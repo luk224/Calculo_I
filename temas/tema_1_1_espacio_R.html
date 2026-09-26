@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 1.1 El espacio ℝ</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo I · El paso al límite · Tema 1.1</div>
+  <h1>El espacio ℝ</h1>
+  <p>Los números reales, su orden, el valor absoluto, los intervalos y la propiedad que los distingue de los racionales: el axioma del supremo. Es la base de todo lo que viene después (límites, continuidad, derivadas).</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §1.1 (pp. 12-21)</span><span>Ejercicios: E Ej. 1.1–1.5 (pp. 6-10)</span><span>⏱ ~5 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §1.1.1 Motivación, p. 12">U p.12</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Con los números reales podemos <b>medir cualquier cosa</b> sin que «falte» ningún número en la recta. Todo el cálculo (límites, derivadas, integrales) se apoya en esa propiedad de «recta sin agujeros», que se formaliza con el <b>axioma del supremo</b>.</p>
+  <span class="src" data-l="U" data-ref="U §1.1.1 Introducción y Objetivos, p. 12">U p.12</span>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li>Operar con fracciones, potencias y raíces cuadradas; resolver ecuaciones de primer y segundo grado.</li>
+  <li>Notación de conjuntos: $a\in S$ (pertenece), $a\notin S$, unión $\cup$, intersección $\cap$, conjunto vacío $\emptyset$ y la notación $\{x : \text{condición}\}$. <span class="src" data-l="S" data-ref="Stewart, Apéndice A, notación de conjuntos, p. A3">S p.A3</span></li>
+  <li>Razonar «por reducción al absurdo» y con «contraejemplos» (se explican donde aparecen).</li>
+</ul>
+<p>El propio libro dice que este tema «debería ser de repaso para la mayoría de los lectores»; si no puedes seguirlo, recomienda el Curso 0 de la UNED. <span class="src" data-l="U" data-ref="U §1.1.1 Orientaciones, p. 12">U p.12</span></p>
+
+<h3>Mapa del tema</h3>
+<table>
+  <tr><th>Apartado de este resumen</th><th>Qué contiene</th><th>Dónde está en los libros</th></tr>
+  <tr><td>1 Los números reales</td><td>ℕ⊂ℤ⊂ℚ⊂ℝ, irracionales, √2</td><td>U pp.12-14 · S pp.A2-A3</td></tr>
+  <tr><td>2 Orden y desigualdades</td><td>propiedades del orden, reglas prácticas</td><td>U pp.14-15 · S pp.A3-A6</td></tr>
+  <tr><td>3 Valor absoluto y distancia</td><td>Def. 1.1, 1.2, Teorema 1.1</td><td>U pp.15-16 · S pp.A6-A9</td></tr>
+  <tr><td>4 Intervalos, centro y radio</td><td>tipos de intervalo, $|x-c|&lt;r$</td><td>U pp.16-18 · S pp.A3-A4</td></tr>
+  <tr><td>5 Cotas y acotados</td><td>Def. 1.3-1.6</td><td>U pp.18-20 · L p.591</td></tr>
+  <tr><td>6 Supremo, ínfimo, máximo, mínimo</td><td>Def. 1.7, 1.8; máx/mín y caracterización ε (propias)</td><td>U pp.20-21</td></tr>
+  <tr><td>7 Axioma del supremo</td><td>completitud de ℝ</td><td>U p.21 · S p.698 · L p.591</td></tr>
+  <tr><td>8 Arquimediana y densidad</td><td>ℕ no acotado, 1/n→0, ℚ denso</td><td>propio (base: U Ej. 1.7)</td></tr>
+  <tr><td>9 Ejercicios</td><td>E 1.1-1.5 + 3 ejemplos propios + 10 métodos</td><td>E pp.6-10</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios</h3>
+<p>Los cinco ejercicios de E de este tema son de elegir opciones o de razonar. Piden cuatro destrezas: (1) pasar entre $|x-c|&lt;r$ e intervalos, y calcular centro y radio; (2) decidir si una implicación con valores absolutos es cierta (o refutarla con un contraejemplo); (3) hallar cotas, supremo e ínfimo de un conjunto y decir si pertenecen a él; (4) acotar una magnitud combinando desigualdades. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.1-1.5, pp. 6-10">E pp.6-10</span></p>
+
+<div class="box warn"><span class="h">Lo que U no dice (y aquí se explica)</span>
+  <p>Comprobado en el texto: en §1.1 el libro U <b>no define máximo ni mínimo</b>, <b>no enuncia la propiedad arquimediana ni la densidad</b> de ℚ, y <b>no da la caracterización con ε</b> del supremo. Son útiles e indispensables para los ejercicios, así que están explicadas en los apartados 6 y 8 marcadas como <span class="src" data-l="P" data-ref="Explicación propia, no está en U §1.1">P</span> (propias). Lo más cercano en U es el Ejemplo 1.7 (p. 19): ℕ no está acotado superiormente.</p>
+</div>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Los números reales <span class="src" data-l="U" data-ref="U §1.1.2 Los números reales, pp. 12-14">U pp.12-14</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Cada familia de números nace de una necesidad: los <b>naturales</b> sirven para <i>contar</i>, los <b>enteros</b> para <i>restar</i> (poder «quedar a deber»), los <b>racionales</b> para <i>repartir</i> (proporciones), y los <b>reales</b> para <i>medir</i> cualquier longitud: la recta entera, sin huecos.</p>
+  <span class="src" data-l="U" data-ref="U §1.1.2, p. 12">U p.12</span>
+</div>
+
+<div class="box def"><span class="h">Conjuntos de números</span>
+  <p>$\mathbb N=\{1,2,3,\dots\}$ (en U el 0 no es natural), $\ \mathbb Z=\{\dots,-2,-1,0,1,2,\dots\}$, $\ \mathbb Q=\left\{\dfrac pq : p,q\in\mathbb Z,\ q\neq 0\right\}$. Los <b>reales</b> $\mathbb R$ contienen a todos ellos; los <b>irracionales</b> $\mathbb I$ son los reales que no son racionales. Se cumple
+  $$\mathbb N\subset\mathbb Z\subset\mathbb Q\subset\mathbb R,\qquad \mathbb Q\cup\mathbb I=\mathbb R,\qquad \mathbb Q\cap\mathbb I=\emptyset.$$</p>
+  <span class="src" data-l="U" data-ref="U §1.1.2, p. 12 (ℕ, ℤ, ℚ) y p. 13 (ℝ, 𝕀)">U pp.12-13</span>
+</div>
+
+<h3>¿Por qué hacen falta los reales?</h3>
+<p>Un triángulo rectángulo con catetos de longitud 1 tiene, por Pitágoras, una hipotenusa $h$ con $h^2=1^2+1^2=2$, es decir $h=\sqrt2$. U afirma que «no es difícil demostrar que tal longitud no es un número racional» (remite al libro <i>Apología de un matemático</i> de G. H. Hardy para la prueba) y que, aunque se añadieran raíces de racionales, $\pi$ tampoco pertenecería a ese nuevo conjunto. Los racionales «se quedan cortos». <span class="src" data-l="U" data-ref="U §1.1.2, Figura 1.1 y texto, p. 13">U p.13</span></p>
+
+<div class="box thm"><span class="h">√2 no es racional (demostración)</span>
+  <p>Supongamos $\sqrt2=p/q$ con $p,q$ enteros positivos <b>sin factores comunes</b> (fracción irreducible).</p>
+  <ol class="steps">
+    <li>Elevando al cuadrado: $p^2=2q^2$, luego $p^2$ es par.</li>
+    <li>Si $p$ fuera impar, $p^2$ sería impar; por tanto $p$ es par: $p=2k$.</li>
+    <li>Sustituyendo, $4k^2=2q^2$, o sea $q^2=2k^2$: $q^2$ es par y, por el mismo razonamiento, $q$ es par.</li>
+    <li>Entonces $p$ y $q$ son pares: tienen el factor 2 en común. <b>Contradicción</b> con que la fracción fuese irreducible. Luego $\sqrt2\notin\mathbb Q$.</li>
+  </ol>
+  <span class="src" data-l="P" data-ref="Demostración clásica, propia. U p.13 solo la menciona (remite a Hardy)">P</span>
+  <span class="src" data-l="U" data-ref="U §1.1.2, p. 13: afirma que √2 no es racional y remite a Hardy para la prueba">U p.13</span>
+</div>
+
+<div class="box intu"><span class="h">Cómo «se ve» un irracional: el decimal</span>
+  <p>Un número es racional si y solo si su expansión decimal es <b>periódica</b> (por ejemplo $\tfrac12=0{,}5000\ldots$, $\tfrac23=0{,}666\ldots$); es irracional si su decimal es infinito y <b>no periódico</b> ($\sqrt2=1{,}41421356\ldots$, $\pi=3{,}14159265\ldots$). Cortar el decimal da una aproximación: $\pi\approx3{,}14159265$.</p>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, números racionales/irracionales y representación decimal, p. A2">S p.A2</span>
+</div>
+
+<div class="box def"><span class="h">La recta real</span>
+  <p>Los números reales se representan como los puntos de una recta, la <b>recta real</b>: se elige un origen (el 0), una unidad y un sentido positivo (a la derecha); cada punto corresponde a exactamente un real y viceversa. En $\mathbb R$ hay suma y producto con la misma estructura algebraica que en $\mathbb Q$; la diferencia con $\mathbb Q$ no es de «operaciones», sino de <i>completitud</i> (apartado 7).</p>
+  <span class="src" data-l="U" data-ref="U §1.1.2, Figura 1.2, p. 14">U p.14</span>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, recta real (Figura 1), pp. A2-A3">S pp.A2-A3</span>
+</div>
+
+<div class="box intu"><span class="h">De dónde sale ℝ</span>
+  <p>U aclara que construir $\mathbb R$ queda fuera del curso, pero que se puede hacer «completando $\mathbb Q$ con los límites de ciertas sucesiones de números racionales»: por eso los reales están tan ligados al cálculo infinitesimal.</p>
+  <span class="src" data-l="U" data-ref="U §1.1.2, nota al margen, p. 13">U p.13</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo: ¿en qué conjuntos está cada número?</span>
+  <table>
+    <tr><th>Número</th><th>ℕ</th><th>ℤ</th><th>ℚ</th><th>ℝ</th><th>Por qué</th></tr>
+    <tr><td>$5$</td><td>sí</td><td>sí</td><td>sí</td><td>sí</td><td>entero positivo</td></tr>
+    <tr><td>$-3$</td><td>no</td><td>sí</td><td>sí</td><td>sí</td><td>entero negativo</td></tr>
+    <tr><td>$0{,}25$</td><td>no</td><td>no</td><td>sí</td><td>sí</td><td>$=\tfrac14$</td></tr>
+    <tr><td>$0{,}333\ldots$</td><td>no</td><td>no</td><td>sí</td><td>sí</td><td>periódico: $=\tfrac13$</td></tr>
+    <tr><td>$\sqrt4$</td><td>sí</td><td>sí</td><td>sí</td><td>sí</td><td>$=2$</td></tr>
+    <tr><td>$\sqrt2,\ \pi$</td><td>no</td><td>no</td><td>no</td><td>sí</td><td>irracionales</td></tr>
+  </table>
+  <span class="src" data-l="P" data-ref="Ejemplo propio">P</span>
+</div>
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Creer que «toda raíz es irracional» ($\sqrt4=2$ es entero) o que «todo decimal con infinitas cifras es irracional» ($0{,}333\ldots=\tfrac13$ es racional). Lo que decide es que el decimal sea o no <i>periódico</i>.</p>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Orden y desigualdades <span class="src" data-l="U" data-ref="U §1.1.2 Operaciones y orden, pp. 14-15">U pp.14-15</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Ordenar dos números es decir cuál está <b>más a la izquierda</b> en la recta real. $x&lt;y$ significa «$x$ está a la izquierda de $y$»; $x\le y$ significa «a la izquierda o en el mismo punto». Negativos: a la izquierda del 0; positivos: a la derecha.</p>
+  <span class="src" data-l="U" data-ref="U §1.1.2, p. 14">U p.14</span>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, orden en la recta numérica, p. A3">S p.A3</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo (U 1.1): comparar con ayuda de la recta</span>
+  <p>¿Son ciertas $e&lt;\pi$, $1\le e$, $-\ln 2&lt;-\tfrac52$? Como $e\approx2{,}718$ y $\pi\approx3{,}142$, la primera es cierta. Como $e\approx2{,}718&gt;1$, la segunda también. Para la tercera, $-\ln2\approx-0{,}693$ está <b>a la derecha</b> de $-\tfrac52=-2{,}5$, así que $-\ln2&gt;-\tfrac52$ y la desigualdad es <b>falsa</b>.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.1, p. 14">U p.14</span>
+</div>
+
+<div class="box thm"><span class="h">Propiedades del orden (x, y, z reales)</span>
+  <ol>
+    <li>$x\le y$ o $y\le x$ (orden total: dos números siempre se pueden comparar).</li>
+    <li>$x\le x$ (reflexiva).</li>
+    <li>$x\le y$ e $y\le x$ implican $x=y$ (antisimétrica).</li>
+    <li>$x\le y$ e $y\le z$ implican $x\le z$ (transitiva).</li>
+    <li>$x\le y\Rightarrow x+z\le y+z$ (compatible con la suma).</li>
+    <li>$x\le y$ y $0\le z\Rightarrow xz\le yz$ (producto por un positivo).</li>
+    <li>$x\le y$ y $z&lt;0\Rightarrow xz\ge yz$ (producto por un negativo: <b>se invierte</b>).</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Propiedades del orden 1-7, p. 15">U p.15</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo (U 1.2): sumar desigualdades</span>
+  <p>Si $x\le y$ y $z\le w$, entonces $x+z\le y+w$. <i>Prueba con las propiedades:</i> sumando $z$ a la primera (prop. 5): $x+z\le y+z$. Sumando $y$ a la segunda: $z+y\le w+y$. Como $y+z=z+y$, la transitividad (prop. 4) da $x+z\le y+w$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.2, p. 15">U p.15</span>
+</div>
+
+<h3>Reglas prácticas (las que vas a usar siempre)</h3>
+<table>
+  <tr><th>Operación</th><th>¿Qué pasa con $a&lt;b$?</th><th>Ejemplo</th></tr>
+  <tr><td>Sumar o restar el mismo número $c$</td><td>se conserva: $a+c&lt;b+c$</td><td>$3&lt;5\Rightarrow 3+2&lt;5+2$</td></tr>
+  <tr><td>Sumar dos desigualdades del mismo sentido</td><td>se conserva: $a&lt;b,\ c&lt;d\Rightarrow a+c&lt;b+d$</td><td>$1&lt;2,\ 3&lt;5\Rightarrow4&lt;7$</td></tr>
+  <tr><td>Multiplicar por $c&gt;0$</td><td>se conserva</td><td>$3&lt;5\Rightarrow6&lt;10$</td></tr>
+  <tr><td>Multiplicar por $c&lt;0$</td><td><b>se invierte</b></td><td>$3&lt;5\Rightarrow-6&gt;-10$</td></tr>
+  <tr><td>Tomar inversos (con $0&lt;a&lt;b$)</td><td><b>se invierte</b>: $\dfrac1a&gt;\dfrac1b$</td><td>$2&lt;4\Rightarrow\tfrac12&gt;\tfrac14$</td></tr>
+</table>
+<p><span class="src" data-l="S" data-ref="Stewart, Apéndice A, Reglas para desigualdades 1-5 y comentario, p. A4">S p.A4</span> Son las propiedades 5-7 de U y el Ejemplo 1.2 (p. 15), en versión estricta ($&lt;$ en lugar de $\le$); la de los inversos se obtiene multiplicando por $\frac1{ab}&gt;0$ (propiedad 6).</p>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>No se pueden <b>restar</b> ni <b>dividir</b> desigualdades miembro a miembro. Con $2&lt;3$ y $1&lt;5$, restar daría $2-1&lt;3-5$, es decir $1&lt;-2$: falso. Solo se pueden sumar (mismo sentido). Tampoco olvides invertir el sentido al multiplicar o dividir por un negativo, ni al invertir números positivos.</p>
+  <span class="src" data-l="P" data-ref="Contraejemplo propio; las reglas permitidas son S p.A4">P</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo resuelto: desigualdad lineal</span>
+  <p>Resolver $1+x&lt;7x+5$.</p>
+  <ol class="steps">
+    <li>Restamos 1 a ambos lados (regla 1): $x&lt;7x+4$.</li>
+    <li>Restamos $7x$: $-6x&lt;4$.</li>
+    <li>Dividimos entre $-6$, que es negativo, y <b>se invierte</b> el sentido: $x&gt;-\tfrac46=-\tfrac23$.</li>
+    <li>Todos los pasos son reversibles, así que la solución es el intervalo $\left(-\tfrac23,\infty\right)$.</li>
+  </ol>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Ejemplo 1, pp. A4-A5">S pp.A4-A5</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo resuelto: desigualdad cuadrática (tabla de signos)</span>
+  <p>Resolver $x^2-5x+6\le0$.</p>
+  <ol class="steps">
+    <li>Factorizamos: $(x-2)(x-3)\le0$. Las raíces $2$ y $3$ dividen la recta en $(-\infty,2)$, $(2,3)$ y $(3,\infty)$.</li>
+    <li>En cada trozo el producto no cambia de signo. Signos de $(x-2)$, $(x-3)$ y el producto: en $(-\infty,2)$: $-,-,+$; en $(2,3)$: $+,-,-$; en $(3,\infty)$: $+,+,+$. (También vale probar un punto de cada trozo: $x=1$ da $1-5+6=2&gt;0$.)</li>
+    <li>El producto es $\le0$ en el trozo central y en sus extremos (porque la desigualdad no es estricta): la solución es $[2,3]$.</li>
+  </ol>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Ejemplo 3, pp. A5-A6">S pp.A5-A6</span>
+</div>
+<div class="box tip"><span class="h">Truco de examen</span>
+  <p>Ante una desigualdad polinómica: pasa todo a un lado, deja $0$ a la derecha, factoriza, marca las raíces en la recta y haz una tabla de signos o prueba un punto de cada trozo. Comprueba los extremos según sea $&lt;$ o $\le$. <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Ejemplos 3-4, pp. A5-A6">S pp.A5-A6</span></p>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Valor absoluto y distancia <span class="src" data-l="U" data-ref="U §1.1.2 Valor absoluto, pp. 15-16">U pp.15-16</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>El valor absoluto de $x$ es <b>cuánto te separas del 0</b>, sin importar hacia qué lado: $|3|=3$ y $|-3|=3$. Y $|x-y|$ es la <b>distancia</b> entre $x$ e $y$, ya sea $x&lt;y$ o $y&lt;x$. Las distancias nunca son negativas.</p>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Valor absoluto, p. A6">S p.A6</span>
+  <span class="src" data-l="U" data-ref="U Definiciones 1.1 y 1.2, p. 15">U p.15</span>
+</div>
+
+<div class="box def"><span class="h">Definición 1.1 (valor absoluto) y Definición 1.2 (distancia)</span>
+  <p>$$|x|=\sqrt{x^2}=\begin{cases}x,&amp;x\ge0,\\-x,&amp;x&lt;0.\end{cases}$$
+  La <b>distancia</b> entre $x$ e $y$ es el número no negativo $|x-y|$.</p>
+  <span class="src" data-l="U" data-ref="U Definiciones 1.1 y 1.2, p. 15">U p.15</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 130" role="img" aria-label="Recta real con el origen, dos puntos x e y, la distancia |x| y la distancia |x-y|">
+  <line class="ax" x1="20" y1="70" x2="625" y2="70"/>
+  <line class="ax" x1="80" y1="64" x2="80" y2="76"/>
+  <line class="ax" x1="200" y1="64" x2="200" y2="76"/>
+  <line class="ax" x1="440" y1="64" x2="440" y2="76"/>
+  <text x="80" y="92" text-anchor="middle">0</text>
+  <text x="200" y="92" text-anchor="middle">x</text>
+  <text x="440" y="92" text-anchor="middle">y</text>
+  <circle class="pt" cx="200" cy="70" r="5"/><circle class="pt" cx="440" cy="70" r="5"/>
+  <path class="th" d="M80 104 V112 H200 V104"/><text class="sm" x="140" y="126" text-anchor="middle">|x|  (distancia de x a 0)</text>
+  <path class="b" d="M200 50 V42 H440 V50"/><text class="bd" x="320" y="34" text-anchor="middle">|x − y|  (distancia entre x e y)</text>
+</svg>
+<figcaption>El valor absoluto mide distancias en la recta real: $|x|$ es la distancia al origen y $|x-y|$ la distancia entre dos puntos.</figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>$\sqrt{x^2}=x$ <b>solo es cierto si $x\ge0$</b>. En general $\sqrt{x^2}=|x|$: por ejemplo $\sqrt{(-3)^2}=\sqrt9=3=|-3|$, no $-3$. La raíz cuadrada indica siempre la raíz positiva. Y ojo: $|x|$ no es «quitar el signo menos de la letra»: si $x=-3$, $-x=3$ es positivo, y $|x|=-x$ cuando $x&lt;0$.</p>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, √(a²)=|a| y comentario, p. A7">S p.A7</span>
+</div>
+
+<div class="box thm"><span class="h">Teorema 1.1 (propiedades del valor absoluto)</span>
+  <p>Para $x,y\in\mathbb R$:</p>
+  <ol>
+    <li>$|x|=0\iff x=0$.</li>
+    <li>$|x+y|\le|x|+|y|$ (<b>desigualdad triangular</b>).</li>
+    <li>$|x|-|y|\le|x-y|$. (Intercambiando $x$ e $y$ se obtiene también $|y|-|x|\le|x-y|$, o sea $\big||x|-|y|\big|\le|x-y|$.)</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Teorema 1.1, p. 16">U p.16</span>
+</div>
+
+<div class="box thm"><span class="h">Otras propiedades que se usan siempre</span>
+  <p>$|ab|=|a|\,|b|$, $\ \left|\dfrac ab\right|=\dfrac{|a|}{|b|}\ (b\ne0)$, $\ |a^n|=|a|^n$.</p>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Propiedades de valores absolutos 1-3, p. A7">S p.A7</span>
+</div>
+
+<div class="box intu"><span class="h">Por qué es razonable la desigualdad triangular</span>
+  <p>Si $a$ y $b$ tienen el mismo signo, sumar y luego tomar módulo es lo mismo que tomar módulo y sumar: hay igualdad. Si tienen signos contrarios se «cancelan» al sumar, pero no al tomar módulos primero: $|3+(-5)|=2\le3+5=8$. <b>Prueba (Stewart):</b> siempre $-|a|\le a\le|a|$ y $-|b|\le b\le|b|$. Sumando: $-(|a|+|b|)\le a+b\le|a|+|b|$, y eso equivale a $|a+b|\le|a|+|b|$, porque $-c\le t\le c\iff|t|\le c$ (es el «traductor» $|t|\le c$ de la caja «Ecuaciones y desigualdades básicas» de más abajo, con $t=a+b$ y $c=|a|+|b|$).</p>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Desigualdad del triángulo y su demostración, p. A8">S p.A8</span>
+</div>
+
+<h3>Los tres «traductores» con valor absoluto</h3>
+<div class="box thm"><span class="h">Ecuaciones y desigualdades básicas (a &gt; 0)</span>
+  <ul>
+    <li>$|x|=a\iff x=a$ o $x=-a$.</li>
+    <li>$|x|&lt;a\iff -a&lt;x&lt;a$ (la distancia al 0 es menor que $a$: $x$ está entre $-a$ y $a$).</li>
+    <li>$|x|&gt;a\iff x&gt;a$ o $x&lt;-a$ (fuera del intervalo anterior).</li>
+  </ul>
+  <p>Con $\le$ y $\ge$ pasa lo mismo, con extremos incluidos: $|x|\le a\iff -a\le x\le a$.</p>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, enunciados 4-6 (a>0) y Figura 7, p. A7">S p.A7</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo (U 1.3): un contraejemplo</span>
+  <p>¿Es cierto que $x&lt;y\Rightarrow|x|&lt;|y|$? Parece falso por los negativos. Para demostrar que una afirmación general es falsa <b>basta un caso</b> en que no se cumpla: $x=-2$, $y=1$ verifican $-2&lt;1$ pero $|-2|=2&gt;1=|1|$. Es un <b>contraejemplo</b>.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.3, p. 16">U p.16</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos resueltos (Stewart)</span>
+  <ol class="steps">
+    <li><b>Ecuación.</b> $|2x-5|=3\iff 2x-5=3$ o $2x-5=-3$, es decir $2x=8$ o $2x=2$: $x=4$ o $x=1$. <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Ejemplo 6, p. A7">S p.A7</span></li>
+    <li><b>Desigualdad «menor».</b> $|x-5|&lt;2\iff-2&lt;x-5&lt;2\iff 3&lt;x&lt;7$: intervalo $(3,7)$. Geométricamente: los $x$ cuya distancia a 5 es menor que 2. <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Ejemplo 7, p. A8">S p.A8</span></li>
+    <li><b>Desigualdad «mayor».</b> $|3x+2|\ge4\iff 3x+2\ge4$ o $3x+2\le-4\iff x\ge\tfrac23$ o $x\le-2$: $(-\infty,-2]\cup[\tfrac23,\infty)$. <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Ejemplo 8, p. A8">S p.A8</span></li>
+    <li><b>Estimar con la desigualdad triangular.</b> Si $|x-4|&lt;0{,}1$ y $|y-7|&lt;0{,}2$, entonces $|(x+y)-11|=|(x-4)+(y-7)|\le|x-4|+|y-7|&lt;0{,}3$. <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Ejemplo 9, p. A9">S p.A9</span></li>
+  </ol>
+</div>
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Aplicar los «traductores» sin comprobar que $a&gt;0$. Si $a&lt;0$: $|x|&lt;a$ no tiene solución (un módulo no es negativo) y $|x|&gt;a$ se cumple siempre. Además $|x|&lt;0$ es imposible y $|x|\le0$ solo se cumple en $x=0$.</p>
+  <span class="src" data-l="P" data-ref="Comentario propio (consecuencia de |x| ≥ 0)">P</span>
+</div>
+<div class="box tip"><span class="h">Truco de examen</span>
+  <p>Con coeficiente delante de la $x$, sácalo fuera: $|2x-5|=2\,\left|x-\tfrac52\right|$. Así $|2x-5|\le3\iff\left|x-\tfrac52\right|\le\tfrac32$ y ya lees centro $\tfrac52$ y radio $\tfrac32$ (apartado 4). Para comparar $|u|$ y $|v|$ puedes elevar al cuadrado: $|u|\le|v|\iff u^2\le v^2$.</p>
+  <span class="src" data-l="P" data-ref="Truco propio (usa |ab|=|a||b|, S p.A7)">P</span>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Intervalos, centro y radio <span class="src" data-l="U" data-ref="U §1.1.2 Intervalos, pp. 16-18">U pp.16-18</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Un <b>intervalo</b> es un trozo de la recta real «de una sola pieza», sin cortes: un segmento o una semirrecta. Los paréntesis $(\ )$ dicen «este extremo <i>no</i> entra» (punto vacío ○) y los corchetes $[\ ]$ dicen «sí entra» (punto lleno ●).</p>
+  <span class="src" data-l="U" data-ref="U §1.1.2 Intervalos, p. 16">U p.16</span>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Intervalos (Figuras 2-3), p. A3">S p.A3</span>
+</div>
+
+<div class="box def"><span class="h">Tipos de intervalo</span>
+  <p>Con $a&lt;b$ reales:</p>
+  <table>
+    <tr><th>Notación</th><th>Conjunto</th><th>Nombre</th></tr>
+    <tr><td>$(a,b)$</td><td>$\{x: a&lt;x&lt;b\}$</td><td>abierto</td></tr>
+    <tr><td>$[a,b]$</td><td>$\{x: a\le x\le b\}$</td><td>cerrado</td></tr>
+    <tr><td>$[a,b)$</td><td>$\{x: a\le x&lt;b\}$</td><td>semiabierto</td></tr>
+    <tr><td>$(a,b]$</td><td>$\{x: a&lt;x\le b\}$</td><td>semiabierto</td></tr>
+    <tr><td>$(a,\infty)$, $[a,\infty)$</td><td>$\{x: x&gt;a\}$, $\{x: x\ge a\}$</td><td>semirrecta</td></tr>
+    <tr><td>$(-\infty,b)$, $(-\infty,b]$</td><td>$\{x: x&lt;b\}$, $\{x: x\le b\}$</td><td>semirrecta</td></tr>
+  </table>
+  <p>$a$ y $b$ son los <b>extremos</b>. También son intervalos los <b>degenerados</b>: $[a,a]=\{a\}$, $(a,a)=\emptyset$ y $(-\infty,\infty)=\mathbb R$.</p>
+  <span class="src" data-l="U" data-ref="U §1.1.2 Intervalos, pp. 16-17">U pp.16-17</span>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, Tabla 1 de intervalos, p. A4">S p.A4</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 250" role="img" aria-label="Cuatro intervalos sobre la recta real: abierto, cerrado, semiabierto y semirrecta abierta">
+  <text x="8" y="40">(a, b)</text><line class="ax" x1="110" y1="35" x2="625" y2="35"/>
+  <line class="a" x1="230" y1="35" x2="450" y2="35"/><circle class="op" cx="230" cy="35" r="5.5"/><circle class="op" cx="450" cy="35" r="5.5"/>
+  <text class="sm" x="230" y="58" text-anchor="middle">a</text><text class="sm" x="450" y="58" text-anchor="middle">b</text>
+
+  <text x="8" y="95">[a, b]</text><line class="ax" x1="110" y1="90" x2="625" y2="90"/>
+  <line class="a" x1="230" y1="90" x2="450" y2="90"/><circle class="pt" cx="230" cy="90" r="5.5"/><circle class="pt" cx="450" cy="90" r="5.5"/>
+  <text class="sm" x="230" y="113" text-anchor="middle">a</text><text class="sm" x="450" y="113" text-anchor="middle">b</text>
+
+  <text x="8" y="150">[a, b)</text><line class="ax" x1="110" y1="145" x2="625" y2="145"/>
+  <line class="a" x1="230" y1="145" x2="450" y2="145"/><circle class="pt" cx="230" cy="145" r="5.5"/><circle class="op" cx="450" cy="145" r="5.5"/>
+  <text class="sm" x="230" y="168" text-anchor="middle">a</text><text class="sm" x="450" y="168" text-anchor="middle">b</text>
+
+  <text x="8" y="205">(a, +∞)</text><line class="ax" x1="110" y1="200" x2="625" y2="200"/>
+  <line class="a" x1="230" y1="200" x2="615" y2="200"/><circle class="op" cx="230" cy="200" r="5.5"/>
+  <polygon class="pt" points="612,193 628,200 612,207"/>
+  <text class="sm" x="230" y="223" text-anchor="middle">a</text>
+</svg>
+<figcaption>Recta real con intervalos: punto vacío ○ = extremo excluido (paréntesis); punto lleno ● = extremo incluido (corchete). La flecha indica que la semirrecta sigue indefinidamente.</figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>$\infty$ <b>no es un número</b>: $(a,\infty)$ solo indica que el intervalo se extiende sin fin a la derecha; por eso el extremo infinito va <b>siempre con paréntesis</b>. Además, todos estos intervalos suponen $a&lt;b$: $(5,2)$ no es un intervalo con este significado.</p>
+  <span class="src" data-l="S" data-ref="Stewart, Apéndice A, comentario sobre ∞ y Tabla 1, p. A4">S p.A4</span>
+</div>
+
+<h3>Centro y radio</h3>
+<div class="box def"><span class="h">Centro y radio de un intervalo (a &lt; b)</span>
+  <p>El <b>centro</b> es el punto medio $c=\dfrac{a+b}2$ y el <b>radio</b> es la distancia del centro a un extremo, $r=\dfrac{b-a}2$. Al revés: dados $c$ y $r&gt;0$, los intervalos $(c-r,c+r)$, $(c-r,c+r]$, $[c-r,c+r)$, $[c-r,c+r]$ tienen ese centro y ese radio, y como $|x-c|$ es la distancia de $x$ a $c$,
+  $$(c-r,c+r)=\{x\in\mathbb R:\ |x-c|&lt;r\},\qquad [c-r,c+r]=\{x\in\mathbb R:\ |x-c|\le r\}.$$</p>
+  <span class="src" data-l="U" data-ref="U §1.1.2, centro y radio, p. 17">U p.17</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 165" role="img" aria-label="El intervalo abierto (1,4) con centro 5/2 y radio 3/2">
+  <line class="ax" x1="30" y1="100" x2="625" y2="100"/>
+  <g class="ax"><line x1="60" y1="94" x2="60" y2="106"/><line x1="165" y1="94" x2="165" y2="106"/><line x1="270" y1="94" x2="270" y2="106"/><line x1="375" y1="94" x2="375" y2="106"/><line x1="480" y1="94" x2="480" y2="106"/><line x1="585" y1="94" x2="585" y2="106"/></g>
+  <text class="sm" x="60" y="124" text-anchor="middle">0</text><text class="sm" x="165" y="124" text-anchor="middle">1</text><text class="sm" x="270" y="124" text-anchor="middle">2</text><text class="sm" x="375" y="124" text-anchor="middle">3</text><text class="sm" x="480" y="124" text-anchor="middle">4</text><text class="sm" x="585" y="124" text-anchor="middle">5</text>
+  <line class="a" x1="165" y1="100" x2="480" y2="100"/>
+  <circle class="op" cx="165" cy="100" r="5.5"/><circle class="op" cx="480" cy="100" r="5.5"/>
+  <circle class="pb" cx="322.5" cy="100" r="5.5"/>
+  <text class="bd" x="322.5" y="88" text-anchor="middle">c = 5/2</text>
+  <path class="b" d="M165 62 V54 H322.5 V62"/><text x="243" y="46" text-anchor="middle">r = 3/2</text>
+  <path class="b" d="M322.5 62 V54 H480 V62"/><text x="401" y="46" text-anchor="middle">r = 3/2</text>
+  <text class="sm" x="165" y="146" text-anchor="middle">extremo a = 1</text><text class="sm" x="480" y="146" text-anchor="middle">extremo b = 4</text>
+</svg>
+<figcaption>El intervalo $(1,4)$ tiene centro $c=\tfrac52$ y radio $r=\tfrac32$, y se escribe $\{x:\ |x-\tfrac52|&lt;\tfrac32\}$ (U Ejemplo 1.4).</figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo (U 1.4): del intervalo al valor absoluto</span>
+  <p>Para $(1,4)$: $c=\frac{1+4}2=\frac52$, $r=\frac{4-1}2=\frac32$, luego $(1,4)=\{x\in\mathbb R:\ |x-\tfrac52|&lt;\tfrac32\}$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.4, p. 17">U p.17</span>
+</div>
+<div class="box ex"><span class="h">Ejemplo (U 1.5): del valor absoluto al intervalo</span>
+  <p>Los puntos a distancia $\le\frac2{10}$ de $-1$ son $\{x:\ |x-(-1)|\le\frac2{10}\}$, el intervalo cerrado de centro $-1$ y radio $\frac2{10}$: $\left[-1-\frac2{10},\,-1+\frac2{10}\right]=\left[-\frac{12}{10},-\frac8{10}\right]=\left[-\tfrac65,-\tfrac45\right]$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.5, p. 18">U p.18</span>
+</div>
+
+<div class="box tip"><span class="h">Receta: pasar de una forma a otra</span>
+  <ul>
+    <li><b>$|x-c|&lt;r$ → intervalo:</b> $(c-r,\,c+r)$. Con $\le$: cerrado $[c-r,c+r]$.</li>
+    <li><b>Intervalo $(a,b)$ → valor absoluto:</b> $c=\frac{a+b}2$, $r=\frac{b-a}2$ y escribe $|x-c|&lt;r$.</li>
+    <li><b>$|x-c|&gt;r$</b> es el complementario: $(-\infty,c-r)\cup(c+r,\infty)$.</li>
+    <li><b>Si el centro está mal escrito</b> (p. ej. $|x+2|&lt;5$), recuerda $|x+2|=|x-(-2)|$: centro $-2$, radio $5$.</li>
+  </ul>
+  <span class="src" data-l="P" data-ref="Receta propia basada en U p.17">P</span>
+</div>
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Leer $|x-3|&lt;4$ como $(-4,4)$ o como $(3,7)$. El número que resta a $x$ es el <b>centro</b> ($3$) y el de la derecha es el <b>radio</b> ($4$): $(3-4,3+4)=(-1,7)$.</p>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="s5"><span class="n">5</span>Cotas y conjuntos acotados <span class="src" data-l="U" data-ref="U §1.1.2 Conjuntos acotados, pp. 18-20">U pp.18-20</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Piensa en un conjunto de números como un grupo de personas en una habitación. Una <b>cota superior</b> es un <b>techo</b>: una altura que ninguna persona supera. Una <b>cota inferior</b> es un <b>suelo</b>. Si hay un techo, hay infinitos (cualquiera más alto también vale). Un techo puede tocar a alguien del grupo o quedar por encima de todos. Hay habitaciones sin techo: los números naturales suben sin límite.</p>
+  <span class="src" data-l="U" data-ref="U p. 18-19: cota superior, infinitas cotas, ℕ sin cotas superiores">U pp.18-19</span>
+  <span class="src" data-l="P" data-ref="Analogía propia del techo y el suelo">P</span>
+</div>
+
+<div class="box def"><span class="h">Definiciones 1.3-1.6</span>
+  <ul>
+    <li><b>Cota superior</b> de $A\subset\mathbb R$: número $c$ con $a\le c$ para todo $a\in A$. (Def. 1.3, p. 18)</li>
+    <li>$A$ está <b>acotado superiormente</b> si tiene una cota superior. (Def. 1.4, p. 19)</li>
+    <li><b>Cota inferior</b>: $c$ con $a\ge c$ para todo $a\in A$; <b>acotado inferiormente</b> si existe una. (Def. 1.5, p. 19)</li>
+    <li>$A$ está <b>acotado</b> si lo está superior e inferiormente. (Def. 1.6, p. 19)</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U Definiciones 1.3 (p. 18), 1.4, 1.5 y 1.6 (p. 19)">U pp.18-19</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Definición de sucesión acotada (mismo concepto para sucesiones), p. 591">L p.591</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo (U 1.6): una cota que pertenece o no</span>
+  <p>El número $\sqrt7$ es cota superior de $A=\{x\in\mathbb Q: x^2\le7\}$ y de $B=\{x\in\mathbb R: x^2\le7\}$: si $x^2\le7$, entonces $|x|\le\sqrt7$, luego $x\le\sqrt7$. Pero $\sqrt7\in B$ y $\sqrt7\notin A$ (no es racional). <b>Un conjunto puede contener o no a sus cotas superiores.</b></p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.6, p. 18">U p.18</span>
+</div>
+<div class="box ex"><span class="h">Ejemplo (U 1.7 y 1.8): ℕ no está acotado superiormente</span>
+  <p><i>Idea de la prueba (por reducción al absurdo):</i> si $c$ fuese cota superior de $\mathbb N$, tomando la parte entera de $c$ y sumándole $2$ obtendríamos un natural mayor que $c$: contradicción. Así $\mathbb N$ no tiene cotas superiores; en cambio $0$ (o $1$) es cota inferior. Por tanto $\mathbb N$ está acotado inferiormente pero <b>no</b> está acotado.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplos 1.7 y 1.8, p. 19">U p.19</span>
+</div>
+<div class="box ex"><span class="h">Ejemplo: los intervalos acotados</span>
+  <p>$[\pi,\,3e^2]$ es un conjunto acotado porque $\pi$ es cota inferior y $3e^2\approx22{,}2$ es cota superior. En general, todo intervalo $(a,b)$, $[a,b]$, $(a,b]$ o $[a,b)$ con $a&lt;b$ es acotado (cotas $a$ y $b$). Las semirrectas no lo son.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.9 y comentario que le sigue (intervalos acotados), p. 20">U p.20</span>
+</div>
+
+<div class="box tip"><span class="h">Cómo se niega «acotado superiormente»</span>
+  <p>$A$ <b>no</b> está acotado superiormente $\iff$ para todo real $K$ existe $a\in A$ con $a&gt;K$ («supera cualquier techo»). Es la forma en que se prueba que $\mathbb N$ o $[0,\infty)$ no están acotados.</p>
+  <span class="src" data-l="P" data-ref="Negación del cuantificador, propia">P</span>
+</div>
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Confundir «una cota superior» con «la mayor cifra del conjunto». Una cota superior es un número <i>cualquiera</i> por encima de todos (puede estar o no en $A$, y hay infinitas). Para $A=\{1,2,3\}$ son cotas superiores $3$, $3{,}5$, $100$. La que interesa después es la <i>menor</i>: el supremo.</p>
+</div>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="s6"><span class="n">6</span>Supremo e ínfimo, máximo y mínimo <span class="src" data-l="U" data-ref="U §1.1.2 Supremo e ínfimo (Def. 1.7 y 1.8), pp. 20-21">U pp.20-21</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Entre todos los techos posibles nos interesa el <b>más bajo</b>: el techo «ajustado». Ese es el <b>supremo</b>. Para $A=(0,1)$, el número $1$ es el techo más bajo aunque nadie lo alcance: cualquier número menor que 1 queda por debajo de algún elemento de $A$. El <b>ínfimo</b> es el suelo más alto. Si el supremo <i>pertenece</i> al conjunto, lo llamamos <b>máximo</b>; si el ínfimo pertenece, <b>mínimo</b>.</p>
+  <span class="src" data-l="U" data-ref="U p. 20: «supremo de A a la menor de las cotas superiores»">U p.20</span>
+</div>
+
+<div class="box def"><span class="h">Definiciones 1.7 (supremo) y 1.8 (ínfimo)</span>
+  <p>Un número $\sup A$ es el <b>supremo</b> de $A\subset\mathbb R$ si (i) $\sup A$ es <b>cota superior</b> de $A$ y (ii) si $c$ es cota superior de $A$, entonces $\sup A\le c$ (es la <b>menor</b> de las cotas superiores).</p>
+  <p>Un número $\inf A$ es el <b>ínfimo</b> si (i) es <b>cota inferior</b> de $A$ y (ii) si $c$ es cota inferior de $A$, entonces $c\le\inf A$ (la <b>mayor</b> de las cotas inferiores).</p>
+  <p>Si existen, son <b>únicos</b>. <i>Prueba:</i> si $s$ y $s\prime$ son supremos, ambos son cotas superiores; por (ii) aplicada a cada uno, $s\le s\prime$ y $s\prime\le s$, y por la propiedad antisimétrica (U p.15) $s=s\prime$. Lo mismo con el ínfimo. Pero no todo conjunto tiene supremo o ínfimo.</p>
+  <span class="src" data-l="U" data-ref="U Definiciones 1.7 y 1.8 y comentario de unicidad, p. 20">U p.20</span>
+</div>
+
+<div class="box def"><span class="h">Máximo y mínimo (definición propia)</span>
+  <p>$M$ es el <b>máximo</b> de $A$ ($M=\max A$) si $M\in A$ y $a\le M$ para todo $a\in A$. Análogamente el <b>mínimo</b> $m=\min A$: $m\in A$ y $m\le a$ para todo $a\in A$. Relación con lo anterior: <b>existe $\max A$ si y solo si $\sup A\in A$</b>, y entonces $\max A=\sup A$. (Igual con $\inf$ y $\min$.) Por eso: <i>si una cota superior pertenece al conjunto, es su supremo y su máximo</i>.</p>
+  <p><i>Por qué ($\Rightarrow$):</i> si $M=\max A$, entonces $M\in A$ es cota superior y cualquier otra cota superior $c$ cumple $M\le c$ porque $M\in A$; así $M$ es la menor cota superior: $M=\sup A\in A$. <i>($\Leftarrow$):</i> si $\sup A\in A$, es una cota superior que pertenece a $A$, es decir, el máximo.</p>
+  <span class="src" data-l="P" data-ref="Definición propia: U §1.1 no define máximo ni mínimo">P</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 200" role="img" aria-label="El conjunto S = {1/n} en la recta: el máximo 1 pertenece al conjunto, el ínfimo 0 no; se indican las cotas superiores e inferiores">
+  <line class="ax" x1="10" y1="110" x2="630" y2="110"/>
+  <line class="b" x1="520" y1="110" x2="622" y2="110"/><polygon class="pb" points="620,103 634,110 620,117"/>
+  <line class="b" x1="70" y1="110" x2="18" y2="110"/><polygon class="pb" points="20,103 6,110 20,117"/>
+  <text class="sm" x="575" y="80" text-anchor="middle">cotas superiores: c ≥ 1</text>
+  <text class="sm" x="40" y="80" text-anchor="middle">cotas inf.: c ≤ 0</text>
+  <circle class="pt" cx="520" cy="110" r="5"/><circle class="pt" cx="295" cy="110" r="4.5"/><circle class="pt" cx="220" cy="110" r="4.5"/><circle class="pt" cx="182.5" cy="110" r="4"/><circle class="pt" cx="160" cy="110" r="4"/><circle class="pt" cx="145" cy="110" r="3.6"/><circle class="pt" cx="134.3" cy="110" r="3.4"/><circle class="pt" cx="126.3" cy="110" r="3.2"/><circle class="pt" cx="120" cy="110" r="3"/><circle class="pt" cx="115" cy="110" r="3"/><circle class="pt" cx="110.9" cy="110" r="3"/><circle class="pt" cx="107.5" cy="110" r="3"/>
+  <circle class="op" cx="70" cy="110" r="5.5"/>
+  <text class="sm" x="295" y="132" text-anchor="middle">1/2</text><text class="sm" x="220" y="132" text-anchor="middle">1/3</text><text class="sm" x="182.5" y="146" text-anchor="middle">1/4</text>
+  <text class="bd" x="520" y="140" text-anchor="middle">máx S = sup S = 1 ∈ S</text>
+  <text class="bd" x="30" y="168">ínf S = 0 ∉ S (no hay mínimo)</text>
+</svg>
+<figcaption>Conjunto $S=\{1,\tfrac12,\tfrac13,\dots\}$: el $1$ es cota superior y pertenece a $S$ (máximo). Los puntos se acumulan hacia el $0$, que es la mayor cota inferior pero no pertenece a $S$ (ínfimo sin mínimo).</figcaption>
+</figure>
+
+<div class="box thm"><span class="h">Caracterización con ε (propia, muy útil)</span>
+  <p>$$s=\sup A\iff\begin{cases}a\le s\ \text{ para todo } a\in A,\\[2pt] \text{para todo }\varepsilon&gt;0\text{ existe }a\in A\text{ con } a&gt;s-\varepsilon.\end{cases}$$
+  Para el ínfimo: $a\ge s$ para todo $a\in A$, y para todo $\varepsilon&gt;0$ existe $a\in A$ con $a&lt;s+\varepsilon$.</p>
+  <p><i>Por qué es la Definición 1.7 disfrazada:</i> la primera condición es (i). La segunda dice que ningún número menor que $s$ es cota superior: cualquier $c&lt;s$ se escribe $c=s-\varepsilon$ con $\varepsilon=s-c&gt;0$, y hay un $a\in A$ mayor que $c$, así que $c$ no es cota superior. Es lo que exige (ii). <i>Recíprocamente</i>, si $s=\sup A$ y $\varepsilon&gt;0$, el número $s-\varepsilon&lt;s$ no puede ser cota superior (por (ii) toda cota superior es $\ge s$), luego existe $a\in A$ con $a&gt;s-\varepsilon$.</p>
+  <p>Stewart usa exactamente este argumento en la demostración del teorema de la sucesión monótona: como $L$ es la mínima cota superior, $L-\varepsilon$ <i>no</i> es cota superior, luego algún término supera $L-\varepsilon$.</p>
+  <span class="src" data-l="P" data-ref="Enunciado propio, equivalente a la Def. 1.7 de U (p. 20); U no lo da">P</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, demostración del teorema 12 (la mínima cota superior L; L−ε no es cota superior), p. 698">S p.698</span>
+</div>
+
+<div class="box tip"><span class="h">Receta para demostrar que sup A = s</span>
+  <ol class="steps">
+    <li><b>Conjetura</b> el valor $s$ (mira los primeros elementos o el intervalo).</li>
+    <li>Demuestra que $s$ es <b>cota superior</b>: $a\le s$ para todo $a\in A$.</li>
+    <li>Demuestra que es la <b>mejor</b>: supón que $c&lt;s$ es cota superior y encuentra un $a\in A$ con $a&gt;c$ (contradicción); o, equivalentemente, dado $\varepsilon&gt;0$ encuentra $a\in A$ con $a&gt;s-\varepsilon$.</li>
+    <li>Decide si $s\in A$: si lo está, es máximo; si no, hay supremo pero no máximo.</li>
+  </ol>
+  <p>Con el ínfimo es igual, dando la vuelta a las desigualdades.</p>
+  <span class="src" data-l="P" data-ref="Receta propia a partir de U Defs. 1.7-1.8, p. 20">P</span>
+</div>
+
+<h3>Ejemplos del libro</h3>
+<div class="box ex"><span class="h">U 1.10: intervalos</span>
+  <p>Los intervalos $(-1,1)$, $(-1,1]$, $[-1,1)$ y $[-1,1]$ tienen todos supremo $1$ e ínfimo $-1$; pero solo $[-1,1]$ tiene máximo y mínimo.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.10, p. 20">U p.20</span>
+</div>
+<div class="box ex"><span class="h">U 1.11: un conjunto de racionales con sup y ínf irracionales</span>
+  <p>Para $A=\{x\in\mathbb Q: x^2\le7\}$: $\inf A=-\sqrt7$ y $\sup A=\sqrt7$, y ninguno pertenece a $A$. (Los supremos se toman en $\mathbb R$; en $\mathbb Q$ no existe el supremo de este conjunto: ver apartado 7.)</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.11, p. 20">U p.20</span>
+</div>
+<div class="box ex"><span class="h">U 1.12 y 1.13: cuando no existen</span>
+  <p>$\inf\mathbb N=1$, pero $\sup\mathbb N$ no existe; $\mathbb Z$ no tiene ni supremo ni ínfimo. El conjunto $\{x\in\mathbb Q: x&lt;7\}$ no tiene ínfimo, pero su supremo es $7$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplos 1.12 y 1.13, p. 21">U p.21</span>
+</div>
+
+<h3>Tabla de intervalos</h3>
+<table>
+  <tr><th>Conjunto</th><th>ínf</th><th>sup</th><th>mín</th><th>máx</th></tr>
+  <tr><td>$(a,b)$</td><td>$a$</td><td>$b$</td><td>no hay</td><td>no hay</td></tr>
+  <tr><td>$[a,b]$</td><td>$a$</td><td>$b$</td><td>$a$</td><td>$b$</td></tr>
+  <tr><td>$(a,b]$</td><td>$a$</td><td>$b$</td><td>no hay</td><td>$b$</td></tr>
+  <tr><td>$[a,b)$</td><td>$a$</td><td>$b$</td><td>$a$</td><td>no hay</td></tr>
+  <tr><td>$(a,\infty)$</td><td>$a$</td><td>no existe</td><td>no hay</td><td>no hay</td></tr>
+  <tr><td>$(-\infty,b]$</td><td>no existe</td><td>$b$</td><td>no hay</td><td>$b$</td></tr>
+  <tr><td>$\mathbb N$</td><td>$1$</td><td>no existe</td><td>$1$</td><td>no hay</td></tr>
+</table>
+<p>En una unión finita de intervalos, el supremo es el mayor extremo derecho y el ínfimo el menor extremo izquierdo; un «agujero» interior (como quitar el $0$ de $(-1,1)$) no cambia esos valores.</p>
+<p><span class="src" data-l="P" data-ref="Tabla propia a partir de U Ejemplos 1.10-1.12, pp. 20-21">P</span> Tabla elaborada a partir de los ejemplos 1.10-1.12 de U.</p>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <ul>
+    <li><b>Confundir supremo con máximo:</b> el supremo siempre es una cota, pero puede no estar en el conjunto ($\sup(0,1)=1$, sin máximo).</li>
+    <li>Decir «el ínfimo de $\{1/n\}$ es $0$ porque $1/n$ tiende a 0» sin probar que ningún $c&gt;0$ es cota inferior.</li>
+    <li>Un conjunto <b>no vacío</b> y acotado <b>sin</b> máximo ni mínimo sí tiene sup e ínf (apartado 7). Lo que falla en un conjunto no acotado es la existencia del supremo (o del ínfimo).</li>
+  </ul>
+</div>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="s7"><span class="n">7</span>Axioma del supremo (completitud) <span class="src" data-l="U" data-ref="U Axioma del supremo, p. 21">U p.21</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>La recta real <b>no tiene agujeros ni brechas</b>. Si vas bajando el techo (cotas cada vez menores), hay un número real donde se detiene: el supremo. Los racionales, en cambio, son como un colador: en el lugar de $\sqrt7$ hay un agujero. Stewart y Larson lo llaman <i>axioma de completez/completitud</i> y lo describen así.</p>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, axioma de completez: «la recta de los números reales no tiene brechas o agujeros», p. 698">S p.698</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, «los números reales están completos… no hay agujeros o brechas», p. 591">L p.591</span>
+</div>
+
+<div class="box thm"><span class="h">Axioma del supremo</span>
+  <p>Todo subconjunto <b>no vacío</b> de números reales <b>acotado superiormente</b> tiene supremo en $\mathbb R$:
+  $$A\subset\mathbb R,\quad A\neq\emptyset,\quad A\text{ acotado superiormente}\ \Longrightarrow\ \sup A\in\mathbb R.$$
+  Análogamente: si $A\neq\emptyset$ está <b>acotado inferiormente</b>, entonces $\inf A\in\mathbb R$.</p>
+  <span class="src" data-l="U" data-ref="U Axioma del supremo y versión para el ínfimo, p. 21">U p.21</span>
+</div>
+
+<div class="box warn"><span class="h">Aviso sobre el enunciado de U (p. 21)</span>
+  <p>La fórmula impresa en U escribe «si $A\subset\mathbb R$ y $A\neq\emptyset$, entonces $\sup A\in\mathbb R$» y <b>omite la hipótesis «acotado superiormente»</b>, que sí aparece en la frase de antes (y en la versión «dicho de un modo más directo»). Sin ella la fórmula es falsa: $\mathbb N$ no está vacío y no tiene supremo (U Ej. 1.12). Usa siempre <b>las dos hipótesis</b>. La versión para el ínfimo de U tampoco menciona $A\neq\emptyset$; también hace falta. Stewart sí enuncia ambas hipótesis. U lo resume con su aviso en broma: «como en los contratos, la letra pequeña también cuenta».</p>
+  <span class="src" data-l="U" data-ref="U Axioma del supremo, texto y fórmula, p. 21">U p.21</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1: «conjunto no vacío… que tiene una cota superior», p. 698">S p.698</span>
+</div>
+
+<div class="box intu"><span class="h">Por qué ℚ no lo cumple</span>
+  <p>Sea $A=\{x\in\mathbb Q: x^2\le7\}$. Es no vacío y está acotado superiormente por cotas racionales como $3$, $2{,}7$, $2{,}65$, $2{,}646$ (y $\sqrt7=2{,}6457\ldots$). Cada vez son menores, pero la menor cota superior <i>sería</i> $\sqrt7$, que no es racional. Luego <b>no existe la menor de todas ellas dentro de $\mathbb Q$</b>. En $\mathbb R$ el axioma garantiza que sí existe: es $\sqrt7$. Esa es la diferencia esencial entre $\mathbb Q$ y $\mathbb R$; y, según una nota al margen de U (p. 13), $\mathbb R$ se puede construir «completando $\mathbb Q$ con los límites de ciertas sucesiones de números racionales», es decir, rellenando esos huecos.</p>
+  <span class="src" data-l="U" data-ref="U p. 21, párrafo tras el Axioma del supremo (ejemplo A={x∈ℚ: x²≤7} del Ej. 1.11)">U p.21</span>
+  <span class="src" data-l="U" data-ref="U §1.1.2, nota al margen sobre la construcción de ℝ, p. 13">U p.13</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Aplicar el axioma sin comprobar las dos hipótesis. Si $A$ no está acotado superiormente ($\mathbb N$, $[0,\infty)$) no hay supremo. Si $A=\emptyset$, todo número real es cota superior y no hay una menor, así que tampoco hay supremo (por eso se exige $A\neq\emptyset$).</p>
+  <span class="src" data-l="P" data-ref="Comentario propio sobre el conjunto vacío">P</span>
+</div>
+
+<div class="box intu"><span class="h">Para qué sirve (avance del tema 1.2)</span>
+  <p>U avisa de que el axioma «es clave para demostrar muchos de los resultados» del curso. El primero es que <b>toda sucesión creciente y acotada converge</b> (a su supremo). Stewart lo demuestra apoyándose en la completez (Teorema 12) y Larson lo enuncia como Teorema 9.5. Se estudia en §1.2.</p>
+  <span class="src" data-l="U" data-ref="U nota al margen tras el Axioma del supremo, p. 21">U p.21</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Teorema 12 (sucesión monótona), p. 698">S p.698</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Teorema 9.5 (sucesiones monótonas acotadas), p. 591">L p.591</span>
+</div>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="s8"><span class="n">8</span>Propiedad arquimediana y densidad <span class="src" data-l="P" data-ref="Apartado propio: U §1.1 no enuncia la propiedad arquimediana ni la densidad; base en U Ejemplo 1.7 (p. 19)">P</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p><b>Arquimediana:</b> no hay números «infinitamente grandes». Por muy grande que sea un número real $K$, contando $1,2,3,\dots$ acabas superándolo. Y por tanto, por pequeño que sea $\varepsilon&gt;0$, alguna fracción $1/n$ es aún menor. <b>Densidad:</b> entre dos números reales distintos, por cerca que estén, siempre hay un racional y un irracional.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia; U §1.1 no trata estas propiedades">P</span>
+</div>
+
+<div class="box thm"><span class="h">Propiedad arquimediana</span>
+  <p>Para todo $K\in\mathbb R$ existe $n\in\mathbb N$ con $n&gt;K$. Equivalentemente: para todo $\varepsilon&gt;0$ existe $n\in\mathbb N$ con $\dfrac1n&lt;\varepsilon$ (aplica lo anterior a $K=\tfrac1\varepsilon$).</p>
+  <p><i>Es el Ejemplo 1.7 de U</i> ($\mathbb N$ no tiene cotas superiores) <i>dicho de otra forma</i>. Prueba con el axioma del supremo: si $\mathbb N$ estuviera acotado superiormente tendría supremo $s$; como $s-1&lt;s$ no es cota superior, hay $n$ con $n&gt;s-1$, y entonces $n+1&gt;s$ con $n+1\in\mathbb N$, lo que contradice que $s$ sea cota.</p>
+  <span class="src" data-l="P" data-ref="Enunciado propio; U no la enuncia, pero equivale a U Ejemplo 1.7 (ℕ sin cotas superiores)">P</span>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.7, p. 19">U p.19</span>
+</div>
+
+<div class="box thm"><span class="h">Densidad de ℚ (y de 𝕀) en ℝ</span>
+  <p>Si $a&lt;b$ son reales, existe un racional $q$ con $a&lt;q&lt;b$ (y también un irracional).</p>
+  <p><i>Prueba para racionales:</i> por la propiedad arquimediana existe $n\in\mathbb N$ con $\frac1n&lt;b-a$, es decir, $1&lt;nb-na$. Por la propiedad arquimediana hay enteros mayores que $na$, y el conjunto de esos enteros está acotado inferiormente (por $na$), así que tiene un menor elemento $m$ (buen orden de los enteros acotados inferiormente). Entonces $na&lt;m$, y como $m-1$ es menor que $m$ y por tanto no es mayor que $na$, $m-1\le na$, es decir $m\le na+1&lt;nb$ (por $1&lt;nb-na$). Dividiendo entre $n&gt;0$: $a&lt;\dfrac mn&lt;b$.</p>
+  <p><i>Idea para irracionales:</i> aplica lo anterior al intervalo $\left(\frac a{\sqrt2},\frac b{\sqrt2}\right)$ para obtener un racional <b>no nulo</b> $r$ en él (si el intervalo contiene al $0$, aplica la densidad a $\left(0,\frac b{\sqrt2}\right)$ y sale $r&gt;0$; si no lo contiene, cualquier racional sirve, pues $0$ no está en él). Entonces $r\sqrt2$ es irracional (si fuese racional, $\sqrt2=\frac{r\sqrt2}{r}$ lo sería) y cae en $(a,b)$.</p>
+  <span class="src" data-l="P" data-ref="Enunciado y pruebas propios; U §1.1 no trata la densidad">P</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos de uso</span>
+  <ol class="steps">
+    <li><b>Entre $3$ y $3{,}001$</b> hay un racional ($3{,}0005$) y un irracional ($3+\dfrac{\sqrt2}{2000}\approx3{,}0007$). Siempre se puede ajustar dividiendo entre un $n$ suficientemente grande.</li>
+    <li><b>$\inf\{1/n\}=0$:</b> si $c&gt;0$ fuera cota inferior, por la propiedad arquimediana existiría $m$ con $\frac1m&lt;c$: contradicción. (Ejercicio 1.4.)</li>
+    <li><b>$\sup\{\tfrac n{n+1}\}=1$:</b> $\frac n{n+1}=1-\frac1{n+1}&lt;1$, y dado $\varepsilon&gt;0$, $\frac n{n+1}&gt;1-\varepsilon\iff n+1&gt;\frac1\varepsilon$, que se logra con $n$ grande. (Larson menciona este supremo: «el extremo superior de $\{\frac n{n+1}\}$ es 1».)</li>
+  </ol>
+  <span class="src" data-l="P" data-ref="Ejemplos propios">P</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, comentario sobre el extremo superior de n/(n+1), p. 591">L p.591</span>
+</div>
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Pensar que existe «el siguiente número» a otro: no hay un real inmediatamente mayor que $0$; entre $0$ y cualquier $\varepsilon&gt;0$ siempre cabe $\varepsilon/2$. Y no confundir «denso» con «igual»: $\mathbb Q$ es denso en $\mathbb R$ pero $\mathbb Q\neq\mathbb R$ (falta $\sqrt2$).</p>
+</div>
+
+<!-- ============================ 9 ============================ -->
+<h2 id="ejercicios"><span class="n">9</span>Ejercicios resueltos del libro (E 1.1-1.5) y ejemplos propios <span class="src" data-l="E" data-ref="Libro de ejercicios, Tema 1, Ej. 1.1-1.5, pp. 6-10">E pp.6-10</span></h2>
+
+<div class="box warn"><span class="h">Erratas del libro E que aquí se corrigen</span>
+  <p>El desarrollo del libro E contiene errores en <b>tres</b> de estos ejercicios; en cada solución están marcados y corregidos:</p>
+  <ul>
+    <li><b>1.2:</b> para $y&lt;0$ escribe $x\in(-y,y)$, que es un intervalo <i>vacío</i>; debe ser $(y,-y)=(-|y|,|y|)$. También escribe $|x|&gt;|y+4|$ donde debería ser $|x|\ge|y+4|$, y trata $y=0$ como «sin sentido» (y escribe $x&lt;0$ queriendo decir $|x|&lt;0$) cuando la implicación es cierta <i>por vacuidad</i> (una implicación solo falla si ocurre la hipótesis y no la conclusión; aquí la hipótesis $|x|&lt;0$ no ocurre nunca).</li>
+    <li><b>1.4:</b> en la reducción al absurdo toma $m\ge1/c$; con eso solo sale $\frac1m\le c$ y no hay contradicción. Hay que tomar $m&gt;1/c$ para obtener $\frac1m&lt;c$ <i>estricto</i>.</li>
+    <li><b>1.5:</b> justifica que $\frac23$ y $\frac{28}{11}$ son ínfimo y supremo «porque salen de los de $C_1$ y $C_2$». No basta: combinar desigualdades da <i>cotas</i>, no necesariamente las óptimas. Hay que comprobar que se <i>alcanzan</i> (y se alcanzan). Además el 1.3 da supremo e ínfimo sin justificarlos; aquí se justifican.</li>
+  </ul>
+  <p>Nota sobre símbolos: el texto extraído de los PDF pierde la barra en $\ne$, $\notin$, $\not\subset$; en los PDF de U y E esas barras sí están impresas (el glifo de negación, <i>negationslash</i>, que <code>pdftotext</code> descarta), y aquí se han restituido.</p>
+</div>
+
+<h3>Ejercicios de E</h3>
+
+<details class="sol"><summary>Ejercicio 1.1 — intervalos, centro y radio <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.1, p. 6">E p.6</span></summary>
+  <p class="enun">Sean $I_1=(-3,5]$ e $I_2=\{x\in\mathbb R:\ |x-3|&lt;4\}$. Elige la o las opciones correctas: a) los dos intervalos tienen el mismo radio; b) el centro de $I_1$ es menor que el centro de $I_2$; c) $I_1\subset I_2$; d) ninguna de las anteriores.</p>
+  <ol class="steps">
+    <li><b>Traducir $I_2$ a extremos.</b> $\{x:|x-c|&lt;r\}=(c-r,c+r)$ (U p.17). Aquí $c=3$, $r=4$, luego $I_2=(-1,7)$. Comprobación: $|x-3|&lt;4\iff-4&lt;x-3&lt;4\iff-1&lt;x&lt;7$ (sumando 3).</li>
+    <li><b>Centro y radio de $I_1$.</b> Las fórmulas valen para cualquier intervalo de extremos $a&lt;b$ (abierto, cerrado o semiabierto): $c_1=\frac{-3+5}2=1$, $r_1=\frac{5-(-3)}2=4$.</li>
+    <li><b>a)</b> $r_1=4=r_2$. <b>Correcta.</b></li>
+    <li><b>b)</b> $c_1=1&lt;3=c_2$. <b>Correcta.</b></li>
+    <li><b>c)</b> Para negar una inclusión basta un punto de $I_1$ fuera de $I_2$ (contraejemplo, U Ej. 1.3): $x=-2$ está en $I_1$ ($-3&lt;-2\le5$) pero $|-2-3|=5\not&lt;4$, luego no está en $I_2$. Así $I_1\not\subset I_2$; de hecho $I_1\setminus I_2=(-3,-1]$. <b>Falsa.</b></li>
+    <li><b>d)</b> Falsa, porque a) y b) son correctas.</li>
+  </ol>
+  <p><b>Respuesta: a) y b).</b></p>
+  <div class="recipe"><b>Receta:</b> pasa todos los intervalos a la misma forma (extremos $(a,b)$ o centro y radio $c=\frac{a+b}2$, $r=\frac{b-a}2$, con $|x-c|&lt;r\iff x\in(c-r,c+r)$) y compara números. Para negar una inclusión, busca un punto concreto que esté en uno y no en el otro.</div>
+  <p><b>Error típico:</b> leer $|x-3|&lt;4$ como $(-4,4)$ o $(3,7)$; o creer que dos intervalos con el mismo radio y centros cercanos han de estar uno dentro del otro.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.2 — ¿debe ser $|x|&lt;|y+4|$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.2, pp. 7-8 (con errata en el caso y<0)">E pp.7-8</span></summary>
+  <p class="enun">Sean $x$, $y$ reales con $|x|&lt;|y|$. ¿Debe ser $|x|&lt;|y+4|$?</p>
+  <ol class="steps">
+    <li><b>Entender la pregunta.</b> Se pregunta si la implicación $|x|&lt;|y|\Rightarrow|x|&lt;|y+4|$ es cierta <i>para todos</i> $x,y$. Para responder «no» basta un contraejemplo; para «sí» habría que probarlo en general.</li>
+    <li><b>Lectura geométrica.</b> $|x|&lt;|y|$ dice que $x\in(-|y|,|y|)$. La pregunta es si $(-|y|,|y|)\subset(-|y+4|,|y+4|)$, lo cual depende de si $|y|\le|y+4|$.</li>
+    <li><b>Caso $y&gt;0$.</b> $|y|=y$ y, como $y+4&gt;0$, $|y+4|=y+4$. Como $y&lt;y+4$, por transitividad $|x|&lt;|y|=y&lt;y+4=|y+4|$. Aquí <b>sí</b> se cumple.</li>
+    <li><b>Caso $y=0$.</b> Ningún $x$ cumple $|x|&lt;0$, porque $|x|\ge0$. La hipótesis nunca se da y la implicación es cierta <b>por vacuidad</b>: una implicación «si $P$ entonces $Q$» solo falla cuando ocurre $P$ y no ocurre $Q$; como $|x|&lt;0$ no ocurre nunca, no puede fallar.</li>
+    <li><b>Caso $y&lt;0$.</b> $|y|=-y$ y el signo de $y+4$ puede ser cualquiera. Si $y&lt;-4$, $|y+4|=-(y+4)=-y-4&lt;-y=|y|$: el segundo intervalo es <b>más pequeño</b> y la implicación puede fallar.</li>
+    <li><b>Contraejemplo.</b> $y=-6$, $x=-5$: $|x|=5&lt;6=|y|$ (la hipótesis se cumple), pero $|y+4|=|-2|=2&lt;5=|x|$, así que <b>no</b> se cumple $|x|&lt;|y+4|$.</li>
+    <li><b>Ampliación (propia).</b> Para que valga con todo $x$ hace falta $|y|\le|y+4|$. Ambos lados son $\ge0$, así que se puede elevar al cuadrado: $y^2\le y^2+8y+16\iff y\ge-2$. Es decir, la implicación es válida para todo $x$ si y solo si $y\ge-2$; para $y&lt;-2$ hay contraejemplos, cualquier $x$ con $|y+4|\le|x|&lt;|y|$.</li>
+  </ol>
+  <p><b>Respuesta: no, en general no</b> (contraejemplo $y=-6$, $x=-5$).</p>
+  <p><b>Errata de E:</b> para $y&lt;0$ escribe $x\in(-y,y)$, que es vacío ($-y&gt;y$); debe ser $(y,-y)=(-|y|,|y|)$. Y «$|x|&gt;|y+4|$» debería ser «$|x|\ge|y+4|$». Para $y=0$ escribe $x&lt;0$ queriendo decir $|x|&lt;0$.</p>
+  <div class="recipe"><b>Receta:</b> ante «¿debe cumplirse…?» con valores absolutos, (1) quítalos distinguiendo casos por el signo de lo de dentro (Def. 1.1); (2) si un caso da problemas, fabrica un contraejemplo numérico concreto y compruébalo; para comparar $|u|$ con $|v|$ puedes elevar al cuadrado.</div>
+  <p><b>Error típico:</b> creer que las desigualdades «pasan» dentro del valor absoluto: $y&lt;y+4$ <i>no</i> implica $|y|&lt;|y+4|$ (compárese con U Ej. 1.3). Otro error es contestar «sí» por haber probado solo el caso $y&gt;0$.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.3 — $A=\{x:\ 0&lt;x^2&lt;1\}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.3, p. 8">E p.8</span></summary>
+  <p class="enun">Dado $A=\{x\in\mathbb R:\ 0&lt;x^2&lt;1\}$, elige la opción correcta: a) $\inf A=0$; b) $A$ tiene supremo pero no ínfimo; c) $A$ está acotado; d) ninguna de las anteriores.</p>
+  <ol class="steps">
+    <li><b>Valor absoluto.</b> $x^2=|x|^2$ (Def. 1.1). $0&lt;x^2\iff x\neq0\iff0&lt;|x|$ (Teorema 1.1.1). Y $x^2&lt;1\iff|x|&lt;1$, porque para $t\ge0$, $t^2&lt;1\iff t&lt;1$. Luego $A=\{x:\ 0&lt;|x|&lt;1\}$.</li>
+    <li><b>Intervalos.</b> $|x|&lt;1\iff x\in(-1,1)$ (centro 0, radio 1). Quitando el $0$: $A=(-1,0)\cup(0,1)$.</li>
+    <li><b>Cotas.</b> Todo $a\in A$ cumple $-1&lt;a&lt;1$: $1$ es cota superior y $-1$ cota inferior. Luego $A$ está <b>acotado</b>.</li>
+    <li><b>$\sup A=1$.</b> (i) $1$ es cota superior. (ii) Si $c&lt;1$ fuera cota superior: como $\frac12\in A$, $c\ge\frac12&gt;0$; el punto medio $a=\frac{c+1}2$ cumple $c&lt;a&lt;1$ y $a&gt;0$, luego $a\in A$ y $a&gt;c$: contradicción. Así $1$ es la menor cota superior. Como $1\notin A$, es supremo pero <b>no máximo</b>.</li>
+    <li><b>$\inf A=-1$.</b> Igual por simetría ($x\in A\iff-x\in A$); compárese con U Ej. 1.10: $(-1,1)$ tiene sup $1$ e ínf $-1$, y quitar el $0$ (interior) no cambia los extremos.</li>
+    <li><b>Opciones.</b> a) falsa: $\inf A=-1$ (ni siquiera $0$ es cota inferior: $-\frac12\in A$ y $-\frac12&lt;0$). b) falsa: sí tiene ínfimo. c) <b>correcta</b>. d) falsa.</li>
+  </ol>
+  <p><b>Respuesta: c).</b></p>
+  <div class="recipe"><b>Receta:</b> convierte la condición del conjunto en intervalos (pasando por $|x|$ cuando aparece $x^2$) y lee el supremo y el ínfimo: mayor extremo derecho y menor extremo izquierdo de la unión; los «agujeros» interiores como $\{0\}$ no afectan.</div>
+  <p><b>Error típico:</b> ver «$0&lt;x^2$» y concluir $\inf A=0$ (confundir $x^2$ con $x$), u olvidar los $x$ negativos al despejar $x^2&lt;1$.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.4 — ínfimo y supremo de $\{1,\frac12,\frac13,\dots\}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.4, pp. 8-9 (con errata en la reducción al absurdo)">E pp.8-9</span></summary>
+  <p class="enun">Sea $S=\left\{1,\frac12,\frac13,\dots,\frac1n,\dots\right\}$. Hallar su ínfimo y su supremo. ¿Están en $S$?</p>
+  <ol class="steps">
+    <li><b>Describir.</b> $S=\{\frac1n:\ n\in\mathbb N\}$ con $\mathbb N=\{1,2,3,\dots\}$. Parece decrecer hacia $0$; hay que <i>demostrarlo</i> con las definiciones.</li>
+    <li><b>1 es cota superior.</b> $n\ge1$; multiplicando por $\frac1n&gt;0$ (prop. 6): $1\ge\frac1n$.</li>
+    <li><b>$\sup S=1\in S$.</b> Si $c$ es cota superior cualquiera, como $1\in S$ ($n=1$), $1\le c$: es la condición (ii) de la Def. 1.7. Luego $\sup S=1$ y, al pertenecer a $S$, es el <b>máximo</b>. <i>Idea general:</i> si una cota superior está en el conjunto, es su supremo y su máximo.</li>
+    <li><b>0 es cota inferior.</b> $n&gt;0\Rightarrow\frac1n&gt;0$.</li>
+    <li><b>0 es la mayor cota inferior (absurdo).</b> Supongamos que $c&gt;0$ fuera cota inferior de $S$. Por la propiedad arquimediana (U Ej. 1.7), $\frac1c$ no es cota superior de $\mathbb N$: existe $m\in\mathbb N$ con $m&gt;\frac1c$. Multiplicando por $\frac cm&gt;0$: $c&gt;\frac1m$. Pero $\frac1m\in S$ es <b>estrictamente</b> menor que $c$: contradice que $c$ sea cota inferior. Por tanto $\inf S=0$.</li>
+    <li><b>$0\notin S$</b>, pues $\frac1n&gt;0$ para todo $n$. El ínfimo no es mínimo.</li>
+  </ol>
+  <p><b>Respuesta:</b> $\sup S=1\in S$ (máximo); $\inf S=0\notin S$ (no hay mínimo).</p>
+  <p><b>Errata de E:</b> escribe «$c\ge\frac1m&gt;0$ (basta tomar $m\ge1/c$)». Con $m\ge\frac1c$ solo se obtiene $\frac1m\le c$, que no contradice nada (podría ser $\frac1m=c$). Hay que tomar $m&gt;\frac1c$ para tener $\frac1m&lt;c$ estricto.</p>
+  <div class="recipe"><b>Receta:</b> para probar $\inf A=s$: (i) comprueba $s\le a$ para todo $a\in A$; (ii) supón una cota inferior $c&gt;s$ y busca un elemento de $A$ menor que $c$ (suele bastar «existe $m\in\mathbb N$ mayor que cualquier número dado»); (iii) mira si $s\in A$ para decidir si es mínimo.</div>
+  <p><b>Error típico:</b> decir $\inf S=0$ «porque $\frac1n\to0$» sin demostrar que ningún $c&gt;0$ es cota inferior; o afirmar que $0\in S$ o que $S$ tiene mínimo.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.5 — condensadores en serie <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.5, p. 10 (con laguna en la justificación)">E p.10</span></summary>
+  <p class="enun">Dos condensadores en serie tienen capacidad equivalente $C$ con $\frac1C=\frac1{C_1}+\frac1{C_2}$. $C_1$ varía entre $2$ y $4$ µF y $C_2$ entre $1$ y $7$ µF. ¿Entre qué valores está $C$? (Se interpreta «varía entre» como $C_1\in[2,4]$ y $C_2\in[1,7]$.)</p>
+  <ol class="steps">
+    <li><b>Datos como desigualdades.</b> $2\le C_1\le4$ y $1\le C_2\le7$; todo es positivo.</li>
+    <li><b>Invertir da la vuelta a las desigualdades (entre positivos).</b> Si $0&lt;a\le b$, multiplicando por $\frac1{ab}&gt;0$: $\frac1b\le\frac1a$. Así $\frac14\le\frac1{C_1}\le\frac12$ y $\frac17\le\frac1{C_2}\le1$.</li>
+    <li><b>Sumar</b> (U Ej. 1.2): $\dfrac{11}{28}=\dfrac14+\dfrac17\ \le\ \dfrac1C\ \le\ \dfrac12+1=\dfrac32$.</li>
+    <li><b>Invertir otra vez:</b> $\dfrac23\le C\le\dfrac{28}{11}$. Son una cota inferior y una cota superior ($\frac{28}{11}\approx2{,}545$ µF).</li>
+    <li><b>¿Son las mejores?</b> (paso que falta en E). Con $C_1=2$ y $C_2=1$: $\frac1C=\frac12+1=\frac32$, luego $C=\frac23$. Con $C_1=4$ y $C_2=7$: $\frac1C=\frac14+\frac17=\frac{11}{28}$, luego $C=\frac{28}{11}$. Como las cotas <b>se alcanzan</b>, son el ínfimo y el supremo, y además mínimo y máximo (como en el 1.4, paso 3). Además, $\frac1C=\frac1{C_1}+\frac1{C_2}$ decrece al aumentar $C_1$ o $C_2$ (invertir positivos invierte el orden), luego $C$ crece con cada capacidad; por eso el mínimo de $C$ está en los mínimos de $C_1,C_2$ y el máximo en los máximos.</li>
+  </ol>
+  <p><b>Respuesta:</b> $\frac23\ \mu F\le C\le\frac{28}{11}\ \mu F$; $\frac23=\min$ y $\frac{28}{11}=\max$. Si los intervalos de $C_1$ y $C_2$ fueran abiertos, esos valores seguirían siendo ínfimo y supremo, pero no se alcanzarían.</p>
+  <p><b>Errata de E:</b> afirma que $\frac23$ y $\frac{28}{11}$ son ínfimo y supremo «porque se obtienen a partir de los de $C_1$ y $C_2$». Ese argumento no basta: hay que comprobar que se alcanzan.</p>
+  <div class="recipe"><b>Receta:</b> para acotar una expresión de variables acotadas, escribe cada variable como desigualdad, transforma paso a paso (sumar conserva el sentido; invertir positivos lo cambia; multiplicar por un negativo lo cambia) y combina. Después <b>comprueba si las cotas se alcanzan</b> con valores concretos; si se alcanzan, son ínfimo y supremo.</div>
+  <p><b>Error típico:</b> invertir sin dar la vuelta a la desigualdad ($\frac12\le\frac1{C_1}\le\frac14$), o creer que cualquier cota obtenida combinando desigualdades ya es el supremo o el ínfimo (si una variable aparece en varios sitios, las cotas pueden no alcanzarse).</p>
+</details>
+
+<h3>Ejemplos propios (de fácil a difícil)</h3>
+
+<details class="sol"><summary>Ejemplo propio 1 (fácil) — del valor absoluto al intervalo y al revés <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p class="enun">(a) Escribe $\{x\in\mathbb R:\ |2x-5|\le3\}$ como intervalo y da su centro y radio. (b) Escribe $(-7,3)$ con valor absoluto.</p>
+  <ol class="steps">
+    <li>(a) Saca el coeficiente: $|2x-5|=2\,|x-\tfrac52|$. Luego $|2x-5|\le3\iff|x-\tfrac52|\le\tfrac32$.</li>
+    <li>Es el intervalo $[\tfrac52-\tfrac32,\tfrac52+\tfrac32]=[1,4]$, con centro $\tfrac52$ y radio $\tfrac32$.</li>
+    <li>(b) $c=\frac{-7+3}2=-2$, $r=\frac{3-(-7)}2=5$. Por tanto $(-7,3)=\{x:\ |x+2|&lt;5\}$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> divide primero por el coeficiente de $x$ y aplica $|x-c|&lt;r\iff(c-r,c+r)$.</div>
+</details>
+
+<details class="sol"><summary>Ejemplo propio 2 (medio) — suma de dos valores absolutos <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p class="enun">Sea $A=\{x\in\mathbb R:\ |x-1|+|x+2|&lt;5\}$. Halla $\sup A$ e $\inf A$. ¿Tiene máximo o mínimo?</p>
+  <ol class="steps">
+    <li><b>Puntos críticos:</b> donde cambia el signo de lo de dentro, $x=-2$ y $x=1$. Tres casos (Def. 1.1).</li>
+    <li>$x&lt;-2$: $-(x-1)-(x+2)=-2x-1&lt;5\iff x&gt;-3$, luego $(-3,-2)$. <br>$-2\le x\le1$: $-(x-1)+(x+2)=3&lt;5$, siempre cierto: $[-2,1]$. <br>$x&gt;1$: $(x-1)+(x+2)=2x+1&lt;5\iff x&lt;2$: $(1,2)$.</li>
+    <li>Uniendo: $A=(-3,2)$.</li>
+    <li>Como en U Ej. 1.10, $\sup A=2$ e $\inf A=-3$. En $x=2$ y $x=-3$ la suma vale exactamente $5$, así que no están en $A$: <b>no hay ni máximo ni mínimo</b>.</li>
+    <li><b>Idea geométrica:</b> $|x-1|+|x+2|$ es la suma de las distancias de $x$ a $1$ y a $-2$: nunca baja de $3$ (la distancia entre ellos) y vale $5$ a una unidad por fuera de cada punto.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> marca los puntos donde se anula cada $|\cdot|$, resuelve trozo a trozo y une los resultados.</div>
+</details>
+
+<details class="sol"><summary>Ejemplo propio 3 (difícil) — supremo no alcanzado con ε <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y con fracciones exactas">P</span></summary>
+  <p class="enun">Sea $B=\left\{\dfrac{2n-1}{n+1}:\ n\in\mathbb N\right\}$. Demuestra que $\sup B=2$, que $\inf B=\min B=\tfrac12$ y que $B$ no tiene máximo.</p>
+  <ol class="steps">
+    <li><b>Reescribir:</b> $\frac{2n-1}{n+1}=2-\frac3{n+1}$. Los primeros términos: $\frac12,1,\frac54,\frac75,\frac32,\dots$</li>
+    <li><b>Mínimo.</b> $b_{n+1}-b_n=\frac3{(n+1)(n+2)}&gt;0$: los términos crecen y el menor es $b_1=\frac12$. Como $\frac12\in B$ y es cota inferior, $\inf B=\min B=\frac12$.</li>
+    <li><b>2 es cota superior.</b> $\frac3{n+1}&gt;0\Rightarrow b_n&lt;2$. Además $2\notin B$.</li>
+    <li><b>2 es la menor cota superior (caracterización ε).</b> Dado $\varepsilon&gt;0$ buscamos $n$ con $b_n&gt;2-\varepsilon$, es decir $\frac3{n+1}&lt;\varepsilon\iff n+1&gt;\frac3\varepsilon$. Por la propiedad arquimediana existe $n&gt;\frac3\varepsilon$, y entonces $n+1&gt;\frac3\varepsilon$. Así $2-\varepsilon$ no es cota superior para ningún $\varepsilon&gt;0$ y $\sup B=2$. Como $2\notin B$, <b>no hay máximo</b>.</li>
+    <li><b>Comprobación numérica.</b> Para $\varepsilon=0{,}01$ basta $n=300$: $b_{300}=\frac{599}{301}\approx1{,}99003&gt;1{,}99$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> reescribe el término como «límite menos algo pequeño»; el supremo es ese límite y se prueba con $\varepsilon$: despeja el $n$ necesario y garantiza que existe con la propiedad arquimediana.</div>
+</details>
+
+<h3>Los 10 métodos del tema, en resumen</h3>
+<ol>
+  <li><b>Pasar entre $|x-c|&lt;r$ e intervalo</b> $(c-r,c+r)$; con coeficiente, divide primero: $|ax-b|&lt;r\iff|x-\frac ba|&lt;\frac r{|a|}$. $|x-c|&gt;r$ es el complementario. (Ej. 1.1)</li>
+  <li><b>Desigualdades con valores absolutos por casos:</b> marca los ceros de cada $|\cdot|$, estudia cada trozo, une. Para comparar $|u|\le|v|$, eleva al cuadrado. (Ej. 1.2, ejemplo propio 2)</li>
+  <li><b>Refutar con un contraejemplo</b> una afirmación «para todo»; una afirmación general no se prueba con ejemplos. (Ej. 1.1c, 1.2)</li>
+  <li><b>Hallar sup/ínf con la definición:</b> conjetura $s$; prueba que es cota; prueba que es la mejor (supón $c&lt;s$ y busca un elemento mayor); decide si pertenece. (Ej. 1.3, 1.4)</li>
+  <li><b>Atajo:</b> si una cota superior pertenece al conjunto, es su supremo y máximo (igual con el ínfimo y el mínimo). (Ej. 1.4, 1.5)</li>
+  <li><b>Caracterización ε:</b> $s=\sup A$ si $a\le s$ y para todo $\varepsilon&gt;0$ hay $a&gt;s-\varepsilon$. (Ejemplo propio 3)</li>
+  <li><b>Propiedad arquimediana:</b> para todo $c&gt;0$ existe $m$ con $\frac1m&lt;c$; sirve para $\inf\{\frac1n\}=0$. (Ej. 1.4)</li>
+  <li><b>Acotar expresiones de variables acotadas:</b> sumar conserva el sentido; multiplicar por negativo o invertir positivos lo cambia; después comprueba si las cotas se alcanzan. (Ej. 1.5)</li>
+  <li><b>Sup e ínf de intervalos y uniones:</b> mayor extremo derecho y menor extremo izquierdo; las semirrectas no tienen supremo (o ínfimo) por el lado infinito. (Ej. 1.3)</li>
+  <li><b>Existencia:</b> el axioma del supremo exige $A\neq\emptyset$ y acotado superiormente; en $\mathbb Q$ puede fallar.</li>
+</ol>
+<p><span class="src" data-l="P" data-ref="Resumen de métodos elaborado a partir de las soluciones de E 1.1-1.5">P</span> Resumen de métodos elaborado a partir de las soluciones de E 1.1-1.5.</p>
+
+<!-- ============================ 10 ============================ -->
+<h2 id="chuleta"><span class="n">10</span>Chuleta y lista de comprobación</h2>
+
+<div class="box thm"><span class="h">Chuleta</span>
+  <table>
+    <tr><th>Tema</th><th>Qué recordar</th></tr>
+    <tr><td>Conjuntos</td><td>$\mathbb N\subset\mathbb Z\subset\mathbb Q\subset\mathbb R$; $\mathbb Q\cup\mathbb I=\mathbb R$, $\mathbb Q\cap\mathbb I=\emptyset$; $\sqrt2,\pi\in\mathbb I$.</td></tr>
+    <tr><td>Orden</td><td>Multiplicar por negativo o invertir positivos invierte el sentido; sumar sí conserva; no se resta ni se divide desigualdades.</td></tr>
+    <tr><td>Valor absoluto</td><td>$|x|=x$ si $x\ge0$, $-x$ si $x&lt;0$; $\sqrt{x^2}=|x|$; distancia $|x-y|$; $|x+y|\le|x|+|y|$; $\big||x|-|y|\big|\le|x-y|$.</td></tr>
+    <tr><td>Traductores ($a&gt;0$)</td><td>$|x|&lt;a\iff-a&lt;x&lt;a$; $|x|&gt;a\iff x&gt;a$ o $x&lt;-a$; $|x|=a\iff x=\pm a$.</td></tr>
+    <tr><td>Intervalo ↔ $|\cdot|$</td><td>$(a,b)$: $c=\frac{a+b}2$, $r=\frac{b-a}2$; $|x-c|&lt;r\iff x\in(c-r,c+r)$.</td></tr>
+    <tr><td>Cotas</td><td>Cota sup: $a\le c$ para todo $a$; cota inf: $a\ge c$. Acotado = ambas. Si hay una cota, hay infinitas.</td></tr>
+    <tr><td>Sup e ínf</td><td>Menor cota superior / mayor cota inferior; únicos. Máx = sup que está en el conjunto; mín = ínf que está en el conjunto.</td></tr>
+    <tr><td>Caracterización ε</td><td>$s=\sup A\iff$ ($a\le s$ $\forall a$) y ($\forall\varepsilon&gt;0\ \exists a&gt;s-\varepsilon$).</td></tr>
+    <tr><td>Axioma del supremo</td><td>$A\ne\emptyset$ y acotado superiormente $\Rightarrow\sup A\in\mathbb R$ (ídem con el ínfimo). Falla en $\mathbb Q$: $\{x\in\mathbb Q:x^2\le7\}$.</td></tr>
+    <tr><td>Arquimediana / densidad</td><td>$\forall K\ \exists n\in\mathbb N: n&gt;K$; $\forall\varepsilon&gt;0\ \exists n: \frac1n&lt;\varepsilon$; entre dos reales hay un racional y un irracional.</td></tr>
+  </table>
+</div>
+
+<div class="box warn"><span class="h">Errores frecuentes</span>
+  <ul>
+    <li>Olvidar invertir el sentido al multiplicar o dividir por un negativo, o al invertir positivos.</li>
+    <li>$\sqrt{x^2}=x$ (falso para $x&lt;0$); leer $|x-3|&lt;4$ como $(-4,4)$.</li>
+    <li>Confundir supremo con máximo; suponer que sup e ínf pertenecen al conjunto.</li>
+    <li>Probar una cota pero no que es la <i>mejor</i> cota.</li>
+    <li>Aplicar el axioma del supremo sin comprobar $A\ne\emptyset$ y acotado.</li>
+    <li>Creer que una cota obtenida combinando desigualdades es ya el supremo (hay que comprobar que se alcanza).</li>
+  </ul>
+</div>
+
+<h3>Lista de comprobación: «sé hacer…»</h3>
+<ul class="checklist">
+  <li>Decir en qué conjuntos ($\mathbb N,\mathbb Z,\mathbb Q,\mathbb R$) está un número y demostrar que $\sqrt2$ no es racional.</li>
+  <li>Manejar desigualdades sin equivocarme con los signos y resolver desigualdades lineales y cuadráticas con tabla de signos.</li>
+  <li>Resolver ecuaciones y desigualdades con valor absoluto (por casos o con los «traductores»).</li>
+  <li>Pasar de $|x-c|&lt;r$ a intervalo y de intervalo a centro y radio.</li>
+  <li>Decidir si una implicación con valores absolutos es cierta o construir un contraejemplo.</li>
+  <li>Hallar cotas, supremo, ínfimo, máximo y mínimo de un conjunto (intervalos, uniones, $\{1/n\}$) y decir si pertenecen.</li>
+  <li>Demostrar $\sup A=s$ con la definición o con ε, usando la propiedad arquimediana.</li>
+  <li>Enunciar el axioma del supremo con sus dos hipótesis y explicar por qué falla en $\mathbb Q$.</li>
+  <li>Acotar una magnitud con desigualdades y comprobar si las cotas se alcanzan.</li>
+</ul>
+
+<!-- ============================ 11 ============================ -->
+<h2 id="fuentes"><span class="n">11</span>Fuentes de este tema</h2>
+<p>Lista automática de todas las etiquetas usadas (libro y página impresa). Recuerda: <b>U</b> = Cálculo para Ingenieros (pág. impresa = PDF + 2), <b>E</b> = libro de ejercicios, <b>S</b> = Stewart (Apéndice A y §11.1), <b>L</b> = Larson (pág. impresa = PDF − 17), <b>P</b> = explicación propia (máximo/mínimo, caracterización ε, arquimediana, densidad y ejemplos propios, que U §1.1 no trata).</p>
+<div id="panel-fuentes"></div>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro.</footer>
+</main>
+</div>
+</body>
+</html>

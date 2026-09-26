@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 2.1 La derivada de una función</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<style>
+/* Extras propios de este tema (prefijo d21-). No modifican assets/resumen.css. */
+svg.fig .d21-dash{stroke:var(--mut);stroke-width:1.3;stroke-dasharray:5 4;fill:none}
+svg.fig .d21-lab{font-size:12.5px}
+svg.fig .d21-lab.b{fill:var(--S);stroke:none;font-weight:700}
+svg.fig .d21-lab.a{fill:var(--acc);stroke:none;font-weight:700}
+.d21-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:.6em 0}
+.d21-cols>div{border:1px solid var(--bd);border-radius:8px;background:var(--card);padding:6px 12px;font:.92rem/1.5 var(--sans)}
+.d21-cols>div b{display:block;color:var(--acc)}
+</style>
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo II · Funciones derivables · Tema 2.1</div>
+  <h1>La derivada de una función</h1>
+  <p>Qué es la derivada (velocidad instantánea y pendiente de la tangente), cuándo existe, por qué derivable implica continua y qué pasa cuando no existe (esquinas, tangentes verticales). Es la herramienta central del resto del curso.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §2.1 (pp. 73-78) + derivadas laterales (§2.2, p. 81)</span><span>Ejercicios: E Ej. 2.1, 2.2, 2.6-2.9, 2.14, 2.17-2.23 (pp. 52-66)</span><span>⏱ ~6 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.1.1 Motivación, Orientaciones y Objetivos, p. 74; introducción del capítulo, p. 73">U pp.73-74</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>La derivada de $f$ en un punto $a$ mide <b>cómo de deprisa cambia $f$ justo en $a$</b>: es la velocidad instantánea si $f$ es una posición, y la <b>pendiente de la recta tangente</b> a la gráfica. Si una función es derivable en un punto, su gráfica «se ve como una recta» al ampliarla mucho alrededor de ese punto; si lo es en todo un intervalo, la gráfica no tiene aristas: es suave.</p>
+  <span class="src" data-l="U" data-ref="U introducción del capítulo 2, p. 73 (aproximación local por la recta tangente; gráfica sin aristas)">U p.73</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.8, «¿Cómo deja de ser derivable una función?» y ampliación (zoom), pp. 159-160">S pp.159-160</span>
+</div>
+
+<h3>Qué necesitas saber ya <span class="src" data-l="U" data-ref="U §1.4: Def. 1.18 p.43, Prop. 1.9 p.44, Prop. 1.10 p.45, Prop. 1.11 p.46, Teorema 1.4 p.47, Def. 1.20 p.51, Bolzano p.52; §1.1 Teorema 1.1 p.16">U pp.16-52</span><span class="src" data-l="U" data-ref="U §2.1.1 Orientaciones, p. 74">U p.74</span></h3>
+<ul>
+  <li><b>Límites de funciones</b> y su álgebra (suma, producto, cociente), <b>límites laterales</b> y el teorema «el límite existe $\iff$ existen los dos laterales y coinciden» (U §1.4, pp. 43-47).</li>
+  <li><b>Continuidad en un punto</b> (U Def. 1.20, p. 51): $f$ es continua en $a$ si $\lim_{x\to a}f(x)=f(a)$. Conservación del signo (U Prop. 1.9, p. 44), regla del emparedado (U p. 45) y el teorema de Bolzano (U p. 52).</li>
+  <li>Valor absoluto y su desigualdad $\big||u|-|v|\big|\le|u-v|$ (U Teorema 1.1, p. 16).</li>
+  <li>Ecuación de una recta: la de pendiente $m$ que pasa por $(x_0,y_0)$ es $y-y_0=m(x-x_0)$.</li>
+  <li>Derivadas de las funciones elementales (tabla en el apartado 6 de este resumen): U da por hecho que «la mayoría de lo tratado en este tema debería resultarle familiar» y que sabe derivar; la única forma de derivar con soltura es hacer muchas derivadas.</li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <tr><th>Apartado de este resumen</th><th>Qué contiene</th><th>Dónde está en U</th><th>Otras fuentes</th></tr>
+  <tr><td>1 Velocidad media e instantánea</td><td>motivación, hormiga y radar</td><td>§2.1.2 pp. 74-75</td><td>S §2.7 p.145</td></tr>
+  <tr><td>2 La derivada en un punto</td><td>Def. 2.1, notación, Ejemplos 2.1-2.2</td><td>§2.1.2 pp. 75-76</td><td>S pp.146-147 · L p.99</td></tr>
+  <tr><td>3 Tangente y normal</td><td>secante → tangente, ecuaciones, ángulo</td><td>pendiente: p.75 (Fig. 2.1); <b>ecuación de la tangente: §2.4.2 p.87</b>; la <b>normal no aparece en U</b></td><td>S pp.143-147, 176-177 · L pp.97-100</td></tr>
+  <tr><td>4 Derivable ⇒ continua</td><td>Teorema 2.1 y su demostración, Ej. 2.3-2.5</td><td>p.76-77 (sin demostración)</td><td>S pp.158-159 · L p.102</td></tr>
+  <tr><td>5 Derivadas laterales y cuándo falla</td><td>esquina, tangente vertical, oscilación</td><td><b>Def. 2.3: §2.2.2 p.81</b> (no está en §2.1)</td><td>S pp.157-159 · L pp.101-102</td></tr>
+  <tr><td>6 Función derivada</td><td>Def. 2.2, notación, reglas mínimas</td><td>§2.1.3 p.78; reglas §2.2.2 p.79</td><td>L p.99</td></tr>
+  <tr><td>7 Ejercicios</td><td>E 2.1, 2.2, 2.6-2.9, 2.14, 2.17-2.23 + 3 ejemplos propios</td><td>—</td><td>E pp.52-66</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios <span class="src" data-l="E" data-ref="Libro de ejercicios, Tema 2, Ej. 2.1, 2.2, 2.6-2.9, 2.14, 2.17-2.23, pp. 52-66">E pp.52-66</span></h3>
+<p>Los 14 ejercicios de E de este tema (los enunciados son de elegir opción o de razonar) piden cinco destrezas: (1) distinguir $f'(a)$ (número), $f'$ (función) y la tangente, y traducir «velocidad media/instantánea»; (2) usar que la pendiente de la tangente es $f'(a)$ para hallar puntos con una tangente dada (horizontal, con un ángulo, perpendicular a un vector); (3) calcular derivadas laterales y decidir la derivabilidad en un punto conflictivo (valor absoluto, funciones a trozos con parámetros); (4) usar «derivable $\Rightarrow$ continua» y su versión con Bolzano; (5) demostrar propiedades sobre $|f|$.</p>
+
+<div class="box warn"><span class="h">Lo que U no dice, o dice en otro sitio (y aquí se explica)</span>
+  <ul>
+    <li><b>Derivadas laterales:</b> E las ejercita en el 2.1, pero U las define en <b>§2.2.2 (Def. 2.3, p. 81)</b>. Aquí están en el apartado 5.</li>
+    <li><b>Ecuación de la recta tangente:</b> en §2.1 U solo da la <i>pendiente</i> (p. 75); la ecuación aparece de pasada en §2.4.2 (p. 87), al explicar el método de Newton. Aquí, en el apartado 3.</li>
+    <li><b>Recta normal</b> y la relación <b>pendiente $=\tan\theta$</b>: no están en U (la normal, en S §3.1 pp. 176-177; la relación, en el margen de E p. 55).</li>
+    <li><b>Demostración de «derivable $\Rightarrow$ continua»:</b> U enuncia el Teorema 2.1 (p. 76) sin demostrarlo; la demostración está en S (pp. 158-159) y L (p. 102) y aquí se da completa.</li>
+    <li><b>Derivada de $|f|$</b> (Ej. 2.21-2.22): no es un resultado de U, S ni L; se demuestra en los ejercicios.</li>
+  </ul>
+</div>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Velocidad media y velocidad instantánea <span class="src" data-l="U" data-ref="U §2.1.2 Derivada en un punto, pp. 74-75">U pp.74-75</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>En un viaje en coche, el <b>cuentakilómetros</b> te dice lo recorrido y el <b>reloj</b> el tiempo; dividiendo obtienes la <b>velocidad media</b> del trayecto. Pero el <b>velocímetro</b> marca otra cosa: la velocidad <i>en este instante</i>. ¿Cómo se define «velocidad en un instante» si en un instante no se recorre distancia alguna? Se calcula la velocidad media en intervalos de tiempo cada vez más cortos alrededor del instante y se mira <b>a qué valor se acercan</b>: ese valor límite es la velocidad instantánea. Ese «se acercan» es exactamente un límite (el del tema 1.4).</p>
+  <span class="src" data-l="U" data-ref="U §2.1.2 (hormiga), pp. 74-75">U pp.74-75</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.7, velocidad instantánea como límite de velocidades medias, p. 145">S p.145</span>
+</div>
+
+<div class="box def"><span class="h">Velocidad media e instantánea</span>
+  <p>Si $f(x)$ es la posición en el instante $x$ de un móvil (U usa una hormiga en la recta real), la <b>velocidad media</b> entre los instantes $x=a$ y $x=b$ es
+  $$\frac{f(b)-f(a)}{b-a}.$$
+  La <b>velocidad instantánea</b> en $x=c$ se define como el límite de las velocidades medias:
+  $$\lim_{x\to c}\frac{f(x)-f(c)}{x-c}.$$
+  Ese límite es, por definición, la <b>derivada</b> de $f$ en $c$.</p>
+  <span class="src" data-l="U" data-ref="U §2.1.2, pp. 74-75">U pp.74-75</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Confundir las dos velocidades. Un radar de tramo, que solo conoce dos posiciones y dos instantes, calcula <b>únicamente la velocidad media</b>; no mide la velocidad instantánea. En el ejercicio 2.2 verás que una velocidad <i>media</i> alta es suficiente para multar, y que además obliga a que en algún instante la velocidad <i>instantánea</i> fuese alta (Teorema del valor medio, U §2.5.3, p. 96; tema 2.5).</p>
+  <span class="src" data-l="P" data-ref="Comentario propio sobre el ejercicio E 2.2; el valor medio es U §2.5.3 p. 96">P</span>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>La derivada en un punto <span class="src" data-l="U" data-ref="U §2.1.2, Definición 2.1 y Ejemplos 2.1-2.2, pp. 75-76">U pp.75-76</span></h2>
+
+<div class="box def"><span class="h">Definición 2.1 (derivada en un punto)</span>
+  <p>Sea $f:D\to\mathbb R$ y $a\in D$. Para poder calcular un límite en $a$, U exige que $a$ no esté «aislado» en $D$: que para cada $r&gt;0$ se cumpla $(a-r,a+r)\cap(D\setminus\{a\})\neq\emptyset$ (siempre hay puntos de $D$, distintos de $a$, arbitrariamente cerca; se cumple, por ejemplo, si $D$ es un intervalo con más de un punto). Entonces, $f$ es <b>derivable en $a$</b> si <b>existe y es finito</b>
+  $$\lim_{x\to a}\frac{f(x)-f(a)}{x-a}\;=\;\lim_{h\to0}\frac{f(a+h)-f(a)}{h}.$$
+  El valor de ese límite se denota $f'(a)$ y es la <b>derivada de $f$ en $a$</b>. Otra notación frecuente: $\dfrac{df}{dx}(a)$.</p>
+  <span class="src" data-l="U" data-ref="U Definición 2.1, p. 75 (fórmula 2.1 y nota al margen sobre df/dx)">U p.75</span>
+  <span class="src" data-l="L" data-ref="Larson §2.1, definición de la derivada (p. 99) y forma alternativa (p. 101)">L pp.99, 101</span>
+</div>
+
+<div class="box intu"><span class="h">Las dos formas del límite son la misma</span>
+  <p>En la primera forma, $x$ se acerca a $a$; en la segunda, medimos <b>cuánto</b> nos alejamos: $h=x-a$, es decir, $x=a+h$. Que $x\to a$ es lo mismo que $h\to0$, y $x-a=h$. Usa la que te resulte más cómoda: la de $h$ para desarrollar $f(a+h)$, la de $x$ cuando se puede factorizar $x-a$.</p>
+  <span class="src" data-l="U" data-ref="U Def. 2.1, igualdad (2.1), p. 75">U p.75</span>
+</div>
+
+<div class="box warn"><span class="h">Dos puntos finos de la definición</span>
+  <ul>
+    <li><b>«Finito».</b> Un límite $+\infty$ o $-\infty$ <i>no</i> da derivada. La función $\sqrt x$ en $0$ tiene cociente $\frac{\sqrt h}{h}=\frac1{\sqrt h}\to+\infty$: no es derivable en $0$ (tiene tangente vertical, apartado 5).</li>
+    <li><b>El cociente no está definido en $h=0$</b> (sería $0/0$). No importa: un límite solo mira los $h\neq0$. Cada cociente con $h\neq0$ es una pendiente perfectamente normal (apartado 3); lo que hace falta es ver a qué número tiende.</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U Definición 2.1 (existe y es finito), p. 75">U p.75</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 2.1 de U: la derivada de una constante</span>
+  <p>Si $f(x)=k$ con $k\in\mathbb R$, para todo $a$: $f'(a)=\lim_{h\to0}\dfrac{k-k}{h}=\lim_{h\to0}0=0$. Una función constante es derivable en todo punto y su derivada es $0$ (su gráfica es horizontal: no cambia).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.1, p. 76">U p.76</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 2.2 de U: la derivada de $x^2$</span>
+  <ol class="steps">
+    <li>Formamos el cociente con la primera forma: $\dfrac{x^2-a^2}{x-a}$. En $x=a$ da $0/0$, así que hay que <b>simplificar</b> antes de tomar el límite.</li>
+    <li>Factorizamos: $x^2-a^2=(x-a)(x+a)$. Para $x\neq a$ se cancela $x-a$: $\dfrac{x^2-a^2}{x-a}=x+a$.</li>
+    <li>Límite: $\lim_{x\to a}(x+a)=2a$. Luego $f'(a)=2a$ para todo $a\in\mathbb R$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.2, p. 76">U p.76</span>
+</div>
+
+<div class="box tip"><span class="h">Receta: derivar por definición</span>
+  <ol class="steps">
+    <li>Escribe el cociente $\dfrac{f(a+h)-f(a)}{h}$ (o $\dfrac{f(x)-f(a)}{x-a}$).</li>
+    <li>Sustituye $f$ y <b>simplifica hasta que $h$ (o $x-a$) desaparezca del denominador</b>: desarrollar un cuadrado, factorizar, multiplicar por el conjugado si hay raíces...</li>
+    <li>Toma el límite. Si es un número real, ese es $f'(a)$; si es $\pm\infty$ o no existe, $f$ no es derivable en $a$.</li>
+  </ol>
+  <span class="src" data-l="P" data-ref="Receta propia; véase Larson §2.1 Ejemplos 3-5, pp. 99-100 (COMENTARIO: eliminar Δx del denominador)">P</span>
+  <span class="src" data-l="L" data-ref="Larson §2.1, Ejemplos 3-5, pp. 99-100">L pp.99-100</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Llamar «la derivada» a tres cosas distintas: el <b>número</b> $f'(a)$ (la pendiente en un punto), la <b>función</b> $f'$ (que a cada $x$ le da su pendiente, apartado 6) y la <b>recta tangente</b> (una recta, apartado 3). También: pensar que para hallar $f'(a)$ se puede primero sustituir $x=a$ en $f$ y luego derivar. $f(a)$ es una constante y su derivada es $0$; $f'(a)$ es la derivada de $f$ y <i>después</i> se evalúa en $a$.</p>
+  <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.1 (b: un número real), p. 52">E p.52</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Interpretación geométrica: tangente y normal <span class="src" data-l="U" data-ref="U §2.1.2, Figura 2.1, p. 75; ecuación de la tangente: U §2.4.2, p. 87">U pp.75, 87</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: de la secante a la tangente</span>
+  <p>Toma dos puntos de la gráfica, $P=(a,f(a))$ y $Q=(a+h,f(a+h))$, y traza la recta que los une: la <b>secante</b>. Su pendiente es justo el cociente de la definición. Ahora acerca $Q$ a $P$ (haz $h$ más pequeño): la secante gira y se va «pegando» a la curva en $P$. La recta a la que tiende es la <b>tangente</b>, y su pendiente es el límite de las pendientes de las secantes, es decir, $f'(a)$. Es la misma idea que arriba: la velocidad media era la pendiente de una secante en la gráfica posición-tiempo.</p>
+  <span class="src" data-l="U" data-ref="U §2.1.2, cociente (2.2) y Figura 2.1, p. 75">U p.75</span>
+  <span class="src" data-l="L" data-ref="Larson §2.1, secantes y tangente (Figuras 2.3-2.4), p. 97">L p.97</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.7, tangente como límite de secantes (Figura 1), p. 143">S p.143</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 660 310" role="img" aria-label="Parábola con el punto P y tres secantes que van hacia P al reducir h; la tangente en P es la recta límite">
+  <line class="ax" x1="40" y1="270" x2="580" y2="270"/>
+  <line class="ax" x1="60" y1="275" x2="60" y2="20"/>
+  <path class="a" d="M60 270 Q281 270 502 38.8"/>
+  <!-- secantes desde P=(190,250) -->
+  <line class="th" x1="190" y1="250" x2="450" y2="90"/>
+  <line class="th" x1="190" y1="250" x2="320" y2="190"/>
+  <line class="th" x1="190" y1="250" x2="255" y2="225"/>
+  <!-- tangente -->
+  <line class="b" x1="125" y1="270" x2="470" y2="164"/>
+  <line class="d21-dash" x1="190" y1="250" x2="190" y2="270"/>
+  <line class="d21-dash" x1="450" y1="90" x2="450" y2="270"/>
+  <circle class="pt" cx="190" cy="250" r="5.5"/>
+  <circle class="pt" cx="450" cy="90" r="4"/><circle class="pt" cx="320" cy="190" r="4"/><circle class="pt" cx="255" cy="225" r="4"/>
+  <text x="190" y="290" text-anchor="middle">a</text>
+  <text x="450" y="290" text-anchor="middle">a + h</text>
+  <text class="d21-lab a" x="176" y="240" text-anchor="end">P = (a, f(a))</text>
+  <text class="d21-lab" x="444" y="82" text-anchor="end">Q, h grande</text>
+  <text class="d21-lab" x="312" y="184" text-anchor="end">Q, h menor</text>
+  <text class="d21-lab" x="248" y="218" text-anchor="end">Q, h aún menor</text>
+  <text class="d21-lab b" x="474" y="168">tangente: pendiente f′(a)</text>
+  <text class="d21-lab" x="500" y="30" text-anchor="end">y = f(x)</text>
+</svg>
+<figcaption>Las secantes (finas) que pasan por $P$ y por un punto $Q$ cada vez más cercano giran hacia la tangente (gruesa, naranja). Sus pendientes $\frac{f(a+h)-f(a)}{h}$ tienden a $f'(a)$. (Figura propia; véase U Fig. 2.1 p. 75.)</figcaption>
+</figure>
+
+<div class="box def"><span class="h">Recta tangente (definición) y su ecuación</span>
+  <p>Si $f$ es derivable en $a$, la <b>recta tangente</b> a la gráfica de $f$ en $(a,f(a))$ es la recta que pasa por ese punto y tiene <b>pendiente $f'(a)$</b>. Como la recta por $(x_0,y_0)$ con pendiente $m$ es $y-y_0=m(x-x_0)$, la tangente es
+  $$y=f(a)+f'(a)\,(x-a).$$
+  Un punto de la gráfica donde la pendiente vale $0$ (tangente <b>horizontal</b>) es aquel con $f'(a)=0$.</p>
+  <span class="src" data-l="U" data-ref="U p. 75 (pendiente de la tangente = límite de pendientes de secantes) y U §2.4.2, p. 87 (ecuación y − y0 = m(x − x0); tangente y − f(x0) = f′(x0)(x − x0))">U pp.75, 87</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.7, Ejemplo 1 p. 144 y recuadro de la tangente p. 147; Larson §2.1, definición de la recta tangente p. 97 y forma punto-pendiente p. 100">S pp.144, 147 · L pp.97, 100</span>
+</div>
+
+<div class="box def"><span class="h">Recta normal</span>
+  <p>La <b>recta normal</b> a una curva en un punto $P$ es la recta que pasa por $P$ y es <b>perpendicular a la tangente</b> en $P$. Si $f'(a)\neq0$, su pendiente es $-\dfrac1{f'(a)}$ (el opuesto del inverso). Una forma que vale <i>siempre</i>, incluso cuando $f'(a)=0$, es
+  $$x-a=-f'(a)\,\big(y-f(a)\big),$$
+  que es la recta por $(a,f(a))$ con vector director $\big(-f'(a),\,1\big)$ (la tangente tiene vector director $(1,\,f'(a))$ y el producto escalar es $-f'(a)+f'(a)=0$). Si $f'(a)=0$, la tangente es horizontal y la normal es la <b>vertical</b> $x=a$; la fórmula con $-1/f'(a)$ no serviría ahí.</p>
+  <span class="src" data-l="S" data-ref="Stewart §3.1, recta normal, Ejemplo 3, pp. 176-177 (U no trata la normal)">S pp.176-177</span>
+  <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.6 c) y margen de p. 55">E pp.54-55</span>
+</div>
+
+<div class="box def"><span class="h">Del ángulo a la pendiente</span>
+  <p>Si una recta forma con el eje $x$ un ángulo $\theta$ (medido desde el eje hacia la recta, en sentido contrario a las agujas del reloj), su pendiente es $m=\tan\theta$. Así, $\theta=\frac\pi4$ da $m=1$; $\theta=0$ da $m=0$ (horizontal).</p>
+  <span class="src" data-l="E" data-ref="Libro de ejercicios, margen de p. 55 (pendiente = tan θ); no está en U">E p.55</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo: tangente y normal a $y=x^2$ en $(1,1)$</span>
+  <ol class="steps">
+    <li>Por el Ejemplo 2.2, $f'(a)=2a$; en $a=1$, $f'(1)=2$. Pendiente de la tangente: $2$.</li>
+    <li>Tangente: $y-1=2(x-1)$, es decir, $y=2x-1$.</li>
+    <li>Normal: pendiente $-\tfrac12$; $y-1=-\tfrac12(x-1)$, es decir, $y=-\tfrac12x+\tfrac32$. (Con la forma general: $x-1=-2(y-1)$.)</li>
+  </ol>
+  <span class="src" data-l="S" data-ref="Stewart §2.7, Ejemplo 1, p. 144 (tangente y = 2x − 1); la normal es cálculo propio">S p.144</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>(i) Escribir la tangente como $y=f'(a)(x-a)$ y olvidar el $+f(a)$: esa recta pasa por $(a,0)$, no por el punto de la gráfica. (ii) Tomar la pendiente de la normal como $-f'(a)$ o como $1/f'(a)$ en lugar de $-1/f'(a)$. (iii) Confundir el ángulo con la pendiente: igualar $f'(x)=\pi/4$ en vez de $f'(x)=\tan\frac\pi4$.</p>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Derivable implica continua <span class="src" data-l="U" data-ref="U Teorema 2.1, Ejemplos 2.3-2.5, pp. 76-77">U pp.76-77</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p><b>Continua</b> significa «sin saltos»: se puede dibujar sin levantar el lápiz. <b>Derivable</b> pide algo más fuerte: sin saltos <i>y</i> sin aristas ni tangentes verticales. Si hubiera un salto en $a$, no habría una tangente única (a un lado y a otro la curva estaría a alturas distintas), así que derivable $\Rightarrow$ continua. En cambio una esquina es continua pero no derivable. Y ojo: «continua» no significa que puedas <i>dibujarla</i> con el lápiz cerca de cada punto; el Ej. 2.5 de U es continua en $0$ y aun así oscila infinitas veces cerca de $0$. La continuidad es la condición precisa $\lim f=f(a)$.</p>
+  <span class="src" data-l="U" data-ref="U p. 76: «condición necesaria para la derivabilidad y suficiente para la continuidad»">U p.76</span>
+</div>
+
+<div class="box thm"><span class="h">Teorema 2.1</span>
+  <p>Si $f$ es derivable en $a$, entonces $f$ es continua en $a$.</p>
+  <p><b>Demostración</b> (U no la incluye). Para $h\neq0$ con $a+h\in D$, multiplicamos y dividimos por $h$:
+  $$f(a+h)-f(a)=h\cdot\frac{f(a+h)-f(a)}{h}.$$
+  Al hacer $h\to0$, el primer factor tiende a $0$ y el segundo a $f'(a)$ (que es un número real, porque $f$ es derivable). Por el límite de un producto (U Prop. 1.11, p. 46) el producto tiende a $0\cdot f'(a)=0$. Por tanto $\lim_{h\to0}f(a+h)=f(a)$, que es la definición de continuidad en $a$ (U Def. 1.20, p. 51). $\blacksquare$</p>
+  <span class="src" data-l="U" data-ref="U Teorema 2.1, p. 76 (enunciado sin demostración)">U p.76</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.8, Teorema 4 y demostración, pp. 158-159">S pp.158-159</span>
+  <span class="src" data-l="L" data-ref="Larson §2.1, Teorema 2.1 y demostración, p. 102">L p.102</span>
+</div>
+
+<div class="box tip"><span class="h">Cómo se usa: dos lecturas del teorema</span>
+  <ul>
+    <li><b>Contrarrecíproco:</b> si $f$ <b>no es continua</b> en $a$, entonces <b>no es derivable</b> en $a$. No hace falta estudiar el límite de la derivada.</li>
+    <li>Ser continua <b>no basta</b> para ser derivable (el recíproco es falso): ver $|x|$ en el apartado 5 y el Ejemplo 2.5 de U.</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U p. 76, Teorema 2.1 y Ejemplo 2.3">U p.76</span>
+  <span class="src" data-l="L" data-ref="Larson §2.1, resumen de la relación entre continuidad y derivabilidad, p. 102">L p.102</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos 2.3, 2.4 y 2.5 de U</span>
+  <ol class="steps">
+    <li><b>Ej. 2.3 (Heaviside).</b> $f(x)=1$ si $x&gt;0$, $f(x)=0$ si $x\le0$, es discontinua en $0$ (salto). Por el Teorema 2.1 <b>no es derivable en $0$</b>, sin calcular ningún límite.</li>
+    <li><b>Ej. 2.4.</b> $f(x)=x^2\operatorname{sen}^2\frac3x$ si $x\neq0$, $f(0)=0$. En $a=0$: $\dfrac{f(h)-f(0)}{h}=h\operatorname{sen}^2\frac3h\to0$, porque $\left|h\operatorname{sen}^2\frac3h\right|\le|h|\to0$ (el seno está acotado; U Prop. 1.10, p. 45). Luego <b>sí</b> es derivable en $0$ con $f'(0)=0$.</li>
+    <li><b>Ej. 2.5.</b> $f(x)=x\cos\frac{10}x$ si $x\neq0$, $f(0)=0$ es continua en $\mathbb R$ (en $0$: $\left|x\cos\frac{10}x\right|\le|x|\to0=f(0)$, por el emparedado, U p. 45), pero $\dfrac{f(h)-f(0)}{h}=\cos\frac{10}h$ oscila entre $-1$ y $1$ cada vez más rápido al acercarse $h$ a $0$: <b>no existe el límite</b>, luego <b>no es derivable en $0$</b>. Continua sin ser derivable.</li>
+  </ol>
+  <p>Diferencia entre los dos últimos: la gráfica del Ej. 2.4 queda entre $0$ y $x^2$ (dos curvas que se tocan en $0$ y comparten tangente horizontal); la del Ej. 2.5 queda entre $-x$ y $x$ (rectas de pendientes distintas: no hay tangente común).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplos 2.3 y 2.4, p. 76; Ejemplo 2.4 (final) y Ejemplo 2.5, p. 77; comentario tras el Ejemplo 2.5, p. 78">U pp.76-78</span>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="s5"><span class="n">5</span>Derivadas laterales y cuándo falla la derivada <span class="src" data-l="U" data-ref="U §2.2.2, Definición 2.3 y criterio de derivabilidad, p. 81 (está en §2.2, no en §2.1)">U p.81 (§2.2)</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Al calcular $\lim_{h\to0}$ te acercas a $a$ por dos lados: $h&gt;0$ (por la derecha) y $h&lt;0$ (por la izquierda). Si <b>cada lado</b> da su propia pendiente, y esas pendientes son distintas, la gráfica llega al punto con dos «direcciones» distintas: una <b>esquina</b>, sin una única tangente. Las derivadas laterales miden cada una de esas dos pendientes por separado.</p>
+  <span class="src" data-l="U" data-ref="U p. 81, introducción a las derivadas laterales">U p.81</span>
+  <span class="src" data-l="L" data-ref="Larson §2.1, derivadas por la izquierda y por la derecha, p. 101">L p.101</span>
+</div>
+
+<div class="box def"><span class="h">Definición 2.3 (derivadas laterales)</span>
+  <p>$f$ es <b>derivable por la derecha</b> en $a$ si existe y es finito
+  $$f'(a^+)=\lim_{h\to0^+}\frac{f(a+h)-f(a)}{h},$$
+  y <b>derivable por la izquierda</b> si existe y es finito $f'(a^-)=\lim_{h\to0^-}\frac{f(a+h)-f(a)}{h}$. Son las <b>derivadas laterales</b> ($a^+$: valores mayores que $a$; $a^-$: menores).</p>
+  <p><b>Criterio.</b> Si las derivadas laterales en $a$ existen y coinciden, entonces $f$ es derivable en $a$ y $f'(a)$ vale ese valor común. Recíprocamente, si $f$ es derivable en $a$ y $a$ es un punto <b>interior</b> de $D$ (hay puntos de $D$ a ambos lados de $a$ arbitrariamente cerca), existen ambas y son iguales: el límite bilateral existe si y solo si existen los laterales y coinciden (U Teorema 1.4, p. 47). Si $a$ es un extremo de $D$ solo hay un lado y el recíproco falla: $f(x)=x$ en $[0,\infty)$ es derivable en $0$ con $f'(0)=1$, pero no existe $f'(0^-)$.</p>
+  <span class="src" data-l="U" data-ref="U Definición 2.3 y criterio, p. 81 (§2.2.2)">U p.81</span>
+  <span class="src" data-l="U" data-ref="U Teorema 1.4, límite bilateral ⇔ laterales coinciden, p. 47">U p.47</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo: $f(x)=|x|$ en $0$ (continua, no derivable)</span>
+  <p>Para $h&gt;0$, $\frac{|h|}{h}=1$; para $h&lt;0$, $\frac{|h|}{h}=\frac{-h}{h}=-1$. Luego $f'(0^+)=1$ y $f'(0^-)=-1$: existen ambas, pero <b>son distintas</b>, así que $|x|$ <b>no es derivable en $0$</b>, aunque sí continua en $0$ (los dos límites laterales de $|x|$ valen $0=|0|$). Es el ejercicio 2.19.</p>
+  <span class="src" data-l="S" data-ref="Stewart §2.8, Ejemplo 5 (f(x) = |x| no es derivable en 0), pp. 157-158">S pp.157-158</span>
+  <span class="src" data-l="L" data-ref="Larson §2.1, Ejemplo 6 (|x − 2|, punto angular), p. 102">L p.102</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 260" role="img" aria-label="Gráfica de valor absoluto con una esquina en el origen; a la izquierda la pendiente es menos uno y a la derecha uno">
+  <line class="ax" x1="40" y1="220" x2="610" y2="220"/>
+  <line class="ax" x1="320" y1="228" x2="320" y2="18"/>
+  <path class="a" d="M140 40 L320 220 L500 40"/>
+  <circle class="pt" cx="320" cy="220" r="5.5"/>
+  <text class="d21-lab" x="205" y="122" text-anchor="end">pendiente −1: f′(0⁻) = −1</text>
+  <text class="d21-lab" x="435" y="122">pendiente +1: f′(0⁺) = +1</text>
+  <text class="d21-lab b" x="320" y="246" text-anchor="middle">esquina en (0, 0): no hay tangente única</text>
+  <text class="d21-lab" x="500" y="30" text-anchor="end">y = |x|</text>
+</svg>
+<figcaption>Gráfica de $f(x)=|x|$. Por la derecha la recta tiene pendiente $+1$ y por la izquierda $-1$: las dos derivadas laterales existen pero no coinciden, y en el origen hay una arista.</figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Creer que <b>«existen las dos derivadas laterales» basta</b> para ser derivable. Hace falta que además <b>coincidan</b> (ejercicio 2.18: $|x|$ es el contraejemplo). Tampoco tomes la derivada de la fórmula de un lado como derivada lateral sin comprobar que esa fórmula <b>toma en $a$ el valor $f(a)$</b> (ejercicio 2.23).</p>
+</div>
+
+<h3>Las formas en que una función deja de ser derivable en $a$ <span class="src" data-l="S" data-ref="Stewart §2.8, «¿Cómo deja de ser derivable una función?» (Figura 7), p. 159">S p.159</span></h3>
+<div class="d21-cols">
+  <div><b>1. Esquina o pico</b>Las derivadas laterales existen y son distintas, o una de ellas es infinita. Ej.: $|x|$ en $0$.</div>
+  <div><b>2. Discontinuidad</b>Si $f$ no es continua en $a$, no es derivable (Teorema 2.1). Ej.: Heaviside.</div>
+  <div><b>3. Tangente vertical</b>$f$ continua en $a$ y el cociente tiende a $+\infty$ o a $-\infty$. Ej.: $\sqrt x$ en $0$, $\sqrt[3]{x}$ en $0$.</div>
+  <div><b>4. Oscilación</b>El cociente oscila sin tender a nada. Ej.: $x\cos\frac{10}x$ en $0$ (U Ej. 2.5).</div>
+</div>
+
+<div class="box def"><span class="h">Tangente vertical</span>
+  <p>Si $f$ es continua en $a$ y el cociente $\dfrac{f(a+h)-f(a)}{h}$ tiende a $+\infty$ o a $-\infty$ cuando $h\to0$, la recta <b>vertical</b> $x=a$ es tangente a la gráfica (definición de L, p. 98). La función <b>no es derivable</b> en $a$ (no hay derivada finita), pero geométricamente sí hay tangente (vertical). Ejemplos de L: $f(x)=\sqrt x$ en $(0,0)$ (cociente $\frac1{\sqrt h}\to+\infty$; solo hay lado derecho, porque el dominio es $[0,\infty)$) y $f(x)=x^{1/3}$ en $0$, donde $\frac{x^{1/3}-0}{x}=x^{-2/3}\to+\infty$ por ambos lados.</p>
+  <p><b>Aviso:</b> S (p. 159) usa un criterio más amplio, $\lim_{x\to a}|f'(x)|=\infty$ con $f$ continua en $a$, que también recoge picos como $\sqrt{|x|}$ en $0$ (cociente $-\infty$ por la izquierda y $+\infty$ por la derecha). Con la definición de L ahí <b>no</b> hay tangente vertical. Aquí seguimos L.</p>
+  <span class="src" data-l="L" data-ref="Larson §2.1, definición de recta tangente vertical, p. 98; Ejemplo 4 (√x), p. 100; Ejemplo 7 (x^(1/3)), p. 102">L pp.98-102</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.8, tangente vertical (Figuras 6-7), p. 159">S p.159</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 620 260" role="img" aria-label="Gráfica de raíz cuadrada con tres secantes desde el origen cuya pendiente crece sin límite; la tangente en el origen es la vertical">
+  <line class="ax" x1="40" y1="230" x2="600" y2="230"/>
+  <line class="ax" x1="60" y1="238" x2="60" y2="18"/>
+  <path class="a" d="M60 230 Q60 140 540 50"/>
+  <line class="b" x1="60" y1="236" x2="60" y2="30"/>
+  <line class="th" x1="60" y1="230" x2="240" y2="95"/>
+  <line class="th" x1="60" y1="230" x2="138" y2="113"/>
+  <line class="th" x1="60" y1="230" x2="94" y2="129"/>
+  <circle class="pt" cx="180" cy="140" r="4"/><circle class="pt" cx="90" cy="185" r="4"/><circle class="pt" cx="67.5" cy="207.5" r="4"/>
+  <circle class="pt" cx="60" cy="230" r="5.5"/>
+  <text class="d21-lab" x="240" y="87" text-anchor="middle">m = 1</text>
+  <text class="d21-lab" x="140" y="105" text-anchor="middle">m = 2</text>
+  <text class="d21-lab" x="94" y="121" text-anchor="middle">m = 4</text>
+  <text class="d21-lab b" x="72" y="34">tangente vertical x = 0</text>
+  <text class="d21-lab" x="540" y="44" text-anchor="end">y = √x</text>
+</svg>
+<figcaption>Para $f(x)=\sqrt x$ en $0$, la secante por $(0,0)$ y $(h,\sqrt h)$ tiene pendiente $m=\frac{\sqrt h}{h}=\frac1{\sqrt h}$: vale $1$, $2$ y $4$ para $h=1,\ \frac14,\ \frac1{16}$ y crece sin límite al reducir $h$. Las secantes tienden a la recta vertical $x=0$: hay tangente vertical, pero no derivada finita.</figcaption>
+</figure>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="s6"><span class="n">6</span>La función derivada y las reglas que necesitas <span class="src" data-l="U" data-ref="U §2.1.3 Derivabilidad en un intervalo, Definición 2.2, p. 78; §2.2.2, p. 79">U pp.78-79</span></h2>
+
+<div class="box def"><span class="h">Definición 2.2 (derivable en un conjunto; función derivada)</span>
+  <p>Una función es <b>derivable en un conjunto</b> $A\subset D$ si lo es en <b>todos</b> los puntos de $A$. Dada $f$, la <b>función derivada</b> (o derivada primera) es la función $f'$ que tiene por dominio el conjunto $A$ donde $f$ es derivable y que a cada $x\in A$ le asigna el número $f'(x)$:
+  $$f':A\to\mathbb R.$$</p>
+  <span class="src" data-l="U" data-ref="U §2.1.3, Definición 2.2, p. 78">U p.78</span>
+  <span class="src" data-l="L" data-ref="Larson §2.1, definición de la derivada de una función y notaciones f′(x), dy/dx, y′, d/dx[f(x)], D_x[y], p. 99">L p.99</span>
+</div>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>La derivada en un punto es <b>un número</b> (la pendiente ahí). Si haces esto en todos los puntos donde se pueda, obtienes <b>una función</b>: $f'(x)$ = «pendiente de la gráfica en $x$». El concepto de derivada es <b>local</b> (solo depende de cómo es $f$ cerca de $a$), pero las funciones derivables en todo su dominio tienen propiedades muy útiles (U §2.5: Rolle, valor medio, monotonía; tema 2.5). Por ejemplo, con $f(x)=x^2$ (Ej. 2.2 de U) resulta $f'(x)=2x$: en $x=1$ la pendiente es $2$, en $x=0$ es $0$ (fondo de la parábola).</p>
+  <span class="src" data-l="U" data-ref="U §2.1.3, «El concepto de derivada es local», p. 78">U p.78</span>
+</div>
+
+<h3>Reglas mínimas (para calcular sin usar la definición) <span class="src" data-l="U" data-ref="U §2.2.2 Reglas de derivación, Proposición 2.1, regla de la cadena y tabla, p. 79 (pertenece al tema 2.2)">U p.79</span></h3>
+<div class="box thm"><span class="h">Proposición 2.1, regla de la cadena y tabla (resumen)</span>
+  <p>Si $f$ y $g$ son derivables en $a$: $(f+g)'(a)=f'(a)+g'(a)$; $(f\cdot g)'(a)=f'(a)g(a)+f(a)g'(a)$; si $g(a)\neq0$, $\left(\dfrac fg\right)'(a)=\dfrac{f'(a)g(a)-f(a)g'(a)}{[g(a)]^2}$. <b>Cadena:</b> si $f$ es derivable en $a$ y $g$ en $f(a)$, entonces $(g\circ f)'(a)=g'(f(a))\cdot f'(a)$.</p>
+  <table>
+    <tr><th>$f(x)$</th><th>$f'(x)$</th><th>$f(x)$</th><th>$f'(x)$</th></tr>
+    <tr><td>$c$ (constante)</td><td>$0$</td><td>$x^c$</td><td>$c\,x^{c-1}$</td></tr>
+    <tr><td>$e^x$</td><td>$e^x$</td><td>$a^x$ $(a&gt;0)$</td><td>$a^x\ln a$</td></tr>
+    <tr><td>$\ln x$</td><td>$1/x$</td><td>$\log_a x$</td><td>$\dfrac1x\log_a e$</td></tr>
+    <tr><td>$\operatorname{sen}x$</td><td>$\cos x$</td><td>$\cos x$</td><td>$-\operatorname{sen}x$</td></tr>
+  </table>
+  <span class="src" data-l="U" data-ref="U §2.2.2, Proposición 2.1, regla de la cadena y tabla de derivadas, p. 79">U p.79</span>
+</div>
+<p>Estas reglas se estudian en el tema 2.2; aquí se usan en los ejercicios 2.7-2.9, 2.20 c) y 2.23 y en los ejemplos propios 2 y 3. Recuerda que una regla como esta vale <b>en los puntos donde $f$ y $g$ son derivables</b>: no las apliques en un punto donde la función tenga una esquina.</p>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="ejercicios"><span class="n">7</span>Ejercicios resueltos del libro (E) y ejemplos propios <span class="src" data-l="E" data-ref="Libro de ejercicios, Tema 2, Ej. 2.1, 2.2, 2.6-2.9, 2.14, 2.17-2.23, pp. 52-66">E pp.52-66</span></h2>
+
+<div class="box warn"><span class="h">Erratas y omisiones del libro E que aquí se corrigen</span>
+  <ul>
+    <li><b>2.2:</b> E toma $0{,}0541$ h y obtiene $55{,}3914$ km/h, pero $3/0{,}0541\approx55{,}45$ y el valor exacto es $720/13\approx55{,}38$. Además no responde «sí» explícitamente.</li>
+    <li><b>2.9:</b> E afirma que «$f$ es periódica»: es falso ($f'$ no es periódica por el factor $e^{2x^2-x}$). La gráfica de E es la de $f'$ (pasa por el origen con $f'(0)=0$ y cambia de signo allí), no la de $f$; la gráfica de $f$ debería tener un mínimo en $0$ y máximos en $\pm1$.</li>
+    <li><b>2.20 y 2.23:</b> usan L'Hôpital (U §2.3, sección posterior); no hace falta: cada límite es una derivada por definición ($\operatorname{sen}'(0)$ en 2.20; $G'(0)$ con la regla de la cadena en 2.23).</li>
+    <li><b>2.17:</b> correcto, pero no advierte que la hipótesis $f'(a^-)=f'(a^+)$ es innecesaria para la continuidad.</li>
+    <li><b>2.14:</b> no justifica por qué existe $n$ con $f(\frac1n)f(1-\frac1n)&lt;0$ (falta la conservación del signo, U Prop. 1.9 p. 44).</li>
+    <li><b>2.22:</b> en la última fórmula el denominador es $x$; debe ser $x-a$.</li>
+  </ul>
+  <p>Nota sobre símbolos: el texto extraído de los PDF pierde la barra en $\neq$ y falla con $\sqrt{\ }$ en algunos enunciados; se han restituido contrastando con el PDF.</p>
+</div>
+
+<h3>Concepto de derivada</h3>
+
+<details class="sol"><summary>Ejercicio 2.1 — ¿qué es la derivada en un punto? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.1, p. 52">E p.52</span></summary>
+  <p class="enun">La derivada en un punto $a\in\mathbb R$ de una función derivable $f:\mathbb R\to\mathbb R$ es: a) una recta tangente; b) un número real; c) una función.</p>
+  <ol class="steps">
+    <li>Por la Def. 2.1 (U p. 75), $f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}$, que por definición es <b>finito</b>, es decir, un número real. Luego $f'(a)\in\mathbb R$.</li>
+    <li><b>a)</b> La tangente es otro objeto: la recta por $(a,f(a))$ con pendiente $f'(a)$. $f'(a)$ es un dato suyo (la pendiente), no la recta.</li>
+    <li><b>c)</b> La <b>función derivada</b> $f'$ (U Def. 2.2, p. 78) asigna a cada $x$ el número $f'(x)$; la derivada <i>en un punto</i> es su valor en $a$.</li>
+  </ol>
+  <p><b>Respuesta: b).</b></p>
+  <div class="recipe"><b>Receta:</b> distingue tres objetos: $f'(a)$ es un <b>número</b> (la pendiente), $f'$ es una <b>función</b>, y la tangente es la <b>recta</b> $y=f(a)+f'(a)(x-a)$.</div>
+  <p><b>Error típico:</b> llamar «la derivada» indistintamente a $f'$, a $f'(a)$ y a la tangente.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.2 — radar de tramo en un túnel <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.2, p. 52 (con errata numérica)">E p.52</span></summary>
+  <p class="enun">Un coche entra en un túnel de 3 km limitado a 50 km/h. Un radar de tramo fotografía al entrar y al salir, y refleja que ha tardado 3 minutos y 15 segundos. ¿Es posible que al conductor le llegue una multa?</p>
+  <ol class="steps">
+    <li><b>Qué mide el radar.</b> Solo conoce dos posiciones y dos instantes, así que solo puede calcular $\frac{f(b)-f(a)}{b-a}$: la <b>velocidad media</b> (U p. 74). La velocidad instantánea sería la derivada (U p. 75) y el radar de tramo no la mide.</li>
+    <li><b>Unidades homogéneas.</b> Como la velocidad está en km/h, el tiempo va en horas: $3\text{ min }15\text{ s}=3{,}25\text{ min}=\frac{3{,}25}{60}\text{ h}=\frac{13}{240}\text{ h}\approx0{,}054167\text{ h}$.</li>
+    <li><b>Velocidad media.</b> $v_m=\dfrac{3}{13/240}=\dfrac{720}{13}\approx55{,}38$ km/h.</li>
+    <li><b>Conclusión.</b> $55{,}38&gt;50$: <b>sí, puede llegarle una multa</b>, que es justo lo que sanciona un radar de tramo.</li>
+    <li><b>Ampliación (tema 2.5).</b> Si la posición $f(t)$ es continua en $[0,T]$ y derivable en $(0,T)$, el Teorema del valor medio (U §2.5.3, p. 96) da un instante $c$ con $f'(c)=v_m\approx55{,}38$ km/h. Es decir, el coche <b>superó los 50 km/h en al menos un instante</b>.</li>
+  </ol>
+  <p><b>Respuesta:</b> sí, $v_m=\frac{720}{13}\approx55{,}38$ km/h $&gt;50$ km/h.</p>
+  <div class="recipe"><b>Receta:</b> velocidad media = incremento de posición entre incremento de tiempo, con las unidades homogeneizadas <i>antes</i> de dividir. La derivada es el límite de ese cociente.</div>
+  <p><b>Error típico:</b> escribir 3,15 min en lugar de 3,25 min, o redondear el tiempo en horas antes de dividir.</p>
+</details>
+
+<h3>Recta tangente</h3>
+
+<details class="sol"><summary>Ejercicio 2.6 — tangente y normal (tres afirmaciones) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.6, p. 54 (margen en p. 55)">E p.54</span></summary>
+  <p class="enun">Si $f:\mathbb R\to\mathbb R$ es derivable en $a$: a) la recta $y=f'(a)(x-a)+f(a)$ es tangente a la gráfica en $(a,f(a))$; b) la pendiente de la recta tangente en $(a,f(a))$ es $f'(a)$; c) la recta $x=-f'(a)(y-f(a))+a$ corta perpendicularmente a la gráfica en $(a,f(a))$.</p>
+  <ol class="steps">
+    <li><b>b)</b> La derivada es el límite de las pendientes de las secantes por $(a,f(a))$ y $(a+h,f(a+h))$, y ese límite es la pendiente de la tangente (U p. 75, Fig. 2.1). <b>Cierta.</b></li>
+    <li><b>a)</b> La recta por $(x_0,y_0)$ con pendiente $m$ es $y-y_0=m(x-x_0)$ (U p. 87). Con $(a,f(a))$ y $m=f'(a)$ sale exactamente esa recta. <b>Cierta.</b></li>
+    <li><b>c)</b> «Cortar perpendicularmente a la gráfica» es ser perpendicular a la tangente en ese punto. <i>Pasa por el punto:</i> si $y=f(a)$, $x=a$. <i>Dirección:</i> reescrita como $x-a=-f'(a)(y-f(a))$, con $y-f(a)=t$ sus puntos son $(a-f'(a)t,\ f(a)+t)$: vector director $(-f'(a),1)$. La tangente tiene vector director $(1,f'(a))$ y el producto escalar es $-f'(a)+f'(a)=0$: son perpendiculares. <b>Cierta.</b></li>
+    <li><b>Por qué se escribe así la normal.</b> Si $f'(a)=0$ la tangente es horizontal y la normal es la vertical $x=a$, que da la fórmula de c). La forma con pendiente $-\frac1{f'(a)}$ no tiene sentido ahí.</li>
+  </ol>
+  <p><b>Respuesta: a), b) y c) son ciertas.</b></p>
+  <div class="recipe"><b>Receta:</b> tangente: $y=f(a)+f'(a)(x-a)$. Normal: vector director $(-f'(a),1)$, es decir, $x-a=-f'(a)(y-f(a))$. Para comprobar perpendicularidad basta que el producto escalar de los vectores directores sea $0$.</div>
+  <p><b>Error típico:</b> escribir la normal con pendiente $-1/f'(a)$ sin excluir el caso $f'(a)=0$. <i>(Nota: en el .txt el margen de E p. 55 aparece como «Si $u=0$»; el PDF dice $u\neq0$: fallo de extracción.)</i></p>
+  <p><b>Fuentes:</b> U p. 75 y p. 87; la normal no está en U (S pp. 176-177).</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.7 — tangente paralela al eje $x$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.7, p. 55">E p.55</span></summary>
+  <p class="enun">Halla los puntos en los que la tangente a la gráfica de $f(x)=-\frac13x^3-x^2-1$ es paralela al eje $x$.</p>
+  <ol class="steps">
+    <li><b>Traducir.</b> Paralela al eje $x$ = horizontal = pendiente $0$. La pendiente en $(x,f(x))$ es $f'(x)$ (U p. 75): buscamos los $x$ con $f'(x)=0$.</li>
+    <li><b>Derivar</b> (tabla y linealidad, U p. 79): $f'(x)=-\frac13\cdot3x^2-2x=-x^2-2x$.</li>
+    <li><b>Resolver:</b> $-x^2-2x=0\iff-x(x+2)=0\iff x=0$ o $x=-2$.</li>
+    <li><b>Ordenadas</b> (sustituyendo en $f$, no en $f'$): $f(0)=-1$; $f(-2)=-\frac13(-8)-4-1=\frac83-5=-\frac73$.</li>
+  </ol>
+  <p><b>Respuesta:</b> $(0,-1)$ y $\left(-2,-\frac73\right)$.</p>
+  <div class="recipe"><b>Receta:</b> «tangente con pendiente $m$» se resuelve con la ecuación $f'(x)=m$; después se sustituye cada solución en $f$ (no en $f'$) para obtener el punto.</div>
+  <p><b>Error típico:</b> dar solo las abscisas, o sustituir en $f'$ para obtener la ordenada.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.8 — tangente con un ángulo de $\pi/4$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.8, pp. 55-56">E pp.55-56</span></summary>
+  <p class="enun">Calcula los puntos en los que la tangente a la gráfica de $f(x)=-\frac13x^3-x^2-1$ forma un ángulo de $\frac\pi4$ radianes con el eje $x$ (medido desde el eje $x$ a la recta, en sentido contrario a las agujas del reloj).</p>
+  <ol class="steps">
+    <li><b>Del ángulo a la pendiente:</b> $m=\tan\theta$ (margen de E p. 55). Aquí $m=\tan\frac\pi4=1$.</li>
+    <li><b>Ecuación.</b> Por el ejercicio 2.7, $f'(x)=-x^2-2x$. Imponemos $-x^2-2x=1\iff x^2+2x+1=0\iff(x+1)^2=0\iff x=-1$ (raíz doble).</li>
+    <li><b>Ordenada:</b> $f(-1)=-\frac13(-1)-1-1=\frac13-2=-\frac53$.</li>
+    <li><b>Tangente:</b> $y=-\frac53+1\cdot(x+1)=x-\frac23$.</li>
+    <li><b>Por qué solo un punto:</b> $f'(x)=1-(x+1)^2\le1$, así que $1$ es la <b>pendiente máxima</b> de la gráfica y solo se alcanza en $x=-1$.</li>
+  </ol>
+  <p><b>Respuesta:</b> $\left(-1,-\frac53\right)$.</p>
+  <div class="recipe"><b>Receta:</b> ángulo $\theta$ $\Rightarrow$ pendiente $\tan\theta$ $\Rightarrow$ resolver $f'(x)=\tan\theta$.</div>
+  <p><b>Error típico:</b> igualar $f'(x)=\pi/4$, es decir, confundir el ángulo con la pendiente.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.9 — tangente de una función de la que solo conocemos $f'$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.9, pp. 56-57 (con errata en la explicación de E)">E pp.56-57</span></summary>
+  <p class="enun">De una función derivable $f:\mathbb R\to\mathbb R$ se sabe que $f'(x)=\operatorname{sen}(\pi x)\,e^{2x^2-x}$. Señala la afirmación correcta sobre la tangente a la gráfica en $(x,f(x))$: a) nunca es paralela al eje $x$; b) para $x=\frac12$ es perpendicular al vector $(-1,1)$; c) solo es paralela al eje $x$ si $x=0$; d) ninguna de las anteriores.</p>
+  <ol class="steps">
+    <li>No conocemos $f$, pero la pendiente en $x$ es $f'(x)$ (U p. 75) y eso basta.</li>
+    <li><b>Tangente horizontal</b> $\iff f'(c)=0$. Como $e^{2c^2-c}&gt;0$, $f'(c)=0\iff\operatorname{sen}(\pi c)=0\iff c\in\mathbb Z$. Hay infinitos puntos con tangente horizontal: <b>a) y c) son falsas</b>.</li>
+    <li><b>En $x=\frac12$:</b> $f'(\tfrac12)=\operatorname{sen}\tfrac\pi2\cdot e^{2\cdot\frac14-\frac12}=1\cdot e^0=1$.</li>
+    <li><b>Perpendicularidad.</b> Con pendiente $1$, un vector director de la tangente es $(1,1)$; $(1,1)\cdot(-1,1)=-1+1=0$: perpendicular. <b>b) es cierta</b>, y por tanto d) es falsa.</li>
+  </ol>
+  <p><b>Respuesta: b).</b></p>
+  <div class="recipe"><b>Receta:</b> pendiente $m$ $\Rightarrow$ vector director $(1,m)$. «Perpendicular al vector $v$» equivale a $(1,m)\cdot v=0$.</div>
+  <p><b>Error típico:</b> confundir «perpendicular al vector $(-1,1)$» con «paralela a $(-1,1)$», que correspondería a pendiente $-1$.</p>
+</details>
+
+<h3>Derivadas laterales y derivabilidad</h3>
+<p>Orden propuesto: el 2.19 primero (calcula las laterales de $|x|$ y da el contraejemplo que usan después), luego el 2.18 y el 2.17 (sobre qué garantizan las laterales), y por último el 2.20 y el 2.23 (aplicaciones).</p>
+
+<details class="sol"><summary>Ejercicio 2.19 — $|x|$: continua pero no derivable en 0 <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.19, p. 62">E p.62</span></summary>
+  <p class="enun">Calcula $f'(0^+)$ y $f'(0^-)$ para $f(x)=|x|$. Deduce que no es derivable en $0$ pese a ser continua en $0$.</p>
+  <ol class="steps">
+    <li><b>Definición</b> (U Def. 2.3, p. 81): $f'(0^\pm)=\lim_{h\to0^\pm}\frac{|h|}{h}$, porque $f(0)=0$.</li>
+    <li><b>Derecha</b> ($h&gt;0$): $|h|=h$ (U Def. 1.1, p. 15), cociente $1$: $f'(0^+)=1$.</li>
+    <li><b>Izquierda</b> ($h&lt;0$): $|h|=-h$, cociente $-1$: $f'(0^-)=-1$.</li>
+    <li><b>No derivable:</b> el límite bilateral existe si y solo si existen los laterales y coinciden (U Teorema 1.4, p. 47); aquí $1\neq-1$.</li>
+    <li><b>Sí continua:</b> $\lim_{x\to0^+}|x|=0=\lim_{x\to0^-}|x|$, luego $\lim_{x\to0}|x|=0=|0|$ (U Def. 1.20, p. 51).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> en un punto donde la fórmula cambia (valor absoluto, función a trozos), calcula por separado $f'(a^+)$ y $f'(a^-)$ con la definición, usando en cada lado la expresión que corresponde al signo de $h$.</div>
+  <p><b>Error típico:</b> pensar que «continua» implica «derivable». Solo es cierto al revés (Teorema 2.1). Mejor explicado en S §2.8 Ej. 5 y L §2.1 Ej. 6 (con $|x-2|$).</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.18 — ¿derivables por los dos lados implica derivable? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.18, p. 62">E p.62</span></summary>
+  <p class="enun">Razona la veracidad o falsedad: <i>si $f$ es derivable por la izquierda y por la derecha en $a$, entonces $f$ es derivable en $a$.</i></p>
+  <ol class="steps">
+    <li>Para que exista $f'(a)$ hace falta que los laterales existan <b>y coincidan</b> (U Teorema 1.4, p. 47; criterio de U p. 81).</li>
+    <li><b>Contraejemplo:</b> $f(x)=|x|$ en $a=0$. Por el 2.19, $f'(0^+)=1$ y $f'(0^-)=-1$ existen, pero $f$ no es derivable en $0$.</li>
+  </ol>
+  <p><b>Respuesta: falsa.</b></p>
+  <div class="recipe"><b>Receta:</b> para refutar un «si…, entonces…» basta un contraejemplo (U p. 16, margen). $|x|$ en $0$ es el contraejemplo estándar en derivabilidad.</div>
+  <p><b>Error típico:</b> olvidar la condición «y coinciden».</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.17 — laterales iguales implica continua <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.17, pp. 61-62 (sin advertir que la hipótesis de igualdad sobra)">E pp.61-62</span></summary>
+  <p class="enun">Razona la veracidad o falsedad: <i>si $f$ es derivable en $a$ por la izquierda y por la derecha, con $f'(a^-)=f'(a^+)$, entonces $f$ es continua en $a$.</i></p>
+  <ol class="steps">
+    <li>Si las derivadas laterales existen y coinciden, $f$ es derivable en $a$ y $f'(a)=f'(a^\pm)$ (U p. 81).</li>
+    <li>Si $f$ es derivable en $a$, es continua en $a$ (Teorema 2.1, con la demostración del apartado 4).</li>
+  </ol>
+  <p><b>Respuesta: verdadera.</b></p>
+  <p><b>Observación (la hipótesis de igualdad sobra).</b> La conclusión es cierta aunque $f'(a^-)\neq f'(a^+)$. Si $h\to0^+$: $f(a+h)-f(a)=h\cdot\frac{f(a+h)-f(a)}{h}\to0\cdot f'(a^+)=0$; si $h\to0^-$, igual con $f'(a^-)$. Los dos límites laterales de $f$ valen $f(a)$ y, por U Teorema 1.4 (p. 47), $f$ es continua en $a$. El ejemplo $|x|$: derivadas laterales distintas y aun así continua.</p>
+  <div class="recipe"><b>Receta:</b> derivable (incluso solo lateralmente por ambos lados) $\Rightarrow$ continua. Para demostrarlo, multiplica y divide por $h$.</div>
+  <p><b>Error típico:</b> creer que hace falta $f'(a^-)=f'(a^+)$ para la continuidad.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.20 — ¿cuál es derivable en 0? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.20, pp. 62-63 (E usa L'Hôpital; aquí se evita)">E pp.62-63</span></summary>
+  <p class="enun">Señala la correcta: a) $f(x)=|x|$ es derivable en $0$; b) $g(x)=|x^3|$; c) $m(x)=|2\operatorname{sen}x|$; d) $j(x)=\sqrt{|x|}$ (todas «es derivable en $0$»).</p>
+  <ol class="steps">
+    <li><b>a)</b> Falsa, por el ejercicio 2.19.</li>
+    <li><b>b)</b> Como $|h^3|=|h|^3$, $\dfrac{|h^3|-0}{h}=\dfrac{|h|^3}{h}=h|h|$, que vale $h^2$ si $h&gt;0$ y $-h^2$ si $h&lt;0$. Ambos tienden a $0$: $g'(0^+)=g'(0^-)=0$ y $g'(0)=0$. <b>Cierta.</b></li>
+    <li><b>c)</b> Para $0&lt;|h|&lt;\pi$ el signo de $\operatorname{sen}h$ es el de $h$. Entonces $m'(0^\pm)=\lim_{h\to0^\pm}\dfrac{\pm2\operatorname{sen}h}{h}=\pm2\lim_{h\to0}\dfrac{\operatorname{sen}h-\operatorname{sen}0}{h-0}=\pm2\operatorname{sen}'(0)=\pm2\cos0=\pm2$. El último límite es, por definición, la derivada del seno en $0$ (U Def. 2.1 y tabla, pp. 75, 79): no hace falta L'Hôpital. Como $2\neq-2$, <b>c) es falsa</b>.</li>
+    <li><b>d)</b> Si $h&gt;0$: $\frac{\sqrt h}{h}=\frac1{\sqrt h}\to+\infty$. Si $h&lt;0$: $\frac{\sqrt{-h}}{h}=-\frac1{\sqrt{-h}}\to-\infty$. La definición exige límite <b>finito</b> (U Def. 2.1 y 2.3): no hay derivada: la gráfica tiene un pico (cúspide) en $0$, con laterales $-\infty$ y $+\infty$. <b>d) es falsa.</b></li>
+  </ol>
+  <p><b>Respuesta: b).</b></p>
+  <div class="recipe"><b>Receta:</b> con $|\cdot|$ en el punto crítico, quita el valor absoluto según el signo de $h$ en cada lado. Si aparece $\frac{g(h)-g(0)}{h}$ con $g$ conocida, reconócelo como $g'(0)$.</div>
+  <p><b>Error típico:</b> dar como derivada un límite infinito (d), o concluir que c) es derivable porque «$|2\operatorname{sen}x|$ es suave salvo en $0$» (justo el punto en el que se pregunta).</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.23 — parámetros para que una función a trozos sea derivable <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.23, pp. 65-66 (E usa L'Hôpital; aquí se evita)">E pp.65-66</span></summary>
+  <p class="enun">Halla $a$ y $b$ para que sea derivable en todo $\mathbb R$: $f(x)=\begin{cases}2x+\operatorname{sen}x,&amp;x\le0,\\ \operatorname{sen}(ax+b),&amp;x&gt;0.\end{cases}$ Opciones: a) $a=-3$, $b=0$; b) $a=3$, $b=1$; c) $a=0$, $b=-3$; d) $a=-3$, $b=-7\pi$.</p>
+  <ol class="steps">
+    <li><b>Fuera de $0$ no hay problema:</b> en $(-\infty,0)$ y en $(0,\infty)$, $f$ coincide con sumas y composiciones de funciones derivables (U p. 79). Solo hay que estudiar $x=0$.</li>
+    <li><b>Primero, continuidad en $0$</b> (necesaria por el Teorema 2.1). $f(0)=0$; $\lim_{x\to0^-}f=0$; $\lim_{x\to0^+}\operatorname{sen}(ax+b)=\operatorname{sen}b$ (U Prop. 1.14, p. 51). Hace falta $\operatorname{sen}b=0\iff b=k\pi$, $k\in\mathbb Z$. Esto descarta b) ($\operatorname{sen}1\neq0$) y c) ($3$ no es múltiplo de $\pi$). Quedan a) con $k=0$ y d) con $k=-7$.</li>
+    <li><b>Derivada por la izquierda:</b> $f'(0^-)=\lim_{h\to0^-}\frac{2h+\operatorname{sen}h-0}{h}=2+\operatorname{sen}'(0)=2+1=3$.</li>
+    <li><b>Derivada por la derecha.</b> Con $b=k\pi$, $f(0)=0=\operatorname{sen}(k\pi)$. Para $h&gt;0$: $\frac{f(h)-f(0)}{h}=\frac{G(h)-G(0)}{h}$ con $G(x)=\operatorname{sen}(ax+k\pi)$, derivable en $\mathbb R$. Por la regla de la cadena, $f'(0^+)=G'(0)=a\cos(k\pi)=(-1)^ka$.</li>
+    <li><b>Igualamos</b> (criterio de U p. 81): $(-1)^ka=3$. a) $k=0$: $a=-3$ da $-3\neq3$. Falla. d) $k=-7$: $(-1)^{-7}(-3)=3$. <b>Cumple.</b></li>
+    <li><b>Comprobación:</b> $\operatorname{sen}(-3x-7\pi)=\operatorname{sen}(3x)$ ($-7\pi$ es un múltiplo impar de $\pi$, lo que cambia el signo, y además $\operatorname{sen}(-3x)=-\operatorname{sen}3x$), y $(\operatorname{sen}3x)'(0)=3$ coincide con $f'(0^-)=3$.</li>
+  </ol>
+  <p><b>Respuesta: d).</b></p>
+  <div class="recipe"><b>Receta (función a trozos con parámetros):</b> (1) estudia solo los puntos de empalme; (2) impón continuidad: límites laterales iguales a $f(a)$; (3) impón $f'(a^-)=f'(a^+)$. Atajo: cada derivada lateral es la derivada de la fórmula de ese lado evaluada en $a$, <b>pero solo después</b> de comprobar que esa fórmula toma en $a$ el valor $f(a)$.</div>
+  <p><b>Error típico:</b> saltarse la continuidad e igualar directamente las derivadas de las fórmulas. Con b) se «resolvería» $a\cos1=3$ aunque $f$ ni siquiera es continua.</p>
+</details>
+
+<h3>Teoría aplicada</h3>
+
+<details class="sol"><summary>Ejercicio 2.14 — Bolzano con límites en los extremos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.14, p. 60 (falta justificar la elección de n)">E p.60</span></summary>
+  <p class="enun">Sea $f:[0,1]\to\mathbb R$ derivable en $(0,1)$. Si $\big(\lim_{x\to0^+}f(x)\big)\big(\lim_{x\to1^-}f(x)\big)&lt;0$, ¿tiene $f(x)=0$ al menos una solución en $[0,1]$? (Se sobrentiende que ambos límites existen.)</p>
+  <ol class="steps">
+    <li><b>Continuidad.</b> $f$ es derivable en cada punto de $(0,1)$, luego continua en $(0,1)$ (Teorema 2.1). No sabemos nada de $f(0)$ ni $f(1)$.</li>
+    <li><b>Signos cerca de los extremos.</b> Sean $L_0=\lim_{0^+}f$ y $L_1=\lim_{1^-}f$. Como $L_0L_1&lt;0$, tienen signos opuestos; supongamos $L_0&lt;0&lt;L_1$ (el otro caso es simétrico, o se aplica a $-f$). Por la conservación del signo (U Prop. 1.9, p. 44, con límites laterales, p. 47): existe $\delta_0&gt;0$ con $f(x)&lt;0$ en $(0,\delta_0)$, y existe $\delta_1&gt;0$ con $f(x)&gt;0$ en $(1-\delta_1,1)$.</li>
+    <li><b>Elegir $n$.</b> Tomamos $n\in\mathbb N$ con $\frac1n&lt;\min\{\delta_0,\delta_1,\frac12\}$. Entonces $\frac1n&lt;1-\frac1n$, $f(\frac1n)&lt;0$ y $f(1-\frac1n)&gt;0$.</li>
+    <li><b>Bolzano.</b> $f$ es continua en $[\frac1n,1-\frac1n]\subset(0,1)$ y cambia de signo en los extremos: el teorema de Bolzano (U p. 52) da $c\in(\frac1n,1-\frac1n)$ con $f(c)=0$.</li>
+  </ol>
+  <p><b>Respuesta: verdadera</b>; de hecho la solución está en $(0,1)$. (U p. 52 enuncia literalmente esta versión de Bolzano con $\lim_{a^+}f\cdot\lim_{b^-}f&lt;0$.) «Derivable» es más de lo necesario: basta la continuidad en $(0,1)$.</p>
+  <div class="recipe"><b>Receta:</b> si la hipótesis de Bolzano viene con límites laterales, usa la conservación del signo para bajar a un intervalo cerrado interior $[\frac1n,1-\frac1n]$ y aplica allí Bolzano.</div>
+  <p><b>Error típico:</b> aplicar Bolzano en $[0,1]$ con $f(0)$ y $f(1)$: no sabemos si $f$ es continua en $0$ y en $1$.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.21 — derivada de $|f|$ donde $f(a)\neq0$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.21, pp. 63-64">E pp.63-64</span></summary>
+  <p class="enun">Muestra que si $f$ es derivable en $a$ y $f(a)\neq0$, entonces $|f|$ es derivable en $a$.</p>
+  <ol class="steps">
+    <li><b>Continuidad.</b> $f$ es continua en $a$ (Teorema 2.1): $\lim_{h\to0}f(a+h)=f(a)$.</li>
+    <li><b>Caso $f(a)&gt;0$.</b> Por conservación del signo (U Prop. 1.9, p. 44) existe $\delta&gt;0$ con $f(a+h)&gt;0$ si $|h|&lt;\delta$. Para esos $h$, $|f(a+h)|=f(a+h)$ y $|f(a)|=f(a)$ (U Def. 1.1), luego $\frac{|f(a+h)|-|f(a)|}{h}=\frac{f(a+h)-f(a)}{h}\to f'(a)$. El límite solo depende de los $h$ pequeños: $|f|'(a)=f'(a)$.</li>
+    <li><b>Caso $f(a)&lt;0$.</b> Igual, con $f(a+h)&lt;0$ cerca: $|f(a+h)|=-f(a+h)$, el cociente es $-\frac{f(a+h)-f(a)}{h}\to-f'(a)$.</li>
+    <li><b>Resumen:</b> $|f|'(a)=\operatorname{sgn}(f(a))\,f'(a)=\dfrac{f(a)}{|f(a)|}f'(a)$, donde $\operatorname{sgn}(t)=1$ si $t&gt;0$ y $-1$ si $t&lt;0$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> donde $f(a)\neq0$, $|f|$ coincide cerca de $a$ con $f$ o con $-f$, y la derivada se hereda con ese signo.</div>
+  <p><b>Error típico:</b> escribir $|f|'=|f'|$. Contraejemplo: $f(x)=x-2$ en $a=1$: $|f|'(1)=-1$ mientras que $|f'(1)|=1$. (En el .txt aparece «$f(a)=0$»; el PDF dice $f(a)\neq0$: fallo de extracción.)</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.22 — cuándo $|f|$ es derivable <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.22, pp. 64-65 (con errata en la fórmula final)">E pp.64-65</span></summary>
+  <p class="enun">Sea $f$ derivable en $a$. Señala la correcta: a) $|f|$ siempre es derivable en $a$; b) si $f'(a)&gt;0$, $|f|$ es derivable en $a$ y $|f|'(a)&gt;0$; c) si $f'(a)=0$, $|f|$ es derivable en $a$ y $|f|'(a)=0$; d) si $f'(a)\neq0$, $|f|$ es derivable en $a$ y $|f|'(a)\neq0$.</p>
+  <ol class="steps">
+    <li><b>a), b) y d) son falsas.</b> Contraejemplo común: $f(x)=x$, $a=0$. Es derivable con $f'(0)=1&gt;0$ y $f'(0)\neq0$, pero $|f|=|x|$ no es derivable en $0$ (ej. 2.19).</li>
+    <li><b>c) es cierta.</b> Queremos $\lim_{x\to a}\frac{|f(x)|-|f(a)|}{x-a}=0$. Como $g\to0\iff|g|\to0$, basta ver que $\left|\frac{|f(x)|-|f(a)|}{x-a}\right|\to0$.</li>
+    <li><i>Cota.</i> Por $\big||u|-|v|\big|\le|u-v|$ (U Teorema 1.1, p. 16): $0\le\left|\frac{|f(x)|-|f(a)|}{x-a}\right|\le\left|\frac{f(x)-f(a)}{x-a}\right|$.</li>
+    <li><i>Límite de la cota.</i> $\frac{f(x)-f(a)}{x-a}\to f'(a)=0$, luego su valor absoluto también tiende a $0$.</li>
+    <li><i>Emparedado</i> (U p. 45): el término central tiende a $0$, así que $|f|'(a)=0$. Vale sea cual sea $f(a)$; si $f(a)\neq0$, ya lo daba el ej. 2.21 ($|f|'(a)=\pm f'(a)=0$).</li>
+  </ol>
+  <p><b>Respuesta: c).</b></p>
+  <p><b>Cuadro completo</b> para $f$ derivable en $a$ (con $\operatorname{sgn}(t)=1$ si $t&gt;0$, $-1$ si $t&lt;0$):</p>
+  <table>
+    <tr><th>Caso</th><th>¿$|f|$ derivable en $a$?</th><th>$|f|'(a)$</th></tr>
+    <tr><td>$f(a)\neq0$</td><td>Sí (2.21)</td><td>$\operatorname{sgn}(f(a))\,f'(a)$</td></tr>
+    <tr><td>$f(a)=0$ y $f'(a)=0$</td><td>Sí (2.22 c)</td><td>$0$</td></tr>
+    <tr><td>$f(a)=0$ y $f'(a)\neq0$</td><td><b>No</b></td><td>laterales $\pm|f'(a)|$</td></tr>
+  </table>
+  <p>El último caso se ve así: $\frac{|f(a+h)|}{h}=\operatorname{sgn}(h)\left|\frac{f(a+h)}{h}\right|$, y $\left|\frac{f(a+h)}{h}\right|\to|f'(a)|$.</p>
+  <div class="recipe"><b>Receta:</b> $|f|$ es derivable en $a$ si y solo si $f(a)\neq0$ o $f'(a)=0$. Para demostraciones con $|\cdot|$, combina $\big||u|-|v|\big|\le|u-v|$ con el emparedado.</div>
+  <p><b>Error típico:</b> pensar que $f'(a)&gt;0$ «arregla» la esquina. Es al revés: si $f(a)=0$, una pendiente no nula <b>crea</b> la esquina. (Errata de E: en la fórmula final el denominador debe ser $x-a$, no $x$.)</p>
+</details>
+
+<h3>Ejemplos propios (de fácil a difícil)</h3>
+
+<details class="sol"><summary>Ejemplo propio 1 (fácil) — derivar $\sqrt x$ por definición; tangente y normal <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy; véase L §2.1 Ej. 4, p. 100">P</span></summary>
+  <p class="enun">Calcula $f'(4)$ para $f(x)=\sqrt x$ con la definición, y halla la tangente y la normal en $(4,2)$.</p>
+  <ol class="steps">
+    <li>Por la Def. 2.1: $f'(4)=\lim_{h\to0}\frac{\sqrt{4+h}-2}{h}$, del tipo $0/0$. Multiplicamos por el conjugado: $\dfrac{(4+h)-4}{h(\sqrt{4+h}+2)}=\dfrac1{\sqrt{4+h}+2}\xrightarrow[h\to0]{}\dfrac14$.</li>
+    <li>Tangente: $y=2+\frac14(x-4)=\frac x4+1$.</li>
+    <li>Normal: pendiente $-4$; $x-4=-\frac14(y-2)$, es decir, $y=-4x+18$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> cociente con raíces en el numerador $\Rightarrow$ multiplica y divide por el conjugado para que $h$ se cancele.</div>
+</details>
+
+<details class="sol"><summary>Ejemplo propio 2 (medio) — función a trozos con parámetros <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy; método del ejercicio 2.23">P</span></summary>
+  <p class="enun">Halla $a,b$ para que $f(x)=\begin{cases}ax^2+bx,&amp;x\le1,\\ \ln x,&amp;x&gt;1\end{cases}$ sea derivable en $\mathbb R$.</p>
+  <ol class="steps">
+    <li>Fuera de $x=1$ es derivable (U p. 79; $\ln x$ lo es en $x&gt;0$). Solo estudiamos $x=1$.</li>
+    <li><b>Continuidad:</b> $f(1)=a+b$ y $\lim_{x\to1^+}\ln x=0$: $a+b=0$.</li>
+    <li>$f'(1^-)=\lim_{h\to0^-}\frac{a(1+h)^2+b(1+h)-(a+b)}{h}=\lim_{h\to0^-}(2a+b+ah)=2a+b$.</li>
+    <li>$f'(1^+)=\lim_{h\to0^+}\frac{\ln(1+h)-\ln1}{h}=\ln'(1)=1$ (válido porque $\ln1=0=f(1)$ una vez impuesta la continuidad).</li>
+    <li>Sistema $a+b=0$, $2a+b=1$: <b>$a=1$, $b=-1$</b>.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> continuidad primero, después igualar derivadas laterales; resuelve el sistema de dos ecuaciones.</div>
+</details>
+
+<details class="sol"><summary>Ejemplo propio 3 (difícil) — ¿dónde son derivables $|x^3-x|$ y $|x^3-x^2|$? <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy; aplica el cuadro de los ejercicios 2.21-2.22">P</span></summary>
+  <p class="enun">Estudia la derivabilidad de $F(x)=|x^3-x|$ y $G(x)=|x^3-x^2|$.</p>
+  <ol class="steps">
+    <li><b>$F$.</b> Sea $f(x)=x^3-x$, con ceros en $-1,0,1$ y $f'(x)=3x^2-1$. Fuera de los ceros, $F$ es derivable (2.21). En los ceros, $f'(\pm1)=2\neq0$ y $f'(0)=-1\neq0$: por el cuadro de 2.22, $F$ <b>no</b> es derivable en $-1,0,1$. Las derivadas laterales en cada cero $c$ son $F'(c^\pm)=\pm|f'(c)|$: $\pm2$ en $\pm1$ y $\pm1$ en $0$.</li>
+    <li><b>$G$.</b> Sea $g(x)=x^3-x^2=x^2(x-1)$, con ceros en $0$ y $1$ y $g'(x)=3x^2-2x$. Como $g'(0)=0$, por 2.22 c) $G$ <b>es</b> derivable en $0$ con $G'(0)=0$. Como $g'(1)=1\neq0$, $G$ <b>no</b> es derivable en $1$, con laterales $\pm1$.</li>
+  </ol>
+  <p><b>Respuesta:</b> $F$ es derivable en $\mathbb R\setminus\{-1,0,1\}$; $G$ es derivable en $\mathbb R\setminus\{1\}$.</p>
+  <div class="recipe"><b>Receta:</b> para $|f|$, busca los ceros de $f$; solo ahí puede haber problema, y allí $|f|$ es derivable $\iff f'(a)=0$ (los ceros dobles de un polinomio se «suavizan»; los simples dejan esquina).</div>
+</details>
+
+<h3>Los métodos del tema, en resumen <span class="src" data-l="P" data-ref="Resumen de métodos elaborado a partir de las soluciones de E 2.1, 2.2, 2.6-2.9, 2.14, 2.17-2.23">P</span></h3>
+<ol>
+  <li><b>Derivar por definición:</b> cociente incremental, simplificar hasta cancelar $h$, límite. (Ej. 2.2 de U, propio 1)</li>
+  <li><b>Velocidad media vs instantánea:</b> media = cociente entre dos puntos; instantánea = derivada. (Ej. 2.2)</li>
+  <li><b>Tangente con pendiente dada:</b> resolver $f'(x)=m$, con $m=\tan\theta$ si te dan un ángulo, y sustituir en $f$. (Ej. 2.7, 2.8)</li>
+  <li><b>Tangente y normal en un punto:</b> $y=f(a)+f'(a)(x-a)$; normal con vector director $(-f'(a),1)$. Perpendicularidad: producto escalar $0$. (Ej. 2.6, 2.9)</li>
+  <li><b>Derivabilidad en un punto conflictivo:</b> quita el valor absoluto o cambia de fórmula según el signo de $h$; calcula $f'(a^+)$ y $f'(a^-)$; deben existir, ser finitas e iguales. (Ej. 2.19, 2.20)</li>
+  <li><b>Funciones a trozos con parámetros:</b> continuidad y luego igualdad de derivadas laterales. (Ej. 2.23, propio 2)</li>
+  <li><b>Refutar con un contraejemplo</b> ($|x|$ en $0$ casi siempre). (Ej. 2.18, 2.22)</li>
+  <li><b>Derivable $\Rightarrow$ continua</b> (multiplicar y dividir por $h$); contrarrecíproco para descartar derivabilidad. (Ej. 2.14, 2.17, 2.23)</li>
+  <li><b>Valor absoluto de una función derivable:</b> $|f|$ es derivable en $a$ si y solo si $f(a)\neq0$ o $f'(a)=0$. (Ej. 2.21, 2.22, propio 3)</li>
+</ol>
+
+
+<!-- ============================ 8 ============================ -->
+<h2 id="chuleta"><span class="n">8</span>Chuleta y lista de comprobación</h2>
+
+<div class="box thm"><span class="h">Chuleta</span>
+  <table>
+    <tr><th>Concepto</th><th>Qué recordar</th></tr>
+    <tr><td>Derivada en $a$</td><td>$f'(a)=\lim_{h\to0}\frac{f(a+h)-f(a)}{h}=\lim_{x\to a}\frac{f(x)-f(a)}{x-a}$, existe y es <b>finito</b>. Es un <b>número</b>.</td></tr>
+    <tr><td>Significados</td><td>Velocidad instantánea = límite de velocidades medias; pendiente de la tangente = límite de pendientes de secantes.</td></tr>
+    <tr><td>Tangente</td><td>$y=f(a)+f'(a)(x-a)$. Horizontal $\iff f'(a)=0$. Ángulo $\theta$ $\Rightarrow$ $m=\tan\theta$.</td></tr>
+    <tr><td>Normal</td><td>$x-a=-f'(a)(y-f(a))$; pendiente $-1/f'(a)$ si $f'(a)\neq0$; vertical $x=a$ si $f'(a)=0$.</td></tr>
+    <tr><td>Teorema 2.1</td><td>Derivable en $a$ $\Rightarrow$ continua en $a$. No al revés ($|x|$ en $0$). No continua $\Rightarrow$ no derivable.</td></tr>
+    <tr><td>Laterales</td><td>$f'(a^\pm)=\lim_{h\to0^\pm}\frac{f(a+h)-f(a)}{h}$. Derivable $\iff$ existen, son finitas y coinciden (si $a$ es interior a $D$; en un extremo de $D$ solo cuenta el lado que existe).</td></tr>
+    <tr><td>Cómo falla</td><td>Esquina (laterales distintas), discontinuidad, tangente vertical (cociente $\to\pm\infty$), oscilación (sin límite).</td></tr>
+    <tr><td>Función derivada</td><td>$f':A\to\mathbb R$, con $A$ el conjunto donde $f$ es derivable.</td></tr>
+    <tr><td>Tabla básica</td><td>$c'=0$; $(x^c)'=cx^{c-1}$; $(e^x)'=e^x$; $(\ln x)'=\frac1x$; $\operatorname{sen}'=\cos$; $\cos'=-\operatorname{sen}$; $(a^x)'=a^x\ln a$.</td></tr>
+    <tr><td>$|f|$ con $f$ derivable</td><td>$f(a)\neq0$: $|f|'(a)=\operatorname{sgn}(f(a))f'(a)$ ($\operatorname{sgn}t=\pm1$ según el signo de $t$). $f(a)=0$: derivable $\iff f'(a)=0$ (entonces vale $0$).</td></tr>
+    <tr><td>Bolzano con límites</td><td>$f$ continua en $(a,b)$ y $\lim_{a^+}f\cdot\lim_{b^-}f&lt;0$ $\Rightarrow$ hay un cero en $(a,b)$.</td></tr>
+  </table>
+</div>
+
+<div class="box warn"><span class="h">Errores frecuentes</span>
+  <ul>
+    <li>Confundir $f'(a)$ (número), $f'$ (función) y la tangente (recta).</li>
+    <li>Creer que continua $\Rightarrow$ derivable, o que «existen las dos laterales» $\Rightarrow$ derivable (hace falta que coincidan).</li>
+    <li>Olvidar el $+f(a)$ en la ecuación de la tangente; usar $-1/f'(a)$ para la normal cuando $f'(a)=0$.</li>
+    <li>Igualar $f'(x)$ al ángulo en lugar de a su tangente.</li>
+    <li>Sustituir en $f'$ para obtener la ordenada del punto de tangencia.</li>
+    <li>Escribir $|f|'=|f'|$; o pensar que $f'(a)\neq0$ garantiza que $|f|$ es derivable en un cero de $f$.</li>
+    <li>En funciones a trozos: igualar derivadas de las fórmulas sin imponer antes la continuidad.</li>
+    <li>Dar como derivada un límite infinito (tangente vertical no es derivada).</li>
+  </ul>
+</div>
+
+<h3>Lista de comprobación: «sé hacer…»</h3>
+<ul class="checklist">
+  <li>Explicar con palabras la diferencia entre velocidad media e instantánea, y entre secante y tangente.</li>
+  <li>Enunciar la definición de derivada (con «existe y es finito») y calcular la derivada por definición de funciones sencillas.</li>
+  <li>Escribir la tangente y la normal a una gráfica en un punto, incluido el caso de tangente horizontal.</li>
+  <li>Hallar los puntos con tangente de pendiente dada (o con un ángulo o dirección dados).</li>
+  <li>Calcular derivadas laterales y decidir la derivabilidad en un punto donde cambia la fórmula o aparece $|\cdot|$.</li>
+  <li>Enunciar y demostrar «derivable $\Rightarrow$ continua», y usar su contrarrecíproco.</li>
+  <li>Reconocer y ejemplificar las cuatro formas de no ser derivable (esquina, salto, tangente vertical, oscilación).</li>
+  <li>Hallar parámetros para que una función a trozos sea derivable (continuidad + laterales).</li>
+  <li>Decidir cuándo $|f|$ es derivable en un punto y cuál es su derivada.</li>
+</ul>
+
+<!-- ============================ 9 ============================ -->
+<h2 id="fuentes"><span class="n">9</span>Fuentes de este tema</h2>
+<p>Lista automática de todas las etiquetas usadas (libro y página impresa). Recuerda: <b>U</b> = Cálculo para Ingenieros (pág. impresa = PDF + 2), <b>E</b> = libro de ejercicios (impresa = PDF), <b>S</b> = Stewart (§2.7, §2.8 y §3.1), <b>L</b> = Larson (§2.1, pág. impresa = PDF − 17), <b>P</b> = explicación propia. Dónde está cada cosa en U: derivada y velocidad (§2.1.2, pp. 74-76), derivable ⇒ continua (p. 76), función derivada (§2.1.3, p. 78), <b>derivadas laterales (§2.2, p. 81)</b> y <b>ecuación de la tangente (§2.4.2, p. 87)</b>.</p>
+<div id="panel-fuentes"></div>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro.</footer>
+</main>
+</div>
+</body>
+</html>

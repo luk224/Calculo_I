@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 1.1 El espacio ℝ</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script defer>
+window.addEventListener('load',function(){
+  renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});
+});
+</script>
+<style>
+:root{--bg:#fafaf7;--fg:#1d2330;--mut:#5b6474;--card:#fff;--bd:#dcdfe6;--acc:#2f5bd8;--def:#e8effe;--thm:#fff3d6;--ex:#e9f6ec;--warn:#fde8e6}
+@media (prefers-color-scheme:dark){:root{--bg:#14171f;--fg:#e6e9f0;--mut:#9aa3b5;--card:#1c2030;--bd:#2f3549;--acc:#8fb0ff;--def:#1f2a4a;--thm:#3a3220;--ex:#1c3326;--warn:#3d2222}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px 80px}
+header{padding:40px 0 16px;border-bottom:2px solid var(--bd)}
+header h1{font-size:2rem;margin:0 0 4px}
+header p{margin:0;color:var(--mut)}
+nav{background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:14px 20px;margin:24px 0;font-family:system-ui,sans-serif;font-size:.95rem}
+nav ol{margin:6px 0 0;padding-left:22px;columns:2}
+nav a{color:var(--acc);text-decoration:none}
+h2{font-size:1.5rem;margin:48px 0 8px;padding-top:8px;border-top:1px solid var(--bd)}
+h3{font-size:1.15rem;margin:26px 0 6px}
+.box{border-radius:8px;padding:12px 16px;margin:14px 0;border-left:5px solid}
+.box>b:first-child{display:block;font-family:system-ui,sans-serif;font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.def{background:var(--def);border-color:var(--acc)}
+.thm{background:var(--thm);border-color:#d99a00}
+.ex{background:var(--ex);border-color:#2e9e57}
+.warn{background:var(--warn);border-color:#d64b3c}
+table{border-collapse:collapse;width:100%;font-size:.95rem;margin:14px 0;background:var(--card)}
+th,td{border:1px solid var(--bd);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-family:system-ui,sans-serif;font-size:.85rem}
+ul,ol{padding-left:24px}
+li{margin:3px 0}
+.tip{font-family:system-ui,sans-serif;font-size:.9rem;color:var(--mut)}
+svg.diagram{max-width:100%;height:auto;display:block;margin:10px auto}
+svg.diagram text{fill:var(--fg);font-family:system-ui,sans-serif;font-size:13px}
+svg.diagram line{stroke:var(--fg)}
+@media(max-width:600px){nav ol{columns:1}body{font-size:16px}}
+@media print{nav{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>1.1 El espacio ℝ</h1>
+<p>Cálculo · Módulo 1 (El paso al límite) · Guía de estudio para los ejercicios del tema 1</p>
+</header>
+
+<nav>
+<b>Contenido</b>
+<ol>
+<li><a href="#num">Los números reales</a></li>
+<li><a href="#alg">Estructura algebraica</a></li>
+<li><a href="#ord">Orden</a></li>
+<li><a href="#abs">Valor absoluto y distancia</a></li>
+<li><a href="#int">Intervalos, centro y radio</a></li>
+<li><a href="#cot">Cotas y conjuntos acotados</a></li>
+<li><a href="#sup">Supremo, ínfimo, máximo, mínimo</a></li>
+<li><a href="#axi">Axioma del supremo</a></li>
+<li><a href="#arq">Propiedad arquimediana y densidad</a></li>
+<li><a href="#met">Métodos para los ejercicios</a></li>
+<li><a href="#eje">Ejercicios 1.1 a 1.4 resueltos</a></li>
+<li><a href="#res">Chuleta final</a></li>
+</ol>
+</nav>
+
+<h2 id="num">1. Los números reales</h2>
+<p>Se parte de los conjuntos numéricos que ya conoces:</p>
+<ul>
+<li>$\mathbb{N}=\{1,2,3,\dots\}$ (en este libro empieza en 1).</li>
+<li>$\mathbb{Z}=\{\dots,-2,-1,0,1,2,\dots\}$.</li>
+<li>$\mathbb{Q}=\left\{\tfrac pq : p,q\in\mathbb{Z},\ q\neq 0\right\}$.</li>
+</ul>
+<p>Hay magnitudes que no son racionales: la hipotenusa de un triángulo rectángulo de catetos 1 mide $\sqrt2\notin\mathbb{Q}$, y también $\pi$ y $e$. Al conjunto que los incluye a todos se le llama $\mathbb{R}$, y a los no racionales, <b>irracionales</b> ($\mathbb{I}=\mathbb{R}\setminus\mathbb{Q}$).</p>
+<div class="box def"><b>Relaciones básicas</b>
+$$\mathbb{N}\subset\mathbb{Z}\subset\mathbb{Q}\subset\mathbb{R},\qquad \mathbb{Q}\cup\mathbb{I}=\mathbb{R},\qquad \mathbb{Q}\cap\mathbb{I}=\emptyset$$
+</div>
+<p>Los reales se representan como los puntos de la <b>recta real</b>, una recta continua y orientada, sin huecos.</p>
+
+<h2 id="alg">2. Estructura algebraica</h2>
+<p>En $\mathbb{R}$ hay dos operaciones internas, suma y producto, con las que forma un <b>cuerpo conmutativo</b> (igual que $\mathbb{Q}$). Para todo $x,y,z\in\mathbb{R}$:</p>
+<ul>
+<li>Asociativa: $(x+y)+z=x+(y+z)$ y $(xy)z=x(yz)$.</li>
+<li>Conmutativa: $x+y=y+x$ y $xy=yx$.</li>
+<li>Neutros: existen $0$ y $1\neq0$ con $x+0=x$ y $x\cdot1=x$.</li>
+<li>Opuesto $-x$ para todo $x$; inverso $1/x$ para todo $x\neq0$.</li>
+<li>Distributiva: $x(y+z)=xy+xz$.</li>
+</ul>
+<p class="tip">En los ejercicios apenas se usan de forma explícita; son las reglas de "toda la vida" del álgebra.</p>
+
+<h2 id="ord">3. Orden</h2>
+<p>La relación $\le$ cumple, para $x,y,z\in\mathbb{R}$:</p>
+<table>
+<tr><th>#</th><th>Propiedad</th><th>Enunciado</th></tr>
+<tr><td>1</td><td>Orden total</td><td>$x\le y$ y/o $y\le x$</td></tr>
+<tr><td>2</td><td>Reflexiva</td><td>$x\le x$</td></tr>
+<tr><td>3</td><td>Antisimétrica</td><td>$x\le y$ y $y\le x\Rightarrow x=y$</td></tr>
+<tr><td>4</td><td>Transitiva</td><td>$x\le y$ y $y\le z\Rightarrow x\le z$</td></tr>
+<tr><td>5</td><td>Con la suma</td><td>$x\le y\Rightarrow x+z\le y+z$</td></tr>
+<tr><td>6</td><td>Producto por $z\ge0$</td><td>$x\le y,\ 0\le z\Rightarrow xz\le yz$</td></tr>
+<tr><td>7</td><td>Producto por $z&lt;0$</td><td>$x\le y,\ z&lt;0\Rightarrow xz\ge yz$ (<b>se invierte</b>)</td></tr>
+</table>
+<div class="box warn"><b>Error típico</b>Al multiplicar o dividir una desigualdad por un número <b>negativo</b>, el sentido cambia. Al pasar a inversos ($1/x$) con números del mismo signo, también.</div>
+<div class="box ex"><b>Ejemplo 1.2 del libro</b>
+Si $x\le y$ y $z\le w$, entonces $x+z\le y+w$.<br>
+Sumando $z$ a la primera: $x+z\le y+z$. Sumando $y$ a la segunda: $z+y\le w+y$, es decir $y+z\le y+w$. Por transitividad, $x+z\le y+w$. $\blacksquare$
+</div>
+
+<h2 id="abs">4. Valor absoluto y distancia</h2>
+<div class="box def"><b>Definición 1.1 · Valor absoluto</b>
+$$|x|=\sqrt{x^2}=\begin{cases}x,&amp; x\ge0\\-x,&amp; x&lt;0\end{cases}$$
+Es la distancia de $x$ al origen en la recta real.</div>
+<div class="box def"><b>Definición 1.2 · Distancia</b>
+$$d(x,y)=|x-y|\ \ge0$$</div>
+<div class="box thm"><b>Teorema 1.1 · Propiedades</b>
+<ol>
+<li>$|x|=0\iff x=0$.</li>
+<li>Desigualdad triangular: $|x+y|\le|x|+|y|$.</li>
+<li>Triangular inversa: $\big||x|-|y|\big|\le|x-y|$.</li>
+</ol></div>
+<h3>Reglas prácticas que usarás mucho</h3>
+<p class="tip">Se deducen de la definición; no vienen numeradas en el libro, pero son la base para resolver inecuaciones.</p>
+<table>
+<tr><th>Condición</th><th>Equivale a</th><th>Conjunto</th></tr>
+<tr><td>$|x-c|&lt;r$</td><td>$c-r&lt;x&lt;c+r$</td><td>$(c-r,\,c+r)$</td></tr>
+<tr><td>$|x-c|\le r$</td><td>$c-r\le x\le c+r$</td><td>$[c-r,\,c+r]$</td></tr>
+<tr><td>$|x-c|&gt;r$</td><td>$x&lt;c-r$ o $x&gt;c+r$</td><td>$(-\infty,c-r)\cup(c+r,\infty)$</td></tr>
+<tr><td>$x^2&lt;r^2$ ($r&gt;0$)</td><td>$|x|&lt;r$</td><td>$(-r,r)$</td></tr>
+<tr><td>$x^2&gt;r^2$ ($r&gt;0$)</td><td>$|x|&gt;r$</td><td>$(-\infty,-r)\cup(r,\infty)$</td></tr>
+</table>
+<div class="box ex"><b>Ejemplo 1.3 · Contraejemplo</b>
+¿Es cierto que $x&lt;y\Rightarrow|x|&lt;|y|$? <b>No.</b> Con $x=-2,\ y=1$: $-2&lt;1$ pero $|-2|=2&gt;1=|1|$.<br>
+<span class="tip">Para refutar una afirmación general basta un solo caso donde falle.</span>
+</div>
+
+<h2 id="int">5. Intervalos, centro y radio</h2>
+<p>Un intervalo es un subconjunto de la recta formado por una sola pieza. Para $a&lt;b$:</p>
+<table>
+<tr><th>Tipo</th><th>Notación</th><th>Definición</th></tr>
+<tr><td>Abierto</td><td>$(a,b)$</td><td>$a&lt;x&lt;b$</td></tr>
+<tr><td>Cerrado</td><td>$[a,b]$</td><td>$a\le x\le b$</td></tr>
+<tr><td>Semiabiertos</td><td>$[a,b)$ y $(a,b]$</td><td>$a\le x&lt;b$ y $a&lt;x\le b$</td></tr>
+<tr><td>Semirrectas</td><td>$(a,\infty),\ [a,\infty),\ (-\infty,a),\ (-\infty,a]$</td><td>$x&gt;a,\ x\ge a,\ x&lt;a,\ x\le a$</td></tr>
+<tr><td>Degenerados</td><td>$[a,a]=\{a\},\ (a,a)=\emptyset,\ (-\infty,\infty)=\mathbb{R}$</td><td></td></tr>
+</table>
+<p>$\infty$ no es un número: es solo un símbolo, por eso siempre va con paréntesis, nunca con corchete.</p>
+
+<svg class="diagram" viewBox="0 0 520 90" role="img" aria-label="Intervalo con centro c y radio r">
+<line x1="30" y1="50" x2="490" y2="50" stroke-width="2"/>
+<line x1="130" y1="42" x2="130" y2="58" stroke-width="2"/>
+<line x1="260" y1="42" x2="260" y2="58" stroke-width="2"/>
+<line x1="390" y1="42" x2="390" y2="58" stroke-width="2"/>
+<path d="M130 30 H390" stroke-width="3" fill="none" stroke="#2f5bd8"/>
+<text x="120" y="76">c − r = a</text><text x="252" y="76">c</text><text x="380" y="76">c + r = b</text>
+<text x="180" y="22">radio r</text><text x="310" y="22">radio r</text>
+</svg>
+
+<div class="box def"><b>Centro y radio de $(a,b)$</b>
+$$c=\frac{a+b}{2},\qquad r=\frac{b-a}{2},\qquad (c-r,c+r)=\{x:|x-c|&lt;r\},\quad [c-r,c+r]=\{x:|x-c|\le r\}$$
+Inversamente: $a=c-r$ y $b=c+r$.</div>
+<div class="box ex"><b>Ejemplo 1.4</b>
+$(1,4)$: $c=\tfrac52$, $r=\tfrac32$, luego $(1,4)=\{x:|x-\tfrac52|&lt;\tfrac32\}$.</div>
+<div class="box ex"><b>Ejemplo 1.5</b>
+Puntos a distancia $\le\tfrac2{10}$ de $-1$: $\{x:|x+1|\le\tfrac2{10}\}=\left[-\tfrac{12}{10},-\tfrac8{10}\right]$.</div>
+
+<h2 id="cot">6. Cotas y conjuntos acotados</h2>
+<div class="box def"><b>Definiciones 1.3 a 1.6</b>
+<ul>
+<li><b>Cota superior</b> de $A\subset\mathbb{R}$: un $c\in\mathbb{R}$ con $a\le c$ para todo $a\in A$.</li>
+<li><b>Cota inferior</b>: un $c$ con $a\ge c$ para todo $a\in A$.</li>
+<li>$A$ está <b>acotado superiormente</b> (inferiormente) si tiene alguna cota superior (inferior).</li>
+<li>$A$ está <b>acotado</b> si lo está superior e inferiormente.</li>
+</ul></div>
+<ul>
+<li>Si $c$ es cota superior, cualquier $c'&gt;c$ también lo es: hay <b>infinitas</b>.</li>
+<li>Una cota puede pertenecer o no al conjunto.</li>
+<li>Todos los intervalos $(a,b)$, $[a,b]$, $[a,b)$, $(a,b]$ con $a&lt;b$ son acotados.</li>
+</ul>
+<div class="box ex"><b>Ejemplo 1.6</b>
+$\sqrt7$ es cota superior de $A=\{x\in\mathbb{Q}:x^2\le7\}$ y de $B=\{x\in\mathbb{R}:x^2\le7\}$: de $x^2\le7$ sale $|x|\le\sqrt7$, luego $x\le\sqrt7$. Además $\sqrt7\notin A$ pero $\sqrt7\in B$.</div>
+<div class="box ex"><b>Ejemplos 1.7 y 1.8 · $\mathbb{N}$ no está acotado superiormente</b>
+Por reducción al absurdo: si $c$ fuese cota superior de $\mathbb{N}$, su parte entera $n_c\in\mathbb{N}$ cumpliría $n_c+2&gt;c$, con $n_c+2\in\mathbb{N}$. Contradicción. Como $\mathbb{N}$ sí tiene cota inferior (0 o 1), <b>no es acotado</b>.</div>
+<div class="box ex"><b>Ejemplo 1.9</b>
+$[\pi,3e^2]$ es acotado: $\pi$ es cota inferior y $3e^2$ cota superior.</div>
+
+<h2 id="sup">7. Supremo, ínfimo, máximo y mínimo</h2>
+<div class="box def"><b>Definición 1.7 · Supremo</b>
+$\sup A$ es la <b>menor cota superior</b>:
+<ol><li>$a\le\sup A$ para todo $a\in A$ (es cota superior);</li>
+<li>si $c$ es cota superior de $A$, entonces $\sup A\le c$.</li></ol></div>
+<div class="box def"><b>Definición 1.8 · Ínfimo</b>
+$\inf A$ es la <b>mayor cota inferior</b>:
+<ol><li>$a\ge\inf A$ para todo $a\in A$;</li>
+<li>si $c$ es cota inferior de $A$, entonces $c\le\inf A$.</li></ol></div>
+<div class="box def"><b>Máximo y mínimo</b>
+Si $\sup A\in A$, se llama <b>máximo</b> ($\max A$). Si $\inf A\in A$, se llama <b>mínimo</b> ($\min A$).</div>
+<p>Si el supremo o el ínfimo existen, son <b>únicos</b> (dos supremos $s_1,s_2$ cumplirían $s_1\le s_2$ y $s_2\le s_1$, luego $s_1=s_2$).</p>
+<div class="box warn"><b>Distinción clave</b>
+Supremo e ínfimo son "cotas óptimas" y <b>no tienen por qué pertenecer al conjunto</b>. Máximo y mínimo sí: son el supremo o ínfimo que además está dentro.</div>
+
+<table>
+<tr><th>Conjunto</th><th>sup</th><th>inf</th><th>máx / mín</th></tr>
+<tr><td>$(-1,1)$</td><td>1</td><td>−1</td><td>ninguno</td></tr>
+<tr><td>$[-1,1]$</td><td>1</td><td>−1</td><td>máx 1, mín −1</td></tr>
+<tr><td>$(-1,1]$</td><td>1</td><td>−1</td><td>máx 1, sin mín</td></tr>
+<tr><td>$[-1,1)$</td><td>1</td><td>−1</td><td>sin máx, mín −1</td></tr>
+<tr><td>$\{x\in\mathbb{Q}:x^2\le7\}$</td><td>$\sqrt7$</td><td>$-\sqrt7$</td><td>ninguno (no son racionales)</td></tr>
+<tr><td>$\mathbb{N}$</td><td>no existe</td><td>1</td><td>mín 1</td></tr>
+<tr><td>$\mathbb{Z}$</td><td>no existe</td><td>no existe</td><td>ninguno</td></tr>
+<tr><td>$\{x\in\mathbb{Q}:x&lt;7\}$</td><td>7</td><td>no existe</td><td>ninguno</td></tr>
+</table>
+<p class="tip">Regla rápida: en un intervalo acotado, el sup es el extremo derecho y el inf el izquierdo; que sean máx/mín depende de si el extremo está incluido (corchete).</p>
+
+<h2 id="axi">8. Axioma del supremo (completitud)</h2>
+<div class="box thm"><b>Axioma del supremo</b>
+Todo subconjunto <b>no vacío</b> de $\mathbb{R}$ <b>acotado superiormente</b> tiene supremo en $\mathbb{R}$.<br>
+Equivalente: todo subconjunto no vacío acotado inferiormente tiene ínfimo en $\mathbb{R}$.</div>
+<p>Es la propiedad que distingue a $\mathbb{R}$ de $\mathbb{Q}$. En $\mathbb{Q}$ no se cumple: $A=\{x\in\mathbb{Q}:x^2\le7\}$ está acotado superiormente (por 3, por ejemplo), pero no hay ninguna cota superior <i>racional</i> que sea la menor, porque esa menor sería $\sqrt7\notin\mathbb{Q}$. Por eso se dice que $\mathbb{R}$ no tiene "huecos".</p>
+
+<h2 id="arq">9. Propiedad arquimediana y densidad</h2>
+<p>Consecuencias de que $\mathbb{N}$ no esté acotado y de la completitud:</p>
+<div class="box thm"><b>Propiedad arquimediana</b>
+<ol>
+<li>Para todo $x\in\mathbb{R}$ existe $n\in\mathbb{N}$ con $n&gt;x$.</li>
+<li>Para todo $\varepsilon&gt;0$ existe $n\in\mathbb{N}$ con $\dfrac1n&lt;\varepsilon$.</li>
+</ol>
+La segunda se obtiene tomando $n&gt;1/\varepsilon$. Es la herramienta central del ejercicio 1.4.</div>
+<div class="box thm"><b>Densidad</b>
+Entre dos reales $x&lt;y$ siempre hay un racional $q$ con $x&lt;q&lt;y$, y también un irracional.</div>
+
+<h2 id="met">10. Métodos para resolver los ejercicios</h2>
+<h3>A. Intervalos e inclusiones (tipo ejercicio 1.1)</h3>
+<ol>
+<li>Pasa todo a la misma forma: calcula $c$ y $r$ de los intervalos, o convierte $|x-c|&lt;r$ en $(c-r,c+r)$.</li>
+<li>Compara radios y centros.</li>
+<li>Para $A\subset B$, escribe ambos como intervalos y compara extremos, <b>vigilando abierto/cerrado</b>. Si no es cierto, busca un punto concreto que esté en $A$ y no en $B$.</li>
+</ol>
+<h3>B. Desigualdades con valor absoluto (tipo 1.2)</h3>
+<ol>
+<li>Interpreta geométricamente: $|t|&lt;|y|$ es "$t$ está en el intervalo centrado en 0 de radio $|y|$".</li>
+<li>Separa por casos según el signo de la variable ($y&gt;0$, $y&lt;0$) para quitar el valor absoluto.</li>
+<li>Si crees que es falso, dibuja los puntos en la recta y construye un <b>contraejemplo</b> numérico; si es cierto, encadena desigualdades con transitividad.</li>
+</ol>
+<h3>C. Acotación, sup e inf de conjuntos dados por condiciones (tipo 1.3)</h3>
+<ol>
+<li>Despeja la condición hasta escribir el conjunto como intervalo o unión de intervalos ($x^2&lt;1\iff|x|&lt;1$).</li>
+<li>Lee sup e inf de los extremos.</li>
+<li>Comprueba si están en el conjunto para decidir máx/mín.</li>
+<li>Con sup e inf finitos, el conjunto es acotado. Un hueco interior (como $(-1,0)\cup(0,1)$) no cambia sup ni inf.</li>
+</ol>
+<h3>D. Conjuntos discretos como $\{1/n\}$ (tipo 1.4)</h3>
+<ol>
+<li>Escribe los primeros términos y detecta la tendencia (decreciente, creciente).</li>
+<li>Si es decreciente, el primer término es el máximo (= sup, y pertenece).</li>
+<li>Propón como candidato a ínfimo el valor al que se acercan los términos y comprueba que es cota inferior.</li>
+<li>Demuestra que es la <b>mayor</b> cota inferior por reducción al absurdo: supón una cota $c&gt;$ candidato, usa la propiedad arquimediana para hallar un elemento del conjunto por debajo de $c$ y llega a contradicción.</li>
+<li>Comprueba si el candidato pertenece al conjunto (si no, no hay mínimo).</li>
+</ol>
+<h3>E. Caracterización con $\varepsilon$ (útil para demostrar sup/inf)</h3>
+<div class="box def"><b>Complemento</b>
+$s=\sup A$ si y solo si (i) $s$ es cota superior y (ii) para todo $\varepsilon&gt;0$ existe $a\in A$ con $a&gt;s-\varepsilon$. Análogamente, $i=\inf A$ si $i$ es cota inferior y para todo $\varepsilon&gt;0$ existe $a\in A$ con $a&lt;i+\varepsilon$.<br>
+<span class="tip">Es equivalente a la definición 1.7/1.8 y no está numerado en el libro, pero es la forma habitual de escribir estas demostraciones.</span></div>
+
+<h2 id="eje">11. Ejercicios 1.1 a 1.4 del libro de ejercicios, resueltos</h2>
+
+<div class="box ex"><b>Ejercicio 1.1</b>
+$I_1=(-3,5]$, $I_2=\{x\in\mathbb{R}:|x-3|&lt;4\}$. ¿Cuáles son correctas? a) mismo radio; b) centro de $I_1$ menor que el de $I_2$; c) $I_1\subset I_2$.
+<ul>
+<li>$I_1$: $c_1=\frac{-3+5}{2}=1$, $r_1=\frac{5-(-3)}{2}=4$.</li>
+<li>$I_2=(3-4,3+4)=(-1,7)$: $c_2=3$, $r_2=4$.</li>
+<li>a) Cierta ($4=4$). b) Cierta ($1&lt;3$). c) Falsa: por ejemplo $-2\in I_1$ pero $-2\notin(-1,7)$.</li>
+</ul>
+<b>Respuesta: a) y b).</b></div>
+
+<div class="box ex"><b>Ejercicio 1.2</b>
+Si $|x|&lt;|y|$, ¿debe ser $|x|&lt;|y+4|$?
+<ul>
+<li>Caso $y&gt;0$: $|y|=y&lt;y+4=|y+4|$, así que $|x|&lt;|y|&lt;|y+4|$. Se cumple.</li>
+<li>Caso $y&lt;0$ con $y+4&lt;0$: $|y+4|&lt;|y|$ y puede fallar. Contraejemplo: $y=-5$, $x=3$. Entonces $|x|=3&lt;5=|y|$, pero $|y+4|=1$ y $3\not&lt;1$.</li>
+</ul>
+<b>Respuesta: no, no es cierto en general.</b></div>
+
+<div class="box ex"><b>Ejercicio 1.3</b>
+$A=\{x\in\mathbb{R}:0&lt;x^2&lt;1\}$. Opciones: a) $\inf A=0$; b) tiene sup pero no inf; c) está acotado; d) ninguna.
+<ul>
+<li>$0&lt;x^2&lt;1\iff0&lt;|x|&lt;1$, luego $A=(-1,0)\cup(0,1)$.</li>
+<li>$\sup A=1$, $\inf A=-1$.</li>
+<li>a) Falsa ($\inf=-1$). b) Falsa (tiene ínfimo). c) Cierta.</li>
+</ul>
+<b>Respuesta: c).</b></div>
+
+<div class="box ex"><b>Ejercicio 1.4</b>
+$S=\{1,\tfrac12,\tfrac13,\dots,\tfrac1n,\dots\}$. Hallar ínfimo y supremo y decir si están en $S$.
+<ul>
+<li>Como $n\ge1$, $\frac1n\le1$ y $1\in S$ (con $n=1$): $\sup S=1=\max S$, <b>pertenece</b>.</li>
+<li>Como $n&gt;0$, $\frac1n&gt;0$: $0$ es cota inferior.</li>
+<li>$0$ es la mayor: si hubiera una cota inferior $c&gt;0$, por la propiedad arquimediana existe $m\in\mathbb{N}$ con $m\ge1/c$, es decir $0&lt;\frac1m\le c$. Tomando $m&gt;1/c$ (estricto) resulta $\frac1m&lt;c$, y como $\frac1m\in S$, $c$ no sería cota inferior. Contradicción, luego $\inf S=0$.</li>
+<li>$0\notin S$ porque no existe $n$ con $\frac1n=0$: <b>no hay mínimo</b>.</li>
+</ul>
+<b>Respuesta: $\sup S=1\in S$; $\inf S=0\notin S$.</b></div>
+
+<h2 id="res">12. Chuleta final</h2>
+<table>
+<tr><th>Si el ejercicio pide…</th><th>Haz esto</th></tr>
+<tr><td>Centro/radio de $(a,b)$</td><td>$c=\frac{a+b}2$, $r=\frac{b-a}2$</td></tr>
+<tr><td>Escribir $|x-c|&lt;r$ como intervalo</td><td>$(c-r,c+r)$</td></tr>
+<tr><td>Ver si $A\subset B$</td><td>Ambos como intervalos; compara extremos y abierto/cerrado</td></tr>
+<tr><td>Refutar una propiedad</td><td>Contraejemplo con números concretos</td></tr>
+<tr><td>Probar una desigualdad</td><td>Casos por signo + transitividad + propiedades del orden</td></tr>
+<tr><td>sup/inf de un conjunto implícito</td><td>Despejar a intervalos; leer extremos; ver si pertenecen</td></tr>
+<tr><td>¿Es acotado?</td><td>¿Tiene cota superior <b>y</b> cota inferior?</td></tr>
+<tr><td>Demostrar que $0=\inf\{1/n\}$</td><td>Absurdo + propiedad arquimediana ($\frac1n&lt;\varepsilon$)</td></tr>
+<tr><td>¿Máximo/mínimo?</td><td>¿El sup/inf pertenece al conjunto?</td></tr>
+</table>
+<p class="tip">Fuentes: capítulo 1 de "Cálculo para ingenieros", libro de ejercicios curso 24/25 y vídeo T1.1 (cuaderno NotebookLM "Calculo"). El apartado 10.E y las reglas prácticas de valor absoluto son complementos míos, no textuales del libro.</p>
+</div>
+</body>
+</html>

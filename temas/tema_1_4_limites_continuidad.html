@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 1.4 Límites y continuidad de funciones</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<style>
+/* Extras de este tema (prefijo l4-): figuras y pequeños componentes */
+svg.fig .l4-band{fill:color-mix(in srgb,var(--acc) 14%,transparent);stroke:none}
+svg.fig .l4-dash{stroke:var(--mut);stroke-width:1.2;stroke-dasharray:5 4;fill:none}
+svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
+.l4-teo{font:14px/1.5 var(--sans);color:var(--mut);margin:.6em 0}
+.l4-blk{font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:.2em 0 0}
+.l4-sign{max-width:34em}
+.l4-sign td:first-child{white-space:nowrap}
+</style>
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo I · El paso al límite · Tema 1.4</div>
+  <h1>Límites y continuidad de funciones</h1>
+  <p>Qué significa que $f(x)$ «se acerque» a un valor cuando $x$ se acerca a un punto (o a $\pm\infty$), cómo calcular esos límites, qué son las asíntotas y por qué una función continua no puede «saltarse» valores. Termina con un método práctico para resolver ecuaciones de forma aproximada: la bisección.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §1.4 (pp. 42-56)</span><span>Ejercicios: E Ej. 1.23–1.41 (pp. 25-41)</span><span>⏱ ~8 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §1.4.1 Motivación, p. 42">U p.42</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>En §1.2 estudiaste límites de <b>sucesiones</b> (valores $a_1,a_2,a_3,\dots$ que se apilan sobre la recta). Ahora la variable $x$ recorre <b>todos</b> los puntos de un intervalo, no solo los enteros, y preguntamos qué hace $f(x)$ cuando $x$ se acerca a un punto $a$ o se va a $\pm\infty$. De ahí sale la <b>continuidad</b> (una función «sin saltos»), que es la propiedad más deseable para fenómenos que ocurren en tiempo continuo, y que tiene consecuencias potentes: si $f$ es continua y pasa de negativa a positiva, <b>tiene que</b> valer $0$ en algún punto. Ese hecho permite resolver ecuaciones que no se saben resolver a mano.</p>
+  <span class="src" data-l="U" data-ref="U §1.4.1 Introducción y Objetivos, p. 42">U p.42</span>
+</div>
+
+<h3>Qué necesitas saber ya <span class="src" data-l="U" data-ref="U §1.2, Def. 1.12 p. 27 e indeterminaciones pp. 29-30">U pp.27-30</span> <span class="src" data-l="U" data-ref="U §1.4.1 Orientaciones y Convenio, p. 42">U p.42</span></h3>
+<ul>
+  <li><b>Límites de sucesiones</b> (§1.2): definición, álgebra de límites, la recta ampliada $\overline{\mathbb R}=\mathbb R\cup\{-\infty,\infty\}$ con sus operaciones, y las <b>siete indeterminaciones</b> $\frac00,\ \infty-\infty,\ \pm\infty\cdot0,\ \frac{\pm\infty}{\pm\infty},\ 0^0,\ 1^{\pm\infty},\ \infty^0$.</li>
+  <li><b>Valor absoluto e intervalos</b> (§1.1): $|x-a|&lt;\delta\iff x\in(a-\delta,a+\delta)$. Es el «traductor» que usarás en toda definición con $\varepsilon$ y $\delta$.</li>
+  <li><b>Funciones elementales y su gráfica</b>: polinomios, $\operatorname{sen}$, $\cos$, $\operatorname{tg}$, $e^x$, $\ln x$, $x^\alpha$. <b>Convenio del libro: los ángulos van en radianes</b> ($\operatorname{sen}2\pi=0$, pero $\operatorname{sen}360\neq0$). Si no las dominas, U recomienda el Curso 0 de la UNED.</li>
+</ul>
+
+<div class="box warn"><span class="h">Aviso: extensión real de §1.4 en U</span>
+  <p>La sección §1.4 <b>no termina en la p. 53</b>: la fórmula del error de la bisección está en la p. 54, el Ejemplo 1.49 ocupa las pp. 55-56 y §1.5 (sucesiones de funciones, fuera de examen) empieza en la p. 56. Todo este resumen cubre <b>U §1.4, pp. 42-56</b>.</p>
+  <span class="src" data-l="U" data-ref="U §1.4, pp. 42-56 (bisección con cota de error p. 54; Ej. 1.49 pp. 55-56)">U pp.42-56</span>
+</div>
+
+<h3>Mapa del tema</h3>
+<table>
+  <tr><th>Apartado</th><th>Qué contiene</th><th>Dónde está en los libros</th></tr>
+  <tr><td>1 Funciones y dominio</td><td>dominio por convenio, imagen, acotada</td><td>U p.43</td></tr>
+  <tr><td>2 Límite en un punto</td><td>Def. 1.18 ($\varepsilon$-$\delta$), signo, unicidad, $\operatorname{sen}\frac1x$</td><td>U pp.43-45 · L p.62</td></tr>
+  <tr><td>3 Herramientas de cálculo</td><td>álgebra, emparedado, acotada×0, composición, $1^\infty$</td><td>U pp.45-46, 29-31 · S pp.105, 124 · L pp.61, 65</td></tr>
+  <tr><td>4 Límites laterales</td><td>Def. 1.19, Teorema 1.4</td><td>U pp.46-47 · L p.73</td></tr>
+  <tr><td>5 Límites infinitos</td><td>$f\to\pm\infty$, regla del signo $\frac{l}{0^\pm}$</td><td>U p.46 · L pp.85-87 · S p.94</td></tr>
+  <tr><td>6 Límites en el infinito</td><td>$x\to\pm\infty$, incluido $f\to\pm\infty$</td><td>U pp.47-48 · L p.201 · S p.131</td></tr>
+  <tr><td>7 Asíntotas</td><td>horizontal, vertical, oblicua; Prop. 1.12</td><td>U pp.48-50 · L p.201 · S pp.315-316</td></tr>
+  <tr><td>8 Continuidad</td><td>Def. 1.20, Props. 1.13-1.14, tipos de discontinuidad</td><td>U p.51 · S p.120 · L p.71</td></tr>
+  <tr><td>9 Bolzano, valores intermedios, Weierstrass</td><td>tres teoremas con sus hipótesis</td><td>U pp.52-53 · S pp.125, 275 · L pp.77, 162</td></tr>
+  <tr><td>10 Método de bisección</td><td>algoritmo, cota de error, nº de iteraciones</td><td>U pp.53-56 · L p.78</td></tr>
+  <tr><td>11 Ejercicios</td><td>E 1.23-1.41 en 5 bloques + 16 ejemplos propios</td><td>E pp.25-41</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios</h3>
+<p>Cinco destrezas: <b>(A)</b> hallar dominios y calcular límites (cocientes de polinomios con $\frac00$, logaritmos, indeterminación $1^\infty$); <b>(B)</b> encontrar asíntotas verticales, horizontales y oblicuas; <b>(C)</b> estudiar continuidad, incluida la de una composición y el ajuste de un parámetro; <b>(D)</b> usar Bolzano, valores intermedios y Weierstrass para demostrar que existe un punto con cierta propiedad; <b>(E)</b> aplicar la bisección y acotar su error.</p>
+
+<div class="box warn"><span class="h">Lo que U no dice (y aquí se explica con S y L)</span>
+  <p>U no da en §1.4: (1) la <b>regla del signo</b> para $\frac{l}{0^\pm}$; (2) la definición rigurosa de <b>límite infinito en el infinito</b> (la «deja al lector», p. 47); (3) el <b>límite de una composición</b> $\lim g(f(x))$; (4) la versión para funciones de $\left(1+\frac1F\right)^F\to e$ (solo está para sucesiones, Prop. 1.5); (5) los <b>nombres</b> de los tipos de discontinuidad. Los apartados 3, 5, 6 y 8 los cubren, con la fuente indicada en cada uno.</p>
+</div>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Funciones reales y dominio <span class="src" data-l="U" data-ref="U §1.4.2 Funciones reales de una variable real, p. 43">U p.43</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una función es una «máquina»: metes un número $x$ y sale un único número $f(x)$. El <b>dominio</b> es el conjunto de números que la máquina acepta (los que no la «rompen»: no dividir entre $0$, no sacar raíz par de un negativo, no tomar logaritmo de un número $\le0$). La <b>imagen</b> es el conjunto de todo lo que puede salir.</p>
+</div>
+
+<div class="box def"><span class="h">Definición (dominio, imagen, acotada, gráfica)</span>
+  <p>Una función real de variable real es $f:D\subset\mathbb R\to\mathbb R$; $D$ es el <b>dominio</b> y $f(D)=\{f(x):x\in D\}$ la <b>imagen</b>. <b>Convenio:</b> si no se indica el dominio, se toma «el mayor conjunto en el que puede estar definida». Si la imagen es un conjunto acotado, $f$ es <b>acotada</b>. La <b>gráfica</b> es el conjunto de puntos $(x,f(x))$ del plano.</p>
+  <p>Con funciones de mismo dominio se hacen sumas, productos y cocientes; en el cociente se quitan del dominio los puntos donde se anula el denominador.</p>
+  <span class="src" data-l="U" data-ref="U §1.4.2, p. 43 (convenio del dominio, imagen, función acotada, gráfica)">U p.43</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo resuelto: dominio de una función compuesta</span>
+  <p>Dominio de $f(x)=\ln(x^2-4)+\sqrt{5-x}$.</p>
+  <ol class="steps">
+    <li>El logaritmo exige argumento positivo: $x^2-4&gt;0\iff x&lt;-2$ o $x&gt;2$.</li>
+    <li>La raíz cuadrada exige radicando $\ge0$: $5-x\ge0\iff x\le5$.</li>
+    <li>Se cumplen las dos a la vez: $D=(-\infty,-2)\cup(2,5]$.</li>
+  </ol>
+  <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con sympy)">P</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Confundir <i>valor</i> con <i>límite</i>: que la fórmula «dé $\pm\infty$» en un punto no significa que $f$ valga $\pm\infty$ allí. En ese punto la función <b>no está definida</b>; $\pm\infty$ solo puede aparecer como <i>límite</i>.</p>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Límite de una función en un punto <span class="src" data-l="U" data-ref="U §1.4.2 Límite en un punto, Def. 1.18, pp. 43-45">U pp.43-45</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: el «juego de la tolerancia»</span>
+  <p>Decir «$\lim_{x\to a}f(x)=l$» es afirmar: <i>si $x$ está suficientemente cerca de $a$ (pero no es $a$), entonces $f(x)$ está tan cerca de $l$ como se desee.</i> Se puede ver como un juego. Un escéptico elige una <b>tolerancia</b> $\varepsilon&gt;0$ («quiero $f(x)$ a menos de $\varepsilon$ de $l$»). Tú, que defiendes el límite, respondes con un radio $\delta&gt;0$ tal que todos los $x\neq a$ a distancia menor que $\delta$ de $a$ cumplen lo pedido. Si por más pequeño que sea $\varepsilon$ siempre tienes respuesta, el límite es $l$.</p>
+  <p>Lo esencial: <b>solo importa lo que pasa cerca de $a$, no en $a$</b>. Por eso $f(a)$ puede ser cualquier cosa, o no existir.</p>
+</div>
+
+<div class="box def"><span class="h">Definición 1.18 (límite de una función en un punto)</span>
+  <p>$f:D\to\mathbb R$ tiene <b>límite $l$ en $a$</b>, y se escribe $\displaystyle\lim_{x\to a}f(x)=l$, si para todo $\varepsilon&gt;0$ existe $\delta&gt;0$ tal que
+  $$x\in D\setminus\{a\}\ \text{ y }\ |x-a|&lt;\delta\ \Longrightarrow\ |f(x)-l|\le\varepsilon.$$
+  Para que tenga sentido, cada conjunto $(a-\delta,a)\cup(a,a+\delta)$ con $\delta&gt;0$ debe cortar al dominio $D$ (hay puntos del dominio arbitrariamente cerca de $a$, distintos de $a$).</p>
+  <span class="src" data-l="U" data-ref="U §1.4.2 Definición 1.18, p. 43">U p.43</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 300" role="img" aria-label="Definición de límite: para la banda horizontal de ancho 2ε alrededor de l existe un intervalo alrededor de a de radio δ cuya gráfica (sin el punto x=a) queda dentro de la banda">
+  <rect class="l4-band" x="50" y="120" width="560" height="60"/>
+  <line class="ax" x1="50" y1="268" x2="620" y2="268"/><line class="ax" x1="50" y1="12" x2="50" y2="268"/>
+  <line class="l4-dash" x1="50" y1="120" x2="610" y2="120"/><line class="l4-dash" x1="50" y1="180" x2="610" y2="180"/>
+  <line class="l4-dash" x1="255" y1="120" x2="255" y2="268"/><line class="l4-dash" x1="345" y1="120" x2="345" y2="268"/>
+  <line class="th" x1="300" y1="150" x2="300" y2="268"/><line class="th" x1="50" y1="150" x2="300" y2="150"/>
+  <path class="a" d="M 100.0 234.0 L 110.0 231.5 L 120.0 228.8 L 130.0 226.0 L 140.0 223.0 L 150.0 219.8 L 160.0 216.4 L 170.0 212.8 L 180.0 209.0 L 190.0 205.1 L 200.0 201.0 L 210.0 196.7 L 220.0 192.2 L 230.0 187.6 L 240.0 182.8 L 250.0 177.8 L 260.0 172.6 L 270.0 167.2 L 280.0 161.6 L 290.0 155.9 L 295.0 153.0"/><path class="a" d="M 305.0 147.0 L 310.0 143.9 L 320.0 137.6 L 330.0 131.2 L 340.0 124.6 L 350.0 117.8 L 360.0 110.8 L 370.0 103.6 L 380.0 96.2 L 390.0 88.7 L 400.0 81.0 L 410.0 73.1 L 420.0 65.0 L 430.0 56.8 L 440.0 48.4 L 450.0 39.8 L 460.0 31.0 L 470.0 22.0"/>
+  <circle class="op" cx="300" cy="150" r="5"/>
+  <circle class="pb" cx="300" cy="205" r="5"/>
+  <text x="312" y="209" class="sm">f(a): puede valer lo que sea</text>
+  <text x="44" y="124" text-anchor="end">l+ε</text><text x="44" y="154" text-anchor="end">l</text><text x="44" y="184" text-anchor="end">l−ε</text>
+  <text x="255" y="286" text-anchor="middle">a−δ</text><text x="300" y="286" text-anchor="middle">a</text><text x="345" y="286" text-anchor="middle">a+δ</text>
+  <text x="600" y="112" class="sm" text-anchor="end">banda de ancho 2ε</text>
+  <text x="62" y="32" class="bd" style="fill:var(--acc)">y = f(x)</text>
+</svg>
+<figcaption>Definición 1.18: para cada banda horizontal $(l-\varepsilon,\,l+\varepsilon)$ existe un intervalo $(a-\delta,\,a+\delta)$ tal que la gráfica sobre él (sin el punto $x=a$) queda dentro de la banda. El punto en $x=a$ (círculo relleno) no cuenta: el límite es $l$ aunque $f(a)\neq l$.</figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Creer que el límite en $a$ es «el valor de $f$ en $a$». Por la definición, el punto $x=a$ está excluido ($x\in D\setminus\{a\}$): el límite puede existir aunque $f(a)$ no exista o valga otra cosa. <b>Solo</b> si además $f(a)=\lim_{x\to a} f(x)$ se dice que $f$ es continua en $a$ (apartado 8).</p>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.42 (¿en qué puntos tiene sentido el límite?)</span>
+  <p>Si una función está definida en $(0,1)\cup\{2\}$, tiene sentido hablar de su límite en cualquier punto de $[0,1]$, pero <b>no en $2$</b> ni en ningún otro punto de $\mathbb R$: en $2$ no hay puntos del dominio cerca de $2$ distintos de $2$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.42, p. 43">U p.43</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos con $\varepsilon$ y $\delta$ (propios)</span>
+  <p><b>(a)</b> $\displaystyle\lim_{x\to3}(2x+1)=7$. Dado $\varepsilon&gt;0$: $|f(x)-7|=|2x-6|=2|x-3|$, y esto es $\le\varepsilon$ si $|x-3|&lt;\delta:=\varepsilon/2$. (Regla práctica: se parte de $|f(x)-l|\le\varepsilon$ y se «despeja» $|x-a|$.)</p>
+  <p><b>(b)</b> $f(x)=\dfrac{x^2-1}{x-1}$ (dominio $\mathbb R\setminus\{1\}$) cumple $\displaystyle\lim_{x\to1}f(x)=2$. Para $x\neq1$, $f(x)=x+1$, luego $|f(x)-2|=|x-1|\le\varepsilon$ si $|x-1|&lt;\delta:=\varepsilon$. Aquí $f(1)$ ni siquiera existe: el límite se calcula igualmente porque $x=1$ está excluido.</p>
+  <span class="src" data-l="P" data-ref="Ejemplos propios de la definición ε-δ">P</span>
+</div>
+
+<h3>Tres propiedades básicas</h3>
+<div class="box thm"><span class="h">Proposición 1.9 (conservación del signo)</span>
+  <p>Si $f:D\to\mathbb R$ cumple $\displaystyle\lim_{x\to a}f(x)&gt;0$, existe $\delta&gt;0$ tal que $f(x)&gt;0$ para todo $x\in D\cap\big((a-\delta,a+\delta)\setminus\{a\}\big)$. Con límite negativo, $f&lt;0$ cerca de $a$ (salvo en $a$).</p>
+  <p>En palabras: si el límite es positivo, cerca de $a$ la función también lo es. (Se usa, p. ej., para decidir el signo de un denominador que tiende a un número no nulo.)</p>
+  <span class="src" data-l="U" data-ref="U Proposición 1.9, p. 44">U p.44</span>
+</div>
+<div class="box thm"><span class="h">Unicidad del límite</span>
+  <p>El límite de una función en un punto puede existir o no, pero <b>si existe, es único</b> (se demuestra igual que para sucesiones). Por eso puede hablarse de «el» límite.</p>
+  <span class="src" data-l="U" data-ref="U Unicidad del límite, p. 44">U p.44</span>
+</div>
+<div class="box thm"><span class="h">Funciones que coinciden salvo en el punto</span>
+  <p>Si $f(x)=g(x)$ para todo $x\neq a$ en un entorno de $a$, y existe $\lim_{x\to a}g(x)$, entonces existe también $\lim_{x\to a}f(x)$ y son iguales. Es lo que justifica «<b>simplificar y sustituir</b>» cuando sale $\frac00$: al simplificar solo se pierde el punto $x=a$, que el límite ignora.</p>
+  <span class="src" data-l="L" data-ref="Larson §1.3, Teorema 1.7 (funciones que coinciden en todo, salvo en un punto), p. 62">L p.62</span>
+  <span class="src" data-l="U" data-ref="U Def. 1.18 p. 43 (de ella se deduce directamente: solo mira x ≠ a)">U p.43</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos 1.43 y 1.44 (con gráfica)</span>
+  <p><b>1.43.</b> $f(x)=\begin{cases}x+1,&amp;x&lt;0\\2,&amp;x=0\\-x+1,&amp;x&gt;0\end{cases}$ tiene límite $1$ en $0$: al acercarse $x$ a $0$ (sin ser $0$) los valores se acercan a $1$, aunque $f(0)=2$.</p>
+  <p><b>1.44.</b> $f(x)=\operatorname{sen}\frac1x$ en $(0,\infty)$ <b>no tiene límite en $0$</b>: al acercarse a $0$ oscila cada vez más deprisa entre $-1$ y $1$ con amplitud constante, así que no se aproxima a ningún $l\in\mathbb R$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplos 1.43 y 1.44, pp. 44-45">U pp.44-45</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Herramientas para calcular límites <span class="src" data-l="U" data-ref="U §1.4.2, regla del emparedado, Prop. 1.10 y Prop. 1.11, pp. 45-46">U pp.45-46</span></h2>
+
+<div class="box thm"><span class="h">Proposición 1.11 (álgebra de límites)</span>
+  <p>Si $f,g:D\to\mathbb R$, $\displaystyle\lim_{x\to a}f(x)=l$ y $\displaystyle\lim_{x\to a}g(x)=m$ (<b>ambos números reales</b>), entonces
+  $$\lim_{x\to a}\big(f(x)+g(x)\big)=l+m,\qquad \lim_{x\to a}\big(f(x)\,g(x)\big)=l\,m.$$
+  Y si además $g(x)\neq0$ en $D$ y $m\neq0$: $\ \displaystyle\lim_{x\to a}\frac{f(x)}{g(x)}=\frac lm$.</p>
+  <span class="src" data-l="U" data-ref="U Proposición 1.11, p. 46">U p.46</span>
+</div>
+
+<div class="box thm"><span class="h">Regla del emparedado</span>
+  <p>Si $\displaystyle\lim_{x\to a}f(x)=\lim_{x\to a}g(x)=l$ y $f(x)\le h(x)\le g(x)$ para todo $x$ del dominio de $h$, entonces $\displaystyle\lim_{x\to a}h(x)=l$. (Como el límite es local, basta que las desigualdades valgan cerca de $a$.)</p>
+  <span class="src" data-l="U" data-ref="U Regla del emparedado, p. 45">U p.45</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.3, Teorema 3 (de la compresión), p. 105">S p.105</span>
+  <span class="src" data-l="L" data-ref="Larson §1.3, Teorema 1.8 (del emparedado), p. 65">L p.65</span>
+</div>
+
+<div class="box thm"><span class="h">Proposición 1.10 (tiende a 0 por acotada)</span>
+  <p>Si $\displaystyle\lim_{x\to a}f(x)=0$ y $g$ es una función <b>acotada</b>, entonces $\displaystyle\lim_{x\to a}f(x)\,g(x)=0$. Versión local: basta que $g$ esté acotada en un intervalo abierto $I$ con $a\in I$.</p>
+  <p><b>Nota:</b> $g$ <i>no necesita tener límite</i>, solo estar acotada. Por eso $x\cos\frac1x\to0$ aunque $\cos\frac1x$ no tenga límite en $0$.</p>
+  <span class="src" data-l="U" data-ref="U Proposición 1.10 y su versión local, p. 45">U p.45</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Aplicar la regla del producto $\lim(fg)=\lim f\cdot\lim g$ cuando <b>uno de los límites no existe</b>: «$\lim x\cdot\lim\cos\frac1x=0\cdot(\text{algo})$» es un razonamiento inválido. Hay que acotar y usar la Prop. 1.10 o el emparedado.</p>
+</div>
+
+<h3>Límite de una composición (hueco de U)</h3>
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Si una función «no da saltos» en $b$ (es continua) y $g(x)$ se acerca a $b$, entonces $f(g(x))$ se acerca a $f(b)$: el límite «puede entrar» dentro de $f$. Es lo que se hizo en §1.2 con $\cos(\frac\pi4+\frac1n)\to\cos\frac\pi4$ y con $e^{n\ln(\cdots)}$.</p>
+</div>
+<div class="box thm"><span class="h">Teorema (límite de una función compuesta)</span>
+  <p>Si $\displaystyle\lim_{x\to a}g(x)=b\in\mathbb R$ y $f$ es <b>continua en $b$</b>, entonces $\displaystyle\lim_{x\to a}f\big(g(x)\big)=f(b)=f\Big(\lim_{x\to a}g(x)\Big)$.</p>
+  <p><b>Con $\pm\infty$ (aritmética de $\overline{\mathbb R}$).</b> Si $t(x)\to-\infty$, $e^{t(x)}\to e^{-\infty}=0$, y si $t(x)\to+\infty$, $e^{t(x)}\to+\infty$ (U Ej. 1.26, p. 30 y Def. 1.12, p. 27).</p>
+  <p><b>Segundo enunciado (cambio de variable).</b> Si $\lim_{x\to a}g(x)=b\in\overline{\mathbb R}$, $\lim_{t\to b}f(t)=L\in\overline{\mathbb R}$ y $g(x)\neq b$ para $x$ cerca de $a$ (salvo en $a$), entonces $\lim_{x\to a}f\big(g(x)\big)=L$. No exige que $f$ sea continua en $b$ ni que esté definida allí, y sirve con $b=\pm\infty$ (entonces $g(x)\ne b$ es automático). Ej.: $t=-\frac1{(1+x)^2}\to-\infty$ y $\lim_{t\to-\infty}e^t=0$, luego $e^{t(x)}\to0$.</p>
+  <p class="l4-teo">Este segundo enunciado no figura así en U, S ni L: S (Apéndice F, Teorema 3, p. A43) y L (Teor. 1.5, p. 61) tratan el caso con $f$ continua en $b$. Se demuestra igual con $\varepsilon$-$\delta$; aquí se admite.</p>
+  <span class="src" data-l="S" data-ref="Stewart §2.5, Teorema 8, p. 124">S p.124</span>
+  <span class="src" data-l="P" data-ref="Segundo enunciado (cambio de variable): explicación propia, sin página en los libros; S Apéndice F Teorema 3 p. A43 demuestra solo el caso f continua en b">P</span>
+  <span class="src" data-l="L" data-ref="Larson §1.3, Teorema 1.5 (límite de una función compuesta), p. 61">L p.61</span>
+  <span class="src" data-l="U" data-ref="U p. 29 (el límite entra en funciones continuas: polinómicas, trigonométricas, exponenciales, logarítmicas) y Ej. 1.26 p. 30">U pp.29-30</span>
+</div>
+
+<h3>Indeterminaciones y la forma $1^\infty$</h3>
+<div class="box def"><span class="h">Las siete indeterminaciones</span>
+  <p>$\displaystyle\frac00,\ \ \infty-\infty,\ \ \pm\infty\cdot0,\ \ \frac{\pm\infty}{\pm\infty},\ \ 0^0,\ \ 1^{\pm\infty},\ \ \infty^0$. Son expresiones a las que la aritmética de $\overline{\mathbb R}$ <b>no da valor</b>: el resultado depende de qué funciones concretas están «detrás». Encontrar una <b>no</b> significa que el límite no exista: hay que <i>trabajar</i> la expresión (factorizar, multiplicar por el conjugado, dividir por el término dominante, reescribir con $a^b=e^{b\ln a}$…).</p>
+  <span class="src" data-l="U" data-ref="U Indeterminaciones (lista de siete), p. 30; fórmula (1.1) p. 29; conjugado Ej. 1.24 p. 29">U pp.29-30</span>
+</div>
+
+<div class="box thm"><span class="h">El número $e$ para funciones</span>
+  <p>Si $F(x)\to+\infty$ o $F(x)\to-\infty$ (cuando $x\to a$, $x\to a^\pm$ o $x\to\pm\infty$), entonces
+  $$\Big(1+\frac1{F(x)}\Big)^{F(x)}\longrightarrow e.$$
+  U lo demuestra <b>solo para sucesiones</b> (Prop. 1.5: $\big(1+\frac1{a_n}\big)^{a_n}\to e$ si $a_n\to\pm\infty$). Para funciones se acepta como extensión natural: con $t=\frac1{F(x)}\to0$ y $t\neq0$ (pues $F$ es finita), el cambio de variable del recuadro anterior lo reduce al límite $\lim_{t\to0}(1+t)^{1/t}=e$, que Stewart obtiene con derivadas y aquí se admite como hecho conocido.</p>
+  <span class="src" data-l="U" data-ref="U Proposición 1.5 (versión para sucesiones), p. 31">U p.31</span>
+  <span class="src" data-l="S" data-ref="Stewart §3.6, «El número e como un límite», p. 222">S p.222</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen: indeterminación $1^\infty$</span>
+  <p>Si $A(x)\to1$ (con $A&gt;0$, $A\ne1$ cerca de $a$) y $B(x)\to\pm\infty$, escribe $A=1+\frac1F$ con $F=\frac1{A-1}$ y el exponente como $B=F\cdot\big(B(A-1)\big)$. Entonces
+  $$A^B=\Big[\big(1+\tfrac1F\big)^F\Big]^{B(A-1)}\longrightarrow e^{\lim B(A-1)}\qquad(\text{si ese límite existe}).$$
+  Se obtiene con la fórmula $a^b=e^{b\ln a}$ y el paso del límite dentro de $\exp$ y $\ln$ (continuas). Ejemplo rápido: $\big(1+\frac2x\big)^x\to e^{\lim x\cdot\frac2x}=e^2$.</p>
+  <span class="src" data-l="P" data-ref="Receta derivada de U Prop. 1.5 (p. 31) y fórmula (1.1) (p. 29)">P</span>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Límites laterales <span class="src" data-l="U" data-ref="U Def. 1.19, límites laterales y Teorema 1.4, pp. 46-47">U pp.46-47</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Ir hacia $a$ «por la izquierda» ($x&lt;a$) puede dar un resultado distinto que hacerlo «por la derecha» ($x&gt;a$): piensa en llegar a un escalón desde abajo o desde arriba. Cada lado tiene su límite. La función tiene límite <b>solo si los dos lados están de acuerdo</b>.</p>
+</div>
+
+<div class="box def"><span class="h">Definición (restricción y límites laterales)</span>
+  <p><b>Def. 1.19.</b> La restricción de $f:D\to\mathbb R$ a $J\subset D$ es $f|_J(x)=f(x)$ para $x\in J$.</p>
+  <p><b>Límite por la derecha:</b> $\lim_{x\to a^+}f(x)=l$ si $\lim_{x\to a}f|_{D\cap(a,\infty)}(x)=l$. <b>Por la izquierda:</b> $\lim_{x\to a^-}f(x)=l$ si $\lim_{x\to a}f|_{D\cap(-\infty,a)}(x)=l$. Es decir, nos restringimos a los puntos mayores (o menores) que $a$.</p>
+  <span class="src" data-l="U" data-ref="U Definición 1.19 p. 46 y límites laterales p. 47">U pp.46-47</span>
+</div>
+
+<div class="box thm"><span class="h">Teorema 1.4 (límite ⇔ límites laterales)</span>
+  <p>Si $f:D\to\mathbb R$ y $l\in\mathbb R$: $\quad\displaystyle\lim_{x\to a}f(x)=l\iff\lim_{x\to a^-}f(x)=\lim_{x\to a^+}f(x)=l.$</p>
+  <p>Por tanto una función puede tener límites laterales y <b>no tener límite</b>.</p>
+  <span class="src" data-l="U" data-ref="U Teorema 1.4, p. 47">U p.47</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.46: $f(x)=\frac1x$ en $0$</span>
+  <p>$\lim_{x\to0^+}\frac1x=+\infty$ y $\lim_{x\to0^-}\frac1x=-\infty$. Los laterales son distintos, así que <b>no hay límite en $0$</b> (aunque cada lateral «existe» como límite infinito).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.46, p. 47">U p.47</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 300" role="img" aria-label="Gráfica de 1/x: por la derecha de 0 tiende a más infinito y por la izquierda a menos infinito">
+  <line class="ax" x1="20" y1="150" x2="625" y2="150"/><line class="ax" x1="320" y1="6" x2="320" y2="296"/>
+  <path class="a" d="M 333.3 18.0 L 337.3 48.5 L 341.3 67.5 L 345.3 80.5 L 349.3 90.0 L 353.3 97.2 L 357.3 102.9 L 361.3 107.4 L 365.3 111.2 L 369.3 114.3 L 373.3 117.0 L 377.3 119.3 L 381.3 121.3 L 385.3 123.1 L 389.3 124.6 L 393.3 126.0 L 397.3 127.2 L 401.3 128.4 L 405.3 129.4 L 409.3 130.3 L 413.3 131.1 L 417.3 131.9 L 421.3 132.6 L 425.3 133.3 L 429.3 133.9 L 433.3 134.5 L 437.3 135.0 L 441.3 135.5 L 445.3 136.0 L 449.3 136.4 L 453.3 136.8 L 457.3 137.2 L 461.3 137.5 L 465.3 137.9 L 469.3 138.2 L 473.3 138.5 L 477.3 138.8 L 481.3 139.1 L 485.3 139.4 L 489.3 139.6 L 493.3 139.8 L 497.3 140.1 L 501.3 140.3 L 505.3 140.5 L 509.3 140.7 L 513.3 140.9 L 517.3 141.1 L 521.3 141.3 L 525.3 141.4 L 529.3 141.6 L 533.3 141.8 L 537.3 141.9 L 541.3 142.0 L 545.3 142.2 L 549.3 142.3 L 553.3 142.5 L 557.3 142.6 L 561.3 142.7"/><path class="a" d="M 306.7 282.0 L 302.7 251.5 L 298.7 232.5 L 294.7 219.5 L 290.7 210.0 L 286.7 202.8 L 282.7 197.1 L 278.7 192.6 L 274.7 188.8 L 270.7 185.7 L 266.7 183.0 L 262.7 180.7 L 258.7 178.7 L 254.7 176.9 L 250.7 175.4 L 246.7 174.0 L 242.7 172.8 L 238.7 171.6 L 234.7 170.6 L 230.7 169.7 L 226.7 168.9 L 222.7 168.1 L 218.7 167.4 L 214.7 166.7 L 210.7 166.1 L 206.7 165.5 L 202.7 165.0 L 198.7 164.5 L 194.7 164.0 L 190.7 163.6 L 186.7 163.2 L 182.7 162.8 L 178.7 162.5 L 174.7 162.1 L 170.7 161.8 L 166.7 161.5 L 162.7 161.2 L 158.7 160.9 L 154.7 160.6 L 150.7 160.4 L 146.7 160.2 L 142.7 159.9 L 138.7 159.7 L 134.7 159.5 L 130.7 159.3 L 126.7 159.1 L 122.7 158.9 L 118.7 158.7 L 114.7 158.6 L 110.7 158.4 L 106.7 158.2 L 102.7 158.1 L 98.7 158.0 L 94.7 157.8 L 90.7 157.7 L 86.7 157.5 L 82.7 157.4 L 78.7 157.3"/>
+  <text x="338" y="22" class="bd" style="fill:var(--S)">x → 0⁺ : +∞</text>
+  <text x="302" y="286" class="bd" text-anchor="end" style="fill:var(--S)">x → 0⁻ : −∞</text>
+  <text x="560" y="130" class="sm">y = 1/x</text>
+  <text x="626" y="168" class="sm" text-anchor="end">x</text>
+</svg>
+<figcaption>La gráfica de $f(x)=\frac1x$: crece sin límite hacia $+\infty$ al acercarse a $0$ por la derecha y baja hacia $-\infty$ por la izquierda. El eje vertical $x=0$ es asíntota vertical (apartado 7).</figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo propio: $\frac{|x|}{x}$ en $0$</span>
+  <p>Para $x&gt;0$, $\frac{|x|}x=1$; para $x&lt;0$, $\frac{|x|}x=-1$. Laterales $1$ y $-1$, distintos: no hay límite en $0$ (un «salto»).</p>
+  <span class="src" data-l="P" data-ref="Ejemplo propio">P</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen</span>
+  <p>Cuando la fórmula <b>cambia a cada lado</b> de $a$ (valor absoluto, función a trozos, cociente que cambia de signo), calcula los <b>dos laterales por separado</b> y compáralos con el Teorema 1.4. Si el límite en $a$ es la única pregunta y salen distintos, la respuesta es «no existe».</p>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="s5"><span class="n">5</span>Límites infinitos y la regla del signo <span class="src" data-l="U" data-ref="U §1.4.2 Límites infinitos, p. 46 (Ej. 1.45)">U p.46</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Decir $\lim_{x\to a}f(x)=\infty$ es decir que $f(x)$ <b>supera cualquier cota</b> que se fije, con tal de acercarse lo bastante a $a$. Ninguna cota, por grande que sea, es un «techo». Como la gráfica «sube por una pared», aparece una <b>asíntota vertical</b>.</p>
+</div>
+
+<div class="box def"><span class="h">Definición (límite infinito en un punto)</span>
+  <p>$\displaystyle\lim_{x\to a}f(x)=\infty$ si para todo $k&gt;0$ existe $\delta&gt;0$ tal que $f(x)\ge k$ para todo $x\in D\cap\big((a-\delta,a+\delta)\setminus\{a\}\big)$ (U escribe el conjunto sin «$D\cap$», pero se sobreentiende $x\in D$). Y $\lim_{x\to a}f(x)=-\infty$ si $\lim_{x\to a}\big(-f(x)\big)=\infty$. Vale también para laterales (aplicando la definición a la restricción).</p>
+  <span class="src" data-l="U" data-ref="U Límites infinitos, p. 46">U p.46</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.45</span>
+  <p>$\displaystyle\lim_{x\to0}\frac1{x^2}=\infty$ (para $x\ne0$, $\frac1{x^2}\ge k\iff|x|\le\frac1{\sqrt k}$; basta $\delta=\frac1{\sqrt k}$).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.45, p. 46">U p.46</span>
+</div>
+
+<h3>Regla del signo para $\dfrac{l}{0^\pm}$ (hueco de U)</h3>
+<p>U (Def. 1.12, p. 27) no define $\frac{x}{0}$. Pero cuando el denominador <b>tiende</b> a $0$ y el numerador tiende a un número $l\ne0$, el límite sí se sabe, y depende del <b>signo</b> del denominador cerca del punto.</p>
+
+<div class="box thm"><span class="h">Regla del signo</span>
+  <p>Sea $\lim_{x\to a}f(x)=l\in\mathbb R$ con $l\neq0$ y $\lim_{x\to a}g(x)=0$. Se escribe $g\to0^+$ si además $g(x)&gt;0$ cerca de $a$ (salvo en $a$), y $g\to0^-$ si $g(x)&lt;0$ cerca de $a$. Entonces:</p>
+  <table class="l4-sign">
+    <tr><th></th><th>$g\to0^+$</th><th>$g\to0^-$</th></tr>
+    <tr><td>$l&gt;0$</td><td>$\dfrac fg\to+\infty$</td><td>$\dfrac fg\to-\infty$</td></tr>
+    <tr><td>$l&lt;0$</td><td>$\dfrac fg\to-\infty$</td><td>$\dfrac fg\to+\infty$</td></tr>
+  </table>
+  <p><b>Por qué:</b> si $g\to0^+$, entonces $\frac1g\ge k$ en cuanto $0&lt;g\le\frac1k$; así que $\frac1g\to+\infty$. Multiplicar por $l&gt;0$ conserva el $+\infty$ y por $l&lt;0$ lo cambia a $-\infty$. Con $g\to0^-$ es igual con los signos cambiados. Cada lateral se estudia por separado.</p>
+  <span class="src" data-l="L" data-ref="Larson §1.5, Teorema 1.14 (asíntotas verticales) p. 85 y Teorema 1.15 (propiedades de los límites infinitos) p. 87">L pp.85-87</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.2, Definición 6 (asíntota vertical), p. 94">S p.94</span>
+</div>
+
+<div class="box tip"><span class="h">Cómo se usa</span>
+  <p>(1) Factoriza el denominador para ver de dónde sale el $0$: $x^2-1=(x-1)(x+1)$. (2) En cada lateral, signo de cada factor: en $x\to1^+$, $(x-1)\to0^+$ y $(x+1)\to2&gt;0$. (3) Signo del numerador cerca del punto. (4) Aplica la tabla. Ejemplo: $\frac{x^2+1}{x^2-1}$ en $1^+$: $\frac{2}{0^+}=+\infty$; en $1^-$: $\frac2{0^-}=-\infty$.</p>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Pensar que «un $0$ en el denominador da siempre $\infty$» sin mirar signos: $\frac1{x^2}\to+\infty$ (denominador siempre $0^+$), pero $\frac1x$ no tiene límite en $0$ (laterales $+\infty$ y $-\infty$). Y si numerador <b>y</b> denominador tienden a $0$, es la indeterminación $\frac00$: no se aplica la tabla, hay que factorizar y simplificar.</p>
+</div>
+
+<div class="box thm"><span class="h">Aritmética con límites infinitos</span>
+  <p>Se usan las operaciones de $\overline{\mathbb R}$ (U Def. 1.12, p. 27): $\infty+l=\infty$, $\infty\cdot l=\infty$ si $l&gt;0$ y $-\infty$ si $l&lt;0$, $\frac{l}{\infty}=0$, etc., salvo indeterminaciones. Si $f\to\infty$ y $g\to l\in\mathbb R$, entonces $f+g\to\infty$; si además $l&gt;0$, $fg\to\infty$; y $\frac gf\to0$.</p>
+  <span class="src" data-l="U" data-ref="U Def. 1.12 (recta ampliada), p. 27, y p. 46 («las operaciones y las indeterminaciones son las mismas»)">U pp.27,46</span>
+  <span class="src" data-l="L" data-ref="Larson §1.5, Teorema 1.15, p. 87">L p.87</span>
+</div>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="s6"><span class="n">6</span>Límites en el infinito <span class="src" data-l="U" data-ref="U §1.4.2 Límites en el infinito, pp. 47-48 (Ej. 1.47)">U pp.47-48</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Ahora $x$ se va «muy lejos» en la recta, a la derecha ($+\infty$) o a la izquierda ($-\infty$), y preguntamos si $f(x)$ se estabiliza en un número. Es el análogo de la convergencia de una sucesión ($n\to\infty$), pero con $x$ real y con dos direcciones posibles.</p>
+</div>
+
+<div class="box def"><span class="h">Definición (límites en el infinito)</span>
+  <p>$f:D\to\mathbb R$ <b>tiende a $l\in\mathbb R$ cuando $x\to\infty$</b> ($\lim_{x\to\infty}f(x)=l$) si para todo $\varepsilon&gt;0$ existe $\delta&gt;0$ tal que $x\in D$ y $x&gt;\delta$ garantiza $|f(x)-l|\le\varepsilon$. Y $\lim_{x\to-\infty}f(x)=l$ si $\lim_{x\to\infty}f(-x)=l$.</p>
+  <span class="src" data-l="U" data-ref="U Límites en el infinito, p. 47">U p.47</span>
+</div>
+
+<div class="box def"><span class="h">Límites infinitos en el infinito (hueco de U)</span>
+  <p>U «deja al lector» esta definición (p. 47). Siguiendo las anteriores: $\displaystyle\lim_{x\to\infty}f(x)=\infty$ si para todo $k&gt;0$ existe $M$ tal que $x\in D$ y $x&gt;M$ garantiza $f(x)\ge k$; y $\lim_{x\to\infty}f(x)=-\infty$ si $\lim_{x\to\infty}\big(-f(x)\big)=\infty$. Para $x\to-\infty$ se usa $f(-x)$, como arriba.</p>
+  <span class="src" data-l="L" data-ref="Larson §3.5, definición de límites (infinitos) al infinito, p. 201">L p.201</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.6, «Límites infinitos en el infinito», p. 136, y Definición 9, p. 140">S pp.136,140</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.47</span>
+  <p>$f(x)=\dfrac{x^2-x+1}{x^2+1}$. Se divide numerador y denominador entre el monomio de mayor grado, $x^2$:
+  $$\lim_{x\to\infty}f(x)=\lim_{x\to\infty}\frac{1-\frac1x+\frac1{x^2}}{1+\frac1{x^2}}=\frac{1-0+0}{1+0}=1,$$
+  y de forma análoga $\lim_{x\to-\infty}f(x)=1$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.47, pp. 47-48">U pp.47-48</span>
+</div>
+
+<div class="box thm"><span class="h">Cocientes de polinomios y polinomios (regla práctica)</span>
+  <p>Para $R(x)=\dfrac{a_px^p+\cdots}{b_qx^q+\cdots}$ con $a_p,b_q\neq0$, y $x\to\pm\infty$:</p>
+  <ul>
+    <li>$p&lt;q$: $R\to0$. &nbsp; $p=q$: $R\to\dfrac{a_p}{b_q}$. &nbsp; $p&gt;q$: $R\to\pm\infty$ (el signo sale del cociente de los términos dominantes $\frac{a_p}{b_q}x^{p-q}$).</li>
+    <li>Un polinomio $p(x)=a_nx^n+\dots+a_0$ se comporta como su término dominante: $p(x)=x^n\big(a_n+\frac{a_{n-1}}x+\dots+\frac{a_0}{x^n}\big)$, y el paréntesis tiende a $a_n$. Si $n$ es <b>impar</b> y $a_n&gt;0$: $p\to+\infty$ en $+\infty$ y $p\to-\infty$ en $-\infty$.</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U p. 27 (dividir entre el monomio de mayor grado) y Ej. 1.47, p. 48">U pp.27,48</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Decir «el límite en $\infty$ no existe» cuando es $+\infty$ (sí existe en $\overline{\mathbb R}$; lo que no hay es un límite <i>finito</i>). Y creer que toda función tiene límite en $\infty$: $\operatorname{sen}x$ oscila y no tiene límite; $x\operatorname{sen}x$ oscila con amplitud creciente y tampoco.</p>
+</div>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="s7"><span class="n">7</span>Asíntotas <span class="src" data-l="U" data-ref="U §1.4.2 Asíntotas, pp. 48-50 (Prop. 1.12, Ej. 1.48)">U pp.48-50</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una <b>asíntota</b> es una recta a la que la gráfica «se pega» tanto como se quiera. Es una buena noticia: el comportamiento de una función puede ser complicado, pero lejos (o cerca de una pared) se parece a una recta sencilla. Hay tres tipos: horizontales (nivel al que se estabiliza), verticales (paredes) y oblicuas (rectas inclinadas).</p>
+</div>
+
+<div class="box def"><span class="h">Las tres asíntotas</span>
+  <ul>
+    <li><b>Horizontal:</b> $y=b$ es asíntota horizontal si $\lim_{x\to+\infty}f(x)=b$ y/o $\lim_{x\to-\infty}f(x)=b$. (Si $f$ tiene una horizontal, al menos uno de los límites en el infinito existe.)</li>
+    <li><b>Vertical:</b> $x=a$ es asíntota vertical si $\lim_{x\to a^-}f(x)=\pm\infty$ y/o $\lim_{x\to a^+}f(x)=\pm\infty$. Basta un lateral.</li>
+    <li><b>Oblicua:</b> $y=mx+b$ con $m\neq0$ es asíntota oblicua si $\lim_{x\to+\infty}\big(f(x)-(mx+b)\big)=0$ y/o $\lim_{x\to-\infty}\big(f(x)-(mx+b)\big)=0$. <b>Condición necesaria</b> (no suficiente): $f\to\pm\infty$ en ese lado. No es suficiente: $f(x)=e^{|x|}$ tiende a $\infty$ en ambos lados y no tiene asíntotas.</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U Asíntotas horizontal (p. 48), vertical y oblicua (p. 49)">U pp.48-49</span>
+</div>
+
+<div class="box thm"><span class="h">Proposición 1.12 (cómo encontrar $m$ y $b$)</span>
+  <p>Si $f$ tiene como asíntota oblicua la recta $y=mx+b$ con $m\neq0$, entonces $\displaystyle m=\lim_{x\to\infty}\frac{f(x)}x$ (o el mismo límite en $-\infty$, según el lado). <b>Procedimiento:</b> (1) calcular $m=\lim\frac{f(x)}{x}$; si no existe o vale $0$ o $\pm\infty$, no hay oblicua en ese lado; (2) calcular $b=\lim\big(f(x)-mx\big)$; si es un número, la recta $y=mx+b$ es la asíntota. La condición de $m$ es necesaria pero <b>no suficiente</b> (falta comprobar que $b$ existe).</p>
+  <p><b>Ejemplo de U (nota al margen, p. 49):</b> $f(x)=x+\operatorname{sen}x$ cumple $\frac{f(x)}x=1+\frac{\operatorname{sen}x}x\to1$, pero $f(x)-x=\operatorname{sen}x$ no tiene límite en $\pm\infty$: no hay asíntota oblicua. Muestra que la condición de $m$ es necesaria pero no suficiente.</p>
+  <span class="src" data-l="U" data-ref="U Proposición 1.12 y contraejemplo x + sen x (nota al margen), p. 49">U p.49</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.48: $f(x)=\dfrac{x^3+x^2+1}{x^2+1}$</span>
+  <ol class="steps">
+    <li><b>Verticales:</b> ninguna, porque para cualquier $a$ el límite $\lim_{x\to a}f(x)=f(a)$ es un número ($x^2+1\neq0$).</li>
+    <li><b>Horizontales:</b> $f\to\infty$ en $+\infty$ y $f\to-\infty$ en $-\infty$: no hay, y se cumple la condición necesaria de la oblicua.</li>
+    <li><b>Pendiente:</b> $m=\lim\frac{f(x)}x=\lim\frac{x^3+x^2+1}{x^3+x}=1$.</li>
+    <li><b>Ordenada:</b> $b=\lim\big(f(x)-x\big)=\lim\frac{x^2-x+1}{x^2+1}=1$.</li>
+  </ol>
+  <p>Luego $y=x+1$ es asíntota oblicua (y en $-\infty$ sale la misma recta).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.48, pp. 49-50">U pp.49-50</span>
+</div>
+
+<div class="box tip"><span class="h">Truco: por división de polinomios</span>
+  <p>Si $f=\frac PQ$ con $\operatorname{gr}P=\operatorname{gr}Q+1$, divide: $f(x)=mx+b+\frac{r(x)}{Q(x)}$ con $\operatorname{gr}r&lt;\operatorname{gr}Q$. El resto $\frac rQ\to0$, así que $y=mx+b$ es la asíntota (en ambos lados). Ej.: $\frac{x^3+2x^2-1}{x^2-4}=x+2+\frac{4x+7}{x^2-4}$ da $y=x+2$.</p>
+  <span class="src" data-l="L" data-ref="Larson §3.5, asíntota oblicua, p. 201">L p.201</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.5, Asíntotas inclinadas: definición al final de la p. 315, Ejemplo 6 (por división larga) en p. 316">S pp.315-316</span>
+</div>
+
+<div class="box thm"><span class="h">Receta para funciones racionales $\frac PQ$</span>
+  <table>
+    <tr><th>Asíntota</th><th>Dónde buscarla</th></tr>
+    <tr><td>Vertical</td><td>en los ceros de $Q$ que <b>no</b> anulan a $P$; mira el signo de cada lateral (regla del signo). Si $P$ y $Q$ se anulan ambos, simplifica el factor común y vuelve a mirar el denominador: puede quedar un «agujero» (como $\frac{x^2-1}{x-1}$ en $1$) o seguir habiendo asíntota (como $\frac x{x^2}$ en $0$).</td></tr>
+    <tr><td>Horizontal</td><td>si $\operatorname{gr}P\le\operatorname{gr}Q$ (dividir entre la mayor potencia).</td></tr>
+    <tr><td>Oblicua</td><td>si $\operatorname{gr}P=\operatorname{gr}Q+1$ (división de polinomios o $m$ y $b$).</td></tr>
+  </table>
+  <span class="src" data-l="P" data-ref="Resumen propio a partir de U pp. 48-50 y ejercicios E 1.28-1.30">P</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 390" role="img" aria-label="Gráfica con asíntota horizontal y=0 en menos infinito, vertical x=1 y oblicua y=x+1 en más infinito">
+  <line class="ax" x1="10" y1="270" x2="630" y2="270"/><line class="ax" x1="230" y1="10" x2="230" y2="385"/>
+  <line class="l4-asy" x1="280.0" y1="12" x2="280.0" y2="385"/>
+  <line class="l4-asy" x1="230.0" y1="238.0" x2="550.0" y2="33.2"/>
+  <line class="l4-asy" x1="10" y1="270" x2="230" y2="270"/>
+  <path class="a" d="M 5.0 275.8 L 10.0 275.9 L 15.0 276.0 L 20.0 276.2 L 25.0 276.3 L 30.0 276.4 L 35.0 276.5 L 40.0 276.7 L 45.0 276.8 L 50.0 277.0 L 55.0 277.1 L 60.0 277.3 L 65.0 277.4 L 70.0 277.6 L 75.0 277.8 L 80.0 278.0 L 85.0 278.2 L 90.0 278.4 L 95.0 278.6 L 100.0 278.9 L 105.0 279.1 L 110.0 279.4 L 115.0 279.7 L 120.0 280.0 L 125.0 280.3 L 130.0 280.7 L 135.0 281.0 L 140.0 281.4 L 145.0 281.9 L 150.0 282.3 L 155.0 282.8 L 160.0 283.3 L 165.0 283.9 L 170.0 284.5 L 175.0 285.2 L 180.0 286.0 L 185.0 286.8 L 190.0 287.8 L 195.0 288.8 L 200.0 290.0 L 205.0 291.3 L 210.0 292.9 L 215.0 294.6 L 220.0 296.7 L 225.0 299.1 L 230.0 302.0"/><path class="a" d="M 230.0 302.0 L 231.0 302.7 L 232.0 303.4 L 233.0 304.2 L 234.0 305.0 L 235.0 305.9 L 236.0 306.9 L 237.0 307.9 L 238.0 309.1 L 239.0 310.3 L 240.0 311.6 L 241.0 313.0 L 242.0 314.5 L 243.0 316.2 L 244.0 317.9 L 245.0 319.8 L 246.0 321.9 L 247.0 324.1 L 248.0 326.5 L 249.0 329.1 L 250.0 331.9 L 251.0 334.9 L 252.0 338.2 L 253.0 341.8 L 254.0 345.7 L 255.0 350.0 L 256.0 354.7 L 257.0 359.9 L 258.0 365.5"/><path class="a" d="M 300.0 33.2 L 302.5 49.4 L 305.0 62.0 L 307.5 72.0 L 310.0 80.1 L 312.5 86.7 L 315.0 92.2 L 317.5 96.7 L 320.0 100.4 L 322.5 103.5 L 325.0 106.1 L 327.5 108.2 L 330.0 110.0 L 332.5 111.4 L 335.0 112.6 L 337.5 113.5 L 340.0 114.3 L 342.5 114.8 L 345.0 115.2 L 347.5 115.4 L 350.0 115.5 L 352.5 115.5 L 355.0 115.3 L 357.5 115.1 L 360.0 114.8 L 362.5 114.4 L 365.0 114.0 L 367.5 113.4 L 370.0 112.8 L 372.5 112.2 L 375.0 111.5 L 377.5 110.8 L 380.0 110.0 L 382.5 109.2 L 385.0 108.3 L 387.5 107.4 L 390.0 106.5 L 392.5 105.6 L 395.0 104.6 L 397.5 103.6 L 400.0 102.5 L 402.5 101.5 L 405.0 100.4 L 407.5 99.3 L 410.0 98.2 L 412.5 97.0 L 415.0 95.9 L 417.5 94.7 L 420.0 93.5 L 422.5 92.3 L 425.0 91.1 L 427.5 89.9 L 430.0 88.7 L 432.5 87.4 L 435.0 86.2 L 437.5 84.9 L 440.0 83.6 L 442.5 82.3 L 445.0 81.0 L 447.5 79.7 L 450.0 78.4 L 452.5 77.0 L 455.0 75.7 L 457.5 74.4 L 460.0 73.0 L 462.5 71.7 L 465.0 70.3 L 467.5 68.9 L 470.0 67.6 L 472.5 66.2 L 475.0 64.8 L 477.5 63.4 L 480.0 62.0 L 482.5 60.6 L 485.0 59.2 L 487.5 57.8 L 490.0 56.4 L 492.5 54.9 L 495.0 53.5 L 497.5 52.1 L 500.0 50.7 L 502.5 49.2 L 505.0 47.8 L 507.5 46.3 L 510.0 44.9 L 512.5 43.4 L 515.0 42.0 L 517.5 40.5 L 520.0 39.1 L 522.5 37.6 L 525.0 36.1 L 527.5 34.7 L 530.0 33.2 L 532.5 31.7 L 535.0 30.3"/>
+  <circle class="op" cx="230.0" cy="302.0" r="4.5"/>
+  <text x="288" y="30" class="bd" style="fill:var(--S)">x = 1</text>
+  <text x="440" y="196" class="bd" style="fill:var(--S)">y = x + 1</text>
+  <text x="20" y="262" class="bd" style="fill:var(--S)">y = 0</text>
+  <text x="95" y="322" class="sm">agujero en x = 0</text>
+</svg>
+<figcaption>La función de E Ej. 1.30 ($\frac1{x-1}$ si $x&lt;0$, $\frac{x^2+1}{x-1}$ si $x&gt;0$) reúne las tres asíntotas: horizontal $y=0$ en $-\infty$, vertical $x=1$ y oblicua $y=x+1$ en $+\infty$. En $x=0$ hay un «agujero» (los dos laterales valen $-1$ pero $f(0)$ no está definida).</figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Errores típicos</span>
+  <ul>
+    <li>Quedarse en $m$ y olvidar comprobar $b$ (la condición de $m$ no basta). Ejemplo de U (p.49): $f(x)=x+\operatorname{sen}x$ tiene $\frac{f(x)}x\to1$, pero $f(x)-x=\operatorname{sen}x$ no tiene límite: no hay asíntota oblicua.</li>
+    <li>Suponer que en $-\infty$ sale la misma recta que en $+\infty$: hay que estudiar <b>cada lado por separado</b> (con raíces, o con funciones a trozos, pueden ser distintas o no existir).</li>
+    <li>Creer que la gráfica no puede <i>cortar</i> a su asíntota horizontal: sí puede; la asíntota describe el comportamiento lejano.</li>
+    <li>En un mismo lado, horizontal y oblicua son <b>incompatibles</b> (una exige $f\to b$ y la otra $f\to\pm\infty$; el límite es único).</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U p. 49 (nota al margen: f(x) = x + sen x)">U p.49</span>
+</div>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="s8"><span class="n">8</span>Continuidad <span class="src" data-l="U" data-ref="U §1.4.3 Funciones continuas, p. 51 (Defs. 1.20, 1.21; Props. 1.13, 1.14)">U pp.51-52</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una función es continua en $a$ si <b>puedes dibujar su gráfica cerca de $a$ sin levantar el lápiz</b>: sin agujeros, saltos ni paredes. Con la definición de límite: los puntos cercanos a $a$ tienen imágenes cercanas a $f(a)$, y el valor en $a$ «encaja» con lo que hace la función a su alrededor.</p>
+</div>
+
+<div class="box def"><span class="h">Definición 1.20 y 1.21</span>
+  <p><b>Def. 1.20.</b> $f:D\subset\mathbb R\to\mathbb R$ es <b>continua en $a\in D$</b> si $\displaystyle\lim_{x\to a}f(x)=f(a)$. En caso contrario es <b>discontinua</b> en $a$.</p>
+  <p>Esto exige <b>tres cosas</b>: (1) $f(a)$ existe; (2) existe el límite en $a$; (3) los dos coinciden.</p>
+  <p><b>Def. 1.21.</b> $f$ es <b>continua en $A\subset D$</b> si lo es en cada punto de $A$. Si no se dice el conjunto, se entiende que es continua en su dominio.</p>
+  <span class="src" data-l="U" data-ref="U Definiciones 1.20 y 1.21, pp. 51-52">U pp.51-52</span>
+</div>
+
+<div class="box thm"><span class="h">Proposiciones 1.13 y 1.14</span>
+  <p><b>Prop. 1.13.</b> Si $f$ y $g$ son continuas en $a$, entonces $f+g$ y $f\cdot g$ son continuas en $a$; y si además $g(a)\neq0$, $\frac fg$ es continua en $a$.</p>
+  <p><b>Prop. 1.14 (composición).</b> Si $f$ es continua en $a$ y $g$ es continua en $f(a)$, entonces $g\circ f$ es continua en $a$.</p>
+  <p>Polinomios, trigonométricas, exponenciales y logaritmos son continuas en su dominio (U p. 29). Con las dos proposiciones se obtiene la continuidad de casi cualquier fórmula elemental sin volver a la definición.</p>
+  <span class="src" data-l="U" data-ref="U Proposiciones 1.13 y 1.14, p. 51; funciones continuas elementales, p. 29">U p.51</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico: la Prop. 1.14 es «local»</span>
+  <p>Solo pide que $g$ sea continua en <b>los puntos $f(a)$ que $f$ alcanza</b>. Razonar «$g$ es discontinua, luego $g\circ f$ también» es falso: si la discontinuidad de $g$ está en un valor que $f$ nunca toma, $g\circ f$ sigue siendo continua (Ej. 1.34).</p>
+</div>
+
+<h3>Tipos de discontinuidad (hueco de U: el libro no les da nombre)</h3>
+<div class="box def"><span class="h">Evitable, de salto e infinita</span>
+  <ul>
+    <li><b>Evitable (removible):</b> existe $\lim_{x\to a}f(x)=l$ pero $f(a)$ no existe o es distinto de $l$. Se «arregla» redefiniendo $f(a)=l$. Ej.: $\frac{x^2-1}{x-1}$ en $1$.</li>
+    <li><b>De salto:</b> existen los dos laterales (finitos) pero son distintos. No hay límite, y <b>ningún</b> valor de $f(a)$ arregla la discontinuidad. Ej.: $\frac{|x|}x$ en $0$.</li>
+    <li><b>Infinita:</b> algún lateral es $\pm\infty$ (asíntota vertical). Ej.: $\frac1x$ en $0$.</li>
+    <li><b>Oscilante (esencial):</b> algún lateral no existe ni es $\pm\infty$. Ej.: $\operatorname{sen}\frac1x$ en $0$, con cualquier valor que se ponga en $0$ (U Ej. 1.44, p. 45).</li>
+  </ul>
+  <span class="src" data-l="S" data-ref="Stewart §2.5, discontinuidades removible, de salto e infinita, p. 120">S p.120</span>
+  <span class="src" data-l="L" data-ref="Larson §1.4, discontinuidad evitable e inevitable, p. 71">L p.71</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen: ajustar un parámetro</span>
+  <p>Si $f$ está definida «por separado» en un punto (o cambia de fórmula en él) y contiene un parámetro, la continuidad en ese punto ⇔ (<b>límite</b> —o los dos laterales, que deben coincidir— $=$ <b>valor</b> de $f$ allí). Se iguala y se despeja el parámetro. Fuera de ese punto la continuidad sale sola de la Prop. 1.13.</p>
+</div>
+
+<!-- ============================ 9 ============================ -->
+<h2 id="s9"><span class="n">9</span>Bolzano, valores intermedios y Weierstrass <span class="src" data-l="U" data-ref="U §1.4.3 Continuidad en un intervalo, pp. 52-53">U pp.52-53</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Si por la mañana un termómetro marcó $-3$ °C y por la tarde $5$ °C, y la temperatura cambió <b>continuamente</b> (sin saltos), en algún instante marcó exactamente $0$ °C, y también $1{,}7$ °C, y todo valor entre $-3$ y $5$. Es imposible ir de abajo a arriba sin cruzar los niveles intermedios <i>siempre que no haya saltos</i>. Además, en un día (intervalo cerrado y acotado) hubo una temperatura máxima y una mínima.</p>
+</div>
+
+<div class="box thm"><span class="h">Teorema de Bolzano</span>
+  <p>Si $f:[a,b]\to\mathbb R$ es <b>continua</b> y $f(a)\cdot f(b)&lt;0$ (es decir, $f(a)$ y $f(b)$ tienen distinto signo), entonces existe al menos un $c\in(a,b)$ tal que $f(c)=0$.</p>
+  <span class="src" data-l="U" data-ref="U Teorema de Bolzano, p. 52">U p.52</span>
+</div>
+
+<div class="box thm"><span class="h">Teorema de los valores intermedios</span>
+  <p>Si $f:[a,b]\to\mathbb R$ es <b>continua</b> y $f(a)&lt;d&lt;f(b)$ o $f(a)&gt;d&gt;f(b)$, entonces existe al menos un $c\in(a,b)$ tal que $f(c)=d$. En palabras: una función continua en un intervalo que toma dos valores, toma todos los intermedios.</p>
+  <p><b>Relación con Bolzano:</b> el de Bolzano es el caso $d=0$; y el de valores intermedios se deduce de Bolzano aplicándolo a $h(x)=f(x)-d$ (que es continua y cumple $h(a)h(b)&lt;0$).</p>
+  <span class="src" data-l="U" data-ref="U Teorema de los valores intermedios, p. 52">U p.52</span>
+  <span class="src" data-l="S" data-ref="Stewart §2.5, Teorema 10 (del valor intermedio), p. 125">S p.125</span>
+  <span class="src" data-l="L" data-ref="Larson §1.4, Teorema 1.13 (traducido «del valor medio»), p. 77">L p.77</span>
+</div>
+
+<div class="box warn"><span class="h">Cuidado con el nombre en Larson</span>
+  <p>La traducción de Larson llama «<b>Teorema del valor medio</b>» (§1.4, Teor. 1.13, p. 77) al teorema de los <b>valores intermedios</b>. No lo confundas con el <i>teorema del valor medio de Lagrange</i> del cálculo diferencial (Temas 2 y 3), que habla de derivadas y de la pendiente de una secante. Son resultados distintos.</p>
+  <span class="src" data-l="L" data-ref="Larson §1.4, Teorema 1.13 «Teorema del valor medio» (= valores intermedios), p. 77">L p.77</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 310" role="img" aria-label="Función continua en [a,b] con f(a) negativo y f(b) positivo: corta al eje en un punto c (Bolzano) y alcanza el valor intermedio d en otro punto">
+  <line class="ax" x1="40" y1="200" x2="620" y2="200"/>
+  <path class="a" d="M 90.0 260.0 L 97.7 255.0 L 105.3 250.0 L 113.0 245.1 L 120.7 240.4 L 128.3 235.9 L 136.0 231.7 L 143.7 227.7 L 151.3 224.0 L 159.0 220.7 L 166.7 217.7 L 174.3 215.0 L 182.0 212.7 L 189.7 210.7 L 197.3 209.0 L 205.0 207.6 L 212.7 206.4 L 220.3 205.5 L 228.0 204.7 L 235.7 204.0 L 243.3 203.3 L 251.0 202.7 L 258.7 202.0 L 266.3 201.2 L 274.0 200.2 L 281.7 199.1 L 289.3 197.7 L 297.0 196.0 L 304.7 194.0 L 312.3 191.7 L 320.0 189.0 L 327.7 186.0 L 335.3 182.6 L 343.0 179.0 L 350.7 175.0 L 358.3 170.7 L 366.0 166.2 L 373.7 161.5 L 381.3 156.7 L 389.0 151.7 L 396.7 146.7 L 404.3 141.6 L 412.0 136.7 L 419.7 131.8 L 427.3 127.1 L 435.0 122.6 L 442.7 118.3 L 450.3 114.4 L 458.0 110.7 L 465.7 107.3 L 473.3 104.3 L 481.0 101.7 L 488.7 99.4 L 496.3 97.4 L 504.0 95.7 L 511.7 94.3 L 519.3 93.1 L 527.0 92.1 L 534.7 91.3 L 542.3 90.6 L 550.0 90.0"/>
+  <line class="l4-dash" x1="90" y1="140" x2="406.9" y2="140"/>
+  <line class="th" x1="90" y1="200" x2="90" y2="260"/><line class="th" x1="550" y1="200" x2="550" y2="90"/>
+  <line class="th" x1="406.9" y1="140" x2="406.9" y2="200"/>
+  <circle class="pt" cx="90" cy="260" r="5"/><circle class="pt" cx="550" cy="90" r="5"/>
+  <circle class="pb" cx="275.6" cy="200" r="5"/><circle class="pb" cx="406.9" cy="140" r="5"/>
+  <text x="90" y="222" text-anchor="middle">a</text><text x="550" y="222" text-anchor="middle">b</text>
+  <text x="275.6" y="222" text-anchor="middle">c</text><text x="406.9" y="222" text-anchor="middle">c′</text>
+  <text x="100" y="278" class="sm">f(a) &lt; 0</text><text x="560" y="86" class="sm">f(b) &gt; 0</text>
+  <text x="84" y="144" text-anchor="end">d</text>
+  <text x="271.6" y="186" class="bd" style="fill:var(--S)" text-anchor="middle">f(c) = 0</text>
+  <text x="414.9" y="172" class="bd" style="fill:var(--S)" text-anchor="start">f(c′) = d</text>
+</svg>
+<figcaption>Bolzano y valores intermedios: la gráfica de una función continua en $[a,b]$ que empieza por debajo del eje ($f(a)&lt;0$) y acaba por encima ($f(b)&gt;0$) tiene que cruzar el eje en algún $c$ (Bolzano) y cortar la recta horizontal a cualquier altura intermedia $d$ (valores intermedios).</figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Errores típicos (hipótesis que no se pueden olvidar)</span>
+  <ul>
+    <li><b>Sin continuidad no hay teorema:</b> $f(x)=-1$ si $x&lt;0$, $f(x)=1$ si $x\ge0$, en $[-1,1]$, cumple $f(-1)f(1)&lt;0$ y no se anula nunca (es discontinua en $0$).</li>
+    <li>Bolzano da <b>«al menos una»</b> raíz, no «una sola».</li>
+    <li>Si $f(a)f(b)&gt;0$, el teorema <b>no dice nada</b>: puede haber raíces igualmente. Ej.: $f(x)=(x-\frac13)(x-\frac23)$ en $[0,1]$ cumple $f(0)=f(1)=\frac29&gt;0$ y tiene dos raíces.</li>
+    <li>Ir a un intervalo no cerrado (como $[0,\infty)$) sin comprobar los límites: ver el recuadro siguiente.</li>
+  </ul>
+</div>
+
+<div class="box thm"><span class="h">Bolzano en intervalos no cerrados ni acotados</span>
+  <p>Los teoremas anteriores valen también para $f$ continua en intervalos como $(a,b)$, $[a,b)$, $(a,\infty)$, $[a,\infty)$, $(-\infty,b)$, $(-\infty,\infty)$…, cambiando la condición sobre los valores en los extremos por una condición sobre <b>límites</b> (laterales o infinitos). Por ejemplo, la condición $f(a)f(b)&lt;0$ se sustituye por $\displaystyle\lim_{x\to a^+}f(x)\cdot\lim_{x\to b^-}f(x)&lt;0$, o por $f(a)\cdot\lim_{x\to b^-}f(x)&lt;0$, o $f(a)\cdot\lim_{x\to\infty}f(x)&lt;0$, etc.</p>
+  <span class="src" data-l="U" data-ref="U Bolzano en intervalos no cerrados, p. 52">U p.52</span>
+</div>
+
+<div class="box tip"><span class="h">Receta: demostrar que una ecuación tiene solución</span>
+  <p>Para ver que existe $x$ con $f(x)=g(x)$ (o con $f(x)=d$): (1) pasa todo a un lado, $h=f-g$ (o $h=f-d$); (2) comprueba que $h$ es <b>continua</b> en un intervalo $[a,b]$ (cociente: denominador no nulo en todo el intervalo); (3) busca $a,b$ con $h(a)$ y $h(b)$ de signo distinto (prueba primero valores sencillos: $0$, $1$, $\pi/2$…); (4) concluye con Bolzano.</p>
+</div>
+
+<h3>Teorema de Weierstrass</h3>
+<div class="box thm"><span class="h">Proposición 1.15 (Weierstrass)</span>
+  <p>Si $f:[a,b]\to\mathbb R$ es <b>continua</b>, existen $c,d\in[a,b]$ tales que $f(c)\le f(x)\le f(d)$ para todo $x\in[a,b]$. Es decir: una función continua en un intervalo <b>cerrado y acotado</b> es acotada y <b>alcanza</b> su máximo y su mínimo. Junto con los valores intermedios: su imagen es un intervalo cerrado y acotado, $[f(c),f(d)]$.</p>
+  <span class="src" data-l="U" data-ref="U Proposición 1.15 (Teorema de Weierstrass), pp. 52-53">U pp.52-53</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.1, Teorema 3 (del valor extremo), p. 275">S p.275</span>
+  <span class="src" data-l="L" data-ref="Larson §3.1, Teorema 3.1 (del valor extremo), p. 162">L p.162</span>
+</div>
+
+<div class="box warn"><span class="h">Hacen falta las tres hipótesis</span>
+  <p>El teorema se apoya en la continuidad <b>y</b> en que el intervalo sea cerrado <b>y</b> acotado. Si falla una, el máximo o el mínimo pueden no existir. Ejemplo de U (p. 53): $f(x)=x^{-1}$ es continua en $(0,1)$ pero no es acotada. Otros: $f(x)=x$ en $(0,1)$ no alcanza ni el supremo $1$ ni el ínfimo $0$; $f(x)=x$ en $[0,\infty)$ no tiene máximo.</p>
+  <p>Y atención al recíproco: Weierstrass es condición <b>suficiente</b>, no necesaria. $f(x)=x^2$ en $(-1,2]$ (no cerrado) sí alcanza mínimo $0$ y máximo $4$; solo que el teorema no lo garantiza.</p>
+  <span class="src" data-l="U" data-ref="U p. 53 (contraejemplo x⁻¹ en (0,1))">U p.53</span>
+</div>
+
+<!-- ============================ 10 ============================ -->
+<h2 id="s10"><span class="n">10</span>Método de bisección <span class="src" data-l="U" data-ref="U §1.4.3 Método de bisección, pp. 53-56 (cota de error p. 54; Ej. 1.49 pp. 55-56)">U pp.53-56</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: «caza mayor»</span>
+  <p>Sabes que un león está en algún lugar del desierto del Sáhara. Divides el desierto en dos partes con una valla, averiguas en cuál está, divides <i>esa</i> parte en dos, y repites. Tras cada paso la zona se reduce a la mitad; al cabo de unos pocos pasos tienes al león encerrado en una valla tan pequeña como quieras. Con una ecuación $f(x)=0$ pasa lo mismo: Bolzano dice <b>en qué mitad</b> está la raíz.</p>
+  <span class="src" data-l="U" data-ref="U p. 53 (recuadro «Caza mayor», H. Pétard 1938)">U p.53</span>
+</div>
+
+<div class="box def"><span class="h">Método de bisección</span>
+  <p>Queremos resolver $f(x)=0$ con $f$ <b>continua</b> en $[a,b]$ y $f(a)\cdot f(b)&lt;0$ (así, por Bolzano, hay al menos una solución en $(a,b)$). Se calcula el punto medio $c_1=\frac{a+b}2$ y se evalúa $f(c_1)$. Hay tres posibilidades excluyentes:</p>
+  <ul>
+    <li>$f(c_1)=0$: $c_1$ es solución y terminamos (en la práctica casi nunca ocurre).</li>
+    <li>$f(c_1)\cdot f(a)&lt;0$: hay solución en $(a,c_1)$, que mide la mitad.</li>
+    <li>$f(c_1)\cdot f(b)&lt;0$: hay solución en $(c_1,b)$, que mide la mitad.</li>
+  </ul>
+  <p>Con el nuevo intervalo se repite el proceso (calculando $c_2$, etc.). Se obtiene una sucesión $\{c_n\}$ de puntos medios que aproxima a una solución $\tilde x$.</p>
+  <span class="src" data-l="U" data-ref="U Método de bisección, pp. 53-54">U pp.53-54</span>
+  <span class="src" data-l="L" data-ref="Larson §1.4, método de bisección, p. 78">L p.78</span>
+</div>
+
+<div class="box thm"><span class="h">Cota del error y número de iteraciones</span>
+  <p>Tras $n$ iteraciones (es decir, $n$ puntos medios calculados),
+  $$|c_n-\tilde x|&lt;\frac{b-a}{2^n}.$$
+  Para tener un error menor que $\varepsilon&gt;0$: $\ \dfrac{b-a}{2^n}&lt;\varepsilon\iff n&gt;\log_2\dfrac{b-a}{\varepsilon}$, o de forma equivalente $2^n&gt;\dfrac{b-a}\varepsilon$. Este número se conoce <b>antes</b> de empezar y solo depende de $b-a$ y $\varepsilon$, no de la forma de $f$.</p>
+  <span class="src" data-l="U" data-ref="U Error de la bisección y n > log₂((b−a)/ε), pp. 54-55">U pp.54-55</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.49: resolver $e^{-x}=x$ en $[0,1]$ con error menor que $0{,}1$</span>
+  <ol class="steps">
+    <li><b>Escribir $f(x)=0$:</b> $f(x)=e^{-x}-x$.</li>
+    <li><b>Hipótesis de Bolzano:</b> $f$ es continua; $f(0)=1&gt;0$ y $f(1)=e^{-1}-1\approx-0{,}632&lt;0$.</li>
+    <li><b>Número de iteraciones:</b> $\frac{1-0}{2^n}&lt;0{,}1\iff2^n&gt;10\iff n&gt;3$. Hay que calcular <b>4 puntos medios</b>.</li>
+    <li><b>Iterar:</b> $c_1=0{,}5$, $f(0{,}5)\approx0{,}107&gt;0$ → $(0{,}5;\,1)$. $c_2=0{,}75$, $f\approx-0{,}278&lt;0$ → $(0{,}5;\,0{,}75)$. $c_3=0{,}625$, $f\approx-0{,}0897&lt;0$ (U imprime $-0{,}0898$) → $(0{,}5;\,0{,}625)$. $c_4=0{,}5625$.</li>
+    <li><b>Respuesta:</b> $c_4=0{,}5625$ es solución aproximada (la solución está en un intervalo de longitud menor que $0{,}1$).</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.49, pp. 55-56 (tabla en p. 56)">U pp.55-56</span>
+</div>
+
+<div class="box warn"><span class="h">Errores típicos</span>
+  <ul>
+    <li><b>Conservar la mitad equivocada:</b> se decide por los <b>signos</b> en los extremos, no por qué valor de $f$ está más cerca de $0$.</li>
+    <li><b>Contar mal las iteraciones:</b> la cota $\frac{b-a}{2^n}$ corresponde al número de puntos medios calculados.</li>
+    <li>La bisección <b>no funciona</b> si $f$ no es continua, ni si $f(a)f(b)&gt;0$ (no arranca), ni detecta raíces sin cambio de signo (raíces dobles como $(x-0{,}6)^2$). Si $f$ no es continua, no está garantizado que la sucesión $c_n$ converja a una raíz (ver 1.39).</li>
+  </ul>
+</div>
+
+<!-- ============================ 11 ============================ -->
+<h2 id="ejercicios"><span class="n">11</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Tema 1, Ej. 1.23-1.41, pp. 25-41">E pp.25-41</span></h2>
+
+<p>Los ejercicios 1.23 a 1.41 de E están agrupados aquí en cinco bloques, de fácil a difícil, <b>conservando la numeración del libro</b>. Cada uno enseña un método reutilizable (recuadro «Receta»). Al final de cada bloque hay ejemplos propios de dificultad creciente. El 1.42 de E ya trata de sucesiones de funciones (fuera de examen). Botón «Mostrar soluciones» arriba para desplegarlas todas.</p>
+<div class="box warn"><span class="h">Nota sobre las erratas de E</span>
+  <p>En las soluciones se señalan, con «Sobre E», las imprecisiones del libro de ejercicios (p. ej. la aritmética de 1.41, o la frase final de 1.34). Comprobado contra el PDF: en el texto extraído se pierden las barras de $\neq$ y algunas raíces y fracciones; aquí los enunciados están restituidos.</p>
+</div>
+
+<!-- ------------------------- BLOQUE A ------------------------- -->
+<h3 id="bloqueA">Bloque A · Dominio y cálculo de límites (1.25 → 1.24 → 1.23 → 1.26 → 1.27)</h3>
+
+<details class="sol"><summary>Ejercicio 1.25 — dominio de $\operatorname{sen}\sqrt{x/(x-1)^6}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.25, pp. 26-27">E pp.26-27</span></summary>
+  <p class="enun">Sea $f(x)=\operatorname{sen}\sqrt{\dfrac{x}{(x-1)^6}}$. Determinar su dominio de definición.</p>
+  <ol class="steps">
+    <li><b>Qué se pide.</b> U fija el convenio: si no se da el dominio, se toma «el mayor conjunto en el que puede estar definida» (U p.43). Hay que hallar todos los $x$ para los que la fórmula tiene sentido.</li>
+    <li><b>Descomponer de fuera hacia dentro.</b> $f$ se calcula en tres etapas: $x\mapsto q(x)=\frac{x}{(x-1)^6}\mapsto\sqrt{q(x)}\mapsto\operatorname{sen}\sqrt{q(x)}$. El seno está definido en todo $\mathbb R$ y no añade condición; la raíz exige radicando $\ge0$; el cociente exige denominador $\neq0$.</li>
+    <li><b>Denominador.</b> $(x-1)^6=0\iff x=1$. Se excluye $x=1$.</li>
+    <li><b>Signo del radicando.</b> Si $x\neq1$, $(x-1)^6&gt;0$ (potencia par de un número no nulo). Dividir entre un positivo no cambia el signo, así que $q(x)$ tiene el signo de $x$: $q(x)\ge0\iff x\ge0$.</li>
+    <li><b>Conclusión.</b> $D=\{x\in\mathbb R:\ x\ge0,\ x\neq1\}=[0,1)\cup(1,+\infty)$. (Comprobado con sympy.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para el dominio de una composición, anota la condición de cada pieza (denominador $\neq0$, raíz de índice par con radicando $\ge0$, logaritmo con argumento $&gt;0$) y resuelve el sistema. El signo de un cociente se obtiene del signo de cada factor.</div>
+  <p><b>Error típico:</b> olvidar excluir $x=1$ («como $1\ge0$, vale»); o exigir $x&gt;0$ cuando $x=0$ sí vale ($\sqrt0=0$). Sobre E: dice que en $x=1$ «la fracción vale $\pm\infty$»; en realidad en $x=1$ la fracción <b>no está definida</b> ($\pm\infty$ solo aparece como límite).</p>
+  <p class="l4-teo">Teoría: U §1.4.2, p. 43 (convenio del dominio).</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.24 — $\lim_{x\to1}\frac{x^2-x}{x^2+2x-3}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.24, p. 26">E p.26</span></summary>
+  <p class="enun">Sea $f(x)=\dfrac{x^2-x}{x^2+2x-3}$. Calcular $\lim_{x\to1}f(x)$.</p>
+  <ol class="steps">
+    <li><b>Intentar sustituir.</b> Un cociente de polinomios es continuo donde el denominador no se anula (U Prop. 1.13, p. 51), y allí el límite es el valor. Pero en $x=1$ el denominador vale $1+2-3=0$, así que $1\notin D$. Al sustituir sale $\frac00$: indeterminación (U p. 29), que no dice nada del límite.</li>
+    <li><b>Por qué factorizar.</b> Si un polinomio se anula en $x=1$, tiene el factor $(x-1)$ (regla de Ruffini o teorema del factor). Ambos se anulan en $1$, así que ambos tienen ese factor y se puede simplificar.</li>
+    <li><b>Factorizar.</b> Numerador: $x^2-x=x(x-1)$. Denominador: raíces de $x^2+2x-3$: $x=\frac{-2\pm\sqrt{4+12}}2=\frac{-2\pm4}2\in\{1,-3\}$, luego $x^2+2x-3=(x-1)(x+3)$.</li>
+    <li><b>Simplificar solo donde se puede.</b> Para $x\neq1$ (y $x\neq-3$), $f(x)=\frac{x(x-1)}{(x-1)(x+3)}=\frac x{x+3}$. Basta porque la Def. 1.18 (U p.43) solo mira $x\neq a$: si dos funciones coinciden cerca de $a$ salvo en $a$, tienen el mismo límite (L Teor. 1.7, p. 62).</li>
+    <li><b>Calcular.</b> $\frac x{x+3}$ es continua en $1$ (denominador $4\neq0$), luego $\displaystyle\lim_{x\to1}f(x)=\frac1{1+3}=\frac14$. (sympy: $1/4$.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si en un cociente de polinomios aparece $\frac00$ en $x=a$, saca el factor $(x-a)$ arriba y abajo, simplifica y vuelve a sustituir.</div>
+  <p><b>Error típico:</b> escribir «$f(1)=\frac14$» ($f$ no está definida en $1$; lo que vale $\frac14$ es el límite); decir que $\frac00=1$ o que «$\frac00$ ⇒ el límite no existe».</p>
+  <p class="l4-teo">Teoría: U Def. 1.18 p. 43; Prop. 1.13 p. 51; indeterminaciones p. 29.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.23 — ¿tiene límite el cociente $f/g$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.23, p. 25">E p.25</span></summary>
+  <p class="enun">Sean $f(x)$ y $g(x)$ dos funciones con límite (sus valores tienden a un número real) cuando $x$ tiende a $x_0$. ¿La función $f/g$ también tiene límite en $x_0$?</p>
+  <ol class="steps">
+    <li><b>Respuesta:</b> <b>no siempre</b>.</li>
+    <li><b>Qué dice la teoría.</b> Por U Prop. 1.11 (p. 46), si $\lim f=l$, $\lim g=m$ y $m\neq0$ (con $g\neq0$ en el dominio), entonces $\lim\frac fg=\frac lm$. Con $m\neq0$ la respuesta sería «sí»; un contraejemplo debe tener $m=0$.</li>
+    <li><b>Elegir bien el numerador.</b> Si también $l=0$, sale $\frac00$ y a veces hay límite ($\frac xx\to1$). Para asegurar que no existe, conviene $l\neq0$.</li>
+    <li><b>Contraejemplo.</b> $x_0=0$, $f(x)=\cos x$, $g(x)=x$. Como $\cos$ es continua, $\lim_{x\to0}\cos x=1$, y $\lim_{x\to0}x=0$.</li>
+    <li><b>Por la derecha.</b> Si $0&lt;x&lt;\pi/3$, $\cos x\ge\frac12$, luego $\frac{\cos x}x\ge\frac1{2x}$. Dado $k&gt;0$, basta $0&lt;x&lt;\delta=\min\{\pi/3,\frac1{2k}\}$ para que $\frac{\cos x}x\ge k$. Por la definición de límite infinito aplicada a la restricción a $(0,\infty)$ (U pp.46-47), $\lim_{x\to0^+}\frac{\cos x}x=+\infty$. (Con la regla del signo del apartado 5: $\frac{1}{0^+}$.)</li>
+    <li><b>Por la izquierda.</b> Si $x&lt;0$, el numerador sigue siendo positivo y el denominador es negativo: $\lim_{x\to0^-}\frac{\cos x}x=-\infty$.</li>
+    <li><b>Conclusión.</b> Si existiera $\lim_{x\to0}\frac{\cos x}x=l\in\mathbb R$, por el Teorema 1.4 (U p.47) los dos laterales valdrían $l$. Pero valen $+\infty$ y $-\infty$: no hay límite. (sympy: $\infty$ y $-\infty$.) Un contraejemplo aún más simple: $f=1$, $g=x$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para refutar un «¿siempre…?», mira qué hipótesis del teorema puede fallar (aquí $m\neq0$) y construye un ejemplo en el que falle. Si el denominador tiende a $0$ y el numerador a $l\neq0$, estudia los laterales con la <b>regla del signo</b>.</div>
+  <p><b>Error típico:</b> «0 en el denominador ⇒ $\infty$» sin mirar signos: $\frac1{x^2}\to+\infty$, pero $\frac1x$ no tiene límite en $0$. Sobre E: dice «los límites laterales no existen (no son números reales)»; como límites <i>reales</i> no existen, pero como límites <i>infinitos</i> sí existen y son distintos, y eso es lo que impide que haya límite.</p>
+  <p class="l4-teo">Teoría: U Prop. 1.11 p. 46; límites infinitos p. 46; laterales y Teorema 1.4 p. 47.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.26 — $\lim_{x\to+\infty}\frac{\ln x}{\ln 4x^4}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.26, p. 27">E p.27</span></summary>
+  <p class="enun">Calcular $\displaystyle\lim_{x\to+\infty}\frac{\ln x}{\ln 4x^4}$.</p>
+  <ol class="steps">
+    <li><b>Dominio.</b> Hace falta $x&gt;0$ para $\ln x$, y $4x^4&gt;0$ si $x\neq0$. Para $x&gt;1$ el cociente está bien definido y tiene sentido $x\to+\infty$.</li>
+    <li><b>Tipo de límite.</b> $\ln t\to+\infty$ si $t\to+\infty$: sale $\frac{+\infty}{+\infty}$, indeterminado (U p.30).</li>
+    <li><b>Mismo argumento en los dos logaritmos.</b> Para $x&gt;0$: $\ln(4x^4)=\ln4+\ln x^4=\ln4+4\ln x$.</li>
+    <li><b>Dividir entre el término que crece</b> ($\ln x&gt;0$ si $x&gt;1$): $\displaystyle\frac{\ln x}{\ln4+4\ln x}=\frac1{\frac{\ln4}{\ln x}+4}$.</li>
+    <li><b>Pasar al límite.</b> $\frac{\ln4}{\ln x}\to0$ (una constante entre algo que tiende a $\infty$ tiende a $0$, U Def. 1.12, p. 27). El denominador tiende a $4\neq0$, así que por U Prop. 1.11 el límite es $\dfrac14$. (sympy: $1/4$.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> con logaritmos de argumentos distintos, usa $\ln(ab)=\ln a+\ln b$ y $\ln a^b=b\ln a$ para dejarlo todo en función de un mismo $\ln x$; luego divide entre el término dominante, como con polinomios.</div>
+  <p><b>Error típico:</b> escribir $\ln(4x^4)=4\ln(4x)$ o $\ln4\cdot\ln x^4$; «simplificar el $\ln$» como si $\frac{\ln x}{\ln 4x^4}=\frac x{4x^4}$.</p>
+  <p class="l4-teo">Teoría: U límites en el infinito p. 47; Prop. 1.11 p. 46; Def. 1.12 p. 27.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.27 — $\lim_{x\to+\infty}\big(\frac{x+1}{x-1}\big)^x$ (forma $1^\infty$) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.27, pp. 27-28">E pp.27-28</span></summary>
+  <p class="enun">Calcular $\displaystyle\lim_{x\to+\infty}\left(\frac{x+1}{x-1}\right)^{x}$.</p>
+  <ol class="steps">
+    <li><b>Tipo.</b> Al dividir entre $x$, la base $\frac{1+1/x}{1-1/x}\to1$ y el exponente $\to+\infty$: es $1^\infty$, indeterminación (U p.30). <b>No vale $1$.</b></li>
+    <li><b>Herramienta.</b> Para sucesiones, U Prop. 1.5 (p. 31): $\big(1+\frac1{a_n}\big)^{a_n}\to e$. E usa la versión para funciones, $\big(1+\frac1{F(x)}\big)^{F(x)}\to e$ si $F(x)\to\pm\infty$, que U no enuncia (ver el recuadro del apartado 3; S p.222).</li>
+    <li><b>Base como $1+\frac1F$.</b> $\frac{x+1}{x-1}=\frac{(x-1)+2}{x-1}=1+\frac2{x-1}=1+\frac1{F(x)}$, con $F(x)=\frac{x-1}2\to+\infty$.</li>
+    <li><b>Hacer aparecer $F$ en el exponente.</b> $x=F(x)\cdot\frac x{F(x)}=F(x)\cdot\frac{2x}{x-1}$, luego
+      $$\Big(\frac{x+1}{x-1}\Big)^x=\Big[\big(1+\tfrac1{F(x)}\big)^{F(x)}\Big]^{\frac{2x}{x-1}}\qquad(x&gt;1,\ \text{base}&gt;0).$$</li>
+    <li><b>Límite de $A^B$.</b> $A(x)=\big(1+\frac1F\big)^F\to e$ y $B(x)=\frac{2x}{x-1}\to2$. Con la fórmula (1.1) (U p.29), $A^B=e^{B\ln A}$; como $\ln$ y $\exp$ son continuas, $\ln A\to\ln e=1$, $B\ln A\to2$ y $A^B\to e^2$.</li>
+    <li><b>Resultado:</b> $e^2\approx7{,}389$. (sympy: $e^2$; con $x=1000$ vale $7{,}38906$.)</li>
+  </ol>
+  <div class="recipe"><b>Receta ($1^\infty$):</b> si $A\to1$ y $B\to\pm\infty$, escribe $A=1+\frac1F$ con $F=\frac1{A-1}$; el resultado es $e^{\lim B(A-1)}$. Aquí: $\lim x\cdot\frac2{x-1}=2$.</div>
+  <p><b>Error típico:</b> decir «$1^\infty=1$»; o pasar al límite base y exponente por separado cuando la base tiende a $1$ (solo vale si el resultado no es indeterminado).</p>
+  <p class="l4-teo">Teoría: U indeterminaciones p. 30; fórmula (1.1) p. 29; Prop. 1.5 p. 31 (sucesiones).</p>
+</details>
+
+<p class="l4-blk">Ejemplos propios del bloque A</p>
+
+<details class="sol"><summary>Ejemplo A1 (fácil) — $\lim_{x\to2}\frac{x^2-4}{x^2-3x+2}$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <ol class="steps">
+    <li>Sale $\frac00$. Factorizando: $\frac{(x-2)(x+2)}{(x-2)(x-1)}=\frac{x+2}{x-1}$ para $x\neq2$.</li>
+    <li>Límite: $\frac{2+2}{2-1}=4$. (sympy: $4$.)</li>
+  </ol>
+</details>
+<details class="sol"><summary>Ejemplo A2 (fácil) — dominio de $\ln(x^2-4)+\sqrt{5-x}$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p>Logaritmo: $x^2-4&gt;0\iff x&lt;-2$ o $x&gt;2$. Raíz: $x\le5$. <b>Solución:</b> $D=(-\infty,-2)\cup(2,5]$. (Ver el ejemplo del apartado 1.)</p>
+</details>
+<details class="sol"><summary>Ejemplo A3 (media, conjugado) — $\lim_{x\to0}\frac{\sqrt{1+x}-1}x$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy; conjugado como en U Ej. 1.24, p. 29">P</span></summary>
+  <ol class="steps">
+    <li>Sale $\frac00$ y no hay polinomio que factorizar. Se multiplica y divide por el conjugado (como en U Ej. 1.24, p. 29).</li>
+    <li>$\frac{(\sqrt{1+x}-1)(\sqrt{1+x}+1)}{x(\sqrt{1+x}+1)}=\frac{(1+x)-1}{x(\sqrt{1+x}+1)}=\frac1{\sqrt{1+x}+1}$ para $x\ne0$.</li>
+    <li>Límite: $\frac1{1+1}=\frac12$. (sympy: $1/2$.)</li>
+  </ol>
+</details>
+<details class="sol"><summary>Ejemplo A4 (difícil) — $\lim_{x\to\infty}\big(\frac{x+2}{x-3}\big)^{2x+1}$ y $\lim_{x\to\infty}\frac{\ln(x^2+1)}{\ln x}$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <ol class="steps">
+    <li><b>Primer límite ($1^\infty$).</b> La base es $\frac{x+2}{x-3}=1+\frac5{x-3}$, así que $A-1=\frac5{x-3}$ y $B=2x+1$. El límite es $e^{\lim(2x+1)\frac5{x-3}}=e^{10}$. (sympy: $e^{10}$.)</li>
+    <li><b>Segundo límite ($\frac\infty\infty$).</b> $\ln(x^2+1)=2\ln x+\ln\!\big(1+\frac1{x^2}\big)$ y el último término $\to\ln1=0$. Dividiendo entre $\ln x$: $2+\frac{\ln(1+1/x^2)}{\ln x}\to2$.</li>
+  </ol>
+</details>
+
+<!-- ------------------------- BLOQUE B ------------------------- -->
+<h3 id="bloqueB">Bloque B · Asíntotas (1.28 → 1.29 → 1.30)</h3>
+<p><b>Recordatorio (U pp.48-49):</b> $y=b$ horizontal si $\lim_{x\to\pm\infty}f=b$; $x=a$ vertical si algún lateral en $a$ vale $\pm\infty$; $y=mx+b$ ($m\neq0$) oblicua si $f(x)-(mx+b)\to0$ en $\pm\infty$, con $m=\lim\frac{f(x)}x$ (Prop. 1.12) y $b=\lim(f(x)-mx)$.</p>
+
+<details class="sol"><summary>Ejercicio 1.28 — asíntotas de $\frac{x^2+1}{x^2-1}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.28, pp. 28-30">E pp.28-30</span></summary>
+  <p class="enun">La función $f(x)=\dfrac{x^2+1}{x^2-1}$ tiene: a) asíntota vertical; b) asíntota oblicua; c) asíntota horizontal; d) no tiene asíntotas.</p>
+  <ol class="steps">
+    <li><b>Dominio:</b> $x^2-1\neq0\iff x\neq\pm1$.</li>
+    <li><b>Horizontales.</b> Dividiendo entre $x^2$: $f(x)=\frac{1+1/x^2}{1-1/x^2}\to1$ si $x\to\pm\infty$. Luego $y=1$ es asíntota horizontal en $+\infty$ y en $-\infty$. (Otra vía: $f(x)=1+\frac2{x^2-1}$.)</li>
+    <li><b>Verticales: dónde buscar.</b> En cualquier $a\neq\pm1$, $f$ es continua (U Prop. 1.13), el límite es el número $f(a)$: no hay asíntota. Solo pueden estar en $x=\pm1$, donde el denominador se anula y el numerador vale $2\neq0$.</li>
+    <li><b>Signos laterales</b> con $x^2-1=(x-1)(x+1)$: en $x\to1^+$, $(0^+)(2)\to0^+$ y $f\to+\infty$; en $x\to1^-$, $(0^-)(2)\to0^-$ y $f\to-\infty$. En $x\to-1^-$ ($x&lt;-1$), los dos factores son negativos, el producto $\to0^+$ y $f\to+\infty$; en $x\to-1^+$, el producto $\to0^-$ y $f\to-\infty$. Luego $x=1$ y $x=-1$ son asíntotas verticales. (sympy: $-\infty,\infty,\infty,-\infty$.)</li>
+    <li><b>Oblicua.</b> Exige $f\to\pm\infty$ en ese lado (U p.49); aquí $f\to1$: no hay. Con la Prop. 1.12: $\frac{f(x)}x\to0$ y hace falta $m\neq0$.</li>
+  </ol>
+  <p><b>Respuesta: a) y c).</b></p>
+  <div class="recipe"><b>Receta (racionales $P/Q$):</b> verticales en los ceros de $Q$ que no anulan $P$, con el signo de cada lateral; horizontal si $\operatorname{gr}P\le\operatorname{gr}Q$; oblicua si $\operatorname{gr}P=\operatorname{gr}Q+1$.</div>
+  <p><b>Error típico:</b> confundir los signos de los laterales; creer que la gráfica no puede cortar la asíntota horizontal; tomar como vertical un punto donde numerador y denominador se anulan a la vez (suele ser un «agujero», ver 1.24; simplifica el factor común y vuelve a mirar el denominador, porque también puede seguir habiendo asíntota).</p>
+  <p class="l4-teo">Teoría: U asíntotas pp. 48-49; Prop. 1.12 p. 49.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.29 — asíntotas de $\frac{x^3+2x^2-1}{x^2-4}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.29, pp. 30-32">E pp.30-32</span></summary>
+  <p class="enun">Sea $f(x)=\dfrac{x^3+2x^2-1}{x^2-4}$. Encontrar las asíntotas de $f$, si las tiene.</p>
+  <ol class="steps">
+    <li><b>Dominio:</b> $x\neq\pm2$.</li>
+    <li><b>Verticales.</b> Si $a\neq\pm2$, $\lim_{x\to a}f=f(a)$ es finito. En $a=2$ el numerador vale $8+8-1=15&gt;0$ y el denominador es $(x-2)(x+2)$: en $2^+$ tiende a $(0^+)(4)=0^+$, luego $f\to+\infty$; en $2^-$, $f\to-\infty$. En $a=-2$ el numerador vale $-8+8-1=-1&lt;0$: en $-2^+$, $(x-2)\to-4$ y $(x+2)\to0^+$, el denominador $\to0^-$ y $f\to\frac{-1}{0^-}=+\infty$; en $-2^-$, $f\to-\infty$. Luego <b>$x=2$ y $x=-2$</b> son asíntotas verticales. (sympy: $-\infty,\infty,-\infty,\infty$ para $2^-,2^+,-2^-,-2^+$.)</li>
+    <li><b>Horizontales.</b> Dividiendo entre $x^2$: $f(x)=\frac{x+2-1/x^2}{1-4/x^2}$, que tiende a $+\infty$ en $+\infty$ y a $-\infty$ en $-\infty$. No hay horizontales y se cumple la condición necesaria de la oblicua (U p.49).</li>
+    <li><b>Oblicua (método de U: Prop. 1.12 y Ej. 1.48).</b> $m=\lim\frac{f(x)}x=\lim\frac{x^3+2x^2-1}{x^3-4x}=1$. $b=\lim\big(f(x)-x\big)=\lim\frac{x^3+2x^2-1-x^3+4x}{x^2-4}=\lim\frac{2x^2+4x-1}{x^2-4}=2$. La asíntota oblicua es <b>$y=x+2$</b>, la misma en $\pm\infty$. (sympy: $m=1$, $b=2$.)</li>
+    <li><b>Comprobación por división.</b> $x^3+2x^2-1=(x+2)(x^2-4)+(4x+7)$, así que $f(x)=x+2+\frac{4x+7}{x^2-4}$ y el resto $\to0$. El resto es positivo para $x$ grande y negativo hacia $-\infty$: la gráfica queda por encima de la asíntota a la derecha y por debajo a la izquierda.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> asíntota oblicua: $m=\lim\frac fx$, $b=\lim(f-mx)$, cada lado por separado. En una racional, la división de polinomios da $mx+b$ directamente.</div>
+  <p><b>Error típico:</b> quedarse en $m$ y olvidar $b$; dar por hecho que en $-\infty$ sale la misma recta (con raíces no tiene por qué: ver B3). Sobre E: calcula $\lim(f-mx)$ con $m$ genérico en vez de hallar antes $m$ con la Prop. 1.12; es correcto, aunque más largo; aquí se sigue el método de U.</p>
+  <p class="l4-teo">Teoría: U pp. 48-50 (Prop. 1.12, Ej. 1.48); L p.201 y S pp.315-316 (división de polinomios).</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.30 — ¿pueden coexistir asíntotas horizontales y oblicuas? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.30, p. 32">E p.32</span></summary>
+  <p class="enun">Razonar si existen funciones que tengan asíntotas horizontales y oblicuas.</p>
+  <ol class="steps">
+    <li><b>Respuesta:</b> sí, pero <b>nunca en el mismo lado</b>.</li>
+    <li><b>En el mismo lado es imposible.</b> Una horizontal en $+\infty$ significa $\lim_{x\to+\infty}f=b\in\mathbb R$; una oblicua en $+\infty$ exige $\lim_{x\to+\infty}f=\pm\infty$ (U p.49). Por la unicidad del límite (U p.44) no puede darse lo uno y lo otro. Otra forma: si $f\to b$, entonces $\frac{f(x)}x\to0$, y una oblicua necesita $m\neq0$.</li>
+    <li><b>En lados distintos es posible.</b> E da la función
+      $$f(x)=\begin{cases}\dfrac1{x-1},&amp;x&lt;0,\\[2mm]\dfrac{x^2+1}{x-1},&amp;x&gt;0.\end{cases}$$</li>
+    <li><b>En $-\infty$:</b> $\frac1{x-1}\to0$: $y=0$ es asíntota horizontal.</li>
+    <li><b>En $+\infty$:</b> $\frac{f(x)}x=\frac{x^2+1}{x^2-x}\to1=m$ y $f(x)-x=\frac{x+1}{x-1}\to1=b$: $y=x+1$ es asíntota oblicua. Por división: $\frac{x^2+1}{x-1}=x+1+\frac2{x-1}$.</li>
+    <li><b>Vertical $x=1$</b> (en la rama $x&gt;0$): el numerador tiende a $2$, así que $x\to1^-$ da $-\infty$ y $x\to1^+$ da $+\infty$.</li>
+    <li><b>En $x=0$</b> (no lo comenta E): $f$ no está definida, pero los dos laterales valen $\frac1{-1}=-1$ y $\frac{0+1}{0-1}=-1$. Hay límite ($-1$), luego no hay asíntota: es un «agujero» en la gráfica. (La figura de E lo dibuja como una curva continua.) Ver la figura del apartado 7.</li>
+  </ol>
+  <p><b>Resumen:</b> horizontal $y=0$ (en $-\infty$), oblicua $y=x+1$ (en $+\infty$) y vertical $x=1$.</p>
+  <div class="recipe"><b>Receta:</b> estudia $+\infty$ y $-\infty$ <b>por separado</b>. En cada lado hay como mucho una recta asíntota: horizontal u oblicua, nunca las dos.</div>
+  <p><b>Error típico:</b> afirmar «si tiene horizontal no puede tener oblicua» sin decir en qué lado.</p>
+  <p class="l4-teo">Teoría: U pp. 48-49; unicidad del límite p. 44.</p>
+</details>
+
+<p class="l4-blk">Ejemplos propios del bloque B</p>
+
+<details class="sol"><summary>Ejemplo B1 (fácil) — $f(x)=\frac{2x+1}{x-3}$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p><b>Vertical</b> $x=3$: el numerador vale $7&gt;0$; en $3^-$ el denominador $\to0^-$ y $f\to-\infty$; en $3^+$, $f\to+\infty$. <b>Horizontal</b> $y=2$ en ambos lados ($\frac{2+1/x}{1-3/x}\to2$).</p>
+</details>
+<details class="sol"><summary>Ejemplo B2 (media) — $f(x)=\frac{x^2-3x}{x+1}$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p><b>Vertical</b> $x=-1$ (numerador $=4&gt;0$; $-1^-$: $-\infty$; $-1^+$: $+\infty$). <b>Horizontales:</b> ninguna. <b>Oblicua:</b> $m=\lim\frac{x^2-3x}{x^2+x}=1$ y $b=\lim\frac{-4x}{x+1}=-4$: $y=x-4$ en ambos lados. Por división: $x^2-3x=(x+1)(x-4)+4$.</p>
+</details>
+<details class="sol"><summary>Ejemplo B3 (difícil) — horizontal en un lado y oblicua en el otro: $f(x)=\sqrt{x^2+1}+x$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <ol class="steps">
+    <li><b>En $-\infty$:</b> con el conjugado, $f=\frac{(\sqrt{x^2+1}+x)(\sqrt{x^2+1}-x)}{\sqrt{x^2+1}-x}=\frac1{\sqrt{x^2+1}-x}\to0$ (el denominador $\to+\infty$). Horizontal $y=0$.</li>
+    <li><b>En $+\infty$:</b> $\frac fx=\sqrt{1+1/x^2}+1\to2$ y $f-2x=\sqrt{x^2+1}-x=\frac1{\sqrt{x^2+1}+x}\to0$. Oblicua $y=2x$.</li>
+  </ol>
+  <p>Otra respuesta al 1.30, con una sola fórmula en vez de una función a trozos.</p>
+</details>
+
+<!-- ------------------------- BLOQUE C ------------------------- -->
+<h3 id="bloqueC">Bloque C · Continuidad (1.32 → 1.31 → 1.33 → 1.34)</h3>
+<p><b>Recordatorio.</b> $f$ es continua en $a\in D$ si $\lim_{x\to a}f(x)=f(a)$ (U Def. 1.20, p. 51): hacen falta tres cosas (que $f(a)$ exista, que exista el límite, que coincidan). Sumas, productos, cocientes con denominador no nulo y composiciones de continuas son continuas (Props. 1.13 y 1.14). Polinomios, trigonométricas, exponenciales y logaritmos son continuas en su dominio (U p.29).</p>
+
+<details class="sol"><summary>Ejercicio 1.32 — ajustar $k$ para que $f$ sea continua <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.32, p. 34">E p.34</span></summary>
+  <p class="enun">Sea $f(x)=\begin{cases}\dfrac{x^3-8}{x-2},&amp;x\neq2,\\[1mm]k,&amp;x=2.\end{cases}$ Encontrar para qué valor de $k$ la función es continua en $\mathbb R$.</p>
+  <ol class="steps">
+    <li><b>Puntos $x\neq2$.</b> Cerca de cada uno, $f$ es un cociente de polinomios con denominador no nulo: continua (Prop. 1.13). No depende de $k$.</li>
+    <li><b>Punto $x=2$.</b> Por la Def. 1.20, $f$ es continua en $2$ si y solo si $\lim_{x\to2}f(x)=f(2)=k$.</li>
+    <li><b>Límite.</b> Sale $\frac00$, así que $x=2$ es raíz del numerador. Por Ruffini o por la diferencia de cubos $a^3-b^3=(a-b)(a^2+ab+b^2)$: $x^3-8=(x-2)(x^2+2x+4)$.</li>
+    <li>Para $x\neq2$, $f(x)=x^2+2x+4$, expresión continua. Como el límite en $2$ solo usa $x\neq2$ (U Def. 1.18), $\lim_{x\to2}f(x)=4+4+4=12$.</li>
+    <li><b>Conclusión:</b> $f$ es continua en $\mathbb R$ si y solo si <b>$k=12$</b>. (sympy: $12$.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para una función definida por separado en un punto con un parámetro: continuidad en ese punto ⇔ (límite, o los dos laterales) $=$ valor. Se despeja el parámetro.</div>
+  <p><b>Error típico:</b> poner $k=0$ «porque el numerador se anula»; sustituir en $\frac{x^3-8}{x-2}$ y quedarse en $\frac00$.</p>
+  <p class="l4-teo">Teoría: U Def. 1.20 y Prop. 1.13, p. 51.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.31 — $x\cos\frac1x$: ¿se puede definir en $0$ para que sea continua? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.31, p. 33">E p.33</span></summary>
+  <p class="enun">Sea $f(x)=x\cos\dfrac1x$. ¿Se puede definir en $x=0$ de tal forma que sea continua en $\mathbb R$?</p>
+  <ol class="steps">
+    <li><b>Respuesta:</b> sí, con $f(0)=0$.</li>
+    <li><b>Fuera de $0$.</b> En $\mathbb R\setminus\{0\}$, $f$ es continua: $x\mapsto\frac1x$ es continua si $x\neq0$, $\cos$ es continua, la composición también (Prop. 1.14) y el producto por $x$ también (Prop. 1.13).</li>
+    <li><b>Qué hace falta en $0$.</b> Dar un valor $f(0)=L$ con $L=\lim_{x\to0}f(x)$ (Def. 1.20). Por la unicidad del límite, si existe es la única elección posible; si no existe, no hay forma de hacerla continua.</li>
+    <li><b>Acotar.</b> Como $|\cos t|\le1$ para todo $t$: $-|x|\le x\cos\frac1x\le|x|$ para $x\neq0$.</li>
+    <li><b>Emparedado (U p.45).</b> $\lim_{x\to0}|x|=\lim_{x\to0}(-|x|)=0$, luego $\lim_{x\to0}x\cos\frac1x=0$. Otra vía: U Prop. 1.10 (versión local): $x\to0$ y $\cos\frac1x$ está acotada cerca de $0$, así que el producto $\to0$. (sympy: $0$.)</li>
+    <li><b>Redefinición:</b> $f(0)=0$.</li>
+  </ol>
+  <p><b>Comparación:</b> $\operatorname{sen}\frac1x$ no tiene límite en $0$ (U Ej. 1.44), porque oscila entre $-1$ y $1$; el factor $x$ reduce esas oscilaciones hasta $0$.</p>
+  <div class="recipe"><b>Receta:</b> (función acotada) × (función que tiende a $0$) → $0$.</div>
+  <p><b>Error típico:</b> escribir $\lim x\cdot\lim\cos\frac1x=0\cdot(\text{algo})$: la regla del producto exige que <b>los dos</b> límites existan, y $\lim\cos\frac1x$ no existe. Sobre E: escribe «$\cos x\in[-1,1]$» y lo que se usa es $\cos\frac1x$; y escribe $0\le\lim|f|\le\lim|x|$ antes de saber que $\lim|f|$ existe (es el emparedado el que lo prueba). Su nota al margen, $\lim g=0\iff\lim|g|=0$, sale de la Def. 1.18, porque $\big||g|-0\big|=|g-0|$.</p>
+  <p class="l4-teo">Teoría: U regla del emparedado y Prop. 1.10, p. 45; Def. 1.20, p. 51.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.33 — límite y continuidad de $e^{-1/(1+x)^2}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.33, pp. 34-35">E pp.34-35</span></summary>
+  <p class="enun">Sea $f(x)=\begin{cases}e^{-\frac1{(1+x)^2}},&amp;x\neq-1,\\[1mm]e^{-\frac14},&amp;x=-1.\end{cases}$ Calcular $\lim_{x\to-1}f(x)$ y estudiar la continuidad de $f$ en $\mathbb R$.</p>
+  <ol class="steps">
+    <li><b>Si $x\neq-1$.</b> El exponente $t(x)=-\frac1{(1+x)^2}$ es un cociente con denominador no nulo: continuo. $\exp$ es continua. Por la Prop. 1.14, $f$ es continua en todo $x\neq-1$.</li>
+    <li><b>Límite en $-1$, de dentro hacia fuera.</b> $(1+x)^2\to0$ y es <b>positivo</b> para $x\neq-1$ (cuadrado): se escribe $0^+$. Por tanto $\frac1{(1+x)^2}\to+\infty$ y el exponente $-\frac1{(1+x)^2}\to-\infty$. Como $e^t\to0$ cuando $t\to-\infty$, $\lim_{x\to-1}f(x)=0$. (sympy: $0$.) Justificación: cambio de variable del apartado 3 (segundo enunciado) con $t=-\frac1{(1+x)^2}\to b=-\infty$ y $\lim_{t\to-\infty}e^t=0$ (con $b=-\infty$, la condición $t\neq b$ es automática); U Ej. 1.26, p. 30 usa $e^{-\infty}=0$.</li>
+    <li><b>Comparar con el valor.</b> $f(-1)=e^{-1/4}\approx0{,}7788\neq0$. Por tanto $f$ <b>no es continua en $-1$</b>; sí lo es en $\mathbb R\setminus\{-1\}$.</li>
+    <li><b>Tipo de discontinuidad</b> (terminología de S §2.5, p. 120, no de U): el límite existe pero no coincide con el valor: es <b>evitable</b>. Poniendo $f(-1)=0$ sería continua.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> con una exponencial, calcula primero el límite del exponente (con su signo) y luego aplica $e^{+\infty}=+\infty$, $e^{-\infty}=0$ o, si es finito, la continuidad de $\exp$.</div>
+  <p><b>Error típico:</b> olvidar el signo menos y concluir $+\infty$; decir que $f$ «no está definida en $-1$» (sí lo está: vale $e^{-1/4}$; lo que falla es la igualdad entre límite y valor).</p>
+  <p class="l4-teo">Teoría: U Def. 1.20 y Prop. 1.14, p. 51; Def. 1.12, p. 27; S p.124 (composición).</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.34 — continuidad de $g\circ f$ con $f=|x|$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.34, p. 35 (con imprecisiones)">E p.35</span></summary>
+  <p class="enun">Sean $f(x)=|x|$ y $g(x)=\begin{cases}e^{-\frac1{(1+x)^2}},&amp;x\neq-1,\\[1mm]e^{-\frac14},&amp;x=-1.\end{cases}$ Estudiar la continuidad de $g\circ f$.</p>
+  <ol class="steps">
+    <li><b>Respuesta:</b> $g\circ f$ es continua en todo $\mathbb R$.</li>
+    <li><b>$f=|x|$ es continua en $\mathbb R$.</b> Si $x\neq0$, cerca de $x$ coincide con $x$ o con $-x$ (polinomios). En $0$: $\lim_{x\to0^-}(-x)=0=\lim_{x\to0^+}x$, y por el Teorema 1.4 (U p.47) el límite es $0=f(0)$.</li>
+    <li><b>$g$</b> es continua en $\mathbb R\setminus\{-1\}$ y discontinua en $-1$ (Ejercicio 1.33).</li>
+    <li><b>Regla de la composición (U Prop. 1.14, p. 51).</b> $g\circ f$ es continua en $a$ si $f$ es continua en $a$ y $g$ es continua en $f(a)$. Para todo $a$, $f(a)=|a|\ge0$, así que $f(a)\neq-1$ y $g$ es continua en $f(a)$. Luego $g\circ f$ es continua en todo $a\in\mathbb R$.</li>
+    <li><b>Fórmula explícita:</b> $(g\circ f)(x)=e^{-\frac1{(1+|x|)^2}}$, con $1+|x|\ge1&gt;0$. El único punto problemático de $g$, el $-1$, no está en la imagen $f(\mathbb R)=[0,\infty)$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> en $g\circ f$, las discontinuidades de $g$ solo importan si son valores que $f$ alcanza, es decir, si están en $f(D)$.</div>
+  <p><b>Error típico:</b> razonar «$g$ es discontinua, luego $g\circ f$ también lo es».</p>
+  <p><b>Sobre E:</b> dice que «el argumento de $g$ es siempre positivo»; es <b>no negativo</b> (vale $0$ en $x=0$), aunque la conclusión no cambia. Su frase final, «$g\circ f$ es continua, aunque no es composición, suma y cociente de funciones continuas», es <b>incorrecta o confusa</b>: $g\circ f$ <b>sí</b> es composición de funciones continuas ($|x|$, luego $t\mapsto-\frac1{(1+t)^2}$ continua en $t\ge0$, luego $\exp$). Lo que importa es que la Prop. 1.14 es <b>local</b>. Aunque no se pide: $f\circ g=|g|=g$ (porque $g&gt;0$) sí es discontinua en $-1$.</p>
+  <p class="l4-teo">Teoría: U Prop. 1.14 y Def. 1.20, p. 51; Teorema 1.4, p. 47.</p>
+</details>
+
+<p class="l4-blk">Ejemplos propios del bloque C</p>
+
+<details class="sol"><summary>Ejemplo C1 (fácil) — parámetro en una función a trozos <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p class="enun">Hallar $a$ para que $f(x)=\begin{cases}x^2+a,&amp;x&lt;1,\\2x+3,&amp;x\ge1\end{cases}$ sea continua.</p>
+  <p>Fuera de $1$ es continua (polinomios). En $1$: $\lim_{x\to1^-}f=1+a$ y $\lim_{x\to1^+}f=5=f(1)$. Por el Teorema 1.4, para que haya límite $1+a=5$: <b>$a=4$</b>.</p>
+</details>
+<details class="sol"><summary>Ejemplo C2 (media) — $x^2\operatorname{sen}\frac1x$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p>¿Se puede extender $f(x)=x^2\operatorname{sen}\frac1x$ a $x=0$ de forma continua? Como $\big|x^2\operatorname{sen}\frac1x\big|\le x^2\to0$, por el emparedado el límite es $0$: sí, con $f(0)=0$.</p>
+</details>
+<details class="sol"><summary>Ejemplo C3 (difícil) — discontinuidad no evitable: $\frac{x^2-1}{|x-1|}$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p>Para $x&gt;1$, $f=\frac{(x-1)(x+1)}{x-1}=x+1\to2$; para $x&lt;1$, $f=\frac{(x-1)(x+1)}{-(x-1)}=-(x+1)\to-2$. Los laterales son distintos: no hay límite (Teorema 1.4) y <b>ningún</b> valor de $f(1)$ la hace continua (discontinuidad de salto).</p>
+</details>
+
+<!-- ------------------------- BLOQUE D ------------------------- -->
+<h3 id="bloqueD">Bloque D · Bolzano, valores intermedios y Weierstrass (1.38 → 1.36 → 1.35 → 1.37)</h3>
+<p><b>Enunciados (U p.52).</b> <i>Bolzano:</i> $f$ continua en $[a,b]$ y $f(a)f(b)&lt;0$ ⇒ existe $c\in(a,b)$ con $f(c)=0$. <i>Valores intermedios:</i> $f$ continua en $[a,b]$ y $d$ estrictamente entre $f(a)$ y $f(b)$ ⇒ existe $c\in(a,b)$ con $f(c)=d$. <i>Weierstrass</i> (Prop. 1.15): $f$ continua en $[a,b]$ ⇒ alcanza máximo y mínimo.</p>
+
+<details class="sol"><summary>Ejercicio 1.38 — ¿existe $x_0\in[0,3]$ con $\frac{x_0+2}{x_0^5+1}=\frac12$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.38, pp. 38-39">E pp.38-39</span></summary>
+  <p class="enun">Sea $f(x)=\dfrac{x+2}{x^5+1}$. ¿Existe un punto $x_0\in[0,3]$ tal que $f(x_0)=\frac12$? Si es así, demostrarlo.</p>
+  <ol class="steps">
+    <li><b>Respuesta:</b> sí.</li>
+    <li><b>Continuidad en $[0,3]$.</b> Numerador y denominador son polinomios (continuos). Si $x\ge0$, $x^5+1\ge1&gt;0$: el denominador no se anula y el cociente es continuo (U Prop. 1.13).</li>
+    <li><b>Valores en los extremos.</b> $f(0)=\frac21=2$ y $f(3)=\frac5{244}\approx0{,}0205$.</li>
+    <li><b>Colocar $d=\frac12$.</b> $f(3)&lt;\frac12&lt;f(0)$. Por el <b>teorema de los valores intermedios</b> (U p.52) existe $x_0\in(0,3)$ con $f(x_0)=\frac12$. Equivale a aplicar Bolzano a $h=f-\frac12$: $h(0)=\frac32&gt;0$ y $h(3)&lt;0$.</li>
+    <li><i>Numéricamente</i> $x_0\approx1{,}4236$ (sympy). El ejercicio no pide unicidad.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para «¿existe $x$ con $f(x)=d$?»: comprueba que $f$ es continua en el intervalo y encuentra dos puntos en los que $f$ quede a cada lado de $d$. Aplica valores intermedios.</div>
+  <p><b>Error típico:</b> no comprobar que el denominador no se anula en el intervalo. En $[-2,0]$ este mismo $f$ <b>no</b> es continuo, porque $x^5+1=0$ en $x=-1$.</p>
+  <p class="l4-teo">Teoría: U TVI y Bolzano, p. 52.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.36 — ¿se cortan $\frac{4x^4}{x^2+x+1}$ y $\cos x$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.36, pp. 36-37">E pp.36-37</span></summary>
+  <p class="enun">Sean $f(x)=\dfrac{4x^4}{x^2+x+1}$ y $g(x)=\cos x$ para $x\in[0,+\infty)$. ¿Existe algún punto $x\in[0,+\infty)$ donde $f(x)=g(x)$?</p>
+  <ol class="steps">
+    <li><b>Respuesta:</b> sí.</li>
+    <li><b>Convertirlo en un problema de ceros.</b> $f(x)=g(x)\iff h(x):=f(x)-g(x)=0$. Bolzano sirve para encontrar ceros.</li>
+    <li><b>Continuidad de $h$.</b> $x^2+x+1&gt;0$ para todo $x$ (discriminante $1-4&lt;0$ y coeficiente principal positivo). Así $f$ es continua; $\cos$ también, y la diferencia (Prop. 1.13).</li>
+    <li><b>Un punto con $h&lt;0$:</b> $h(0)=0-\cos0=-1&lt;0$.</li>
+    <li><b>Un punto con $h&gt;0$.</b> E usa $\lim_{x\to+\infty}h(x)=+\infty$ ($f$ se comporta como $4x^2$ y $\cos$ está acotado), que asegura algún $b$ con $h(b)&gt;0$. Es más cómodo dar uno concreto: $b=1$, $h(1)=\frac43-\cos1\ge\frac43-1&gt;0$ (solo hace falta $\cos1\le1$). (Numéricamente $h(1)\approx0{,}793$.)</li>
+    <li><b>Bolzano en $[0,1]$:</b> existe $c\in(0,1)$ con $h(c)=0$, es decir, $f(c)=g(c)$. (sympy: $c\approx0{,}8075$.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para una igualdad $f=g$, aplica Bolzano a $h=f-g$. Busca puntos de prueba sencillos ($0$, $1$, $\pi/2$…) antes de recurrir a límites.</div>
+  <p><b>Error típico:</b> aplicar Bolzano «en $[0,+\infty)$» sin un extremo finito $b$. U solo lo enuncia en $[a,b]$; la versión para intervalos no acotados (U p.52) exige hipótesis sobre límites.</p>
+  <p class="l4-teo">Teoría: U Bolzano y su extensión, p. 52.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.35 — un polinomio de grado impar tiene una raíz real <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.35, pp. 35-36">E pp.35-36</span></summary>
+  <p class="enun">Demostrar, utilizando el teorema de Bolzano, que cualquier polinomio de grado impar con coeficientes reales tiene al menos una raíz real.</p>
+  <ol class="steps">
+    <li><b>Planteamiento.</b> $p(x)=a_nx^n+\dots+a_1x+a_0$ con $n$ impar y $a_n\neq0$. Se puede suponer $a_n&gt;0$: si no, se trabaja con $-p$, que tiene las mismas raíces.</li>
+    <li><b>Límites en $\pm\infty$.</b> Para $x\neq0$, $p(x)=x^n\Big(a_n+\frac{a_{n-1}}x+\dots+\frac{a_0}{x^n}\Big)$. El paréntesis $\to a_n&gt;0$ (cada $\frac{a_k}{x^{n-k}}\to0$). Como $n$ es impar, $x^n$ tiene el signo de $x$: $x^n\to+\infty$ si $x\to+\infty$ y $x^n\to-\infty$ si $x\to-\infty$. Con las reglas $x\cdot(\pm\infty)$ de U Def. 1.12 (p.27): $\lim_{x\to+\infty}p=+\infty$ y $\lim_{x\to-\infty}p=-\infty$.</li>
+    <li><b>De los límites a dos puntos concretos.</b> Aplicando la definición de límite infinito en el infinito con $k=1$ (apartado 6): existe $b$ con $p(b)\ge1&gt;0$ y existe $a&lt;b$ con $p(a)\le-1&lt;0$. <i>(Versión constructiva, propia:</i> con $M=1+\frac{|a_0|+\dots+|a_{n-1}|}{a_n}$, si $|x|\ge M$ se tiene $|a_{n-1}x^{n-1}+\dots+a_0|\le(\sum|a_k|)|x|^{n-1}=a_n(M-1)|x|^{n-1}&lt;a_n|x|^n$; así $p(x)$ tiene el signo de $a_nx^n$ y se puede tomar $a=-M$, $b=M$.)</li>
+    <li><b>Bolzano.</b> $p$ es continua en $[a,b]$ (polinomio) y $p(a)p(b)&lt;0$: existe $c\in(a,b)$ con $p(c)=0$.</li>
+  </ol>
+  <p><b>Por qué hace falta grado impar:</b> $x^2+1$ no tiene raíces reales; con grado par, los dos límites tienen el mismo signo.</p>
+  <div class="recipe"><b>Receta:</b> si hay que probar que existe una raíz sin que den un intervalo, usa los límites en $\pm\infty$ (o en los extremos del dominio) para encontrar dos puntos con signos opuestos.</div>
+  <p><b>Error típico:</b> creer que se ha demostrado que hay <b>una sola</b> raíz (Bolzano da «al menos una»); aplicar el argumento a grado par. Sobre E: escribe el grado como $2k+1$ con $k\in\mathbb N$; en U $\mathbb N=\{1,2,\dots\}$ (p.12), lo que deja fuera el grado $1$ (caso trivial: la raíz es $-a_0/a_1$). Además dice «como el límite es $-\infty$ y un polinomio es continuo, existe $a$ con $p(a)&lt;0$»; ese paso sale de la definición de límite, no de la continuidad.</p>
+  <p class="l4-teo">Teoría: U Bolzano p. 52; Def. 1.12 p. 27.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.37 — $\frac{e^{-x}}x$ en $(0,+\infty)$ y Weierstrass <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.37, pp. 37-38">E pp.37-38</span></summary>
+  <p class="enun">Sea $f(x)=\dfrac{e^{-x}}x$ en $(0,+\infty)$. ¿Existen $\lim_{x\to0^+}f(x)$ y $\lim_{x\to+\infty}f(x)$? Si existen, ¿alcanza la imagen de $f$ el valor del supremo o del ínfimo en algún punto de $(0,+\infty)$? ¿Contradice esto el teorema de Weierstrass?</p>
+  <ol class="steps">
+    <li><b>$x\to0^+$.</b> El numerador tiende a $e^0=1$ y el denominador a $0^+$: $\lim_{x\to0^+}f=+\infty$ (regla del signo, como en 1.23). La imagen <b>no está acotada superiormente</b> Un conjunto no acotado superiormente no tiene cotas superiores, luego no tiene supremo en $\mathbb R$ (U Def. 1.7, p.20).</li>
+    <li><b>$x\to+\infty$.</b> Para $x&gt;0$, $0&lt;e^{-x}&lt;1$, luego $0&lt;f(x)&lt;\frac1x$. Como $\frac1x\to0$, el emparedado (U p.45) da $\lim_{x\to+\infty}f=0$. (sympy: $\infty$ y $0$.)</li>
+    <li><b>Ínfimo.</b> $f(x)&gt;0$ para todo $x$: $0$ es cota inferior. Como $f\to0$, para cada $\varepsilon&gt;0$ hay puntos con $f(x)&lt;\varepsilon$ y ninguna cota inferior puede ser mayor que $0$: $\inf f\big((0,\infty)\big)=0$, pero <b>no se alcanza</b> ($f(x)&gt;0$). Además $f$ es continua y estrictamente decreciente (producto de dos positivas decrecientes); con los límites y el TVI, su imagen es exactamente $(0,+\infty)$.</li>
+    <li><b>Weierstrass.</b> La Prop. 1.15 (U pp.52-53) exige un intervalo $[a,b]$ <b>cerrado y acotado</b>. $(0,+\infty)$ no es ni una cosa ni la otra (basta que falle una). Si falla una hipótesis, el teorema no dice nada: <b>no hay contradicción</b>. U da un contraejemplo análogo en p.53: $x^{-1}$ en $(0,1)$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para usar Weierstrass comprueba tres cosas: $f$ continua, intervalo cerrado, intervalo acotado. Si falla una, el máximo o el mínimo pueden no alcanzarse.</div>
+  <p><b>Error típico:</b> pensar que «no alcanza el mínimo, luego contradice Weierstrass»; decir que el ínfimo «no es $0$» porque no se alcanza (ínfimo y mínimo son cosas distintas). Sobre E: escribe $0\le\lim f\le\lim\frac1x$ antes de saber que $\lim f$ existe, y no dice explícitamente que $\inf=0$.</p>
+  <p class="l4-teo">Teoría: U Prop. 1.15, pp. 52-53; emparedado, p. 45; supremo e ínfimo, §1.1 p. 20.</p>
+</details>
+
+<p class="l4-blk">Ejemplos propios del bloque D</p>
+
+<details class="sol"><summary>Ejemplo D1 (fácil) — $x^3+x-1=0$ tiene una raíz en $(0,1)$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <p>$f(x)=x^3+x-1$ es continua (polinomio), $f(0)=-1&lt;0$ y $f(1)=1&gt;0$. Por Bolzano existe una raíz en $(0,1)$. (Raíz $\approx0{,}6823$.)</p>
+</details>
+<details class="sol"><summary>Ejemplo D2 (media) — Weierstrass es condición suficiente, no necesaria <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
+  <p>$f(x)=x^2$ en $(-1,2]$: el intervalo no es cerrado y aun así $f$ alcanza el mínimo $0$ (en $x=0$) y el máximo $4$ (en $x=2$). En cambio $f(x)=x$ en $(0,1)$ no alcanza ni el supremo $1$ ni el ínfimo $0$.</p>
+</details>
+<details class="sol"><summary>Ejemplo D3 (difícil) — contar raíces con Bolzano: $x^5-3x+1$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
+  <ol class="steps">
+    <li>Se evalúa en varios enteros: $p(-2)=-25$, $p(-1)=3$, $p(0)=1$, $p(1)=-1$, $p(2)=27$.</li>
+    <li>Hay tres cambios de signo, en $(-2,-1)$, $(0,1)$ y $(1,2)$: por Bolzano, $p$ tiene <b>al menos 3</b> raíces reales. (sympy: $-1{,}3888$; $0{,}3347$; $1{,}21465$.)</li>
+  </ol>
+</details>
+
+<!-- ------------------------- BLOQUE E ------------------------- -->
+<h3 id="bloqueE">Bloque E · Método de bisección (1.40 → 1.41 → 1.39)</h3>
+<p><b>Recordatorio (U pp.53-55).</b> Si $f$ es continua en $[a,b]$ y $f(a)f(b)&lt;0$: se toma $c_1=\frac{a+b}2$ y se conserva la mitad en cuyos extremos $f$ cambia de signo; se repite. Tras $n$ iteraciones, $|c_n-\tilde x|&lt;\frac{b-a}{2^n}$. Para un error menor que $\varepsilon$ basta $n&gt;\log_2\frac{b-a}\varepsilon$.</p>
+
+<details class="sol"><summary>Ejercicio 1.40 — tres iteraciones para $x^3-3$ en $[0,4]$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.40, pp. 40-41">E pp.40-41</span></summary>
+  <p class="enun">El polinomio $x^3-3$ tiene una única raíz en el intervalo $[0,4]$. Aproximarla realizando 3 iteraciones con el método de bisección y acotar el error cometido.</p>
+  <ol class="steps">
+    <li><b>Hipótesis.</b> $f(x)=x^3-3$ es continua, $f(0)=-3&lt;0$ y $f(4)=61&gt;0$: Bolzano garantiza una raíz. Es única porque $x^3$ es estrictamente creciente. La raíz es $\sqrt[3]3$.</li>
+    <li><b>Iteraciones</b> (la mitad que se conserva es siempre la que tiene signos opuestos en sus extremos):
+      <table>
+        <tr><th>$n$</th><th>$[a,b]$</th><th>$c_n$</th><th>$f(c_n)$</th><th>intervalo siguiente</th></tr>
+        <tr><td>1</td><td>$[0,4]$</td><td>$2$</td><td>$5&gt;0$</td><td>$[0,2]$</td></tr>
+        <tr><td>2</td><td>$[0,2]$</td><td>$1$</td><td>$-2&lt;0$</td><td>$[1,2]$</td></tr>
+        <tr><td>3</td><td>$[1,2]$</td><td>$1{,}5$</td><td>$0{,}375&gt;0$</td><td>$[1;1{,}5]$</td></tr>
+      </table>
+      <b>Aproximación:</b> $c_3=1{,}5$.</li>
+    <li><b>Cota del error (U p.54):</b> $|c_3-\sqrt[3]3|&lt;\frac{4-0}{2^3}=\frac12$. Comprobación: $\sqrt[3]3\approx1{,}44225$, así que el error real es $\approx0{,}0578$, muy por debajo de la cota (que es para el peor caso).</li>
+  </ol>
+  <figure>
+<svg class="fig" viewBox="0 0 880 250" role="img" aria-label="Bisección para x al cubo menos 3 en [0,4]: cada paso conserva la mitad donde f cambia de signo y la raíz cúbica de 3 queda dentro de todos los intervalos">
+  <line class="ax" x1="40" y1="212" x2="580" y2="212"/>
+  <line class="ax" x1="60" y1="207" x2="60" y2="217"/><text x="60" y="234" text-anchor="middle">0</text>
+  <line class="ax" x1="185" y1="207" x2="185" y2="217"/><text x="185" y="234" text-anchor="middle">1</text>
+  <line class="ax" x1="310" y1="207" x2="310" y2="217"/><text x="310" y="234" text-anchor="middle">2</text>
+  <line class="ax" x1="435" y1="207" x2="435" y2="217"/><text x="435" y="234" text-anchor="middle">3</text>
+  <line class="ax" x1="560" y1="207" x2="560" y2="217"/><text x="560" y="234" text-anchor="middle">4</text>
+  <line class="l4-dash" x1="240.3" y1="26" x2="240.3" y2="212"/><text x="240.3" y="20" text-anchor="middle" class="bd" style="fill:var(--S)">∛3 ≈ 1,442</text>
+  <line class="a" x1="60.0" y1="50" x2="560.0" y2="50"/><line class="ax" x1="60.0" y1="44" x2="60.0" y2="56"/><line class="ax" x1="560.0" y1="44" x2="560.0" y2="56"/>
+  <circle class="pb" cx="310.0" cy="50" r="4.5"/>
+  <text x="596" y="54" class="sm">[0, 4] → c₁ = 2, f(2) = 5 &gt; 0</text>
+  <line class="a" x1="60.0" y1="95" x2="310.0" y2="95"/><line class="ax" x1="60.0" y1="89" x2="60.0" y2="101"/><line class="ax" x1="310.0" y1="89" x2="310.0" y2="101"/>
+  <circle class="pb" cx="185.0" cy="95" r="4.5"/>
+  <text x="596" y="99" class="sm">[0, 2] → c₂ = 1, f(1) = −2 &lt; 0</text>
+  <line class="a" x1="185.0" y1="140" x2="310.0" y2="140"/><line class="ax" x1="185.0" y1="134" x2="185.0" y2="146"/><line class="ax" x1="310.0" y1="134" x2="310.0" y2="146"/>
+  <circle class="pb" cx="247.5" cy="140" r="4.5"/>
+  <text x="596" y="144" class="sm">[1, 2] → c₃ = 1,5, f(1,5) = 0,375 &gt; 0</text>
+  <line class="a" x1="185.0" y1="185" x2="247.5" y2="185"/><line class="ax" x1="185.0" y1="179" x2="185.0" y2="191"/><line class="ax" x1="247.5" y1="179" x2="247.5" y2="191"/>
+  <text x="596" y="189" class="sm">[1; 1,5]: error &lt; 4/2³ = 0,5</text>
+</svg>
+    <figcaption>Cada fila es el intervalo que se conserva; el punto naranja es su punto medio. La raíz $\sqrt[3]3\approx1{,}442$ queda siempre dentro.</figcaption>
+  </figure>
+  <div class="recipe"><b>Receta:</b> haz una tabla con $a$, $b$, $c$ y el signo de $f(c)$. Tras $n$ puntos medios, el error es menor que $\frac{b-a}{2^n}$.</div>
+  <p><b>Error típico:</b> quedarse con la mitad equivocada (hay que mirar los <b>signos</b>, no qué valor está más cerca de $0$); contar mal las iteraciones (la cota corresponde al número de <b>puntos medios</b> calculados).</p>
+  <p class="l4-teo">Teoría: U método de bisección, pp. 53-54.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.41 — ¿cuántas iteraciones para un error menor que $0{,}11$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.41, p. 41 (con errata aritmética)">E p.41</span></summary>
+  <p class="enun">Tenemos $f:[0,1]\to\mathbb R$ continua, con $f(0)=-1$ y $f(1)=4$. Buscamos una solución aproximada de $f(x)=0$ en $[0,1]$ por bisección. ¿Cuántas iteraciones son necesarias para asegurar que el error es menor que $0{,}11$? a) No se puede aplicar el método. b) Faltan datos. c) 3. d) 4.</p>
+  <ol class="steps">
+    <li><b>a) es falsa:</b> $f$ es continua y $f(0)f(1)=-4&lt;0$: se cumplen las hipótesis.</li>
+    <li><b>b) es falsa:</b> la cota $\frac{b-a}{2^n}$ solo depende de la longitud del intervalo y de $n$, no de la forma de $f$.</li>
+    <li><b>Cálculo:</b> $\frac1{2^n}&lt;0{,}11\iff2^n&gt;\frac1{0{,}11}\approx9{,}09$. Como $2^3=8&lt;9{,}09&lt;16=2^4$, el menor $n$ es $4$. Con la fórmula de U (pp.54-55): $n&gt;\log_2\frac1{0{,}11}\approx3{,}18$, luego $n=4$.</li>
+  </ol>
+  <p><b>Respuesta: d) 4.</b></p>
+  <p><b>Errata de E:</b> escribe $\frac1{2^4}=\frac1{16}=0{,}0635$, pero $\frac1{16}=0{,}0625$. La respuesta no cambia. <b>Matiz:</b> con 3 iteraciones el error <i>podría</i> ser menor que $0{,}11$, pero no se puede <i>asegurar</i>, porque la cota es $0{,}125$.</p>
+  <div class="recipe"><b>Receta:</b> $n$ es el menor entero con $n&gt;\log_2\frac{b-a}\varepsilon$, o equivalentemente $2^n&gt;\frac{b-a}\varepsilon$.</div>
+  <p><b>Error típico:</b> elegir $3$ porque «$0{,}125\approx0{,}11$»; calcular $\log_2(0{,}11)$ en lugar de $\log_2(1/0{,}11)$.</p>
+  <p class="l4-teo">Teoría: U pp. 54-55.</p>
+</details>
+
+<details class="sol"><summary>Ejercicio 1.39 — cuándo falla la bisección <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.39, pp. 39-40">E pp.39-40</span></summary>
+  <p class="enun">¿Por qué no puede aplicarse la bisección a cualquier ecuación $f(x)=0$ en un intervalo cerrado $I$? Construir una $f$ para la que $f(x)=0$ tenga solución en $[0,1]$, $f(0)f(1)&lt;0$ y tal que el método no se pueda aplicar. ¿Se puede aplicar a cualquier $f(x)=0$ en un intervalo cerrado $I$ cuando $f$ sea continua? ¿Existen funciones continuas en $[0,1]$, con $f(c)=0$ para algún $c\in[0,1]$, a las que no se puede aplicar la bisección?</p>
+  <ol class="steps">
+    <li><b>En qué se apoya el método.</b> En cada paso usa <b>Bolzano</b> (U pp.53-54): un cambio de signo en los extremos de un subintervalo garantiza una raíz en él, pero solo si $f$ es <b>continua</b>. Sin continuidad, un cambio de signo puede deberse a un salto, y el método puede quedarse con una mitad donde no hay raíz.</li>
+    <li><b>Ejemplo analítico</b> (propio, reproduce la figura de E p.40):
+      $$f(x)=\begin{cases}-1,&amp;0\le x\le0{,}3,\\1,&amp;0{,}3&lt;x\le0{,}6,\\x-0{,}8,&amp;0{,}6&lt;x\le1.\end{cases}$$
+      $f(0)=-1$ y $f(1)=0{,}2$, así que $f(0)f(1)&lt;0$; la única raíz es $x=0{,}8$. Primer paso: $c_1=0{,}5$ y $f(0{,}5)=1&gt;0$: hay cambio de signo en $[0,0{,}5]$ y el método se queda con esa mitad, <b>donde no hay raíz</b>. Los intervalos siguientes se cierran sobre el salto $x=0{,}3$, donde $f(0{,}3)=-1\neq0$. (Simulado: tras 12 iteraciones, $c\approx0{,}30005$.)</li>
+    <li><b>¿Basta con que $f$ sea continua?</b> No. Hace falta además $f(a)f(b)&lt;0$; si no, el método ni puede empezar. Ejemplo: $f(x)=(x-\frac13)(x-\frac23)$ en $[0,1]$ tiene dos raíces, pero $f(0)=f(1)=\frac29&gt;0$.</li>
+    <li><b>Continua, con raíz y sin bisección posible.</b> $f(x)=(x-0{,}6)^2$ en $[0,1]$ tiene la raíz $0{,}6$, pero $f\ge0$ en todo el intervalo: no hay cambio de signo en ningún subintervalo. La raíz se ha puesto en $0{,}6$ y no en $\frac12$ porque, si estuviera en $\frac12$, el primer punto medio la encontraría por casualidad.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> antes de biseccionar comprueba: (1) continuidad en $[a,b]$ y (2) $f(a)f(b)&lt;0$. La bisección no detecta raíces en las que la función no cambia de signo (raíces dobles).</div>
+  <p><b>Error típico:</b> creer que basta $f(a)f(b)&lt;0$, o que basta la continuidad. Sobre E: en la tercera pregunta explica que «si el signo de $f(\frac12)$ es el mismo… el método fallará», pero con $f(0)f(1)&gt;0$ el método <b>ni siquiera arranca</b>.</p>
+  <p class="l4-teo">Teoría: U Bolzano, p. 52; método de bisección, pp. 53-54.</p>
+</details>
+
+<p class="l4-blk">Ejemplos propios del bloque E</p>
+
+<details class="sol"><summary>Ejemplo E1 (fácil) — aproximar $\sqrt2$ con 3 iteraciones <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con Python">P</span></summary>
+  <p>$f(x)=x^2-2$ en $[1,2]$ ($f(1)=-1&lt;0$, $f(2)=2&gt;0$). $c_1=1{,}5$: $f=0{,}25&gt;0$, se pasa a $[1;1{,}5]$. $c_2=1{,}25$: $f=-0{,}4375&lt;0$, a $[1{,}25;1{,}5]$. $c_3=1{,}375$: $f\approx-0{,}109&lt;0$. Error $&lt;\frac1{2^3}=0{,}125$; el error real es $|1{,}375-1{,}41421|\approx0{,}039$.</p>
+</details>
+<details class="sol"><summary>Ejemplo E2 (media) — número de iteraciones para $10^{-3}$ <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
+  <p>En $[0,1]$, error menor que $10^{-3}$: $n&gt;\log_21000\approx9{,}97$, luego <b>$n=10$</b> ($2^{10}=1024&gt;1000$).</p>
+</details>
+<details class="sol"><summary>Ejemplo E3 (difícil) — resolver $\cos x=x$ en $[0,1]$ con 4 iteraciones <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con Python y sympy">P</span></summary>
+  <p>Con $f(x)=\cos x-x$: $f(0)=1&gt;0$ y $f(1)\approx-0{,}46&lt;0$. $c_1=0{,}5$: $f\approx0{,}378&gt;0$. $c_2=0{,}75$: $f\approx-0{,}018&lt;0$. $c_3=0{,}625$: $f\approx0{,}186&gt;0$. $c_4=0{,}6875$. Error $&lt;\frac1{16}=0{,}0625$; la raíz real es $0{,}73909$, así que el error es $\approx0{,}052$.</p>
+</details>
+
+<!-- ============================ 12 ============================ -->
+<h2 id="chuleta"><span class="n">12</span>Chuleta y lista de comprobación</h2>
+
+<div class="box thm"><span class="h">Chuleta</span>
+  <table>
+    <tr><th>Tema</th><th>Qué recordar</th></tr>
+    <tr><td>Límite (Def. 1.18)</td><td>$\forall\varepsilon\,\exists\delta$: $x\in D\setminus\{a\}$, $|x-a|&lt;\delta\Rightarrow|f(x)-l|\le\varepsilon$. El punto $x=a$ no cuenta. Si existe, es único.</td></tr>
+    <tr><td>Simplificar y sustituir</td><td>Funciones iguales cerca de $a$ salvo en $a$ tienen el mismo límite en $a$. Con $\frac00$: factorizar $(x-a)$ o multiplicar por el conjugado.</td></tr>
+    <tr><td>Álgebra (Prop. 1.11)</td><td>suma, producto y cociente ($m\neq0$) de límites <b>que existen</b>.</td></tr>
+    <tr><td>Emparedado y acotada×0</td><td>$f\le h\le g$ con mismo límite $\Rightarrow$ ese límite; $\lim f=0$ y $g$ acotada $\Rightarrow\lim fg=0$.</td></tr>
+    <tr><td>Composición</td><td>$g(x)\to b$ y $f$ continua en $b\Rightarrow f(g(x))\to f(b)$. $e^{-\infty}=0$, $e^{+\infty}=+\infty$.</td></tr>
+    <tr><td>Indeterminaciones</td><td>$\frac00,\ \infty-\infty,\ \pm\infty\cdot0,\ \frac\infty\infty,\ 0^0,\ 1^{\pm\infty},\ \infty^0$.</td></tr>
+    <tr><td>$1^\infty$</td><td>$A\to1$, $B\to\pm\infty$: $A^B\to e^{\lim B(A-1)}$. $\big(1+\frac1F\big)^F\to e$ si $F\to\pm\infty$.</td></tr>
+    <tr><td>Laterales (Teor. 1.4)</td><td>$\lim_{x\to a}f=l\iff\lim_{a^-}f=\lim_{a^+}f=l$.</td></tr>
+    <tr><td>Regla del signo</td><td>$\frac{l}{0^+}$: $\operatorname{sig}(l)\,\infty$; $\frac{l}{0^-}$: $-\operatorname{sig}(l)\,\infty$ ($l\neq0$). Cada lateral por separado.</td></tr>
+    <tr><td>Infinito</td><td>Racional: $\operatorname{gr}P&lt;\operatorname{gr}Q\to0$; $=\to$ cociente de coeficientes dominantes; $&gt;\to\pm\infty$. Polinomio impar: $\pm\infty$ con signos opuestos en $\pm\infty$.</td></tr>
+    <tr><td>Asíntotas</td><td>Horizontal $y=b$: $\lim_{\pm\infty}f=b$. Vertical $x=a$: algún lateral $=\pm\infty$. Oblicua $y=mx+b$: $m=\lim\frac fx\ne0$, $b=\lim(f-mx)$; cada lado por separado; nunca horizontal y oblicua en el mismo lado. Ojo: $m=\lim\frac fx$ no basta (U p.49: $x+\operatorname{sen}x$ tiene $m=1$ pero $f-x=\operatorname{sen}x$ no tiene límite, así que no hay oblicua).</td></tr>
+    <tr><td>Continuidad</td><td>$\lim_{x\to a}f=f(a)$ (existe $f(a)$, existe el límite, coinciden). Suma, producto, cociente ($g(a)\ne0$), composición (local). Evitable / salto / infinita.</td></tr>
+    <tr><td>Bolzano</td><td>$f$ continua en $[a,b]$, $f(a)f(b)&lt;0\Rightarrow\exists c\in(a,b)$, $f(c)=0$. Valores intermedios: lo mismo con $f(c)=d$ entre $f(a)$ y $f(b)$.</td></tr>
+    <tr><td>Weierstrass</td><td>$f$ continua en $[a,b]$ (cerrado <b>y</b> acotado) $\Rightarrow$ alcanza máximo y mínimo.</td></tr>
+    <tr><td>Bisección</td><td>$c_n$ = punto medio; error $&lt;\frac{b-a}{2^n}$; $n&gt;\log_2\frac{b-a}\varepsilon$. Necesita $f$ continua y $f(a)f(b)&lt;0$.</td></tr>
+  </table>
+</div>
+
+<div class="box warn"><span class="h">Errores frecuentes</span>
+  <ul>
+    <li>Creer que el límite en $a$ es $f(a)$; olvidar que $x=a$ está excluido.</li>
+    <li>Sustituir y quedarse en $\frac00$, o decir «$\frac00$ ⇒ no existe» o «$1^\infty=1$».</li>
+    <li>Usar $\lim(fg)=\lim f\cdot\lim g$ cuando alguno de los dos límites no existe.</li>
+    <li>Decir «denominador $\to0$ ⇒ $\infty$» sin estudiar el signo de cada lateral.</li>
+    <li>Olvidar $b$ en la asíntota oblicua, o suponer la misma recta en $+\infty$ y en $-\infty$.</li>
+    <li>Razonar «$g$ discontinua ⇒ $g\circ f$ discontinua» (la Prop. 1.14 es local).</li>
+    <li>Aplicar Bolzano sin comprobar continuidad en <b>todo</b> $[a,b]$; creer que da «una sola» raíz.</li>
+    <li>Aplicar Weierstrass en un intervalo no cerrado o no acotado; confundir supremo con máximo.</li>
+    <li>En la bisección: mirar qué valor de $f$ es menor en vez de los signos; contar mal las iteraciones.</li>
+  </ul>
+</div>
+
+<h3>Lista de comprobación: «sé hacer…»</h3>
+<ul class="checklist">
+  <li>Hallar el dominio de una fórmula compuesta (denominadores, raíces, logaritmos).</li>
+  <li>Enunciar la definición de límite con $\varepsilon$ y $\delta$ y explicar por qué se excluye $x=a$.</li>
+  <li>Calcular límites con $\frac00$ (factorizando o con el conjugado), con logaritmos y con la forma $1^\infty$.</li>
+  <li>Usar el emparedado y la regla «acotada por tendente a $0$».</li>
+  <li>Calcular límites laterales y decidir con el Teorema 1.4 si existe el límite.</li>
+  <li>Determinar el signo de $\frac{l}{0^\pm}$ y calcular límites infinitos.</li>
+  <li>Calcular límites en $\pm\infty$ de racionales, polinomios y exponenciales.</li>
+  <li>Encontrar asíntotas verticales, horizontales y oblicuas ($m$ y $b$), cada lado por separado.</li>
+  <li>Estudiar la continuidad de una función a trozos, ajustar un parámetro y clasificar discontinuidades.</li>
+  <li>Decidir la continuidad de una composición con la Prop. 1.14.</li>
+  <li>Demostrar con Bolzano o valores intermedios que existe una solución (incluida una raíz de un polinomio impar).</li>
+  <li>Comprobar las tres hipótesis de Weierstrass y explicar por qué falla en $(0,\infty)$ o $(0,1)$.</li>
+  <li>Hacer $n$ pasos de bisección con tabla, acotar el error y calcular cuántas iteraciones hacen falta.</li>
+</ul>
+
+<!-- ============================ ★ ============================ -->
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<p>Lista automática de todas las etiquetas usadas (libro y página impresa). <b>U</b> = Cálculo para Ingenieros (pág. impresa = PDF + 2), <b>E</b> = libro de ejercicios, <b>S</b> = Stewart cap. 2 y §§3.6, 4.1, 4.5, <b>L</b> = Larson caps. 1 y 3 (pág. impresa = PDF − 17). Las etiquetas <b>P</b> son explicaciones o ejemplos propios.</p>
+<div id="panel-fuentes"></div>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro.</footer>
+</main>
+</div>
+</body>
+</html>

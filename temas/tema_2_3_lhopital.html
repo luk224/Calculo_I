@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 2.3 Límites y derivación: regla de L'Hôpital</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+<style>
+/* Extras propios del tema 2.3 (clases prefijadas l3-) */
+.l3-dec td:first-child{font-weight:600;white-space:nowrap}
+.l3-dec td:nth-child(2){white-space:nowrap}
+.l3-yes,.l3-no{display:inline-block;font:700 11.5px/1 var(--sans);padding:3px 8px;border-radius:99px;border:1px solid currentColor}
+.l3-yes{color:#a3281c}
+.l3-no{color:#1d6b3f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .l3-yes{color:var(--warn-b)}:root:not([data-theme="light"]) .l3-no{color:var(--ex-b)}}
+:root[data-theme="dark"] .l3-yes{color:var(--warn-b)}
+:root[data-theme="dark"] .l3-no{color:var(--ex-b)}
+.l3-ladder{font:600 1.05rem var(--sans);text-align:center;padding:10px 6px;border:1px solid var(--bd);border-radius:10px;background:var(--card);overflow-x:auto}
+.l3-check{display:grid;gap:8px;margin:1em 0}
+.l3-check>div{border:1px solid var(--bd);border-left:5px solid var(--thm-b);border-radius:8px;padding:8px 14px;background:var(--card);font-family:var(--sans);font-size:.95rem}
+.l3-check b{color:var(--thm-b)}
+svg.fig .dash{stroke:var(--mut);stroke-width:1.3;stroke-dasharray:5 4;fill:none}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo II · Funciones derivables · Tema 2.3</div>
+  <h1>Límites y derivación: la regla de L'Hôpital</h1>
+  <p>Cómo usar las derivadas para calcular límites que, a primera vista, «no se pueden hacer» ($\tfrac00$, $\tfrac\infty\infty$, $0\cdot\infty$, $\infty-\infty$, $1^\infty$, $0^0$, $\infty^0$), cuándo se puede usar la regla y cuándo no.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §2.3 (pp. 81-85)</span><span>Complementos: Stewart §4.4 (pp. 301-307), Larson §8.7 (pp. 557-563)</span><span>Ejercicios: E Ej. 2.24–2.33 (pp. 66-72)</span><span>⏱ ~4 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.3.1 Motivación, p. 81; §2.3.2, p. 82">U pp.81-82</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Definimos la derivada como un límite. Ahora se da la vuelta: <b>la derivada ayuda a calcular límites</b>. Cuando un cociente $\dfrac{f(x)}{g(x)}$ «se atasca» porque arriba y abajo tienden a $0$ (o a $\infty$), a veces basta mirar el cociente de las <i>velocidades de cambio</i> $\dfrac{f'(x)}{g'(x)}$. Además, con unos pocos trucos algebraicos, otras formas de atasco (productos, restas, potencias) se convierten en un cociente y entran en la misma máquina.</p>
+  <span class="src" data-l="U" data-ref="U §2.3.1 Introducción, p. 81">U p.81</span>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li>Límites de funciones y sus «reglas de cálculo» (suma, producto, cociente), incluidos límites laterales y en el infinito (U §1.4). <span class="src" data-l="U" data-ref="U Prop. 1.11 (álgebra de límites), p. 46">U p.46</span></li>
+  <li>Derivar con soltura: tabla de derivadas, regla de la cadena (U §2.2). <span class="src" data-l="U" data-ref="U §2.2.2 tabla de derivadas, pp. 79-80">U pp.79-80</span></li>
+  <li>Continuidad de la exponencial y del logaritmo: si $h\to L$, entonces $e^{h}\to e^{L}$. <span class="src" data-l="U" data-ref="U Prop. 1.14 (continuidad de la composición), p. 51">U p.51</span></li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <tr><th>Apartado</th><th>Qué contiene</th><th>Dónde está</th></tr>
+  <tr><td>1 Indeterminaciones</td><td>por qué $\tfrac00$ «no se sabe» y por qué la regla tiene sentido</td><td>S p.301-302</td></tr>
+  <tr><td>2 La regla</td><td>enunciado <b>completo</b>, condiciones, usos correctos e incorrectos</td><td>U p.82-83 · S p.302-305 · L p.558-560</td></tr>
+  <tr><td>3 $0\cdot\infty$ y $\infty-\infty$</td><td>cómo convertirlos en un cociente</td><td>U p.83-84 · S p.305-306 · L p.560, 563</td></tr>
+  <tr><td>4 Potencias</td><td>$1^\infty$, $0^0$, $\infty^0$ y el número $e$</td><td>U p.84-85 · S p.306-307 · L p.561-562</td></tr>
+  <tr><td>5 Sucesiones</td><td>L'Hôpital para $\lim_n a_n$ (Prop. 2.3)</td><td>U p.85</td></tr>
+  <tr><td>6 Tabla-decisión</td><td>«qué indeterminación tengo → qué hago»</td><td>síntesis propia</td></tr>
+  <tr><td>7 Errores típicos</td><td>los siete fallos más frecuentes</td><td>U · S · L · E</td></tr>
+  <tr><td>8 Ejercicios</td><td>E 2.24–2.33 y 4 ejemplos propios, con receta</td><td>E pp.66-72</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios</h3>
+<p>Los diez ejercicios de E son cálculo de límites: siempre hay que (1) <b>reconocer el tipo</b> de indeterminación sustituyendo, (2) <b>transformarlo</b> a $\tfrac00$ o $\tfrac\infty\infty$ si hace falta, (3) <b>comprobar las condiciones</b> de la regla, (4) derivar y calcular el nuevo límite (simplificando antes de sustituir) y (5) <b>deshacer</b> la transformación (por ejemplo, $e^{L}$). Uno es tipo test (2.29) y otro de sucesiones (2.33). <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.24-2.33, pp. 66-72">E pp.66-72</span></p>
+
+<div class="box warn"><span class="h">Lo que U no dice del todo (y aquí se completa)</span>
+  <p>1) <b>La hipótesis «si existe $\lim\frac{f'}{g'}$»</b> no aparece escrita en el enunciado de la regla de U (p. 82): véase el aviso «Sobre el enunciado de U» en el <a href="#s2">apartado 2</a>.</p>
+  <p>2) U solo cita explícitamente $\infty^0$ y $1^\infty$; el tipo $0^0$ y la lista de formas <i>no</i> indeterminadas están en S y L. 3) U razona con «supongamos que $\lim=l$ y tomemos $\ln l$» (Ej. 2.12), lo cual da por hecho que el límite existe y es positivo; aquí usamos la forma $e^{g\ln f}$, que no supone nada.</p>
+  <span class="src" data-l="U" data-ref="U §2.3.2, Regla de L'Hôpital, p. 82; Ej. 2.12, p. 84">U pp.82, 84</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Regla de l'Hospital, p. 302">S p.302</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, Teorema 8.4, p. 558">L p.558</span>
+</div>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Indeterminaciones: cuando «sustituir» no basta <span class="src" data-l="S" data-ref="Stewart §4.4, pp. 301-302">S pp.301-302</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: una lucha entre arriba y abajo</span>
+  <p>En $\lim\frac{f}{g}$ con $f\to0$ y $g\to0$, el numerador quiere hacer la fracción pequeña y el denominador quiere hacerla grande. <b>Todo depende de quién se acerca más rápido a $0$</b>. Con $\tfrac\infty\infty$ pasa lo mismo: Stewart lo describe como «una lucha entre numerador y denominador»: si gana el numerador el límite es $\infty$, si gana el denominador es $0$, y si empatan sale un número. Por eso «$\tfrac00$» no vale ni $0$, ni $1$, ni $\infty$: <i>depende de las funciones</i>.</p>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, «lucha entre numerador y denominador», p. 302">S p.302</span>
+</div>
+
+<div class="box ex"><span class="h">Tres límites, misma «forma» $\tfrac00$, tres respuestas distintas</span>
+  <p>Para $x\to0$: $\ \dfrac{3x}{x}\to3$, $\quad\dfrac{x^2}{x}=x\to0$, $\quad\dfrac{x}{x^2}=\dfrac1x\to+\infty$ (por la derecha). En los tres, numerador y denominador tienden a $0$. El símbolo $\tfrac00$ no es un número: es la <b>etiqueta de una situación</b> en la que hay que trabajar más.</p>
+  <span class="src" data-l="P" data-ref="Ejemplo propio; idea en S §4.4, p. 301">P</span>
+</div>
+
+<div class="box def"><span class="h">Formas indeterminadas</span>
+  <p>Se llaman <b>indeterminadas</b> las situaciones en que, al sustituir el valor al que tiende la variable, aparece uno de los símbolos
+  $$\frac00,\quad\frac{\infty}{\infty},\quad 0\cdot\infty,\quad \infty-\infty,\quad 1^{\infty},\quad 0^{0},\quad \infty^{0},$$
+  porque <b>no determinan</b> el valor (ni siquiera la existencia) del límite: hace falta un estudio adicional. Las dos primeras son las únicas a las que se aplica <i>directamente</i> la regla de L'Hôpital; las demás se transforman en ellas (apartados 3 y 4).</p>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, formas indeterminadas de tipo 0/0, ∞/∞, 0·∞, ∞−∞ y potencias, pp. 301-306">S pp.301-306</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, Forma indeterminada: 0/0, ∞/∞, ∞−∞, 0·∞, 0^0, 1^∞, ∞^0, pp. 557, 560, 563">L pp.557-563</span>
+</div>
+
+<h3>Por qué la regla tiene sentido (idea geométrica)</h3>
+<p>Si $f$ y $g$ son derivables y ambas valen $0$ en $a$, cerca de $a$ cada una se parece a su recta tangente: $f(x)\approx f'(a)(x-a)$ y $g(x)\approx g'(a)(x-a)$. Entonces
+$$\frac{f(x)}{g(x)}\approx\frac{f'(a)(x-a)}{g'(a)(x-a)}=\frac{f'(a)}{g'(a)}.$$
+El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el cociente de pendientes. Esto es un argumento de plausibilidad (Stewart lo demuestra así solo para $f,g$ con derivada continua y $g'(a)\neq0$); la demostración general usa el teorema del valor medio de Cauchy. <span class="src" data-l="S" data-ref="Stewart §4.4, Figura 1 y Nota 3, pp. 302-303; demostración general en Apéndice F, p. A46">S pp.302-303</span> <span class="src" data-l="L" data-ref="Larson §8.7, Teorema 8.3 (valor medio ampliado) y Teorema 8.4, p. 558">L p.558</span></p>
+
+<figure>
+<svg class="fig" viewBox="0 0 460 240" width="460" role="img" aria-label="Dos funciones que valen cero en a y se parecen a sus rectas tangentes">
+  <line class="ax" x1="30" y1="160" x2="440" y2="160"/>
+  <line class="ax" x1="150" y1="154" x2="150" y2="166"/>
+  <line class="dash" x1="70" y1="240" x2="200" y2="110"/>
+  <line class="dash" x1="50" y1="210" x2="230" y2="120"/>
+  <text class="sm" x="44" y="236">m₁</text>
+  <text class="sm" x="28" y="206">m₂</text>
+  <path class="a" d="M90 220 L150 160 Q210 100 270 70"/>
+  <path class="b" d="M90 190 L150 160 Q210 130 290 105"/>
+  <circle class="pt" cx="150" cy="160" r="4.5"/>
+  <text x="145" y="184">a</text>
+  <text x="272" y="62" style="fill:var(--acc)">f</text>
+  <text x="294" y="112" style="fill:var(--S)">g</text>
+  <text class="sm" x="40" y="44">Ambas valen 0 en a y, cerca de a, son casi rectas:</text>
+  <text class="sm" x="40" y="62">f ≈ m₁(x − a), g ≈ m₂(x − a)  ⇒  f/g ≈ m₁/m₂ = f′(a)/g′(a)</text>
+</svg>
+<figcaption>Figura 1. Las rectas discontinuas son las tangentes en $a$, de pendientes $m_1=f'(a)$ y $m_2=g'(a)$. Cerca de $a$ cada función se confunde con su tangente; el cociente de funciones se parece al cociente de pendientes.</figcaption>
+</figure>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>La regla de L'Hôpital <span class="src" data-l="U" data-ref="U §2.3.2 Regla de L'Hôpital, pp. 82-83">U pp.82-83</span></h2>
+
+<div class="box thm"><span class="h">Regla de L'Hôpital (enunciado completo)</span>
+  <p>Sean $f,g$ funciones definidas y <b>derivables</b> en un entorno de $a$ (salvo quizá en $a$ mismo) y tales que $g'(x)\neq0$ cerca de $a$ (esto <i>no</i> excluye que $g'(a)=0$). Supongamos que
+  $$\lim_{x\to a}f(x)=\lim_{x\to a}g(x)=0\qquad\text{o bien}\qquad \lim_{x\to a}f(x)=\pm\infty\ \text{ y }\ \lim_{x\to a}g(x)=\pm\infty ,$$
+  y que <b>existe</b> el límite del cociente de derivadas, $\displaystyle\lim_{x\to a}\frac{f'(x)}{g'(x)}=\ell\in\overline{\mathbb R}$ (es decir, $\ell$ es un número real, $+\infty$ o $-\infty$). Entonces
+  $$\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}=\ell .$$
+  La regla sigue valiendo si se cambia «$x\to a$» por $x\to a^+$, $x\to a^-$, $x\to+\infty$ o $x\to-\infty$. (Si $a=+\infty$, «cerca de $a$» significa en un intervalo $(M,+\infty)$; si $a=-\infty$, en $(-\infty,M)$.)</p>
+  <span class="src" data-l="U" data-ref="U §2.3.2, Regla de L'Hôpital y nota al margen (límites laterales y en el infinito), p. 82. U omite la frase «si existe el límite de f'/g'»: se añade según S y L">U p.82</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Regla de l'Hospital y Notas 1-2, pp. 302-303">S pp.302-303</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, Teorema 8.4, p. 558">L p.558</span>
+</div>
+
+<div class="box warn"><span class="h">Sobre el enunciado de U</span>
+  <p>U escribe la conclusión como «$\lim\frac fg=\lim\frac{f'}{g'}=\ell$» sin exigir explícitamente que este último límite exista; leído literalmente, parece afirmar que siempre existe. <b>No es así</b>: es una <b>hipótesis</b>, «si $\lim\frac{f'}{g'}$ existe (o es $\pm\infty$)», como escriben S (p. 302: «si existe el límite del lado derecho») y L (Teorema 8.4, p. 558: «siempre que exista el límite por la derecha»). Larson lo subraya: «en realidad no sabe que el primer límite es igual al segundo hasta que se haya demostrado que existe el segundo». Y si $\lim\frac{f'}{g'}$ <i>no</i> existe, <b>la regla no dice nada</b> (el límite original puede existir o no).</p>
+  <span class="src" data-l="L" data-ref="Larson §8.7, comentario tras el Ejemplo 1, p. 559">L p.559</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Regla de l'Hospital, p. 302">S p.302</span>
+  <span class="src" data-l="U" data-ref="U §2.3.2, Regla de L'Hôpital, p. 82">U p.82</span>
+</div>
+
+<h3>Lista de comprobación antes de derivar</h3>
+<div class="l3-check">
+  <div><b>1 · ¿Es una indeterminación $\tfrac00$ o $\tfrac\infty\infty$?</b> Sustituye (o calcula los límites de $f$ y de $g$ por separado). Si no lo es, <b>no</b> se puede usar la regla (ejemplo abajo).</div>
+  <div><b>2 · ¿$f$ y $g$ son derivables y $g'\neq0$ cerca de $a$?</b> (puede fallar en el propio $a$.) Casi siempre se comprueba de un vistazo con la tabla de derivadas.</div>
+  <div><b>3 · ¿Existe $\lim\frac{f'}{g'}$?</b> Se ve <i>después</i> de derivar. Si es de nuevo $\tfrac00$ o $\tfrac\infty\infty$ y sigue cumpliendo (2), se puede aplicar la regla otra vez. Si no existe o «da vueltas», busca otro método.</div>
+</div>
+<p>Al derivar, se deriva <b>el numerador y el denominador por separado</b>; no se usa la regla del cociente. <span class="src" data-l="S" data-ref="Stewart §4.4, nota al margen «derivamos el numerador y el denominador por separado», p. 303">S p.303</span> <span class="src" data-l="L" data-ref="Larson §8.7, uso incorrecto de la regla del cociente, p. 558">L p.558</span></p>
+
+<div class="box ex"><span class="h">Ejemplo 1 (U Ej. 2.8): $\lim_{x\to0}\dfrac{\operatorname{sen}x}{x}$</span>
+  <ol class="steps">
+    <li><b>Tipo.</b> Numerador y denominador tienden a $0$: $\tfrac00$.</li>
+    <li><b>Condiciones.</b> $\operatorname{sen}x$ y $x$ son derivables en todo $\mathbb R$ y $(x)'=1\neq0$.</li>
+    <li><b>Derivamos.</b> $\displaystyle\lim_{x\to0}\frac{\cos x}{1}=1$. Como este límite existe, el original vale $1$.</li>
+  </ol>
+  <p><i>Ojo, matiz lógico:</i> para derivar $\operatorname{sen}$ ya se usó que $\lim\frac{\operatorname{sen}x}{x}=1$; así que este ejemplo sirve para <b>practicar la regla</b>, no para demostrar ese límite (sería un razonamiento circular).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.8, pp. 82-83">U pp.82-83</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 2 (U Ej. 2.9): aplicación reiterada, $\lim_{x\to+\infty}\dfrac{1+e^{x^2}}{x^3}$</span>
+  <ol class="steps">
+    <li><b>Tipo.</b> $\tfrac\infty\infty$. Derivadas fáciles, $(x^3)'=3x^2\neq0$ para $x&gt;0$.</li>
+    <li>$\displaystyle\lim\frac{1+e^{x^2}}{x^3}=\lim\frac{2xe^{x^2}}{3x^2}=\lim\frac{2e^{x^2}}{3x}$ (tras simplificar una $x$). Sigue siendo $\tfrac\infty\infty$ y cumple las condiciones.</li>
+    <li>Otra vez: $\displaystyle\lim\frac{2e^{x^2}}{3x}=\lim\frac{4xe^{x^2}}{3}=+\infty$.</li>
+    <li>Como el último límite existe (es $+\infty$), <b>todos</b> los anteriores valen $+\infty$ (se sube por la cadena de igualdades).</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.9, p. 83">U p.83</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, Ejemplo 3 (x²/e^(−x) con x→−∞), p. 560: misma idea de aplicar la regla más de una vez">L p.560</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen: simplifica antes de volver a derivar</span>
+  <p>Tras derivar, casi siempre se puede simplificar el cociente $\frac{f'}{g'}$ (cancelar un factor $x$, aplicar $\frac{\operatorname{sen}x}{x}\to1$, etc.). Muchas veces el factor que causaba el atasco desaparece y ya no hace falta derivar otra vez. Stewart lo hace en su Ejemplo 3 ($\frac{\ln x}{\sqrt[3]x}$) y en el Ejemplo 4.</p>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Ejemplos 3 y 4, p. 304">S p.304</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico 1: aplicar la regla sin que haya indeterminación</span>
+  <p>Ejemplo de Stewart: $\displaystyle\lim_{x\to\pi^-}\frac{\operatorname{sen}x}{1-\cos x}$ (Stewart lo plantea con $x\to\pi$). El numerador tiende a $0$, pero el denominador tiende a $1-\cos\pi=2\neq0$: <b>no</b> es $\tfrac00$. Si «se aplica la regla» se obtiene $\frac{\cos x}{\operatorname{sen}x}\to-\infty$ (numerador $\to-1$, denominador $\to0^+$), ¡y es falso: el límite vale $0$! Lo correcto: como el denominador no se anula, se sustituye: $\frac{\operatorname{sen}\pi}{1-\cos\pi}=\frac02=0$. Larson da otro: $\lim_{x\to0}\frac{e^x}{x}$ no es indeterminado (arriba $\to1$, abajo $\to0$; el límite no existe como número: da $\pm\infty$ según el lado), y «aplicar la regla» daría el valor falso $1$.</p>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Ejemplo 5, pp. 304-305">S pp.304-305</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, «uso incorrecto de la regla», p. 563">L p.563</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico 2: creer que si $\lim f'/g'$ no existe, el límite original tampoco</span>
+  <p>Contraejemplo: $\displaystyle\lim_{x\to+\infty}\frac{x+\operatorname{sen}x}{x}$. Es $\tfrac\infty\infty$ y $g'(x)=1\neq0$, pero $\frac{f'}{g'}=1+\cos x$ <b>no tiene límite</b> en $+\infty$ (oscila entre $0$ y $2$). La regla no dice nada; y sin embargo, directamente, $\frac{x+\operatorname{sen}x}{x}=1+\frac{\operatorname{sen}x}{x}\to1$ (cero por acotada). No es lo que ocurre en E 2.27, resuelto más abajo: allí $\lim\frac{f'}{g'}$ <b>sí existe</b> (vale $1$), pero derivar no ayuda a calcularlo porque la expresión da vueltas.</p>
+  <span class="src" data-l="P" data-ref="Contraejemplo propio (comprobado)">P</span>
+</div>
+
+<div class="box intu"><span class="h">Quién gana: $\ln x\ \ll\ x^p\ \ll\ a^x$</span>
+  <p>La regla demuestra una «escalera» que conviene memorizar (para $x\to+\infty$, $p&gt;0$, $a&gt;1$):</p>
+  <div class="l3-ladder">$\ln x\ \ll\ x^{p}\ \ll\ a^{x}$</div>
+  <p>donde $u\ll v$ significa $\frac uv\to0$: el logaritmo crece más despacio que cualquier potencia, y toda potencia crece más despacio que cualquier exponencial de base mayor que $1$. </p>
+  <p><b>Por qué.</b> Logaritmo frente a potencia: $\displaystyle\lim\frac{\ln x}{x^p}=\lim\frac{1/x}{p\,x^{p-1}}=\lim\frac{1}{p\,x^{p}}=0$ (regla, tipo $\tfrac\infty\infty$, $p&gt;0$). Potencia frente a exponencial: para $p$ real, si $n\ge p$ es un entero y $x\ge1$, entonces $0\le x^p\le x^n$, luego $0\le\frac{x^p}{a^x}\le\frac{x^n}{a^x}\to0$ por E 2.32. Ejemplos en S Ej. 2-3.</p>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Ejemplos 2 y 3, pp. 303-304">S pp.303-304</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia con E Ej. 2.32">P</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Productos y restas: $0\cdot\infty$ y $\infty-\infty$ <span class="src" data-l="U" data-ref="U §2.3.2, pp. 83-84">U pp.83-84</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>La regla solo entiende <i>cocientes</i>. Si tenemos un producto o una resta, el truco es <b>fabricar un cociente</b> sin cambiar el valor de la expresión. Como U escribe: «la regla no cita las indeterminaciones $\pm\infty\cdot0$, pero recordando esto podremos atacarlas».</p>
+  <span class="src" data-l="U" data-ref="U §2.3.2, p. 84">U p.84</span>
+</div>
+
+<h3>$0\cdot\infty$: pasar un factor «al otro lado»</h3>
+<div class="box def"><span class="h">Receta $0\cdot\infty$</span>
+  <p>Si $f\to0$ y $g\to\pm\infty$, entonces
+  $$f\cdot g=\frac{f}{1/g}\qquad\text{(tipo }\tfrac00\text{)}\qquad\text{o bien}\qquad f\cdot g=\frac{g}{1/f}\qquad\text{(tipo }\tfrac\infty\infty\text{)}.$$
+  Se elige la versión cuyo denominador es <b>más fácil de derivar</b>; casi siempre conviene pasar al denominador la <b>potencia</b> ($x^k$), no el logaritmo.</p>
+  <span class="src" data-l="U" data-ref="U §2.3.2, fórmula de la p. 84 (± ∞ · 0)">U p.84</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Productos indeterminados, p. 305">S p.305</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, Ejemplo 4 y comentario, pp. 560-561">L pp.560-561</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 3 (U Ej. 2.11): $\lim_{x\to\frac\pi2^-}\left(x-\frac\pi2\right)\operatorname{tg}x$</span>
+  <ol class="steps">
+    <li><b>Tipo.</b> $x-\frac\pi2\to0$ y $\operatorname{tg}x\to+\infty$ (por la izquierda): $0\cdot\infty$.</li>
+    <li><b>Cociente.</b> $\left(x-\frac\pi2\right)\operatorname{tg}x=\dfrac{x-\frac\pi2}{1/\operatorname{tg}x}$, de tipo $\tfrac00$ (y $1/\operatorname{tg}x=\frac{\cos x}{\operatorname{sen}x}$).</li>
+    <li><b>Derivamos.</b> Derivada del numerador: $1$; derivada del denominador $\left(\frac{\cos x}{\operatorname{sen}x}\right)'=-\frac1{\operatorname{sen}^2x}$. El cociente es $-\operatorname{sen}^2x\to-1$.</li>
+    <li>Resultado: $-1$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.11, p. 84">U p.84</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico 3: «cero por lo que sea vale cero»</span>
+  <p>$0\cdot\infty$ es indeterminado. Con $x\to0^+$: $x\cdot\frac1x=1$, $\ x\cdot\frac2x=2$, $\ x\cdot\frac1{x^2}=\frac1x\to+\infty$, $\ x^2\cdot\frac1x=x\to0$. Larson pone cuatro ejemplos así, con cuatro respuestas distintas.</p>
+  <span class="src" data-l="L" data-ref="Larson §8.7, cuatro límites 0·∞ con resultados distintos, p. 560">L p.560</span>
+</div>
+
+<h3>$\infty-\infty$: hacer la resta</h3>
+<div class="box def"><span class="h">Receta $\infty-\infty$</span>
+  <p>Si $f\to+\infty$ y $g\to+\infty$ (o restas de infinitos del mismo signo), <b>opera la resta</b> hasta obtener un solo cociente: poniendo <b>denominador común</b>, <b>racionalizando</b> o <b>sacando factor común</b>. Normalmente sale $\tfrac00$ o $\tfrac\infty\infty$. (Si son infinitos de <i>signos opuestos</i>, $\infty+\infty=\infty$ no es indeterminado.)</p>
+  <span class="src" data-l="U" data-ref="U §2.3.2, p. 83 (∞ − ∞ «pueden desaparecer o transformarse … si realizamos la resta»)">U p.83</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Diferencias indeterminadas, pp. 305-306">S pp.305-306</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 4 (U Ej. 2.10): $\lim_{x\to0^+}\left(\dfrac1x-\dfrac1{\operatorname{sen}x}\right)$</span>
+  <ol class="steps">
+    <li><b>Tipo.</b> Ambos sumandos $\to+\infty$: $\infty-\infty$.</li>
+    <li><b>Resta:</b> $\dfrac1x-\dfrac1{\operatorname{sen}x}=\dfrac{\operatorname{sen}x-x}{x\operatorname{sen}x}$, de tipo $\tfrac00$. La derivada del denominador, $\operatorname{sen}x+x\cos x$, no se anula cerca de $0$ (por la derecha).</li>
+    <li>$\displaystyle\lim\frac{\cos x-1}{\operatorname{sen}x+x\cos x}$ es de nuevo $\tfrac00$. Derivamos otra vez: $\displaystyle\lim_{x\to0^+}\frac{-\operatorname{sen}x}{2\cos x-x\operatorname{sen}x}=\frac{0}{2}=0$.</li>
+    <li>Resultado: $0$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.10, pp. 83-84">U pp.83-84</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Ejemplo 7 (sec x − tan x), p. 306">S p.306</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, Ejemplo 7 (1/ln x − 1/(x−1)), p. 563">L p.563</span>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Potencias: $1^\infty$, $0^0$, $\infty^0$ <span class="src" data-l="U" data-ref="U §2.3.2, pp. 84-85">U pp.84-85</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una potencia $f(x)^{g(x)}$ es difícil porque la variable está en la base <i>y</i> en el exponente. La salida es <b>bajar el exponente</b> con logaritmos: $f^g=e^{g\ln f}$. Así el problema pasa al exponente $g\ln f$, que es un producto ($0\cdot\infty$) y ya sabemos manejarlo.</p>
+</div>
+
+<div class="box def"><span class="h">Receta para $1^\infty$, $0^0$ y $\infty^0$</span>
+  <ol class="steps">
+    <li>Escribe, para base positiva, $\ f(x)^{g(x)}=e^{\,g(x)\ln f(x)}$.</li>
+    <li>Calcula $L=\displaystyle\lim g(x)\ln f(x)$; es de tipo $0\cdot\infty$. Pásalo a cociente (apartado 3) y aplica L'Hôpital.</li>
+    <li><b>Deshaz el logaritmo</b>: $\displaystyle\lim f^g=e^{L}$ (con $e^{+\infty}=+\infty$ y $e^{-\infty}=0$), porque $\exp$ es continua.</li>
+  </ol>
+  <p>Este camino no necesita «suponer que el límite existe» (como hace U en su Ej. 2.12, con $\ln l$): basta que exista $L$.</p>
+  <span class="src" data-l="U" data-ref="U §2.3.2, ∞^0 (Ej. 2.12, p. 84) y 1^∞ con logaritmos (p. 85)">U pp.84-85</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Potencias indeterminadas, Ejemplos 8 y 9, pp. 306-307">S pp.306-307</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, Ejemplos 5 y 6, pp. 561-562">L pp.561-562</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico 4: olvidar deshacer el logaritmo</span>
+  <p>Tras calcular $L$, el límite pedido es $e^{L}$, no $L$. U lo avisa expresamente: «un error típico es olvidar que aplicamos logaritmos y dar como valor del límite $0$ en lugar de $1$». (Con $x^{1/x}$, $L=0$ y el límite es $e^0=1$.)</p>
+  <span class="src" data-l="U" data-ref="U recuadro «Ojo», p. 85">U p.85</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5 (U Ej. 2.12): $\lim_{x\to+\infty}x^{1/x}$ (tipo $\infty^0$)</span>
+  <ol class="steps">
+    <li>Base $\to+\infty$, exponente $\to0$: $\infty^0$.</li>
+    <li>$x^{1/x}=e^{\frac{\ln x}{x}}$ para $x&gt;0$.</li>
+    <li>$L=\displaystyle\lim_{x\to+\infty}\frac{\ln x}{x}$ es $\tfrac\infty\infty$; por L'Hôpital, $=\lim\frac{1/x}{1}=0$.</li>
+    <li>Resultado: $e^{0}=1$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.12, p. 84">U p.84</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 6 (S Ej. 9): $\lim_{x\to0^+}x^{x}$ (tipo $0^0$)</span>
+  <p>Es indeterminado: $0^x=0$ para $x&gt;0$ pero $x^0=1$; la base y el exponente «tiran» en direcciones distintas. Con $x^x=e^{x\ln x}$ y $\lim_{x\to0^+}x\ln x=0$ (apartado 3), el límite es $e^0=1$. (Stewart lo resuelve igual y señala que los valores de $y=x^x$ se acercan a $1$.)</p>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, Ejemplo 9, p. 307">S p.307</span>
+  <span class="src" data-l="L" data-ref="Larson §8.7, Ejemplo 6, (sen x)^x, p. 562">L p.562</span>
+</div>
+
+<h3>Atajo para $1^\infty$: el número $e$</h3>
+<div class="box thm"><span class="h">Proposición 2.2</span>
+  <p>Si $\displaystyle\lim_{x\to a}f(x)=\pm\infty$, entonces $\displaystyle\lim_{x\to a}\left(1+\frac1{f(x)}\right)^{f(x)}=e$.</p>
+  <span class="src" data-l="U" data-ref="U Proposición 2.2, p. 85">U p.85</span>
+</div>
+<p>Se usa <b>forzando el exponente</b> a ser la misma $f(x)$ que aparece en la base, y luego propiedades de potencias.</p>
+<div class="box ex"><span class="h">Ejemplo 7 (U Ej. 2.13): $\lim_{x\to\infty}\left(1+\frac1{x^2}\right)^{2x^2}$</span>
+  <p>Con $f(x)=x^2\to\infty$: $\ \left(1+\frac1{x^2}\right)^{2x^2}=\left[\left(1+\frac1{x^2}\right)^{x^2}\right]^{2}\to e^2$ (la función $t\mapsto t^2$ es continua). Es el mismo límite que el Ejemplo 1.29 de sucesiones (tema 1.2), con $n$ en lugar de $x$, como señala U.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.13, p. 85">U p.85</span>
+</div>
+
+<div class="box tip"><span class="h">Atajo general para $1^\infty$</span>
+  <p>Si $f\to1$ y $g\to\infty$, entonces $\lim f^g=e^{\lim g\,(f-1)}$ (siempre que exista $\lim g(f-1)$ en $\overline{\mathbb R}$, con $e^{+\infty}=+\infty$ y $e^{-\infty}=0$ como en la receta).</p>
+  <p><b>Por qué.</b> Donde $f\neq1$: $g\ln f=g(f-1)\cdot\dfrac{\ln f}{f-1}$, y $\dfrac{\ln t}{t-1}\to1$ cuando $t\to1$ (regla, tipo $\tfrac00$: $\frac{1/t}{1}\to1$); como $f\to1$, el segundo factor tiende a $1$. Donde $f=1$, ambos lados valen $0$. Se usa en E 2.24 y en el propio 3.</p>
+  <span class="src" data-l="P" data-ref="Consecuencia propia del método del logaritmo, verificada en E Ej. 2.24 y en el ejemplo propio 3">P</span>
+</div>
+
+<h3>Lo que NO es indeterminado</h3>
+<div class="box warn"><span class="h">Error típico 5: aplicar L'Hôpital a formas determinadas</span>
+  <p>Estas formas <b>sí determinan</b> el límite (no hay que hacer nada más, y la regla daría resultados falsos):</p>
+  <p>$\infty+\infty=\infty$, $\quad(-\infty)+(-\infty)=-\infty$, $\quad\infty\cdot\infty=\infty$, $\quad\dfrac{c}{\infty}=0$, $\quad\dfrac{c}{0^{\pm}}=\pm\infty$ (con $c\neq0$; el signo depende del signo de $c$ y del lado), $\quad0^{+\infty}=0$ y $0^{-\infty}=+\infty$ (con base $\to0^+$), $\quad\infty^{\infty}=\infty$.</p>
+  <span class="src" data-l="L" data-ref="Larson §8.7, formas «determinadas» (∞+∞, −∞−∞, 0^∞, 0^(−∞)), p. 563">L p.563</span>
+  <span class="src" data-l="P" data-ref="Las demás (c/∞, c/0, ∞·∞, ∞^∞) son propias, elementales">P</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.4, margen: 0^∞ no está indeterminada, p. 306">S p.306</span>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="s5"><span class="n">5</span>L'Hôpital y sucesiones <span class="src" data-l="U" data-ref="U Proposición 2.3 y Ejemplo 2.14, p. 85">U p.85</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una sucesión $a_n$ solo está definida para $n=1,2,3,\dots$; no se puede «derivar respecto de $n$». Pero si $a_n=f(n)$ para una función $f$ de variable real, y $f(x)$ tiene límite cuando $x\to\infty$, la sucesión, que es como «mirar $f$ solo en los enteros», tiene el mismo límite.</p>
+</div>
+
+<div class="box thm"><span class="h">Proposición 2.3</span>
+  <p>Si $\displaystyle\lim_{x\to\infty}f(x)=l\in\overline{\mathbb R}$, entonces $\displaystyle\lim_{n\to\infty}f(n)=l$.</p>
+  <span class="src" data-l="U" data-ref="U Proposición 2.3, p. 85">U p.85</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Teorema 9.1 y Ejemplo 6, pp. 585 y 588">L pp.585-588</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 8 (U Ej. 2.14): $\lim_{n\to\infty}\dfrac{\ln n}{n}$</span>
+  <p>La función asociada es $f(x)=\frac{\ln x}{x}$, de tipo $\tfrac\infty\infty$; por L'Hôpital, $\lim_{x\to\infty}\frac{\ln x}{x}=\lim\frac{1/x}{1}=0$. Por la Prop. 2.3, $\lim_n\frac{\ln n}{n}=0$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 2.14, p. 85">U p.85</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico 6: usar la Proposición 2.3 al revés</span>
+  <p>Que $f(n)\to l$ <b>no</b> implica que $f(x)\to l$. Contraejemplo: $\operatorname{sen}(\pi n)=0$ para todo $n$ (la sucesión tiende a $0$), pero $\operatorname{sen}(\pi x)$ no tiene límite cuando $x\to\infty$. Por tanto, si $\lim_{x\to\infty}f(x)$ no existe, esta técnica no dice nada de la sucesión.</p>
+  <span class="src" data-l="P" data-ref="Aclaración propia (contraejemplo comprobado)">P</span>
+</div>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="s6"><span class="n">6</span>Tabla-decisión: qué indeterminación tengo y qué hago <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.82-85, S pp.302-307, L pp.557-563">P</span></h2>
+
+<div class="box intu"><span class="h">Cómo usar la tabla</span>
+  <p>Paso 0, siempre: <b>sustituye</b> el valor al que tiende $x$ (o calcula el límite de cada pieza). Mira qué «símbolo» sale y busca la fila.</p>
+</div>
+
+<table class="l3-dec">
+  <tr><th>Al sustituir sale…</th><th>¿Indeterminado?</th><th>Qué hago</th></tr>
+  <tr><td>$\tfrac{c}{0}$, $c\neq0$</td><td><span class="l3-no">no</span></td><td>El límite es $\pm\infty$ (o no existe si los lados difieren): decide el <b>signo</b> de cada lado. No usar L'Hôpital.</td></tr>
+  <tr><td>$\tfrac{c}{\infty}$, $\infty+\infty$, $\infty\cdot\infty$, $0^{+\infty}$, $\infty^\infty$</td><td><span class="l3-no">no</span></td><td>Ya está determinado ($0$, $\infty$, $\infty$, $0$ si la base $\to0^+$, $\infty$). Nada que hacer.</td></tr>
+  <tr><td>$\tfrac00$</td><td><span class="l3-yes">sí</span></td><td>Primero <b>álgebra</b> (factorizar y simplificar, Ruffini, racionalizar). Si no basta: <b>L'Hôpital</b> tras comprobar las 3 condiciones.</td></tr>
+  <tr><td>$\tfrac\infty\infty$</td><td><span class="l3-yes">sí</span></td><td>Comparar crecimientos ($\ln x\ll x^p\ll a^x$), <b>dividir por el término dominante</b>, o <b>L'Hôpital</b> (reiterado si hace falta). Si al derivar todo se repite, usar la división.</td></tr>
+  <tr><td>$0\cdot\infty$</td><td><span class="l3-yes">sí</span></td><td>Escribir $fg=\dfrac{f}{1/g}$ o $\dfrac{g}{1/f}$; poner abajo el factor cuya inversa sea fácil de derivar (la potencia, no el logaritmo). Luego L'Hôpital.</td></tr>
+  <tr><td>$\infty-\infty$</td><td><span class="l3-yes">sí</span></td><td><b>Hacer la resta</b>: denominador común, racionalizar o factor común. Sale $\tfrac00$ o $\tfrac\infty\infty$.</td></tr>
+  <tr><td>$1^\infty$</td><td><span class="l3-yes">sí</span></td><td>Prop. 2.2 (base $1+\frac1f$, exponente múltiplo de $f$) o $e^{g\ln f}$ / atajo $e^{\lim g(f-1)}$. Devolver $e^{L}$.</td></tr>
+  <tr><td>$0^0$, $\infty^0$</td><td><span class="l3-yes">sí</span></td><td>$f^g=e^{g\ln f}$; el exponente es $0\cdot\infty$ (fila anterior). Devolver $e^{L}$.</td></tr>
+  <tr><td>Sucesión $a_n$ con indeterminación</td><td><span class="l3-yes">sí</span></td><td>Cambiar $n$ por $x$: $f(x)$; calcular $\lim_{x\to\infty}f(x)$ (L'Hôpital) y aplicar Prop. 2.3.</td></tr>
+  <tr><td>Tras derivar, $\lim\frac{f'}{g'}$ <b>no existe</b> o la expresión «da vueltas»</td><td>—</td><td>La regla <b>no concluye</b>. Cambiar de método (dividir por el dominante, acotar, álgebra).</td></tr>
+</table>
+
+<div class="box tip"><span class="h">Orden de ataque recomendado en el examen</span>
+  <ol class="steps">
+    <li>Sustituir y <b>nombrar</b> el tipo.</li>
+    <li>¿Se puede resolver con álgebra o comparando crecimientos? Hazlo así (suele ser más corto y más seguro).</li>
+    <li>Si no, transformar a $\tfrac00$ o $\tfrac\infty\infty$.</li>
+    <li>Escribir las <b>condiciones</b> de la regla (aunque sea en una línea).</li>
+    <li>Derivar, <b>simplificar</b>, calcular. Devolver la transformación si la hubo.</li>
+  </ol>
+</div>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="s7"><span class="n">7</span>Errores típicos, resumidos</h2>
+<ol>
+  <li><b>Sin indeterminación:</b> usar L'Hôpital cuando el denominador no tiende a $0$ (S Ej. 5, L p. 563).</li>
+  <li><b>Regla del cociente:</b> derivar $\frac fg$ en lugar de $f'$ y $g'$ por separado (L p. 558; S p. 303).</li>
+  <li><b>«Si $\lim f'/g'$ no existe, el límite tampoco»:</b> falso; la regla simplemente no informa.</li>
+  <li><b>$0\cdot\infty=0$, $1^\infty=1$, $\infty-\infty=0$:</b> son indeterminados.</li>
+  <li><b>Olvidar deshacer el logaritmo:</b> el resultado es $e^{L}$ (U p. 85).</li>
+  <li><b>Signo de $0^\pm$:</b> al pasar a $\infty$ o $-\infty$ en un límite lateral, decidir bien el signo (E 2.28: el numerador es $+\infty$).</li>
+  <li><b>Exigir $g'(a)\neq0$:</b> lo que importa es $g'(x)\neq0$ <i>cerca</i> de $a$, no en $a$ (U p. 82, E 2.25).</li>
+</ol>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="ejercicios"><span class="n">8</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.24-2.33, pp. 66-72">E pp.66-72</span></h2>
+
+<p>Todos los límites se han comprobado con cálculo simbólico. Los ejercicios respetan la numeración de E. <b>Orden de estudio recomendado, de fácil a difícil:</b></p>
+<table>
+  <tr><th>Orden</th><th>Ejercicio</th><th>Tipo</th><th>Resultado</th></tr>
+  <tr><td>1</td><td>2.26</td><td>$\tfrac00$ (polinomios)</td><td>$-\tfrac34$</td></tr>
+  <tr><td>2</td><td>2.25</td><td>$\tfrac00$ (raíz y logaritmo)</td><td>$-1$</td></tr>
+  <tr><td>3</td><td>2.28</td><td>$\tfrac\infty\infty$ lateral</td><td>$0$</td></tr>
+  <tr><td>4</td><td>2.30</td><td>$0\cdot\infty$</td><td>$0$</td></tr>
+  <tr><td>5</td><td>2.27</td><td>$\tfrac\infty\infty$ donde la regla «da vueltas»</td><td>$1$</td></tr>
+  <tr><td>6</td><td>2.31</td><td>$0^0$</td><td>$1$</td></tr>
+  <tr><td>7</td><td>2.29</td><td>$\infty^0$ (test)</td><td>b) $1$</td></tr>
+  <tr><td>8</td><td>2.24</td><td>$1^\infty$</td><td>$\sqrt e$</td></tr>
+  <tr><td>9</td><td>2.32</td><td>$\tfrac\infty\infty$ reiterado $n$ veces</td><td>$0$</td></tr>
+  <tr><td>10</td><td>2.33</td><td>$\tfrac00$ en una sucesión</td><td>$1$</td></tr>
+</table>
+
+<details class="sol"><summary>Ejercicio 2.24 · $1^\infty$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.24, pp. 66-67">E pp.66-67</span></summary>
+  <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to+\infty}\left(\frac{\ln x^2+1}{2\ln x}\right)^{\ln x}$.</p>
+  <p>Aquí $\ln x^2+1$ significa $\ln(x^2)+1$ (así lo usa la solución de E).</p>
+  <p><b>Camino 1: el número $e$ (Prop. 2.2 de U).</b></p>
+  <ol class="steps">
+    <li><b>Tipo.</b> Como $\ln(x^2)=2\ln x$, la base es $\dfrac{2\ln x+1}{2\ln x}=1+\dfrac1{2\ln x}\to1$ y el exponente $\ln x\to+\infty$: $1^{+\infty}$.</li>
+    <li><b>Forzar la forma de la Prop. 2.2.</b> Tomamos $f(x)=\ln x^2=2\ln x\to+\infty$. El exponente es $\ln x=\frac12\ln x^2$, luego
+    $$\left(1+\frac1{\ln x^2}\right)^{\ln x}=\left[\left(1+\frac1{\ln x^2}\right)^{\ln x^2}\right]^{1/2}$$
+    (propiedad $(b^c)^d=b^{cd}$, válida para $b&gt;0$).</li>
+    <li><b>Límite.</b> Lo de dentro tiende a $e$ (Prop. 2.2) y $t\mapsto t^{1/2}$ es continua en $e$: el límite es $e^{1/2}=\sqrt e$.</li>
+  </ol>
+  <p><b>Camino 2: logaritmos y L'Hôpital (la «Nota» de E).</b></p>
+  <ol class="steps">
+    <li>La expresión es $e^{h(x)}$ con $h(x)=\ln x\cdot\ln\!\left(1+\frac1{\ln x^2}\right)$, de tipo $+\infty\cdot0$.</li>
+    <li>Cociente: $h(x)=\dfrac{\ln\left(1+\frac1{\ln x^2}\right)}{1/\ln x}$, de tipo $\tfrac00$.</li>
+    <li>Derivadas (cadena): numerador $\dfrac1{1+\frac1{\ln x^2}}\cdot\left(-\dfrac1{(\ln x^2)^2}\cdot\dfrac2x\right)$; denominador $-\dfrac1{(\ln x)^2}\cdot\dfrac1x\neq0$.</li>
+    <li>Cociente de derivadas, usando $(\ln x^2)^2=4(\ln x)^2$: $\ \dfrac{2(\ln x)^2}{(\ln x^2)^2}\cdot\dfrac1{1+\frac1{\ln x^2}}=\dfrac1{2\left(1+\frac1{\ln x^2}\right)}\to\dfrac12$.</li>
+    <li>Por continuidad de $\exp$: límite $=e^{1/2}=\sqrt e$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $1^\infty$: escribe la base como $1+\frac1f$ y fuerza el exponente a ser $f\cdot(\text{algo})$; el límite es $e^{\lim(\text{algo})}$. Atajo: $\lim f^g=e^{\lim g(f-1)}$; aquí $g(f-1)=\ln x\cdot\frac1{2\ln x}=\frac12$.</div>
+  <div class="box warn"><span class="h">Error típico y erratas de E</span>
+    <p>Decir «$1^\infty=1$»: la base solo <i>tiende</i> a $1$ y el exponente amplifica la diferencia. Notación: si se leyera $\ln(x^2+1)$ el límite sería $1$, no $\sqrt e$. Además, en la «Nota» E remite al Ej. 2.12 de U para $1^{\pm\infty}$, pero el Ej. 2.12 es de tipo $\infty^0$; lo del $1^\infty$ está en U p. 85.</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Proposición 2.2 y Ejemplo 2.13, p. 85">U p.85</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.25 · $\tfrac00$ con raíz y logaritmo <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.25, p. 67">E p.67</span></summary>
+  <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to0}\frac{\ln(1+x)-x}{1-\sqrt{1-x^2}}$.</p>
+  <ol class="steps">
+    <li><b>Tipo.</b> Numerador: $\ln1-0=0$. Denominador: $1-\sqrt1=0$. Ambas son continuas en $0$: $\tfrac00$.</li>
+    <li><b>Hipótesis.</b> En $(-1,1)$ ambas son derivables. $f'(x)=\dfrac1{1+x}-1=\dfrac{-x}{1+x}$ y $g'(x)=-\dfrac1{2\sqrt{1-x^2}}\cdot(-2x)=\dfrac{x}{\sqrt{1-x^2}}$. $g'(x)=0$ solo en $x=0$; luego $g'(x)\neq0$ en $(-1,1)\setminus\{0\}$, que es lo que exige U («esta última condición no excluye que $g'(a)$ pueda ser $0$»).</li>
+    <li><b>Simplificar antes de pasar al límite.</b> Para $x\neq0$: $\dfrac{f'}{g'}=\dfrac{-x}{1+x}\cdot\dfrac{\sqrt{1-x^2}}{x}=-\dfrac{\sqrt{1-x^2}}{1+x}$. Podemos cancelar $x$ porque en un límite nunca se toma $x=0$.</li>
+    <li><b>Límite.</b> La última función es continua en $0$ y vale $-1$.</li>
+    <li><b>Conclusión.</b> El límite pedido es $-1$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> tras derivar, <b>simplifica</b> el cociente de derivadas antes de sustituir: el factor que producía el $0/0$ suele cancelarse y no hace falta derivar otra vez.</div>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Decir «$g'(0)=0$, luego no se puede aplicar»: lo que importa es $g'\neq0$ <b>cerca</b> de $0$, no en $0$. (E dice «la derivada del denominador cerca de cero no se anula»: es correcto en el sentido de U, es decir, cerca de $0$ <i>sin contar</i> el propio $0$; véase también U Ej. 2.10, p. 83.)</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, Regla de L'Hôpital, p. 82">U p.82</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.26 · $\tfrac00$ con polinomios <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.26, p. 67 (solución p. 68)">E p.67</span></summary>
+  <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to-1}\dfrac{x^5+x^4-x^2+1}{x^4-1}$.</p>
+  <ol class="steps">
+    <li><b>Sustituir primero.</b> Numerador en $x=-1$: $-1+1-1+1=0$. Denominador: $1-1=0$. Son polinomios (continuos): $\tfrac00$. No vale el «cociente de límites» porque el del denominador es $0$.</li>
+    <li><b>Condiciones.</b> Ambos son polinomios, derivables en $\mathbb R$; $g'(x)=4x^3$ solo se anula en $x=0$, así que $g'\neq0$ en un entorno de $-1$ (por ejemplo en $(-2,0)$).</li>
+    <li><b>Derivar</b> (numerador y denominador por separado): $f'(x)=5x^4+4x^3-2x$, $\ g'(x)=4x^3$.</li>
+    <li><b>Límite del cociente de derivadas.</b> El denominador vale $4(-1)^3=-4\neq0$, basta sustituir: $\ \dfrac{5-4+2}{-4}=-\dfrac34$.</li>
+    <li><b>Conclusión.</b> Como este límite existe, el original vale $-\dfrac34$.</li>
+    <li><b>Comprobación sin L'Hôpital.</b> $x=-1$ anula a ambos, luego $(x+1)$ divide a los dos (Ruffini): $x^5+x^4-x^2+1=(x+1)(x^4-x+1)$ y $x^4-1=(x+1)(x-1)(x^2+1)$. Simplificando, $\dfrac{x^4-x+1}{(x-1)(x^2+1)}\to\dfrac{3}{(-2)(2)}=-\dfrac34$. Coincide.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> cociente de polinomios con $0/0$ en $x=a$: o factorizas $(x-a)$ por Ruffini y simplificas, o derivas arriba y abajo una vez y sustituyes. Ambos caminos deben coincidir.</div>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Aplicar la regla del cociente $\left(\frac fg\right)'$ en vez de derivar numerador y denominador <b>por separado</b>.</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, p. 82; tabla de derivadas U pp. 79-80">U p.82</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.27 · cuando L'Hôpital da vueltas <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.27, p. 68">E p.68</span></summary>
+  <p class="enun">Calcula el valor del límite $\displaystyle\lim_{x\to+\infty}\frac{\operatorname{sen}x+e^x}{\cos x+e^x}$.</p>
+  <ol class="steps">
+    <li><b>Tipo.</b> $e^x\to+\infty$ y $\operatorname{sen}x,\cos x\in[-1,1]$; así $\operatorname{sen}x+e^x\ge e^x-1\to+\infty$ y lo mismo el denominador: $\tfrac\infty\infty$.</li>
+    <li><b>Intento con L'Hôpital.</b> Las condiciones se cumplen ($g'(x)=-\operatorname{sen}x+e^x\ge e^x-1&gt;0$ para $x&gt;0$), pero $\ \dfrac{f'}{g'}=\dfrac{\cos x+e^x}{-\operatorname{sen}x+e^x}$, $\ \dfrac{f''}{g''}=\dfrac{-\operatorname{sen}x+e^x}{-\cos x+e^x},\dots$ Tras cuatro derivaciones se vuelve al cociente de partida: no simplifica nada.</li>
+    <li><b>Otro camino: dividir por el término dominante</b> $e^x$ arriba y abajo: $\ \dfrac{\operatorname{sen}x+e^x}{\cos x+e^x}=\dfrac{\operatorname{sen}x\cdot e^{-x}+1}{\cos x\cdot e^{-x}+1}$.</li>
+    <li><b>Cada trozo.</b> $e^{-x}\to0$ y $\operatorname{sen}x,\cos x$ están acotadas: $\operatorname{sen}x\,e^{-x}\to0$ y $\cos x\,e^{-x}\to0$ («cero por acotada»).</li>
+    <li><b>Álgebra de límites</b> (el denominador tiende a $1\neq0$): el límite es $\dfrac{0+1}{0+1}=1$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si al derivar reaparece la misma estructura (senos y cosenos que rotan, exponenciales que se reproducen), abandona L'Hôpital y <b>divide por el término dominante</b>.</div>
+  <div class="box warn"><span class="h">Error típico y matiz sobre E</span>
+    <p>Concluir «el límite no existe» porque L'Hôpital no termina. La regla solo informa si sabes calcular $\lim f'/g'$; si no, hay que buscar otro método. (E dice que la regla «no es infalible»: en rigor sus hipótesis se cumplen y $\lim\frac{f'}{g'}$ existe, vale $1$; lo que ocurre es que derivar no ayuda a calcularlo.)</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Prop. 1.10 (cero por acotada), p. 45 y Prop. 1.11, p. 46">U pp.45-46</span> <span class="src" data-l="S" data-ref="Stewart §4.4, «debe tener en cuenta otros métodos antes de utilizar la regla», p. 305">S p.305</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.28 · $\tfrac\infty\infty$ lateral <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.28, p. 68 (solución p. 69)">E p.68</span></summary>
+  <p class="enun">Calcula el valor del límite $\displaystyle\lim_{x\to\frac\pi2^-}\frac{2-\ln(\cos x)}{2+\operatorname{tg}x}$.</p>
+  <ol class="steps">
+    <li><b>Dominio.</b> Para $x\in(0,\pi/2)$, $\cos x&gt;0$ y $\ln(\cos x)$ está definido: tiene sentido el límite <b>por la izquierda</b>.</li>
+    <li><b>Tipo.</b> Cuando $x\to\frac\pi2^-$, $\cos x\to0^+$, luego $\ln(\cos x)\to-\infty$ y el numerador $2-\ln(\cos x)\to+\infty$. Además $\operatorname{tg}x=\frac{\operatorname{sen}x}{\cos x}\to\frac1{0^+}=+\infty$. Es $\tfrac{+\infty}{+\infty}$.</li>
+    <li><b>Condiciones.</b> Ambas son derivables en $(0,\pi/2)$. $f'(x)=-\dfrac1{\cos x}\cdot(-\operatorname{sen}x)=\dfrac{\operatorname{sen}x}{\cos x}$ y $g'(x)=\dfrac1{\cos^2x}$, que nunca se anula.</li>
+    <li><b>Cociente de derivadas.</b> Dividir entre $\frac1{\cos^2x}$ es multiplicar por $\cos^2x$: $\ \dfrac{f'}{g'}=\dfrac{\operatorname{sen}x}{\cos x}\cdot\cos^2x=\operatorname{sen}x\cos x\to1\cdot0=0$.</li>
+    <li><b>Conclusión.</b> El límite vale $0$.</li>
+  </ol>
+  <p><i>Interpretación:</i> el numerador crece como $-\ln(\cos x)$ (muy despacio) y el denominador como $\frac1{\cos x}$ (como una potencia): gana el denominador.</p>
+  <div class="recipe"><b>Receta:</b> en un límite lateral hacia un punto donde algo se anula, determina primero el <b>signo</b> de lo que tiende a $0$ ($0^+$ o $0^-$) para saber si cada trozo va a $+\infty$ o a $-\infty$.</div>
+  <div class="box warn"><span class="h">Error típico y errata de E</span>
+    <p>Equivocar el signo: $\ln(\cos x)\to-\infty$ pero hay un signo menos delante, así que el numerador va a $+\infty$. E escribe que la indeterminación es del tipo $\frac{-\infty}{+\infty}$; es $\frac{+\infty}{+\infty}$ (el resultado $0$ es correcto).</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, p. 82 y nota al margen (límites laterales); derivada de tg, p. 80">U p.82</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.29 · $\infty^0$ (test) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.29, p. 69">E p.69</span></summary>
+  <p class="enun">Señala el valor del límite $\displaystyle\lim_{x\to+\infty}x^{\frac1{x+1}}$: <b>a)</b> $0$. <b>b)</b> $1$. <b>c)</b> $e$. <b>d)</b> $e^e$.</p>
+  <ol class="steps">
+    <li><b>Tipo.</b> Base $\to+\infty$, exponente $\frac1{x+1}\to0$: $\infty^0$.</li>
+    <li><b>Exponencial.</b> Para $x&gt;0$: $x^{\frac1{x+1}}=e^{\frac{\ln x}{x+1}}$.</li>
+    <li><b>Exponente</b>, de tipo $\tfrac\infty\infty$ (derivables en $(0,\infty)$ y $(x+1)'=1\neq0$): $\displaystyle\lim\frac{\ln x}{x+1}=\lim\frac{1/x}{1}=0$.</li>
+    <li><b>Continuidad de $\exp$:</b> el límite es $e^0=1$. <b>Respuesta b).</b></li>
+    <li><i>Descarte rápido en un test:</i> para $x&gt;1$ la base es $&gt;1$ y el exponente positivo, luego $x^{1/(x+1)}&gt;1$: la a) es imposible; y como el exponente de $e$ tiende a $0$, no puede salir $e$ ni $e^e$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\infty^0\Rightarrow e^{\lim g\ln f}$; «logaritmo entre potencia de $x$» tiende siempre a $0$.</div>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Escribir «$\ln l=\ln\lim\ldots$» sin haber probado que el límite $l$ existe y es positivo (E y U suponen que el límite existe: falta de rigor). Con la forma $e^{g\ln f}$ no hace falta suponerlo.</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Ejemplo 2.12, p. 84 (mismo tipo: x^(1/x))">U p.84</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.30 · $0\cdot\infty$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.30, p. 70">E p.70</span></summary>
+  <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to0^+}x\ln x$.</p>
+  <ol class="steps">
+    <li><b>Tipo.</b> $x\to0^+$ y $\ln x\to-\infty$: $0\cdot(-\infty)$. L'Hôpital no se aplica a productos.</li>
+    <li><b>Convertir en cociente.</b> Pasamos al denominador el factor $x$: $x\ln x=\dfrac{\ln x}{1/x}$, de tipo $\tfrac{-\infty}{+\infty}$.</li>
+    <li><b>Condiciones.</b> $\ln x$ y $\frac1x$ son derivables en $(0,\infty)$ y $\left(\frac1x\right)'=-\frac1{x^2}\neq0$.</li>
+    <li><b>L'Hôpital:</b> $\displaystyle\lim\frac{\ln x}{1/x}=\lim\frac{1/x}{-1/x^2}=\lim_{x\to0^+}(-x)=0$.</li>
+    <li><b>La otra elección (mala).</b> $x\ln x=\dfrac{x}{1/\ln x}$ es $\tfrac00$, pero al derivar sale $-x(\ln x)^2$, más complicado que el de partida.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $0\cdot\infty$: escribe $fg=\dfrac g{1/f}$ poniendo <b>en el denominador el factor cuya inversa se deriva fácil</b> (la potencia $x^k$, casi nunca el logaritmo).</div>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Pensar «$0$ por lo que sea es $0$». Aquí sale $0$, pero $x\cdot\frac1x=1$ también es $0\cdot\infty$ y vale $1$.</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, fórmula de p. 84 y Ejemplo 2.11">U p.84</span> Es exactamente <span class="src" data-l="S" data-ref="Stewart §4.4, Ejemplo 6 y Nota, p. 305">S p.305</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.31 · $0^0$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.31, p. 70">E p.70</span></summary>
+  <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to0^+}x^{x^2}$.</p>
+  <ol class="steps">
+    <li><b>Tipo.</b> Base $x\to0^+$, exponente $x^2\to0$: $0^0$.</li>
+    <li><b>Escribir como exponencial.</b> Para $x&gt;0$: $x^{x^2}=e^{\ln(x^{x^2})}=e^{x^2\ln x}$.</li>
+    <li><b>Límite del exponente</b> ($0\cdot(-\infty)$), pasado a cociente como en 2.30: $\displaystyle\lim_{x\to0^+}x^2\ln x=\lim\frac{\ln x}{1/x^2}=\lim\frac{1/x}{-2/x^3}=\lim_{x\to0^+}\left(-\frac{x^2}{2}\right)=0$. (Condiciones: $\tfrac{-\infty}{+\infty}$, derivables en $(0,\infty)$, $(x^{-2})'=-2x^{-3}\neq0$.)</li>
+    <li><b>Volver a la potencia.</b> Como $\exp$ es continua, $\lim e^{x^2\ln x}=e^0=1$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $f^g$ con $0^0$, $\infty^0$ o $1^\infty$: escribe $f^g=e^{g\ln f}$, calcula $L=\lim g\ln f$ (será $0\cdot\infty$) y el resultado es $e^{L}$ (con $e^{+\infty}=+\infty$, $e^{-\infty}=0$).</div>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Quedarse en el límite del exponente y responder $0$ en lugar de $e^0=1$ (U lo avisa en el recuadro de la p. 85).</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Ejemplo 2.12 y recuadro «Ojo», pp. 84-85 (U no cita explícitamente 0^0)">U pp.84-85</span> <span class="src" data-l="S" data-ref="Stewart §4.4, Ejemplo 9 (x^x), p. 307">S p.307</span> <span class="src" data-l="L" data-ref="Larson §8.7, Ejemplo 6, p. 562">L p.562</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.32 · potencia frente a exponencial <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.32, p. 70 (solución p. 71)">E p.70</span></summary>
+  <p class="enun">Calcula para $n\in\mathbb N$ y $a&gt;1$ el límite $\displaystyle\lim_{x\to+\infty}\frac{x^n}{a^x}$.</p>
+  <ol class="steps">
+    <li><b>Qué es la variable.</b> $n$ está fijo; la variable es $x$.</li>
+    <li><b>Tipo.</b> $a^x=e^{x\ln a}$ con $\ln a&gt;0$ (porque $a&gt;1$), luego $a^x\to+\infty$; y $x^n\to+\infty$: $\tfrac\infty\infty$.</li>
+    <li><b>Una aplicación de L'Hôpital.</b> $(x^n)'=nx^{n-1}$ y $(a^x)'=a^x\ln a\neq0$: $\ \displaystyle\lim\frac{x^n}{a^x}=\frac n{\ln a}\lim\frac{x^{n-1}}{a^x}$, siempre que este último límite exista.</li>
+    <li><b>Inducción</b> (lo que E llama «aplicamos L'Hôpital $n$ veces»). Sea $L_k=\lim_{x\to\infty}\frac{x^k}{a^x}$. Para $k=0$: $L_0=\lim\frac1{a^x}=0$. Si $L_{k-1}=0$ con $k\ge1$, entonces $\frac{x^k}{a^x}$ es $\tfrac\infty\infty$, se cumplen las condiciones y, por el paso anterior, $L_k=\frac k{\ln a}L_{k-1}=0$. Luego $L_n=0$. Equivalentemente, tras $n$ derivaciones queda $\dfrac{n!}{a^x(\ln a)^n}\to0$.</li>
+    <li><b>Pregunta final de E ($0&lt;a&lt;1$).</b> Entonces $a^x\to0^+$ y ya <b>no hay indeterminación</b>: $\frac{x^n}{a^x}=x^n\left(\frac1a\right)^x$ es un producto de dos funciones que tienden a $+\infty$, luego el límite es $+\infty$. (E deja la pregunta sin responder.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> potencia frente a exponencial de base $&gt;1$: deriva hasta que la potencia sea constante (el grado baja $1$ cada vez; la exponencial se reproduce). <b>La exponencial gana siempre.</b></div>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Derivar respecto de $n$, o tratar $a^x$ como si fuese $x^a$: su derivada es $a^x\ln a$, no $x\,a^{x-1}$.</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Ejemplo 2.9 (aplicación reiterada), p. 83; derivada de a^x, tabla U pp. 79-80">U p.83</span> El Ejemplo 3 de Larson equivale a $n=2$, $a=e$ con $t=-x$: <span class="src" data-l="L" data-ref="Larson §8.7, Ejemplo 3 (x²/e^(−x), x→−∞), p. 560">L p.560</span></p>
+</details>
+
+<details class="sol"><summary>Ejercicio 2.33 · una sucesión <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.33, p. 71 (solución p. 72)">E p.71</span></summary>
+  <p class="enun">Utilizando la regla de L'Hôpital calcula el valor del límite de la sucesión $\left\{\dfrac{\ln\frac{n+1}{n}}{\ln\frac{n+2}{n+1}}\right\}$ cuando $n$ tiende a $+\infty$.</p>
+  <ol class="steps">
+    <li><b>Por qué no se deriva la sucesión.</b> Solo está definida en $\mathbb N$. Pasamos a una función de variable real con la Prop. 2.3 de U: si $\lim_{x\to\infty}f(x)=l$, entonces $\lim_{n\to\infty}f(n)=l$.</li>
+    <li><b>Función asociada:</b> $f(x)=\dfrac{\ln\frac{x+1}{x}}{\ln\frac{x+2}{x+1}}$, $x&gt;0$.</li>
+    <li><b>Tipo.</b> $\frac{x+1}{x}\to1$ y $\frac{x+2}{x+1}\to1$; por continuidad del logaritmo, arriba y abajo $\to\ln1=0$: $\tfrac00$.</li>
+    <li><b>Derivadas</b> (conviene escribir $\ln\frac{x+1}x=\ln(x+1)-\ln x$): numerador $\dfrac1{x+1}-\dfrac1x=\dfrac{-1}{x(x+1)}$; denominador $\dfrac1{x+2}-\dfrac1{x+1}=\dfrac{-1}{(x+1)(x+2)}$, que no se anula nunca.</li>
+    <li><b>Cociente de derivadas:</b> $\ \dfrac{-1/(x(x+1))}{-1/((x+1)(x+2))}=\dfrac{(x+1)(x+2)}{x(x+1)}=\dfrac{x+2}x=1+\dfrac2x\to1$.</li>
+    <li><b>Conclusión.</b> $\lim_{x\to\infty}f(x)=1$ y, por la Prop. 2.3, el límite de la sucesión es $1$. (Comprobación numérica: para $n=1000$ el término vale $1{,}0010$.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> límite de sucesión con $0/0$ o $\infty/\infty$ «difícil»: cambia $n$ por $x\in\mathbb R$, aplica L'Hôpital a la función y vuelve a la sucesión con la Prop. 2.3.</div>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Usar la implicación al revés: que $f(n)\to l$ <b>no</b> implica que $f(x)\to l$ (por ejemplo, $\operatorname{sen}(\pi n)=0$ para todo $n$, pero $\operatorname{sen}(\pi x)$ no tiene límite en $+\infty$).</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Proposición 2.3 y Ejemplo 2.14, p. 85">U p.85</span> <span class="src" data-l="L" data-ref="Larson §9.1, Teorema 9.1, p. 585 y Ejemplo 6, p. 588">L pp.585, 588</span></p>
+</details>
+
+<h3>Ejemplos propios (de fácil a difícil)</h3>
+
+<details class="sol"><summary>Propio 1 · $\tfrac00$ con dos derivaciones <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con cálculo simbólico)">P</span></summary>
+  <p class="enun">Calcula $\displaystyle\lim_{x\to0}\frac{e^x-1-x}{x^2}$.</p>
+  <ol class="steps">
+    <li>En $0$: $\frac{1-1-0}{0}$, tipo $\tfrac00$. Derivables; $(x^2)'=2x\neq0$ si $x\neq0$.</li>
+    <li>L'Hôpital: $\lim\dfrac{e^x-1}{2x}$, otra vez $\tfrac00$; $(2x)'=2\neq0$.</li>
+    <li>L'Hôpital: $\lim\dfrac{e^x}{2}=\dfrac12$. <b>Resultado: $\dfrac12$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> repite la regla mientras siga saliendo $\tfrac00$ o $\tfrac\infty\infty$ y comprueba las condiciones en cada paso.</div>
+</details>
+
+<details class="sol"><summary>Propio 2 · $\infty-\infty$ <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con cálculo simbólico)">P</span></summary>
+  <p class="enun">Calcula $\displaystyle\lim_{x\to0}\left(\frac1x-\frac1{e^x-1}\right)$.</p>
+  <ol class="steps">
+    <li>Por la derecha es $+\infty-(+\infty)$ (y por la izquierda $-\infty-(-\infty)$). <b>Restamos:</b> $\dfrac{e^x-1-x}{x(e^x-1)}$, de tipo $\tfrac00$.</li>
+    <li>Derivadas: numerador $e^x-1$; denominador $h(x)=e^x-1+xe^x$. Como $h'(x)=(2+x)e^x&gt;0$ cerca de $0$, $h$ es estrictamente creciente allí y solo se anula en $0$: condiciones cumplidas.</li>
+    <li>$\lim\dfrac{e^x-1}{e^x-1+xe^x}$ sigue siendo $\tfrac00$; derivamos otra vez: $\lim\dfrac{e^x}{(2+x)e^x}=\lim\dfrac1{2+x}=\dfrac12$. <b>Resultado: $\dfrac12$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\infty-\infty$: haz la resta (denominador común) y aplica la regla al cociente resultante.</div>
+</details>
+
+<details class="sol"><summary>Propio 3 · $1^\infty$ <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con cálculo simbólico)">P</span></summary>
+  <p class="enun">Calcula $\displaystyle\lim_{x\to0}(\cos x)^{1/x^2}$.</p>
+  <ol class="steps">
+    <li>Base $\to1$, exponente $\to+\infty$: $1^\infty$. Cerca de $0$, $\cos x&gt;0$, luego $(\cos x)^{1/x^2}=e^{\ln(\cos x)/x^2}$.</li>
+    <li>Exponente: $\dfrac{\ln\cos x}{x^2}$ es $\tfrac00$. L'Hôpital: $\dfrac{-\operatorname{tg}x}{2x}=-\dfrac12\cdot\dfrac{\operatorname{sen}x}{x}\cdot\dfrac1{\cos x}\to-\dfrac12$ (usando $\frac{\operatorname{sen}x}x\to1$, U Ej. 2.8).</li>
+    <li><b>Resultado: $e^{-1/2}=\dfrac1{\sqrt e}$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $1^\infty$: $e^{L}$ con $L=\lim g\ln f$ (o el atajo $\lim g(f-1)$: aquí $\frac{\cos x-1}{x^2}\to-\frac12$, mismo resultado).</div>
+</details>
+
+<details class="sol"><summary>Propio 4 · sucesión $n\left(a^{1/n}-1\right)$ <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con cálculo simbólico)">P</span></summary>
+  <p class="enun">Para $a&gt;0$, calcula $\displaystyle\lim_{n\to\infty}n\left(a^{1/n}-1\right)$.</p>
+  <ol class="steps">
+    <li>Función asociada: $f(x)=x\left(a^{1/x}-1\right)=\dfrac{a^{1/x}-1}{1/x}$. Como $a^{1/x}=e^{(\ln a)/x}\to1$, es $\tfrac00$.</li>
+    <li>Derivadas: numerador $a^{1/x}\ln a\cdot\left(-\frac1{x^2}\right)$; denominador $-\frac1{x^2}\neq0$. Cociente: $a^{1/x}\ln a\to\ln a$.</li>
+    <li>Por la Prop. 2.3: <b>$\lim_n n\left(a^{1/n}-1\right)=\ln a$</b> (numéricamente, con $a=2$ y $n=1000$: $0{,}69339\approx\ln2=0{,}69315$).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> producto $n\cdot(\text{algo}\to0)$ en una sucesión: pásalo a cociente con $\frac1n$ y a la variable real $x$.</div>
+</details>
+
+<!-- ============================ chuleta ============================ -->
+<h2 id="chuleta"><span class="n">9</span>Chuleta y lista de comprobación</h2>
+
+<div class="box thm"><span class="h">Fórmulas y enunciados clave</span>
+  <p><b>Regla:</b> $f,g$ derivables cerca de $a$, $g'\neq0$ cerca de $a$; $\tfrac00$ o $\tfrac\infty\infty$; <b>si existe</b> $\lim\frac{f'}{g'}=\ell\in\overline{\mathbb R}$, entonces $\lim\frac fg=\ell$. Vale con $a^\pm$ y $\pm\infty$.</p>
+  <p><b>Productos:</b> $fg=\dfrac f{1/g}$ o $\dfrac g{1/f}$. <b>Restas:</b> denominador común, racionalizar, factor común. <b>Potencias:</b> $f^g=e^{g\ln f}$, límite $e^{L}$. <b>Prop. 2.2:</b> $f\to\pm\infty\Rightarrow(1+\frac1f)^f\to e$. <b>Prop. 2.3:</b> $\lim_x f=l\Rightarrow\lim_nf(n)=l$.</p>
+  <p><b>Escalera:</b> $\ln x\ll x^p\ll a^x$ ($p&gt;0$, $a&gt;1$). <b>No indeterminados:</b> $\frac c\infty=0$, $\frac c{0^\pm}=\pm\infty$ (signo según $c$ y el lado), $\infty+\infty=\infty$, $0^{+\infty}=0$ (base $\to0^+$), $\infty^\infty=\infty$.</p>
+  <span class="src" data-l="U" data-ref="U §2.3.2, pp. 82-85 (regla, Prop. 2.2 y 2.3); completado con S pp.302-307 y L pp.558-563">U pp.82-85</span>
+</div>
+
+<ul class="checklist">
+  <li>Sé reconocer, sustituyendo, si un límite es $\tfrac00$, $\tfrac\infty\infty$, $0\cdot\infty$, $\infty-\infty$, $1^\infty$, $0^0$, $\infty^0$ o <i>no</i> es indeterminado.</li>
+  <li>Sé enunciar la regla con <b>todas</b> sus condiciones, incluida «existe $\lim f'/g'$».</li>
+  <li>Sé derivar numerador y denominador por separado y simplificar antes de sustituir.</li>
+  <li>Sé convertir $0\cdot\infty$ en cociente eligiendo qué factor pasar al denominador.</li>
+  <li>Sé resolver $\infty-\infty$ operando la resta.</li>
+  <li>Sé resolver potencias con $e^{g\ln f}$ y no olvido devolver $e^{L}$.</li>
+  <li>Sé cuándo abandonar L'Hôpital (si da vueltas o si $\lim f'/g'$ no existe) y dividir por el término dominante.</li>
+  <li>Sé pasar de una sucesión a una función y usar la Prop. 2.3, y sé por qué no vale al revés.</li>
+  <li>Decido el signo de $0^\pm$ en los límites laterales antes de decir $+\infty$ o $-\infty$.</li>
+</ul>
+
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<div id="panel-fuentes"></div>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro.</footer>
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 1.2 Sucesiones y sus límites</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<style>
+/* Extras propios del tema 1.2 (prefijo s12-): banda ε, líneas discontinuas y puntos neutros en las figuras */
+.s12-band{fill:var(--acc);opacity:.13}
+svg.fig .s12-dash{stroke:var(--mut);stroke-width:1.3;stroke-dasharray:5 4;fill:none}
+svg.fig .s12-mut{fill:var(--mut)}
+.s12-tbl td:first-child{white-space:nowrap}
+svg.fig .sm{font-size:15px}
+</style>
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo I · El paso al límite · Tema 1.2</div>
+  <h1>Sucesiones y sus límites</h1>
+  <p>Qué es una sucesión, qué significa que «tienda» a un número (o a infinito), cómo se calculan límites sin usar la definición y qué hacer con las indeterminaciones. Es el primer «paso al límite» del curso: series, continuidad y derivadas se construyen sobre él.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §1.2 (pp. 22-33)</span><span>Ejercicios: E Ej. 1.6–1.16 (pp. 10-20)</span><span>⏱ ~8 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §1.2.1 Motivación, p. 22">U p.22</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Una <b>sucesión</b> es una lista infinita de números; decimos que <b>converge</b> a $l$ cuando, si esperas lo bastante, todos los términos quedan tan cerca de $l$ como tú quieras. Con esa idea, «un proceso infinito» (que ningún ser finito puede recorrer) se controla con una sola condición finita.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.1 Introducción y Objetivos, p. 22">U p.22</span>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li><b>Valor absoluto y distancia</b>: $|a-b|$ es la distancia entre $a$ y $b$; desigualdad triangular $|x+y|\le|x|+|y|$ y su variante $\big||x|-|y|\big|\le|x-y|$. <a href="tema_1_1_espacio_R.html#s3">Tema 1.1, apartado 3</a>.</li>
+  <li><b>Intervalos</b>, centro y radio: $|x-c|&lt;r\iff x\in(c-r,c+r)$. <a href="tema_1_1_espacio_R.html#s4">Tema 1.1, apartado 4</a>.</li>
+  <li><b>Cotas, supremo y axioma del supremo</b> (para la sucesión monótona) y <b>propiedad arquimediana</b> (para «$1/n$ se hace tan pequeño como quieras»). <a href="tema_1_1_espacio_R.html#s5">Tema 1.1, apartados 5-8</a>.</li>
+  <li>Funciones que U da por conocidas (p. 29): polinomios, trigonométricas, exponencial $e^x$ y logaritmo $\ln x$. Y el <b>factorial</b>: $n!=n(n-1)\cdots2\cdot1$, con $0!=1$ (U p. 25, nota al margen).</li>
+  <li>Reglas de potencias: $e^{a+b}=e^ae^b$, $\ \ln(a^b)=b\ln a$ $(a&gt;0)$, $\ \sqrt{pq}=\sqrt p\sqrt q$ $(p,q\ge0)$.</li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <tr><th>Apartado</th><th>Qué contiene</th><th>Dónde está en los libros</th></tr>
+  <tr><td>1 Sucesiones</td><td>Def. 1.9, término general, definición recursiva, dibujarlas</td><td>U pp.22-23, 33 · S pp.690-691 · L p.584</td></tr>
+  <tr><td>2 Límite y convergencia</td><td>Def. 1.10 ($\varepsilon$–$N$), unicidad, «divergente»</td><td>U pp.23-24 · S pp.691-692 · L p.585</td></tr>
+  <tr><td>3 Sucesiones acotadas</td><td>Def. 1.11, Prop. 1.1</td><td>U p.24 · S p.697 · L p.591</td></tr>
+  <tr><td>4 Emparedado y «tiende a 0 por acotada»</td><td>Regla del emparedado, Teorema 1.2, Prop. 1.2</td><td>U pp.25-26 · S p.694 · L pp.587-588</td></tr>
+  <tr><td>5 Álgebra de límites</td><td>Prop. 1.3; cocientes de polinomios</td><td>U pp.26-27 · S p.693 · L p.586</td></tr>
+  <tr><td>6 Límites infinitos</td><td>Def. 1.12 (recta ampliada), límite $\pm\infty$, Prop. 1.4</td><td>U pp.27-28 · S p.693 · L p.585</td></tr>
+  <tr><td>7 Indeterminaciones</td><td>Las 7 formas, conjugado, fórmula (1.1), continuidad</td><td>U pp.29-30 · S p.695</td></tr>
+  <tr><td>8 Sucesiones monótonas</td><td>Def. 1.13, Teorema 1.3</td><td>U p.31 · S pp.696-699 · L pp.590-591</td></tr>
+  <tr><td>9 El número $e$</td><td>Prop. 1.5, indeterminación $1^{\pm\infty}$</td><td>U pp.31-32 · L p.585</td></tr>
+  <tr><td>10 Criterio de Stolz</td><td>Enunciado, Ejemplo 1.30</td><td>U pp.32-33</td></tr>
+  <tr><td>11 Sumas parciales (avance)</td><td>Enlace con las series (§1.3)</td><td>U p.34 · L p.595</td></tr>
+  <tr><td>12 Estrategia y catálogo</td><td>Qué técnica usar ante cada límite</td><td>propio</td></tr>
+  <tr><td>13 Ejercicios</td><td>E <a href="#ej1-6">1.6</a>-1.16 + ejemplos propios</td><td>E pp.10-20</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios</h3>
+<p>Los once ejercicios de E de esta sección (1.6 a 1.16) piden: razonar con la definición de convergencia y de divergencia (1.6); calcular límites de <b>cocientes</b> con potencias, exponenciales y raíces (1.7, 1.8, 1.9); resolver <b>$\infty-\infty$</b> con el conjugado (1.10, 1.12); acotar una <b>suma de $n$ términos</b> con el emparedado (1.11); calcular <b>potencias</b> $a_n^{b_n}$ con y sin indeterminación (1.13, 1.14) y usar el <b>criterio de Stolz</b> (1.15, 1.16). <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.6-1.16, pp. 10-20">E pp.10-20</span></p>
+
+<div class="box warn"><span class="h">Avisos: alcance de U y huecos que aquí se completan</span>
+  <ul>
+    <li><b>§1.2 de U ocupa las pp. 22-33</b> (no acaba en la 30): monotonía, número $e$ y criterio de Stolz están en las pp. 31-33; §1.3 (Series) empieza a mitad de la p. 33.</li>
+    <li>U <b>no define «sucesión divergente»</b> (solo dice que las de límite $\pm\infty$ «no son convergentes», p. 28). Se usa la definición de S: divergente = no convergente.</li>
+    <li>La lista de funciones continuas de U (p. 29) <b>no incluye las raíces</b>; se cubre con $\sqrt x=e^{\frac12\ln x}$ o con S p. 693-695.</li>
+    <li>U enuncia el emparedado «para todo $n$»; S y L lo enuncian «a partir de un $N$» (apartado 4).</li>
+    <li>U no define el número $e$ (usa $\lim(1+1/a_n)^{a_n}=e$ sin más); L p. 585 lo da como $\lim_{x\to\infty}(1+1/x)^x$.</li>
+    <li>Del criterio de Stolz, U no dice que hace falta $b_{n+1}\ne b_n$; se precisa en el apartado 10 (explicación propia; ni S ni L tratan Stolz).</li>
+  </ul>
+</div>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Sucesiones <span class="src" data-l="U" data-ref="U §1.2.2 Sucesiones, Def. 1.9 y ejemplos, pp. 22-23">U pp.22-23</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una sucesión es una <b>lista infinita con orden</b>: primer término, segundo, tercero… como los vagones numerados de un tren que no acaba nunca, o el saldo de una cuenta al final de cada mes. A cada número natural $n$ (el «número de vagón») le corresponde un número real $a_n$ (lo que lleva ese vagón). Por eso, técnicamente, es una <b>función</b> de $\mathbb N$ en $\mathbb R$.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, p. 22">U p.22</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, p. 690 (lista de números en orden definido)">S p.690</span>
+</div>
+
+<div class="box def"><span class="h">Definición 1.9 (sucesión)</span>
+  <p>Una <b>sucesión de números reales</b> es una aplicación $a:\mathbb N\to\mathbb R$. Se escribe $a_n$ en lugar de $a(n)$: $a_1$ es el <b>primer término</b>, $a_7$ el séptimo. Si todos los términos se dan por una fórmula (p. ej. $a_n=\ln n$), esa fórmula es el <b>término general</b>. La sucesión completa se abrevia $\{a_n\}$.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, Def. 1.9, p. 22; notación y término general, p. 23">U pp.22-23</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos 1.14 y 1.15 de U</span>
+  <ul>
+    <li>$a(n)=\pi$ es una sucesión <b>constante</b>: todos sus términos valen $\pi$.</li>
+    <li>$a(n)=2n-1$ toma los números impares: $a_1=1,\ a_2=3,\ a_3=5,\dots$</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U Ejemplos 1.14 y 1.15, p. 22">U p.22</span>
+</div>
+
+<h3>Tres formas de dar una sucesión <span class="src" data-l="S" data-ref="Stewart §11.1, Ejemplo 2, pp. 690-691">S pp.690-691</span><span class="src" data-l="U" data-ref="U §1.2, sucesión de Fibonacci (forma recursiva), p. 33">U p.33</span><span class="src" data-l="U" data-ref="U §1.2.2, nota al margen, p. 23">U p.23</span></h3>
+<ol>
+  <li><b>Fórmula (término general).</b> $a_n=\dfrac n{n+1}$ da $\frac12,\frac23,\frac34,\frac45,\dots$</li>
+  <li><b>Lista con un patrón.</b> De $\frac35,-\frac4{25},\frac5{125},-\frac6{625},\dots$ se deduce $a_n=(-1)^{n-1}\dfrac{n+2}{5^n}$: los numeradores suben de 1 en 1 empezando en 3, los denominadores son potencias de 5 y el signo alterna.</li>
+  <li><b>Recursiva</b>: se dan los primeros términos y una regla que calcula cada uno con los anteriores. La <b>sucesión de Fibonacci</b>: $a_1=1,\ a_2=1,\ a_n=a_{n-1}+a_{n-2}$ para $n&gt;2$, que da $1,1,2,3,5,8,\dots$</li>
+</ol>
+<p>También pueden empezar en $n=0$ (o en otro entero); entonces el primer término es $a_0$.</p>
+
+<h3>Cómo se «ve» una sucesión: dos dibujos <span class="src" data-l="S" data-ref="Stewart §11.1, Figuras 1 y 2, p. 691">S p.691</span></h3>
+<p>Hay dos formas útiles de dibujarla: <b>(a)</b> sus términos como puntos sobre la recta real (ver cómo se amontonan), y <b>(b)</b> su <b>gráfica</b>, que son puntos aislados $(n,a_n)$ (ver la evolución con $n$). Se usan las dos a lo largo del tema.</p>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 135" role="img" aria-label="Los términos a1 a a8 de la sucesión n/(n+1) sobre la recta real, acercándose al 1">
+<line class="ax" x1="20" y1="70" x2="625" y2="70"/>
+<line class="ax" x1="60" y1="63" x2="60" y2="77"/><text x="60" y="100" text-anchor="middle">0</text>
+<line class="ax" x1="560" y1="63" x2="560" y2="77"/><text x="560" y="100" text-anchor="middle">1</text>
+<circle class="pb" cx="560" cy="70" r="6"/><text class="sm" x="560" y="120" text-anchor="middle">límite l = 1</text>
+<circle class="pt" cx="310" cy="70" r="4.5"/>
+<circle class="pt" cx="393.3" cy="70" r="4.5"/>
+<circle class="pt" cx="435" cy="70" r="4.5"/>
+<circle class="pt" cx="460" cy="70" r="4.5"/>
+<circle class="pt" cx="476.7" cy="70" r="4.5"/>
+<circle class="pt" cx="488.6" cy="70" r="4.5"/>
+<circle class="pt" cx="497.5" cy="70" r="4.5"/>
+<circle class="pt" cx="504.4" cy="70" r="4.5"/>
+<text class="sm" x="310" y="50" text-anchor="middle">a₁</text>
+<text class="sm" x="393.3" y="92" text-anchor="middle">a₂</text>
+<text class="sm" x="435" y="50" text-anchor="middle">a₃</text>
+<text class="sm" x="460" y="92" text-anchor="middle">a₄</text>
+<text class="sm" x="525" y="50" text-anchor="middle">a₅, a₆, …</text></svg>
+<figcaption>Primeros términos de $a_n=\frac n{n+1}$ sobre la recta real: cada uno queda a la derecha del anterior y se amontonan junto a 1.</figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Confundir la <b>sucesión</b> $\{a_n\}$ (lista ordenada e infinita) con el <b>conjunto</b> de sus valores $\{a_n:n\in\mathbb N\}$: la sucesión $(-1)^n$ tiene infinitos términos, pero su conjunto de valores es $\{-1,1\}$. Y tampoco es una <b>serie</b> (una suma infinita): eso viene en el apartado 11 y en el tema 1.3.</p>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Límite de una sucesión: convergencia <span class="src" data-l="U" data-ref="U §1.2.2 Sucesiones convergentes, Def. 1.10, pp. 23-24">U pp.23-24</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: el juego del reto</span>
+  <p>Alguien te dice que $\{a_n\}$ tiende a $l$. Tú lanzas un <b>reto</b>: «¿estás a menos de $\varepsilon=0{,}001$ de $l$?». La sucesión responde con un número $N$: «a partir del término $N$, <i>todos</i> los términos están a esa distancia de $l$ o menos». Da igual lo pequeño que sea el reto $\varepsilon$: siempre hay respuesta (aunque $N$ sea cada vez mayor). Lo que ocurre al <b>principio</b> no importa, solo el <b>final</b>.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, p. 23: «no nos importa lo que pasa al principio sino al final»">U p.23</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Def. 1 y 2, Figuras 4 y 5, p. 692">S p.692</span>
+</div>
+
+<div class="box def"><span class="h">Definición 1.10 (límite; sucesión convergente)</span>
+  <p>Una sucesión $\{a_n\}$ <b>tiene límite $l\in\mathbb R$</b> si para cada $\varepsilon&gt;0$ existe un número natural $N$ tal que
+  $$|a_n-l|\le\varepsilon\qquad\text{para todo } n\ge N.$$
+  Se escribe $\displaystyle\lim_{n\to\infty}a_n=l$ y se dice que $\{a_n\}$ es <b>convergente</b>.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, Def. 1.10, p. 23">U p.23</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Def. 2, p. 692 (con desigualdad estricta)">S p.692</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Definición del límite de una sucesión, p. 585 (con desigualdad estricta)">L p.585</span>
+</div>
+
+<p><b>Cómo leerla.</b> $|a_n-l|\le\varepsilon$ significa $l-\varepsilon\le a_n\le l+\varepsilon$: el término $a_n$ está en el intervalo de centro $l$ y radio $\varepsilon$. Por tanto: <i>cualquier intervalo abierto que contenga a $l$ contiene a todos los términos salvo, quizá, un número finito de ellos</i> (U p. 23). S y L escriben $&lt;\varepsilon$ en vez de $\le\varepsilon$: es equivalente, porque $\varepsilon$ es arbitrario. En la definición de U, $N$ es un natural cualquiera que funcione; en L se llama $M$ y puede ser real.</p>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 260" role="img" aria-label="Gráfica de a_n = n/(n+1) con la banda de anchura ε = 0,1 alrededor del límite 1: desde n = 9 todos los puntos están dentro">
+<rect class="s12-band" x="60" y="55" width="540" height="30"/>
+<line class="ax" x1="60" y1="220" x2="620" y2="220"/><line class="ax" x1="60" y1="220" x2="60" y2="24"/>
+<line class="s12-dash" x1="60" y1="70" x2="600" y2="70"/>
+<line class="s12-dash" x1="384" y1="24" x2="384" y2="220"/>
+<text class="sm" x="52" y="59" text-anchor="end">1 + ε</text>
+<text class="sm" x="52" y="74" text-anchor="end">1</text>
+<text class="sm" x="52" y="89" text-anchor="end">1 − ε</text>
+<circle class="op" cx="96" cy="145" r="4.5"/>
+<circle class="op" cx="132" cy="120" r="4.5"/>
+<circle class="op" cx="168" cy="107.5" r="4.5"/>
+<circle class="op" cx="204" cy="100" r="4.5"/>
+<circle class="op" cx="240" cy="95" r="4.5"/>
+<circle class="op" cx="276" cy="91.4" r="4.5"/>
+<circle class="op" cx="312" cy="88.8" r="4.5"/>
+<circle class="op" cx="348" cy="86.7" r="4.5"/>
+<circle class="pt" cx="384" cy="85" r="4.5"/>
+<circle class="pt" cx="420" cy="83.6" r="4.5"/>
+<circle class="pt" cx="456" cy="82.5" r="4.5"/>
+<circle class="pt" cx="492" cy="81.5" r="4.5"/>
+<circle class="pt" cx="528" cy="80.7" r="4.5"/>
+<circle class="pt" cx="564" cy="80" r="4.5"/>
+<line class="ax" x1="96" y1="220" x2="96" y2="225"/><text class="sm" x="96" y="240" text-anchor="middle">1</text>
+<line class="ax" x1="240" y1="220" x2="240" y2="225"/><text class="sm" x="240" y="240" text-anchor="middle">5</text>
+<line class="ax" x1="384" y1="220" x2="384" y2="225"/><text class="sm" x="384" y="240" text-anchor="middle">9</text>
+<line class="ax" x1="564" y1="220" x2="564" y2="225"/><text class="sm" x="564" y="240" text-anchor="middle">14</text>
+<text class="bd" x="390" y="40">N = 9</text><text class="sm" x="610" y="240" text-anchor="end">n</text></svg>
+<figcaption>Gráfica de $a_n=\frac n{n+1}$ con $\varepsilon=0{,}1$. Los puntos huecos (n de 1 a 8) quedan fuera de la banda $[1-\varepsilon,1+\varepsilon]$; desde $N=9$ todos los puntos (rellenos) están dentro. Con otro $\varepsilon$ más pequeño la banda se estrecha y hace falta un $N$ mayor.</figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo 1.16: sucesión constante</span>
+  <p>Si $a_n=c$ para todo $n$, entonces $\lim a_n=c$: dado $\varepsilon&gt;0$, $|a_n-c|=0&lt;\varepsilon$ para todo $n\in\mathbb N$ (sirve cualquier $N$).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.16, p. 23">U p.23</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.17: $\lim\frac1n=0$ con la definición</span>
+  <ol class="steps">
+    <li>Distancia al supuesto límite: $|a_n-0|=\left|\frac1n\right|=\frac1n$.</li>
+    <li>Dado $\varepsilon&gt;0$ queremos $\frac1n\le\varepsilon$ para todo $n\ge N$. Como $n\ge N\Rightarrow\frac1n\le\frac1N$, basta con que $\frac1N\le\varepsilon$, es decir, $\frac1\varepsilon\le N$.</li>
+    <li>Tomamos como $N$ el primer natural mayor que $\frac1\varepsilon$ (existe por la propiedad arquimediana, tema 1.1). Con $\varepsilon=\frac1{1000}$ vale $N=1001$; con $\varepsilon=12$ vale $N=1$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.17, p. 24">U p.24</span>
+</div>
+
+<div class="box tip"><span class="h">Receta: probar $\lim a_n=l$ con la definición</span>
+  <ol class="steps">
+    <li>Calcula y simplifica $|a_n-l|$.</li>
+    <li>Resuelve la desigualdad $|a_n-l|\le\varepsilon$ <b>para $n$</b> (o busca una expresión mayor y más sencilla que $|a_n-l|$ que sea fácil de resolver).</li>
+    <li>Elige $N$ natural que cumpla esa condición. Si $|a_n-l|$ (o la cota que uses) <b>decrece con $n$</b>, basta comprobarlo en $n=N$: para $n\ge N$ será aún menor.</li>
+  </ol>
+  <p><i>Ejemplo propio:</i> $a_n=\frac n{n+1}\to1$. $|a_n-1|=\frac1{n+1}\le\varepsilon\iff n\ge\frac1\varepsilon-1$. Para $\varepsilon=0{,}1$ basta $N=9$: comprobamos $a_9=0{,}9$ y $|0{,}9-1|=0{,}1\le0{,}1$ (por eso U escribe $\le$). Es el dibujo de arriba.</p>
+  <span class="src" data-l="P" data-ref="Receta y ejemplo propios (método de U Ejemplo 1.17, p. 24)">P</span>
+</div>
+
+<div class="box tip"><span class="h">Para comprobar con ordenador</span>
+  <p>U incluye notas sobre Maxima: la sucesión $\frac1n$ se define con <code>a[n]:=1/n</code> y el límite se calcula con <code>limit(a[n],n,inf)</code>; el factorial $7!$ se escribe <code>7!;</code>. Sirve para comprobar tus resultados, no para razonarlos.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, notas al margen sobre Maxima, p. 23 (límites) y p. 25 (factorial)">U pp.23-25</span>
+</div>
+<div class="box warn"><span class="h">Error típico</span>
+  <p>(1) $N$ <b>depende de</b> $\varepsilon$: no se puede fijar $N$ antes de que te den $\varepsilon$. (2) La condición es para <b>todos</b> los $n\ge N$, no solo para uno: $\{(-1)^n\}$ pasa por 1 infinitas veces y no converge a 1. (3) El límite <b>no tiene por qué alcanzarse</b> ni la sucesión acercarse siempre «por un lado»: $\frac{(-1)^n}{n}$ converge a 0 alternando de lado.</p>
+</div>
+
+<h3>Unicidad del límite</h3>
+<div class="box thm"><span class="h">Unicidad</span>
+  <p>Si $\{a_n\}$ converge, su límite es <b>único</b>: no puede tender a dos números distintos a la vez.</p>
+  <p><i>Prueba (la «receta» de U, completada).</i> Supón $a_n\to l$ y $a_n\to m$ con $l\ne m$ y sea $L=|l-m|&gt;0$. Tomando $\varepsilon=L/3$ en la definición, existen $N_1,N_2$ con $|a_n-l|\le L/3$ si $n\ge N_1$ y $|a_n-m|\le L/3$ si $n\ge N_2$. Para $n\ge\max\{N_1,N_2\}$, por la desigualdad triangular, $L=|l-m|=|(l-a_n)+(a_n-m)|\le\frac L3+\frac L3=\frac{2L}3&lt;L$. Absurdo; luego $l=m$.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, unicidad del límite (receta al margen), p. 24">U p.24</span>
+</div>
+
+<h3>¿Y si no converge? «Divergente»</h3>
+<div class="box def"><span class="h">Sucesión divergente</span>
+  <p>Una sucesión que <b>no converge</b> se llama <b>divergente</b>. Puede serlo de dos maneras: porque sus términos crecen (o decrecen) sin límite (límite $\pm\infty$, apartado 6) o porque <b>oscila</b> sin acercarse a nada, como $(-1)^n$. (U no da esta definición; es la de S y L.)</p>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Def. 1 (converge/diverge), p. 692">S p.692</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Definición del límite de una sucesión, p. 585">L p.585</span>
+  <span class="src" data-l="U" data-ref="U §1.2, sucesiones con límite infinito «no son convergentes», p. 28">U p.28</span>
+</div>
+
+<div class="box ex"><span class="h">$\{(-1)^n\}$ no converge (prueba)</span>
+  <p>Los términos son $-1,1,-1,1,\dots$ Si tendiera a un $l$, con $\varepsilon=\frac12$ existiría $N$ tal que para $n\ge N$: $|a_n-l|\le\frac12$ y $|a_{n+1}-l|\le\frac12$. Pero entonces $2=|a_{n+1}-a_n|\le|a_{n+1}-l|+|l-a_n|\le1$, absurdo. Luego diverge (oscila).</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, {(−1)^n} acotada pero no convergente, p. 24">U p.24</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Ejemplo 7, p. 695">S p.695</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Sucesiones acotadas <span class="src" data-l="U" data-ref="U §1.2.2, Def. 1.11 y Prop. 1.1, p. 24">U p.24</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una sucesión está <b>acotada</b> si vive dentro de un «corral»: existe una valla de altura $c$ y otra de altura $-c$ que ningún término salta. Una sucesión convergente <b>no puede escaparse</b>: casi todos sus términos están pegados a $l$ y solo quedan unos pocos «rezagados» del principio, que siempre se pueden encerrar.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U Prop. 1.1">P</span>
+</div>
+
+<div class="box def"><span class="h">Definición 1.11 (sucesión acotada)</span>
+  <p>$\{a_n\}$ es <b>acotada</b> si existe $c&gt;0$ tal que $|a_n|\le c$ para todo $n\in\mathbb N$; es decir, si el conjunto $\{a_n:n\in\mathbb N\}$ está acotado (tema 1.1).</p>
+  <p><i>Equivalencia con S y L:</i> ellos piden una cota superior $M$ ($a_n\le M$) y una inferior $m$ ($m\le a_n$). Son lo mismo: de $m\le a_n\le M$ sale $|a_n|\le c$ con $c=\max\{|m|,|M|,1\}$ (U exige $c&gt;0$), y de $|a_n|\le c$ salen $M=c$ y $m=-c$.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, Def. 1.11, p. 24">U p.24</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Def. 11 (acotada por arriba/abajo), p. 697">S p.697</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Definición de sucesión acotada, p. 591">L p.591</span>
+</div>
+
+<div class="box thm"><span class="h">Proposición 1.1 (convergente ⇒ acotada)</span>
+  <p>Toda sucesión <b>convergente</b> es acotada. (Su recíproco es falso.)</p>
+  <p><i>Prueba (completa lo que U no detalla).</i> Sea $a_n\to l$. Con $\varepsilon=1$ hay $N$ con $|a_n-l|\le1$ para $n\ge N$, luego $|a_n|\le|l|+1$ para $n\ge N$ (triangular). Sea $c=\max\{|a_1|,\dots,|a_{N-1}|,\,|l|+1\}$: es un máximo de un número finito de valores y $c\ge1&gt;0$. Entonces $|a_n|\le c$ para todo $n$.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, Prop. 1.1, p. 24">U p.24</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 700 260" role="img" aria-label="Gráfica de (−1)^n + 1/n para n de 1 a 12: los términos pares se acercan a 1 y los impares a −1; está acotada pero no converge">
+<line class="ax" x1="60" y1="150" x2="620" y2="150"/><line class="ax" x1="60" y1="240" x2="60" y2="20"/>
+<line class="s12-dash" x1="60" y1="70" x2="600" y2="70"/><line class="s12-dash" x1="60" y1="230" x2="600" y2="230"/>
+<text class="sm" x="52" y="74" text-anchor="end">1</text><text class="sm" x="52" y="234" text-anchor="end">−1</text><text class="sm" x="52" y="154" text-anchor="end">0</text>
+<circle class="pb" cx="100" cy="150" r="4.5"/>
+<circle class="pt" cx="140" cy="30" r="4.5"/>
+<circle class="pb" cx="180" cy="203.3" r="4.5"/>
+<circle class="pt" cx="220" cy="50" r="4.5"/>
+<circle class="pb" cx="260" cy="214" r="4.5"/>
+<circle class="pt" cx="300" cy="56.7" r="4.5"/>
+<circle class="pb" cx="340" cy="218.6" r="4.5"/>
+<circle class="pt" cx="380" cy="60" r="4.5"/>
+<circle class="pb" cx="420" cy="221.1" r="4.5"/>
+<circle class="pt" cx="460" cy="62" r="4.5"/>
+<circle class="pb" cx="500" cy="222.7" r="4.5"/>
+<circle class="pt" cx="540" cy="63.3" r="4.5"/>
+<text class="sm" x="554" y="62">n par → 1</text><text class="sm" x="554" y="252">n impar → −1</text>
+<text class="sm" x="610" y="168" text-anchor="end">n</text></svg>
+<figcaption>La sucesión $(-1)^n+\frac1n$ (U Ejemplo 1.20, p. 26) está acotada ($|a_n|\le2$) y <b>no converge</b>: los términos pares (azul) se acercan a 1 y los impares (naranja) a $-1$.</figcaption>
+</figure>
+
+<div class="box tip"><span class="h">Cómo se usa</span>
+  <p>Probar «$P\Rightarrow Q$» equivale a probar «no $Q\Rightarrow$ no $P$» (la <b>contrarrecíproca</b>; U lo recuerda al margen, p. 24). Aquí es la herramienta práctica: <b>si una sucesión no está acotada, no converge</b>. Así, $a_n=n$ o $a_n=n^2-n$ divergen sin más cálculo (U lo llama «condición necesaria para la convergencia», p. 24). Pero <b>acotada no implica convergente</b>: $(-1)^n$, y también $(-1)^n+\frac1n$ de la figura.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, condición necesaria para la convergencia, p. 24">U p.24</span>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Regla del emparedado y «tiende a 0 por acotada» <span class="src" data-l="U" data-ref="U §1.2.2, Regla del emparedado, Teorema 1.2, Prop. 1.2, pp. 25-26">U pp.25-26</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: el bocadillo</span>
+  <p>Si un jamón está siempre entre dos panes y los dos panes se juntan en el mismo punto, el jamón queda aplastado en ese punto. La dificultad es que de entrada solo tienes el jamón (la sucesión que quieres estudiar): hay que <b>encontrar los panes</b>, y eso se aprende con práctica (U p. 25).</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, «jamón y panes», p. 25">U p.25</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, teorema de la compresión para sucesiones, p. 694">S p.694</span>
+</div>
+
+<div class="box thm"><span class="h">Regla del emparedado</span>
+  <p>Si $a_n\le b_n\le c_n$ para todo $n\in\mathbb N$ y $\displaystyle\lim a_n=\lim c_n=l$, entonces $\displaystyle\lim b_n=l$.</p>
+  <p><i>Versión «a partir de un $N$» (S, L):</i> basta que $a_n\le b_n\le c_n$ <b>desde cierto $n_0$ en adelante</b>, porque el límite solo depende del final de la sucesión (U p. 23). Es la que usan los ejercicios.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, Regla del emparedado, p. 25">U p.25</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, teorema de la compresión (n ≥ n0), p. 694">S p.694</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Teorema 9.3 (n > N), p. 587">L p.587</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 240" role="img" aria-label="Regla del emparedado: b_n = 1/n² queda entre a_n = 0 y c_n = 1/n, que tienden ambas a 0">
+<line class="ax" x1="60" y1="200" x2="620" y2="200"/><line class="ax" x1="60" y1="200" x2="60" y2="20"/>
+<circle class="s12-mut" cx="110" cy="200" r="4"/><circle class="pb" cx="110" cy="30" r="4.5"/><circle class="pt" cx="110" cy="30" r="4.5"/>
+<line class="ax" x1="110" y1="200" x2="110" y2="205"/><text class="sm" x="110" y="220" text-anchor="middle">1</text>
+<circle class="s12-mut" cx="160" cy="200" r="4"/><circle class="pb" cx="160" cy="157.5" r="4.5"/><circle class="pt" cx="160" cy="115" r="4.5"/>
+<line class="ax" x1="160" y1="200" x2="160" y2="205"/><text class="sm" x="160" y="220" text-anchor="middle">2</text>
+<circle class="s12-mut" cx="210" cy="200" r="4"/><circle class="pb" cx="210" cy="181.1" r="4.5"/><circle class="pt" cx="210" cy="143.3" r="4.5"/>
+<line class="ax" x1="210" y1="200" x2="210" y2="205"/><text class="sm" x="210" y="220" text-anchor="middle">3</text>
+<circle class="s12-mut" cx="260" cy="200" r="4"/><circle class="pb" cx="260" cy="189.4" r="4.5"/><circle class="pt" cx="260" cy="157.5" r="4.5"/>
+<line class="ax" x1="260" y1="200" x2="260" y2="205"/><text class="sm" x="260" y="220" text-anchor="middle">4</text>
+<circle class="s12-mut" cx="310" cy="200" r="4"/><circle class="pb" cx="310" cy="193.2" r="4.5"/><circle class="pt" cx="310" cy="166" r="4.5"/>
+<line class="ax" x1="310" y1="200" x2="310" y2="205"/><text class="sm" x="310" y="220" text-anchor="middle">5</text>
+<circle class="s12-mut" cx="360" cy="200" r="4"/><circle class="pb" cx="360" cy="195.3" r="4.5"/><circle class="pt" cx="360" cy="171.7" r="4.5"/>
+<line class="ax" x1="360" y1="200" x2="360" y2="205"/><text class="sm" x="360" y="220" text-anchor="middle">6</text>
+<circle class="s12-mut" cx="410" cy="200" r="4"/><circle class="pb" cx="410" cy="196.5" r="4.5"/><circle class="pt" cx="410" cy="175.7" r="4.5"/>
+<line class="ax" x1="410" y1="200" x2="410" y2="205"/><text class="sm" x="410" y="220" text-anchor="middle">7</text>
+<circle class="s12-mut" cx="460" cy="200" r="4"/><circle class="pb" cx="460" cy="197.3" r="4.5"/><circle class="pt" cx="460" cy="178.8" r="4.5"/>
+<line class="ax" x1="460" y1="200" x2="460" y2="205"/><text class="sm" x="460" y="220" text-anchor="middle">8</text>
+<circle class="s12-mut" cx="510" cy="200" r="4"/><circle class="pb" cx="510" cy="197.9" r="4.5"/><circle class="pt" cx="510" cy="181.1" r="4.5"/>
+<line class="ax" x1="510" y1="200" x2="510" y2="205"/><text class="sm" x="510" y="220" text-anchor="middle">9</text>
+<circle class="s12-mut" cx="560" cy="200" r="4"/><circle class="pb" cx="560" cy="198.3" r="4.5"/><circle class="pt" cx="560" cy="183" r="4.5"/>
+<line class="ax" x1="560" y1="200" x2="560" y2="205"/><text class="sm" x="560" y="220" text-anchor="middle">10</text>
+<text class="sm" x="52" y="34" text-anchor="end">1</text>
+<circle class="pt" cx="360" cy="46" r="4.5"/><text class="sm" x="372" y="50">cₙ = 1/n  (pan de arriba)</text>
+<circle class="pb" cx="360" cy="68" r="4.5"/><text class="sm" x="372" y="72">bₙ = 1/n²  (jamón)</text>
+<circle class="s12-mut" cx="360" cy="90" r="4"/><text class="sm" x="372" y="94">aₙ = 0  (pan de abajo)</text></svg>
+<figcaption>Ejemplo 1.18 de U: $0\le\frac1{n^2}\le\frac1n$ y ambos «panes» tienden a 0; el «jamón» $\frac1{n^2}$ queda comprimido entre ellos.</figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo 1.18: $\lim\frac1{n^2}=0$</span>
+  <p>Para todo $n\in\mathbb N$, $0\le\frac1{n^2}\le\frac1n$. Como $\lim0=0$ y $\lim\frac1n=0$ (Ejemplos 1.16-1.17), la regla del emparedado da $\lim\frac1{n^2}=0$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.18, p. 25">U p.25</span>
+</div>
+
+<div class="box thm"><span class="h">Teorema 1.2 (infinitésimo por acotada)</span>
+  <p>Si $\lim a_n=0$ y $\{b_n\}$ es <b>acotada</b>, entonces $\lim(a_nb_n)=0$.</p>
+  <p><i>Idea de la prueba.</i> Sea $|b_n|\le c$. Entonces $-c|a_n|\le a_nb_n\le c|a_n|$; como $\big||a_n|-0\big|=|a_n-0|$, la definición da $|a_n|\to0$ y por tanto $c|a_n|\to0$; el emparedado da el resultado. <b>Ojo:</b> no vale si $\{b_n\}$ no está acotada ($\frac1n\cdot n=1$).</p>
+  <span class="src" data-l="U" data-ref="U Teorema 1.2 y Ejemplo 1.19, p. 25">U p.25</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.19</span>
+  <p>$\displaystyle\lim\frac1n\cos^2\!\left(\frac{\exp\frac{n^2}{\sqrt[n]{(n+1)!}}}{\ln|n+2|}\right)=0$. La función coseno toma valores en $[-1,1]$, así que $\cos^2(\cdots)\in[0,1]$ es una sucesión <b>acotada</b> (no importa lo complicado que sea su argumento); y $\frac1n\to0$. Por el Teorema 1.2 el límite existe y es $0$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.19, p. 25">U p.25</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo propio</span>
+  <p>$\lim\dfrac{\operatorname{sen}n}n=0$: $\frac1n\to0$ y $\operatorname{sen}n$ está acotada ($|\operatorname{sen}n|\le1$). También: $-\frac1n\le\frac{\operatorname{sen}n}n\le\frac1n$ y emparedado.</p>
+  <span class="src" data-l="P" data-ref="Ejemplo propio; método de U Teorema 1.2 y Ejemplo 1.19, p. 25">P</span>
+</div>
+
+<div class="box thm"><span class="h">Proposición 1.2 (valor absoluto) y su recíproco</span>
+  <p>Si $\lim a_n=l$, entonces $\lim|a_n|=|l|$. Se cumple porque $\big||a_n|-|l|\big|\le|a_n-l|$ (Teorema 1.1 de 1.1). <b>El recíproco solo es cierto si $l=0$</b>: si $|a_n|\to0$ entonces $a_n\to0$, por el emparedado $-|a_n|\le a_n\le|a_n|$. En general es falso: $\{(-1)^n+\frac1n\}$ no converge pero su valor absoluto converge a 1 (U Ejemplo 1.20, figura de la p. 26).</p>
+  <span class="src" data-l="U" data-ref="U Prop. 1.2, p. 25; recíproco y Ejemplo 1.20, p. 26">U pp.25-26</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Teorema 6, p. 694: recíproco para l=0 (|a_n|→0 ⇒ a_n→0)">S p.694</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Teorema 9.4 (valor absoluto), p. 588: recíproco para l=0 (|a_n|→0 ⇒ a_n→0)">L p.588</span>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="s5"><span class="n">5</span>Álgebra de límites <span class="src" data-l="U" data-ref="U §1.2.2, Prop. 1.3, Ejemplo 1.21 y observación, pp. 26-27">U pp.26-27</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Si $a_n$ se aproxima a $l$ y $b_n$ a $m$, es natural que $a_n+b_n$ se aproxime a $l+m$, $a_nb_n$ a $lm$ y $\frac{a_n}{b_n}$ a $\frac lm$ (si $m\ne0$). Es la Proposición 1.3: permite calcular límites «por piezas», con una condición: <b>las piezas deben tener límite (finito)</b>.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, p. 26: «Operar con límites simplifica su cálculo»">U p.26</span>
+</div>
+
+<div class="box thm"><span class="h">Proposición 1.3 (suma, producto y cociente)</span>
+  <p>Supongamos que $\lim a_n$ y $\lim b_n$ <b>existen</b> (como números reales). Entonces
+  $$\lim(a_n+b_n)=\lim a_n+\lim b_n,\qquad \lim(a_nb_n)=\lim a_n\cdot\lim b_n .$$
+  Si además $b_n\ne0$ para todo $n$ y $\lim b_n\ne0$, entonces $\displaystyle\lim\frac{a_n}{b_n}=\frac{\lim a_n}{\lim b_n}$.</p>
+  <p>Consecuencias inmediatas: $\lim(c\,a_n)=c\lim a_n$ y $\lim(a_n-b_n)=\lim a_n-\lim b_n$. Como el límite solo depende del final, basta que $b_n\ne0$ desde cierto $n$ en adelante.</p>
+  <span class="src" data-l="U" data-ref="U Prop. 1.3, p. 26 (en el cociente: b_n ≠ 0 y lim b_n ≠ 0)">U p.26</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Leyes de los límites para las sucesiones, p. 693">S p.693</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Teorema 9.2, p. 586">L p.586</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.21: cociente de polinomios</span>
+  <p>$\displaystyle\lim\frac{2n^2+n+1}{n^2-n+1}$.</p>
+  <ol class="steps">
+    <li>Aplicar la Prop. 1.3 directamente falla: ni el numerador ni el denominador tienen límite finito.</li>
+    <li>Dividimos numerador y denominador entre $n^2$ (la mayor potencia del denominador): $\displaystyle\frac{2+\frac1n+\frac1{n^2}}{1-\frac1n+\frac1{n^2}}$.</li>
+    <li>Ahora cada pieza tiene límite ($\frac1n\to0$, $\frac1{n^2}\to0$) y el denominador tiende a $1\ne0$: el límite es $\dfrac{2+0+0}{1-0+0}=2$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.21, pp. 26-27">U pp.26-27</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Ejemplo 4 (dividir entre la mayor potencia), p. 694">S p.694</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen</span>
+  <p>En un cociente de expresiones polinómicas, <b>divide numerador y denominador entre el monomio de mayor grado del denominador</b> (U p. 27). Adelanto para calcular «de cabeza»: manda el término de mayor grado, y el resultado depende de los grados: mismo grado → cociente de coeficientes principales; mayor grado arriba → $\pm\infty$; mayor grado abajo → 0.</p>
+  <span class="src" data-l="U" data-ref="U Observación tras el Ejemplo 1.21, p. 27">U p.27</span>
+</div>
+
+<div class="box warn"><span class="h">Errores típicos con la Proposición 1.3</span>
+  <ul>
+    <li><b>Aplicarla sin que existan los límites</b>: $a_n=n$, $b_n=\frac1n$ tiene $\lim a_nb_n=1$, pero no es $\lim n\cdot0$.</li>
+    <li><b>Usarla con un número de sumandos que crece con $n$</b>: la suma de límites solo vale para un número <i>fijo</i> de sumandos. $\underbrace{\frac1n+\cdots+\frac1n}_{n\text{ veces}}=1$, no $0+\cdots+0=0$ (ver <a href="#ej1-11">Ejercicio 1.11</a>).</li>
+    <li>Dividir por un $b_n$ cuyo límite es 0 (eso da una indeterminación, apartado 7).</li>
+  </ul>
+</div>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="s6"><span class="n">6</span>Límites infinitos y la recta ampliada <span class="src" data-l="U" data-ref="U §1.2.2, Def. 1.12, límite infinito, Prop. 1.4, pp. 27-28">U pp.27-28</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Algunas sucesiones no se acercan a ningún número, pero su comportamiento es <b>claro</b>: $n$, $n^2-n$… crecen sin techo. Para hablar de ello y poder «calcular» con ellas, se añaden a $\mathbb R$ dos símbolos, $-\infty$ y $+\infty$, con las reglas de cálculo que esperaríamos. Ojo: <b>$\infty$ no es un número</b>; es una abreviatura de «crece sin límite».</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, Límites infinitos, p. 27">U p.27</span>
+</div>
+
+<div class="box def"><span class="h">Definición 1.12 (recta real ampliada)</span>
+  <p>$\overline{\mathbb R}=\mathbb R\cup\{-\infty,\infty\}$, con $-\infty&lt;x&lt;\infty$ para todo $x\in\mathbb R$ y las operaciones de $\mathbb R$ ampliadas así:</p>
+  <table class="s12-tbl">
+    <tr><th>Regla</th><th>Vale para</th><th>Ejemplo</th></tr>
+    <tr><td>$\dfrac x\infty=\dfrac x{-\infty}=0$</td><td>$x\in\mathbb R$</td><td>$\dfrac5\infty=0$</td></tr>
+    <tr><td>$x+\infty=\infty$</td><td>$x\in\overline{\mathbb R}$, $x\ne-\infty$</td><td>$-7+\infty=\infty$</td></tr>
+    <tr><td>$x-\infty=-\infty$</td><td>$x\in\overline{\mathbb R}$, $x\ne\infty$</td><td>$3-\infty=-\infty$</td></tr>
+    <tr><td>$x\cdot\infty=\infty$</td><td>$x\in(0,\infty]$</td><td>$2\cdot\infty=\infty$</td></tr>
+    <tr><td>$x\cdot\infty=-\infty$</td><td>$x\in[-\infty,0)$</td><td>$(-2)\cdot\infty=-\infty$</td></tr>
+    <tr><td>$x^\infty=0$</td><td>$x\in(0,1)$</td><td>$\left(\frac12\right)^\infty=0$</td></tr>
+    <tr><td>$x^\infty=\infty$</td><td>$x\in(1,\infty]$</td><td>$e^\infty=\infty$</td></tr>
+    <tr><td>$\infty^x=\infty$</td><td>$x\in(0,\infty]$</td><td>$\infty^2=\infty$</td></tr>
+    <tr><td>$\infty^x=0$</td><td>$x\in[-\infty,0)$</td><td>$\infty^{-1}=0$</td></tr>
+  </table>
+  <p>La tabla recoge las reglas que da U. Hay otras expresiones que no son indeterminaciones aunque U no las liste ($e^{-\infty}=0$, $0^{+\infty}=0$…). Las <b>siete indeterminaciones</b> del apartado 7 son las que no tienen valor fijo.</p>
+  <span class="src" data-l="U" data-ref="U Def. 1.12, p. 27">U p.27</span>
+</div>
+
+<div class="box def"><span class="h">Límite infinito</span>
+  <p>$\displaystyle\lim a_n=\infty$ si para cada $k&gt;0$ existe $N\in\mathbb N$ tal que $a_n\ge k$ para todo $n\ge N$. $\ \lim a_n=-\infty$ si $\lim(-a_n)=\infty$. Dicho de otro modo: para cualquier cantidad $k&gt;0$ solo hay un número finito de términos menores que $k$.</p>
+  <p><b>Las sucesiones con límite $\pm\infty$ no son convergentes</b> (convergente = límite en $\mathbb R$): son divergentes «de un modo especial». Una sucesión con límite $\pm\infty$ es <b>no acotada</b>.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, Límite infinito, p. 28">U p.28</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Def. 5, p. 693">S p.693</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, p. 585 (términos que aumentan/disminuyen sin límite)">L p.585</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.22: $\lim(n^2-n)=\infty$ con la definición</span>
+  <ol class="steps">
+    <li>Dado $\varepsilon&gt;0$ (aquí hace de «$k$») queremos $n^2-n\ge\varepsilon$ para $n\ge N$.</li>
+    <li>Para $n\ge2$: $n-1\ge1$, luego $n^2-n=n(n-1)\ge n$.</li>
+    <li>Tomando $N\ge\max\{2,\varepsilon\}$: si $n\ge N$, entonces $n\ge2$ y $\ n^2-n\ge n\ge N\ge\varepsilon$.</li>
+  </ol>
+  <p><b>Aviso:</b> U escribe $N\ge\max\{1,\varepsilon\}$, que falla en $n=1$: con $N=1$ y $\varepsilon\le1$, el término $n=1$ da $n^2-n=0&lt;\varepsilon$. Hay que exigir $N\ge2$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.22, p. 28">U p.28</span>
+</div>
+
+<div class="box thm"><span class="h">Proposición 1.4 y regla de «sustituir $n$ por $\infty$»</span>
+  <p>La regla del emparedado y las Proposiciones 1.2 y 1.3 <b>siguen siendo válidas</b> si alguno o todos los límites que intervienen valen $\pm\infty$ (y las operaciones se hacen en $\overline{\mathbb R}$ según la Def. 1.12). Como es sencillo probar que $\lim n=\infty$, si al sustituir $n$ por $\infty$ en el término general las operaciones <b>están definidas</b> (no es una indeterminación), el resultado es el límite.</p>
+  <p>Ejemplo 1.23: $\lim n^2=\infty^2=\infty$.</p>
+  <span class="src" data-l="U" data-ref="U Prop. 1.4 y Ejemplo 1.23, p. 28">U p.28</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Tratar $\infty$ como un número cualquiera: $\infty-\infty=0$ o $\frac\infty\infty=1$ son <b>falsos</b> (apartado 7). Y decir «$\lim n=\infty$ luego converge»: no converge, diverge a $\infty$.</p>
+</div>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="s7"><span class="n">7</span>Indeterminaciones, conjugado y la fórmula (1.1) <span class="src" data-l="U" data-ref="U §1.2.2, indeterminaciones, Ejemplos 1.24-1.26, pp. 29-30">U pp.29-30</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: ¿por qué «indeterminación»?</span>
+  <p>Una expresión como $\infty-\infty$ <b>no tiene valor fijo</b>: depende de <i>quién gana la carrera</i>. Con $n-n=0$, $(n+5)-n=5$ y $n^2-n\to\infty$ tenemos tres sucesiones de la forma «$\infty-\infty$» con tres límites distintos. Por eso, al sustituir $n$ por $\infty$ y encontrar una de estas formas, <b>no se puede concluir nada</b>: hay que transformar la expresión.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia; la lista de indeterminaciones es U p. 29">P</span>
+  <span class="src" data-l="U" data-ref="U §1.2.2, indeterminaciones, p. 29">U p.29</span>
+</div>
+
+<div class="box def"><span class="h">Las siete indeterminaciones</span>
+  <p>Cuatro «de operaciones» (p. 29): $\ \dfrac00,\quad\infty-\infty,\quad\pm\infty\cdot0,\quad\dfrac{\pm\infty}{\pm\infty}$.</p>
+  <p>Y tres «de potencias» (p. 30), que llevan a $\pm\infty\cdot0$ mediante (1.1): $\ 0^0,\quad1^{\pm\infty},\quad\infty^0$.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, indeterminaciones, p. 29 (las 4 primeras) y p. 30 (lista de 7)">U pp.29-30</span>
+</div>
+
+<h3>Conjugado: $\infty-\infty$ con raíces</h3>
+<div class="box ex"><span class="h">Ejemplo 1.24 y el truco del conjugado</span>
+  <p>$\displaystyle\lim(n^2-n)$ sin usar la definición. Al sustituir sale $\infty-\infty$. Multiplicamos y dividimos por el <b>conjugado</b> $n^2+n$, usando $(A-B)(A+B)=A^2-B^2$:
+  $$n^2-n=\frac{(n^2-n)(n^2+n)}{n^2+n}=\frac{n^4-n^2}{n^2+n}=\frac{n^2-1}{1+\frac1n}\quad(\text{dividiendo entre }n^2)\ \longrightarrow\ \frac\infty1=\infty.$$
+  Regla de U: si $\infty-\infty$ procede de $a_n-b_n$, suele ser buena idea <b>multiplicar y dividir por $a_n+b_n$</b>.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.24 y nota al margen «multiplicar por el conjugado», p. 29">U p.29</span>
+</div>
+
+<h3>Potencias: la fórmula (1.1)</h3>
+<div class="box thm"><span class="h">Fórmula (1.1)</span>
+  <p>Si $a_n&gt;0$ para todo $n$:
+  $$\lim a_n^{\,b_n}=\lim e^{\,b_n\ln a_n}=e^{\lim b_n\ln a_n}\qquad(\text{si el último límite existe en }\overline{\mathbb R}).$$
+  Se basa en $a_n^{b_n}=e^{\ln a_n^{b_n}}=e^{b_n\ln a_n}$ y en poder <b>intercambiar el límite con una función continua</b> (aquí $e^x$).</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, fórmula (1.1), p. 29">U p.29</span>
+</div>
+
+<div class="box thm"><span class="h">Intercambiar límite y función continua</span>
+  <p>Si $\lim a_n=l$ y $f$ es <b>continua en $l$</b> (con $a_n$ en el dominio de $f$), entonces $\lim f(a_n)=f(l)$. U lo aplica a las funciones que «el lector debe conocer»: polinómicas, trigonométricas, exponenciales y logarítmicas (la continuidad se estudia en el tema 1.4). <b>Las raíces no están en su lista</b>, pero también son continuas: $\sqrt x=e^{\frac12\ln x}$ para $x&gt;0$, y $\sqrt{a_n}\to\sqrt l$ (S p. 693, potencia $p&gt;0$).</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, cambiar límite por función continua, p. 29">U p.29</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Teorema 7 (f continua en L), p. 695">S p.695</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos 1.25 y 1.26</span>
+  <ol class="steps">
+    <li><b>1.25.</b> $\lim\cos\!\left(\frac\pi4+\frac1n\right)=\cos\!\left(\lim\left(\frac\pi4+\frac1n\right)\right)=\cos\frac\pi4=\frac{\sqrt2}2$ (el coseno es continuo).</li>
+    <li><b>1.26.</b> $\displaystyle\lim\left(\frac n{n^2+3}\right)^{n}$: por (1.1) es $e^{\lim n\ln\frac n{n^2+3}}$. Aquí $\frac n{n^2+3}\to0$ con términos positivos y $\ln x\to-\infty$ cuando $x\to0^+$ (se verá en 1.4), luego $\ln\frac n{n^2+3}\to-\infty$; el exponente es $\infty\cdot(-\infty)=-\infty$ y el límite es $e^{-\infty}=0$ (una de las expresiones que no son indeterminación, apartado 6). (No es indeterminación: la base tiende a $0$ y el exponente a $\infty$.)</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplos 1.25 y 1.26, pp. 29-30">U pp.29-30</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>«$1^\infty=1$» o «$0^0=1$» o «$\infty^0=1$»: <b>son indeterminaciones</b>. Y sustituir solo en una parte: $\left(1+\frac1n\right)^n\to1^\infty=1$ es falso; su límite es $e$ (apartado 9). También: aplicar (1.1) con $a_n$ que pueda ser $\le0$ ($\ln$ no está definido).</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, lista de indeterminaciones, p. 30">U p.30</span>
+</div>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="s8"><span class="n">8</span>Sucesiones monótonas <span class="src" data-l="U" data-ref="U §1.2.2, Def. 1.13, Ejemplos 1.27-1.28, Teorema 1.3, p. 31">U p.31</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una sucesión monótona <b>siempre avanza en el mismo sentido</b> sobre la recta: cada término queda a la derecha (o a la izquierda) del anterior (U p. 31). Si además tiene un techo, no puede escaparse hacia arriba ni retroceder: se ve forzada a <b>amontonarse</b> contra algún número. Es como subir una escalera con un techo encima: al final solo puedes acercarte al techo.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, nota al margen sobre la recta real, p. 31">U p.31</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, p. 698 (Figura 12 y explicación intuitiva)">S p.698</span>
+</div>
+
+<div class="box def"><span class="h">Definición 1.13 (monotonía)</span>
+  <ul>
+    <li>$\{a_n\}$ es <b>creciente</b> si $a_n\le a_{n+1}$ para todo $n$; <b>decreciente</b> si $a_n\ge a_{n+1}$ para todo $n$.</li>
+    <li>Es <b>estrictamente creciente</b> (resp. decreciente) si $a_n&lt;a_{n+1}$ (resp. $a_n&gt;a_{n+1}$) para todo $n$.</li>
+    <li>Es <b>monótona</b> si es creciente o decreciente.</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U Def. 1.13, p. 31">U p.31</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Def. 10, p. 696 (ojo: en S «creciente» = estrictamente creciente)">S p.696</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Definición de sucesión monótona (no decrecientes/no crecientes), p. 590">L p.590</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos 1.27 y 1.28</span>
+  <ul>
+    <li>Una sucesión <b>constante</b> como $\{4\}$ es monótona (creciente y decreciente a la vez) pero no estrictamente.</li>
+    <li>$a_n=\frac1n$ es estrictamente decreciente: $a_{n+1}=\frac1{n+1}&lt;\frac1n=a_n$.</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U Ejemplos 1.27 y 1.28, p. 31">U p.31</span>
+</div>
+
+<div class="box tip"><span class="h">Cómo probar que es monótona</span>
+  <p>Estudia el signo de $a_{n+1}-a_n$ (o, con términos positivos, compara $\frac{a_{n+1}}{a_n}$ con 1). Ejemplo (L Ej. 8b): $b_n=\frac{2n}{1+n}$ es creciente porque $\frac{2n}{1+n}&lt;\frac{2(n+1)}{2+n}\iff2n(2+n)&lt;2(n+1)^2\iff4n+2n^2&lt;2n^2+4n+2\iff0&lt;2$, y todos los pasos son reversibles. (Cuando sepas derivar, otra vía es ver que la función $f(x)$ correspondiente es creciente: L p. 590, S Ej. 13 p. 697.)</p>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Ejemplo 8, p. 590">L p.590</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Ejemplos 12-13, p. 697">S p.697</span>
+</div>
+
+<div class="box thm"><span class="h">Teorema 1.3 (monótona: convergente ⇔ acotada)</span>
+  <p>Si $\{a_n\}$ es <b>monótona</b>, entonces: $\{a_n\}$ es convergente si y solo si es acotada.</p>
+  <p><i>Prueba.</i> ($\Rightarrow$) es la Proposición 1.1. ($\Leftarrow$) Supón $\{a_n\}$ <b>creciente</b> y acotada. El conjunto $\{a_n\}$ es no vacío y acotado superiormente, así que por el axioma del supremo (tema 1.1) tiene supremo $L$. Dado $\varepsilon&gt;0$, $L-\varepsilon$ no es cota superior, luego existe $N$ con $a_N&gt;L-\varepsilon$. Para $n\ge N$: $L-\varepsilon&lt;a_N\le a_n\le L$, o sea $|a_n-L|&lt;\varepsilon$. Así $a_n\to L$. El caso decreciente es simétrico (con el ínfimo).</p>
+  <p><b>Consecuencia:</b> una monótona <b>siempre tiene límite en $\overline{\mathbb R}$</b>: si no está acotada, tiende a $\pm\infty$ (creciente no acotada: para cada $k$ hay $a_N\ge k$ y luego $a_n\ge a_N\ge k$ si $n\ge N$).</p>
+  <span class="src" data-l="U" data-ref="U Teorema 1.3, p. 31">U p.31</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Teorema 12 (con demostración), p. 698">S p.698</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Teorema 9.5 (con demostración), p. 591">L p.591</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos de uso (L Ejemplo 9)</span>
+  <ul>
+    <li>$\{\frac1n\}$ es acotada y monótona: converge (a 0).</li>
+    <li>$\left\{\frac{n^2}{n+1}\right\}$ es monótona pero <b>no acotada</b> (crece sin techo): diverge.</li>
+    <li>$\{(-1)^n\}$ es acotada pero <b>no monótona</b>: diverge.</li>
+  </ul>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Ejemplo 9, p. 591">L p.591</span>
+</div>
+
+<div class="box ex"><span class="h">Un uso típico: sucesión recursiva (S Ejemplo 14)</span>
+  <p>$a_1=2,\ a_{n+1}=\frac12(a_n+6)$. Los primeros términos $2,4,5,5{,}5,5{,}75,\dots$ sugieren que crece hacia 6.</p>
+  <ol class="steps">
+    <li><b>Creciente</b> (inducción): $a_2=4&gt;a_1$; si $a_{k+1}&gt;a_k$, entonces $\frac12(a_{k+1}+6)&gt;\frac12(a_k+6)$, es decir $a_{k+2}&gt;a_{k+1}$.</li>
+    <li><b>Acotada</b>: $a_n&lt;6$ para todo $n$. Se cumple para $n=1$; si $a_k&lt;6$, entonces $a_{k+1}=\frac12(a_k+6)&lt;\frac12(12)=6$. Y $a_n\ge a_1=2$.</li>
+    <li>Por el Teorema 1.3 <b>existe</b> $L=\lim a_n$. Como $a_{n+1}$ también tiende a $L$, en la recurrencia queda $L=\frac12(L+6)$, luego $L=6$. (El teorema garantiza que el límite existe; no dice cuánto vale: eso se saca de la recurrencia.)</li>
+  </ol>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, Ejemplo 14, p. 699">S p.699</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>El teorema exige <b>las dos</b> hipótesis a la vez, monótona y acotada: sola, la acotación no basta ($(-1)^n$) ni la monotonía ($n$). Y no da el valor del límite. Otro error: pensar que «monótona» significa «estrictamente creciente»; en U las constantes son monótonas (Ej. 1.27). <b>Ojo con Stewart:</b> allí «creciente» = estrictamente creciente (Def. 10, p. 696); en U una constante es creciente.</p>
+</div>
+
+<!-- ============================ 9 ============================ -->
+<h2 id="s9"><span class="n">9</span>El número $e$ y la indeterminación $1^{\pm\infty}$ <span class="src" data-l="U" data-ref="U §1.2.2, Prop. 1.5 y Ejemplo 1.29, pp. 31-32">U pp.31-32</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: el interés compuesto</span>
+  <p>En $\left(1+\frac1n\right)^n$ hay dos fuerzas opuestas: la base $1+\frac1n$ baja hacia $1$ (y $1^n=1$ no crecería), pero el exponente $n$ crece (y una base mayor que 1 elevada a un exponente enorme crece). El resultado de esa «pelea» no es $1$ ni $\infty$: se estabiliza en el número $e\approx2{,}71828$. (Es el capital final de 1 euro al 100 % anual capitalizado $n$ veces al año.)</p>
+  <table>
+    <tr><th>$n$</th><td>1</td><td>10</td><td>100</td><td>1000</td><td>$10^6$</td></tr>
+    <tr><th>$(1+1/n)^n$</th><td>2</td><td>2,5937</td><td>2,7048</td><td>2,7169</td><td>2,71828</td></tr>
+  </table>
+  <span class="src" data-l="P" data-ref="Explicación y tabla propias (valores calculados)">P</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Ejemplo 2, p. 585: recuerda (su Teorema 5.15) que lím (1+1/x)^x = e">L p.585</span>
+</div>
+
+<figure>
+<svg class="fig" viewBox="0 0 640 275" role="img" aria-label="Gráfica de (1+1/n)^n para n de 1 a 10: crece y se queda por debajo de e = 2,718…">
+<line class="ax" x1="60" y1="260" x2="620" y2="260"/><line class="ax" x1="60" y1="260" x2="60" y2="20"/>
+<line class="s12-dash" x1="60" y1="75.5" x2="600" y2="75.5"/><text class="bd" x="604" y="79.5">e</text>
+<text class="sm" x="52" y="216" text-anchor="end">2</text><text class="sm" x="52" y="121" text-anchor="end">2,5</text>
+<line class="ax" x1="56" y1="212" x2="64" y2="212"/><line class="ax" x1="56" y1="117" x2="64" y2="117"/>
+<circle class="pt" cx="110" cy="212" r="4.5"/><line class="ax" x1="110" y1="260" x2="110" y2="265"/><text class="sm" x="110" y="272" text-anchor="middle">1</text>
+<circle class="pt" cx="160" cy="164.5" r="4.5"/><line class="ax" x1="160" y1="260" x2="160" y2="265"/><text class="sm" x="160" y="272" text-anchor="middle">2</text>
+<circle class="pt" cx="210" cy="141.6" r="4.5"/><line class="ax" x1="210" y1="260" x2="210" y2="265"/><text class="sm" x="210" y="272" text-anchor="middle">3</text>
+<circle class="pt" cx="260" cy="128.1" r="4.5"/><line class="ax" x1="260" y1="260" x2="260" y2="265"/><text class="sm" x="260" y="272" text-anchor="middle">4</text>
+<circle class="pt" cx="310" cy="119.2" r="4.5"/><line class="ax" x1="310" y1="260" x2="310" y2="265"/><text class="sm" x="310" y="272" text-anchor="middle">5</text>
+<circle class="pt" cx="360" cy="112.9" r="4.5"/><line class="ax" x1="360" y1="260" x2="360" y2="265"/><text class="sm" x="360" y="272" text-anchor="middle">6</text>
+<circle class="pt" cx="410" cy="108.2" r="4.5"/><line class="ax" x1="410" y1="260" x2="410" y2="265"/><text class="sm" x="410" y="272" text-anchor="middle">7</text>
+<circle class="pt" cx="460" cy="104.5" r="4.5"/><line class="ax" x1="460" y1="260" x2="460" y2="265"/><text class="sm" x="460" y="272" text-anchor="middle">8</text>
+<circle class="pt" cx="510" cy="101.6" r="4.5"/><line class="ax" x1="510" y1="260" x2="510" y2="265"/><text class="sm" x="510" y="272" text-anchor="middle">9</text>
+<circle class="pt" cx="560" cy="99.2" r="4.5"/><line class="ax" x1="560" y1="260" x2="560" y2="265"/><text class="sm" x="560" y="272" text-anchor="middle">10</text>
+<text class="sm" x="554" y="119.2" text-anchor="end">2,594</text></svg>
+<figcaption>$\left(1+\frac1n\right)^n$ para $n=1,\dots,10$: es creciente y queda siempre por debajo de $e$; su límite es $e$.</figcaption>
+</figure>
+
+<div class="box thm"><span class="h">Proposición 1.5</span>
+  <p>Si $\lim a_n=\pm\infty$, entonces
+  $$\lim\left(1+\frac1{a_n}\right)^{a_n}=e.$$
+  (Con $a_n\to\pm\infty$ se tiene $|a_n|&gt;1$ desde cierto $n$, así que $1+\frac1{a_n}&gt;0$ y la potencia está definida.) U la deduce del Teorema 1.3 y no define $e$ aparte; L p. 585 lo toma como $\lim_{x\to\infty}(1+\frac1x)^x$.</p>
+  <span class="src" data-l="U" data-ref="U Prop. 1.5, p. 31">U p.31</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, Ejemplo 2, p. 585: recuerda (su Teorema 5.15) que lím (1+1/x)^x = e">L p.585</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.29: $\lim\left(1+\frac1{n^2}\right)^{2n^2}$</span>
+  <p>Por las propiedades de las potencias, $\left(1+\frac1{n^2}\right)^{2n^2}=\left[\left(1+\frac1{n^2}\right)^{n^2}\right]^2$. Como $a_n=n^2\to\infty$, el corchete tiende a $e$ (Prop. 1.5) y, al intercambiar límite y potencia (función continua), el límite es $e^2$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.29, p. 32">U p.32</span>
+</div>
+
+<div class="box tip"><span class="h">Receta para $1^{\pm\infty}$</span>
+  <ol class="steps">
+    <li><b>Clasifica</b>: base $x_n\to1$ y exponente $y_n\to\pm\infty$.</li>
+    <li>Escribe la base como $1+\frac1{a_n}$, es decir $a_n=\frac1{x_n-1}$ (definido si $x_n\ne1$; tiende a $\pm\infty$ si $x_n-1$ tiende a 0 con signo constante: base siempre mayor, o siempre menor, que 1).</li>
+    <li>Reparte el exponente: $x_n^{y_n}=\Big[\big(1+\frac1{a_n}\big)^{a_n}\Big]^{s_n}$ con $s_n=\frac{y_n}{a_n}=y_n(x_n-1)$.</li>
+    <li>Si $s_n\to s\in\mathbb R$, el corchete tiende a $e$ y por (1.1) el límite es $e^s$. <b>En resumen: $\lim x_n^{y_n}=e^{\lim y_n(x_n-1)}$.</b> Si $s_n\to\pm\infty$, el resultado es $e^{\pm\infty}$ ($\infty$ o $0$), por (1.1).</li>
+  </ol>
+  <p>(Deducción propia a partir de U Prop. 1.5 y (1.1); se practica en los Ejercicios <a href="#ej1-13">1.13</a> y <a href="#ej1-16">1.16</a>.)</p>
+  <span class="src" data-l="P" data-ref="Receta propia basada en U Prop. 1.5, p. 31, y fórmula (1.1), p. 29">P</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Aplicar la técnica del número $e$ a algo que <b>no</b> es $1^\infty$ (p. ej. base que tiende a $\frac12$ o a $2$: entonces basta la Def. 1.12 y (1.1), ver <a href="#ej1-14">Ejercicio 1.14</a>), o no conseguir que el exponente sea <b>el mismo</b> $a_n$ que aparece en $1+\frac1{a_n}$.</p>
+</div>
+
+<!-- ============================ 10 ============================ -->
+<h2 id="s10"><span class="n">10</span>Criterio de Stolz <span class="src" data-l="U" data-ref="U §1.2.2, Criterio de Stolz y Ejemplo 1.30, pp. 32-33">U pp.32-33</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Si el numerador $a_n$ crece «$X$ unidades por paso» y el denominador $b_n$ crece «$Y$ unidades por paso», al cabo de mucho tiempo su cociente vale aproximadamente $\frac XY$. Stolz formaliza eso: sustituye el cociente $\frac{a_n}{b_n}$ (difícil, típicamente $\frac\infty\infty$) por el cociente de <b>incrementos</b> $\frac{a_{n+1}-a_n}{b_{n+1}-b_n}$ (más fácil). Es el análogo, para sucesiones, de comparar derivadas. Y tiene un truco: si $a_n$ es una <b>suma de $n$ términos</b>, $a_{n+1}-a_n$ es solo el último sumando, y la suma desaparece.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia">P</span>
+</div>
+
+<div class="box thm"><span class="h">Criterio de Stolz</span>
+  <p>Sean $\{a_n\}$, $\{b_n\}$ sucesiones con
+  $$\lim\frac{a_{n+1}-a_n}{b_{n+1}-b_n}=l\in\mathbb R.$$
+  Entonces $\displaystyle\lim\frac{a_n}{b_n}=l$, siempre que se cumpla alguna de estas dos condiciones:</p>
+  <ul>
+    <li>(i) $\{b_n\}$ es <b>monótona</b> y $\lim b_n=\pm\infty$; <b>o</b></li>
+    <li>(ii) $\{b_n\}$ es <b>monótona</b> y $\lim b_n=\lim a_n=0$.</li>
+  </ul>
+  <p><b>Precisiones (no están en U):</b> (a) para que el cociente de incrementos tenga sentido hace falta $b_{n+1}\ne b_n$ (en la práctica $b_n$ estrictamente monótona); (b) U enuncia el criterio con $l\in\mathbb R$; E lo enuncia también con $l=\pm\infty$ (E p. 18), cierto si $b_n$ es estrictamente monótona con límite $\pm\infty$, pero para examen cíñete a la versión de U y a $l$ finito; (c) el recíproco es falso: con $b_n=n$ y $a_n=n+(-1)^n$ se tiene $\frac{a_n}{b_n}=1+\frac{(-1)^n}n\to1$ (Teorema 1.2), pero $a_{n+1}-a_n=1-2(-1)^n$ vale alternadamente $3$ y $-1$ y no tiene límite. Si el cociente de incrementos <b>no tiene límite</b>, Stolz no dice nada. Ni S ni L tratan este criterio.</p>
+  <span class="src" data-l="U" data-ref="U §1.2.2, Criterio de Stolz, p. 32">U p.32</span>
+  <span class="src" data-l="P" data-ref="Precisiones y contraejemplo propios; E p. 18 (nota al margen del Ej. 1.15) enuncia Stolz con l en R ampliada">P</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.30: suma de impares entre suma de pares</span>
+  <p>$\displaystyle\lim\frac{1+3+\cdots+(2n+1)}{2+4+\cdots+(2n+2)}$.</p>
+  <ol class="steps">
+    <li>Sean $a_n=1+3+\cdots+(2n+1)$ y $b_n=2+4+\cdots+(2n+2)$. Ambas son crecientes y tienden a $\infty$ (a cada término positivo se le suma una cantidad cada vez mayor). Se cumple (i).</li>
+    <li>Sustituir $n\to n+1$: $a_{n+1}=a_n+(2(n+1)+1)$ y $b_{n+1}=b_n+(2(n+1)+2)$. Por tanto $a_{n+1}-a_n=2n+3$ y $b_{n+1}-b_n=2n+4$.</li>
+    <li>$\displaystyle\lim\frac{2n+3}{2n+4}=1$. Por Stolz, el límite pedido es $1$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.30, pp. 32-33">U pp.32-33</span>
+</div>
+
+<div class="box tip"><span class="h">Cuándo usar Stolz</span>
+  <p>Cuando el cociente es de la forma $\frac\infty\infty$ (o $\frac00$, caso (ii)) y el numerador (o el denominador) es una <b>suma con $n$ sumandos</b>, o contiene logaritmos: $\frac{1^2+\cdots+n^2}{n^3}$, $\frac{\ln n}n$, $\frac1{n^2}\big(\text{suma}\big)$. Pasos: (1) identifica $a_n$ y $b_n$; (2) comprueba que $b_n$ es monótona con $b_{n+1}\ne b_n$ y tiende a $\pm\infty$ (o, en el caso $\frac00$, que $a_n\to0$ y $b_n\to0$); (3) calcula $a_{n+1}-a_n$ y $b_{n+1}-b_n$; (4) calcula el límite del cociente.</p>
+  <span class="src" data-l="P" data-ref="Receta propia (ver Ejercicios 1.15 y 1.16)">P</span>
+</div>
+
+<!-- ============================ 11 ============================ -->
+<h2 id="s11"><span class="n">11</span>Sucesión de sumas parciales (avance de las series) <span class="src" data-l="U" data-ref="U §1.3.2 Series, sucesión de sumas parciales, p. 34 (pertenece a §1.3)">U p.34</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>¿Cómo se suma una cantidad <b>infinita</b> de números? No se puede hacer «de golpe», pero sí se pueden sumar los primeros $n$, para cada $n$, y ver si esas sumas se estabilizan. Eso es una sucesión: la de sumas parciales. El tema 1.3 (series) es exactamente el estudio del límite de esa sucesión.</p>
+  <span class="src" data-l="U" data-ref="U §1.3.1 Introducción, pp. 33-34">U pp.33-34</span>
+</div>
+
+<div class="box def"><span class="h">Sucesión de sumas parciales</span>
+  <p>A partir de $\{a_n\}$ se define $\{s_n\}$ con $s_1=a_1$, $s_2=a_1+a_2$, …, $s_n=\displaystyle\sum_{i=1}^na_i$. Es la <b>sucesión de sumas parciales</b> de $\{a_n\}$. Una <b>serie</b> es el par $(\{a_n\},\{s_n\})$ (U Def. 1.14), y es <b>convergente</b> si $\{s_n\}$ converge (U Def. 1.15, p. 35); se estudia en el tema 1.3.</p>
+  <p><i>Ejemplo propio:</i> con $a_n=\frac1{2^n}$, $s_n=\frac12+\frac14+\cdots+\frac1{2^n}=1-\frac1{2^n}\to1$ (porque $0\le\frac1{2^n}\le\frac1n$ y el emparedado da $\frac1{2^n}\to0$).</p>
+  <span class="src" data-l="U" data-ref="U §1.3.2, Def. 1.14 y sumas parciales, p. 34">U p.34</span>
+  <span class="src" data-l="U" data-ref="U §1.3.2, Def. 1.15 (serie convergente), p. 35">U p.35</span>
+  <span class="src" data-l="L" data-ref="Larson §9.2, sumas parciales y serie convergente, p. 595">L p.595</span>
+</div>
+
+<div class="box warn"><span class="h">No confundir</span>
+  <p>Los Ejercicios <a href="#ej1-11">1.11</a> y <a href="#ej1-16">1.16</a> de E tienen una <b>suma de $n$ términos</b> cuyo número de sumandos crece con $n$, pero son <b>sucesiones</b> (el límite es cuando $n\to\infty$ de esa suma finita), no series. En esa situación no vale «límite de una suma = suma de límites» (apartado 5); se usa el emparedado (1.11) o Stolz (1.16).</p>
+</div>
+
+<!-- ============================ 12 ============================ -->
+<h2 id="s12"><span class="n">12</span>Estrategia y catálogo de límites</h2>
+
+<div class="box intu"><span class="h">Cómo atacar un límite de sucesión</span>
+  <p>Primero <b>sustituye $n$ por $\infty$</b> y mira qué sale (Prop. 1.4). Si el resultado está definido en $\overline{\mathbb R}$, ya está. Si sale una de las siete indeterminaciones, elige la técnica según esta tabla.</p>
+  <span class="src" data-l="P" data-ref="Tabla-guía propia; técnicas de U pp. 25-33">P</span>
+</div>
+
+<table>
+  <tr><th>Lo que ves</th><th>Qué hacer</th><th>Dónde</th></tr>
+  <tr><td>Cociente $\frac\infty\infty$ de polinomios, exponenciales…</td><td>Dividir numerador y denominador entre lo que domina</td><td>E <a href="#ej1-8">1.8</a>, P1-P3</td></tr>
+  <tr><td>Raíces de polinomios en un cociente</td><td>Sacar la mayor potencia dentro de cada raíz</td><td>E <a href="#ej1-7">1.7</a>, <a href="#ej1-9">1.9</a>, P2</td></tr>
+  <tr><td>$\infty-\infty$ con raíces</td><td>Multiplicar y dividir por el conjugado; luego dividir entre la potencia dominante</td><td>E <a href="#ej1-10">1.10</a>, <a href="#ej1-12">1.12</a>, P4-P6</td></tr>
+  <tr><td>Suma de $n$ términos parecidos</td><td>Acotar cada término por el menor y por el mayor; emparedado</td><td>E <a href="#ej1-11">1.11</a>, P8</td></tr>
+  <tr><td>Cociente con una suma de $n$ términos (o con $\ln n$)</td><td>Criterio de Stolz</td><td>E <a href="#ej1-15">1.15</a>, <a href="#ej1-16">1.16</a>, P14-P16</td></tr>
+  <tr><td>Una potencia $a_n^{b_n}$</td><td>Estudiar base y exponente por separado; si no es $1^\infty$, $0^0$ o $\infty^0$, basta (1.1) y la Def. 1.12</td><td>E <a href="#ej1-14">1.14</a>, P13</td></tr>
+  <tr><td>$1^{\pm\infty}$</td><td>Número $e$: $\ e^{\lim y_n(x_n-1)}$</td><td>E <a href="#ej1-13">1.13</a>, P10-P12</td></tr>
+  <tr><td>$\infty^0$, $0^0$</td><td>(1.1): pasar a $e^{b_n\ln a_n}$ y estudiar el exponente</td><td>E <a href="#ej1-15">1.15</a>, P9</td></tr>
+  <tr><td>(algo que tiende a 0) $\times$ (algo acotado)</td><td>Teorema 1.2</td><td>P7</td></tr>
+  <tr><td>Sucesión monótona, no se sabe si converge</td><td>Ver si está acotada (Teorema 1.3)</td><td>S Ej. 14</td></tr>
+  <tr><td>Probar que <i>no</i> converge</td><td>No acotada, o dos comportamientos distintos (oscila)</td><td>E <a href="#ej1-6">1.6</a>, $(-1)^n$</td></tr>
+</table>
+
+<h3>Catálogo de límites de referencia</h3>
+<div class="box thm"><span class="h">Límites que conviene saber</span>
+  <table>
+    <tr><th>Sucesión</th><th>Límite</th><th>Por qué</th></tr>
+    <tr><td>$c$ (constante)</td><td>$c$</td><td>U Ej. 1.16 p.23</td></tr>
+    <tr><td>$\dfrac1{n^r}$, $r&gt;0$</td><td>$0$</td><td>Dado $\varepsilon$, si $n\ge(1/\varepsilon)^{1/r}$ entonces $n^r\ge1/\varepsilon$. (S ec. 4, p. 693)</td></tr>
+    <tr><td>$n^r$, $r&gt;0$</td><td>$\infty$</td><td>Dado $k&gt;0$, si $n\ge k^{1/r}$ entonces $n^r\ge k$ (definición de límite infinito, U p. 28)</td></tr>
+    <tr><td>$r^n$</td><td>$0$ si $|r|&lt;1$ (incluye $r=0$); $1$ si $r=1$; $\infty$ si $r&gt;1$; no converge si $r\le-1$</td><td>$r&gt;0$: $r^n=e^{n\ln r}$ con (1.1). $-1&lt;r&lt;0$: $|r|^n\to0$ y apartado 4. $r=-1$: oscila. $r&lt;-1$: $|r|^n\to\infty$, no acotada. (S Ej. 11, p. 696)</td></tr>
+    <tr><td>$\sqrt[n]a$, $a&gt;0$</td><td>$1$</td><td>$a^{1/n}=e^{(\ln a)/n}\to e^0$, por (1.1)</td></tr>
+    <tr><td>$\sqrt[n]n$</td><td>$1$</td><td>Ejercicio 1.15 (Stolz)</td></tr>
+    <tr><td>$\dfrac{\ln n}n$</td><td>$0$</td><td>Ejercicio 1.15 (Stolz)</td></tr>
+    <tr><td>$\left(1+\dfrac1n\right)^n$</td><td>$e$</td><td>Prop. 1.5</td></tr>
+    <tr><td>$\dfrac{n!}{n^n}$</td><td>$0$</td><td>$0\le\frac{n!}{n^n}=\frac1n\cdot\frac2n\cdots\frac nn\le\frac1n$ (S Ej. 10, pp. 695-696)</td></tr>
+  </table>
+  <p><b>Regla práctica (no demostrada aquí en general):</b> para $n$ grande, $\ln n\ll n^p\ll a^n\ll n!\ll n^n$ ($p&gt;0$, $a&gt;1$), donde «$\ll$» significa «crece mucho más despacio que». Sirve para saber qué domina en un cociente. De ella solo se prueban aquí algunos casos (los de la tabla). L p. 587 comenta que $n!$ crece más rápido que cualquier exponencial.</p>
+  <span class="src" data-l="S" data-ref="Stewart §11.1, ec. 4 (p. 693), Ejemplo 10 (pp. 695-696), Ejemplo 11 (p. 696)">S pp.693-696</span>
+  <span class="src" data-l="L" data-ref="Larson §9.1, comentario sobre n! frente a exponenciales, p. 587">L p.587</span>
+  <span class="src" data-l="P" data-ref="Tabla resumen y justificaciones propias de los casos no citados">P</span>
+</div>
+
+<!-- ============================ 13 ============================ -->
+<h2 id="ejercicios"><span class="n">13</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.6-1.16, pp. 10-20">E pp.10-20</span></h2>
+
+<p>Los once ejercicios de E de la sección 1.2, <b>del más fácil al más difícil</b> (el número entre paréntesis es el de E). Todos los resultados están comprobados con cálculo simbólico (sympy) y, los que tienen sumas, también numéricamente. Pulsa «Mostrar soluciones» arriba para abrirlos todos a la vez. Ojo: en la extracción del texto de E se pierden las raíces; los enunciados de aquí se han copiado del PDF.</p>
+
+<details class="sol" id="ej1-6"><summary>Ejercicio 1.6 — ¿puede converger $\{x_ny_n\}$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.6, pp. 10-11">E pp.10-11</span></summary>
+  <p class="enun">La sucesión $\{x_n\}$ es convergente y la sucesión $\{y_n\}$ es divergente. Razone si puede ser convergente la sucesión $\{x_ny_n\}$.</p>
+  <ol class="steps">
+    <li><b>Qué se pregunta.</b> «¿Puede ser…?» es una pregunta de <b>existencia</b>: basta <b>un ejemplo</b>. No hace falta que ocurra siempre (y no ocurre siempre; ver el paso 5).</li>
+    <li><b>«Divergente»</b> = no convergente (apartado 2): tiende a $\pm\infty$ o oscila. El ejemplo que sigue vale con cualquiera de los dos sentidos.</li>
+    <li><b>Divergente:</b> $y_n=n$, con límite $+\infty$ (U p. 28), luego no convergente.</li>
+    <li><b>Convergente:</b> $x_n=\frac1{n^2}\to0$ (U Ejemplo 1.18). Entonces $x_ny_n=\frac n{n^2}=\frac1n\to0$ (U Ejemplo 1.17). <b>Sí puede ser convergente.</b> Otro ejemplo: con $x_n=\frac1n$ sale $x_ny_n=1$, constante y convergente.</li>
+    <li><b>El factor convergente tiene que tender a 0</b> (E no lo dice). Supón $x_n\to l\ne0$ y $x_ny_n\to m$. Con $\varepsilon=|l|/2$ en la Def. 1.10, $x_n\ne0$ desde cierto $n$ (solo importa el final). Entonces $y_n=\frac{x_ny_n}{x_n}\to\frac ml$ por la Prop. 1.3 (cociente): absurdo, porque $\{y_n\}$ diverge. Conclusión: <b>si $\{x_ny_n\}$ converge, necesariamente $x_n\to0$.</b></li>
+  </ol>
+  <p><b>Respuesta:</b> sí puede (ejemplo $x_n=\frac1{n^2}$, $y_n=n$), pero solo si $x_n\to0$.</p>
+  <div class="recipe"><b>Receta:</b> ante «¿puede ocurrir…?», construye un ejemplo con las sucesiones más sencillas ($n$, $\frac1n$, $\frac1{n^2}$, $(-1)^n$). Ante «¿ocurre siempre?», busca un contraejemplo o razona por reducción al absurdo con la Prop. 1.3.</div>
+  <p><b>Error típico:</b> responder «nunca» (porque la divergente lo estropea todo) o «siempre». Otro: usar $\lim x_n\cdot\lim y_n$ cuando $\lim y_n$ no existe; la Prop. 1.3 exige que los dos límites existan. <i>Comprobación:</i> con $x_n=\frac1n$, $y_n=(-1)^n$ (oscila) el producto tiende a 0 (Teorema 1.2); con $x_n=1+\frac1n\to1\ne0$ e $y_n=n$ el producto tiende a $+\infty$.</p>
+</details>
+
+<details class="sol" id="ej1-8"><summary>Ejercicio 1.8 — cociente con exponenciales <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.8, p. 12">E p.12</span></summary>
+  <p class="enun">Sea $x_n=\dfrac{e^{\,n+\frac3n}+5}{2e^n}$. Se pide calcular su límite cuando $n\to+\infty$.</p>
+  <ol class="steps">
+    <li><b>Sustituir.</b> Numerador y denominador tienden a $+\infty$ ($e^\infty=\infty$ por Def. 1.12): sale $\frac\infty\infty$, indeterminación.</li>
+    <li><b>Separar lo que domina.</b> $e^{n+3/n}=e^n\,e^{3/n}$, luego $$x_n=\frac{e^ne^{3/n}}{2e^n}+\frac5{2e^n}=\frac{e^{3/n}}2+\frac5{2e^n}.$$ (La misma idea que «dividir entre el término de mayor grado», pero aquí manda $e^n$.)</li>
+    <li><b>Primer sumando.</b> $\frac3n\to0$; como la exponencial es continua, $e^{3/n}\to e^0=1$. El sumando tiende a $\frac12$.</li>
+    <li><b>Segundo sumando.</b> $2e^n\to\infty$ y $\frac5\infty=0$ (Def. 1.12).</li>
+    <li><b>Sumar</b> (Prop. 1.3): $\lim x_n=\frac12+0=\boxed{\tfrac12}$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> ante un cociente $\frac\infty\infty$, divide numerador y denominador entre lo que crece más deprisa ($n^k$, $e^n$…) y aplica la Prop. 1.3.</div>
+  <p><b>Error típico:</b> escribir $e^{n+3/n}=e^n+e^{3/n}$. La exponencial convierte <b>sumas en productos</b>.</p>
+</details>
+
+<details class="sol" id="ej1-7"><summary>Ejercicio 1.7 — cociente con una raíz <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.7, pp. 11-12">E pp.11-12</span></summary>
+  <p class="enun">Sea $\{a_n\}$ la sucesión de término general $a_n=\dfrac n{\sqrt{n^3+4}}$. ¿Es convergente?</p>
+  <ol class="steps">
+    <li>Al sustituir sale $\frac{+\infty}{+\infty}$, indeterminación.</li>
+    <li><b>Intuición.</b> Dentro de la raíz domina $n^3$: $\sqrt{n^3+4}\approx n^{3/2}$ y $a_n\approx\frac n{n^{3/2}}=\frac1{\sqrt n}\to0$. Ahora se demuestra.</li>
+    <li><b>Factor común dentro de la raíz:</b> $n^3+4=n^3\left(1+\frac4{n^3}\right)$ y $\sqrt{pq}=\sqrt p\sqrt q$ ($p,q\ge0$), así $\sqrt{n^3+4}=n^{3/2}\sqrt{1+4/n^3}$ y $$a_n=\frac1{n^{1/2}\sqrt{1+4/n^3}}.$$</li>
+    <li><b>Factores del denominador.</b> $\sqrt n\to+\infty$ (dado $k&gt;0$, si $n\ge k^2$ entonces $\sqrt n\ge k$). $1+\frac4{n^3}\to1$ y, por continuidad de la raíz, $\sqrt{1+4/n^3}\to1$.</li>
+    <li><b>Conclusión.</b> El denominador tiende a $+\infty\cdot1=+\infty$ y el cociente a $\frac1{+\infty}=0$. <b>Es convergente y $\lim a_n=0$.</b></li>
+    <li><b>Otra vía (emparedado).</b> $0\le\frac n{\sqrt{n^3+4}}\le\frac n{\sqrt{n^3}}=\frac1{\sqrt n}\to0$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si aparece la raíz de un polinomio, saca factor común dentro de la raíz la <b>mayor potencia</b> del radicando, pásala fuera con exponente $\frac12$ y compara exponentes arriba y abajo.</div>
+  <p><b>Error típico:</b> $\sqrt{n^3+4}=\sqrt{n^3}+2$. La raíz no se reparte sobre una suma.</p>
+</details>
+
+<details class="sol" id="ej1-9"><summary>Ejercicio 1.9 — cociente con dos raíces <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.9, pp. 12-13">E pp.12-13</span></summary>
+  <p class="enun">Sea $\{a_n\}$ la sucesión de término general $a_n=\dfrac{\sqrt{16n^4-4}}{n\sqrt{4n^2+5}}$. Se pide calcular su límite cuando $n\to\infty$.</p>
+  <ol class="steps">
+    <li>Sustituir da $\frac\infty\infty$.</li>
+    <li><b>Intuición.</b> Arriba domina $\sqrt{16n^4}=4n^2$; abajo, $n\sqrt{4n^2}=2n^2$. Esperamos $\frac{4n^2}{2n^2}=2$.</li>
+    <li><b>Factor común en cada radicando:</b> $\sqrt{16n^4-4}=n^2\sqrt{16-\frac4{n^4}}$ y $n\sqrt{4n^2+5}=n\cdot n\sqrt{4+\frac5{n^2}}=n^2\sqrt{4+\frac5{n^2}}$ (usamos $\sqrt{n^4}=n^2$, $\sqrt{n^2}=n$, ciertos porque $n&gt;0$).</li>
+    <li><b>Simplificar $n^2$:</b> $a_n=\dfrac{\sqrt{16-4/n^4}}{\sqrt{4+5/n^2}}$.</li>
+    <li><b>Límite.</b> Numerador $\to\sqrt{16}=4$; denominador $\to\sqrt4=2\ne0$. Por la Prop. 1.3: $\lim a_n=\boxed2$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> la del 1.7. Antes de operar identifica el término que manda arriba y abajo: anticipa el resultado y sirve de comprobación.</div>
+  <p><b>Error típico:</b> $\sqrt{16n^4-4}=4n^2-2$.</p>
+</details>
+
+<details class="sol" id="ej1-10"><summary>Ejercicio 1.10 — conjugado para $\infty-\infty$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.10, pp. 13-14">E pp.13-14</span></summary>
+  <p class="enun">Calcular $\displaystyle\lim_{n\to+\infty}\left(\sqrt{n^2+4n+8}-n\right)$.</p>
+  <ol class="steps">
+    <li>Sale $+\infty-(+\infty)$: indeterminación. Aquí no basta mirar lo que domina: los términos dominantes ($\sqrt{n^2}=n$ y $n$) <b>se cancelan</b> y el límite lo decide lo que queda.</li>
+    <li><b>Conjugado</b> (nota al margen de U p. 29), con $(A-B)(A+B)=A^2-B^2$: $$\sqrt{n^2+4n+8}-n=\frac{(n^2+4n+8)-n^2}{\sqrt{n^2+4n+8}+n}=\frac{4n+8}{\sqrt{n^2+4n+8}+n}.$$ El denominador es positivo, así que la operación es válida.</li>
+    <li><b>Ahora es $\frac\infty\infty$.</b> Dividimos entre $n$, con $\sqrt{n^2+4n+8}=n\sqrt{1+\frac4n+\frac8{n^2}}$: $$\frac{4+\frac8n}{\sqrt{1+\frac4n+\frac8{n^2}}+1}\longrightarrow\frac4{1+1}=\boxed2.$$</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\infty-\infty$ con raíces $\Rightarrow$ multiplica por el <b>conjugado</b>; después divide entre la potencia dominante.</div>
+  <p><b>Error típico:</b> concluir «$\infty-\infty=0$» o que el límite es 0 porque $\sqrt{n^2+4n+8}\approx n$: esa aproximación pierde justo el término $4n$, que da el 2.</p>
+</details>
+
+<details class="sol" id="ej1-12"><summary>Ejercicio 1.12 — conjugado con parámetros <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.12, pp. 15-16">E pp.15-16</span></summary>
+  <p class="enun">Encontrar la relación entre $a$ y $b$ para que $\displaystyle\lim_{n\to+\infty}\left(\sqrt{n^2+an+1}-\sqrt{n^2+bn}\right)$ valga 2.</p>
+  <ol class="steps">
+    <li>Es $+\infty-(+\infty)$. Para $n$ grande los dos radicandos son positivos sean cuales sean $a$ y $b$, y el límite solo depende del final.</li>
+    <li><b>Conjugado:</b> $$\frac{(n^2+an+1)-(n^2+bn)}{\sqrt{n^2+an+1}+\sqrt{n^2+bn}}=\frac{(a-b)n+1}{\sqrt{n^2+an+1}+\sqrt{n^2+bn}}.$$</li>
+    <li><b>Dividir entre $n$:</b> $$\frac{(a-b)+\frac1n}{\sqrt{1+\frac an+\frac1{n^2}}+\sqrt{1+\frac bn}}\longrightarrow\frac{a-b}{1+1}=\frac{a-b}2.$$</li>
+    <li><b>Imponer la condición:</b> $\frac{a-b}2=2\iff\boxed{a-b=4}$. Hay infinitos pares, p. ej. $a=5$, $b=1$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> calcula el límite tratando los parámetros como números y <b>al final</b> impón la condición.</div>
+  <p><b>Error típico:</b> equivocarse de signo al restar $(n^2+bn)$, o creer que el $+1$ del radicando influye (al dividir entre $n$ desaparece).</p>
+</details>
+
+<details class="sol" id="ej1-14"><summary>Ejercicio 1.14 — una potencia que NO es indeterminación <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.14, pp. 17-18">E pp.17-18</span></summary>
+  <p class="enun">Calcular el límite de $a_n=\left(\dfrac{n^4-n+1}{2n^4-n+2}\right)^{\frac{n^2}{n+1}}$.</p>
+  <ol class="steps">
+    <li><b>Estudia base y exponente por separado</b> (siempre, antes de lanzarte con el número $e$). Base: $u_n=\dfrac{1-\frac1{n^3}+\frac1{n^4}}{2-\frac1{n^3}+\frac2{n^4}}\to\frac12$ (dividiendo entre $n^4$) y $u_n&gt;0$. Exponente: $t_n=\dfrac{n^2}{n+1}=\dfrac n{1+1/n}\to+\infty$.</li>
+    <li><b>¿Indeterminación?</b> La forma es $\left(\frac12\right)^{+\infty}$, que <b>no</b> está en la lista de U (p. 30): $0^0$, $1^{\pm\infty}$, $\infty^0$. La Def. 1.12 dice $x^\infty=0$ si $x\in(0,1)$.</li>
+    <li><b>Justificación con (1.1):</b> $a_n=e^{t_n\ln u_n}$. Por la continuidad de $\ln$, $\ln u_n\to\ln\frac12&lt;0$; luego $t_n\ln u_n\to(+\infty)\cdot\ln\frac12=-\infty$ y $e^{-\infty}=0$. Así $\lim a_n=\boxed0$.</li>
+    <li><b>Comprobación elemental (emparedado).</b> $u_n\le\frac35\iff5(n^4-n+1)\le3(2n^4-n+2)\iff0\le n^4+2n+1$ (siempre cierto). Además $t_n=\frac{n^2}{n+1}\ge n-1$, porque $n^2\ge n^2-1$. Con base en $(0,1)$, mayor exponente da menor valor: $0&lt;a_n\le\left(\frac35\right)^{n-1}\to0$.</li>
+  </ol>
+  <p><b>Nota sobre E:</b> E escribe $\lim(\text{base})^{\lim(\text{exponente})}$ dejando la base con $n$; ningún resultado del libro lo justifica tal como está escrito. El resultado es correcto, pero la forma rigurosa es la del paso 3.</p>
+  <div class="recipe"><b>Receta:</b> ante $u_n^{t_n}$ calcula por separado $\lim u_n$ y $\lim t_n$. Solo necesitas técnica especial si sale $1^{\pm\infty}$, $0^0$ o $\infty^0$; en otro caso bastan (1.1) y las reglas de $\overline{\mathbb R}$.</div>
+  <p><b>Error típico:</b> aplicar mecánicamente la técnica del número $e$ (como en el 1.13) a algo que no es $1^\infty$.</p>
+</details>
+
+<details class="sol" id="ej1-13"><summary>Ejercicio 1.13 — indeterminación $1^\infty$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.13, pp. 16-17">E pp.16-17</span></summary>
+  <p class="enun">Calcular, si existe, $\displaystyle\lim_{n\to+\infty}\left(\frac{5n+2}{5n+3}\right)^{3n+1}$.</p>
+  <ol class="steps">
+    <li><b>Clasificar.</b> La base tiende a 1 y el exponente a $+\infty$: forma $1^{+\infty}$, indeterminada (U p. 30).</li>
+    <li><b>Herramienta:</b> Prop. 1.5. Hay que escribir la base como $1+\frac1{a_n}$.</li>
+    <li><b>La base:</b> $\dfrac{5n+2}{5n+3}=1-\dfrac1{5n+3}=1+\dfrac1{a_n}$ con $a_n=-(5n+3)\to-\infty$.</li>
+    <li><b>Que el exponente sea $a_n$:</b> $\left(1+\frac1{a_n}\right)^{3n+1}=\left[\left(1+\frac1{a_n}\right)^{a_n}\right]^{s_n}$ con $s_n=\dfrac{3n+1}{a_n}=-\dfrac{3n+1}{5n+3}\to-\dfrac35$.</li>
+    <li><b>Paso al límite con (1.1):</b> si $w_n\to e$ y $s_n\to s$ (finito), $w_n^{s_n}=e^{s_n\ln w_n}\to e^{s\ln e}=e^s$. Por tanto $$\lim\left(\frac{5n+2}{5n+3}\right)^{3n+1}=\boxed{e^{-3/5}}.$$</li>
+  </ol>
+  <div class="recipe"><b>Receta para $1^{\pm\infty}$:</b> si $x_n\to1$ (con $x_n-1$ de signo constante) e $y_n\to\pm\infty$, entonces $\lim x_n^{y_n}=e^{\lim y_n(x_n-1)}$. Aquí: $(3n+1)\left(-\frac1{5n+3}\right)\to-\frac35$. ✓</div>
+  <p><b>Error típico:</b> decir «$1^\infty=1$», o aplicar la Prop. 1.5 sin conseguir que la base sea exactamente $1+\frac1{a_n}$ con <b>el mismo</b> $a_n$ en el exponente.</p>
+</details>
+
+<details class="sol" id="ej1-11"><summary>Ejercicio 1.11 — regla del emparedado con una suma <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.11, pp. 14-15">E pp.14-15</span></summary>
+  <p class="enun">Sea $b_n=\dfrac1{\sqrt{n^2+1}}+\dfrac1{\sqrt{n^2+2}}+\cdots+\dfrac1{\sqrt{n^2+n}}$. ¿Cuál es su límite cuando $n\to\infty$?</p>
+  <ol class="steps">
+    <li><b>Por qué no sirve «suma de límites».</b> La Prop. 1.3 vale para un número <b>fijo</b> de sumandos. Aquí hay $n$ sumandos: cada uno tiende a 0 pero cada vez hay más. (E lo llama «equivalente a $0\cdot\infty$»: es una analogía, no una igualdad.)</li>
+    <li><b>Comparar cada sumando.</b> Para $1\le k\le n$: $n^2+1\le n^2+k\le n^2+n$. La raíz es creciente y $x\mapsto\frac1x$ decreciente en $(0,\infty)$, luego $$\frac1{\sqrt{n^2+n}}\le\frac1{\sqrt{n^2+k}}\le\frac1{\sqrt{n^2+1}}.$$ (Paso que E da por evidente.)</li>
+    <li><b>Sumar las $n$ desigualdades</b> ($k=1,\dots,n$): quedan $n$ copias de cada cota, $$a_n:=\frac n{\sqrt{n^2+n}}\le b_n\le\frac n{\sqrt{n^2+1}}=:c_n.$$</li>
+    <li><b>Límite de los «panes».</b> $a_n=\dfrac1{\sqrt{1+1/n}}\to1$ y $c_n=\dfrac1{\sqrt{1+1/n^2}}\to1$.</li>
+    <li><b>Regla del emparedado:</b> $\lim b_n=\boxed1$. Comprobación numérica: $b_{10}\approx0{,}9739$, $b_{100}\approx0{,}99749$, $b_{10^4}\approx0{,}999975$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> suma de $n$ términos parecidos $\Rightarrow$ acota <b>cada</b> término por el menor y por el mayor, multiplica por el número de términos y aplica el emparedado.</div>
+  <p><b>Error típico:</b> sumar los límites de los sumandos ($0+0+\dots=0$) y concluir que el límite es 0.</p>
+</details>
+
+<details class="sol" id="ej1-15"><summary>Ejercicio 1.15 — $\sqrt[n]n$ con el criterio de Stolz <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.15, pp. 18-19 (con errata en la nota inicial)">E pp.18-19</span></summary>
+  <p class="enun">Calcular el límite de $a_n=\sqrt[n]n$.</p>
+  <ol class="steps">
+    <li><b>Clasificar.</b> $\sqrt[n]n=n^{1/n}$: base $\to+\infty$, exponente $\to0$. Forma $\infty^0$, indeterminada.</li>
+    <li><b>Fórmula (1.1):</b> $n^{1/n}=e^{\frac1n\ln n}$. Si $L=\lim\frac{\ln n}n$, el límite pedido es $e^L$ (continuidad de la exponencial).</li>
+    <li><b>Stolz</b> para $\frac{\ln n}n$ (forma $\frac\infty\infty$), con $a_n=\ln n$, $b_n=n$. Hipótesis: $b_n$ es estrictamente creciente, $b_n\to\infty$ y $b_{n+1}-b_n=1\ne0$ ✓. Cociente de incrementos: $\dfrac{\ln(n+1)-\ln n}{(n+1)-n}=\ln\!\left(1+\tfrac1n\right)\to\ln1=0$ (continuidad del $\ln$). Por Stolz, $\lim\frac{\ln n}n=0$.</li>
+    <li><b>Conclusión:</b> $\lim\sqrt[n]n=e^0=\boxed1$.</li>
+  </ol>
+  <p><b>Erratas de E (p. 18):</b> donde dice «$e^a=e^{\ln a^b}=e^{b\ln a}$» debe decir $a^b=e^{\ln a^b}=e^{b\ln a}$ (con $a&gt;0$). Además, la nota al margen enuncia Stolz con $l\in\overline{\mathbb R}$ y U (p. 32) solo con $l\in\mathbb R$; aquí $l=0$, así que no afecta.</p>
+  <div class="recipe"><b>Receta:</b> ante $\infty^0$, $0^0$ o $1^\infty$, pasa a $e^{\,b_n\ln a_n}$ con (1.1) y calcula el límite del exponente; si es un cociente $\frac\infty\infty$ con sumas o logaritmos, prueba con <b>Stolz</b>.</div>
+  <p><b>Error típico:</b> afirmar «$\infty^0=1$» sin más, o «$n^{1/n}\to n^0=1$» (sustituir solo en el exponente). (S resuelve $\frac{\ln n}n$ con la regla de l'Hôpital, S Ejemplo 6 p. 694, que es del tema 2: aquí solo sirve de contraste.)</p>
+</details>
+
+<details class="sol" id="ej1-16"><summary>Ejercicio 1.16 — Stolz con una suma de $n$ términos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.16, pp. 19-20">E pp.19-20</span></summary>
+  <p class="enun">Calcular, si existe, $\displaystyle\lim_{n\to+\infty}\frac1{n^2}\left(\frac21+\frac{3^2}2+\frac{4^3}{3^2}+\cdots+\frac{(n+1)^n}{n^{n-1}}\right)$.</p>
+  <ol class="steps">
+    <li><b>Término $k$-ésimo:</b> $\frac{(k+1)^k}{k^{k-1}}$ (para $k=1,2,3$ da $\frac21,\frac{3^2}2,\frac{4^3}{3^2}$ ✓).</li>
+    <li><b>Como cociente:</b> $s_n=\frac{A_n}{B_n}$ con $A_n=\sum_{k=1}^n\frac{(k+1)^k}{k^{k-1}}$ y $B_n=n^2$. Cada sumando es $\ge1$, luego $A_n\ge n\to\infty$: forma $\frac\infty\infty$. Los sumandos son muy distintos entre sí, así que el emparedado del 1.11 no funciona bien.</li>
+    <li><b>Por qué Stolz:</b> al restar términos consecutivos <b>la suma desaparece</b>: $A_{n+1}-A_n=\dfrac{(n+2)^{n+1}}{(n+1)^n}$. Hipótesis: $B_n=n^2$ es creciente, $B_n\to\infty$ y $B_{n+1}-B_n=2n+1\ne0$ ✓.</li>
+    <li><b>Cociente de Stolz:</b> $\dfrac{A_{n+1}-A_n}{B_{n+1}-B_n}=\dfrac{(n+2)^{n+1}}{(2n+1)(n+1)^n}=\dfrac{n+2}{2n+1}\cdot\left(\dfrac{n+2}{n+1}\right)^{n}$.</li>
+    <li><b>Primer factor:</b> $\frac{n+2}{2n+1}=\frac{1+2/n}{2+1/n}\to\frac12$.</li>
+    <li><b>Segundo factor</b> ($1^\infty$). Con $m=n+1$: $\left(\frac{n+2}{n+1}\right)^n=\left(1+\frac1m\right)^{m-1}=\dfrac{(1+\frac1m)^m}{1+\frac1m}\to\dfrac e1=e$ (Prop. 1.5 con $a_m=m$ y Prop. 1.3).</li>
+    <li><b>Conclusión</b> (Stolz): $\lim s_n=\frac12\cdot e=\boxed{\dfrac e2}\approx1{,}35914$. Comprobación numérica: $s_{100}\approx1{,}35967$, $s_{1000}\approx1{,}359149$.</li>
+  </ol>
+  <p><b>Sobre el desarrollo de E:</b> usa $\frac{a_n-a_{n-1}}{b_n-b_{n-1}}$ en lugar de $\frac{a_{n+1}-a_n}{b_{n+1}-b_n}$: es la misma sucesión desplazada un lugar y tiene el mismo límite. Erratas menores: «$n\to++\infty$» (p. 19) y, en la p. 20, «límite de una serie de números racionales»: es una <b>sucesión</b> (contiene una suma finita, no una serie).</p>
+  <div class="recipe"><b>Receta:</b> si el numerador (o el denominador) es una <b>suma de $n$ términos</b>, usa Stolz: al restar términos consecutivos, la suma se reduce a su último sumando.</div>
+  <p><b>Error típico:</b> no comprobar la hipótesis sobre el denominador (monótono y con límite $\pm\infty$, o numerador y denominador con límite 0), o calcular $B_{n+1}-B_n$ como $1$ en lugar de $2n+1$.</p>
+</details>
+
+<h3>Ejemplos propios (de fácil a difícil)</h3>
+
+<details class="sol"><summary>Ejemplos propios A — cocientes («lo que domina») <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></summary>
+  <ol class="steps">
+    <li><b>P1 (fácil).</b> $\lim\dfrac{3n^2-n+2}{5n^2+4}$. Dividimos entre $n^2$: $\dfrac{3-\frac1n+\frac2{n^2}}{5+\frac4{n^2}}\to\dfrac35$.</li>
+    <li><b>P2 (media).</b> $\lim\dfrac{\sqrt{9n^2+n}}{2n+1}$. Como $\sqrt{9n^2+n}=n\sqrt{9+1/n}$, dividimos entre $n$: $\dfrac{\sqrt{9+1/n}}{2+1/n}\to\dfrac32$.</li>
+    <li><b>P3 (difícil).</b> $\lim\dfrac{2^n+3^n}{3^{n+1}+1}$. Domina $3^n$: dividimos entre $3^n$: $\dfrac{(2/3)^n+1}{3+(1/3)^n}\to\dfrac{0+1}{3+0}=\dfrac13$, porque $x^\infty=0$ para $x\in(0,1)$ (Def. 1.12).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> divide arriba y abajo entre el término que domina (el de mayor grado o la exponencial de base mayor).</div>
+</details>
+
+<details class="sol"><summary>Ejemplos propios B — conjugado <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></summary>
+  <ol class="steps">
+    <li><b>P4 (fácil).</b> $\lim(\sqrt{n^2+n}-n)=\lim\dfrac n{\sqrt{n^2+n}+n}=\lim\dfrac1{\sqrt{1+1/n}+1}=\dfrac12$.</li>
+    <li><b>P5 (media).</b> $\lim\sqrt n\,(\sqrt{n+1}-\sqrt n)=\lim\dfrac{\sqrt n}{\sqrt{n+1}+\sqrt n}=\lim\dfrac1{\sqrt{1+1/n}+1}=\dfrac12$. (Forma $\infty\cdot0$.)</li>
+    <li><b>P6 (difícil).</b> ¿Para qué $c$ es $\lim(\sqrt{n^2+cn}-n)=5$? Con el conjugado queda $\dfrac{cn}{\sqrt{n^2+cn}+n}\to\dfrac c2$, luego $c=10$. Del mismo modo, $\lim(\sqrt{n^2+3n}-\sqrt{n^2-n})=\dfrac{3-(-1)}2=2$.</li>
+  </ol>
+</details>
+
+<details class="sol"><summary>Ejemplos propios C — emparedado e infinitésimo por acotada <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy y numéricamente">P</span></summary>
+  <ol class="steps">
+    <li><b>P7 (fácil).</b> $\lim\dfrac{\operatorname{sen}n}n=0$: $\frac1n\to0$ y $\operatorname{sen}n$ acotada (Teorema 1.2); o $-\frac1n\le\frac{\operatorname{sen}n}n\le\frac1n$ y emparedado.</li>
+    <li><b>P8 (media).</b> $\lim\displaystyle\sum_{k=1}^n\frac n{n^2+k}=1$. Cada sumando está entre $\frac n{n^2+n}$ y $\frac n{n^2+1}$; multiplicando por $n$ sumandos, $\frac{n^2}{n^2+n}\le b_n\le\frac{n^2}{n^2+1}$, y las dos cotas tienden a 1.</li>
+    <li><b>P9 (difícil).</b> $\lim\sqrt[n]{2^n+3^n}=3$. Se cumple $3^n\le2^n+3^n\le2\cdot3^n$. Como $x\mapsto x^{1/n}$ es creciente, $3\le a_n\le3\cdot2^{1/n}$, y $2^{1/n}=e^{(\ln2)/n}\to e^0=1$ por (1.1). Emparedado: el límite es 3.</li>
+  </ol>
+</details>
+
+<details class="sol"><summary>Ejemplos propios D — potencias: $1^\infty$ y casos que no son indeterminación <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></summary>
+  <ol class="steps">
+    <li><b>P10 (fácil).</b> $\lim\left(1+\frac2n\right)^n=\lim\Big[\big(1+\frac1{a_n}\big)^{a_n}\Big]^2$ con $a_n=\frac n2$: es $e^2$ (como el Ejemplo 1.29).</li>
+    <li><b>P11 (media).</b> $\lim\left(\frac{n+3}{n-1}\right)^{2n}$. Como $\frac{n+3}{n-1}=1+\frac4{n-1}$, la receta da $2n\cdot\frac4{n-1}\to8$: el límite es $e^8$.</li>
+    <li><b>P12 (media).</b> $\lim\left(\frac{n^2+1}{n^2-n}\right)^n$. Aquí $x_n-1=\frac{n+1}{n^2-n}$ y $n(x_n-1)=\frac{n^2+n}{n^2-n}\to1$: el límite es $e$.</li>
+    <li><b>P13 (trampa).</b> $\lim\left(\frac{2n+1}{n+3}\right)^n=+\infty$: la base tiende a $2&gt;1$, no es $1^\infty$, y $x^\infty=\infty$ para $x&gt;1$. En cambio $\lim\left(\frac{n+1}{3n}\right)^{\sqrt n}=0$, porque la base tiende a $\frac13\in(0,1)$.</li>
+  </ol>
+</details>
+
+<details class="sol"><summary>Ejemplos propios E — criterio de Stolz <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy y numéricamente">P</span></summary>
+  <ol class="steps">
+    <li><b>P14 (fácil).</b> $\lim\dfrac{1^2+2^2+\cdots+n^2}{n^3}$. Stolz con $b_n=n^3$: $\dfrac{(n+1)^2}{(n+1)^3-n^3}=\dfrac{(n+1)^2}{3n^2+3n+1}\to\dfrac13$. Igual, $\dfrac{1+2+\cdots+n}{n^2}\to\dfrac12$.</li>
+    <li><b>P15 (difícil).</b> $\lim\dfrac{\ln n}{\sqrt n}=0$. Stolz con $b_n=\sqrt n$ (creciente, $\to\infty$): $$\frac{\ln(n+1)-\ln n}{\sqrt{n+1}-\sqrt n}=\ln\!\left(1+\tfrac1n\right)(\sqrt{n+1}+\sqrt n)=\underbrace{n\ln\!\left(1+\tfrac1n\right)}_{=\ln(1+1/n)^n\to\ln e=1}\cdot\underbrace{\frac{\sqrt{n+1}+\sqrt n}n}_{\to0}\to0.$$</li>
+    <li><b>P16 (difícil).</b> $\lim\dfrac{1+\sqrt2+\sqrt[3]3+\cdots+\sqrt[n]n}n=1$. Stolz con $b_n=n$: el cociente de incrementos es $\sqrt[n+1]{n+1}\to1$ (<a href="#ej1-15">Ejercicio 1.15</a>).</li>
+  </ol>
+</details>
+
+<!-- ============================ 14 ============================ -->
+<h2 id="chuleta"><span class="n">14</span>Chuleta y lista de comprobación</h2>
+
+<div class="box thm"><span class="h">Chuleta</span>
+  <table>
+    <tr><th>Concepto</th><th>Qué recordar</th></tr>
+    <tr><td>Sucesión</td><td>$a:\mathbb N\to\mathbb R$, término general $a_n$, notación $\{a_n\}$; puede ser recursiva.</td></tr>
+    <tr><td>Límite (Def. 1.10)</td><td>$\lim a_n=l\iff\forall\varepsilon&gt;0\ \exists N\in\mathbb N:\ |a_n-l|\le\varepsilon\ \ \forall n\ge N$. El límite, si existe, es único. Solo importa el final.</td></tr>
+    <tr><td>Divergente</td><td>No convergente: límite $\pm\infty$ u oscilación ($(-1)^n$).</td></tr>
+    <tr><td>Acotada / convergente</td><td>Convergente $\Rightarrow$ acotada (no al revés). No acotada $\Rightarrow$ no converge.</td></tr>
+    <tr><td>Emparedado</td><td>$a_n\le b_n\le c_n$ (desde cierto $n$) y $a_n,c_n\to l\Rightarrow b_n\to l$.</td></tr>
+    <tr><td>Teorema 1.2</td><td>$a_n\to0$ y $b_n$ acotada $\Rightarrow a_nb_n\to0$.</td></tr>
+    <tr><td>Valor absoluto</td><td>$a_n\to l\Rightarrow|a_n|\to|l|$; recíproco solo si $l=0$.</td></tr>
+    <tr><td>Álgebra (Prop. 1.3)</td><td>Suma, producto, cociente ($b_n\ne0$, $\lim b_n\ne0$) <b>si los límites existen</b>. No vale con un número creciente de sumandos.</td></tr>
+    <tr><td>$\overline{\mathbb R}$ (Def. 1.12)</td><td>$\frac x\infty=0$; $x\cdot\infty=\pm\infty$ según el signo de $x\ne0$; $x^\infty=0$ si $0&lt;x&lt;1$, $=\infty$ si $x&gt;1$; $\infty^x=\infty$ si $x&gt;0$, $=0$ si $x&lt;0$.</td></tr>
+    <tr><td>Indeterminaciones</td><td>$\frac00$, $\infty-\infty$, $\pm\infty\cdot0$, $\frac{\pm\infty}{\pm\infty}$, $0^0$, $1^{\pm\infty}$, $\infty^0$.</td></tr>
+    <tr><td>Conjugado</td><td>$\infty-\infty$ con raíces: multiplicar y dividir por $a_n+b_n$.</td></tr>
+    <tr><td>Fórmula (1.1)</td><td>$a_n&gt;0$: $\lim a_n^{b_n}=e^{\lim b_n\ln a_n}$.</td></tr>
+    <tr><td>Monótona (Teo. 1.3)</td><td>Monótona: convergente $\iff$ acotada. Monótona no acotada $\to\pm\infty$.</td></tr>
+    <tr><td>Número $e$ (Prop. 1.5)</td><td>$a_n\to\pm\infty\Rightarrow(1+\frac1{a_n})^{a_n}\to e$. Si $x_n\to1$ ($x_n\ne1$, $x_n-1$ de signo constante), $y_n\to\pm\infty$: $x_n^{y_n}\to e^{\lim y_n(x_n-1)}$ (si ese límite es $\pm\infty$, da $e^{\pm\infty}$).</td></tr>
+    <tr><td>Stolz</td><td>$\lim\frac{a_{n+1}-a_n}{b_{n+1}-b_n}=l\in\mathbb R$ y $b_n$ monótona ($b_{n+1}\ne b_n$) con $b_n\to\pm\infty$ (o $a_n,b_n\to0$) $\Rightarrow\lim\frac{a_n}{b_n}=l$.</td></tr>
+  </table>
+</div>
+
+<div class="box warn"><span class="h">Errores frecuentes</span>
+  <ul>
+    <li>Tratar $\infty$ como un número: $\infty-\infty=0$, $\frac\infty\infty=1$, $1^\infty=1$, $\infty^0=1$.</li>
+    <li>Aplicar la Prop. 1.3 sin que existan los límites, o con un número de sumandos que crece con $n$.</li>
+    <li>Escribir $\sqrt{a+b}=\sqrt a+\sqrt b$, $e^{a+b}=e^a+e^b$, $\sqrt{16n^4-4}=4n^2-2$.</li>
+    <li>Aplicar el número $e$ a algo que no es $1^\infty$; o cambiar solo la base o solo el exponente.</li>
+    <li>Creer que acotada implica convergente, o que monótona implica convergente.</li>
+    <li>Usar Stolz sin comprobar que $b_n$ es monótona y tiende a $\pm\infty$; o sin que exista el límite del cociente de incrementos.</li>
+    <li>En la definición: fijar $N$ antes que $\varepsilon$.</li>
+  </ul>
+</div>
+
+<h3>Lista de comprobación: «sé hacer…»</h3>
+<ul class="checklist">
+  <li>Enunciar la definición $\varepsilon$–$N$ de límite y demostrar $\lim\frac1n=0$ o $\lim\frac n{n+1}=1$ con ella.</li>
+  <li>Explicar por qué el límite es único y por qué convergente implica acotada (y por qué el recíproco falla).</li>
+  <li>Decir si una sucesión converge, diverge a $\pm\infty$ u oscila, y demostrar que $(-1)^n$ no converge.</li>
+  <li>Calcular límites de cocientes de polinomios, exponenciales y raíces dividiendo entre lo que domina.</li>
+  <li>Resolver $\infty-\infty$ con el conjugado (incluso con parámetros).</li>
+  <li>Reconocer las siete indeterminaciones y usar la fórmula (1.1) para las potencias.</li>
+  <li>Resolver $1^\infty$ con el número $e$ y saber cuándo una potencia no es indeterminada.</li>
+  <li>Acotar una suma de $n$ términos y aplicar el emparedado.</li>
+  <li>Aplicar el criterio de Stolz comprobando sus hipótesis.</li>
+  <li>Probar que una sucesión monótona converge viendo que está acotada, y calcular su límite con la recurrencia.</li>
+</ul>
+
+<!-- ============================ 15 ============================ -->
+<h2 id="fuentes"><span class="n">15</span>Fuentes de este tema</h2>
+<p>Lista automática de todas las etiquetas usadas (libro y página impresa). <b>U</b> = Cálculo para Ingenieros (pág. impresa = PDF + 2; §1.2 ocupa las pp. 22-33), <b>E</b> = libro de ejercicios, <b>S</b> = Stewart §11.1 (pp. 690-699), <b>L</b> = Larson §9.1 (pp. 584-591; impresa = PDF − 17), <b>P</b> = explicación propia (definición de divergente, pruebas completadas, recetas, ejemplos propios y precisiones sobre Stolz, que ni S ni L tratan).</p>
+<div id="panel-fuentes"></div>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro.</footer>
+</main>
+</div>
+</body>
+</html>

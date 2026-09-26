@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 3.1 El Teorema de Taylor</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+<style>
+/* Extras propios del tema 3.1 (clases prefijadas t31-) */
+.t31-steps4{display:grid;gap:8px;margin:1em 0}
+.t31-steps4>div{border:1px solid var(--bd);border-left:5px solid var(--thm-b);border-radius:8px;padding:8px 14px;background:var(--card);font-family:var(--sans);font-size:.95rem}
+.t31-steps4 b{color:var(--thm-b)}
+.t31-ext{border-left:4px dashed var(--P);padding:2px 0 6px 16px;margin:1.2em 0}
+.t31-ext>.t31-tag{display:inline-block;font:700 13px var(--sans);letter-spacing:.07em;text-transform:uppercase;color:#a3281c;margin-top:8px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .t31-ext>.t31-tag{color:var(--warn-b)}}
+:root[data-theme="dark"] .t31-ext>.t31-tag{color:var(--warn-b)}
+.t31-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:1em 0}
+.t31-two figure{margin:0}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo III · Aplicaciones de la derivada · Tema 3.1</div>
+  <h1>El Teorema de Taylor</h1>
+  <p>Cómo sustituir una función complicada, cerca de un punto, por un polinomio que se calcula con sumas y productos, y cómo saber <i>cuánto</i> te equivocas al hacerlo.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §3.1 (pp. 104-112)</span><span>Complementos: Stewart §3.10 (pp. 250-253), §11.10-11.11 (pp. 753-777); Larson §9.7 (pp. 636-646)</span><span>Ejercicios: E Ej. 3.1–3.14 (pp. 88-100)</span><span>⏱ ~7 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §3.1.1 Motivación, p. 104">U p.104</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Una calculadora no sabe «hacer» $\operatorname{sen}0{,}5$ ni $\ln1{,}1$: solo suma, resta, multiplica y divide. Lo que sí sabe es evaluar <b>polinomios</b>. El Teorema de Taylor dice cómo construir, para una función $f$ y un punto $x_0$, un polinomio que se parece muchísimo a $f$ cerca de $x_0$, y da una fórmula del <b>error</b> que se comete. Aproximar sin saber el error no sirve de nada; aproximar <i>con</i> el error controlado es una herramienta de ingeniería.</p>
+  <span class="src" data-l="U" data-ref="U §3.1.1 Motivación, p. 104">U p.104</span>
+</div>
+
+<h3>Qué necesitas saber ya <span class="src" data-l="U" data-ref="U Prop. 2.1 y regla de la cadena, p. 79; tabla de derivadas pp. 79-80">U pp.79-80</span> <span class="src" data-l="U" data-ref="U Def. 2.1, p. 75; Def. 2.3, p. 81">U pp.75, 81</span> <span class="src" data-l="U" data-ref="U §2.3.2, p. 82">U p.82</span> <span class="src" data-l="U" data-ref="U §2.5, Teorema del valor medio, p. 96">U p.96</span></h3>
+<ul>
+  <li>Derivar con soltura: tabla de derivadas, producto, cociente y regla de la cadena (Tema 2.2). (U pp.79-80)</li>
+  <li>Definición de derivada como límite finito del cociente incremental y derivadas laterales. (U pp.75, 81)</li>
+  <li>Regla de L'Hôpital para límites $\tfrac00$ (aparece en E 3.6). (U p.82)</li>
+  <li>Teorema del valor medio: si $f$ es continua en $[a,b]$ y derivable en $(a,b)$, existe $c$ con $f(b)-f(a)=f'(c)(b-a)$. Es el caso más simple del teorema de esta unidad. (U p.96)</li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <tr><th>Apartado</th><th>Qué contiene</th><th>Dónde está</th></tr>
+  <tr><td>1 Derivadas sucesivas</td><td>$f'',f''',\dots,f^{(n}$; cuándo existen</td><td>U pp.104-106</td></tr>
+  <tr><td>2 Polinomio de Taylor</td><td>de la recta tangente a la parábola…; fórmula; orden frente a grado; ejemplos</td><td>U pp.107-110, 112 · S p.755, §3.10 · L pp.636-641</td></tr>
+  <tr><td>3 Resto y Teorema de Taylor</td><td>error exacto (Lagrange), método de acotación en 4 pasos</td><td>U p.111-112 · L p.642-643 · S p.756, 769-771</td></tr>
+  <tr><td>4 Puente: forma de Peano</td><td>$R_n=o((x-x_0)^n)$ y por qué se pueden sumar/multiplicar desarrollos</td><td><b>material externo a U</b> (propio)</td></tr>
+  <tr><td>5 Ejercicios</td><td>E 3.1–3.14 resueltos con receta</td><td>E pp.88-100</td></tr>
+  <tr><td>6 Ejemplos propios</td><td>12 ejemplos de dificultad creciente</td><td>propio</td></tr>
+  <tr><td>7 Errores, erratas y chuleta</td><td>lo que hay que llevar aprendido</td><td>síntesis</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.1-3.14, pp. 88-100">E pp.88-100</span></h3>
+<p>Tres tipos: (A) calcular derivadas de varios órdenes, incluido <i>dónde existen</i> (E 3.1–3.6); (B) calcular polinomios de Taylor, recentrar polinomios y razonar sobre su grado (E 3.7–3.13); (C) <b>acotar el error</b> con el resto de Lagrange (E 3.12, 3.14).</p>
+
+<div class="box warn"><span class="h">Aviso: parte del temario no está en el libro U</span>
+  <p>Según el cronograma del curso, el Tema 3 se complementa con «notas adicionales» del curso virtual: <b>la notación de Landau ($o$, $O$)</b> y la <b>forma de Lagrange del error en interpolación</b>. <b>Esas notas no las tenemos</b>, y el libro U no las contiene (en el índice del PDF de U hay una anotación manuscrita que dice justo eso). En este resumen, el apartado 4 explica la forma de Peano ($o$-pequeña) como <b>material externo, marcado con la etiqueta P</b>, construido solo con lo que sí demuestra U. Cuando dispongas de las notas del Aula Virtual, compara la notación. El error de interpolación es de la unidad 3.3.</p>
+  <span class="src" data-l="U" data-ref="U, índice general (p. VI), anotación junto a §3.1; cronograma del curso">U p.VI</span>
+</div>
+
+<div class="box tip"><span class="h">Cómo leer las fuentes</span>
+  <p>U tiene lo que cae en examen, pero es escueto: no explica <i>por qué</i> se igualan derivadas ni relaciona Taylor con la recta tangente. Para eso usamos Stewart (§3.10 y §11.10-11.11) y Larson (§9.7), indicando cada vez qué parte de U completan. <b>Notación de U:</b> $f^{(n}(x)$ es la derivada $n$-ésima (U escribe el paréntesis sin cerrar); $p_n$ es el polinomio de Taylor de <b>orden</b> $n$, es decir, de grado $\le n$; $R_n=f-p_n$ es el resto. Stewart escribe $T_n$ y $R_n$; Larson, $P_n$ y $R_n$.</p>
+</div>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Derivadas sucesivas <span class="src" data-l="U" data-ref="U §3.1.2 Derivadas sucesivas, pp. 104-106">U pp.104-106</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>La derivada $f'$ es una función nueva, así que se puede volver a derivar. Si $f$ es la posición de un coche, $f'$ es su velocidad y $f''$ su aceleración; $f'''$ (el «tirón») cuenta cómo cambia la aceleración. Se pueden seguir derivando mientras haya derivada.</p>
+</div>
+
+<div class="box def"><span class="h">Definición</span>
+  <p>Si $f$ es derivable en un intervalo y $f'$ es derivable en $a$, la <b>derivada segunda</b> es $f''(a)=(f')'(a)$. Igual, $f'''=(f'')'$ y, en general, la <b>derivada $n$-ésima</b> $f^{(n}$ se obtiene derivando $n$ veces. Notación: $f^{(n}(x)=\dfrac{d^nf}{dx^n}(x)$. Se dice que $f$ <b>es derivable $n$ veces</b> (o de clase $C^n$ si además $f^{(n}$ es continua) cuando existen esas derivadas.</p>
+  <span class="src" data-l="U" data-ref="U §3.1.2, definición de derivadas sucesivas y notación (nota al margen p. 104); espacios C(a,b), C¹(a,b)… al margen p. 106">U pp.104, 106</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico: $f^{(4}$ no es $f^4$</span>
+  <p>El paréntesis marca <b>derivar</b>. $f^{(4}(x)$ es la derivada cuarta; $(f(x))^4$ es la potencia. Además, «la derivada es $0$» <b>no</b> significa «no existe»: la derivada de la función nula es la función nula, así que un polinomio tiene derivadas de todos los órdenes (U lo aclara en una nota al margen del Ej. 3.1).</p>
+  <span class="src" data-l="U" data-ref="U Ej. 3.1 y nota al margen, p. 105">U p.105</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos de U (3.1 y 3.2)</span>
+  <p>U calcula sucesivamente las derivadas de $3x^3$ (que se anulan a partir de la cuarta) y de $xe^{x^2}$ (cada una es un producto y una cadena, y crece en tamaño). Lección: <b>escribe cada derivada completa y simplificada antes de derivar la siguiente</b>.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplos 3.1 y 3.2, p. 105">U p.105</span>
+</div>
+
+<h3>Cuando la derivada segunda no existe: el Ejemplo 3.3 de U</h3>
+<p>U toma una función pegada a trozos con una rama $x^2$ (a la izquierda) y otra $x^3$ (a la derecha) en $0$. Su derivada $f'$ vale $2x$ a la izquierda y $3x^2$ a la derecha, y $f'(0)=0$ por ambos lados: $f$ es derivable con $f'$ continua. Pero $f'$ tiene en $0$ un «pico»: pendiente $2$ por la izquierda y $0$ por la derecha, así que <b>no existe $f''(0)$</b>. Se ve en la gráfica.</p>
+<figure class="bookfig"><img src="../assets/img/fig_u_3_ej33.png" alt="Gráficas de f (parábola a la izquierda y cúbica a la derecha, suave en el origen) y de f' (recta con pendiente 2 a la izquierda de 0 y curva plana a la derecha, con un pico en 0)" loading="lazy">
+<figcaption>Ejemplo 3.3 de U: $f$ y su derivada $f'$. La curva $f$ parece suave, pero $f'$ tiene un cambio brusco de pendiente en $0$. <span class="src" data-l="U" data-ref="U Ej. 3.3, figura de la p. 106 (recorte del libro)">U p.106</span></figcaption></figure>
+
+<div class="box thm"><span class="h">Regla práctica para funciones a trozos</span>
+  <p>Fuera de los puntos de unión se deriva con las reglas de siempre. En un punto de unión hay que usar la <b>definición</b> (derivadas laterales), primero para $f'$ y luego, <b>aplicada a $f'$</b>, para $f''$. Hay derivada solo si los límites laterales son finitos e iguales.</p>
+  <span class="src" data-l="U" data-ref="U Def. 2.3, p. 81; Ej. 3.3, pp. 105-106">U pp.81, 105-106</span>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>El polinomio de Taylor <span class="src" data-l="U" data-ref="U §3.1.3 El Teorema de Taylor, pp. 107-110">U pp.107-110</span></h2>
+
+<h3>2.1 De la recta tangente a la parábola: la idea</h3>
+<div class="box intu"><span class="h">Idea intuitiva: «copiar» a $f$ en un punto</span>
+  <p>Queremos un polinomio $p$ que imite a $f$ cerca de $x_0$. Se le exige que, <b>en $x_0$</b>, coincida con $f$ en valor y en derivadas sucesivas.</p>
+  <ul>
+    <li><b>Mismo valor:</b> $p(x_0)=f(x_0)$. Es la mejor constante.</li>
+    <li><b>Mismo valor y misma pendiente:</b> $p(x)=f(x_0)+f'(x_0)(x-x_0)$. Es la <b>recta tangente</b>: en el mismo punto, misma altura y misma inclinación.</li>
+    <li><b>Además, misma curvatura:</b> se añade $\frac{f''(x_0)}{2}(x-x_0)^2$ y sale una <b>parábola</b> que se curva igual que $f$.</li>
+    <li>Y así sucesivamente: cada término nuevo corrige lo que faltaba.</li>
+  </ul>
+  <p>Analogía: es como ajustar una foto. Primero pones el centro en el sitio (valor), luego la inclinación (pendiente), luego cómo se dobla (segunda derivada), y cada corrección mejora el parecido <i>cerca del centro</i>, no lejos de él.</p>
+  <span class="src" data-l="L" data-ref="Larson §9.7, Ej. 1 (P₁ de eˣ, p. 636), Ej. 2 (P₂, P₃, p. 637) y deducción de los coeficientes, p. 638">L pp.636-638</span>
+  <span class="src" data-l="S" data-ref="Stewart, Proyecto de laboratorio «Polinomios de Taylor», pp. 256-257: aproximación cuadrática imponiendo P(a)=f(a), P′(a)=f′(a), P″(a)=f″(a)">S pp.256-257</span>
+</div>
+
+<div class="box ex"><span class="h">Orden 1 es la recta tangente (linealización)</span>
+  <p>El polinomio de Taylor de orden 1 es $p_1(x)=f(a)+f'(a)(x-a)$, la <b>linealización</b> de $f$ en $a$ que Stewart estudia en §3.10 («$T_1$ es lo mismo que la linealización de $f$ en $a$», §11.11). U no lo relaciona con la recta tangente: tú sí. Ejemplo de Stewart: $\sqrt{x+3}\approx 2+\tfrac14(x-1)$ cerca de $a=1$; la aproximación es buena cerca de $1$ y se estropea al alejarse.</p>
+  <span class="src" data-l="S" data-ref="Stewart §3.10, linealización L(x)=f(a)+f′(a)(x−a), pp. 250-251; Ej. 1 (√(x+3) en a=1), p. 251; Ej. 2, p. 252">S pp.250-252</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.11, p. 768: «T₁ es lo mismo que la linealización de f en a»">S p.768</span>
+</div>
+
+<h3>2.2 Polinomios centrados en $x_0$</h3>
+<div class="box def"><span class="h">Definición 3.1 · polinomio centrado en $x_0$</span>
+  <p>Decir que un polinomio está <b>centrado en $x_0$</b> es escribirlo en potencias de $(x-x_0)$:
+  $$q(x)=a_0+a_1(x-x_0)+a_2(x-x_0)^2+\dots+a_n(x-x_0)^n .$$
+  Para <b>recentrar</b> un polinomio dado en potencias de $x$, se sustituye $x=(x-x_0)+x_0$ y se desarrolla (U Ej. 3.4): por ejemplo, $x^2+x+2=(x-2)^2+5(x-2)+8$.</p>
+  <span class="src" data-l="U" data-ref="U Def. 3.1 y Ej. 3.4, p. 107">U p.107</span>
+</div>
+
+<div class="box thm"><span class="h">Proposición 3.1 · un polinomio se lee en sus derivadas</span>
+  <p>Sea $q$ un polinomio de grado $\le n$. Entonces, para cualquier $x_0\in\mathbb R$,
+  $$q(x)=\sum_{i=0}^{n}\frac{q^{(i}(x_0)}{i!}\,(x-x_0)^i\qquad\text{para todo }x\in\mathbb R.$$
+  Es decir, el coeficiente de $(x-x_0)^k$ es $\dfrac{q^{(k}(x_0)}{k!}$.</p>
+  <p><i>Ejemplo de U (3.5):</i> si $p$ es de orden $3$ con $p(0)=1$, $p'(0)=0$, $p''(0)=6$, $p'''(0)=-6$, entonces $p(x)=1+0\,x+\frac{6}{2!}x^2-\frac{6}{3!}x^3=1+3x^2-x^3$.</p>
+  <span class="src" data-l="U" data-ref="U Prop. 3.1, p. 108 (U dice «polinomio de orden n», que hay que entender como de grado ≤ n); Ej. 3.5, p. 108">U p.108</span>
+</div>
+
+<div class="box def"><span class="h">Definición 3.2 · polinomio de Taylor de orden $n$</span>
+  <p>Sea $f$ una función que tiene derivadas hasta el orden $n$ en $x_0$. Su <b>polinomio de Taylor de orden $n$ centrado en $x_0$</b> es
+  $$p_n(x)=f(x_0)+f'(x_0)(x-x_0)+\frac{f''(x_0)}{2!}(x-x_0)^2+\dots+\frac{f^{(n}(x_0)}{n!}(x-x_0)^n=\sum_{k=0}^{n}\frac{f^{(k}(x_0)}{k!}(x-x_0)^k.\tag{3.1}$$
+  Si $x_0=0$ se llama polinomio de <b>Mac Laurin</b>. Es el <b>único</b> polinomio de grado $\le n$ con las mismas derivadas que $f$ en $x_0$ hasta el orden $n$ (por la Prop. 3.1).</p>
+  <span class="src" data-l="U" data-ref="U fórmula (3.1) y Def. 3.2, p. 108">U p.108</span>
+  <span class="src" data-l="L" data-ref="Larson §9.7, definición de polinomio de Taylor y de Maclaurin, p. 638">L p.638</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.10, polinomio de Taylor de n-ésimo grado, p. 755">S p.755</span>
+</div>
+
+<div class="box warn"><span class="h">«Orden» no es «grado»</span>
+  <p>El último sumando de $p_n$ es $\frac{f^{(n}(x_0)}{n!}(x-x_0)^n$; si $f^{(n}(x_0)=0$ desaparece y el polinomio tiene grado <b>menor</b> que $n$. Ejemplo: para $\cos x$ en $0$, $p_1(x)=1$ (grado $0$). Por eso U dice «de orden $n$» y no «de grado $n$». (Stewart p. 755 escribe «polinomial de grado $n$», lo cual es impreciso; Larson dice «$n$-ésimo polinomio». Sigue U.)</p>
+  <span class="src" data-l="S" data-ref="Stewart §11.10, p. 755 (terminología 'grado n')">S p.755</span>
+  <span class="src" data-l="U" data-ref="U Def. 3.2 y Ej. 3.7, pp. 108-109">U pp.108-109</span>
+</div>
+
+<h3>2.3 Ejemplos básicos que hay que saberse</h3>
+<div class="box ex"><span class="h">$e^x$ (U Ej. 3.6) y $\operatorname{sen}x$ (U Ej. 3.7) en el origen</span>
+  <ol class="steps">
+    <li><b>$e^x$.</b> Todas las derivadas son $e^x$, que en $0$ vale $1$. Por (3.1): $p_n(x)=1+x+\dfrac{x^2}{2!}+\dots+\dfrac{x^n}{n!}=\displaystyle\sum_{i=0}^n\frac{x^i}{i!}$.</li>
+    <li><b>$\operatorname{sen}x$.</b> Las derivadas son $\cos x,-\operatorname{sen}x,-\cos x,\operatorname{sen}x,\dots$ (se repiten de 4 en 4); en $0$ valen $1,0,-1,0,\dots$ Solo sobreviven las potencias <b>impares</b> y con signos alternados: $p_{2n+1}(x)=x-\dfrac{x^3}{3!}+\dfrac{x^5}{5!}-\dots+(-1)^n\dfrac{x^{2n+1}}{(2n+1)!}$. Como $\operatorname{sen}^{(2n+2}(0)=0$, resulta $p_{2n+2}=p_{2n+1}$ (un ejemplo de «orden $\neq$ grado»).</li>
+    <li><b>$\cos x$</b> (por el mismo camino): $p_{2n}(x)=1-\dfrac{x^2}{2!}+\dfrac{x^4}{4!}-\dots+(-1)^n\dfrac{x^{2n}}{(2n)!}$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ej. 3.6, pp. 108-109; Ej. 3.7, p. 109">U pp.108-109</span>
+  <span class="src" data-l="L" data-ref="Larson §9.7, Ej. 3 (eˣ, p. 638), Ej. 5 (cos x, p. 640)">L pp.638, 640</span>
+</div>
+
+<div class="box ex"><span class="h">Fuera del origen y por sustitución (U Ej. 3.8 y 3.9)</span>
+  <p><b>Ej. 3.8:</b> $\operatorname{sen}x$ centrado en $\frac\pi4$, orden 3. Se evalúan las derivadas en $\frac\pi4$: $f=\frac1{\sqrt2}$, $f'=\frac1{\sqrt2}$, $f''=-\frac1{\sqrt2}$, $f'''=-\frac1{\sqrt2}$, luego $p_3(x)=\dfrac1{\sqrt2}+\dfrac1{\sqrt2}\big(x-\tfrac\pi4\big)-\dfrac{1/\sqrt2}{2!}\big(x-\tfrac\pi4\big)^2-\dfrac{1/\sqrt2}{3!}\big(x-\tfrac\pi4\big)^3$. <b>Ej. 3.9:</b> para $e^{x^2}$ no se deriva: se toma $p_n(u)=1+u+\dots+\frac{u^n}{n!}$ de $e^u$ y se <b>sustituye</b> $u=x^2$, lo que da $q_{2n}(x)=1+x^2+\frac{x^4}{2!}+\dots+\frac{x^{2n}}{n!}$. <b>Ojo: sale de orden $2n$, no $n$</b> (así lo advierte U). <i>Por qué vale</i> (apartado 4, material externo a U): si $e^u=p_n(u)+o(u^n)$ cuando $u\to0$ y $u=x^2\to0$, entonces $e^{x^2}=p_n(x^2)+o(x^{2n})$, y por la unicidad $p_n(x^2)$ es el polinomio de Taylor de orden $2n$. Como $e^{x^2}$ es par no hay potencias impares, y U obtiene $q_7=q_6=1+x^2+\frac{x^4}{2}+\frac{x^6}{6}$. Larson trata un caso análogo en su Ej. 6 ($\operatorname{sen}x$ en $\frac\pi6$, p. 640).</p>
+  <span class="src" data-l="U" data-ref="U Ej. 3.8, p. 110; Ej. 3.9, p. 110">U p.110</span>
+  <span class="src" data-l="L" data-ref="Larson §9.7, Ej. 4 (ln x en c=1, p. 639), Ej. 6 (sen x en π/6, p. 640)">L pp.639-640</span>
+</div>
+<div class="box warn"><span class="h">Error típico con la sustitución</span>
+  <p>Creer que sustituir $u=x^2$ en $p_n(u)$ da un polinomio de orden $n$. Da orden $2n$: el resto pasa de $o(u^n)$ a $o(x^{2n})$.</p>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen: tabla de dos columnas</span>
+  <p>Para calcular $p_n$ escribe una tabla «$f^{(k}(x)$ | $f^{(k}(x_0)$» para $k=0,\dots,n$, <b>simplificando cada derivada antes de derivar la siguiente</b>; los coeficientes son la segunda columna dividida entre $k!$. Comprueba siempre con paridad (si $f$ es par, solo habrá potencias pares) o con un desarrollo conocido.</p>
+</div>
+
+<h3>2.4 Cómo se ve: más orden, mejor ajuste <span class="src" data-l="L" data-ref="Larson §9.7, Ej. 7 (tablas de ln 1,1), p. 641">L p.641</span> <span class="src" data-l="S" data-ref="Stewart §11.11, tabla de Tₙ(0,2) y Tₙ(3) para eˣ, pp. 768-769">S pp.768-769</span></h3>
+<div class="t31-two">
+<figure class="bookfig"><img src="../assets/img/fig_s_11_10_1.png" alt="Gráfica de la exponencial y de sus polinomios de Taylor T1 (recta), T2 (parábola) y T3 en el punto (0,1)" loading="lazy">
+<figcaption>$e^x$ (curva rosa) y $T_1,T_2,T_3$ en $0$: cuanto mayor es el orden, más se pega a $e^x$ cerca del origen (Stewart escribe $T_n$ donde U escribe $p_n$). <span class="src" data-l="S" data-ref="Stewart §11.10, Figura 1, p. 755 (recorte del libro)">S p.755</span></figcaption></figure>
+<figure class="bookfig"><img src="../assets/img/fig_u_3_sen_p3_p5.png" alt="Gráfica de sen x en trazo discontinuo y de sus polinomios de Taylor p3 y p5 centrados en el origen" loading="lazy">
+<figcaption>$\operatorname{sen}x$ (discontinua) con $p_3$ y $p_5$ centrados en $0$. Cerca de $0$ los tres son indistinguibles; lejos, los polinomios se van «al infinito». <span class="src" data-l="U" data-ref="U, figura de la p. 112, «f(x)=sen x y sus polinomios de Taylor centrados en el origen de orden 3 y 5» (recorte del libro)">U p.112</span></figcaption></figure>
+</div>
+<p>Lecciones de las figuras: (1) la aproximación es <b>local</b>: buena cerca de $x_0$ y peor al alejarse; (2) subir el orden ensancha la zona donde el ajuste es bueno. Larson lo comprueba con tablas ($\ln1{,}1$ y conclusiones 1 y 2, Ej. 7) y Stewart con $e^x$ en $x=0{,}2$ y $x=3$.</p>
+
+<div class="box thm"><span class="h">Recuadro de U: Taylor de un polinomio</span>
+  <p>Si $P$ es un polinomio, su polinomio de Taylor de orden $n$ en $x_0$ es <b>lo que queda al escribir $P$ centrado en $x_0$ y quedarse con las potencias de grado $\le n$</b>. En particular, si $n\ge\operatorname{grado}P$, el polinomio de Taylor <b>es</b> $P$. Ejemplo de U: para $f(x)=x^5+3x^4-x^2+1$, $p_3(x)=-x^2+1$ en el origen.</p>
+  <span class="src" data-l="U" data-ref="U, recuadro de la p. 112 (Taylor de un polinomio)">U p.112</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>El resto y el Teorema de Taylor <span class="src" data-l="U" data-ref="U Prop. 3.2, Def. 3.3 y Ej. 3.10, pp. 111-112">U pp.111-112</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva: ¿cuánto me equivoco?</span>
+  <p>El polinomio $p_n$ no es exactamente $f$. La diferencia $R_n(x)=f(x)-p_n(x)$ es el <b>resto</b> (el error con signo). El Teorema de Taylor dice que el error tiene la <b>forma del siguiente término</b> del polinomio, pero con la derivada $(n+1)$-ésima evaluada en un punto desconocido $c$ entre $x_0$ y $x$. No conocemos $c$, pero sí el intervalo donde vive, y eso basta para <b>acotar</b> el error: nos ponemos en el caso peor.</p>
+</div>
+
+<div class="box thm"><span class="h">Proposición 3.2 · Teorema de Taylor (forma de Lagrange del resto)</span>
+  <p>Sea $f$ una función tal que $f^{(n+1}$ está <b>definida y es continua</b> en un intervalo abierto $(a,b)$, y sea $x_0\in[a,b]$. Entonces, para cada $x\in(a,b)$ existe un punto $c$ <b>entre $x_0$ y $x$</b> tal que
+  $$R_n(x)=f(x)-p_n(x)=\frac{f^{(n+1}(c)}{(n+1)!}\,(x-x_0)^{n+1}.$$
+  Ese segundo miembro es el <b>resto de Lagrange de orden $n$</b> (Def. 3.3).</p>
+  <span class="src" data-l="U" data-ref="U Prop. 3.2 (Teorema de Taylor) y Def. 3.3 (resto de Lagrange), p. 111. U no demuestra el teorema y omite otras formas del resto («no las consideraremos aquí»)">U p.111</span>
+  <span class="src" data-l="L" data-ref="Larson §9.7, Teorema 9.19 (Teorema de Taylor): basta que f sea derivable hasta el orden n+1 en un intervalo I que contiene a c; p. 642 (en Larson, c es el centro y z el punto intermedio)">L p.642</span>
+</div>
+
+<div class="box warn"><span class="h">Hipótesis y detalles que no hay que olvidar</span>
+  <ul>
+    <li><b>U exige</b> que $f^{(n+1}$ exista y sea continua en el intervalo $(a,b)$: es una hipótesis <i>suficiente</i>. Basta con menos: que $f^{(n}$ sea continua en el intervalo cerrado entre $x_0$ y $x$ y que exista $f^{(n+1}$ en el abierto (Larson, Teorema 9.19). Si falla, p. ej. $\sqrt[3]{x^2}$ en $0$ (no es derivable en $0$), el teorema no se puede aplicar.</li>
+    <li>Si $x_0$ fuera un extremo del intervalo haría falta además la continuidad de $f^{(n}$ en $x_0$. En los ejercicios $x_0$ es interior y no afecta. Larson enuncia el teorema con la hipótesis más débil «derivable hasta el orden $n+1$».</li>
+    <li>El punto $c$ <b>depende de $x$ y de $n$</b> y no se puede calcular. «Toma $c=x$» o «toma $c=0$» es un error: hay que acotar para <b>todos</b> los $c$ posibles.</li>
+    <li>Con $n=0$ el teorema dice $f(x)-f(x_0)=f'(c)(x-x_0)$: es el <b>teorema del valor medio</b> (U p.96). Taylor es su generalización a órdenes superiores. Stewart lo señala en su nota al margen de la p. 756, donde además cita la forma integral del resto.</li>
+  </ul>
+  <span class="src" data-l="L" data-ref="Larson §9.7, p. 642: para n=0 el teorema de Taylor es el teorema del valor medio; «no se debe esperar poder encontrar el valor exacto de z» (en Larson, c es el centro y z el punto intermedio)">L p.642</span>
+  <span class="src" data-l="S" data-ref="Stewart §11.10, nota al margen «Fórmulas para el residuo de Taylor», p. 756">S p.756</span>
+</div>
+
+<h3>Método para acotar el error (4 pasos) <span class="src" data-l="U" data-ref="U Ej. 3.10, p. 111 (fórmula (3.2) de la cota)">U p.111</span> <span class="src" data-l="S" data-ref="Stewart §11.10, Teorema 9 (Desigualdad de Taylor): si |f⁽ⁿ⁺¹⁾(x)| ≤ M para |x−a| ≤ d, entonces |Rₙ(x)| ≤ M|x−a|ⁿ⁺¹/(n+1)! para |x−a| ≤ d; p. 756">S p.756</span></h3>
+<div class="t31-steps4">
+  <div><b>1 · Calcula $p_n$ y $f^{(n+1}$</b>. Comprueba que $f^{(n+1}$ es continua en el intervalo relevante.</div>
+  <div><b>2 · Escribe el resto</b> $R_n(x)=\dfrac{f^{(n+1}(c)}{(n+1)!}(x-x_0)^{n+1}$ con $c$ entre $x_0$ y $x$.</div>
+  <div><b>3 · Acota $|f^{(n+1}(c)|\le M$</b> con una constante $M$ que valga para <b>todo</b> $c$ posible (busca el caso peor).</div>
+  <div><b>4 · Concluye</b> $|R_n(x)|\le\dfrac{M}{(n+1)!}|x-x_0|^{n+1}$ y despeja lo que pidan ($x$, $n$ o el error).</div>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo de U (3.10): $\operatorname{sen}\frac12$ con error menor que $0{,}001$</span>
+  <ol class="steps">
+    <li>Para $f=\operatorname{sen}$ en $x_0=0$, todas las derivadas son $\pm\operatorname{sen}$ o $\pm\cos$, así que $|f^{(n+1}(c)|\le1$: $M=1$ para <b>cualquier</b> $n$.</li>
+    <li>Entonces $|R_n(\tfrac12)|\le\dfrac{(1/2)^{n+1}}{(n+1)!}$. Para $n=3$ la cota es $\frac{(1/2)^4}{4!}\approx0{,}0026&gt;0{,}001$: no basta, por eso U sube a $n=4$, que da $\dfrac{(1/2)^5}{5!}\approx0{,}00026&lt;0{,}001$.</li>
+    <li>Como $p_4=p_3=x-\frac{x^3}{6}$, se obtiene $\operatorname{sen}\tfrac12\approx\tfrac12-\tfrac1{48}=0{,}47916\ldots$ con error $&lt;0{,}001$.</li>
+  </ol>
+  <p><i>Observación:</i> como $p_3=p_4$, el mismo polinomio admite <b>dos restos</b> ($R_3$ y $R_4$) y se puede usar el que dé mejor cota (ver ejemplo propio C0).</p>
+  <span class="src" data-l="U" data-ref="U Ej. 3.10, pp. 111-112 (U dice «Propiedad 3.2», es la Proposición 3.2)">U pp.111-112</span>
+  <span class="src" data-l="L" data-ref="Larson §9.7, Ej. 8 (sen 0,1 con P₃ y cota del error), p. 643; Ej. 9 (grado necesario para ln 1,2 con error < 0,001), p. 643">L p.643</span>
+</div>
+
+<h3>Ver el error <span class="src" data-l="S" data-ref="Stewart §11.11, Ej. 1 (raíz cúbica de x en 8), pp. 769-770; Ej. 2 (sen x con |x| ≤ 0,3 y sen 12°), pp. 770-771; aplicaciones en la física, pp. 772-774">S pp.769-774</span></h3>
+<figure class="bookfig"><img src="../assets/img/fig_s_11_11_2_3.png" alt="Arriba: gráfica de la raíz cúbica de x en el intervalo de 0 a 15 y su polinomio T2 centrado en 8, casi pegadas. Abajo: gráfica del valor absoluto del resto R2 entre 7 y 9, cuyo máximo es de unos 0,0003 en los extremos y casi cero en 8" loading="lazy">
+<figcaption>Stewart aproxima $\sqrt[3]{x}$ por $T_2$ centrado en $8$. Arriba, las dos curvas; abajo, el error $|R_2(x)|$ en $[7,9]$: es casi $0$ junto al centro y crece hacia los extremos (menos de $0{,}0003$). Con la desigualdad de Taylor él obtiene la cota, algo más grande, $0{,}0004$. <span class="src" data-l="S" data-ref="Stewart §11.11, Ej. 1 y Figuras 2 y 3, pp. 769-770 (recorte del libro)">S p.770</span></figcaption></figure>
+<p>La moraleja: la cota de Taylor es una <b>garantía</b>, no el error exacto. Puede ser algo pesimista (en E 3.12 y 3.14 se ve). Otros ejemplos de Stewart: $\operatorname{sen}12^\circ$ con $|x|\le0{,}3$ (Ej. 2, pp. 770-771) y aplicaciones a la física (p. 772).</p>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Puente: la forma de Peano y la notación $o$ <span class="src" data-l="P" data-ref="Material propio, NO está en U (el cronograma lo sitúa en el Aula Virtual). Justificado con la Prop. 3.2 de U">P externo a U</span></h2>
+
+<div class="t31-ext">
+<span class="t31-tag">Material externo a U · no es del libro oficial</span>
+<p>El cronograma indica que la <b>notación de Landau</b> se explica en el curso virtual, no en U. Lo que sigue es un puente <b>propio</b>, sin más herramientas que la Prop. 3.2 de U. Compara con las notas del Aula Virtual cuando las tengas.</p>
+
+<div class="box def"><span class="h">Notación $o$-pequeña (Landau)</span>
+  <p>Decimos que $g(x)=o\big((x-x_0)^n\big)$ cuando $x\to x_0$ si $\displaystyle\lim_{x\to x_0}\frac{g(x)}{(x-x_0)^n}=0$. En palabras: $g$ es <b>mucho más pequeña</b> que $(x-x_0)^n$ cerca de $x_0$. Ejemplo: $x^3=o(x^2)$ cuando $x\to0$, porque $\frac{x^3}{x^2}=x\to0$.</p>
+  <span class="src" data-l="P" data-ref="Definición estándar de la notación de Landau; no está en U">P</span>
+</div>
+
+<div class="box thm"><span class="h">Forma de Peano del resto</span>
+  <p>Si $f^{(n+1}$ es continua en un intervalo abierto que contiene a $x_0$, entonces
+  $$f(x)=p_n(x)+o\big((x-x_0)^n\big)\quad(x\to x_0),\qquad\text{es decir,}\qquad \lim_{x\to x_0}\frac{R_n(x)}{(x-x_0)^n}=0.$$</p>
+  <p><b>Prueba (con U).</b> Tomamos $\delta&gt;0$ con $[x_0-\delta,x_0+\delta]$ dentro del intervalo; como $f^{(n+1}$ es continua en ese intervalo cerrado, está acotada (Teorema de Weierstrass, U Prop. 1.15, pp. 52-53): $|f^{(n+1}|\le M$. Por la Prop. 3.2, para $0&lt;|x-x_0|\le\delta$: $\left|\dfrac{R_n(x)}{(x-x_0)^n}\right|\le\dfrac{M}{(n+1)!}|x-x_0|\to0$.</p>
+  <span class="src" data-l="P" data-ref="Puente propio; demostración a partir de U Prop. 3.2, p. 111. No está en U">P</span>
+</div>
+
+<div class="box thm"><span class="h">Unicidad, suma y producto (lo que se usa en E 3.13 y en U Ej. 3.9)</span>
+  <ul>
+    <li><b>Unicidad.</b> Si $q$ es un polinomio de grado $\le n$ y $f(x)-q(x)=o((x-x_0)^n)$, entonces $q=p_n$. (La diferencia $d=p_n-q$ es un polinomio de grado $\le n$ con $d=o((x-x_0)^n)$. Si no fuera $0$, su primer coeficiente no nulo $c_k$ ($k\le n$) daría $d/(x-x_0)^k\to c_k\ne0$, pero también $d/(x-x_0)^k=o((x-x_0)^{n-k})\to0$; contradicción.) (Hipótesis sobre $f$: $f^{(n+1}$ continua cerca de $x_0$, para que valga la forma de Peano.) Consecuencia: cualquier procedimiento que dé <i>un polinomio de grado $\le n$ con resto $o((x-x_0)^n)$</i> da el polinomio de Taylor. <b>Sustitución:</b> si $g(u)=p_n(u)+o(u^n)$ y se pone $u=x^2$, entonces $g(x^2)=p_n(x^2)+o(x^{2n})$; como $p_n(x^2)$ es un polinomio de grado $\le2n$, por la unicidad es el de orden $2n$ de $g(x^2)$ (si esta función cumple la hipótesis anterior, p. ej. $e^{x^2}$). Es lo que hace U en el Ej. 3.9.</li>
+    <li><b>Suma.</b> $p_n^{f+g}=p_n^f+p_n^g$ (basta derivar: $(f+g)^{(k}=f^{(k}+g^{(k}$).</li>
+    <li><b>Producto.</b> $p_n^{fg}$ es el producto $p_n^f\,p_n^g$ <b>truncado</b> en grado $n$: los términos de grado mayor que $n$ y los productos con los restos son $o((x-x_0)^n)$, y se aplica la unicidad.</li>
+  </ul>
+  <span class="src" data-l="P" data-ref="Puente propio con las hipótesis de derivabilidad de la Prop. 3.2; E enuncia estas propiedades en el Ej. 3.13 sin demostrarlas; U no las demuestra">P</span>
+  <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.13, pp. 98-99">E p.98</span>
+</div>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="ejercicios"><span class="n">5</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.1-3.14, pp. 88-100">E pp.88-100</span></h2>
+<p>Se mantiene la numeración de E, pero se agrupan en bloques según lo que enseñan: A (derivadas sucesivas), B (polinomio de Taylor), C (resto y cotas). Pulsa «Mostrar soluciones» arriba para abrirlos todos.</p>
+
+<h3>Acceso rápido por número</h3>
+<table>
+<tr><th>Ejercicio</th><th>De qué va</th><th>Bloque</th></tr>
+<tr><td><a href="#ej-3-1">E 3.1</a></td><td>derivada tercera de $\operatorname{sen}(x^2+\frac\pi5)$</td><td>A</td></tr>
+<tr><td><a href="#ej-3-2">E 3.2</a></td><td>$f^{(4}$ de un polinomio de grado 2</td><td>A</td></tr>
+<tr><td><a href="#ej-3-3">E 3.3</a></td><td>$f(x)=\sqrt{|x|}$</td><td>A</td></tr>
+<tr><td><a href="#ej-3-4">E 3.4</a></td><td>$f(x)=\frac{x^2-1}{x}$, $f(0)=0$</td><td>A</td></tr>
+<tr><td><a href="#ej-3-5">E 3.5</a></td><td>posición, velocidad y aceleración desde la gráfica de $f'$</td><td>A</td></tr>
+<tr><td><a href="#ej-3-6">E 3.6</a></td><td>$f(x)=\frac{e^x-1}{x}$, $f(0)=1$</td><td>A</td></tr>
+<tr><td><a href="#ej-3-7">E 3.7</a></td><td>¿el polinomio de Taylor de orden $n$ tiene grado $n$?</td><td>B</td></tr>
+<tr><td><a href="#ej-3-8">E 3.8</a></td><td>¿puede ser el polinomio de Taylor de $f$?</td><td>B</td></tr>
+<tr><td><a href="#ej-3-9">E 3.9</a></td><td>Mac Laurin de orden 3 de $\ln(x^2+1)$</td><td>B</td></tr>
+<tr><td><a href="#ej-3-10">E 3.10</a></td><td>recentrar $x^3-x^2+x-2$ en $x_0=1$</td><td>B</td></tr>
+<tr><td><a href="#ej-3-11">E 3.11</a></td><td>Taylor de un polinomio</td><td>B</td></tr>
+<tr><td><a href="#ej-3-12">E 3.12</a></td><td>$p_3$ y cota del error de $\ln(\cos x)$ en $(-1,1)$</td><td>C</td></tr>
+<tr><td><a href="#ej-3-13">E 3.13</a></td><td>Taylor de una suma y de un producto</td><td>B</td></tr>
+<tr><td><a href="#ej-3-14">E 3.14</a></td><td>¿para qué $x\ge0$ vale $\ln(1+x)\approx x-\frac{x^2}2+\frac{x^3}3$?</td><td>C</td></tr>
+</table>
+<h3>Bloque A · Derivadas sucesivas</h3>
+
+<details class="sol" id="ej-3-2"><summary>Ejercicio 3.2 · $f^{(4}$ de un polinomio de grado 2 <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.2, p. 88">E p.88</span></summary>
+  <p class="enun">Sea $f(x)=3x^2-x+1$. Entonces: a) $f^{(4}(x)=(f(x))^4$; b) $f^{(4}(x)=0$; c) $f^{(4}(x)$ no existe; d) ninguna.</p>
+  <ol class="steps">
+    <li><b>Leer la notación.</b> $f^{(4}$ es derivar cuatro veces, no la potencia cuarta. Descarta a).</li>
+    <li><b>¿Existe?</b> Un polinomio es derivable en todo $\mathbb R$ y su derivada es otro polinomio, así que existen todas las derivadas. Descarta c).</li>
+    <li><b>Calcular:</b> $f'=6x-1$, $f''=6$, $f'''=0$, $f^{(4}=0$.</li>
+    <li>Respuesta: <b>b)</b>.</li>
+  </ol>
+  <p>En general, si $p$ tiene grado $n$ y coeficiente principal $a_n$, entonces $p^{(n}\equiv n!\,a_n$ y $p^{(k}\equiv0$ para $k&gt;n$ (aquí $f''=2!\cdot3=6$).</p>
+  <div class="recipe"><b>Receta:</b> cada derivada baja un grado al polinomio; la derivada de orden igual al grado es $n!\,a_n$ y las siguientes son $0$. «Es $0$» no es «no existe».</div>
+<p><b>Teoría:</b> U p.105.</p>
+</details>
+
+<details class="sol" id="ej-3-1"><summary>Ejercicio 3.1 · derivada tercera de $\operatorname{sen}(x^2+\frac\pi5)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.1, p. 88">E p.88</span></summary>
+  <p class="enun">Calcula la derivada tercera de $f(x)=\operatorname{sen}\!\left(x^2+\frac{\pi}{5}\right)$.</p>
+  <p>Llamamos $u=x^2+\frac\pi5$, con $u'=2x$.</p>
+  <ol class="steps">
+    <li><b>Primera</b> (cadena): $f'(x)=2x\cos u$.</li>
+    <li><b>Segunda.</b> $f'$ es un producto, así que derivamos con la regla del producto y, dentro, con la cadena ($(\cos u)'=-2x\operatorname{sen}u$): $f''(x)=2\cos u-4x^2\operatorname{sen}u$.</li>
+    <li><b>Tercera.</b> Cada sumando por separado: $(2\cos u)'=-4x\operatorname{sen}u$ y $(-4x^2\operatorname{sen}u)'=-8x\operatorname{sen}u-8x^3\cos u$.</li>
+    <li><b>Agrupar:</b> $\boxed{f'''(x)=-12x\operatorname{sen}\!\left(x^2+\tfrac\pi5\right)-8x^3\cos\!\left(x^2+\tfrac\pi5\right)}$. Coincide con E.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> derivar por etapas, escribiendo cada derivada completa y agrupada; llamar $u$ a lo de dentro para no olvidar el factor $u'$.</div>
+  <p><b>Error típico:</b> olvidar $u'=2x$ de la cadena en la 2.ª y 3.ª derivada, o derivar $2x\cos u$ como si $2x$ fuera constante.</p>
+<p><b>Teoría:</b> U pp.79, 105.</p>
+</details>
+
+<details class="sol" id="ej-3-3"><summary>Ejercicio 3.3 · $f(x)=\sqrt{|x|}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.3, pp. 89-90">E pp.89-90</span></summary>
+  <p class="enun">Señale la opción correcta para $f(x)=\sqrt{|x|}$: a) $f'$ es positiva en $(-\infty,0)$; b) $f'$ es positiva en $\mathbb R$; c) $f$ es derivable en $\mathbb R$; d) $f''$ es negativa en $(-\infty,0)\cup(0,+\infty)$.</p>
+  <ol class="steps">
+    <li><b>Quitar el valor absoluto:</b> $f(x)=\sqrt x$ si $x\ge0$ y $f(x)=\sqrt{-x}$ si $x&lt;0$.</li>
+    <li><b>Derivada fuera de $0$</b> (cadena): $f'(x)=\dfrac1{2\sqrt x}$ si $x&gt;0$ y $f'(x)=\dfrac{-1}{2\sqrt{-x}}$ si $x&lt;0$. Luego $f'&lt;0$ en $(-\infty,0)$: a) y b) son falsas.</li>
+    <li><b>En $0$</b> (cambia la fórmula, se usan laterales): $f'(0^+)=\lim_{h\to0^+}\frac{\sqrt h}{h}=\lim\frac1{\sqrt h}=+\infty$ y $f'(0^-)=\lim_{h\to0^-}\frac{\sqrt{-h}}{h}=\lim\frac{-1}{\sqrt{-h}}=-\infty$ (si $h&lt;0$, $h=-\sqrt{-h}\sqrt{-h}$). No son finitos: <b>no es derivable en $0$</b> (tangente vertical). c) es falsa.</li>
+    <li><b>Segunda derivada fuera de $0$.</b> Para $x&gt;0$: $f''=-\frac14x^{-3/2}&lt;0$. Para $x&lt;0$: $f''=-\frac14(-x)^{-3/2}&lt;0$.</li>
+    <li>Respuesta: <b>d)</b>.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> valor absoluto o trozos → (i) reescribir por trozos, (ii) derivar con reglas dentro de cada trozo, (iii) en los puntos de unión usar derivadas laterales; hay derivada solo si son <b>finitas e iguales</b>.</div>
+  <p><b>Error típico:</b> creer que $f'(0)$ existe porque $f$ es continua en $0$ (la continuidad es necesaria, no suficiente), u olvidar el signo $-1$ de la cadena en $\sqrt{-x}$.</p>
+<p><b>Teoría:</b> U pp.75-81.</p>
+</details>
+
+<details class="sol" id="ej-3-4"><summary>Ejercicio 3.4 · $f(x)=\frac{x^2-1}{x}$, $f(0)=0$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.4, pp. 90-91">E pp.90-91</span></summary>
+  <p class="enun">Para $f(x)=\dfrac{x^2-1}{x}$ si $x\ne0$ y $f(0)=0$, calcula $f'$ y $f''$ en todos los puntos donde sea posible.</p>
+  <ol class="steps">
+    <li><b>$x\ne0$.</b> Simplificamos: $f(x)=x-\frac1x$, luego $f'(x)=1+\frac1{x^2}=\frac{x^2+1}{x^2}$ y $f''(x)=-\frac2{x^3}$.</li>
+    <li><b>En $x=0$, primero la continuidad</b> (si no es continua, no es derivable): $\lim_{x\to0^+}(x-\frac1x)=-\infty$ y $\lim_{x\to0^-}(x-\frac1x)=+\infty$. No hay límite, así que $f$ no es continua en $0$ y <b>no existe $f'(0)$</b>.</li>
+    <li><b>$f''(0)$ tampoco</b>: derivar $f'$ en $0$ exige que $f'(0)$ exista.</li>
+    <li>Comprobación con la definición: $\frac{f(h)-f(0)}{h}=1-\frac1{h^2}\to-\infty$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> antes de la definición en un punto conflictivo, mira si $f$ es continua ahí. Si no lo es, se acabó: no hay derivada, ni de orden 1 ni superior.</div>
+  <p><b>Error típico:</b> derivar la fórmula y «evaluarla en $0$», o creer que $f'(0)$ existe porque $f(0)=0$ está definido.</p>
+<p><b>Teoría:</b> U pp.76, 79.</p>
+</details>
+
+<details class="sol" id="ej-3-6"><summary>Ejercicio 3.6 · $f(x)=\frac{e^x-1}{x}$, $f(0)=1$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.6, pp. 92-93">E pp.92-93</span></summary>
+  <p class="enun">Para $f(x)=\dfrac{e^x-1}{x}$ si $x\ne0$ y $f(0)=1$, calcula $f'$ y $f''$ donde sea posible.</p>
+  <ol class="steps">
+    <li><b>$f'$ para $x\ne0$</b> (cociente): $f'(x)=\dfrac{xe^x-e^x+1}{x^2}$.</li>
+    <li><b>$f'(0)$ por definición.</b> $f'(0)=\lim_{h\to0}\dfrac{\frac{e^h-1}{h}-1}{h}=\lim_{h\to0}\dfrac{e^h-1-h}{h^2}$, de tipo $\frac00$. Aplicamos L'Hôpital (numerador y denominador derivables y $2h\ne0$): $\lim\frac{e^h-1}{2h}\overset{\text{L'H}}{=}\lim\frac{e^h}{2}=\frac12$. Luego $f'(0)=\frac12$.</li>
+    <li><b>$f''$ para $x\ne0$.</b> Con $N=xe^x-e^x+1$, $N'=xe^x$: $f''(x)=\dfrac{x^2e^x-2xe^x+2e^x-2}{x^3}$ (tras dividir por $x\neq0$).</li>
+    <li><b>$f''(0)$ por definición, aplicada a $f'$</b> (con $f'(0)=\frac12$): $f''(0)=\lim_{h\to0}\dfrac{f'(h)-\frac12}{h}=\lim_{h\to0}\dfrac{2he^h-2e^h+2-h^2}{2h^3}$ ($\frac00$). L'Hôpital: la derivada del numerador es $2he^h-2h$ y la del denominador $6h^2$, así que queda $\lim\frac{2h(e^h-1)}{6h^2}=\lim\frac{e^h-1}{3h}\overset{\text{L'H}}{=}\frac13$. (Simplificar $h$ no es L'Hôpital.)</li>
+    <li><b>Resultado:</b> $f'(0)=\frac12$, $f''(0)=\frac13$; $f$ es dos veces derivable en $\mathbb R$.</li>
+  </ol>
+  <p><b>Comprobación con Taylor:</b> $\frac{e^x-1}{x}=1+\frac x2+\frac{x^2}{6}+\dots$ sugiere $f'(0)=\frac12$ y $\frac{f''(0)}{2!}=\frac16$, es decir, $f''(0)=\frac13$. Coincide.</p>
+  <div class="recipe"><b>Receta:</b> función definida aparte en $a$: $f'(a)$ con el cociente incremental y L'Hôpital para el $\frac00$; para $f''(a)$ se repite <b>con $f'$</b> y el valor $f'(a)$ recién obtenido.</div>
+  <p><b>Error típico:</b> calcular $f''(0)$ como $\lim_{x\to0}f''(x)$: aquí da lo mismo, pero no es la definición. Y aplicar L'Hôpital sin comprobar el $\frac00$.</p>
+<p><b>Teoría:</b> U pp.75, 82, 108.</p>
+</details>
+
+<details class="sol" id="ej-3-5"><summary>Ejercicio 3.5 · posición, velocidad y aceleración desde la gráfica de $f'$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.5, pp. 91-92">E pp.91-92</span></summary>
+  <p class="enun">La altura de un objeto en función del tiempo es $f$. La gráfica de $f'$ es la de la figura. ¿Qué puedes decir de la posición, la velocidad y la aceleración?</p>
+  <figure class="bookfig"><img src="../assets/img/fig_e_3_5.png" alt="Gráfica de f': segmento de (0,0) a (1,1) y desde t=1 una curva que sale horizontal y crece cada vez más deprisa hasta 7 aproximadamente en t=4,5" loading="lazy">
+  <figcaption>Gráfica de $f'$ (la velocidad). <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.5, figura de la p. 91 (recorte del libro)">E p.91</span></figcaption></figure>
+  <p>Si $f$ es la posición, $f'$ es la velocidad y $f''$ la aceleración.</p>
+  <ol class="steps">
+    <li><b>Velocidad ($f'$, se lee directamente).</b> Vale $0$ en $t=0$, es positiva para $t&gt;0$ y creciente.</li>
+    <li><b>Posición ($f$).</b> Como $f'&gt;0$ para $t&gt;0$, $f$ es estrictamente creciente: el objeto sube (U Prop. 2.4). Como $f'$ crece, $f$ es <b>convexa</b> (U Prop. 3.9, que se estudia en §3.5): sube cada vez más deprisa.</li>
+    <li><b>Aceleración ($f''$ = pendiente de la gráfica de $f'$).</b> En $(0,1)$ el segmento tiene pendiente $1$: $f''=1$. En $t=1$ las laterales son $f''(1^-)=1$ y $f''(1^+)=0$ (la curva sale horizontal): <b>no existe $f''(1)$</b>, como en U Ej. 3.3. Para $t&gt;1$ la pendiente crece desde $0$: aceleración positiva y creciente.</li>
+    <li>Interpretación (la da E): un cohete que cambia de propulsor en $t=1$.</li>
+  </ol>
+  <p><b>Precisión sobre E:</b> E dice «velocidad siempre positiva», pero $f'(0)=0$: es positiva para $t&gt;0$.</p>
+  <div class="recipe"><b>Receta:</b> el signo de $f'$ dice si $f$ sube o baja; la pendiente de $f'$ es $f''$; donde la gráfica de $f'$ tiene un pico no existe $f''$.</div>
+  <p><b>Error típico:</b> confundir la gráfica dada (de $f'$) con la de $f$ y decir «la altura crece linealmente hasta $t=1$»: lo que crece linealmente es la <b>velocidad</b>.</p>
+<p><b>Teoría:</b> U pp.98, 105, 136.</p>
+</details>
+
+<h3>Bloque B · El polinomio de Taylor</h3>
+
+<details class="sol" id="ej-3-7"><summary>Ejercicio 3.7 · ¿el polinomio de Taylor de orden $n$ tiene grado $n$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.7, p. 93">E p.93</span></summary>
+  <p class="enun">Razona si es cierto o falso que el polinomio de Taylor de orden $n$ centrado en $x_0$ de una función $f$ es un polinomio de grado $n$.</p>
+  <ol class="steps">
+    <li>Su término de mayor potencia es $\frac{f^{(n}(x_0)}{n!}(x-x_0)^n$.</li>
+    <li>Si $f^{(n}(x_0)\ne0$, el grado es $n$; si $f^{(n}(x_0)=0$, ese término desaparece y el grado es <b>menor</b>.</li>
+    <li><b>Contraejemplo:</b> $f=\cos x$, $x_0=0$, $n=1$: $f(0)=1$, $f'(0)=0$, luego $p_1(x)=1$, de grado $0$. (También $p_2=p_1=x$ para $\operatorname{sen}x$, U Ej. 3.7.)</li>
+    <li><b>FALSO.</b> Lo correcto: grado $\le n$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> «orden $n$» = se usan derivadas hasta la $n$; el grado es el de la última derivada <b>no nula</b> en $x_0$.</div>
+<p><b>Teoría:</b> U pp.108-109.</p>
+</details>
+
+<details class="sol" id="ej-3-11"><summary>Ejercicio 3.11 · Taylor de un polinomio <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.11, pp. 96-97">E pp.96-97</span></summary>
+  <p class="enun">Razona si es cierto o falso que el polinomio de Taylor centrado en $x_0$ de un polinomio $P(x)$ coincide con $P(x)$.</p>
+  <ol class="steps">
+    <li><b>Tal cual (sin decir el orden), es FALSO.</b> Contraejemplo: $P=x^2$, $x_0=0$, orden $1$: $p_1=0\ne x^2$.</li>
+    <li><b>Cuándo es cierto: orden $n\ge$ grado $m$ de $P$.</b> Por la Prop. 3.1, $P=\sum_{i=0}^m\frac{P^{(i}(x_0)}{i!}(x-x_0)^i=p_m$; y para $i&gt;m$, $P^{(i}\equiv0$, así que $p_n=p_m=P$. Con el Teorema de Taylor: $R_n=\frac{P^{(n+1}(c)}{(n+1)!}(x-x_0)^{n+1}=0$ porque $P^{(n+1}\equiv0$.</li>
+    <li><b>Si $n&lt;m$,</b> $p_n$ es $P$ centrado en $x_0$ <b>truncado</b> a las potencias $\le n$ (recuadro de U p.112).</li>
+  </ol>
+  <p><b>Aviso sobre E:</b> E dice «cierto si tienen el mismo grado» y que se anula «$R_{n+1}$». Lo preciso: cierto si <b>$n\ge\operatorname{grado}P$</b>, y lo que se anula es <b>$R_n$</b>. Además $p_n$ puede tener grado menor que $n$ (Ej. 3.7).</p>
+  <div class="recipe"><b>Receta:</b> Taylor de un polinomio de grado $m$: se centra en $x_0$ y se trunca en la potencia $n$; si $n\ge m$ se recupera el propio polinomio.</div>
+<p><b>Teoría:</b> U pp.108, 111-112.</p>
+</details>
+
+<details class="sol" id="ej-3-10"><summary>Ejercicio 3.10 · recentrar $x^3-x^2+x-2$ en $x_0=1$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.10, p. 96">E p.96</span></summary>
+  <p class="enun">Escribe $P(x)=x^3-x^2+x-2$ en potencias enteras no negativas de $(x-1)$ utilizando el polinomio de Taylor.</p>
+  <ol class="steps">
+    <li>$P$ tiene grado $3$, así que $P=p_3$ centrado en $1$ (Ej. 3.11).</li>
+    <li><b>Derivadas en $1$:</b> $P(1)=-1$; $P'=3x^2-2x+1\Rightarrow P'(1)=2$; $P''=6x-2\Rightarrow P''(1)=4$; $P'''=6$.</li>
+    <li><b>Coeficientes</b> $\frac{P^{(k}(1)}{k!}$: $-1,\ 2,\ \frac42=2,\ \frac66=1$. Por tanto $\boxed{P(x)=-1+2(x-1)+2(x-1)^2+(x-1)^3}$.</li>
+    <li><b>Comprobación</b> por el otro método (U Ej. 3.4): con $t=x-1$, $(t+1)^3-(t+1)^2+(t+1)-2=t^3+2t^2+2t-1$. Coincide.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> dos caminos para recentrar: (a) coeficientes $\frac{P^{(k}(x_0)}{k!}$; (b) sustituir $x=(x-x_0)+x_0$ y desarrollar. Usa uno y comprueba con el otro.</div>
+  <p><b>Error típico:</b> olvidar dividir entre $k!$ (poner $4(x-1)^2$ en vez de $2(x-1)^2$).</p>
+<p><b>Teoría:</b> U pp.107-108.</p>
+</details>
+
+<details class="sol" id="ej-3-9"><summary>Ejercicio 3.9 · Mac Laurin de orden 3 de $\ln(x^2+1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.9, p. 95">E p.95</span></summary>
+  <p class="enun">Calcula el polinomio de Taylor de orden 3 centrado en $0$ de $f(x)=\ln(x^2+1)$.</p>
+  <ol class="steps">
+    <li><b>Derivadas</b> (simplificando cada una): $f'=\dfrac{2x}{x^2+1}$; $f''=\dfrac{2-2x^2}{(x^2+1)^2}$; $f'''=\dfrac{4x(x^2-3)}{(x^2+1)^3}$ (tras simplificar un factor $x^2+1$).</li>
+    <li><b>En $0$:</b> $f(0)=0$, $f'(0)=0$, $f''(0)=2$, $f'''(0)=0$.</li>
+    <li><b>Polinomio:</b> $p_3(x)=\frac{2}{2!}x^2=\boxed{x^2}$: grado $2$ con orden $3$ (Ej. 3.7).</li>
+    <li><b>Comprobación sin derivar</b> (sustitución, U Ej. 3.9): $\ln(1+u)=u-\frac{u^2}2+o(u^2)$; con $u=x^2$ queda $x^2-\frac{x^4}{2}+o(x^4)$, que es el desarrollo de orden $4$ (por la unicidad del apartado 4; ojo, orden $2n$ y no $n$). La parte de grado $\le3$ es $x^2$.</li>
+  </ol>
+  <p><b>Por qué salen ceros:</b> $f$ es par, sus derivadas de orden impar son impares y valen $0$ en $0$; solo hay potencias pares.</p>
+  <div class="recipe"><b>Receta:</b> tabla «$f^{(k}(x)$ | $f^{(k}(x_0)$», simplificando antes de derivar; después los coeficientes $\frac{f^{(k}(x_0)}{k!}$.</div>
+<p><b>Teoría:</b> U pp.108, 110.</p>
+</details>
+
+<details class="sol" id="ej-3-8"><summary>Ejercicio 3.8 · ¿puede ser el polinomio de Taylor de $f$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.8, pp. 94-95">E pp.94-95</span></summary>
+  <p class="enun">De $f$, dos veces derivable, se sabe $f'(0)=2$ y $f''(-3)=6$. ¿Puede ser alguno de estos el polinomio de Taylor de orden 2 de $f$ centrado en $0$? ¿Y centrado en $-3$? a) $1-x+\frac{x^2}{2}$; b) $\pi^2+(x-3)^2$; c) $2x+3(x+3)^2$.</p>
+  <p><b>Idea.</b> Centrado en $0$, el coeficiente de $x$ debe ser $f'(0)=2$. Centrado en $-3$, el coeficiente de $(x+3)^2$ debe ser $\frac{f''(-3)}{2}=3$. De los demás coeficientes no sabemos nada: «puede ser» = «no contradice los datos». <b>Lema útil:</b> al recentrar un polinomio de grado 2, el coeficiente del término cuadrático no cambia.</p>
+  <ol class="steps">
+    <li><b>a)</b> Centrado en $0$: el coeficiente de $x$ es $-1\ne2$, no. Centrado en $-3$: el cuadrático es $\frac12\ne3$, no.</li>
+    <li><b>b)</b> Centrado en $0$: $\pi^2+(x-3)^2=(\pi^2+9)-6x+x^2$, coeficiente de $x$ es $-6\ne2$, no. Centrado en $-3$: cuadrático $=1\ne3$, no.</li>
+    <li><b>c)</b> Centrado en $-3$: $2x=2(x+3)-6$, luego $2x+3(x+3)^2=-6+2(x+3)+3(x+3)^2$; cuadrático $3$: <b>sí puede</b> (con $f(-3)=-6$, $f'(-3)=2$). Centrado en $0$: $27+20x+3x^2$, coeficiente de $x$ es $20\ne2$: no.</li>
+    <li><b>Resumen:</b> solo c), y solo centrado en $-3$.</li>
+  </ol>
+  <p>Moraleja (la de E): el polinomio de Taylor es <b>local</b>; centrado en puntos distintos da polinomios distintos.</p>
+  <div class="recipe"><b>Receta:</b> escribe el polinomio en potencias de $(x-a)$ y compara cada coeficiente con $\frac{f^{(k}(a)}{k!}$ <b>solo donde conozcas $f^{(k}(a)$</b>.</div>
+  <p><b>Error típico:</b> comparar sin recentrar (en c, decir «el coeficiente de $x$ es 2» y concluir que vale en $0$, cuando $3(x+3)^2$ también aporta términos en $x$).</p>
+<p><b>Teoría:</b> U pp.107-108.</p>
+</details>
+
+<details class="sol" id="ej-3-13"><summary>Ejercicio 3.13 · Taylor de una suma y de un producto <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.13, pp. 98-99 (con errata en p. 99)">E pp.98-99</span></summary>
+  <p class="enun">Sabiendo que el polinomio de Taylor de orden 3 centrado en $-1$ de $g(x)=e^x$ es $p(x)=e^{-1}\big(1+(x+1)+\frac{(x+1)^2}{2!}+\frac{(x+1)^3}{3!}\big)$, obtén el de orden 3 centrado en $-1$ de $f(x)=x+e^x$ y de $h(x)=(x+1)e^x$.</p>
+  <p>Usamos dos propiedades (E las presenta como consecuencia de las propiedades de la derivada; la suma sale así, pero el producto necesita la regla de Leibniz para $(fg)^{(k}$, que U no trae. El apartado 4, material externo a U, es solo una vía posible de justificarlas): <b>(S)</b> el polinomio de una suma es la suma de polinomios; <b>(P)</b> el de un producto es el producto <b>truncado</b> en grado $n$.</p>
+  <ol class="steps">
+    <li><b>$f=x+e^x$.</b> El de $x$ es $x=-1+(x+1)$. Por (S): $\boxed{p_3^f(x)=(e^{-1}-1)+(1+e^{-1})(x+1)+\tfrac{e^{-1}}2(x+1)^2+\tfrac{e^{-1}}6(x+1)^3}$.</li>
+    <li><b>$h=(x+1)e^x$.</b> Multiplicamos $(x+1)\,p(x)=e^{-1}\big((x+1)+(x+1)^2+\frac{(x+1)^3}{2}+\frac{(x+1)^4}{6}\big)$ y quitamos el grado $4$: $\boxed{p_3^h(x)=e^{-1}\big((x+1)+(x+1)^2+\tfrac{(x+1)^3}{2}\big)}$.</li>
+    <li><b>Comprobación derivando</b> (solo con U). Para $f$: $f'=1+e^x$, $f''=f'''=e^x$; en $-1$: $-1+e^{-1},\ 1+e^{-1},\ e^{-1},\ e^{-1}$; dividiendo entre $k!$ se recuperan los coeficientes. Para $h$: $h^{(k}(x)=(x+1+k)e^x$ (ejemplo A1); en $-1$: $0,\ e^{-1},\ 2e^{-1},\ 3e^{-1}$; coeficientes $0,\ e^{-1},\ e^{-1},\ \frac{e^{-1}}2$. ✓</li>
+  </ol>
+  <p><b>Errata de E (p. 99).</b> En la última línea del cálculo de $f$, E escribe el paréntesis $e^{-1}\big((x+1)^2+\frac{(x+1)^3}{2!}+\frac{(x+1)^4}{3!}\big)$, que es el de $h$ copiado por error (aparece un término de grado 4). Lo correcto es $e^{-1}\big(\frac{(x+1)^2}{2}+\frac{(x+1)^3}{6}\big)$. Además, en $h$ E escribe «$h(x)p(x)$» donde debería decir «$j(x)p(x)$».</p>
+  <div class="recipe"><b>Receta:</b> con funciones construidas a partir de otras cuyo Taylor ya conocemos: sumar, multiplicar y <b>truncar</b>, o sustituir. Comprueba al menos un coeficiente derivando.</div>
+  <p><b>Error típico:</b> no truncar (dejar $(x+1)^4$), o truncar antes de multiplicar y perder términos.</p>
+<p><b>Teoría:</b> U pp.79, 108, 110.</p>
+</details>
+
+<h3>Bloque C · Resto de Lagrange y cotas de error</h3>
+
+<details class="sol" id="ej-3-14"><summary>Ejercicio 3.14 · ¿para qué $x\ge0$ vale $\ln(1+x)\approx x-\frac{x^2}2+\frac{x^3}3$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.14, pp. 99-100">E pp.99-100</span></summary>
+  <p class="enun">Encuentra valores de $x\ge0$ para los que se pueda asegurar que $\ln(1+x)\approx x-\frac{x^2}{2}+\frac{x^3}{3}$ con error en valor absoluto menor de $0{,}0001$.</p>
+  <ol class="steps">
+    <li><b>¿Es un polinomio de Taylor?</b> Para $f=\ln(1+x)$: $f^{(k}(x)=\frac{(-1)^{k-1}(k-1)!}{(1+x)^k}$ (ejemplo A2). En $0$: $f(0)=0$, $f'(0)=1$, $f''(0)=-1$, $f'''(0)=2$, luego $p_3(x)=x-\frac{x^2}2+\frac{x^3}3$. El error es $R_3$.</li>
+    <li><b>Resto de Lagrange</b> ($n=3$, $x_0=0$). Se cumplen las hipótesis: $f^{(4}(x)=-\frac6{(1+x)^4}$ es continua en $(-1,\infty)$. Entonces $R_3(x)=\dfrac{f^{(4}(c)}{4!}x^4=-\dfrac{x^4}{4(1+c)^4}$, con $c\in(0,x)$.</li>
+    <li><b>Caso peor en $c$.</b> Como $c&gt;0$, $(1+c)^4&gt;1$ y $\frac1{(1+c)^4}&lt;1$; así $|R_3(x)|&lt;\frac{x^4}4$. (Por eso el enunciado pide $x\ge0$: si $x&lt;0$, entonces $c\in(x,0)$, luego $1+c&lt;1$ y $\frac1{(1+c)^4}&gt;1$; habría que acotarlo por $\frac1{(1+x)^4}$, que crece sin límite cuando $x\to-1$.)</li>
+    <li><b>Despejar.</b> $\frac{x^4}4\le10^{-4}\iff x\le(4\cdot10^{-4})^{1/4}=\frac{\sqrt2}{10}$.</li>
+    <li><b>Conclusión:</b> para $x\in\big[0,\frac{\sqrt2}{10}\big]\approx[0;0{,}1414]$ el error es menor que $10^{-4}$. (En $x=\sqrt2/10$ el error real es $\approx8{,}99\cdot10^{-5}$.)</li>
+  </ol>
+  <p><b>Qué significa (lo subraya E):</b> es un intervalo donde podemos <b>garantizarlo</b> con esta cota, no «el» intervalo exacto: numéricamente el error sigue siendo $&lt;10^{-4}$ hasta $x\approx0{,}1453$. La cota es conservadora porque cambiamos $\frac1{(1+c)^4}$ por $1$.</p>
+  <div class="recipe"><b>Receta:</b> «¿para qué $x$ vale la aproximación con error $&lt;\varepsilon$?»: (1) comprueba que es $p_n$; (2) escribe $R_n$; (3) acota $|f^{(n+1}(c)|$ por una constante <b>independiente de $c$</b>; (4) resuelve $\frac{M}{(n+1)!}|x-x_0|^{n+1}&lt;\varepsilon$.</div>
+  <p><b>Error típico:</b> tomar $c=0$ o $c=x$ «porque sí», o dejar la cota dependiendo de $c$.</p>
+<p><b>Teoría:</b> U pp.111-112.</p>
+</details>
+
+<details class="sol" id="ej-3-12"><summary>Ejercicio 3.12 · $p_3$ y cota del error de $\ln(\cos x)$ en $(-1,1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.12, pp. 97-98 (con errata en la cota, p. 98)">E pp.97-98</span></summary>
+  <p class="enun">Sea $f(x)=\ln(\cos x)$. Determina el polinomio de Maclaurin de orden 3 y una cota del error en valor absoluto al aproximar $f$ por $p_3$ en $(-1,1)$.</p>
+  <ol class="steps">
+    <li><b>Dominio.</b> En $(-1,1)$, $\cos x\ge\cos1&gt;0$ (pues $1&lt;\frac\pi2$): $f$ y sus derivadas están definidas y son continuas. Se cumplen las hipótesis de la Prop. 3.2.</li>
+    <li><b>Derivadas:</b> $f'=-\operatorname{tg}x$; $f''=-\frac1{\cos^2x}$; $f'''=-\frac{2\operatorname{sen}x}{\cos^3x}$; $f^{(4}=-2\,\dfrac{3-2\cos^2x}{\cos^4x}$ (usando $\operatorname{sen}^2=1-\cos^2$).</li>
+    <li><b>En $0$:</b> $f(0)=0$, $f'(0)=0$, $f''(0)=-1$, $f'''(0)=0$. Luego $\boxed{p_3(x)=-\tfrac12x^2}$.</li>
+    <li><b>Resto:</b> $|R_3(x)|=\dfrac{x^4}{12}\cdot\dfrac{3-2\cos^2c}{\cos^4c}$ con $c$ entre $0$ y $x$ (el numerador es $\ge1&gt;0$).</li>
+    <li><b>Caso peor en $c$.</b> Con $u=\cos^2c\in(\cos^21,1]$, la función $g(u)=\frac{3-2u}{u^2}$ es <b>decreciente</b> (al crecer $u$ el numerador positivo baja y el denominador sube). El caso peor es $\cos c$ lo más pequeño posible: $c$ cerca de $\pm1$.</li>
+    <li><b>Cota:</b> con $x^4&lt;1$, $|R_3(x)|&lt;\dfrac{3-2\cos^21}{12\cos^41}\approx2{,}363$ para todo $x\in(-1,1)$. Es válida pero muy pesimista: el supremo del error real en $(-1,1)$ es $|\ln\cos1+\frac12|\approx0{,}116$ (no se alcanza, pues el intervalo es abierto).</li>
+  </ol>
+  <p><b>Errata de E (p. 98).</b> E empieza bien: $|R_3|\le\frac{x^4}{12}\frac{3-2\cos^21}{\cos^41}$. Pero luego sustituye $\cos^2c$ por $\cos^20=1$ en el <b>numerador</b> y obtiene $\approx0{,}97785$. Eso toma el <b>mínimo</b> del numerador ($=1$), no el máximo, mientras usa el caso peor del denominador: no es una cota demostrada. (El valor de E sí queda por encima del error real, $0{,}116$, pero su razonamiento no lo demuestra.) Además, la nota al margen de E p. 97 dice «para $c&lt;|x-x_0|$»; lo correcto es «$c$ entre $x_0$ y $x$».</p>
+  <div class="recipe"><b>Receta:</b> al acotar un cociente $\frac{A(c)}{B(c)}$ con $A,B&gt;0$ hay que usar <b>a la vez</b> el máximo de $A$ y el mínimo de $B$ en el mismo intervalo de $c$; si dependen de la misma cantidad, estudia la función $g(u)$ completa.</div>
+<p><b>Teoría:</b> U pp.111-112.</p>
+</details>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="propios"><span class="n">6</span>Ejemplos propios, de fácil a difícil <span class="src" data-l="P" data-ref="Ejemplos propios, todos verificados con sympy">P propios</span></h2>
+<p>Cada ejemplo refuerza un bloque. Los de U p.139 (autoevaluación del Tema 3, n.º 1 y 2) son A3 y B0.</p>
+
+<details class="sol"><summary>A1 · $f^{(n}$ de $xe^x$ (fácil) <span class="src" data-l="P" data-ref="Ejemplo propio A1">P</span></summary>
+  <p class="enun">Halla una fórmula para $f^{(n}(x)$ si $f(x)=xe^x$.</p>
+  <p>$f'=(x+1)e^x$, $f''=(x+2)e^x$, $f'''=(x+3)e^x$: aparece el patrón $f^{(n}(x)=(x+n)e^x$. <b>Inducción:</b> si $f^{(n}=(x+n)e^x$, entonces $f^{(n+1}=e^x+(x+n)e^x=(x+n+1)e^x$. ✓</p>
+</details>
+
+<details class="sol"><summary>A2 · $f^{(n}$ de $\frac1{1+x}$ (medio) <span class="src" data-l="P" data-ref="Ejemplo propio A2">P</span></summary>
+  <p class="enun">Halla $f^{(n}(x)$ si $f(x)=\frac1{1+x}$.</p>
+  <p>$f=(1+x)^{-1}$; $f'=-(1+x)^{-2}$, $f''=2(1+x)^{-3}$, $f'''=-6(1+x)^{-4}$. Cada derivada multiplica por el exponente (negativo) y lo baja en $1$, así que el signo alterna: $f^{(n}(x)=\dfrac{(-1)^n\,n!}{(1+x)^{n+1}}$. Como $\ln(1+x)$ tiene derivada $\frac1{1+x}$, se usa en E 3.14.</p>
+</details>
+
+<details class="sol"><summary>A3 · ¿continua, derivada continua y sin derivada segunda? (autoevaluación n.º 1, U p.139) <span class="src" data-l="U" data-ref="U autoevaluación del Tema 3, ejercicio 1, p. 139 (U no da la solución)">U p.139</span></summary>
+  <p class="enun">¿Puede una función ser continua, con derivada continua, y no tener derivada segunda?</p>
+  <p><b>Sí.</b> Sea $g(x)=x|x|$ ($x^2$ si $x\ge0$, $-x^2$ si $x&lt;0$). Fuera de $0$, $g'(x)=2|x|$. En $0$: $\frac{g(h)-g(0)}{h}=|h|\to0$, luego $g'(0)=0=2|0|$. Así $g'(x)=2|x|$ es continua en $\mathbb R$. Pero $\frac{g'(h)-g'(0)}{h}=\frac{2|h|}{h}\to2$ por la derecha y $\to-2$ por la izquierda: <b>no existe $g''(0)$</b> (como en U Ej. 3.3).</p>
+</details>
+
+<details class="sol"><summary>B0 · ¿Taylor de orden 2 de $|x|$ en $0$? (autoevaluación n.º 2, U p.139) <span class="src" data-l="U" data-ref="U autoevaluación del Tema 3, ejercicio 2, p. 139; Def. 2.3, p. 81">U pp.81, 139</span></summary>
+  <p class="enun">¿Se puede calcular el polinomio de Taylor de orden 2 de $f(x)=|x|$ en el origen?</p>
+  <p><b>No.</b> La Def. 3.2 necesita $f'(0)$ y $f''(0)$, y $f'(0)$ no existe: $\frac{|h|}{h}$ vale $1$ por la derecha y $-1$ por la izquierda.</p>
+</details>
+
+<details class="sol"><summary>B1 · Mac Laurin de orden 4 de $\cos x$ (fácil) <span class="src" data-l="P" data-ref="Ejemplo propio B1">P</span></summary>
+  <p>Derivadas: $\cos x,-\operatorname{sen}x,-\cos x,\operatorname{sen}x,\cos x$; en $0$: $1,0,-1,0,1$. Queda $p_4(x)=1-\frac{x^2}{2}+\frac{x^4}{24}$. Como $f^{(5}(0)=0$, también $p_5=p_4$.</p>
+</details>
+
+<details class="sol"><summary>B2 · Taylor de orden 2 de $\sqrt x$ en $4$ (medio) <span class="src" data-l="P" data-ref="Ejemplo propio B2">P</span></summary>
+  <p>$f(4)=2$; $f'=\frac1{2\sqrt x}\Rightarrow f'(4)=\frac14$; $f''=-\frac1{4x^{3/2}}\Rightarrow f''(4)=-\frac1{32}$, coeficiente $-\frac1{64}$. Queda $p_2(x)=2+\frac{x-4}{4}-\frac{(x-4)^2}{64}$.</p>
+</details>
+
+<details class="sol"><summary>B3 · Mac Laurin de $e^x\operatorname{sen}x$ (orden 3) y de $e^{-x^2}$ (orden 4) (difícil) <span class="src" data-l="P" data-ref="Ejemplo propio B3; usa el apartado 4 (material externo a U) y U Ej. 3.9, p. 110">P</span></summary>
+  <p>(i) <b>Producto truncado:</b> $(1+x+\frac{x^2}2+\frac{x^3}6)(x-\frac{x^3}6)=x+x^2+(\frac12-\frac16)x^3+\dots$, luego $p_3=x+x^2+\frac{x^3}3$. <b>Comprobación derivando:</b> $f'(0)=1$, $f''=2e^x\cos x\Rightarrow f''(0)=2$ (coef. $1$), $f'''=2e^x(\cos x-\operatorname{sen}x)\Rightarrow f'''(0)=2$ (coef. $\frac13$). ✓</p>
+  <p>(ii) <b>Sustitución:</b> $e^u=1+u+\frac{u^2}2+o(u^2)$ con $u=-x^2$ (y $u^2=x^4$) da $e^{-x^2}=1-x^2+\frac{x^4}2+o(x^4)$, que por unicidad es el desarrollo de orden $4$.</p>
+</details>
+
+<details class="sol"><summary>C0 · el truco de U Ej. 3.10: usar el resto de un orden más <span class="src" data-l="U" data-ref="U Ej. 3.10, pp. 111-112 (análisis propio)">U pp.111-112</span></summary>
+  <p>U quiere $\operatorname{sen}\frac12$ y usa $n=4$ con $|R_4|\le\frac{(1/2)^5}{5!}\approx0{,}00026$. Pero $p_4=p_3=x-\frac{x^3}6$ porque $f^{(4}(0)=0$: <b>el mismo polinomio $p_3$ tiene dos restos válidos</b>, $R_3$ y $R_4$, y podemos usar el menor. $p_3(\frac12)=0{,}479166\ldots$ frente a $\operatorname{sen}\frac12=0{,}4794255\ldots$ (error real $2{,}6\cdot10^{-4}$).</p>
+  <div class="recipe"><b>Receta:</b> si $f^{(n+1}(x_0)=0$, entonces $p_n=p_{n+1}$ y conviene usar el resto $R_{n+1}$, que lleva una potencia más.</div>
+</details>
+
+<details class="sol"><summary>C1 · $e^{0{,}1}$ con $p_3$ y cota (fácil) <span class="src" data-l="P" data-ref="Ejemplo propio C1">P</span></summary>
+  <p>$p_3(0{,}1)=1+0{,}1+0{,}005+0{,}000166\ldots=1{,}1051667$. $R_3=\frac{e^c}{4!}(0{,}1)^4$ con $c\in(0;0{,}1)$; como $e^c&lt;e^{0{,}1}&lt;2$, $|R_3|&lt;\frac{2\cdot10^{-4}}{24}\approx8{,}3\cdot10^{-6}$. Valor real $e^{0{,}1}=1{,}1051709$; error $4{,}3\cdot10^{-6}$, dentro de la cota.</p>
+</details>
+
+<details class="sol"><summary>C2 · $\sqrt{4{,}1}$ con el $p_2$ de B2 y cota (medio) <span class="src" data-l="P" data-ref="Ejemplo propio C2">P</span></summary>
+  <p>$p_2(4{,}1)=2+\frac{0{,}1}4-\frac{0{,}01}{64}=2{,}02484375$. $f'''(x)=\frac{3}{8x^{5/2}}$; con $c\in(4;4{,}1)$, $c^{5/2}&gt;4^{5/2}=32$ y $f'''(c)&lt;\frac3{256}$ (caso peor: el extremo <b>izquierdo</b>, porque $f'''$ decrece). Entonces $|R_2|&lt;\frac{3/256}{3!}(0{,}1)^3\approx1{,}95\cdot10^{-6}$. Real: $\sqrt{4{,}1}=2{,}0248457$; error $1{,}92\cdot10^{-6}$, justo por debajo de la cota.</p>
+</details>
+
+<details class="sol"><summary>C3 · ¿qué orden hace falta para $\sqrt e$ con error $&lt;10^{-3}$? (medio-difícil) <span class="src" data-l="P" data-ref="Ejemplo propio C3">P</span></summary>
+  <p>$|R_n(\frac12)|=\frac{e^c}{(n+1)!}\big(\frac12\big)^{n+1}$, $c\in(0,\frac12)$, $e^c&lt;e^{1/2}&lt;2$. La cota $\frac{2}{(n+1)!\,2^{n+1}}$ vale $0{,}0052$ para $n=3$ (no basta) y $0{,}00052$ para $n=4$ (basta). Con $n=4$: $p_4(\frac12)=\frac{211}{128}=1{,}6484375$; real $\sqrt e=1{,}6487213$, error $2{,}8\cdot10^{-4}$. (Análogo a L Ej. 9, p. 643.)</p>
+<p><b>Teoría:</b> L p.643.</p>
+</details>
+
+<details class="sol"><summary>C4 · ¿para qué $x\ge0$ vale $\cos x\approx1-\frac{x^2}2$ con error $&lt;10^{-4}$? (difícil) <span class="src" data-l="P" data-ref="Ejemplo propio C4">P</span></summary>
+  <p>$p_2=p_3$ ($f'''(0)=\operatorname{sen}0=0$, truco C0). Con $R_2=\frac{\operatorname{sen}c}{3!}x^3$ y $|\operatorname{sen}c|\le1$: $\frac{x^3}6&lt;10^{-4}\Rightarrow x&lt;0{,}0843$. Con $R_3=\frac{\cos c}{4!}x^4$ y $|\cos c|\le1$: $\frac{x^4}{24}&lt;10^{-4}\Rightarrow x&lt;(24\cdot10^{-4})^{1/4}\approx0{,}2213$, <b>mucho mejor</b>. Respuesta: $0\le x&lt;0{,}2213$ (el error real alcanza $10^{-4}$ en $x\approx0{,}2214$: la cota es casi óptima).</p>
+</details>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="chuleta"><span class="n">7</span>Errores frecuentes, erratas y chuleta</h2>
+
+<h3>Errores frecuentes</h3>
+<ul>
+  <li>Confundir $f^{(n}$ con la potencia $f^n$; creer que «derivada $=0$» es «no existe».</li>
+  <li>Derivar una función a trozos «con la fórmula» en el punto de unión, sin usar la definición.</li>
+  <li>Olvidar el $k!$ en los coeficientes, o no recentrar antes de comparar coeficientes.</li>
+  <li>Decir que $p_n$ tiene grado $n$ (es $\le n$).</li>
+  <li>En el resto: dejar $c$ en la cota, tomar $c=0$ o $c=x$, o acotar numerador y denominador en sentidos contrarios (errata de E 3.12).</li>
+  <li>Creer que la cota de Taylor es el error exacto o el mayor intervalo posible; es solo una <b>garantía</b>.</li>
+</ul>
+
+<h3>Erratas de E detectadas en este tema</h3>
+<ol>
+  <li><b>E 3.12 (p. 98):</b> la cota $0{,}97785$ no está justificada (se usa el mínimo del numerador). La cota correcta por ese camino es $\approx2{,}363$. Nota al margen p. 97: «$c&lt;|x-x_0|$» debe decir «$c$ entre $x_0$ y $x$».</li>
+  <li><b>E 3.13 (p. 99):</b> paréntesis de $h$ copiado en el de $f$ (aparece grado 4); y «$h(x)p(x)$» en vez de «$j(x)p(x)$».</li>
+  <li><b>E 3.11 (p. 97):</b> «$R_{n+1}=0$» debe ser $R_n=0$; la condición correcta es orden $n\ge$ grado de $P$, no «mismo grado».</li>
+  <li><b>E 3.10 (p. 96):</b> la referencia al «ejercicio anterior» debería ser al 3.11 (posterior) y a U p.112.</li>
+  <li><b>E 3.3 (p. 89, margen):</b> en el cociente incremental aparece $f(a+h)-f(x)$; debe ser $f(a+h)-f(a)$.</li>
+  <li><b>E 3.5 (p. 91):</b> «velocidad siempre positiva»: es $0$ en $t=0$.</li>
+</ol>
+<p>Erratas menores de U: en el Ej. 3.3 (pp. 105-106) falta un signo «=» en $f''(0^+)$ (p. 106), y tanto en $f'(0^+)$ (p. 105) como en $f''(0^+)$ el límite dice $x\to0^+$ en vez de $h\to0^+$; en el Ej. 3.10 (p. 111) dice «Propiedad 3.2» por «Proposición 3.2»; en la Prop. 3.1 «orden $n$» debe leerse «grado $\le n$».</p>
+
+<h3>Chuleta</h3>
+<table>
+  <tr><th>Concepto</th><th>Fórmula</th><th>Fuente</th></tr>
+  <tr><td>Derivada $n$-ésima</td><td>$f^{(n}=(f^{(n-1})'$; polinomio de grado $n$: $p^{(n}=n!\,a_n$</td><td>U p.104 (definición) · E Ej. 3.2 p.88 (polinomio)</td></tr>
+  <tr><td>Polinomio de Taylor de orden $n$</td><td>$p_n(x)=\sum_{k=0}^n\frac{f^{(k}(x_0)}{k!}(x-x_0)^k$ (grado $\le n$)</td><td>U p.108</td></tr>
+  <tr><td>Recta tangente</td><td>$p_1(x)=f(x_0)+f'(x_0)(x-x_0)$</td><td>S p.250</td></tr>
+  <tr><td>Resto de Lagrange</td><td>$R_n(x)=\frac{f^{(n+1}(c)}{(n+1)!}(x-x_0)^{n+1}$, $c$ entre $x_0$ y $x$</td><td>U p.111</td></tr>
+  <tr><td>Cota del error</td><td>$|R_n(x)|\le\frac{M}{(n+1)!}|x-x_0|^{n+1}$, con $|f^{(n+1}|\le M$ entre $x_0$ y $x$</td><td>U p.111 · S p.756</td></tr>
+  <tr><td>Caso $n=0$</td><td>teorema del valor medio</td><td>U p.96 · L p.642</td></tr>
+  <tr><td>Mac Laurin básicos</td><td>$e^x\!:\sum\frac{x^i}{i!}$; $\operatorname{sen}x\!:x-\frac{x^3}6+\frac{x^5}{120}-\dots$; $\cos x\!:1-\frac{x^2}2+\frac{x^4}{24}-\dots$; $\ln(1+x)\!:x-\frac{x^2}2+\frac{x^3}3-\dots$</td><td>U pp.108-109 · E 3.14</td></tr>
+  <tr><td>Peano (externo a U)</td><td>$f=p_n+o((x-x_0)^n)$</td><td>P</td></tr>
+</table>
+
+<h3>Lista de comprobación</h3>
+<ul class="checklist">
+  <li>Sé calcular derivadas sucesivas y sé cuándo no existen (puntos de unión, picos, tangente vertical).</li>
+  <li>Sé escribir $p_n$ con una tabla y comprobarlo con paridad o con un desarrollo conocido.</li>
+  <li>Sé la diferencia entre orden y grado, y sé que $p_n$ de un polinomio de grado $\le n$ es él mismo.</li>
+  <li>Sé recentrar un polinomio de dos maneras y comprobar una con otra.</li>
+  <li>Sé escribir el resto de Lagrange con sus hipótesis y sé por qué $c$ es desconocido.</li>
+  <li>Sé acotar $|f^{(n+1}|$ en el caso peor y despejar $x$, $n$ o el error.</li>
+  <li>Sé cuándo usar $R_{n+1}$ en vez de $R_n$ (si $p_n=p_{n+1}$).</li>
+  <li>Sé qué parte de este tema (notación $o$) no está en U y dónde buscarla (Aula Virtual).</li>
+</ul>
+
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<div id="panel-fuentes"></div>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro. Las figuras recortadas de los libros son solo para uso personal de estudio.</footer>
+</main>
+</div>
+</body>
+</html>
