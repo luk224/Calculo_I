@@ -13,7 +13,7 @@ Lee primero `CLAUDE.md` (fuentes, offsets de página, cronograma, reglas de cont
 3. **Ejercicios**: lanzar `resolutor-ejercicios` (opus) con la lista de ejercicios; en paralelo con el paso 4 si el dossier ya está.
 4. **Redacción**: `redactor-tema` (sonnet) copia `plantilla_tema.html` a `temas/tema_X_Y_<slug>.html` y lo rellena siguiendo las reglas de contenido (CLAUDE.md §3). Usa solo `assets/resumen.css|js` y KaTeX local, sin dependencias externas.
 5. **Revisión**: `revisor-tema` (opus) comprueba matemáticas, citas, cobertura y render. Aplicar sus correcciones.
-6. **Cierre**: actualizar `index.html`, comprobar visualmente el HTML (Claude in Chrome o captura) en ancho de escritorio y móvil, y resumir al usuario qué hay y qué falta.
+6. **Cierre**: actualizar `index.html`, **subir a GitHub siguiendo CLAUDE.md §4b (commit + push)**, comprobar visualmente el HTML (Claude in Chrome o captura) en ancho de escritorio y móvil, y resumir al usuario qué hay y qué falta.
 
 ## Convenciones de marcado (resumen)
 - Cajas: `.box.def|thm|ex|warn|tip|intu` con `<span class="h">Título</span>`; receta: `.recipe`; pasos: `ol.steps`; ejercicio: `details.sol > summary + .enun + …`.

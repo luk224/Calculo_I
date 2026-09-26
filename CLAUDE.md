@@ -100,6 +100,16 @@ Reglas de contenido (para alguien que estudia por primera vez):
 Pipeline: (1) `fuentes-calculo` → dossier del tema; (2) `resolutor-ejercicios` (en paralelo con 3 si es posible); (3) `redactor-tema`; (4) `revisor-tema`; (5) corregir, actualizar `index.html` y avisar al usuario. Al empezar un tema, la conversación principal coordina y **no** escribe el HTML a mano salvo retoques.
 Skills de diseño ya disponibles y a usar por el redactor/maquetador: `frontend-design:frontend-design`, `carattere` (tipografía), `componi` (layout), `scrutinio` (accesibilidad/rendimiento), `lucida` (pulido final). Skill propio del proyecto: `resumen-calculo` (`.claude/skills/`).
 
+## 4b. Publicación en GitHub (obligatorio tras cada cambio)
+Repositorio: `git@github.com:luk224/Calculo_I.git` (rama `main`, **público**). Web: https://luk224.github.io/Calculo_I/ (GitHub Pages desde `main`, carpeta raíz; hay `.nojekyll`).
+**Cada vez que se termine un tema nuevo o se haga un cambio en el proyecto (temas, assets, CLAUDE.md, agentes, soluciones, index.html), y antes de dar la tarea por cerrada:**
+1. Actualizar `index.html` (marcar el tema como «listo») si se añadió o terminó un tema.
+2. `git add -A`, revisar `git status` (no debe entrar nada de `.gitignore`: los `.pdf` y los 4 textos completos `fuentes_txt/{ingenieros,ejercicios,larson,stewart}.txt` se quedan fuera; regenerarlos desde los PDF si hacen falta).
+3. `git commit` con mensaje en español que diga qué tema o cambio (p. ej. «Tema 3.2: series de Taylor»), terminado con la línea de coautoría que indique el entorno.
+4. `git pull --rebase origin main` si hace falta y `git push origin main`.
+5. Confirmar con `git log -1` y `git status` que quedó sincronizado, e indicar al usuario el enlace de la web.
+Un commit por tema o cambio coherente; no acumular varios temas sin subir. No usar `--force`. Si el push falla (red, credenciales), avisar al usuario en lugar de dejarlo sin subir en silencio.
+
 ## 5. Comandos útiles
 - Buscar en un libro: `Grep pattern=… path=fuentes_txt/ingenieros.txt` (usar `-C` para contexto).
 - Leer una página de U: `python -c "print(open('fuentes_txt/ingenieros.txt',encoding='utf8').read().split('\f')[PDF-1])"` (PDF = impresa − 2; p. impresa 12 = PDF 10).
