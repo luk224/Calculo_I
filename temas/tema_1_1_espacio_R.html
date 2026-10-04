@@ -30,6 +30,7 @@
     <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
     <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
     <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="X" data-ref="Exámenes reales resueltos (Examenes-resueltos-Calculo.pdf), página PDF">X</span> exámenes
     <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
     — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
   </div>
@@ -745,7 +746,101 @@
 <p><span class="src" data-l="P" data-ref="Resumen de métodos elaborado a partir de las soluciones de E 1.1-1.5">P</span> Resumen de métodos elaborado a partir de las soluciones de E 1.1-1.5.</p>
 
 <!-- ============================ 10 ============================ -->
-<h2 id="chuleta"><span class="n">10</span>Chuleta y lista de comprobación</h2>
+<h2 id="examenes"><span class="n">10</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Examenes-resueltos-Calculo.pdf (exámenes reales resueltos); páginas = página PDF">X pp.16-135</span></h2>
+
+<p>Estos son los tipos <b>reales</b> que han caído (exámenes de la UNED resueltos, fuente <b>X</b>; se cita la página PDF). Son preguntas cortas de 1 punto: la dificultad no está en la teoría sino en <i>traducir el conjunto a un intervalo</i> sin saltarse pasos y en justificar «es cota» y «es la menor». Todo se resuelve con lo de este tema (orden, valor absoluto, intervalos, cotas, supremo e ínfimo) más monotonía de la raíz y de la exponencial. Los problemas van de fácil a difícil. Los dos últimos piden un <i>dominio</i> (vocabulario de U §1.4), pero lo que se practica es la inecuación.</p>
+
+<details class="sol"><summary>Problema 1 — ínfimo y supremo de $\{x:\ 0\le x^3&lt;1\}$ <span class="src" data-l="X" data-ref="X p.88 (Febrero 2018, Grado en Ing. Mecánica, Modelo A, pregunta corta 1, 1 punto)">X p.88</span></summary>
+  <p class="enun">Determine el ínfimo y el supremo del conjunto $A=\{x\in\mathbb R:\ 0\le x^3&lt;1\}$. Razone la respuesta.</p>
+  <ol class="steps">
+    <li><b>Traducir el conjunto a un intervalo.</b> Las condiciones son sobre $x^3$, no sobre $x$; antes de buscar cotas hay que saber qué números hay en $A$.</li>
+    <li><b>La potencia cúbica conserva el orden.</b> $b^3-a^3=(b-a)(a^2+ab+b^2)$ y $a^2+ab+b^2=\left(a+\tfrac b2\right)^2+\tfrac34 b^2&gt;0$ salvo si $a=b=0$. Por tanto $a&lt;b\iff a^3&lt;b^3$ (y lo mismo con $\le$).</li>
+    <li>Con $0=0^3$ y $1=1^3$: $0\le x^3\iff0\le x$ y $x^3&lt;1\iff x&lt;1$. Luego $A=[0,1)$.</li>
+    <li><b>Ínfimo.</b> $0\le x$ para todo $x\in A$ (cota inferior) y $0\in A$. Una cota inferior que pertenece al conjunto es el mínimo y, por tanto, el ínfimo: $\inf A=\min A=0$.</li>
+    <li><b>Supremo: conjetura $s=1$.</b> (a) Es cota superior: todo $x\in A$ cumple $x&lt;1$. (b) Es la menor: sea $c&lt;1$. Si $c&lt;0$, $0\in A$ y $0&gt;c$; si $0\le c&lt;1$, el punto medio $a=\frac{c+1}2$ cumple $c&lt;a&lt;1$ y $a\ge0$, luego $a\in A$ y $a&gt;c$. En ambos casos $c$ no es cota superior. Así $\sup A=1$ (U Def. 1.7, p.20).</li>
+    <li><b>¿Máximo?</b> $1\notin A$ ($1^3=1\not&lt;1$): $A$ no tiene máximo.</li>
+  </ol>
+  <p><b>Resultado:</b> $\inf A=\min A=0$, $\sup A=1$ (sin máximo).</p>
+  <div class="recipe"><b>Receta:</b> reescribe el conjunto como intervalo (usando que $x\mapsto x^3$ conserva el orden) y lee ínf/sup en la tabla de intervalos, justificando «es cota» y «es la menor».</div>
+  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span>
+    <p>No justifica $x^3&lt;1\iff x&lt;1$ ni que $1$ sea la <i>menor</i> cota, aunque el enunciado pide «razone»; en el examen escribe los pasos 2 y 5. Tampoco dice que $0$ es mínimo y que no hay máximo.</p></div>
+</details>
+
+<details class="sol"><summary>Problema 2 — ínfimo y supremo de $\{x:\ 0&lt;x^2&lt;1\}$ (conjunto con un «agujero») <span class="src" data-l="X" data-ref="X p.16 (Septiembre 2011, Ing. Mecánica, preguntas cortas, nº 1, 1 punto); variante X p.56 (Febrero 2015, Grado en Ing. Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.16</span></summary>
+  <p class="enun">Calcule el ínfimo y el supremo del conjunto $A=\{x\in\mathbb R:\ 0&lt;x^2&lt;1\}$.</p>
+  <ol class="steps">
+    <li><b>Pasar a valor absoluto.</b> $x^2=|x|^2$. Las condiciones pasan a ser sobre $u=|x|\ge0$.</li>
+    <li>$0&lt;x^2\iff x\ne0$: un cuadrado es $\ge0$ y vale $0$ solo si $x=0$.</li>
+    <li>$x^2&lt;1\iff|x|&lt;1$: con $u=|x|\ge0$, $u^2-1=(u-1)(u+1)$ y $u+1&gt;0$, así que $u^2&lt;1\iff u&lt;1$.</li>
+    <li><b>Traductor</b> $|x|&lt;a\iff-a&lt;x&lt;a$: $|x|&lt;1\iff-1&lt;x&lt;1$. Con $x\ne0$: $A=(-1,0)\cup(0,1)$.</li>
+    <li><b>Supremo $=1$.</b> Cota: todo $x\in A$ cumple $x&lt;1$. La menor: si $c&lt;1$, tomar $a=\max\{\tfrac12,\tfrac{c+1}2\}$; entonces $a\in(0,1)\subset A$ y $a&gt;c$, luego $c$ no es cota. $1\notin A$: no hay máximo.</li>
+    <li><b>Ínfimo $=-1$</b>, por simetría: cota inferior porque $x&gt;-1$; si $c&gt;-1$, $a=\min\{-\tfrac12,\tfrac{c-1}2\}\in(-1,0)\subset A$ y $a&lt;c$. $-1\notin A$: no hay mínimo.</li>
+    <li>El «agujero» en $0$ no influye: sup e ínf de una unión finita de intervalos son el mayor extremo derecho y el menor extremo izquierdo.</li>
+  </ol>
+  <p><b>Resultado:</b> $\inf A=-1$, $\sup A=1$; ni mínimo ni máximo.</p>
+  <p><b>Variante del mismo tipo</b> (<span class="src" data-l="X" data-ref="X p.56 (Febrero 2015, Grado en Ing. Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.56</span>): $A=\{x\in\mathbb R:\ 0\le|x|\le1\}$. Como $|x|\ge0$ siempre, queda $|x|\le1\iff-1\le x\le1$, $A=[-1,1]$, $\inf A=\min A=-1$, $\sup A=\max A=1$ (aquí sí hay mínimo y máximo).</p>
+  <div class="recipe"><b>Receta:</b> si la condición depende de $x^2$ o de $|x|$, pasa a $|x|$, usa el traductor $|x|&lt;a\iff-a&lt;x&lt;a$ y quita los puntos excluidos; luego sup/ínf = extremos exteriores del conjunto.</div>
+  <p><b>Error típico:</b> escribir $A=(-1,1)$ olvidando que $0&lt;x^2$ excluye $x=0$ (no cambia sup/ínf, pero el conjunto queda mal), o «$x^2&lt;1\iff x&lt;1$» (falso: $x=-2$ cumple $x&lt;1$ pero $x^2=4$).</p>
+</details>
+
+<details class="sol"><summary>Problema 3 — test con exponencial: $A=\{x:\ 1/e^x&lt;1\}$ <span class="src" data-l="X" data-ref="X p.122 enunciado y p.123 solución (Examen 5 elaborado con exámenes de asignaturas similares, sin fecha ni puntuación, Ejercicio 2, tipo test)">X pp.122-123</span></summary>
+  <p class="enun">Dado el conjunto $A=\left\{x\in\mathbb R:\ \dfrac1{e^x}&lt;1\right\}$ señale la respuesta correcta: <b>A)</b> no tiene supremo ni ínfimo; <b>B)</b> $\inf A=0$; <b>C)</b> $\sup A=0$; <b>D)</b> $A$ es acotado.</p>
+  <ol class="steps">
+    <li><b>Quitar el denominador.</b> $e^x&gt;0$ y multiplicar por un positivo conserva la desigualdad: $\frac1{e^x}&lt;1\iff1&lt;e^x$.</li>
+    <li><b>Monotonía de la exponencial</b> (bachillerato): $e^x$ es estrictamente creciente y $e^0=1$, luego $e^x&gt;e^0\iff x&gt;0$. Así $A=(0,+\infty)$.</li>
+    <li><b>Ínfimo.</b> $0$ es cota inferior. Es la mayor: si $c&gt;0$, $a=\frac c2\in A$ y $a&lt;c$. $\inf A=0$ y $0\notin A$ (no hay mínimo).</li>
+    <li><b>No hay supremo.</b> Dado $M\in\mathbb R$, $a=\max\{M,0\}+1\in A$ y $a&gt;M$: ningún $M$ es cota superior, $A$ no está acotado superiormente.</li>
+    <li><b>Opciones.</b> A) falsa (hay ínfimo). C) falsa ($0$ ni es cota superior: $1\in A$). D) falsa (paso 4). <b>B) correcta.</b></li>
+  </ol>
+  <p><b>Resultado:</b> B.</p>
+  <div class="recipe"><b>Receta:</b> en un test de sup/ínf, escribe primero el conjunto como intervalo despejando con operaciones que conservan el orden (multiplicar por positivos, aplicar $\ln$ o $e^{(\cdot)}$) y comprueba cada opción contra la tabla de intervalos.</div>
+  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span>
+    <p>Dice «$1/e^x$ es decreciente; además $1/e^0=1$» sin explicar el paso a $x&gt;0$: es correcto (si $g$ es estrictamente decreciente y $g(0)=1$, entonces $g(x)&lt;1\iff x&gt;0$). Remite a un libro externo («Ejercicios resueltos de Matemáticas I», ej. 211), no a U.</p></div>
+</details>
+
+<details class="sol"><summary>Problema 4 — inecuación cuadrática: dominio de $f(x)=\sqrt{2x^2-6}$ <span class="src" data-l="X" data-ref="X p.135 (Febrero 2017, segunda semana, Grado en Ing. Electrónica Industrial y Automática, pregunta corta 1, 1 punto)">X p.135</span></summary>
+  <p class="enun">Sea $f(x)=\sqrt{2x^2-6}$. Determine el dominio de la función $f$.</p>
+  <ol class="steps">
+    <li><b>Qué se exige.</b> La raíz real solo existe para radicandos $\ge0$: $\operatorname{Dom}f=\{x:\ 2x^2-6\ge0\}$.</li>
+    <li><b>Despejar.</b> Sumar $6$ y multiplicar por $\tfrac12&gt;0$ conservan el sentido (propiedades 5 y 6 del orden): $2x^2-6\ge0\iff x^2\ge3$.</li>
+    <li><b>Pasar a valor absoluto.</b> $x^2=|x|^2$ y $3=(\sqrt3)^2$; para $u,v\ge0$, $u^2\ge v^2\iff u\ge v$ (porque $u^2-v^2=(u-v)(u+v)$ con $u+v&gt;0$ salvo $u=v=0$). Luego $|x|\ge\sqrt3$.</li>
+    <li><b>Traductor</b> $|x|\ge a\iff x\ge a$ o $x\le-a$: $x\le-\sqrt3$ o $x\ge\sqrt3$.</li>
+    <li><b>Dominio:</b> $(-\infty,-\sqrt3]\cup[\sqrt3,+\infty)$. Comprobación: $x=\pm\sqrt3$ da radicando $0$ (vale); $x=0$ da $-6$ (no vale); $x=-2$ da $2$ (vale).</li>
+  </ol>
+  <p><b>Resultado:</b> $\operatorname{Dom}f=(-\infty,-\sqrt3]\cup[\sqrt3,+\infty)$.</p>
+  <div class="recipe"><b>Receta:</b> para $x^2\ge a$ (con $a&gt;0$) pasa a $|x|\ge\sqrt a$ y usa el traductor: salen <b>dos</b> semirrectas; los extremos entran si la desigualdad es $\ge$.</div>
+  <div class="box warn"><span class="h">Errata menor en la solución impresa</span>
+    <p>En el «Fallo recurrente» pone «$x=-\sqrt3$ y $x=-\sqrt3$»: el valor está repetido; debe leerse «$x=-\sqrt3$ y $x=\sqrt3$». Los errores que señala son reales: quedarse solo con $[\sqrt3,\infty)$ (escribir $x\ge\sqrt3$ en vez de $|x|\ge\sqrt3$) o dejar los extremos abiertos.</p></div>
+</details>
+
+<details class="sol"><summary>Problema 5 — inecuación racional: dominio de $f(x)=\sqrt{\dfrac{2-x}{(x+1)^2}}$ <span class="src" data-l="X" data-ref="X p.69 (Septiembre 2016, Grado en Ing. Mecánica, Modelo A, pregunta corta 1, 1 punto)">X p.69</span></summary>
+  <p class="enun">Determine el dominio de definición de $f(x)=\sqrt{\dfrac{2-x}{(x+1)^2}}$.</p>
+  <ol class="steps">
+    <li><b>Condiciones.</b> Hacen falta dos: que el cociente exista, $(x+1)^2\ne0\iff x\ne-1$; y radicando $\ge0$: $\frac{2-x}{(x+1)^2}\ge0$.</li>
+    <li><b>Signo del denominador.</b> Si $x\ne-1$, $(x+1)^2&gt;0$.</li>
+    <li><b>Multiplicar por un positivo conserva el sentido</b> (propiedad 6): $\frac{2-x}{(x+1)^2}\ge0\iff2-x\ge0\iff x\le2$. Es $\ge$ y no $&gt;$, porque $\sqrt0=0$ existe.</li>
+    <li><b>Unir condiciones:</b> $x\le2$ y $x\ne-1$: $\operatorname{Dom}f=(-\infty,-1)\cup(-1,2]$.</li>
+    <li><b>Comprobación:</b> $x=2$: $\sqrt{0/9}=0$ (vale); $x=-1$: división por $0$ (no vale); $x=3$: $\sqrt{-1/16}$ (no vale); $x=-5$: $\sqrt{7/16}$ (vale).</li>
+  </ol>
+  <p><b>Resultado:</b> $(-\infty,-1)\cup(-1,2]$, es decir, el impreso «$(-\infty,2]-\{-1\}$».</p>
+  <div class="recipe"><b>Receta:</b> en un cociente separa «denominador $\ne0$» de «signo»; si el denominador es un cuadrado, es positivo donde existe y el signo lo decide solo el numerador.</div>
+  <div class="box warn"><span class="h">Errata en la solución impresa</span>
+    <p>El razonamiento dice «numerador mayor que 0: $2-x&gt;0\iff x&lt;2$», lo que excluiría $x=2$; pero el resultado final $(-\infty,2]-\{-1\}$ sí lo incluye (y es el correcto). Debe leerse «mayor <b>o igual</b> que 0: $2-x\ge0\iff x\le2$».</p></div>
+</details>
+
+<div class="box tip"><span class="h">Tipos que también caen y no están en el PDF</span>
+  <ul>
+    <li>Sup/ínf de conjuntos definidos <b>por una sucesión</b> ($\{1/n\}$, $\{(-1)^n+1/n\}$, $\{\frac n{n+1}\}$): exigen la propiedad arquimediana o la caracterización con $\varepsilon$ (E Ej. 1.4; ejemplo propio 3).</li>
+    <li>Conjuntos de <b>racionales</b> con sup/ínf irracional y el axioma del supremo en $\mathbb Q$ (U Ej. 1.11, p.20; p.21).</li>
+    <li>Desigualdades con <b>varios valores absolutos</b> por casos ($|x-1|+|x+2|&lt;5$, $|x-a|&lt;|x-b|$) (E Ej. 1.2).</li>
+    <li><b>Acotar expresiones</b> de variables acotadas (sup/ínf de $\{x-y\}$, $\{1/x\}$…) (E Ej. 1.5).</li>
+    <li>Paso intervalo $\leftrightarrow|x-c|&lt;r$ (centro y radio) (U Ej. 1.4-1.5, pp.17-18; E Ej. 1.1).</li>
+    <li>Distinguir explícitamente <b>máximo/mínimo</b> de sup/ínf: X nunca lo pide, pero conviene decirlo en la respuesta.</li>
+  </ul>
+</div>
+
+<!-- ============================ 11 ============================ -->
+<h2 id="chuleta"><span class="n">11</span>Chuleta y lista de comprobación</h2>
 
 <div class="box thm"><span class="h">Chuleta</span>
   <table>
@@ -787,11 +882,11 @@
   <li>Acotar una magnitud con desigualdades y comprobar si las cotas se alcanzan.</li>
 </ul>
 
-<!-- ============================ 11 ============================ -->
-<h2 id="fuentes"><span class="n">11</span>Fuentes de este tema</h2>
+<!-- ============================ 12 ============================ -->
+<h2 id="fuentes"><span class="n">12</span>Fuentes de este tema</h2>
 <details class="fuentes-toggle">
 <summary>Mostrar lista de fuentes</summary>
-<p>Lista automática de todas las etiquetas usadas (libro y página impresa). Recuerda: <b>U</b> = Cálculo para Ingenieros (pág. impresa = PDF + 2), <b>E</b> = libro de ejercicios, <b>S</b> = Stewart (Apéndice A y §11.1), <b>L</b> = Larson (pág. impresa = PDF − 17), <b>P</b> = explicación propia (máximo/mínimo, caracterización ε, arquimediana, densidad y ejemplos propios, que U §1.1 no trata).</p>
+<p>Lista automática de todas las etiquetas usadas (libro y página impresa). Recuerda: <b>U</b> = Cálculo para Ingenieros (pág. impresa = PDF + 2), <b>E</b> = libro de ejercicios, <b>S</b> = Stewart (Apéndice A y §11.1), <b>L</b> = Larson (pág. impresa = PDF − 17), <b>X</b> = exámenes reales resueltos (<i>Examenes-resueltos-Calculo.pdf</i>; se cita la página PDF), <b>P</b> = explicación propia (máximo/mínimo, caracterización ε, arquimediana, densidad y ejemplos propios, que U §1.1 no trata).</p>
 <div id="panel-fuentes"></div>
 </details>
 

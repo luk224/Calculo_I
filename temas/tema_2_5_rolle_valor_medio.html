@@ -42,6 +42,7 @@ svg.fig .t25-o{fill:var(--S)}
     <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
     <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
     <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (UNED)">X</span> exámenes
     — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
   </div>
 </header>
@@ -528,7 +529,109 @@ svg.fig .t25-o{fill:var(--S)}
   <li><b>10.</b> «Una función creciente en $I$ verifica $f'(x)\ge0$ para todo $x\in I$». <b>Falsa</b> (U, p. 285): es la respuesta de U, porque una función creciente puede ser discontinua (y por lo tanto no derivable), como en el Ej. 2.21. Recuerda: el recíproco del tercer apartado de la Prop. 2.4 vale si $f$ es derivable; el del primero, nunca.</li>
 </ul>
 
-<h2 id="chuleta"><span class="n">11</span>Chuleta y lista de comprobación</h2>
+<h2 id="examenes"><span class="n">11</span>Así lo preguntan en el examen</h2>
+<p>Estos son los tipos reales que caen de este tema en los exámenes resueltos de la UNED (<span class="src" data-l="X" data-ref="X: Exámenes resueltos de Cálculo (UNED); se cita la página del PDF">X</span> = <i>Exámenes resueltos de Cálculo</i>; página del PDF). Siempre son preguntas cortas de 1 punto, de dificultad baja o media: enunciar Rolle o el TVM, aplicar Rolle a una función concreta, estudiar la monotonía con el signo de $f'$ y contar soluciones combinando Bolzano con monotonía. Están ordenados de fácil a difícil. Las páginas de U que cita la solución impresa son de una edición antigua; aquí van las de la edición de 2023.</p>
+
+<details class="sol"><summary>Problema 1. Enunciar el TVM e interpretarlo geométricamente <span class="src" data-l="X" data-ref="X p.137 (Febrero 2017, 1ª semana, I. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.137</span></summary>
+  <p class="enun">Enuncie el Teorema del Valor Medio (para funciones de una variable) y explique la interpretación geométrica de este resultado.</p>
+  <ol class="steps">
+    <li><b>Enunciado (U p.96).</b> Sea $f:[a,b]\to\mathbb R$ <b>continua en $[a,b]$</b> y <b>derivable en $(a,b)$</b>. Entonces existe al menos un $c\in(a,b)$ tal que $$f'(c)=\frac{f(b)-f(a)}{b-a}.$$ Hay que escribir las dos hipótesis: sin ellas es falso. Por ejemplo, $|x|$ en $[-1,2]$ es continua pero no derivable en $0$: la cuerda tiene pendiente $\tfrac13$ y $f'$ solo vale $\pm1$.</li>
+    <li><b>Qué es cada lado.</b> $\dfrac{f(b)-f(a)}{b-a}$ es la pendiente de la <b>cuerda</b> que une $A=(a,f(a))$ con $B=(b,f(b))$; $f'(c)$ es la pendiente de la <b>tangente</b> en $(c,f(c))$.</li>
+    <li><b>Interpretación geométrica.</b> Hay al menos un punto interior de la gráfica en el que la tangente es <b>paralela a la cuerda $AB$</b> (misma pendiente).</li>
+    <li><b>Interpretación física (opcional).</b> Si $f(t)$ es la posición, el cociente es la velocidad media; en algún instante $c$ la velocidad instantánea coincide con ella.</li>
+    <li><b>Relación con Rolle (opcional).</b> Si $f(a)=f(b)$, la cuerda es horizontal y sale Rolle. El TVM se demuestra aplicando Rolle a $h(x)=f(x)-f(a)-\frac{f(b)-f(a)}{b-a}(x-a)$ (U pp.96-97).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para «enuncie y explique», escribe las hipótesis (continua en el cerrado y derivable en el abierto), la fórmula con $c\in(a,b)$ abierto y la frase «tangente paralela a la cuerda», con un dibujo.</div>
+  <div class="box warn"><span class="h">Erratas / avisos</span><p>La solución impresa solo dice «ver texto base (páginas 94 y 95)», de una edición anterior de U; en la de 2023 el TVM está en la p.96.</p></div>
+</details>
+
+<details class="sol"><summary>Problema 2. Rolle para encontrar una tangente horizontal <span class="src" data-l="X" data-ref="X p.135 (Febrero 2017, 2ª semana, I. Electrónica Industrial y Automática, pregunta corta 4, 1 punto)">X p.135</span></summary>
+  <p class="enun">Enuncie el Teorema de Rolle. Úselo para demostrar que, dada $f:[-2,0]\to\mathbb R$, $f(x)=e^{(x+1)^2}$, existe algún $c\in[-2,0]$ tal que la recta tangente a la gráfica de $f$ en $(c,f(c))$ es paralela al eje $x$.</p>
+  <ol class="steps">
+    <li><b>Enunciado (U p.95).</b> Si $f:[a,b]\to\mathbb R$ es continua en $[a,b]$, derivable en $(a,b)$ y $f(a)=f(b)$, existe $c\in(a,b)$ con $f'(c)=0$.</li>
+    <li><b>Traducir lo pedido.</b> La tangente en $(c,f(c))$ es $y=f(c)+f'(c)(x-c)$; es horizontal si y solo si $f'(c)=0$. Basta hallar un $c$ con $f'(c)=0$, que es lo que da Rolle.</li>
+    <li><b>Continuidad.</b> $f=\exp\circ g$ con $g(x)=(x+1)^2$ polinomio; la composición de continuas es continua en $\mathbb R$, y en particular en $[-2,0]$.</li>
+    <li><b>Derivabilidad.</b> Por la regla de la cadena, $f$ es derivable en $\mathbb R$ y $f'(x)=2(x+1)\,e^{(x+1)^2}$.</li>
+    <li><b>Mismo valor en los extremos.</b> $f(-2)=e^{(-1)^2}=e$ y $f(0)=e^{1^2}=e$.</li>
+    <li><b>Aplicar Rolle.</b> Se cumplen las tres hipótesis: existe $c\in(-2,0)$ con $f'(c)=0$.</li>
+    <li><b>Comprobación (no se pide).</b> Como $e^{(x+1)^2}&gt;0$, $f'(c)=0\iff c=-1\in(-2,0)$; la tangente es $y=f(-1)=1$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> «tangente paralela al eje $x$» significa $f'(c)=0$. Comprueba las tres hipótesis de Rolle (continuidad y derivabilidad salen de las reglas de composición) y calcula $f(a)=f(b)$. Mismo método que E 2.39.</div>
+  <div class="box warn"><span class="h">Erratas / avisos</span><p>El enunciado y la solución impresa escriben $c\in[-2,0]$ (cerrado); Rolle da más, $c\in(-2,0)$, y en el examen conviene escribir el abierto. La solución remite al «ejercicio 87 del libro de problemas» (numeración antigua); el análogo es E 2.39. Error típico: decir «paralela al eje $y$», que sería una tangente vertical.</p></div>
+</details>
+
+<details class="sol"><summary>Problema 3. Intervalos de crecimiento de $x^2e^{1-x}$ <span class="src" data-l="X" data-ref="X p.101 (sin fecha, I. Electrónica Industrial y Automática, examen «Electrónica 2» del índice, pregunta corta 2, 1 punto)">X p.101</span></summary>
+  <p class="enun">Calcule los intervalos de crecimiento y decrecimiento de la función $f(x)=x^2e^{(1-x)}$.</p>
+  <ol class="steps">
+    <li><b>Derivabilidad.</b> Producto de un polinomio y de $e^{1-x}$, ambos derivables en $\mathbb R$: no hay puntos que separar.</li>
+    <li><b>Derivar</b> (producto y cadena, $(e^{1-x})'=-e^{1-x}$): $$f'(x)=2x\,e^{1-x}-x^2e^{1-x}=x(2-x)\,e^{1-x}.$$</li>
+    <li><b>Quitar el factor de signo fijo.</b> $e^{1-x}&gt;0$, así que el signo de $f'$ es el de $x(2-x)$.</li>
+    <li><b>Ceros:</b> $x=0$ y $x=2$, que dividen $\mathbb R$ en $(-\infty,0)$, $(0,2)$ y $(2,\infty)$.</li>
+    <li><b>Signo con puntos de prueba:</b> $x=-1$: $(-1)\cdot3\lt0$; $x=1$: $1\cdot1&gt;0$; $x=3$: $3\cdot(-1)\lt0$.</li>
+    <li><b>Prop. 2.4 (U p.98).</b> $f$ es estrictamente decreciente en $(-\infty,0)$ y en $(2,\infty)$, y estrictamente creciente en $(0,2)$. Como $f$ es continua se pueden incluir los extremos: decreciente en $(-\infty,0]$ y $[2,\infty)$, creciente en $[0,2]$.</li>
+    <li><b>Extra (Tema 3).</b> En $0$ hay mínimo relativo, $f(0)=0$; en $2$, máximo relativo, $f(2)=4/e$.</li>
+    <li><b>Cuidado al redactar.</b> No escribas «decreciente en $(-\infty,0)\cup(2,\infty)$»: aquí es falso, pues $-0{,}1\lt3$ y $f(-0{,}1)\approx0{,}030\lt f(3)\approx1{,}218$. Nombra cada intervalo por separado.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> deriva y factoriza, quita las exponenciales (siempre positivas), haz la tabla de signos con los ceros y aplica la Prop. 2.4 en cada intervalo por separado. Es el método de «intervalos de monotonía» de la sección 5.</div>
+  <div class="box warn"><span class="h">Erratas de la solución impresa</span><p>Dice «$f'$ será <i>negativa</i> si $x$ es menor que <i>1</i> o mayor que 2 y <i>negativa</i> si $x$ está entre 0 y 2». Debe decir «menor que <b>0</b>» y, en el segundo caso, «<b>positiva</b>». La conclusión impresa (creciente en $(0,2)$, decreciente en $(-\infty,0)$ y $(2,\infty)$) es correcta.</p></div>
+</details>
+
+<details class="sol"><summary>Problema 4. Monotonía de $x^3e^x$: un cero de $f'$ que no cambia de signo <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 2, 1 punto)">X p.13</span></summary>
+  <p class="enun">Determine los intervalos de crecimiento y decrecimiento de $f(x)=x^3e^x$. (Versión más fácil, <span class="src" data-l="X" data-ref="X p.35 (Febrero 2013, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 1)">X p.35</span>: «¿dónde es creciente $f(x)=xe^x$?»; allí $f'(x)=(1+x)e^x$ y es creciente en $[-1,\infty)$.)</p>
+  <ol class="steps">
+    <li><b>Derivabilidad.</b> Producto de un polinomio por $e^x$: derivable en $\mathbb R$.</li>
+    <li><b>Derivar y factorizar:</b> $f'(x)=3x^2e^x+x^3e^x=x^2(x+3)\,e^x$.</li>
+    <li><b>Factores de signo fijo.</b> $e^x&gt;0$ y $x^2\ge0$ (solo se anula en $0$). Para $x\ne0$, el signo de $f'$ es el de $x+3$.</li>
+    <li><b>Ceros de $f'$:</b> $x=-3$ (simple: $f'$ cambia de signo) y $x=0$ (doble: no cambia de signo).</li>
+    <li><b>Tabla de signos:</b> en $(-\infty,-3)$, $f'\lt0$ (en $x=-4$: $16\cdot(-1)\cdot e^{-4}\lt0$); en $(-3,0)$, $f'&gt;0$ (en $x=-1$: $1\cdot2\cdot e^{-1}&gt;0$); en $(0,\infty)$, $f'&gt;0$.</li>
+    <li><b>Prop. 2.4 (U p.98) en cada intervalo:</b> estrictamente decreciente en $(-\infty,-3)$ y estrictamente creciente en $(-3,0)$ y en $(0,\infty)$.</li>
+    <li><b>Unir a través de $x=0$.</b> Como $f'(0)=0$, la Prop. 2.4 no basta tal cual. Se razona como U con $x^3$ (U p.99): $f$ es continua y estrictamente creciente en $[-3,0]$ y en $[0,\infty)$; si $-3\le a\lt0\lt b$, entonces $f(a)\lt f(0)\lt f(b)$. Por tanto $f$ es <b>estrictamente creciente en $[-3,\infty)$</b> y <b>estrictamente decreciente en $(-\infty,-3]$</b>.</li>
+    <li><b>Extra.</b> Mínimo relativo (y absoluto) en $-3$, $f(-3)=-27e^{-3}\approx-1{,}344$. En $0$ la tangente es horizontal pero no hay extremo (punto de silla, como $x^3$).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> en la tabla de signos, un factor al cuadrado ($x^2$, $(x-a)^2$) no cambia el signo y su cero no separa la monotonía. Si $f'$ tiene el mismo signo a ambos lados de un cero aislado, los dos intervalos se unen.</div>
+  <div class="box warn"><span class="h">Avisos sobre la solución impresa</span><p>Da «creciente en $(-3,\infty)$ y decreciente en $(-\infty,-3)$», que es correcto, pero no justifica por qué el cero en $x=0$ no rompe el crecimiento; la clave es $x^2e^x\ge0$ y el argumento del paso 7. En X p.35, «es creciente cuando su derivada es mayor o igual que 0» usa una equivalencia: «$\Leftarrow$» es la Prop. 2.4 y «$\Rightarrow$» vale en un intervalo con $f$ derivable (U pp.98-99).</p></div>
+</details>
+
+<details class="sol"><summary>Problema 5. Bolzano: ni da unicidad, ni sirve sin continuidad (dos V/F) <span class="src" data-l="X" data-ref="X p.22 (a) (Febrero 2012, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.22</span> <span class="src" data-l="X" data-ref="X p.126 (b) (sin fecha, I. Electrónica Industrial y Automática, pregunta corta 2, 1 punto)">X p.126</span></summary>
+  <p class="enun">(a) Sea $f:[-1,1]\to\mathbb R$ continua con $f(-1)=-3$ y $f(1)=3$. Razone si es cierto que $f(x)=0$ tiene una única solución en $[-1,1]$. Apóyese en una gráfica si lo considera necesario.<br>(b) Razone si es verdadera o falsa: «Si $f:\mathbb R\to\mathbb R$ es estrictamente creciente y $f(-1)\lt0\lt f(1)$, entonces existe al menos una solución de $f(x)=0$.»</p>
+  <ol class="steps">
+    <li><b>(a) Existencia.</b> $f$ es continua y $f(-1)f(1)=-9\lt0$: por Bolzano (U p.52) existe $c\in(-1,1)$ con $f(c)=0$.</li>
+    <li><b>(a) Unicidad: falsa.</b> Bolzano solo da «al menos una». Contraejemplo impreso: $f(x)=3\operatorname{sen}\frac{5\pi x}{2}$, continua, con $f(-1)=-3$, $f(1)=3$ y ceros en $0,\pm\tfrac25,\pm\tfrac45$. Uno polinómico: $p(x)=\tfrac32(5x^3-3x)$, con $p(\pm1)=\pm3$ y ceros $0,\pm\sqrt{3/5}$.</li>
+    <li><b>(a) Qué falta para la unicidad.</b> Que $f$ sea estrictamente monótona (entonces es inyectiva); con $f$ derivable basta $f'&gt;0$ en $(-1,1)$ (Prop. 2.4, U p.98). Con Rolle (U p.95): dos ceros $r_1\lt r_2$ darían $c\in(r_1,r_2)$ con $f'(c)=0$.</li>
+    <li><b>(b) Falsa: la monotonía no sustituye a la continuidad.</b> Contraejemplo impreso: $f(x)=x$ si $x\lt0$, $f(x)=x+1$ si $x\ge0$. Es estrictamente creciente (si $a\lt0\le b$: $f(a)=a\lt0\lt1\le b+1=f(b)$), cumple $f(-1)=-1\lt0\lt2=f(1)$ y no se anula ($f\lt0$ si $x\lt0$ y $f\ge1$ si $x\ge0$). Falla Bolzano porque $f$ <b>no es continua en $0$</b>.</li>
+    <li><b>Conclusión conjunta.</b> Continuidad + cambio de signo da <b>existencia</b>; estricta monotonía da <b>a lo sumo una</b>; las dos juntas, <b>exactamente una</b>.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> «¿única solución?»: existencia con Bolzano (comprueba la continuidad) y unicidad con estricta monotonía ($f'&gt;0$ o $f'\lt0$) o con Rolle. Para refutar, basta una gráfica que oscile o que salte.</div>
+  <div class="box warn"><span class="h">Avisos</span><p>La solución impresa de (a) cita «página 51 de Cálculo para Ingenieros» (edición antigua); en la de 2023 Bolzano está en U p.52. Estas dos preguntas no son de §2.5 por sí solas: se incluyen porque «unicidad = estricta monotonía o Rolle» es justo lo que aporta el tema.</p></div>
+</details>
+
+<details class="sol"><summary>Problema 6. Bolzano + monotonía: ¿cuántas soluciones tiene $e^x-x=2$? <span class="src" data-l="X" data-ref="X p.147 (Febrero 2019, 2ª semana, I. Electrónica Industrial y Automática, pregunta corta 4, 1 punto); la ampliación es propia">X p.147</span></summary>
+  <p class="enun"><b>Original:</b> enuncie el Teorema de Bolzano y aplíquelo para demostrar que $e^x-x=2$ tiene al menos una solución en $[1,2]$. <b>Ampliación propia</b> (así se pregunta el «número de raíces»): demuestre que esa solución es única en $[1,2]$ y que la ecuación tiene exactamente dos soluciones reales.</p>
+  <ol class="steps">
+    <li><b>Forma $f(x)=0$.</b> Sea $f(x)=e^x-x-2$.</li>
+    <li><b>Bolzano (U p.52).</b> Si $f:[a,b]\to\mathbb R$ es continua y $f(a)f(b)\lt0$, existe $c\in(a,b)$ con $f(c)=0$.</li>
+    <li><b>Hipótesis.</b> $f$ es continua en $\mathbb R$; $f(1)=e-3\approx-0{,}28\lt0$ y $f(2)=e^2-4\approx3{,}39&gt;0$. Existe $c\in(1,2)$ con $e^c-c=2$: es lo que pedía el examen.</li>
+    <li><b>Unicidad en $[1,2]$ (propia).</b> $f'(x)=e^x-1&gt;0$ si $x&gt;0$ (la exponencial es estrictamente creciente y $e^0=1$). Por la Prop. 2.4 (U p.98), $f$ es estrictamente creciente en $[1,2]$: la raíz es única, $c\approx1{,}1462$.</li>
+    <li><b>Todo $\mathbb R$.</b> $f'\lt0$ si $x\lt0$ y $f'&gt;0$ si $x&gt;0$; por la Prop. 2.4 y la continuidad en $0$, $f$ es estrictamente decreciente en $(-\infty,0]$ y estrictamente creciente en $[0,\infty)$: en cada uno, como mucho una raíz.</li>
+    <li><b>Segunda raíz.</b> $f(0)=-1\lt0$ y $f(-2)=e^{-2}&gt;0$: por Bolzano hay una raíz en $(-2,0)$, $\approx-1{,}8414$.</li>
+    <li><b>Conclusión.</b> Exactamente <b>dos</b> soluciones reales, una en $(-2,0)$ y otra en $(1,2)$. Con Rolle (U p.95): tres raíces darían dos ceros distintos de $f'$, pero $f'=e^x-1$ solo se anula en $x=0$.</li>
+  </ol>
+  <div class="recipe"><b>Receta (contar soluciones):</b> (1) escribe $f(x)=0$; (2) estudia el signo de $f'$ para partir $\mathbb R$ en intervalos de estricta monotonía (en cada uno, a lo sumo una raíz); (3) en cada intervalo busca un cambio de signo para que Bolzano dé la existencia.</div>
+  <div class="box warn"><span class="h">Erratas / avisos</span><p>La solución impresa concluye «existe al menos un $c\in[1,2]$»; Bolzano da el abierto $(1,2)$, más fuerte. En la misma página, la pregunta 3 (Taylor en $\sqrt3$) dice «derivadas en $x=2$» y llama $p_3$ a un polinomio de orden 2: son erratas ajenas a este tema.</p></div>
+</details>
+
+<div class="box tip"><span class="h">Tipos que también caen y no están en el PDF</span>
+  <p>Aunque en X el tema 2.5 apenas aparece, el tema y E (2.40-2.42, 2.45-2.47, 2.49) trabajan estos tipos, que conviene practicar:</p>
+  <ul>
+    <li>Desigualdades con el TVM (p. ej. $|\operatorname{sen}a-\operatorname{sen}b|\le|a-b|$, $\ln(1+x)\lt x$).</li>
+    <li>Hallar el $c$ del TVM para una función concreta (tipo Larson, $5-4/x$ en $[1,4]$).</li>
+    <li>Probar que una expresión es constante porque su derivada es $0$ (Teorema 2.4, tipo E 2.45 d).</li>
+    <li>V/F sobre las hipótesis de Rolle o del TVM con funciones a trozos o con $|\cdot|$ (tipo E 2.42, 2.49).</li>
+    <li>Número exacto de raíces de un polinomio (tipo $x^3+3x+1=0$).</li>
+    <li>El TVM en varias variables sí aparece en X (p.86, Septiembre 2017, Modelo A, P4), pero es del Tema 5.</li>
+  </ul></div>
+
+<h2 id="chuleta"><span class="n">12</span>Chuleta y lista de comprobación</h2>
 <table>
   <thead><tr><th>Resultado</th><th>Hipótesis</th><th>Conclusión</th></tr></thead>
   <tbody>
