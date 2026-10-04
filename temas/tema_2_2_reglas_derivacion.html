@@ -708,58 +708,76 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
 
 <details class="sol"><summary>Problema 1 — producto y cadena: $f(x)=x^2e^{\cos x}$ <span class="src" data-l="X" data-ref="X p.96 (Septiembre 2018, Grado en Ing. Mecánica, Modelo A, pregunta corta 2, 1 punto)">X p.96</span></summary>
   <p class="enun">Determine la derivada de la función $f(x)=x^2e^{\cos x}$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Es un <b>producto</b> de dos cosas ($x^2$ y $e^{\cos x}$): se usa la regla del producto, y la segunda cosa, que tiene algo «dentro», se deriva con la regla de la cadena.</p></div>
   <ol class="steps">
-    <li><b>Última operación.</b> $f$ es un <i>producto</i> de $u(x)=x^2$ y $v(x)=e^{\cos x}$: $f'=u'v+uv'$.</li>
-    <li>$u'(x)=2x$ (tabla: $(x^n)'=nx^{n-1}$).</li>
-    <li>$v$ es una composición (exterior $e^{(\cdot)}$, interior $\cos x$): $v'(x)=e^{\cos x}\cdot(\cos x)'=e^{\cos x}(-\operatorname{sen}x)$.</li>
-    <li>Juntando: $f'(x)=2x\,e^{\cos x}+x^2e^{\cos x}(-\operatorname{sen}x)$. Sacando factor común $e^{\cos x}$ (que nunca se anula):
-    $$f'(x)=e^{\cos x}\bigl(2x-x^2\operatorname{sen}x\bigr),\qquad x\in\mathbb R.$$</li>
-    <li><b>Dominio.</b> $f$ es producto y composición de funciones derivables en $\mathbb R$, luego es derivable en todo $\mathbb R$.</li>
+    <li><b>Regla del producto.</b> $f=u\cdot v$ con $u=x^2$ y $v=e^{\cos x}$, y $f'=u'v+uv'$.</li>
+    <li><b>Derivar $u$:</b> $u'=2x$.</li>
+    <li><b>Derivar $v$ con la cadena:</b> se deriva la exponencial dejando el interior igual, y se multiplica por la derivada del interior: $v'=e^{\cos x}\cdot(-\operatorname{sen}x)$.</li>
+    <li><b>Juntar:</b> $f'=2x\,e^{\cos x}+x^2e^{\cos x}(-\operatorname{sen}x)$.</li>
+    <li><b>Sacar factor común</b> $e^{\cos x}$ (opcional, queda más limpio).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> identifica la última operación (aquí producto); deriva cada factor por separado y, si un factor es una composición, aplica la cadena dentro.</div>
+  <p><b>Lo que escribes en el examen:</b> $$f'(x)=e^{\cos x}\bigl(2x-x^2\operatorname{sen}x\bigr),\qquad x\in\mathbb R$$ (es derivable en todo $\mathbb R$: producto y composición de funciones derivables).</p>
+  <div class="recipe"><b>Receta:</b> mira la última operación (aquí, producto); deriva cada factor y, si uno tiene algo dentro, multiplica por la derivada de lo de dentro.</div>
   <p><b>Error típico:</b> olvidar el signo de $(\cos x)'=-\operatorname{sen}x$. La solución impresa coincide.</p>
 </details>
 
 <details class="sol"><summary>Problema 2 — cadena con varias capas: $\operatorname{sen}\bigl[\cos^2(2/x)\bigr]$ <span class="src" data-l="X" data-ref="X p.52 (Septiembre 2015, Grado en Ing. Mecánica, Modelo A, pregunta corta 2, 1 punto)">X p.52</span></summary>
   <p class="enun">Calcular la derivada de la función $\operatorname{sen}\left[\cos^2\left(\dfrac{2}{x}\right)\right]$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Es como una muñeca rusa: una función dentro de otra dentro de otra. Se abre <b>de fuera hacia dentro</b>, se deriva cada capa y se <b>multiplican</b> todas las derivadas.</p></div>
   <ol class="steps">
-    <li><b>Dominio.</b> $2/x$ exige $x\neq0$; el resto está definido en $\mathbb R$. Dominio: $\mathbb R\setminus\{0\}$, y ahí todas las capas son derivables.</li>
-    <li><b>Capas</b> (de fuera hacia dentro), con $t=2/x$: (1) $\operatorname{sen}(w)$ con $w=\cos^2t$; (2) $w=z^2$ con $z=\cos t$; (3) $z=\cos t$; (4) $t=2x^{-1}$. Cuatro capas, cuatro factores.</li>
-    <li><b>Derivada de cada capa, evaluada en lo que tiene dentro:</b> $(\operatorname{sen}w)'=\cos\bigl[\cos^2(2/x)\bigr]$; $(z^2)'=2\cos(2/x)$; $(\cos t)'=-\operatorname{sen}(2/x)$; $(2x^{-1})'=-2/x^2$.</li>
-    <li><b>Multiplicar:</b> $$f'(x)=\cos\!\Bigl[\cos^2\tfrac2x\Bigr]\cdot2\cos\tfrac2x\cdot\Bigl(-\operatorname{sen}\tfrac2x\Bigr)\cdot\Bigl(-\tfrac{2}{x^2}\Bigr).$$</li>
-    <li>Los dos signos menos se cancelan y $2\cdot2=4$: $$f'(x)=\frac{4}{x^2}\cos\frac2x\,\operatorname{sen}\frac2x\,\cos\!\Bigl[\cos^2\frac2x\Bigr],\qquad x\neq0.$$ (Opcional: $2\operatorname{sen}a\cos a=\operatorname{sen}2a$ da $f'(x)=\frac{2}{x^2}\operatorname{sen}\frac4x\cos[\cos^2\frac2x]$.)</li>
+    <li><b>Contar las capas</b> (de fuera a dentro): $\operatorname{sen}(\cdots)$, luego $(\cdots)^2$, luego $\cos(\cdots)$, luego $2/x$. Son 4 capas, así que saldrán 4 factores.</li>
+    <li><b>Derivar cada capa</b> dejando intacto lo que tiene dentro:
+      <ul>
+        <li>$\operatorname{sen}$ da $\cos\bigl[\cos^2\frac2x\bigr]$;</li>
+        <li>el cuadrado da $2\cos\frac2x$;</li>
+        <li>$\cos$ da $-\operatorname{sen}\frac2x$;</li>
+        <li>$\frac2x=2x^{-1}$ da $-\frac2{x^2}$.</li>
+      </ul></li>
+    <li><b>Multiplicar los 4 factores.</b> Los dos signos menos se cancelan y $2\cdot2=4$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> con varias composiciones, escribe explícitamente las capas y multiplica una derivada por capa, cada una evaluada en lo que tiene dentro: $n$ capas, $n$ factores.</div>
-  <p><b>Error típico:</b> leer $\cos^2(2/x)$ como $\cos(\cos(2/x))$; perder la capa $2/x$ o su signo.</p>
-  <div class="box warn"><span class="h">Errata de la solución impresa</span><p>Coincide con el resultado, pero no indica el dominio $x\neq0$.</p></div>
+  <p><b>Lo que escribes en el examen:</b> $$f'(x)=\frac{4}{x^2}\cos\frac2x\,\operatorname{sen}\frac2x\,\cos\!\Bigl[\cos^2\frac2x\Bigr],\qquad x\neq0.$$ (Opcional: $2\operatorname{sen}a\cos a=\operatorname{sen}2a$ da $f'(x)=\frac{2}{x^2}\operatorname{sen}\frac4x\cos[\cos^2\frac2x]$.)</p>
+  <div class="recipe"><b>Receta:</b> escribe las capas y pon un factor por capa: $n$ capas, $n$ factores.</div>
+  <p><b>Error típico:</b> leer $\cos^2(2/x)$ como $\cos(\cos(2/x))$, o perder la capa $2/x$ o su signo.</p>
+  <div class="box warn"><span class="h">Errata de la solución impresa</span><p>No indica el dominio $x\neq0$ (el resultado coincide).</p></div>
 </details>
 
 <details class="sol"><summary>Problema 3 — arcotangente y cadena: $\operatorname{arctg}\sqrt{x^2-1}-\operatorname{sen}^2 3x$ <span class="src" data-l="X" data-ref="X p.46 (Septiembre 2014, Grado en Ing. Mecánica, Modelo A, pregunta corta 2, 1 punto)">X p.46</span></summary>
   <p class="enun">Calcular la derivada de $f(x)=\operatorname{arctg}\sqrt{x^2-1}-\operatorname{sen}^2 3x$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Son dos sumandos: se derivan por separado, cada uno con la regla de la cadena (de fuera hacia dentro), y se restan.</p></div>
   <ol class="steps">
-    <li><b>Dominio.</b> La raíz exige $x^2-1\ge0$, es decir $|x|\ge1$. Dominio de $f$: $(-\infty,-1]\cup[1,\infty)$.</li>
-    <li><b>Dónde vale la fórmula.</b> $\sqrt u$ sólo es derivable para $u>0$; la fórmula valdrá para $|x|>1$. En $x=\pm1$ la pendiente tiende a $\pm\infty$ (tangente vertical) y $f$ no es derivable.</li>
-    <li><b>Primer sumando</b> (capas $\operatorname{arctg}s$, $s=\sqrt u$, $u=x^2-1$): $(\operatorname{arctg}s)'=\dfrac1{1+s^2}=\dfrac1{1+(x^2-1)}=\dfrac1{x^2}$; $(\sqrt u)'=\dfrac1{2\sqrt{x^2-1}}$; $(x^2-1)'=2x$. Producto: $\dfrac1{x^2}\cdot\dfrac{2x}{2\sqrt{x^2-1}}=\dfrac{1}{x\sqrt{x^2-1}}$.</li>
-    <li><b>Segundo sumando</b> (capas $w^2$, $w=\operatorname{sen}v$, $v=3x$): $(\operatorname{sen}^2 3x)'=2\operatorname{sen}3x\cos3x\cdot3=6\operatorname{sen}3x\cos3x\;(=3\operatorname{sen}6x)$.</li>
-    <li><b>Resta:</b> $$f'(x)=\frac{1}{x\sqrt{x^2-1}}-6\operatorname{sen}3x\cos3x,\qquad |x|>1.$$</li>
-    <li><b>Control del signo.</b> Al simplificar $\frac{2x}{2x^2}=\frac1x$ se conserva el signo de $x$: para $x&lt;-1$ el primer término es negativo, como debe ser (si $x$ crece de $-3$ a $-1$, $x^2-1$ disminuye y $\operatorname{arctg}\sqrt{x^2-1}$ decrece). Por eso <b>no</b> se puede escribir $\frac{1}{\sqrt{x^4-x^2}}$ (siempre positivo).</li>
+    <li><b>Dónde existe.</b> La raíz pide $x^2-1\ge0$, o sea $|x|\ge1$. Pero $\sqrt{\ }$ no se puede derivar donde vale $0$, así que la fórmula valdrá para $|x|>1$ (en $x=\pm1$ la tangente es vertical y $f$ no es derivable).</li>
+    <li><b>Primer sumando, $\operatorname{arctg}\sqrt{x^2-1}$.</b> Tres capas, tres factores:
+      <ul>
+        <li>$\operatorname{arctg}$ da $\dfrac1{1+(x^2-1)}=\dfrac1{x^2}$ (se simplifica ya);</li>
+        <li>la raíz da $\dfrac1{2\sqrt{x^2-1}}$;</li>
+        <li>$x^2-1$ da $2x$.</li>
+      </ul>
+      Multiplicados: $\dfrac1{x^2}\cdot\dfrac{2x}{2\sqrt{x^2-1}}=\dfrac{1}{x\sqrt{x^2-1}}$.</li>
+    <li><b>Segundo sumando, $\operatorname{sen}^2 3x$.</b> Es $(\operatorname{sen}3x)^2$; tres capas: el cuadrado da $2\operatorname{sen}3x$, el seno da $\cos3x$, el $3x$ da $3$. Total: $6\operatorname{sen}3x\cos3x$.</li>
+    <li><b>Restar.</b></li>
   </ol>
-  <div class="recipe"><b>Receta:</b> separa sumandos; en cada uno, capas de fuera a dentro, usando $(\operatorname{arctg}u)'=\frac{u'}{1+u^2}$ y $(\sqrt u)'=\frac{u'}{2\sqrt u}$; simplifica $1+(\sqrt{\cdot})^2$ antes de multiplicar.</div>
-  <p><b>Error típico:</b> escribir $\frac{1}{\sqrt{x^4-x^2}}$, que pierde el signo para $x&lt;-1$.</p>
-  <div class="box warn"><span class="h">Erratas de la solución impresa</span><p>El resultado impreso es correcto, pero (a) en un paso intermedio la tipografía muestra $\sqrt{x^2-1}^{\,2}$ (que es $x^2-1$); (b) no indica el dominio ni que $f$ no es derivable en $x=\pm1$.</p></div>
+  <p><b>Lo que escribes en el examen:</b> $$f'(x)=\frac{1}{x\sqrt{x^2-1}}-6\operatorname{sen}3x\cos3x,\qquad |x|>1.$$</p>
+  <div class="recipe"><b>Receta:</b> separa los sumandos y, en cada uno, capas de fuera a dentro; usa $(\operatorname{arctg}u)'=\frac{u'}{1+u^2}$ y $(\sqrt u)'=\frac{u'}{2\sqrt u}$, y simplifica $1+(\sqrt{\cdot})^2$ antes de multiplicar.</div>
+  <p><b>Error típico:</b> escribir $\frac{1}{\sqrt{x^4-x^2}}$: siempre es positivo, pero para $x&lt;-1$ el término correcto $\frac1{x\sqrt{x^2-1}}$ es negativo. Deja $x$ sin meterla en la raíz.</p>
+  <div class="box warn"><span class="h">Erratas de la solución impresa</span><p>Resultado correcto, pero no indica el dominio ni que $f$ no es derivable en $x=\pm1$.</p></div>
 </details>
 
 <details class="sol"><summary>Problema 4 — cadena con función desconocida: $g(x)=\operatorname{sen}\bigl(f(5x^2-8)\bigr)$ <span class="src" data-l="X" data-ref="X p.144 (Febrero 2018, Primera Semana, I. Electrónica Industrial y Automática, pregunta corta 2, 1 punto)">X p.144</span></summary>
   <p class="enun">Sabiendo que $f$ es derivable y verifica $f(2)=\pi$ y $f'(2)=3$, calcular $g'(\sqrt2)$ siendo $g(x)=\operatorname{sen}\bigl(f(5x^2-8)\bigr)$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>No conocemos $f$, solo sus valores en $2$. Se deriva con la cadena <b>sin sustituir nada</b> y, al final, se ve que en $x=\sqrt2$ lo de dentro de $f$ vale justo $2$, el punto donde nos dan los datos.</p></div>
   <ol class="steps">
-    <li><b>Capas.</b> Exterior $\operatorname{sen}$; media $f$; interior $u(x)=5x^2-8$. Las tres son derivables (la de $f$ por hipótesis), así que la cadena se aplica.</li>
-    <li><b>Cadena en general</b> (sin sustituir todavía): $$g'(x)=\cos\bigl(f(5x^2-8)\bigr)\cdot f'(5x^2-8)\cdot10x.$$</li>
-    <li><b>Interior en el punto.</b> $u(\sqrt2)=5\cdot2-8=2$: justo el punto donde conocemos $f$ y $f'$ (señal de que vamos bien).</li>
-    <li><b>Sustituir:</b> $g'(\sqrt2)=\cos\bigl(f(2)\bigr)\cdot f'(2)\cdot10\sqrt2=\cos\pi\cdot3\cdot10\sqrt2$. Como $\cos\pi=-1$: $$g'(\sqrt2)=-30\sqrt2.$$</li>
+    <li><b>Derivar con la cadena</b> (tres capas: $\operatorname{sen}$, $f$ y $5x^2-8$): $$g'(x)=\cos\bigl(f(5x^2-8)\bigr)\cdot f'(5x^2-8)\cdot10x.$$</li>
+    <li><b>Ver qué vale lo de dentro en $x=\sqrt2$:</b> $5\cdot(\sqrt2)^2-8=5\cdot2-8=2$. Es el punto de los datos.</li>
+    <li><b>Sustituir</b> $f(2)=\pi$ y $f'(2)=3$: $g'(\sqrt2)=\cos\pi\cdot3\cdot10\sqrt2$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> con una $f$ «desconocida» dentro de una composición, aplica la cadena en general, sustituye el punto y comprueba que el argumento de $f$ y de $f'$ es justo el punto donde te dan los datos.</div>
-  <p><b>Error típico:</b> escribir $f'(\sqrt2)$ en lugar de $f'(u(\sqrt2))=f'(2)$.</p>
-  <div class="box warn"><span class="h">Errata de la solución impresa</span><p>El resultado coincide, pero escribe «$(g(\sqrt2))'$» por $g'(\sqrt2)$: abuso de notación (la derivada de la constante $g(\sqrt2)$ sería $0$).</p></div>
+  <p><b>Lo que escribes en el examen:</b> como $\cos\pi=-1$, $$g'(\sqrt2)=-30\sqrt2.$$</p>
+  <div class="recipe"><b>Receta:</b> deriva en general, calcula lo que vale el interior en el punto pedido y comprueba que coincide con el punto donde te dan los datos de $f$.</div>
+  <p><b>Error típico:</b> escribir $f'(\sqrt2)$ en lugar de $f'(2)$ (la $f'$ se evalúa en lo de dentro, no en $x$).</p>
+  <div class="box warn"><span class="h">Errata de la solución impresa</span><p>Escribe «$(g(\sqrt2))'$» por $g'(\sqrt2)$; el resultado coincide.</p></div>
   <p><b>Variantes del mismo tipo para practicar:</b></p>
   <ul>
     <li>$f(0)=1$, $f'(0)=-2$, $g(x)=f^2(\operatorname{sen}x)$: $g'(x)=2f(\operatorname{sen}x)\,f'(\operatorname{sen}x)\cos x$ y $g'(0)=-4$. Ojo: $f^2(\operatorname{sen}x)$ es $[f(\operatorname{sen}x)]^2$, no $f(f(\operatorname{sen}x))$. <span class="src" data-l="X" data-ref="X p.25 (Septiembre 2012 original, Ing. Mecánica, Modelo A, pregunta corta 1, 1 punto)">X p.25</span></li>
@@ -769,29 +787,35 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
 
 <details class="sol"><summary>Problema 5 — el problema «al revés»: hallar $g'(2)$ a partir de $f(x)=x\,g(2x)$ <span class="src" data-l="X" data-ref="X p.64 (Febrero 2016, Grado en Ing. Mecánica, Modelo B, pregunta corta 2, 1 punto)">X p.64</span></summary>
   <p class="enun">Se sabe que $f$ y $g$ son derivables, $g(2)=-1$, $f'(1)=2$ y que $f(x)=x\,g(2x)$. Calcule $g'(2)$. <i>Indicación:</i> aplique la regla de la cadena.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Se deriva la igualdad $f(x)=x\,g(2x)$ (producto y cadena) y se sustituye en el $x$ que hace que $g'$ aparezca justo en el punto pedido; ahí hay una ecuación con $g'(2)$ y se despeja.</p></div>
   <ol class="steps">
-    <li><b>Última operación.</b> $f$ es el <i>producto</i> de $x$ por $g(2x)$, y $g(2x)$ es una composición (exterior $g$, interior $2x$).</li>
-    <li><b>Derivar en general.</b> Producto: $f'(x)=1\cdot g(2x)+x\cdot\bigl(g(2x)\bigr)'$. Cadena: $\bigl(g(2x)\bigr)'=g'(2x)\cdot2$. Por tanto $$f'(x)=g(2x)+2x\,g'(2x).$$</li>
-    <li><b>Elegir el punto.</b> Queremos $g'(2)$, es decir $2x=2$, o sea $x=1$; y en $x=1$ conocemos $f'(1)$. Sustituyendo: $$f'(1)=g(2)+2\,g'(2)\;\Longrightarrow\;2=-1+2g'(2).$$</li>
-    <li><b>Despejar:</b> $2g'(2)=3$, luego $g'(2)=\tfrac32$.</li>
+    <li><b>Derivar con el producto:</b> $f'(x)=1\cdot g(2x)+x\cdot\bigl(g(2x)\bigr)'$.</li>
+    <li><b>Derivar $g(2x)$ con la cadena:</b> $g'(2x)\cdot2$. Queda $$f'(x)=g(2x)+2x\,g'(2x).$$</li>
+    <li><b>Elegir $x$.</b> Para tener $g'(2)$ hace falta $2x=2$, o sea $x=1$. Y en $x=1$ conocemos $f'(1)=2$.</li>
+    <li><b>Sustituir</b> $x=1$ y los datos $g(2)=-1$, $f'(1)=2$: $\;2=-1+2g'(2)$.</li>
+    <li><b>Despejar:</b> $2g'(2)=3$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> deriva la relación en general (producto + cadena), elige el $x$ que hace que el argumento de la función desconocida sea el pedido, sustituye los datos y despeja.</div>
-  <p><b>Error típico:</b> olvidar el factor $2$ de la derivada interior y obtener $g'(2)=3$. La solución impresa coincide.</p>
+  <p><b>Lo que escribes en el examen:</b> $f'(x)=g(2x)+2x\,g'(2x)$; en $x=1$: $2=-1+2g'(2)$, luego $g'(2)=\tfrac32$.</p>
+  <div class="recipe"><b>Receta:</b> deriva la relación en general, elige el $x$ que pone el punto pedido dentro de la función desconocida, sustituye los datos y despeja.</div>
+  <p><b>Error típico:</b> olvidar el factor $2$ de la derivada de $2x$ y obtener $g'(2)=3$. La solución impresa coincide.</p>
 </details>
 
 <details class="sol"><summary>Problema 6 — derivada segunda: $f(x)=\dfrac1{x^2+2x+1}+\cos(e^x)$ <span class="src" data-l="X" data-ref="X p.139 (Septiembre 2018, Grado en Ing. Mecánica, Modelo B, pregunta corta 2, 1 punto; el PDF no trae la solución)">X p.139</span></summary>
   <p class="enun">Sea $f(x)=\dfrac{1}{x^2+2x+1}+\cos(e^x)$. ¿Cuál es su derivada segunda?</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>La derivada segunda es <b>derivar dos veces</b>. Antes de empezar, el denominador se reconoce como un cuadrado, $(x+1)^2$, para tratarlo como una potencia y no usar la regla del cociente.</p></div>
   <ol class="steps">
-    <li><b>Simplificar antes de derivar.</b> $x^2+2x+1=(x+1)^2$, así que $\dfrac1{x^2+2x+1}=(x+1)^{-2}$. Dominio: $x\neq-1$. Como potencia, evitamos aplicar dos veces el cociente.</li>
-    <li><b>Primera derivada, primer sumando</b> (cadena con interior $x+1$, de derivada $1$): $\bigl((x+1)^{-2}\bigr)'=-2(x+1)^{-3}$.</li>
-    <li><b>Primera derivada, segundo sumando</b> (exterior $\cos$, interior $e^x$): $\bigl(\cos e^x\bigr)'=-e^x\operatorname{sen}(e^x)$.</li>
-    <li>Por tanto $f'(x)=-2(x+1)^{-3}-e^x\operatorname{sen}(e^x)$.</li>
-    <li><b>Derivada segunda</b> = derivar $f'$: $\bigl(-2(x+1)^{-3}\bigr)'=6(x+1)^{-4}$, y $e^x\operatorname{sen}(e^x)$ es un <i>producto</i>: $\bigl(e^x\operatorname{sen}(e^x)\bigr)'=e^x\operatorname{sen}(e^x)+e^x\cos(e^x)\,e^x=e^x\operatorname{sen}(e^x)+e^{2x}\cos(e^x)$.</li>
-    <li><b>Restando:</b> $$f''(x)=\frac{6}{(x+1)^4}-e^x\operatorname{sen}(e^x)-e^{2x}\cos(e^x),\qquad x\neq-1.$$</li>
+    <li><b>Reescribir:</b> $x^2+2x+1=(x+1)^2$, así que $\dfrac1{x^2+2x+1}=(x+1)^{-2}$ (dominio $x\neq-1$).</li>
+    <li><b>Primera derivada del primer sumando:</b> $\bigl((x+1)^{-2}\bigr)'=-2(x+1)^{-3}$.</li>
+    <li><b>Primera derivada del segundo sumando</b> (cadena: $\cos$ por fuera, $e^x$ por dentro): $\bigl(\cos e^x\bigr)'=-e^x\operatorname{sen}(e^x)$.</li>
+    <li><b>Segunda derivada del primer sumando:</b> $\bigl(-2(x+1)^{-3}\bigr)'=6(x+1)^{-4}$.</li>
+    <li><b>Segunda derivada del segundo sumando.</b> $-e^x\operatorname{sen}(e^x)$ es un <i>producto</i>; la derivada de $e^x\operatorname{sen}(e^x)$ es $e^x\operatorname{sen}(e^x)+e^x\cos(e^x)\,e^x$ (el último $e^x$ sale de la cadena). Con el signo menos delante queda $-e^x\operatorname{sen}(e^x)-e^{2x}\cos(e^x)$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> simplifica primero (factoriza el denominador y pásalo a potencia negativa); deriva una vez y, para la segunda, vuelve a mirar la última operación de cada término de $f'$ (aquí aparece un producto nuevo, $e^x\operatorname{sen}(e^x)$).</div>
-  <p><b>Error típico:</b> derivar $e^x\operatorname{sen}(e^x)$ como si fuera sólo $e^x\cos(e^x)e^x$ (olvidar la regla del producto).</p>
-  <div class="box warn"><span class="h">Sin solución impresa</span><p>El PDF deja vacío el apartado «Solución»; la de arriba es propia y verificada con sympy. La derivada segunda se define en U §3.1 p.104; aquí basta saber que es «derivar otra vez».</p></div>
+  <p><b>Lo que escribes en el examen:</b> $f'(x)=-2(x+1)^{-3}-e^x\operatorname{sen}(e^x)$ y $$f''(x)=\frac{6}{(x+1)^4}-e^x\operatorname{sen}(e^x)-e^{2x}\cos(e^x),\qquad x\neq-1.$$</p>
+  <div class="recipe"><b>Receta:</b> simplifica primero; deriva una vez; para la segunda, vuelve a mirar la última operación de cada término de $f'$ (aquí aparece un producto nuevo).</div>
+  <p><b>Error típico:</b> derivar $e^x\operatorname{sen}(e^x)$ sin la regla del producto (quedándose solo con $e^{2x}\cos(e^x)$).</p>
+  <div class="box warn"><span class="h">Sin solución impresa</span><p>El PDF no trae la solución; esta es propia y verificada con sympy.</p></div>
 </details>
 
 <div class="box tip"><span class="h">Tipos que también caen y no están en el PDF</span>

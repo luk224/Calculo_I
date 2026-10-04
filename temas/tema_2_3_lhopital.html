@@ -635,103 +635,138 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Examen 1 · $\tfrac00$: aplicar la regla dos veces <span class="src" data-l="X" data-ref="X p.88 (Febrero 2018, Grado Ing. Mecánica, cód. 68031029, Modelo A, pregunta corta 2, 1 punto)">X p.88</span></summary>
   <p class="enun">Calcule el límite $\displaystyle\lim_{x\to0}\frac{e^x-x-1}{x^2}$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Al sustituir $x=0$ sale $\tfrac00$, que no dice nada. La regla de L'Hôpital permite <b>derivar arriba y abajo</b> y volver a mirar; si sigue saliendo $\tfrac00$, se repite.</p></div>
   <ol class="steps">
-    <li><b>Sustituir primero.</b> Numerador: $e^0-0-1=0$; denominador: $0^2=0$. Es $\tfrac00$.</li>
-    <li><b>Condiciones.</b> $f(x)=e^x-x-1$ y $g(x)=x^2$ son derivables en $\mathbb R$; $g'(x)=2x\neq0$ para $x\neq0$ (que sea $0$ en el propio $0$ no importa).</li>
-    <li><b>Derivar arriba y abajo por separado</b> (no la regla del cociente): $\dfrac{f'(x)}{g'(x)}=\dfrac{e^x-1}{2x}$. Al sustituir vuelve a salir $\tfrac00$: todavía no sabemos si este límite existe.</li>
-    <li><b>Segunda aplicación.</b> $e^x-1$ y $2x$ son derivables, $(2x)'=2\neq0$, y es $\tfrac00$: $$\lim_{x\to0}\frac{e^x-1}{2x}=\lim_{x\to0}\frac{e^x}{2}=\frac12 .$$</li>
-    <li><b>Subir la cadena.</b> Como el último límite existe ($=\tfrac12$), la regla garantiza que el del paso 3 vale $\tfrac12$ y, por tanto, también el original: $$\lim_{x\to0}\frac{e^x-x-1}{x^2}=\frac12 .$$</li>
+    <li><b>Sustituir.</b> Arriba: $e^0-0-1=0$. Abajo: $0^2=0$. Sale $\tfrac00$, así que se puede usar la regla.</li>
+    <li><b>Derivar arriba y abajo por separado</b> (no es la regla del cociente): $\dfrac{e^x-1}{2x}$.</li>
+    <li><b>Sustituir otra vez.</b> Arriba: $e^0-1=0$. Abajo: $0$. Vuelve a salir $\tfrac00$: derivamos de nuevo.</li>
+    <li><b>Derivar otra vez:</b> $\dfrac{e^x}{2}$. Ahora ya no hay problema: en $x=0$ vale $\tfrac12$.</li>
   </ol>
-  <p><i>Alternativa con Taylor (tema 3.1):</i> $e^x=1+x+\tfrac{x^2}2+o(x^2)$.</p>
-  <div class="recipe"><b>Receta:</b> repite la regla mientras siga saliendo $\tfrac00$ o $\tfrac\infty\infty$, comprobando en cada paso que la derivada del denominador no se anula cerca del punto.</div>
-  <div class="box warn"><span class="h">Avisos sobre la solución impresa</span>
-    <p>Solución impresa correcta. Justifica la condición con «$x^2$ y $2x$ no se anulan cerca de $0$»; lo exacto es que no se anulen las <b>derivadas del denominador</b> ($2x$ y $2$) en un entorno perforado de $0$, que también es cierto.</p>
+  <div class="box thm"><span class="h">Lo que escribes en el examen</span>
+    <p>Es $\tfrac00$; aplicamos L'Hôpital (las derivadas del denominador, $2x$ y $2$, no se anulan cerca de $0$, salvo en $0$ mismo):
+    $$\lim_{x\to0}\frac{e^x-x-1}{x^2}\overset{L'H}{=}\lim_{x\to0}\frac{e^x-1}{2x}\overset{L'H}{=}\lim_{x\to0}\frac{e^x}{2}=\frac12 .$$</p>
+  </div>
+  <p><b>Resultado:</b> $\tfrac12$.</p>
+  <div class="recipe"><b>Receta:</b> sustituye; si sale $\tfrac00$ o $\tfrac\infty\infty$, deriva arriba y abajo y repite hasta que el límite se pueda calcular.</div>
+  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span>
+    <p>Correcta. Solo que la condición precisa es sobre las <b>derivadas</b> del denominador, no sobre el denominador.</p>
   </div>
   <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, regla y «aplicarla más de una vez», Ej. 2.9, pp. 82-83">U pp.82-83</span></p>
 </details>
 
 <details class="sol"><summary>Examen 2 · $\tfrac\infty\infty$ con exponenciales <span class="src" data-l="X" data-ref="X p.10 (Febrero 2011, 1ª semana, Ing. Mecánica, Modelo A, pregunta corta 2, 1 punto)">X p.10</span></summary>
   <p class="enun">Calcule el valor del límite $\displaystyle\lim_{x\to\infty}\frac{x+e^x}{2x+e^x}$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Para $x$ enorme, $e^x$ es gigantesca y $x$ es una miseria al lado. Por ejemplo, con $x=20$: $e^{20}\approx485\,000\,000$ frente a $20$. Así que arriba y abajo «casi solo hay $e^x$», y el cociente se acerca a $\tfrac{e^x}{e^x}=1$.</p></div>
   <ol class="steps">
-    <li><b>Tipo.</b> $x+e^x\to+\infty$ y $2x+e^x\to+\infty$: es $\tfrac\infty\infty$.</li>
-    <li><b>Condiciones.</b> Numerador y denominador derivables en $\mathbb R$; $g'(x)=2+e^x>0$ siempre.</li>
-    <li><b>Primera aplicación:</b> $\dfrac{1+e^x}{2+e^x}$, de nuevo $\tfrac\infty\infty$, y $(2+e^x)'=e^x\neq0$.</li>
-    <li><b>Segunda aplicación:</b> $\dfrac{e^x}{e^x}=1$ para todo $x$, luego su límite es $1$.</li>
-    <li>Subiendo la cadena (cada límite existe porque existe el siguiente): $\displaystyle\lim_{x\to\infty}\frac{x+e^x}{2x+e^x}=1$.</li>
+    <li><b>Tipo.</b> Arriba y abajo tienden a $+\infty$: es $\tfrac\infty\infty$.</li>
+    <li><b>Derivar arriba y abajo:</b> $\dfrac{1+e^x}{2+e^x}$. Sigue siendo $\tfrac\infty\infty$.</li>
+    <li><b>Derivar otra vez:</b> $\dfrac{e^x}{e^x}=1$ para todo $x$. Su límite es $1$.</li>
   </ol>
-  <p><b>Alternativa más segura</b> (receta del tema para exponenciales): dividir arriba y abajo por el término dominante $e^x$: $$\frac{x+e^x}{2x+e^x}=\frac{x/e^x+1}{2x/e^x+1}\longrightarrow\frac{0+1}{0+1}=1,$$ porque $\lim_{x\to\infty}x/e^x=\lim 1/e^x=0$ (regla, tipo $\tfrac\infty\infty$: «la exponencial gana siempre»).</p>
-  <div class="recipe"><b>Receta:</b> cociente de sumas con exponenciales en $\pm\infty$: divide por la exponencial dominante; usa la regla solo para los cocientes «potencia/exponencial» que queden.</div>
-  <div class="box warn"><span class="h">Avisos sobre la solución impresa</span>
-    <p>El solucionario escribe «el <b>numerador</b> no se anula si $x$ tiende a $\infty$» como condición de la regla. La hipótesis correcta es que <b>la derivada del denominador</b>, $g'(x)=2+e^x$, no se anule cerca de $\infty$ (se cumple). Aquí la regla funciona porque en el segundo paso $e^x/e^x$ se simplifica; en variantes como $\frac{e^x+e^{-x}}{e^x-e^{-x}}$ la regla da vueltas y hay que dividir.</p>
+  <div class="box thm"><span class="h">Lo que escribes en el examen</span>
+    <p>Es $\tfrac\infty\infty$; aplico L'Hôpital (la derivada del denominador, $2+e^x$, no se anula nunca):
+    $$\lim_{x\to\infty}\frac{x+e^x}{2x+e^x}\overset{L'H}{=}\lim_{x\to\infty}\frac{1+e^x}{2+e^x}\overset{L'H}{=}\lim_{x\to\infty}\frac{e^x}{e^x}=1 .$$</p>
+  </div>
+  <p><b>Resultado:</b> $1$.</p>
+  <p><b>Camino alternativo sin regla:</b> divide arriba y abajo entre $e^x$: $\dfrac{x/e^x+1}{2x/e^x+1}\to\dfrac{0+1}{0+1}=1$, porque $x/e^x\to0$ (la exponencial gana siempre).</p>
+  <div class="recipe"><b>Receta:</b> en un cociente con exponenciales cuando $x\to\infty$, divide entre la exponencial; o aplica la regla hasta que las exponenciales se simplifiquen.</div>
+  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span>
+    <p>La condición de la regla es sobre la <b>derivada del denominador</b> ($2+e^x\neq0$), no sobre «el numerador».</p>
   </div>
   <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, regla con x→∞ (nota al margen), p. 82">U p.82</span> y el error típico «la regla da vueltas» <span class="src" data-l="S" data-ref="Stewart §4.4, Ejemplo 5, pp. 304-305">S pp.304-305</span></p>
 </details>
 
 <details class="sol"><summary>Examen 3 · $\infty-\infty$: restar y aplicar la regla <span class="src" data-l="X" data-ref="X p.104 (examen sin fecha, I. Electrónica Industrial y Automática, pregunta corta 1, 1 punto)">X p.104</span></summary>
   <p class="enun">Calcule el límite $\displaystyle\lim_{x\to0}\left(\frac1x-\frac1{1-\cos x}\right)$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Una resta $\infty-\infty$ no se puede resolver tal cual. Se <b>junta en una sola fracción</b> y entonces sale un $\tfrac00$ que ya sabemos tratar con L'Hôpital.</p></div>
   <ol class="steps">
-    <li><b>Qué tipo es.</b> Por la derecha: $\frac1x\to+\infty$ y $\frac1{1-\cos x}\to+\infty$ ($1-\cos x>0$ para $0<|x|<2\pi$): es $\infty-\infty$. Por la izquierda: $\frac1x\to-\infty$ y queda $-\infty-(+\infty)=-\infty$, que <b>no</b> es indeterminado.</li>
-    <li><b>Hacer la resta</b> (denominador común): $$\frac1x-\frac1{1-\cos x}=\frac{1-\cos x-x}{x(1-\cos x)} .$$ En $x\to0$ es $\tfrac00$.</li>
-    <li><b>Condiciones.</b> $f(x)=1-\cos x-x$ y $g(x)=x(1-\cos x)$ son derivables; $g'(x)=(1-\cos x)+x\operatorname{sen}x$. Para $0<|x|<\pi$: $1-\cos x>0$ y $x\operatorname{sen}x>0$ ($x$ y $\operatorname{sen}x$ tienen el mismo signo), luego $g'(x)>0$: no se anula cerca de $0$.</li>
-    <li><b>Derivar:</b> $$\frac{f'(x)}{g'(x)}=\frac{\operatorname{sen}x-1}{(1-\cos x)+x\operatorname{sen}x}.$$ Numerador $\to-1$; denominador $\to0$ <b>por valores positivos</b>. Es «$\frac{-1}{0^+}$», no indeterminado: tiende a $-\infty$ por ambos lados.</li>
-    <li><b>Conclusión.</b> La regla vale también si $\ell=-\infty$ ($\ell\in\overline{\mathbb R}$): $$\lim_{x\to0}\left(\frac1x-\frac1{1-\cos x}\right)=-\infty .$$</li>
+    <li><b>Juntar</b> las dos fracciones (denominador común): $$\frac1x-\frac1{1-\cos x}=\frac{1-\cos x-x}{x(1-\cos x)} .$$</li>
+    <li><b>Sustituir $x=0$.</b> Arriba: $1-1-0=0$. Abajo: $0\cdot0=0$. Sale $\tfrac00$.</li>
+    <li><b>Derivar arriba y abajo.</b> Arriba: $\operatorname{sen}x-1$. Abajo (regla del producto): $(1-\cos x)+x\operatorname{sen}x$.</li>
+    <li><b>Sustituir $x=0$ en lo nuevo.</b> Arriba: $0-1=-1$. Abajo: $0$. Es «$\tfrac{-1}{0}$», que ya no es indeterminado: hay que ver el <b>signo</b> del $0$.</li>
+    <li><b>Signo del denominador.</b> Cerca de $0$ (con $x\ne0$), $1-\cos x>0$, y $x\operatorname{sen}x>0$ porque $x$ y $\operatorname{sen}x$ tienen el mismo signo. El denominador es positivo: $\tfrac{-1}{0^+}=-\infty$.</li>
   </ol>
-  <p>Intuición: $\frac1{1-\cos x}\approx\frac2{x^2}$ crece mucho más rápido que $\frac1x$.</p>
-  <div class="recipe"><b>Receta:</b> $\infty-\infty$: junta en una sola fracción, aplica la regla al $\tfrac00$ resultante y, si sale «número$/0$», estudia el <b>signo</b> del $0$.</div>
-  <div class="box warn"><span class="h">Avisos sobre la solución impresa</span>
-    <p>Solución impresa correcta (justifica el signo con «$x\operatorname{sen}x$ no toma valores negativos»). No comenta que por la izquierda no hay indeterminación; el resultado no cambia.</p>
+  <div class="box thm"><span class="h">Lo que escribes en el examen</span>
+    <p>$$\lim_{x\to0}\left(\frac1x-\frac1{1-\cos x}\right)=\lim_{x\to0}\frac{1-\cos x-x}{x(1-\cos x)}\overset{L'H}{=}\lim_{x\to0}\frac{\operatorname{sen}x-1}{(1-\cos x)+x\operatorname{sen}x}=\frac{-1}{0^+}=-\infty .$$ (El denominador es $>0$ cerca de $0$, con $x\neq0$.)</p>
+  </div>
+  <p><b>Resultado:</b> $-\infty$.</p>
+  <div class="recipe"><b>Receta:</b> $\infty-\infty$: junta en una fracción, aplica la regla al $\tfrac00$ y, si sale «número$/0$», mira el <b>signo</b> del $0$.</div>
+  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span>
+    <p>Correcta. No comenta que por la izquierda no hay indeterminación; el resultado es el mismo.</p>
   </div>
   <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, ∞−∞, Ej. 2.10, pp. 83-84">U pp.83-84</span></p>
 </details>
 
 <details class="sol"><summary>Examen 4 · $0^0$: exponencial y $0\cdot\infty$ <span class="src" data-l="X" data-ref="X p.8 (Septiembre 2010, Grado Ing. Eléctrica, cód. 63011021, ejercicio 5, 3 puntos)">X p.8</span></summary>
   <p class="enun">Calcule $\displaystyle\lim_{x\to0^+}x^{x^2}$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Una potencia con $0^0$ es difícil de manejar. Escribimos $x^{x^2}=e^{x^2\ln x}$ y calculamos solo el <b>exponente</b> $x^2\ln x$, que ya es un límite normal; al final se pone $e^{\text{(resultado)}}$.</p></div>
   <ol class="steps">
-    <li><b>Tipo.</b> Base $x\to0^+$, exponente $x^2\to0$: es $0^0$. La función solo tiene sentido para $x>0$ (por eso el límite es lateral).</li>
-    <li><b>Pasar a exponencial.</b> Para $x>0$, $x^{x^2}=e^{x^2\ln x}$. Como $e^t$ es continua (U Prop. 1.14, p. 51), basta calcular $L=\lim_{x\to0^+}x^2\ln x$; el resultado será $e^L$.</li>
-    <li><b>El exponente es $0\cdot(-\infty)$.</b> Pasarlo a cociente poniendo <b>abajo la potencia</b> (su inversa se deriva fácil; la del logaritmo, no): $$x^2\ln x=\frac{\ln x}{1/x^2}=\frac{\ln x}{x^{-2}},\qquad \text{tipo }\frac{-\infty}{+\infty}.$$</li>
-    <li><b>Regla.</b> $(\ln x)'=\frac1x$, $(x^{-2})'=-2x^{-3}\neq0$ para $x>0$: $$\lim_{x\to0^+}\frac{1/x}{-2/x^3}=\lim_{x\to0^+}\left(-\frac{x^2}{2}\right)=0 .$$ Simplificar antes de pasar al límite evita derivar otra vez.</li>
-    <li><b>Volver.</b> $L=0$, luego $\displaystyle\lim_{x\to0^+}x^{x^2}=e^0=1$.</li>
+    <li><b>Pasar a exponencial.</b> Para $x>0$: $x^{x^2}=e^{x^2\ln x}$. Hay que hallar $L=\lim_{x\to0^+}x^2\ln x$; la respuesta será $e^L$.</li>
+    <li><b>Ver qué tipo es el exponente.</b> $x^2\to0$ y $\ln x\to-\infty$: es $0\cdot\infty$. Se pasa a fracción poniendo la potencia abajo: $$x^2\ln x=\frac{\ln x}{x^{-2}},\qquad\text{tipo }\tfrac{-\infty}{+\infty}.$$</li>
+    <li><b>Derivar arriba y abajo.</b> $(\ln x)'=\frac1x$ y $(x^{-2})'=-2x^{-3}$: $$\frac{1/x}{-2/x^3}=-\frac{x^2}{2}.$$</li>
+    <li><b>Sustituir.</b> $-\frac{x^2}{2}\to0$, luego $L=0$.</li>
+    <li><b>Volver a la exponencial:</b> $e^{L}=e^0=1$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> $f^g$ con $0^0$, $\infty^0$ o $1^\infty$: escribe $f^g=e^{g\ln f}$, calcula $L=\lim g\ln f$ (será $0\cdot\infty$, que se pasa a cociente) y el resultado es $e^L$.</div>
-  <div class="box warn"><span class="h">Avisos sobre la solución impresa</span>
-    <p>El solucionario escribe «suponemos que tiene límite y es $l$» y toma $\ln l=\lim\ln x^{x^2}$: da por supuesto que el límite existe y es positivo, que es justo lo que hay que demostrar. Es más riguroso el paso 2 ($x^{x^2}=e^{x^2\ln x}$ y continuidad de la exponencial). Además remite a la «página 260» de un libro de ejercicios antiguo (no corresponde a E 24-25).</p>
+  <div class="box thm"><span class="h">Lo que escribes en el examen</span>
+    <p>$$x^{x^2}=e^{x^2\ln x},\qquad \lim_{x\to0^+}x^2\ln x=\lim_{x\to0^+}\frac{\ln x}{x^{-2}}\overset{L'H}{=}\lim_{x\to0^+}\frac{1/x}{-2x^{-3}}=\lim_{x\to0^+}\left(-\frac{x^2}{2}\right)=0.$$ Como $e^t$ es continua, $\displaystyle\lim_{x\to0^+}x^{x^2}=e^0=1$.</p>
+  </div>
+  <p><b>Resultado:</b> $1$.</p>
+  <div class="recipe"><b>Receta:</b> $0^0$, $\infty^0$, $1^\infty$: escribe $f^g=e^{g\ln f}$, calcula el límite de $g\ln f$ (pasando a fracción) y pon $e$ elevado al resultado.</div>
+  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span>
+    <p>Supone que el límite existe («suponemos que es $l$»). Mejor el camino de arriba, que no supone nada.</p>
   </div>
   <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, 0·∞ y potencias, Ej. 2.11 y 2.12, pp. 84-85">U pp.84-85</span></p>
 </details>
 
 <details class="sol"><summary>Examen 5 · $1^\infty$ en $x\to\infty$ <span class="src" data-l="X" data-ref="X p.132 (Septiembre 2017, I. Electrónica Industrial y Automática, pregunta corta 1, 1 punto)">X p.132</span></summary>
   <p class="enun">Calcule el límite $\displaystyle\lim_{x\to\infty}\left(\frac{x-1}{x+2}\right)^x$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Es el truco de la potencia otra vez: se escribe $f^g=e^{g\ln f}$ y se calcula solo el exponente. Aquí la base se acerca a $1$ y el exponente crece sin parar ($1^\infty$).</p></div>
   <ol class="steps">
-    <li><b>Tipo.</b> $\frac{x-1}{x+2}\to1$ y el exponente $x\to\infty$: es $1^\infty$. Para $x>1$ la base es positiva.</li>
-    <li><b>Exponencial.</b> $\left(\frac{x-1}{x+2}\right)^x=e^{\,x\ln\frac{x-1}{x+2}}$. Hay que hallar $L=\lim_{x\to\infty}x\ln\frac{x-1}{x+2}$, de tipo $\infty\cdot0$.</li>
-    <li><b>A cociente:</b> $x\ln\frac{x-1}{x+2}=\dfrac{\ln(x-1)-\ln(x+2)}{1/x}$, tipo $\tfrac00$ (separar el logaritmo simplifica la derivada).</li>
-    <li><b>Regla.</b> Numerador: $\frac1{x-1}-\frac1{x+2}=\frac{3}{(x-1)(x+2)}$; denominador: $-\frac1{x^2}\neq0$. Cociente: $$\frac{3/((x-1)(x+2))}{-1/x^2}=\frac{-3x^2}{x^2+x-2}\longrightarrow-3 .$$</li>
-    <li><b>Resultado:</b> $\displaystyle\lim_{x\to\infty}\left(\frac{x-1}{x+2}\right)^x=e^{-3}$.</li>
+    <li><b>Pasar a exponencial.</b> $\left(\frac{x-1}{x+2}\right)^x=e^{\,x\ln\frac{x-1}{x+2}}$. Hay que hallar $L=\lim_{x\to\infty}x\ln\frac{x-1}{x+2}$.</li>
+    <li><b>Pasar a fracción.</b> $x$ pasa abajo como $\frac1x$, y el logaritmo se separa en dos: $$L=\lim\frac{\ln(x-1)-\ln(x+2)}{1/x},\qquad\text{tipo }\tfrac00.$$</li>
+    <li><b>Derivar arriba y abajo.</b> Arriba: $\frac1{x-1}-\frac1{x+2}=\frac{3}{(x-1)(x+2)}$. Abajo: $-\frac1{x^2}$.</li>
+    <li><b>Dividir y simplificar:</b> $\dfrac{3/((x-1)(x+2))}{-1/x^2}=\dfrac{-3x^2}{x^2+x-2}$.</li>
+    <li><b>Límite.</b> Con $x$ enorme, $x^2+x-2\approx x^2$, así que el cociente tiende a $-3$. Luego $L=-3$.</li>
+    <li><b>Volver:</b> el resultado es $e^{L}=e^{-3}$.</li>
   </ol>
-  <p><b>Solución del solucionario (Prop. 2.2, número $e$).</b> $\frac{x-1}{x+2}=1+\frac1{(x+2)/(-3)}$; con $f(x)=\frac{x+2}{-3}\to-\infty$ se fuerza el exponente, $x=f(x)\cdot\frac{-3x}{x+2}$, y $$\left[\left(1+\tfrac1{f(x)}\right)^{f(x)}\right]^{\frac{-3x}{x+2}}\to e^{\lim\frac{-3x}{x+2}}=e^{-3}.$$ Atajo equivalente: $e^{\lim g(f-1)}$ con $g(f-1)=x\cdot\frac{-3}{x+2}\to-3$.</p>
-  <div class="recipe"><b>Receta:</b> $1^\infty$: $e^{L}$ con $L=\lim g\ln f$ (o el atajo $L=\lim g\,(f-1)$).</div>
-  <div class="box warn"><span class="h">Avisos sobre la solución impresa</span>
-    <p>Resultado impreso correcto. El último paso del solucionario (base y exponente variables a la vez: $(\dots)^{a(x)}\to e^{\lim a(x)}$) se justifica escribiendo $e^{a(x)\ln b(x)}$ y usando la continuidad de la exponencial; el solucionario no lo dice.</p>
+  <div class="box thm"><span class="h">Lo que escribes en el examen</span>
+    <p>$$\left(\frac{x-1}{x+2}\right)^x=e^{x\ln\frac{x-1}{x+2}},\quad \lim_{x\to\infty}\frac{\ln(x-1)-\ln(x+2)}{1/x}\overset{L'H}{=}\lim_{x\to\infty}\frac{-3x^2}{x^2+x-2}=-3.$$ Por la continuidad de $e^t$, el límite pedido es $e^{-3}$.</p>
+  </div>
+  <p><b>Resultado:</b> $e^{-3}$. (El solucionario lo hace con el número $e$, Prop. 2.2: base $=1+\frac{-3}{x+2}$ y exponente reescrito; vale igual, pero es más fácil equivocarse.)</p>
+  <div class="recipe"><b>Receta:</b> $1^\infty$: $e^{L}$ con $L=\lim g\ln f$, pasando $g$ a fracción. Atajo: $L=\lim g\,(f-1)$, que aquí es $x\cdot\frac{-3}{x+2}\to-3$.</div>
+  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span>
+    <p>Resultado correcto. No explica por qué se puede pasar al límite del exponente (continuidad de $e^t$).</p>
   </div>
   <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, 1^∞ con logaritmos y Proposición 2.2, p. 85">U p.85</span></p>
 </details>
 
 <details class="sol"><summary>Examen 6 · la regla dentro de un problema de continuidad y derivabilidad <span class="src" data-l="X" data-ref="X pp.86-87 (Septiembre 2017, Grado Ing. Mecánica, cód. 68031029, Modelo A, ejercicio 5, 3 puntos: (a) 1, (b) 0.75, (c) 1.25)">X pp.86-87</span></summary>
   <p class="enun">Dada $f(x)=\dfrac{x}{e^x-1}$ si $x\neq0$, $f(0)=1$. (a) (1 punto) Demuestre que es continua en $\mathbb R$. (b) (0.75 puntos) Demuestre que tiene derivada continua en $\mathbb R-\{0\}$. (c) (1.25 puntos) Demuestre que la derivada es continua en $x=0$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>La función cambia de fórmula en $x=0$, y justo ahí la fórmula da $\tfrac00$. Así que en $0$ hay que comprobar tres cosas con límites: que $f$ encaja (a), que $f'$ existe y cuánto vale (c) y que $f'$ también encaja; la regla de L'Hôpital resuelve cada límite.</p></div>
   <ol class="steps">
-    <li><b>(a) Fuera de $0$.</b> Si $x\neq0$, $e^x\neq1$: $f$ es cociente de continuas con denominador no nulo, luego continua.</li>
-    <li><b>(a) En $0$.</b> Hay que ver $\lim_{x\to0}f(x)=f(0)=1$. Es $\tfrac00$; $(e^x-1)'=e^x\neq0$; regla: $$\lim_{x\to0}\frac{x}{e^x-1}=\lim_{x\to0}\frac1{e^x}=1=f(0).$$ Luego $f$ es continua en $\mathbb R$.</li>
-    <li><b>(b)</b> Para $x\neq0$, por la regla del cociente (U §2.2): $$f'(x)=\frac{(e^x-1)-xe^x}{(e^x-1)^2},$$ cociente de continuas con denominador $\neq0$ si $x\neq0$: $f'$ es continua en $\mathbb R-\{0\}$.</li>
-    <li><b>(c) Existencia de $f'(0)$ por la definición</b> (la fórmula de (b) no vale en $0$): $$f'(0)=\lim_{h\to0}\frac{f(h)-f(0)}{h}=\lim_{h\to0}\frac{\frac{h}{e^h-1}-1}{h}=\lim_{h\to0}\frac{h-e^h+1}{h(e^h-1)}\quad\left(\tfrac00\right).$$</li>
-    <li><b>Regla (1ª vez).</b> Numerador derivado: $1-e^h$; denominador derivado: $(e^h-1)+he^h$. Sigue $\tfrac00$. La derivada de ese denominador, $(2+h)e^h$, es $>0$ para $h>-2$: $(e^h-1)+he^h$ es estrictamente creciente allí y solo se anula en $h=0$, así que la condición «$g'\neq0$ cerca de $0$» se cumple.</li>
-    <li><b>Regla (2ª vez).</b> $$\lim_{h\to0}\frac{-e^h}{e^h+e^h+he^h}=\lim_{h\to0}\frac{-1}{2+h}=-\frac12 .$$ Por tanto $f'(0)=-\tfrac12$.</li>
-    <li><b>(c) Continuidad de $f'$ en $0$:</b> falta $\lim_{x\to0}f'(x)=-\tfrac12$. Con $N=e^x-1-xe^x$, $D=(e^x-1)^2$ (tipo $\tfrac00$): $N'=-xe^x$, $D'=2(e^x-1)e^x\neq0$ si $x\neq0$. Entonces $$\frac{N'}{D'}=\frac{-xe^x}{2(e^x-1)e^x}=-\frac12\cdot\frac{x}{e^x-1}\longrightarrow-\frac12\cdot1=-\frac12,$$ usando el límite del paso 2. Así $\lim_{x\to0}f'(x)=f'(0)$: $f'$ es continua en $0$.</li>
+    <li><b>(a) Fuera de $0$.</b> Si $x\neq0$, entonces $e^x\neq1$: $f$ es un cociente de funciones continuas con denominador no nulo, luego es continua.</li>
+    <li><b>(a) En $0$: qué hay que probar.</b> Que $\lim_{x\to0}f(x)=f(0)=1$.</li>
+    <li><b>(a) Calcular el límite.</b> Al sustituir sale $\tfrac00$. Derivando arriba y abajo: $\dfrac{1}{e^x}\to1$. Coincide con $f(0)$: $f$ es continua en $\mathbb R$.</li>
+    <li><b>(b) Derivar fuera de $0$</b> con la regla del cociente: $$f'(x)=\frac{(e^x-1)-xe^x}{(e^x-1)^2}.$$ Es cociente de continuas con denominador $\neq0$ si $x\neq0$: $f'$ es continua en $\mathbb R-\{0\}$.</li>
+    <li><b>(c) Valor de $f'(0)$.</b> La fórmula del paso anterior no vale en $0$: se usa la definición, $f'(0)=\lim_{h\to0}\frac{f(h)-f(0)}{h}$. Escribiendo $f(h)-1$ con denominador común queda $$f'(0)=\lim_{h\to0}\frac{h-e^h+1}{h(e^h-1)}\quad\left(\tfrac00\right).$$</li>
+    <li><b>(c) L'Hôpital, 1ª vez.</b> Arriba: $1-e^h$. Abajo (producto): $(e^h-1)+he^h$. Sigue saliendo $\tfrac00$.</li>
+    <li><b>(c) L'Hôpital, 2ª vez.</b> Arriba: $-e^h$. Abajo: $(2+h)e^h$. El cociente $\dfrac{-1}{2+h}$ tiende a $-\tfrac12$. Luego $f'(0)=-\tfrac12$.</li>
+    <li><b>(c) ¿Es continua $f'$ en $0$?</b> Falta ver que $\lim_{x\to0}f'(x)=-\tfrac12$. Sustituyendo en la fórmula de (b) sale $\tfrac00$.</li>
+    <li><b>Derivar arriba y abajo.</b> Arriba: $-xe^x$. Abajo: $2(e^x-1)e^x$. Se simplifica $e^x$: $$\frac{-xe^x}{2(e^x-1)e^x}=-\frac12\cdot\frac{x}{e^x-1}.$$</li>
+    <li><b>Límite.</b> $\dfrac{x}{e^x-1}\to1$ (paso 3), así que todo tiende a $-\tfrac12=f'(0)$. Luego $f'$ es continua en $0$.</li>
   </ol>
+  <div class="box thm"><span class="h">Lo que escribes en el examen</span>
+    <p>(a) $\displaystyle\lim_{x\to0}\frac{x}{e^x-1}\overset{L'H}{=}\lim_{x\to0}\frac1{e^x}=1=f(0)$. (c) $\displaystyle f'(0)=\lim_{h\to0}\frac{h-e^h+1}{h(e^h-1)}\overset{L'H}{=}\lim_{h\to0}\frac{1-e^h}{(e^h-1)+he^h}\overset{L'H}{=}\lim_{h\to0}\frac{-e^h}{(2+h)e^h}=-\frac12$, y $\displaystyle\lim_{x\to0}f'(x)\overset{L'H}{=}\lim_{x\to0}\frac{-xe^x}{2(e^x-1)e^x}=-\frac12\lim_{x\to0}\frac{x}{e^x-1}=-\frac12$.</p>
+  </div>
   <p><i>Alternativa con Taylor (tema 3.1):</i> $\frac{x}{e^x-1}=1-\frac x2+O(x^2)$ da directamente $f'(0)=-\tfrac12$.</p>
   <div class="recipe"><b>Receta:</b> función a trozos con $\tfrac00$ en el punto de unión: continuidad = un límite con la regla; $f'(a)$ = <b>definición</b> (cociente incremental, otra vez con la regla); continuidad de $f'$ = calcular $\lim f'(x)$ y compararlo con $f'(a)$.</div>
   <div class="box warn"><span class="h">Avisos sobre la solución impresa</span>
-    <p>Resultados impresos correctos. En el último límite el solucionario pasa de $\frac{-xe^x}{2(e^x-1)e^x}$ a $\frac{-1}{2e^x}$ sin decirlo: ha simplificado $e^x$ y aplicado la regla otra vez. Tampoco comprueba la condición sobre la derivada del denominador (paso 5).</p>
+    <p>Resultados impresos correctos. En el último límite el solucionario salta de $\frac{-xe^x}{2(e^x-1)e^x}$ a $\frac{-1}{2e^x}$ sin explicarlo (simplifica $e^x$ y aplica la regla otra vez).</p>
   </div>
   <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, regla varias veces, pp. 82-83">U pp.82-83</span> (más derivada por definición, U §2.1, y regla del cociente, U §2.2)</p>
 </details>

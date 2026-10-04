@@ -580,40 +580,44 @@
 
 <details class="sol" id="ex-1"><summary>Examen 1 · escribir el resto de Lagrange <span class="src" data-l="X" data-ref="X p.46 (Septiembre 2014, Grado en Ing. Mecánica, Modelo A, pregunta corta 3, 1 punto)">X p.46</span></summary>
   <p class="enun">Sea $p_3(x)$ el polinomio de Taylor de orden 3, centrado en $x_0=0$, de la función $f:[-1,2]\to\mathbb{R}$, que es cuatro veces derivable con continuidad en $[-1,2]$. Indique la expresión del error cometido al aproximar $f$ por $p_3$ en un punto $x$ del intervalo $[-1,2]$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>El error de $p_3$ es «el término que viene después» ($x^4$), pero con la derivada cuarta evaluada en un punto $c$ que no conocemos.</p></div>
   <ol class="steps">
-    <li><b>Hipótesis.</b> $f^{(4}$ existe y es continua en $[-1,2]$ y $x_0=0$ está en el intervalo: son las de la Proposición 3.2 de U con $n=3$.</li>
-    <li><b>Error.</b> Es el resto $R_3(x)=f(x)-p_3(x)$.</li>
-    <li><b>Teorema de Taylor.</b> Para cada $x\in[-1,2]$ existe $c$ entre $0$ y $x$ con
-    $$R_3(x)=\frac{f^{(4}(c)}{4!}(x-0)^4=\frac{f^{(4}(c)}{24}\,x^4 .$$</li>
-    <li><b>Matiz.</b> $c$ depende de $x$ y no se conoce; solo se sabe que está entre $0$ y $x$ (si $x=0$, el error es $0$).</li>
+    <li><b>Qué es el error.</b> Es lo que le falta a $p_3$ para ser $f$: $R_3(x)=f(x)-p_3(x)$.</li>
+    <li><b>Qué orden toca.</b> $p_3$ llega hasta la derivada 3, así que el error lleva la derivada <b>4</b> y $(x-0)^4$.</li>
+    <li><b>Se escribe la fórmula</b> (Teorema de Taylor, que se puede usar porque $f$ es cuatro veces derivable con continuidad):</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> el error de $p_n$ es «el siguiente término del polinomio con la derivada evaluada en un $c$ desconocido»: $\frac{f^{(n+1}(c)}{(n+1)!}(x-x_0)^{n+1}$, con $c$ entre $x_0$ y $x$.</div>
-  <p><b>Error típico:</b> poner $f^{(3}$ o $3!$ (confundir el orden del polinomio con el del resto) o escribir $f^{(4}(x)$ o $f^{(4}(0)$ en lugar de $f^{(4}(c)$. La solución impresa es correcta pero muy escueta.</p>
+  <p><b>Lo que escribes en el examen:</b> para cada $x\in[-1,2]$ existe $c$ entre $0$ y $x$ con
+  $$R_3(x)=f(x)-p_3(x)=\frac{f^{(4}(c)}{4!}\,x^4=\frac{f^{(4}(c)}{24}\,x^4 .$$</p>
+  <div class="recipe"><b>Receta:</b> el error de $p_n$ es $\frac{f^{(n+1}(c)}{(n+1)!}(x-x_0)^{n+1}$, con $c$ entre $x_0$ y $x$.</div>
+  <p><b>Error típico:</b> poner $f^{(3}$ o $3!$, o $f^{(4}(x)$ o $f^{(4}(0)$ en vez de $f^{(4}(c)$.</p>
   <p><b>Teoría:</b> §3 (U Prop. 3.2 y Def. 3.3, p. 111).</p>
 </details>
 
 <details class="sol" id="ex-2"><summary>Examen 2 · ¿es compatible un polinomio con la recta tangente? <span class="src" data-l="X" data-ref="X pp.126-127 (sin fecha, I. Electrónica Industrial y Automática, examen que empieza en p. 126, pregunta corta 3, 1 punto)">X pp.126-127</span></summary>
   <p class="enun">La recta tangente a la gráfica de la función $f(x)$, derivable en todo $\mathbb{R}$, en $(\pi^2,f(\pi^2))$ es $y=2(x-\pi^2)+1$. ¿Puede ser $p_2(x)=(x-\pi^2)^2+2\pi^2+1$ el polinomio de Taylor de $f$ en $x=\pi^2$ de orden 2? ¿Por qué?</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Los dos primeros términos de un polinomio de Taylor son siempre la recta tangente; si el polinomio del enunciado no empieza como la tangente, no puede ser el de Taylor.</p></div>
   <ol class="steps">
-    <li><b>Datos de la tangente.</b> $y=f(x_0)+f'(x_0)(x-x_0)$; comparando con $y=1+2(x-\pi^2)$: $f(\pi^2)=1$ y $f'(\pi^2)=2$.</li>
-    <li><b>Forma obligada de $p_2$.</b>
-    $$p_2(x)=1+2(x-\pi^2)+\frac{f''(\pi^2)}{2!}(x-\pi^2)^2 .$$
-    Es decir, $p_1$ <b>es</b> la recta tangente y $p_2$ solo añade el término cuadrático.</li>
-    <li><b>El candidato en potencias de $(x-\pi^2)$:</b> $(2\pi^2+1)+0\cdot(x-\pi^2)+1\cdot(x-\pi^2)^2$. No hay que confundir la constante $2\pi^2+1$ con un término en $(x-\pi^2)$.</li>
-    <li><b>Comparación.</b> El término independiente debería ser $f(\pi^2)=1$ y es $2\pi^2+1\ne1$. El coeficiente de $(x-\pi^2)$ debería ser $2$ y es $0$. Fallan dos coeficientes: <b>no puede ser</b> el polinomio de Taylor.</li>
-    <li><b>Lo que no se decide.</b> El coeficiente de $(x-\pi^2)^2$ es $f''(\pi^2)/2$, que no viene en los datos; solo se sabe que $p_2=1+2(x-\pi^2)+a(x-\pi^2)^2$.</li>
+    <li><b>Qué dice la tangente.</b> Es $y=f(\pi^2)+f'(\pi^2)(x-\pi^2)$. Al compararla con $y=1+2(x-\pi^2)$: $f(\pi^2)=1$ y $f'(\pi^2)=2$.</li>
+    <li><b>Cómo debe empezar $p_2$.</b> $p_2=1+2(x-\pi^2)+\dots$ (el término cuadrático no se conoce, pero no hace falta).</li>
+    <li><b>Cómo empieza el candidato.</b> Ya está escrito en potencias de $(x-\pi^2)$: constante $2\pi^2+1$, coeficiente de $(x-\pi^2)$ igual a $0$.</li>
+    <li><b>Se comparan.</b> Constante: debería ser $1$ y es $2\pi^2+1$. Coeficiente lineal: debería ser $2$ y es $0$. No coinciden.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> los coeficientes de orden 0 y 1 de cualquier $p_n$ son los de la recta tangente: si no coinciden con ella, el polinomio no es de Taylor.</div>
-  <div class="box warn"><span class="h">Solución impresa</span>Solo señala el término independiente ($2\pi^2+1$). No es un error, porque basta una contradicción, pero se le escapa que <b>también</b> falla el coeficiente lineal ($0\ne2$).</div>
+  <p><b>Lo que escribes en el examen:</b> «No puede ser. El polinomio de Taylor de orden 2 empieza por $f(\pi^2)+f'(\pi^2)(x-\pi^2)=1+2(x-\pi^2)$, y $p_2$ tiene término independiente $2\pi^2+1\ne1$ (y coeficiente lineal $0\ne2$).»</p>
+  <div class="recipe"><b>Receta:</b> los coeficientes de orden 0 y 1 de $p_n$ son los de la recta tangente; si no coinciden, no es de Taylor.</div>
+  <div class="box warn"><span class="h">Solución impresa</span>Solo señala el término independiente. Basta con eso, pero también falla el lineal.</div>
   <p><b>Teoría:</b> §2 y Ej. 3.8 de E (receta «compara cada coeficiente con $f^{(k}(a)/k!$ solo donde conozcas $f^{(k}(a)$»).</p>
 </details>
 
 <details class="sol" id="ex-3"><summary>Examen 3 · polinomio de orden 3 cuyo grado es 2: $\operatorname{sen}(\pi x)$ en $x=\frac12$ <span class="src" data-l="X" data-ref="X p.132 (Septiembre 2017, I. Electrónica Industrial y Automática, pregunta corta 2, 1 punto)">X p.132</span></summary>
   <p class="enun">Calcule el polinomio de Taylor de orden 3 centrado en $x=\tfrac12$ para la función dada por $f(x)=\operatorname{sen}(\pi x)$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Se derivan tres veces, se evalúa todo en $x=\frac12$, se divide cada valor entre $k!$ y se multiplica por $(x-\frac12)^k$. Una tabla lo ordena.</p></div>
   <ol class="steps">
     <li><b>Fórmula.</b> $p_3(x)=\sum_{k=0}^{3}\frac{f^{(k}(\frac12)}{k!}\left(x-\frac12\right)^k$ (U §3.1.3, pp. 107-110).</li>
-    <li><b>Derivadas</b> (cada una saca un factor $\pi$ por la regla de la cadena): $f'=\pi\cos(\pi x)$, $f''=-\pi^2\operatorname{sen}(\pi x)$, $f'''=-\pi^3\cos(\pi x)$.</li>
-    <li><b>Tabla en $x_0=\frac12$</b> (allí $\operatorname{sen}\frac\pi2=1$, $\cos\frac\pi2=0$):
+    <li><b>Derivadas</b> (cada una saca un $\pi$ por la regla de la cadena): $f'=\pi\cos(\pi x)$, $f''=-\pi^2\operatorname{sen}(\pi x)$, $f'''=-\pi^3\cos(\pi x)$.</li>
+    <li><b>Tabla en $x_0=\frac12$</b> (allí $\operatorname{sen}\frac\pi2=1$ y $\cos\frac\pi2=0$):
       <table>
         <tr><th>$k$</th><th>$f^{(k}(\frac12)$</th><th>$f^{(k}(\frac12)/k!$</th></tr>
         <tr><td>0</td><td>$1$</td><td>$1$</td></tr>
@@ -621,40 +625,42 @@
         <tr><td>2</td><td>$-\pi^2$</td><td>$-\pi^2/2$</td></tr>
         <tr><td>3</td><td>$0$</td><td>$0$</td></tr>
       </table></li>
-    <li><b>Polinomio:</b> $\boxed{p_3(x)=1-\dfrac{\pi^2}{2}\left(x-\tfrac12\right)^2}$.</li>
-    <li><b>Interpretación.</b> Orden 3 pero grado 2, porque $f'''(\frac12)=0$. En $x=\frac12$ hay un máximo: tangente horizontal y simetría respecto a $x=\frac12$ (solo potencias pares). Además $p_2=p_3$, así que para acotar el error se podría usar $R_3$ en vez de $R_2$.</li>
+    <li><b>Polinomio:</b> se suman las filas de la tabla, y los ceros desaparecen: $\boxed{p_3(x)=1-\dfrac{\pi^2}{2}\left(x-\tfrac12\right)^2}$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> tabla «$k$ | $f^{(k}(x_0)$ | $f^{(k}(x_0)/k!$»; los ceros se escriben y se ven, y el grado es el de la última derivada no nula.</div>
-  <p><b>Error típico:</b> olvidar el factor $\pi$ de la regla de la cadena, o «completar» el polinomio hasta grado 3 inventando un término.</p>
+  <p><b>Nota.</b> Es de orden 3 pero de grado 2, porque $f'''(\frac12)=0$. No hay que inventar un término cúbico.</p>
+  <div class="recipe"><b>Receta:</b> tabla «$k$ | $f^{(k}(x_0)$ | $f^{(k}(x_0)/k!$»; los ceros se escriben y se ven.</div>
+  <p><b>Error típico:</b> olvidar el factor $\pi$ al derivar.</p>
   <p><b>Teoría:</b> §2 y Ej. 3.7 (orden y grado). Verificado con sympy.</p>
 </details>
 
 <details class="sol" id="ex-4"><summary>Examen 4 · del polinomio a las derivadas (problema inverso) <span class="src" data-l="X" data-ref="X p.129 (sin fecha, I. Electrónica Industrial y Automática, examen que empieza en p. 129, pregunta corta 2, 1 punto)">X p.129</span></summary>
   <p class="enun">Sabiendo que el polinomio de Taylor de $f(x)$ en $x=\pi$ de orden 4 es $p_4=\left[\frac{(x-\pi)}{4}+1\right](x-\pi)^2$, calcule $f(\pi)$, $f''(\pi)$, $f'''(\pi)$ y $f^{(4}(\pi)$.</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>En $p_4$, el número que acompaña a $(x-\pi)^k$ es $f^{(k}(\pi)/k!$. Leyendo los números del polinomio y multiplicando por $k!$ salen las derivadas.</p></div>
   <ol class="steps">
     <li><b>Forma general.</b> $p_4=f(\pi)+f'(\pi)(x-\pi)+\frac{f''(\pi)}{2!}(x-\pi)^2+\frac{f'''(\pi)}{3!}(x-\pi)^3+\frac{f^{(4}(\pi)}{4!}(x-\pi)^4$.</li>
-    <li><b>Se desarrolla el dato en potencias de $(x-\pi)$, sin expandir $x$:</b> $p_4=\frac14(x-\pi)^3+(x-\pi)^2$. Coeficientes: $0$ en $(x-\pi)^0$ y $(x-\pi)^1$; $1$ en el cuadrado; $\frac14$ en el cubo; $0$ en la cuarta.</li>
-    <li><b>Se igualan coeficientes</b> (mismo centro, mismos coeficientes):
+    <li><b>Se reescribe el dato</b> multiplicando $(x-\pi)^2$ por el corchete (sin tocar $x$): $p_4=(x-\pi)^2+\frac14(x-\pi)^3$. Coeficientes: $0$ en $(x-\pi)^0$ y en $(x-\pi)^1$; $1$ en el cuadrado; $\frac14$ en el cubo; $0$ en la cuarta.</li>
+    <li><b>Se igualan coeficientes</b> (mismo centro, mismas potencias):
       <ul>
         <li>$f(\pi)=0$;</li>
         <li>$\frac{f''(\pi)}{2}=1\Rightarrow f''(\pi)=2$;</li>
         <li>$\frac{f'''(\pi)}{6}=\frac14\Rightarrow f'''(\pi)=\frac32$;</li>
         <li>$\frac{f^{(4}(\pi)}{24}=0\Rightarrow f^{(4}(\pi)=0$.</li>
       </ul>
-      De paso, $f'(\pi)=0$ (no se pide).</li>
-    <li><b>Por qué no multiplicar por $x$.</b> Expandir en potencias de $x$ obliga a volver a centrar. Con $t=x-\pi$: $p_4=t^2+\frac14t^3$.</li>
+      </li>
   </ol>
-  <div class="recipe"><b>Receta:</b> el coeficiente de $(x-x_0)^k$ multiplicado por $k!$ es $f^{(k}(x_0)$; una potencia que no aparece significa derivada nula.</div>
-  <p><b>Error típico:</b> olvidar multiplicar por $k!$ (dar $f'''(\pi)=\frac14$). (La impresa escribe «$f^{(iv}$»: es la misma derivada cuarta.)</p>
+  <div class="recipe"><b>Receta:</b> coeficiente de $(x-x_0)^k$ $\times\,k!=f^{(k}(x_0)$; una potencia que no aparece significa derivada $0$.</div>
+  <p><b>Error típico:</b> olvidar multiplicar por $k!$ (dar $f'''(\pi)=\frac14$). La impresa escribe «$f^{(iv}$»: es la derivada cuarta.</p>
   <p><b>Teoría:</b> §2 (coeficientes $a_k=f^{(k}(x_0)/k!$) y Ej. 3.8 de E.</p>
 </details>
 
 <details class="sol" id="ex-5"><summary>Examen 5 · Taylor de un producto: $(3x-1)e^x$ en $x=-1$, orden 3 <span class="src" data-l="X" data-ref="X p.70 (Septiembre 2016, Grado en Ing. Mecánica, Modelo A, ejercicio 5 apartado (a); el ejercicio vale 3 puntos en total)">X p.70</span></summary>
   <p class="enun">Sea $f(x)=(3x-1)e^x$ definida en $\mathbb{R}$. (a) Obtenga el polinomio de Taylor de $f$ de orden 3 centrado en $x=-1$. (Los apartados (b) crecimiento e inflexión y (c) extremos relativos son de U §2.5 y §3.4-3.5; no se tratan aquí.)</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Es el mismo método de siempre (derivar, evaluar en $-1$, dividir entre $k!$); la única dificultad es derivar con orden el producto $(3x-1)e^x$.</p></div>
   <ol class="steps">
-    <li><b>Derivadas</b> (regla del producto): $f'=3e^x+(3x-1)e^x=e^x(3x+2)$; $f''=e^x(3x+5)$; $f'''=e^x(3x+8)$.</li>
-    <li><b>Patrón.</b> Cada derivada suma $3$ al término independiente: $f^{(k}(x)=e^x(3x-1+3k)$ (inducción: $(e^x(3x+b))'=e^x(3x+b+3)$).</li>
-    <li><b>Tabla en $x_0=-1$</b> (factor común $e^{-1}$):
+    <li><b>Derivadas</b> (regla del producto): $f'=3e^x+(3x-1)e^x=e^x(3x+2)$; $f''=e^x(3x+5)$; $f'''=e^x(3x+8)$. (Cada derivada suma $3$ dentro del paréntesis.)</li>
+    <li><b>Tabla en $x_0=-1$</b> (se sustituye $x=-1$ en el paréntesis y queda el factor común $e^{-1}$):
       <table>
         <tr><th>$k$</th><th>$f^{(k}(-1)$</th><th>$f^{(k}(-1)/k!$</th></tr>
         <tr><td>0</td><td>$-4e^{-1}$</td><td>$-4e^{-1}$</td></tr>
@@ -662,28 +668,31 @@
         <tr><td>2</td><td>$2e^{-1}$</td><td>$e^{-1}$</td></tr>
         <tr><td>3</td><td>$5e^{-1}$</td><td>$\frac56e^{-1}$</td></tr>
       </table></li>
-    <li><b>Polinomio:</b> $$p_3(x)=e^{-1}\left[-4-(x+1)+(x+1)^2+\frac56(x+1)^3\right].$$</li>
-    <li><b>Cómo dejarlo.</b> En potencias de $(x+1)$, porque «centrado en $-1$» significa eso. Desarrollado en $x$ (solo para comprobar): $e^{-1}\left(\frac56x^3+\frac72x^2+\frac72x-\frac{19}6\right)$.</li>
+    <li><b>Polinomio</b> (se suman las filas con su potencia de $(x+1)$; «centrado en $-1$» significa dejarlo así, sin desarrollar):</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> en productos «polinomio × exponencial» se deriva dos o tres veces, se busca el patrón $f^{(k}=e^x(\dots)$ y luego se hace la tabla en $x_0$ sacando factor común.</div>
-  <div class="box warn"><span class="h">Errata en la solución impresa</span>En la primera línea de $p_3$ pone $\frac{3}{3!}e^{-1}(x+1)^3$; debe ser $\frac{5}{3!}e^{-1}(x+1)^3$ (pues $f'''(-1)=5e^{-1}$). En la línea siguiente escribe bien $\frac56$: el resultado final es correcto.</div>
+  <p><b>Lo que escribes en el examen:</b> $$p_3(x)=e^{-1}\left[-4-(x+1)+(x+1)^2+\frac56(x+1)^3\right].$$</p>
+  <div class="recipe"><b>Receta:</b> «polinomio × exponencial»: derivar tres veces, ver que cada derivada es $e^x(\dots)$, y hacer la tabla en $x_0$ con factor común.</div>
+  <div class="box warn"><span class="h">Errata en la impresa</span>Una línea pone $\frac{3}{3!}$ en el término cúbico; debe ser $\frac{5}{3!}$. El resultado final impreso, $\frac56$, es correcto.</div>
   <p><b>Teoría:</b> §1 (derivadas sucesivas) y §2 (tabla de coeficientes). Verificado con sympy.</p>
 </details>
 
 <details class="sol" id="ex-6"><summary>Examen 6 · cota del error con Lagrange: $\cos\frac14$ con error $&lt;0{,}002$ <span class="src" data-l="X" data-ref="X pp.145-146 (Febrero 2018, 1.ª semana, I. Electrónica Industrial y Automática, ejercicio 5, segundo apartado, 1,5 puntos de 3)">X pp.145-146</span></summary>
   <p class="enun">Dada la función $f(x)=\cos(x)$: […] Usando el resto de Lagrange de orden $n$, calcule $\cos\left(\frac14\right)$ con un error en valor absoluto menor que $0{,}002$. (El primer apartado, «serie de Taylor de $f$ centrada en $x=\frac12$», es de §3.2 y no se trata aquí.)</p>
+  <div class="box intu"><span class="h">La idea en una frase</span>
+    <p>Se aproxima $\cos\frac14$ con un polinomio fácil de calcular y se busca el primer grado $n$ cuyo error máximo (la cota de Lagrange) ya es menor que $0{,}002$.</p></div>
   <ol class="steps">
-    <li><b>Centro.</b> Hace falta un $x_0$ cercano a $\frac14$ con $\cos x_0$ y $\operatorname{sen}x_0$ exactos: $x_0=0$ ($\cos0=1$, $\operatorname{sen}0=0$). Con $x_0=\frac12$ los coeficientes no se saben calcular a mano.</li>
-    <li><b>Derivadas.</b> $f'=-\operatorname{sen}$, $f''=-\cos$, $f'''=\operatorname{sen}$, $f^{(4}=\cos$, con periodo 4. En $0$: $1,0,-1,0,1,\dots$ Así $p_0=p_1=1$, $p_2=p_3=1-\frac{x^2}{2}$, $p_4=p_5=1-\frac{x^2}2+\frac{x^4}{24}$.</li>
-    <li><b>Resto</b> (U Prop. 3.2). Para cada $n$ existe $c\in(0,\frac14)$ con $R_n(\frac14)=\frac{f^{(n+1}(c)}{(n+1)!}\left(\frac14\right)^{n+1}$.</li>
-    <li><b>Acotar la derivada.</b> Toda derivada de $\cos$ es $\pm\operatorname{sen}$ o $\pm\cos$: $|f^{(n+1}(c)|\le1$ ($M=1$), luego $\left|R_n(\frac14)\right|\le\frac{(1/4)^{n+1}}{(n+1)!}$.</li>
-    <li><b>Menor $n$ con cota $&lt;0{,}002$:</b> $n=0$: $0{,}25$; $n=1$: $0{,}03125$; $n=2$: $\frac1{6\cdot64}\approx0{,}0026&gt;0{,}002$, <b>no basta</b>; $n=3$: $\frac1{24\cdot256}\approx0{,}000163&lt;0{,}002$, <b>basta</b>.</li>
-    <li><b>Polinomio.</b> $p_3(x)=1-\frac{x^2}2$ (porque $f'''(0)=0$, $p_3=p_2$). Entonces
-    $$\cos\tfrac14\approx p_3\!\left(\tfrac14\right)=1-\frac1{32}=\frac{31}{32}=0{,}96875,\qquad|\text{error}|&lt;0{,}000163&lt;0{,}002 .$$</li>
-    <li><b>Comprobación.</b> $\cos\frac14=0{,}968912\ldots$; el error real, $0{,}000162$, es casi igual a la cota de $R_3$.</li>
+    <li><b>Centro.</b> Se elige $x_0=0$, donde $\cos0=1$ y $\operatorname{sen}0=0$ se saben exactos.</li>
+    <li><b>Derivadas en $0$:</b> $f=\cos$, $f'=-\operatorname{sen}$, $f''=-\cos$, $f'''=\operatorname{sen}$, y vuelve a empezar. Valores: $1,0,-1,0,1,\dots$ Por tanto $p_2=p_3=1-\frac{x^2}{2}$.</li>
+    <li><b>Error.</b> $R_n(\frac14)=\frac{f^{(n+1}(c)}{(n+1)!}\left(\frac14\right)^{n+1}$ con $c\in(0,\frac14)$.</li>
+    <li><b>Acotar $f^{(n+1}(c)$.</b> Toda derivada de $\cos$ es $\pm\operatorname{sen}$ o $\pm\cos$, y esos valores están entre $-1$ y $1$. Así $\left|R_n(\frac14)\right|\le\frac{(1/4)^{n+1}}{(n+1)!}$.</li>
+    <li><b>Se prueba $n=0,1,2,\dots$:</b> $n=0$: $0{,}25$; $n=1$: $0{,}03125$; $n=2$: $\frac1{6\cdot64}\approx0{,}0026&gt;0{,}002$, <b>no basta</b>; $n=3$: $\frac1{24\cdot256}\approx0{,}000163&lt;0{,}002$, <b>basta</b>.</li>
+    <li><b>Se usa $p_3$,</b> que es $1-\frac{x^2}{2}$ (porque $f'''(0)=0$).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> cota $\frac{M}{(n+1)!}|x-x_0|^{n+1}$ y se prueba $n=0,1,2,\dots$ hasta que sea $&lt;\varepsilon$. Si una cota no basta pero $f^{(n+1}(x_0)=0$, el mismo polinomio $p_n=p_{n+1}$ admite el resto $R_{n+1}$, mucho menor.</div>
-  <div class="box warn"><span class="h">Fallo en la solución impresa</span>Calcula la cota de $n=2$, $\approx0{,}002604&gt;0{,}002$, y aun así concluye «es suficiente tomar $p_2$». El resultado $\frac{31}{32}$ es correcto, pero la justificación no: hay que pasar a $n=3$ y observar que $p_3=p_2$. Otra salida correcta es afinar $M$: $|f'''(c)|=|\operatorname{sen}c|\le\operatorname{sen}\frac14&lt;\frac14$, con lo que $|R_2|\le\frac{1/4}{6}\cdot\frac1{64}\approx0{,}00065&lt;0{,}002$. La impresa centra en $x_0=0$ aunque el primer apartado usa $x=\frac12$: es lícito, el enunciado no fija el centro.</div>
+  <p><b>Lo que escribes en el examen:</b> con $n=3$ y $M=1$, $|R_3(\frac14)|\le\frac{(1/4)^4}{4!}\approx0{,}000163&lt;0{,}002$, y
+  $$\cos\tfrac14\approx p_3\!\left(\tfrac14\right)=1-\frac1{32}=\frac{31}{32}=0{,}96875 .$$</p>
+  <p>(Comprobación: $\cos\frac14=0{,}968912\ldots$)</p>
+  <div class="recipe"><b>Receta:</b> cota $\frac{M}{(n+1)!}|x-x_0|^{n+1}$; probar $n=0,1,2,\dots$ hasta que sea $&lt;\varepsilon$. Si $f^{(n+1}(x_0)=0$, entonces $p_n=p_{n+1}$ y se puede usar el resto $R_{n+1}$.</div>
+  <div class="box warn"><span class="h">Fallo en la solución impresa</span>Calcula la cota de $n=2$ ($\approx0{,}0026&gt;0{,}002$) y aun así concluye «basta $p_2$». El resultado $\frac{31}{32}$ es correcto, pero la justificación es $n=3$ con $p_3=p_2$. Otra salida válida: $|\operatorname{sen}c|\le\frac14$ da $|R_2|\approx0{,}00065&lt;0{,}002$.</div>
   <p><b>Teoría:</b> §3 (método de 4 pasos; Ej. 3.10 de U, p. 111, que es el mismo ejercicio con $\operatorname{sen}\frac12$) y ejemplo propio C0.</p>
 </details>
 
