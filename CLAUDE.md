@@ -1,4 +1,4 @@
-# CLAUDE.md — Cálculo (UNED, Grado Ingeniería Industrial, curso 2025-26)
+# CLAUDE.md — Cálculo (UNED, Grado Ingeniería Industrial, curso 2026-27)
 
 **Objetivo del proyecto:** que el usuario apruebe la asignatura y sepa resolver los ejercicios del libro de ejercicios.
 **Producto principal:** un resumen HTML por cada tema/sección (`temas/tema_X_Y_nombre.html`), pensado para alguien que lo estudia **por primera vez**, con ejercicios resueltos y **la fuente (libro + página/capítulo) visible en lateral o al pasar el ratón**.
@@ -29,17 +29,17 @@ Otros ficheros previos del usuario: `resumen_modulo1_calculo.html` (resumen anti
 
 | Semana | Módulo | Libro de teoría **U** | Ejercicios **E** |
 |---|---|---|---|
-| 1-12 oct | **I. El paso al límite** | Tema 1, secciones **1.1-1.4** (p. 11-56) | Tema 1 hasta p. 41 (ej. 1.1 … ~1.41) |
-| 13-26 oct | II. Funciones derivables | Tema 2 (p. 71+) | Tema 2 (E p. 51+) |
-| 27 oct | PA1 (módulos I, II) | | |
-| 27 oct-9 nov | III. Aplicaciones de la derivada | Tema 3 + **notas adicionales** (Landau, forma de Lagrange en interpolación, Taylor) | Tema 3 (E p. 87+) |
-| 10-23 nov | IV. Funciones de varias variables | Tema 4 + material adicional (f: ℝⁿ→ℝᵐ) | Tema 4 (E p. 135+) |
-| 24 nov | PA2 (módulos III, IV) | | |
-| 24 nov-7 dic | V. Aplicaciones de la diferencial | Tema 5 | Tema 5 (E p. 167+) |
-| 12-14 dic | PEC única (módulos I-V) | | |
-| 8-19 dic, 8-11 ene | VI. Integral de Riemann | Tema 6 | Tema 6 (E p. 213+) |
-| 12 ene | PA3 (módulos V, VI) | | |
-| 12-18 ene | Repaso y pruebas presenciales | | |
+| 1-11 oct | **I. El paso al límite** | Tema 1, secciones **1.1-1.4** (p. 11-56) | Tema 1 hasta p. 41 (ej. 1.1 … ~1.41) |
+| 12-25 oct | II. Funciones derivables | Tema 2 (p. 71+) | Tema 2 (E p. 51+) |
+| 26 oct | PA1 (módulos I, II) | | |
+| 26 oct-8 nov | III. Aplicaciones de la derivada | Tema 3 + **notas adicionales** (Landau, forma de Lagrange en interpolación, Taylor) | Tema 3 (E p. 87+) |
+| 9-22 nov | IV. Funciones de varias variables | Tema 4 + material adicional (f: ℝⁿ→ℝᵐ) | Tema 4 (E p. 135+) |
+| 23 nov | PA2 (módulos III, IV) | | |
+| 23 nov-6 dic | V. Aplicaciones de la diferencial | Tema 5 | Tema 5 (E p. 167+) |
+| 11-13 dic | PEC única (módulos I-V) | | |
+| 7-20 dic, 8-13 ene | VI. Integral de Riemann | Tema 6 | Tema 6 (E p. 213+) |
+| 14 ene | PA3 (módulos V, VI) | | |
+| 14-24 ene | Repaso y pruebas presenciales | | |
 
 **No es materia de examen:** sucesiones y series *funcionales* (§1.5 de U, p. 54-70). De series de funciones solo **series de Taylor** (módulo III).
 
