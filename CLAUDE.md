@@ -25,7 +25,7 @@ Otros ficheros previos del usuario: `resumen_modulo1_calculo.html` (resumen anti
 - **S**: no hay offset fijo fiable en el `.txt` (algunas páginas se parten). Localizar la página impresa por la cabecera («SECCIÓN 1.3 …», «254 CAPÍTULO 3 …») o el pie. Apéndices con prefijo A (A2 = Apéndice A).
 - El índice que devuelve NotebookLM es poco fiable: confirmar siempre contra el texto.
 
-## 2. Temario y cronograma (curso 2025-26)
+## 2. Temario y cronograma (curso 2026-27)
 
 | Semana | Módulo | Libro de teoría **U** | Ejercicios **E** |
 |---|---|---|---|
