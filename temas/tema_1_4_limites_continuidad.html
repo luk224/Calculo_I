@@ -85,7 +85,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
 <p>Cinco destrezas: <b>(A)</b> hallar dominios y calcular límites (cocientes de polinomios con $\frac00$, logaritmos, indeterminación $1^\infty$); <b>(B)</b> encontrar asíntotas verticales, horizontales y oblicuas; <b>(C)</b> estudiar continuidad, incluida la de una composición y el ajuste de un parámetro; <b>(D)</b> usar Bolzano, valores intermedios y Weierstrass para demostrar que existe un punto con cierta propiedad; <b>(E)</b> aplicar la bisección y acotar su error.</p>
 
 <div class="box warn"><span class="h">Lo que U no dice (y aquí se explica con S y L)</span>
-  <p>U no da en §1.4: (1) la <b>regla del signo</b> para $\frac{l}{0^\pm}$; (2) la definición rigurosa de <b>límite infinito en el infinito</b> (la «deja al lector», p. 47); (3) el <b>límite de una composición</b> $\lim g(f(x))$; (4) la versión para funciones de $\left(1+\frac1F\right)^F\to e$ (solo está para sucesiones, Prop. 1.5); (5) los <b>nombres</b> de los tipos de discontinuidad. Los apartados 3, 5, 6 y 8 los cubren, con la fuente indicada en cada uno.</p>
+  <p>U no da en §1.4: (1) la <b>regla del signo</b> para $\frac{l}{0^\pm}$; (2) la definición rigurosa de <b>límite infinito en el infinito</b> (la «deja al lector», p. 47); (3) el <b>límite de una composición</b> $\lim_{x\to a} g(f(x))$; (4) la versión para funciones de $\left(1+\frac1F\right)^F\to e$ (solo está para sucesiones, Prop. 1.5); (5) los <b>nombres</b> de los tipos de discontinuidad. Los apartados 3, 5, 6 y 8 los cubren, con la fuente indicada en cada uno.</p>
 </div>
 
 <!-- ============================ 1 ============================ -->
@@ -210,7 +210,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
 </div>
 
 <div class="box warn"><span class="h">Error típico</span>
-  <p>Aplicar la regla del producto $\lim(fg)=\lim f\cdot\lim g$ cuando <b>uno de los límites no existe</b>: «$\lim x\cdot\lim\cos\frac1x=0\cdot(\text{algo})$» es un razonamiento inválido. Hay que acotar y usar la Prop. 1.10 o el emparedado.</p>
+  <p>Aplicar la regla del producto $\lim_{x\to a}(fg)=\lim_{x\to a}f\cdot\lim_{x\to a}g$ cuando <b>uno de los límites no existe</b>: «$\lim_{x\to0}x\cdot\lim_{x\to0}\cos\frac1x=0\cdot(\text{algo})$» es un razonamiento inválido. Hay que acotar y usar la Prop. 1.10 o el emparedado.</p>
 </div>
 
 <h3>Límite de una composición (hueco de U)</h3>
@@ -244,8 +244,8 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
 
 <div class="box tip"><span class="h">Truco de examen: indeterminación $1^\infty$</span>
   <p>Si $A(x)\to1$ (con $A&gt;0$, $A\ne1$ cerca de $a$) y $B(x)\to\pm\infty$, escribe $A=1+\frac1F$ con $F=\frac1{A-1}$ y el exponente como $B=F\cdot\big(B(A-1)\big)$. Entonces
-  $$A^B=\Big[\big(1+\tfrac1F\big)^F\Big]^{B(A-1)}\longrightarrow e^{\lim B(A-1)}\qquad(\text{si ese límite existe}).$$
-  Se obtiene con la fórmula $a^b=e^{b\ln a}$ y el paso del límite dentro de $\exp$ y $\ln$ (continuas). Ejemplo rápido: $\big(1+\frac2x\big)^x\to e^{\lim x\cdot\frac2x}=e^2$.</p>
+  $$A^B=\Big[\big(1+\tfrac1F\big)^F\Big]^{B(A-1)}\longrightarrow e^{\lim_{x\to a} B(A-1)}\qquad(\text{si ese límite existe}).$$
+  Se obtiene con la fórmula $a^b=e^{b\ln a}$ y el paso del límite dentro de $\exp$ y $\ln$ (continuas). Ejemplo rápido: $\big(1+\frac2x\big)^x\to e^{\lim_{x\to\infty}x\cdot\frac2x}=e^2$.</p>
   <span class="src" data-l="P" data-ref="Receta derivada de U Prop. 1.5 (p. 31) y fórmula (1.1) (p. 29)">P</span>
 </div>
 
@@ -395,7 +395,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
 </div>
 
 <div class="box thm"><span class="h">Proposición 1.12 (cómo encontrar $m$ y $b$)</span>
-  <p>Si $f$ tiene como asíntota oblicua la recta $y=mx+b$ con $m\neq0$, entonces $\displaystyle m=\lim_{x\to\infty}\frac{f(x)}x$ (o el mismo límite en $-\infty$, según el lado). <b>Procedimiento:</b> (1) calcular $m=\lim\frac{f(x)}{x}$; si no existe o vale $0$ o $\pm\infty$, no hay oblicua en ese lado; (2) calcular $b=\lim\big(f(x)-mx\big)$; si es un número, la recta $y=mx+b$ es la asíntota. La condición de $m$ es necesaria pero <b>no suficiente</b> (falta comprobar que $b$ existe).</p>
+  <p>Si $f$ tiene como asíntota oblicua la recta $y=mx+b$ con $m\neq0$, entonces $\displaystyle m=\lim_{x\to\infty}\frac{f(x)}x$ (o el mismo límite en $-\infty$, según el lado). <b>Procedimiento:</b> (1) calcular $m=\lim_{x\to\infty}\frac{f(x)}{x}$; si no existe o vale $0$ o $\pm\infty$, no hay oblicua en ese lado; (2) calcular $b=\lim_{x\to\infty}\big(f(x)-mx\big)$; si es un número, la recta $y=mx+b$ es la asíntota. La condición de $m$ es necesaria pero <b>no suficiente</b> (falta comprobar que $b$ existe).</p>
   <p><b>Ejemplo de U (nota al margen, p. 49):</b> $f(x)=x+\operatorname{sen}x$ cumple $\frac{f(x)}x=1+\frac{\operatorname{sen}x}x\to1$, pero $f(x)-x=\operatorname{sen}x$ no tiene límite en $\pm\infty$: no hay asíntota oblicua. Muestra que la condición de $m$ es necesaria pero no suficiente.</p>
   <span class="src" data-l="U" data-ref="U Proposición 1.12 y contraejemplo x + sen x (nota al margen), p. 49">U p.49</span>
 </div>
@@ -404,8 +404,8 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
   <ol class="steps">
     <li><b>Verticales:</b> ninguna, porque para cualquier $a$ el límite $\lim_{x\to a}f(x)=f(a)$ es un número ($x^2+1\neq0$).</li>
     <li><b>Horizontales:</b> $f\to\infty$ en $+\infty$ y $f\to-\infty$ en $-\infty$: no hay, y se cumple la condición necesaria de la oblicua.</li>
-    <li><b>Pendiente:</b> $m=\lim\frac{f(x)}x=\lim\frac{x^3+x^2+1}{x^3+x}=1$.</li>
-    <li><b>Ordenada:</b> $b=\lim\big(f(x)-x\big)=\lim\frac{x^2-x+1}{x^2+1}=1$.</li>
+    <li><b>Pendiente:</b> $m=\lim_{x\to\infty}\frac{f(x)}x=\lim_{x\to\infty}\frac{x^3+x^2+1}{x^3+x}=1$.</li>
+    <li><b>Ordenada:</b> $b=\lim_{x\to\infty}\big(f(x)-x\big)=\lim_{x\to\infty}\frac{x^2-x+1}{x^2+1}=1$.</li>
   </ol>
   <p>Luego $y=x+1$ es asíntota oblicua (y en $-\infty$ sale la misma recta).</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 1.48, pp. 49-50">U pp.49-50</span>
@@ -659,7 +659,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
   <p class="enun">Sean $f(x)$ y $g(x)$ dos funciones con límite (sus valores tienden a un número real) cuando $x$ tiende a $x_0$. ¿La función $f/g$ también tiene límite en $x_0$?</p>
   <ol class="steps">
     <li><b>Respuesta:</b> <b>no siempre</b>.</li>
-    <li><b>Qué dice la teoría.</b> Por U Prop. 1.11 (p. 46), si $\lim f=l$, $\lim g=m$ y $m\neq0$ (con $g\neq0$ en el dominio), entonces $\lim\frac fg=\frac lm$. Con $m\neq0$ la respuesta sería «sí»; un contraejemplo debe tener $m=0$.</li>
+    <li><b>Qué dice la teoría.</b> Por U Prop. 1.11 (p. 46), si $\lim_{x\to a}f=l$, $\lim_{x\to a}g=m$ y $m\neq0$ (con $g\neq0$ en el dominio), entonces $\lim_{x\to a}\frac fg=\frac lm$. Con $m\neq0$ la respuesta sería «sí»; un contraejemplo debe tener $m=0$.</li>
     <li><b>Elegir bien el numerador.</b> Si también $l=0$, sale $\frac00$ y a veces hay límite ($\frac xx\to1$). Para asegurar que no existe, conviene $l\neq0$.</li>
     <li><b>Contraejemplo.</b> $x_0=0$, $f(x)=\cos x$, $g(x)=x$. Como $\cos$ es continua, $\lim_{x\to0}\cos x=1$, y $\lim_{x\to0}x=0$.</li>
     <li><b>Por la derecha.</b> Si $0&lt;x&lt;\pi/3$, $\cos x\ge\frac12$, luego $\frac{\cos x}x\ge\frac1{2x}$. Dado $k&gt;0$, basta $0&lt;x&lt;\delta=\min\{\pi/3,\frac1{2k}\}$ para que $\frac{\cos x}x\ge k$. Por la definición de límite infinito aplicada a la restricción a $(0,\infty)$ (U pp.46-47), $\lim_{x\to0^+}\frac{\cos x}x=+\infty$. (Con la regla del signo del apartado 5: $\frac{1}{0^+}$.)</li>
@@ -696,7 +696,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
     <li><b>Límite de $A^B$.</b> $A(x)=\big(1+\frac1F\big)^F\to e$ y $B(x)=\frac{2x}{x-1}\to2$. Con la fórmula (1.1) (U p.29), $A^B=e^{B\ln A}$; como $\ln$ y $\exp$ son continuas, $\ln A\to\ln e=1$, $B\ln A\to2$ y $A^B\to e^2$.</li>
     <li><b>Resultado:</b> $e^2\approx7{,}389$. (sympy: $e^2$; con $x=1000$ vale $7{,}38906$.)</li>
   </ol>
-  <div class="recipe"><b>Receta ($1^\infty$):</b> si $A\to1$ y $B\to\pm\infty$, escribe $A=1+\frac1F$ con $F=\frac1{A-1}$; el resultado es $e^{\lim B(A-1)}$. Aquí: $\lim x\cdot\frac2{x-1}=2$.</div>
+  <div class="recipe"><b>Receta ($1^\infty$):</b> si $A\to1$ y $B\to\pm\infty$, escribe $A=1+\frac1F$ con $F=\frac1{A-1}$; el resultado es $e^{\lim_{x\to\infty} B(A-1)}$. Aquí: $\lim_{x\to\infty} x\cdot\frac2{x-1}=2$.</div>
   <p><b>Error típico:</b> decir «$1^\infty=1$»; o pasar al límite base y exponente por separado cuando la base tiende a $1$ (solo vale si el resultado no es indeterminado).</p>
   <p class="l4-teo">Teoría: U indeterminaciones p. 30; fórmula (1.1) p. 29; Prop. 1.5 p. 31 (sucesiones).</p>
 </details>
@@ -721,14 +721,14 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
 </details>
 <details class="sol"><summary>Ejemplo A4 (difícil) — $\lim_{x\to\infty}\big(\frac{x+2}{x-3}\big)^{2x+1}$ y $\lim_{x\to\infty}\frac{\ln(x^2+1)}{\ln x}$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
   <ol class="steps">
-    <li><b>Primer límite ($1^\infty$).</b> La base es $\frac{x+2}{x-3}=1+\frac5{x-3}$, así que $A-1=\frac5{x-3}$ y $B=2x+1$. El límite es $e^{\lim(2x+1)\frac5{x-3}}=e^{10}$. (sympy: $e^{10}$.)</li>
+    <li><b>Primer límite ($1^\infty$).</b> La base es $\frac{x+2}{x-3}=1+\frac5{x-3}$, así que $A-1=\frac5{x-3}$ y $B=2x+1$. El límite es $e^{\lim_{x\to\infty}(2x+1)\frac5{x-3}}=e^{10}$. (sympy: $e^{10}$.)</li>
     <li><b>Segundo límite ($\frac\infty\infty$).</b> $\ln(x^2+1)=2\ln x+\ln\!\big(1+\frac1{x^2}\big)$ y el último término $\to\ln1=0$. Dividiendo entre $\ln x$: $2+\frac{\ln(1+1/x^2)}{\ln x}\to2$.</li>
   </ol>
 </details>
 
 <!-- ------------------------- BLOQUE B ------------------------- -->
 <h3 id="bloqueB">Bloque B · Asíntotas (1.28 → 1.29 → 1.30)</h3>
-<p><b>Recordatorio (U pp.48-49):</b> $y=b$ horizontal si $\lim_{x\to\pm\infty}f=b$; $x=a$ vertical si algún lateral en $a$ vale $\pm\infty$; $y=mx+b$ ($m\neq0$) oblicua si $f(x)-(mx+b)\to0$ en $\pm\infty$, con $m=\lim\frac{f(x)}x$ (Prop. 1.12) y $b=\lim(f(x)-mx)$.</p>
+<p><b>Recordatorio (U pp.48-49):</b> $y=b$ horizontal si $\lim_{x\to\pm\infty}f=b$; $x=a$ vertical si algún lateral en $a$ vale $\pm\infty$; $y=mx+b$ ($m\neq0$) oblicua si $f(x)-(mx+b)\to0$ en $\pm\infty$, con $m=\lim_{x\to\pm\infty}\frac{f(x)}x$ (Prop. 1.12) y $b=\lim_{x\to\pm\infty}(f(x)-mx)$.</p>
 
 <details class="sol"><summary>Ejercicio 1.28 — asíntotas de $\frac{x^2+1}{x^2-1}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.28, pp. 28-30">E pp.28-30</span></summary>
   <p class="enun">La función $f(x)=\dfrac{x^2+1}{x^2-1}$ tiene: a) asíntota vertical; b) asíntota oblicua; c) asíntota horizontal; d) no tiene asíntotas.</p>
@@ -751,11 +751,11 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
     <li><b>Dominio:</b> $x\neq\pm2$.</li>
     <li><b>Verticales.</b> Si $a\neq\pm2$, $\lim_{x\to a}f=f(a)$ es finito. En $a=2$ el numerador vale $8+8-1=15&gt;0$ y el denominador es $(x-2)(x+2)$: en $2^+$ tiende a $(0^+)(4)=0^+$, luego $f\to+\infty$; en $2^-$, $f\to-\infty$. En $a=-2$ el numerador vale $-8+8-1=-1&lt;0$: en $-2^+$, $(x-2)\to-4$ y $(x+2)\to0^+$, el denominador $\to0^-$ y $f\to\frac{-1}{0^-}=+\infty$; en $-2^-$, $f\to-\infty$. Luego <b>$x=2$ y $x=-2$</b> son asíntotas verticales. (sympy: $-\infty,\infty,-\infty,\infty$ para $2^-,2^+,-2^-,-2^+$.)</li>
     <li><b>Horizontales.</b> Dividiendo entre $x^2$: $f(x)=\frac{x+2-1/x^2}{1-4/x^2}$, que tiende a $+\infty$ en $+\infty$ y a $-\infty$ en $-\infty$. No hay horizontales y se cumple la condición necesaria de la oblicua (U p.49).</li>
-    <li><b>Oblicua (método de U: Prop. 1.12 y Ej. 1.48).</b> $m=\lim\frac{f(x)}x=\lim\frac{x^3+2x^2-1}{x^3-4x}=1$. $b=\lim\big(f(x)-x\big)=\lim\frac{x^3+2x^2-1-x^3+4x}{x^2-4}=\lim\frac{2x^2+4x-1}{x^2-4}=2$. La asíntota oblicua es <b>$y=x+2$</b>, la misma en $\pm\infty$. (sympy: $m=1$, $b=2$.)</li>
+    <li><b>Oblicua (método de U: Prop. 1.12 y Ej. 1.48).</b> $m=\lim_{x\to\pm\infty}\frac{f(x)}x=\lim_{x\to\pm\infty}\frac{x^3+2x^2-1}{x^3-4x}=1$. $b=\lim_{x\to\pm\infty}\big(f(x)-x\big)=\lim_{x\to\pm\infty}\frac{x^3+2x^2-1-x^3+4x}{x^2-4}=\lim_{x\to\pm\infty}\frac{2x^2+4x-1}{x^2-4}=2$. La asíntota oblicua es <b>$y=x+2$</b>, la misma en $\pm\infty$. (sympy: $m=1$, $b=2$.)</li>
     <li><b>Comprobación por división.</b> $x^3+2x^2-1=(x+2)(x^2-4)+(4x+7)$, así que $f(x)=x+2+\frac{4x+7}{x^2-4}$ y el resto $\to0$. El resto es positivo para $x$ grande y negativo hacia $-\infty$: la gráfica queda por encima de la asíntota a la derecha y por debajo a la izquierda.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> asíntota oblicua: $m=\lim\frac fx$, $b=\lim(f-mx)$, cada lado por separado. En una racional, la división de polinomios da $mx+b$ directamente.</div>
-  <p><b>Error típico:</b> quedarse en $m$ y olvidar $b$; dar por hecho que en $-\infty$ sale la misma recta (con raíces no tiene por qué: ver B3). Sobre E: calcula $\lim(f-mx)$ con $m$ genérico en vez de hallar antes $m$ con la Prop. 1.12; es correcto, aunque más largo; aquí se sigue el método de U.</p>
+  <div class="recipe"><b>Receta:</b> asíntota oblicua: $m=\lim_{x\to\pm\infty}\frac fx$, $b=\lim_{x\to\pm\infty}(f-mx)$, cada lado por separado. En una racional, la división de polinomios da $mx+b$ directamente.</div>
+  <p><b>Error típico:</b> quedarse en $m$ y olvidar $b$; dar por hecho que en $-\infty$ sale la misma recta (con raíces no tiene por qué: ver B3). Sobre E: calcula $\lim_{x\to\infty}(f-mx)$ con $m$ genérico en vez de hallar antes $m$ con la Prop. 1.12; es correcto, aunque más largo; aquí se sigue el método de U.</p>
   <p class="l4-teo">Teoría: U pp. 48-50 (Prop. 1.12, Ej. 1.48); L p.201 y S pp.315-316 (división de polinomios).</p>
 </details>
 
@@ -783,7 +783,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
   <p><b>Vertical</b> $x=3$: el numerador vale $7&gt;0$; en $3^-$ el denominador $\to0^-$ y $f\to-\infty$; en $3^+$, $f\to+\infty$. <b>Horizontal</b> $y=2$ en ambos lados ($\frac{2+1/x}{1-3/x}\to2$).</p>
 </details>
 <details class="sol"><summary>Ejemplo B2 (media) — $f(x)=\frac{x^2-3x}{x+1}$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
-  <p><b>Vertical</b> $x=-1$ (numerador $=4&gt;0$; $-1^-$: $-\infty$; $-1^+$: $+\infty$). <b>Horizontales:</b> ninguna. <b>Oblicua:</b> $m=\lim\frac{x^2-3x}{x^2+x}=1$ y $b=\lim\frac{-4x}{x+1}=-4$: $y=x-4$ en ambos lados. Por división: $x^2-3x=(x+1)(x-4)+4$.</p>
+  <p><b>Vertical</b> $x=-1$ (numerador $=4&gt;0$; $-1^-$: $-\infty$; $-1^+$: $+\infty$). <b>Horizontales:</b> ninguna. <b>Oblicua:</b> $m=\lim_{x\to\pm\infty}\frac{x^2-3x}{x^2+x}=1$ y $b=\lim_{x\to\pm\infty}\frac{-4x}{x+1}=-4$: $y=x-4$ en ambos lados. Por división: $x^2-3x=(x+1)(x-4)+4$.</p>
 </details>
 <details class="sol"><summary>Ejemplo B3 (difícil) — horizontal en un lado y oblicua en el otro: $f(x)=\sqrt{x^2+1}+x$ <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
   <ol class="steps">
@@ -823,7 +823,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
   </ol>
   <p><b>Comparación:</b> $\operatorname{sen}\frac1x$ no tiene límite en $0$ (U Ej. 1.44), porque oscila entre $-1$ y $1$; el factor $x$ reduce esas oscilaciones hasta $0$.</p>
   <div class="recipe"><b>Receta:</b> (función acotada) × (función que tiende a $0$) → $0$.</div>
-  <p><b>Error típico:</b> escribir $\lim x\cdot\lim\cos\frac1x=0\cdot(\text{algo})$: la regla del producto exige que <b>los dos</b> límites existan, y $\lim\cos\frac1x$ no existe. Sobre E: escribe «$\cos x\in[-1,1]$» y lo que se usa es $\cos\frac1x$; y escribe $0\le\lim|f|\le\lim|x|$ antes de saber que $\lim|f|$ existe (es el emparedado el que lo prueba). Su nota al margen, $\lim g=0\iff\lim|g|=0$, sale de la Def. 1.18, porque $\big||g|-0\big|=|g-0|$.</p>
+  <p><b>Error típico:</b> escribir $\lim_{x\to0}x\cdot\lim_{x\to0}\cos\frac1x=0\cdot(\text{algo})$: la regla del producto exige que <b>los dos</b> límites existan, y $\lim_{x\to0}\cos\frac1x$ no existe. Sobre E: escribe «$\cos x\in[-1,1]$» y lo que se usa es $\cos\frac1x$; y escribe $0\le\lim_{x\to0}|f|\le\lim_{x\to0}|x|$ antes de saber que $\lim_{x\to0}|f|$ existe (es el emparedado el que lo prueba). Su nota al margen, $\lim_{x\to a}g=0\iff\lim_{x\to a}|g|=0$, sale de la Def. 1.18, porque $\big||g|-0\big|=|g-0|$.</p>
   <p class="l4-teo">Teoría: U regla del emparedado y Prop. 1.10, p. 45; Def. 1.20, p. 51.</p>
 </details>
 
@@ -924,7 +924,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
     <li><b>Weierstrass.</b> La Prop. 1.15 (U pp.52-53) exige un intervalo $[a,b]$ <b>cerrado y acotado</b>. $(0,+\infty)$ no es ni una cosa ni la otra (basta que falle una). Si falla una hipótesis, el teorema no dice nada: <b>no hay contradicción</b>. U da un contraejemplo análogo en p.53: $x^{-1}$ en $(0,1)$.</li>
   </ol>
   <div class="recipe"><b>Receta:</b> para usar Weierstrass comprueba tres cosas: $f$ continua, intervalo cerrado, intervalo acotado. Si falla una, el máximo o el mínimo pueden no alcanzarse.</div>
-  <p><b>Error típico:</b> pensar que «no alcanza el mínimo, luego contradice Weierstrass»; decir que el ínfimo «no es $0$» porque no se alcanza (ínfimo y mínimo son cosas distintas). Sobre E: escribe $0\le\lim f\le\lim\frac1x$ antes de saber que $\lim f$ existe, y no dice explícitamente que $\inf=0$.</p>
+  <p><b>Error típico:</b> pensar que «no alcanza el mínimo, luego contradice Weierstrass»; decir que el ínfimo «no es $0$» porque no se alcanza (ínfimo y mínimo son cosas distintas). Sobre E: escribe $0\le\lim_{x\to+\infty}f\le\lim_{x\to+\infty}\frac1x$ antes de saber que $\lim_{x\to+\infty}f$ existe, y no dice explícitamente que $\inf=0$.</p>
   <p class="l4-teo">Teoría: U Prop. 1.15, pp. 52-53; emparedado, p. 45; supremo e ínfimo, §1.1 p. 20.</p>
 </details>
 
@@ -1101,14 +1101,14 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
 <details class="sol"><summary>Examen 5 — indeterminación $1^\infty$: $\lim_{x\to\infty}\big(\frac{x-1}{x+2}\big)^x$ <span class="src" data-l="X" data-ref="X p.132 (Septiembre 2017, I. Electrónica Industrial y Automática, pregunta corta 1, 1 punto)">X p.132</span></summary>
   <p class="enun">Calcule $\displaystyle\lim_{x\to\infty}\Big(\frac{x-1}{x+2}\Big)^x$.</p>
   <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>La base se acerca a $1$ y el exponente crece sin parar: es una indeterminación $1^\infty$ (no vale «$1^\infty=1$»). Se resuelve con la fórmula del número $e$: $\lim A^B=e^{\lim B\,(A-1)}$, es decir, <b>exponente por (base menos 1)</b>.</p></div>
+    <p>La base se acerca a $1$ y el exponente crece sin parar: es una indeterminación $1^\infty$ (no vale «$1^\infty=1$»). Se resuelve con la fórmula del número $e$: $\lim_{x\to\infty} A^B=e^{\lim_{x\to\infty} B\,(A-1)}$, es decir, <b>exponente por (base menos 1)</b>.</p></div>
   <ol class="steps">
     <li><b>Reconocer la forma.</b> $\frac{x-1}{x+2}\to1$ y el exponente $x\to+\infty$: tipo $1^\infty$.</li>
     <li><b>Base menos 1.</b> $\frac{x-1}{x+2}-1=\frac{-3}{x+2}$.</li>
     <li><b>Multiplicar por el exponente.</b> $x\cdot\frac{-3}{x+2}\to-3$.</li>
     <li><b>Resultado.</b> $e^{-3}$ (U Prop. 1.5, p.31).</li>
   </ol>
-  <div class="recipe"><b>Receta ($1^\infty$):</b> $\lim A^B=e^{\lim B\,(A-1)}$; simplifica $A-1$ y multiplícalo por el exponente.</div>
+  <div class="recipe"><b>Receta ($1^\infty$):</b> $\lim_{x\to\infty} A^B=e^{\lim_{x\to\infty} B\,(A-1)}$; simplifica $A-1$ y multiplícalo por el exponente.</div>
   <p class="l4-teo">Teoría: §3 indeterminaciones y forma $1^\infty$ (U pp.29-31, Prop. 1.5). Sin erratas en el impreso.</p>
 </details>
 
@@ -1120,11 +1120,11 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
     <li><b>(a) Continuidad.</b> El denominador $x^2+4\ge4$ nunca es $0$: $f$ es continua en todo $\mathbb R$ (U p.51).</li>
     <li><b>(b) Verticales.</b> Una vertical exige que $f$ se dispare en algún punto (U p.49); como $f$ es continua en todo $\mathbb R$, <b>no hay</b>.</li>
     <li><b>(c) Horizontales.</b> El numerador tiene grado $3$, mayor que el del denominador ($2$): $f\to\pm\infty$ en $\pm\infty$. <b>No hay</b>.</li>
-    <li><b>(d) Pendiente.</b> $m=\lim\frac{f(x)}x=\lim\frac{x^3+x^2+1}{x^3+4x}=1$ (los términos de mayor grado), en $+\infty$ y en $-\infty$.</li>
-    <li><b>(d) Ordenada.</b> $b=\lim(f-x)=\lim\frac{x^2-4x+1}{x^2+4}=1$, en ambos lados.</li>
+    <li><b>(d) Pendiente.</b> $m=\lim_{x\to\pm\infty}\frac{f(x)}x=\lim_{x\to\pm\infty}\frac{x^3+x^2+1}{x^3+4x}=1$ (los términos de mayor grado), en $+\infty$ y en $-\infty$.</li>
+    <li><b>(d) Ordenada.</b> $b=\lim_{x\to\pm\infty}(f-x)=\lim_{x\to\pm\infty}\frac{x^2-4x+1}{x^2+4}=1$, en ambos lados.</li>
     <li><b>Conclusión.</b> La asíntota oblicua es $y=x+1$ en $+\infty$ y en $-\infty$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> racional $P/Q$: continua donde $Q\neq0$; verticales en los ceros de $Q$; horizontal si $\operatorname{gr}P\le\operatorname{gr}Q$; oblicua si $\operatorname{gr}P=\operatorname{gr}Q+1$, con $m=\lim f/x$ y $b=\lim(f-mx)$, cada lado por separado.</div>
+  <div class="recipe"><b>Receta:</b> racional $P/Q$: continua donde $Q\neq0$; verticales en los ceros de $Q$; horizontal si $\operatorname{gr}P\le\operatorname{gr}Q$; oblicua si $\operatorname{gr}P=\operatorname{gr}Q+1$, con $m=\lim_{x\to\pm\infty} f/x$ y $b=\lim_{x\to\pm\infty}(f-mx)$, cada lado por separado.</div>
   <p class="l4-teo">Teoría: §7 asíntotas (U pp.48-50, Prop. 1.12); §8 continuidad (U p.51); §6 límites en el infinito. Sin erratas de resultado.</p>
 </details>
 
@@ -1170,14 +1170,14 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
     <tr><td>Límite (Def. 1.18)</td><td>$\forall\varepsilon\,\exists\delta$: $x\in D\setminus\{a\}$, $|x-a|&lt;\delta\Rightarrow|f(x)-l|\le\varepsilon$. El punto $x=a$ no cuenta. Si existe, es único.</td></tr>
     <tr><td>Simplificar y sustituir</td><td>Funciones iguales cerca de $a$ salvo en $a$ tienen el mismo límite en $a$. Con $\frac00$: factorizar $(x-a)$ o multiplicar por el conjugado.</td></tr>
     <tr><td>Álgebra (Prop. 1.11)</td><td>suma, producto y cociente ($m\neq0$) de límites <b>que existen</b>.</td></tr>
-    <tr><td>Emparedado y acotada×0</td><td>$f\le h\le g$ con mismo límite $\Rightarrow$ ese límite; $\lim f=0$ y $g$ acotada $\Rightarrow\lim fg=0$.</td></tr>
+    <tr><td>Emparedado y acotada×0</td><td>$f\le h\le g$ con mismo límite $\Rightarrow$ ese límite; $\lim_{x\to a}f=0$ y $g$ acotada $\Rightarrow\lim_{x\to a}fg=0$.</td></tr>
     <tr><td>Composición</td><td>$g(x)\to b$ y $f$ continua en $b\Rightarrow f(g(x))\to f(b)$. $e^{-\infty}=0$, $e^{+\infty}=+\infty$.</td></tr>
     <tr><td>Indeterminaciones</td><td>$\frac00,\ \infty-\infty,\ \pm\infty\cdot0,\ \frac\infty\infty,\ 0^0,\ 1^{\pm\infty},\ \infty^0$.</td></tr>
-    <tr><td>$1^\infty$</td><td>$A\to1$, $B\to\pm\infty$: $A^B\to e^{\lim B(A-1)}$. $\big(1+\frac1F\big)^F\to e$ si $F\to\pm\infty$.</td></tr>
+    <tr><td>$1^\infty$</td><td>$A\to1$, $B\to\pm\infty$: $A^B\to e^{\lim_{x\to a} B(A-1)}$. $\big(1+\frac1F\big)^F\to e$ si $F\to\pm\infty$.</td></tr>
     <tr><td>Laterales (Teor. 1.4)</td><td>$\lim_{x\to a}f=l\iff\lim_{a^-}f=\lim_{a^+}f=l$.</td></tr>
     <tr><td>Regla del signo</td><td>$\frac{l}{0^+}$: $\operatorname{sig}(l)\,\infty$; $\frac{l}{0^-}$: $-\operatorname{sig}(l)\,\infty$ ($l\neq0$). Cada lateral por separado.</td></tr>
     <tr><td>Infinito</td><td>Racional: $\operatorname{gr}P&lt;\operatorname{gr}Q\to0$; $=\to$ cociente de coeficientes dominantes; $&gt;\to\pm\infty$. Polinomio impar: $\pm\infty$ con signos opuestos en $\pm\infty$.</td></tr>
-    <tr><td>Asíntotas</td><td>Horizontal $y=b$: $\lim_{\pm\infty}f=b$. Vertical $x=a$: algún lateral $=\pm\infty$. Oblicua $y=mx+b$: $m=\lim\frac fx\ne0$, $b=\lim(f-mx)$; cada lado por separado; nunca horizontal y oblicua en el mismo lado. Ojo: $m=\lim\frac fx$ no basta (U p.49: $x+\operatorname{sen}x$ tiene $m=1$ pero $f-x=\operatorname{sen}x$ no tiene límite, así que no hay oblicua).</td></tr>
+    <tr><td>Asíntotas</td><td>Horizontal $y=b$: $\lim_{\pm\infty}f=b$. Vertical $x=a$: algún lateral $=\pm\infty$. Oblicua $y=mx+b$: $m=\lim_{x\to\pm\infty}\frac fx\ne0$, $b=\lim_{x\to\pm\infty}(f-mx)$; cada lado por separado; nunca horizontal y oblicua en el mismo lado. Ojo: $m=\lim_{x\to\pm\infty}\frac fx$ no basta (U p.49: $x+\operatorname{sen}x$ tiene $m=1$ pero $f-x=\operatorname{sen}x$ no tiene límite, así que no hay oblicua).</td></tr>
     <tr><td>Continuidad</td><td>$\lim_{x\to a}f=f(a)$ (existe $f(a)$, existe el límite, coinciden). Suma, producto, cociente ($g(a)\ne0$), composición (local). Evitable / salto / infinita.</td></tr>
     <tr><td>Bolzano</td><td>$f$ continua en $[a,b]$, $f(a)f(b)&lt;0\Rightarrow\exists c\in(a,b)$, $f(c)=0$. Valores intermedios: lo mismo con $f(c)=d$ entre $f(a)$ y $f(b)$.</td></tr>
     <tr><td>Weierstrass</td><td>$f$ continua en $[a,b]$ (cerrado <b>y</b> acotado) $\Rightarrow$ alcanza máximo y mínimo.</td></tr>
@@ -1189,7 +1189,7 @@ svg.fig .l4-asy{stroke:var(--S);stroke-width:2;stroke-dasharray:8 5;fill:none}
   <ul>
     <li>Creer que el límite en $a$ es $f(a)$; olvidar que $x=a$ está excluido.</li>
     <li>Sustituir y quedarse en $\frac00$, o decir «$\frac00$ ⇒ no existe» o «$1^\infty=1$».</li>
-    <li>Usar $\lim(fg)=\lim f\cdot\lim g$ cuando alguno de los dos límites no existe.</li>
+    <li>Usar $\lim_{x\to a}(fg)=\lim_{x\to a}f\cdot\lim_{x\to a}g$ cuando alguno de los dos límites no existe.</li>
     <li>Decir «denominador $\to0$ ⇒ $\infty$» sin estudiar el signo de cada lateral.</li>
     <li>Olvidar $b$ en la asíntota oblicua, o suponer la misma recta en $+\infty$ y en $-\infty$.</li>
     <li>Razonar «$g$ discontinua ⇒ $g\circ f$ discontinua» (la Prop. 1.14 es local).</li>
