@@ -12,6 +12,60 @@
         macros: { '\\lim': '\\mathop{\\operatorname{lim}}\\limits' } /* subíndice siempre debajo de «lim», también en línea */
       });
     } catch (e) {}
+    /* fórmulas en pantalla: si no caben, se reducen (hasta 55 %) para evitar el scroll horizontal */
+    var MACROS = { '\\lim': '\\mathop{\\operatorname{lim}}\\limits' };
+    /* parte un TeX en los puntos de profundidad 0 donde empieza un token de `re` */
+    function splitTop(tex, re) {
+      var out = [], depth = 0, last = 0, i = 0, m;
+      while (i < tex.length) {
+        var c = tex[i];
+        if (c === '{' || c === '(' || c === '[') depth++; else if (c === '}' || c === ')' || c === ']') depth--;
+        else if (c === '\\') {
+          m = /^\\(left|right|begin|end)\b/.exec(tex.slice(i));
+          if (m) { if (m[1] === 'left' || m[1] === 'begin') depth++; else depth--; }
+        }
+        if (depth === 0 && i > last && (m = re.exec(tex.slice(i))) && m.index === 0) { out.push(tex.slice(last, i)); last = i; i += m[0].length; continue; }
+        if (c === '\\') i += 2; else i++;
+      }
+      out.push(tex.slice(last)); return out;
+    }
+    function fits(m) { return m.clientWidth && m.scrollWidth <= m.clientWidth + 1; }
+    function wrapMath(m) {
+      var an = m.querySelector('annotation'); if (!an || !window.katex || m.dataset.wrapped) return;
+      var tex = an.textContent, tries = [];
+      var l1 = splitTop(tex, /^\\q?quad/).map(function (x) { return x.replace(/^\\q?quad\s*/, ''); }).filter(function (x) { return x.trim(); });
+      tries.push(l1);
+      var l2 = []; l1.forEach(function (ln) {
+        splitTop(ln, /^=|^\\(Longrightarrow|iff|Rightarrow)\b/).forEach(function (p, j) { l2.push(j ? '{}' + p : p); }); });
+      tries.push(l2);
+      var l3 = []; l2.forEach(function (ln) {
+        splitTop(ln, /^[+]/).forEach(function (p, j) { l3.push(j ? '{}' + p : p); }); });
+      tries.push(l3);
+      for (var t = 0; t < tries.length; t++) {
+        if (tries[t].length < 2) continue;
+        var src = '\\begin{gathered}' + tries[t].map(function (x) { return /^[\s]*\[/.test(x) ? '{}' + x : x; }).join('\\\\') + '\\end{gathered}';
+        var tmp = d.createElement('span');
+        try { katex.render(src, tmp, { displayMode: true, throwOnError: true, macros: MACROS }); } catch (e) { continue; }
+        m.innerHTML = tmp.firstChild.innerHTML; m.dataset.wrapped = '1';
+        fitOne(m); if (fits(m)) return;
+      }
+    }
+    function fitOne(m) {
+      var k = m.querySelector('.katex'); if (!k || !m.clientWidth) return;
+      k.style.fontSize = '';
+      var r = m.clientWidth / m.scrollWidth;
+      if (r < 1) k.style.fontSize = (1.21 * Math.max(0.55, r * 0.98)).toFixed(3) + 'em';
+    }
+    function fitMath() {
+      [].forEach.call(d.querySelectorAll('.katex-display'), function (m) {
+        if (m.dataset.wrapped) { fitOne(m); return; }
+        fitOne(m);
+        var k = m.querySelector('.katex');
+        if (k && m.clientWidth && (m.scrollWidth > m.clientWidth + 1 || parseFloat(k.style.fontSize || '1.21') < 1.21 * 0.8)) wrapMath(m);
+      });
+    }
+    fitMath(); window.addEventListener('resize', fitMath); window.addEventListener('load', fitMath);
+    d.addEventListener('toggle', fitMath, true);
     var toc = d.querySelector('.side-toc');
     var hs = [].slice.call(d.querySelectorAll('main h2[id]'));
     if (toc) hs.forEach(function (h) {
