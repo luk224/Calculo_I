@@ -72,7 +72,7 @@
       var a = d.createElement('a'); a.href = '#' + h.id;
       var c = h.cloneNode(true); c.querySelectorAll('.src').forEach(function (x) { x.remove(); });
       var n = c.querySelector('.n'); var num = n ? n.textContent.trim() + ' ' : ''; if (n) n.remove();
-      a.textContent = num + c.textContent.replace(/\s+/g, ' ').trim(); toc.appendChild(a);
+      a.innerHTML = num + c.innerHTML.replace(/\s+/g, ' ').trim(); toc.appendChild(a);
     });
     if ('IntersectionObserver' in window && toc) {
       var io = new IntersectionObserver(function (es) {
@@ -86,7 +86,7 @@
       var mn = d.createElement('div'); mn.className = 'mnav';
       mn.innerHTML = '<button type="button" class="mnav-btn" aria-expanded="false" aria-controls="mnav-list">☰ Apartados</button><nav id="mnav-list" class="mnav-list" aria-label="Apartados del tema" hidden></nav>';
       var list = mn.querySelector('nav'), mb = mn.querySelector('button');
-      tocLinks.forEach(function (a) { var c = d.createElement('a'); c.href = a.getAttribute('href'); c.textContent = a.textContent; list.appendChild(c); });
+      tocLinks.forEach(function (a) { var c = d.createElement('a'); c.href = a.getAttribute('href'); c.innerHTML = a.innerHTML; list.appendChild(c); });
       function setOpen(o) { list.hidden = !o; mb.setAttribute('aria-expanded', o ? 'true' : 'false');
         if (o) { var cur = null; hs.forEach(function (h) { if (h.getBoundingClientRect().top < 120) cur = h.id; });
           [].forEach.call(list.children, function (x) { var on = x.getAttribute('href') === '#' + cur; x.classList.toggle('on', on); if (on) x.scrollIntoView({ block: 'center' }); }); } }
