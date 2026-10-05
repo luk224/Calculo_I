@@ -523,11 +523,31 @@ svg.fig .sm{font-size:15px}
 </div>
 
 <div class="box ex"><span class="h">Ejemplos 1.25 y 1.26</span>
+  <p><b>Ejemplo 1.25.</b> Calcular $\displaystyle\lim_{n\to\infty}\cos\!\left(\frac\pi4+\frac1n\right)$.</p>
   <ol class="steps">
-    <li><b>1.25.</b> $\lim_{n\to\infty}\cos\!\left(\frac\pi4+\frac1n\right)=\cos\!\left(\lim_{n\to\infty}\left(\frac\pi4+\frac1n\right)\right)=\cos\frac\pi4=\frac{\sqrt2}2$ (el coseno es continuo).</li>
-    <li><b>1.26.</b> $\displaystyle\lim_{n\to\infty}\left(\frac n{n^2+3}\right)^{n}$: por (1.1) es $e^{\lim_{n\to\infty} n\ln\frac n{n^2+3}}$. Aquí $\frac n{n^2+3}\to0$ con términos positivos y $\ln x\to-\infty$ cuando $x\to0^+$ (se verá en 1.4), luego $\ln\frac n{n^2+3}\to-\infty$; el exponente es $\infty\cdot(-\infty)=-\infty$ y el límite es $e^{-\infty}=0$ (una de las expresiones que no son indeterminación, apartado 6). (No es indeterminación: la base tiende a $0$ y el exponente a $\infty$.)</li>
+    <li><b>Qué pasa dentro.</b> $\frac\pi4+\frac1n\to\frac\pi4$, porque $\frac1n\to0$.</li>
+    <li><b>Meter el límite dentro del coseno.</b> El coseno es continuo, así que $\lim_{n\to\infty}\cos(a_n)=\cos\big(\lim_{n\to\infty}a_n\big)$.</li>
+    <li><b>Resultado:</b> $\cos\frac\pi4=\dfrac{\sqrt2}2\approx0{,}707$.</li>
   </ol>
-  <span class="src" data-l="U" data-ref="U Ejemplos 1.25 y 1.26, pp. 29-30">U pp.29-30</span>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.25, p. 29-30">U p.29-30</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 1.26 paso a paso</span>
+  <p>Calcular $\displaystyle\lim_{n\to\infty}\left(\frac n{n^2+3}\right)^{n}$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span>
+    <p>La base se hace <b>muy pequeña</b> (casi $0$) y se multiplica por sí misma $n$ veces, cada vez más veces: el resultado se hace $0$. Ejemplo numérico: $n=10$ da $\left(\frac{10}{103}\right)^{10}\approx7\cdot10^{-11}$; con $n=100$ es aún mucho menor.</p>
+  </div>
+  <ol class="steps">
+    <li><b>Mirar la base y el exponente por separado.</b> Base: $\dfrac n{n^2+3}$. Dividiendo arriba y abajo entre $n$ queda $\dfrac1{n+\frac3n}\to0$ (el denominador crece sin límite). Además la base es siempre $&gt;0$. Exponente: $n\to+\infty$. Es del tipo «$0^{\infty}$», que <b>no es indeterminación</b> (apartado 6); lo comprobamos con la fórmula (1.1).</li>
+    <li><b>Escribirlo con $e$ (fórmula 1.1).</b> Como la base es positiva, $a_n^{\,b_n}=e^{\,b_n\ln a_n}$. Aquí:
+      $$\left(\frac n{n^2+3}\right)^{n}=e^{\,n\cdot\ln\frac n{n^2+3}}.$$</li>
+    <li><b>Límite del logaritmo.</b> Cuando un número positivo se acerca a $0$, su $\ln$ se va a $-\infty$ (p.ej. $\ln0{,}001\approx-6{,}9$, $\ln10^{-9}\approx-20{,}7$). Como la base tiende a $0^+$:
+      $$\ln\frac n{n^2+3}\longrightarrow-\infty.$$</li>
+    <li><b>Límite del exponente.</b> $n\to+\infty$ y $\ln\frac n{n^2+3}\to-\infty$; «$(+\infty)\cdot(-\infty)=-\infty$». Es decir, el exponente de $e$ tiende a $-\infty$.</li>
+    <li><b>Último paso.</b> $e^{-\infty}=\lim_{t\to-\infty}e^{t}=0$ (p.ej. $e^{-20}\approx2\cdot10^{-9}$).</li>
+  </ol>
+  <div class="recipe"><b>Resultado:</b> $\displaystyle\lim_{n\to\infty}\left(\frac n{n^2+3}\right)^{n}=\mathbf{0}$.<br><b>Receta (potencia $a_n^{b_n}$):</b> si $a_n>0$, pasa a $e^{b_n\ln a_n}$, calcula el límite de $b_n\ln a_n$ (puede ser $\pm\infty$) y aplica $e^{+\infty}=+\infty$, $e^{-\infty}=0$.</div>
+  <span class="src" data-l="U" data-ref="U Ejemplo 1.26, p. 30">U p.30</span>
 </div>
 
 <div class="box warn"><span class="h">Error típico</span>
