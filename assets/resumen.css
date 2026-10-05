@@ -125,3 +125,15 @@ details.fuera>summary::-webkit-details-marker{display:none}
 details.fuera>summary::before{content:"▸ ";display:inline-block}
 details.fuera[open]>summary::before{content:"▾ "}
 details.fuera[open]>summary{border-bottom:1px solid var(--bd);margin-bottom:8px}
+
+/* menú desplegable de apartados (solo móvil/tablet, donde se oculta el índice lateral) */
+.mnav{display:none}
+@media (max-width:1000px){
+  .mnav{display:block;position:fixed;right:14px;bottom:14px;z-index:40;font:14px var(--sans)}
+  .mnav-btn{font:600 14px var(--sans);background:var(--acc);color:var(--bg);border:0;border-radius:99px;padding:10px 16px;box-shadow:0 4px 14px rgba(0,0,0,.28);cursor:pointer}
+  .mnav-list{position:absolute;right:0;bottom:calc(100% + 10px);width:min(80vw,320px);max-height:60vh;overflow:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,.3);padding:6px}
+  .mnav-list[hidden]{display:none}
+  .mnav-list a{display:block;padding:9px 12px;border-radius:8px;color:var(--fg);text-decoration:none;line-height:1.35}
+  .mnav-list a.on{background:color-mix(in srgb,var(--acc) 14%,transparent);color:var(--acc);font-weight:600}
+}
+@media print{.mnav{display:none!important}}
