@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 3.3 Interpolación polinómica</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo III · Aplicaciones de la derivada · Tema 3.3</div>
+  <h1>Interpolación polinómica</h1>
+  <p>Cómo encontrar un polinomio que pase exactamente por una lista de puntos, cómo construirlo con la tabla de diferencias divididas de Newton y cuánto se equivoca fuera de los puntos.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §3.3 (pp. 119-124)</span><span>Ejercicios: E Ej. 3.21–3.28 (pp. 107-113)</span><span>Examen: 9 problemas de X</span><span>⏱ ~4 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (páginas del PDF)">X</span> exámenes
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §3.3.1 Motivación, p. 119; Orientaciones y objetivos, p. 120">U pp.119-120</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Tienes una tabla de datos (por ejemplo, la temperatura de una habitación a las 0, 1, 2 y 4 horas) y quieres una <b>fórmula</b> que reproduzca esos datos exactamente y que sirva para estimar valores intermedios. Lo más sencillo es unir los puntos con segmentos (una poligonal), pero queda «picuda». Si quieres una curva suave, fácil de construir y de evaluar, lo mejor es un <b>polinomio</b>: el <b>polinomio interpolador</b>. En 3.1 el polinomio de Taylor copiaba a $f$ en <i>un solo punto</i> (usando derivadas); aquí el polinomio copia a $f$ en <i>varios puntos</i> (usando solo valores) y aproxima bien en todo el intervalo.</p>
+  <span class="src" data-l="U" data-ref="U §3.3.1 Motivación, p. 119 y p. 120 («queremos que aproxime bien en todo un intervalo»)">U pp.119-120</span>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li>Polinomios: grado, raíces, y que un polinomio no nulo de grado $\le n$ tiene como mucho $n$ raíces. <span class="src" data-l="P" data-ref="Álgebra básica; no tiene página en U">P</span></li>
+  <li>Teorema de Rolle (solo para el apartado 4, el error). <span class="src" data-l="U" data-ref="U §2.5.2 Teorema de Rolle, p. 95">U p.95</span></li>
+  <li>Polinomio de Taylor y su resto de Lagrange, para comparar (tema 3.1). <span class="src" data-l="U" data-ref="U Prop. 3.2 y Def. 3.3, p. 111">U p.111</span></li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <tr><th>Apartado</th><th>Qué contiene</th><th>Dónde está</th></tr>
+  <tr><td>1 Qué es interpolar</td><td>nodos, polinomio interpolador, grado $\le n$, existencia y unicidad, recta y parábola</td><td>U pp.119-122</td></tr>
+  <tr><td>2 Diferencias divididas</td><td>definición, tabla de diferencias</td><td>U p.123</td></tr>
+  <tr><td>3 Forma de Newton</td><td>el polinomio con la diagonal superior; añadir un nodo</td><td>U p.124</td></tr>
+  <tr><td>4 Error de interpolación</td><td>forma de Lagrange (apuntes propios, sin verificar contra las notas adicionales)</td><td>P</td></tr>
+  <tr><td>5 Fuera de examen</td><td>splines</td><td>U p.121</td></tr>
+  <tr><td>6 Ejercicios</td><td>E 3.21–3.28 con receta</td><td>E pp.107-113</td></tr>
+  <tr><td>7 Ejemplos propios</td><td>4 ejemplos, de fácil a difícil</td><td>propio</td></tr>
+  <tr><td>8 Examen</td><td>problemas reales de X</td><td>X</td></tr>
+  <tr><td>9 Chuleta y comprobación</td><td>fórmulas, erratas, lista</td><td>síntesis</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios y en el examen</h3>
+<p>(A) <b>Calcular el polinomio interpolador</b> de 3 o 4 datos con diferencias divididas y, casi siempre, <b>evaluarlo</b> en un punto (E 3.24-3.25, 3.27; X pp.5, 57, 101, 119, 151). (B) Preguntas <b>teóricas</b> de grado y unicidad: ¿el grado es exactamente $n$?, ¿puede haber más de uno? (E 3.21-3.23, 3.26). (C) <b>Añadir un nodo</b> sin repetir la tabla (E 3.27-3.28). (D) Preguntas que <b>mezclan interpolación con trapecio y Simpson</b> del Tema 6 (X pp.65-66, 85, 100, 107). Los splines no se preguntan.</p>
+
+<div class="box tip"><span class="h">Antes de calcular: dibuja y comprueba</span>
+  <p>U recomienda representar gráficamente los datos antes de resolver, para anticipar qué tipo de polinomio saldrá, y comprobar el resultado al final, porque «el proceso de interpolación supone realizar diversas operaciones y es fácil equivocarse». La comprobación es barata: sustituye el polinomio en dos o tres nodos y mira que da el dato.</p>
+  <span class="src" data-l="U" data-ref="U Orientaciones y objetivos, p. 120">U p.120</span>
+</div>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Qué es interpolar: nodos, polinomio interpolador, existencia y unicidad <span class="src" data-l="U" data-ref="U §3.3.2 Interpolación, pp. 120-121; Ejemplo 3.16, pp. 121-122">U pp.120-122</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Dos puntos determinan una recta; tres puntos (no alineados), una parábola; cuatro, una cúbica. En general, $n+1$ puntos con abscisas distintas determinan <b>un único</b> polinomio de grado $\le n$ que pasa por todos ellos. Es como un ajuste «a medida» sin sobrantes: tantos datos como coeficientes libres ($a_0,\dots,a_n$ son $n+1$ números).</p>
+  <span class="src" data-l="U" data-ref="U §3.3.2, pp. 120-121">U pp.120-121</span>
+</div>
+
+<div class="box def"><span class="h">Definición · nodos y polinomio interpolador</span>
+  <p>Se dispone de datos $(x_k,f_k)$ para $k=0,\dots,n$. Los números $x_k$ (distintos) se llaman <b>nodos</b> y $f_k$ es el valor de la función $f(x)$ en $x_k$. Se busca un polinomio
+  $$p_n(x)=a_0+a_1x+\cdots+a_nx^n\quad\text{tal que}\quad p_n(x_k)=f_k,\ \ k=0,\dots,n.$$
+  Ese $p_n$ se llama <b>polinomio de interpolación</b> o <b>polinomio interpolador</b>.</p>
+  <span class="src" data-l="U" data-ref="U §3.3.2, pp. 120-121 (definición de nodos, polinomio interpolador)">U pp.120-121</span>
+</div>
+
+<div class="box thm"><span class="h">Propiedad · sistema lineal, grado máximo, existencia y unicidad</span>
+  <p>Las $n+1$ condiciones $p_n(x_k)=f_k$ forman un sistema de $n+1$ ecuaciones lineales con $n+1$ incógnitas $a_0,\dots,a_n$. Por eso el grado de $p_n$ es <b>$n$ como máximo</b> (puede ser menor). El polinomio <b>existe y es único</b>. U afirma la unicidad («muy sencilla», remite a un libro externo) y prueba la existencia construyéndolo con diferencias divididas de Newton (apartados 2-3).</p>
+  <span class="src" data-l="U" data-ref="U §3.3.2, p. 121 (sistema lineal, «el grado de pn(x) es n como máximo», existencia y unicidad)">U p.121</span>
+</div>
+
+<div class="box intu"><span class="h">Por qué es único (argumento propio)</span>
+  <p>Si $p$ y $q$ tienen grado $\le n$ y coinciden en los $n+1$ nodos, su diferencia $d=p-q$ tiene grado $\le n$ y se anula en $n+1$ puntos distintos. Un polinomio no nulo de grado $\le n$ tiene como mucho $n$ raíces (cada raíz $r$ aporta un factor $(x-r)$ y no caben más de $n$ factores). Luego $d\equiv0$ y $p=q$.</p>
+  <p><b>Consecuencia práctica, la usarás mucho:</b> si encuentras <i>de cualquier forma</i> (a ojo, porque los puntos están alineados, etc.) un polinomio de grado $\le n$ que pase por los $n+1$ datos, <b>ese es</b> el interpolador. No hay otro.</p>
+  <span class="src" data-l="P" data-ref="Argumento propio; U p. 121 afirma la unicidad sin demostrarla (nota 1 remite a Rodríguez Marín et al.)">P</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico · «n+1 datos ⇒ grado exactamente n»</span>
+  <p>«Grado $n$» es el <b>máximo</b>, no lo obligatorio. Con tres puntos alineados el interpolador es una recta (grado 1), no una parábola. Hasta U lo escribe así en el Ej. 3.18: «Su grado es 3, porque tenemos 4 datos»; es cierto allí <i>porque</i> la última diferencia dividida vale $\frac1{12}\neq0$. Lo seguro es «grado $\le3$».</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 3.18, p. 124 (frase «Su grado es 3, porque tenemos 4 datos»); aviso propio">U p.124</span>
+</div>
+
+<div class="box intu"><span class="h">Resolver el sistema es posible, pero pesado</span>
+  <p>Con 2 o 3 datos puedes plantear el sistema y resolverlo a mano (lo haces en el ejemplo P1). Con 4 o más, U advierte de que «la resolución de este sistema … puede ser una tarea ardua»; por eso se usa el método de las diferencias divididas de Newton, que no necesita resolver ningún sistema.</p>
+  <span class="src" data-l="U" data-ref="U §3.3.2, p. 121 (el sistema se resuelve con métodos de Álgebra; «tarea ardua»)">U p.121</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 3.16 de U · una recta y una parábola</span>
+  <p>Temperatura de una habitación al encender la calefacción: $x_k=0,1$ (horas) y $f_k=15,18$ (grados).</p>
+  <ol class="steps">
+    <li><b>Recta por dos puntos.</b> La recta por $(x_0,f_0)$ con pendiente $m$ es $p_1(x)-f_0=m(x-x_0)$. Aquí $m=\frac{f_1-f_0}{x_1-x_0}=\frac{18-15}{1-0}=3$.</li>
+    <li><b>Resultado:</b> $p_1(x)=15+3x$. Esa pendiente $m$ aproxima la derivada de $f$, en analogía con el polinomio de Taylor de orden 1.</li>
+    <li><b>Un tercer dato</b> $(2,20)$. Se parte de $p_1$ y se suma un término que no estropea los datos anteriores (se anula en $0$ y en $1$): $p_2(x)=3x+15-\tfrac12\,x(x-1)$. El número $-\tfrac12$ se fija con el nuevo dato y aproxima la derivada segunda.</li>
+    <li><b>Comprobación</b> (U la deja al lector): $p_2(0)=15$, $p_2(1)=18$, $p_2(2)=6+15-1=20$. ✓</li>
+  </ol>
+  <p>Este «ir añadiendo un término que no estropea lo anterior» es exactamente el método de Newton del apartado 3.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 3.16, pp. 121-122">U pp.121-122</span>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Diferencias divididas y tabla de diferencias <span class="src" data-l="U" data-ref="U §3.3 (diferencias divididas), p. 123; Ejemplo 3.17, p. 123">U p.123</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una diferencia dividida de orden 1 es una <b>pendiente</b> (cociente incremental entre dos nodos). Una de orden 2 es la «pendiente de las pendientes»: mide cuánto se curva la gráfica. Una de orden 3, cómo cambia esa curvatura, y así sucesivamente. U lo dice con otras palabras: las diferencias divididas «son una aproximación de la derivada de orden $m$». Cada una se calcula con las del orden anterior, y se organizan en una tabla.</p>
+  <span class="src" data-l="U" data-ref="U p. 123 («Geométricamente, son una aproximación de la derivada de orden m»); p. 122 (analogía con Taylor)">U pp.122-123</span>
+</div>
+
+<div class="box def"><span class="h">Definición · diferencias divididas</span>
+  <p><b>Orden 0:</b> $f[x_k]=f_k$ (el valor de la función en el nodo).<br>
+  <b>Orden 1:</b> $\displaystyle f[x_k,x_{k+1}]=\frac{f[x_{k+1}]-f[x_k]}{x_{k+1}-x_k}=\frac{f_{k+1}-f_k}{x_{k+1}-x_k}.$<br>
+  <b>Orden $m$</b> (recursiva):
+  $$f[x_k,\dots,x_{k+m}]=\frac{f[x_{k+1},\dots,x_{k+m}]-f[x_k,\dots,x_{k+m-1}]}{x_{k+m}-x_k}.$$</p>
+  <span class="src" data-l="U" data-ref="U §3.3, definición de diferencias divididas de orden 0, 1 y m, p. 123">U p.123</span>
+</div>
+
+<div class="box tip"><span class="h">Cómo leer la fórmula (para no equivocarte)</span>
+  <p>Numerador: «la casilla de la columna anterior <b>de abajo</b> menos la de <b>arriba</b>». Denominador: el nodo <b>más alto</b> menos el nodo <b>más bajo</b> del grupo que abarca la casilla (los de los <b>extremos</b>, no los vecinos). La forma más sencilla de calcularlas es en una tabla, la <b>tabla de diferencias</b>.</p>
+  <span class="src" data-l="U" data-ref="U p. 123 («la forma más sencilla de calcular las diferencias divididas es en una tabla»); lectura de la fórmula: explicación propia">U p.123</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 3.17 de U · tabla de diferencias</span>
+  <p>Datos: $x_k=0,1,2,4$ y $f_k=15,18,20,23$ (temperatura a distintas horas).</p>
+  <table>
+    <tr><th>$x_k$</th><th>$f[x_k]$</th><th>orden 1</th><th>orden 2</th><th>orden 3</th></tr>
+    <tr><td>0</td><td><b>15</b></td><td>$\frac{18-15}{1-0}=\mathbf{3}$</td><td>$\frac{2-3}{2-0}=-\mathbf{\tfrac12}$</td><td>$\frac{-\frac16+\frac12}{4-0}=\mathbf{\tfrac1{12}}$</td></tr>
+    <tr><td>1</td><td>18</td><td>$\frac{20-18}{2-1}=2$</td><td>$\frac{\frac32-2}{4-1}=-\frac16$</td><td></td></tr>
+    <tr><td>2</td><td>20</td><td>$\frac{23-20}{4-2}=\frac32$</td><td></td><td></td></tr>
+    <tr><td>4</td><td>23</td><td></td><td></td><td></td></tr>
+  </table>
+  <p>En negrita, la <b>diagonal superior</b> ($15,\ 3,\ -\frac12,\ \frac1{12}$): son las que se usan para construir el polinomio. Fíjate en los denominadores del orden 2: $2-0$ y $4-1$, los nodos de los extremos de cada grupo de tres. (En U las columnas de la tabla van desplazadas medio renglón entre filas; aquí se alinean arriba, con los mismos valores.)</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 3.17, p. 123 (tabla reconstruida y verificada con las fórmulas de U)">U p.123</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico · denominadores</span>
+  <p>En el orden 2 o 3, dividir entre la diferencia de nodos <b>vecinos</b> (por ejemplo $x_2-x_1$) en vez de entre los <b>extremos</b> ($x_2-x_0$). Otro error: restar «arriba menos abajo», que cambia el signo de todo.</p>
+  <span class="src" data-l="P" data-ref="Error frecuente; explicación propia basada en la definición de U p. 123">P</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>La forma de Newton del polinomio interpolador <span class="src" data-l="U" data-ref="U §3.3, polinomio de interpolación por Newton y Ejemplo 3.18, p. 124">U p.124</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · el polinomio «por capas»</span>
+  <p>Se construye apilando capas. <b>Capa 0</b>: una constante que acierta en $x_0$. <b>Capa 1</b>: una recta que lleva el factor $(x-x_0)$, así que vale 0 en $x_0$ (no estropea la capa 0) y se ajusta para acertar en $x_1$. <b>Capa 2</b>: una parábola con factor $(x-x_0)(x-x_1)$, que no toca los dos primeros nodos y acierta en $x_2$. Y así hasta el último dato. El coeficiente de cada capa es una diferencia dividida de la diagonal superior.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 3.16, pp. 121-122 (la misma idea con recta y parábola) y p. 124">U pp.121-124</span>
+</div>
+
+<div class="box thm"><span class="h">Fórmula de Newton</span>
+  <p>
+  $$p_n(x)=f[x_0]+f[x_0,x_1](x-x_0)+f[x_0,x_1,x_2](x-x_0)(x-x_1)+\cdots+f[x_0,\dots,x_n](x-x_0)(x-x_1)\cdots(x-x_{n-1}).$$
+  El término de orden $m$ lleva $m$ factores: $(x-x_0)\cdots(x-x_{m-1})$. El último factor es $(x-x_{m-1})$, <b>no</b> $(x-x_m)$.</p>
+  <span class="src" data-l="U" data-ref="U p. 124, polinomio de interpolación por Newton">U p.124</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 3.18 de U · el polinomio de los datos del Ej. 3.17</span>
+  <ol class="steps">
+    <li><b>Diagonal superior</b> del Ej. 3.17: $15,\ 3,\ -\frac12,\ \frac1{12}$ (U lo resalta: «elegimos las diferencias de la diagonal superior»).</li>
+    <li><b>Newton:</b> $p_3(x)=15+3(x-0)-\tfrac12(x-0)(x-1)+\tfrac1{12}(x-0)(x-1)(x-2)$.</li>
+    <li><b>Desarrollado:</b> $p_3(x)=\tfrac1{12}x^3-\tfrac34x^2+\tfrac{11}3x+15$.</li>
+    <li><b>Comprobación:</b> $p_3(4)=\frac{64}{12}-12+\frac{44}3+15=23$ ✓.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 3.18, p. 124">U p.124</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_3_18_p3.png" alt="Gráfica de p3(x) con los cuatro datos (0,15), (1,18), (2,20) y (4,23): una curva creciente que pasa por los cuatro puntos" loading="lazy">
+<figcaption>Gráfica de $p_3(x)$ del Ejemplo 3.18 con los cuatro datos. <span class="src" data-l="U" data-ref="U Ejemplo 3.18, figura de p. 124">U p.124</span></figcaption>
+</figure>
+
+<div class="box thm"><span class="h">Añadir un nodo sin empezar de nuevo</span>
+  <p>$p_n(x)=p_{n-1}(x)+f[x_0,\dots,x_n]\,(x-x_0)\cdots(x-x_{n-1})$. «Al añadir un nuevo nodo no hace falta empezar todo el proceso de nuevo, basta con calcular las diferencias que nos faltan (que son las diferencias donde está $x_n$) y añadir este nuevo término.» El polinomio viejo se conserva; el término nuevo se anula en todos los nodos viejos.</p>
+  <span class="src" data-l="U" data-ref="U p. 124 (p_n = p_{n-1} + …; «basta con calcular las diferencias que nos faltan»)">U p.124</span>
+</div>
+
+<div class="box thm"><span class="h">Propiedad que U no enuncia · el orden de los nodos no importa</span>
+  <p>$f[x_0,\dots,x_m]$ es el coeficiente de $x^m$ del interpolador de esos $m+1$ datos (en la forma de Newton solo el último término tiene $x^m$), y ese polinomio es único sea cual sea el orden en que se listen. Por eso <b>los nodos no tienen que estar ordenados</b> en la tabla, y un nodo nuevo se puede poner siempre <b>al final</b> de la lista. Lo usa el ejercicio 3.28.</p>
+  <span class="src" data-l="P" data-ref="Propiedad no enunciada en U; razonamiento propio verificado con sympy">P</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen · evaluar sin desarrollar</span>
+  <p>Si te piden $p(a)$ para un valor concreto (casi siempre), sustituye $a$ directamente en la <b>forma de Newton</b> y no desarrolles el polinomio: son menos cuentas y menos errores (y, con decimales, menos redondeo). Desarrolla en potencias de $x$ solo si el enunciado lo pide.</p>
+  <span class="src" data-l="P" data-ref="Consejo propio, basado en E 3.24-3.27 y X pp.119-121">P</span>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Cuánto se equivoca el interpolador: forma de Lagrange del error <span class="src" data-l="P" data-ref="No está en U, S ni L. Procede de las notas adicionales del cronograma (módulo III), que no están en el repositorio: SIN VERIFICAR. Demostración propia con Rolle (U §2.5.2, p. 95)">P</span></h2>
+
+<div class="box warn"><span class="h">Aviso sobre la fuente</span>
+  <p>Esta fórmula <b>no aparece en U §3.3 (pp. 119-124), ni en Stewart, ni en Larson</b>. El cronograma la cita entre las <i>notas adicionales</i> del módulo III, que no están en el repositorio, así que enunciado y notación están <b>sin verificar</b> contra ellas (es el resultado clásico). Se razona aquí con herramientas de U (Rolle, p. 95). Es la «hermana» del resto de Lagrange de Taylor (U Prop. 3.2, p. 111; S p.756; L p.642). Antes del examen, cotéjala con las notas.</p>
+  <span class="src" data-l="P" data-ref="Forma de Lagrange del error de interpolación: no está en U/S/L; viene de las notas adicionales del cronograma (no disponibles), sin verificar">P</span>
+</div>
+
+<div class="box thm"><span class="h">Forma de Lagrange del error de interpolación (P)</span>
+  <p>Sea $f$ con derivada de orden $n+1$ en un intervalo $I$ que contiene los nodos distintos $x_0,\dots,x_n$ y el punto $x$, y sea $p_n$ el interpolador. Existe $\xi\in I$ (entre el menor y el mayor de $x,x_0,\dots,x_n$) tal que
+  $$f(x)-p_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}\,(x-x_0)(x-x_1)\cdots(x-x_n).$$
+  Si $|f^{(n+1)}|\le M$ en $I$, entonces $\ |f(x)-p_n(x)|\le\dfrac{M}{(n+1)!}\,|x-x_0|\cdots|x-x_n|.$</p>
+  <span class="src" data-l="P" data-ref="Forma de Lagrange del error de interpolación: no está en U/S/L; viene de las notas adicionales del cronograma (no disponibles), sin verificar">P</span>
+</div>
+
+<div class="box intu"><span class="h">Comparación con Taylor</span>
+  <p>Taylor: $\frac{f^{(n+1)}(c)}{(n+1)!}(x-x_0)^{n+1}$, con toda la información concentrada en un punto. Interpolación: el mismo $\frac{f^{(n+1)}}{(n+1)!}$, pero la potencia se <b>reparte</b> entre los $n+1$ nodos. El producto vale 0 en cada nodo (el interpolador es exacto allí) y es grande lejos de ellos: por eso <b>extrapolar</b> (evaluar fuera del intervalo de los nodos) es peligroso.</p>
+  <span class="src" data-l="U" data-ref="Resto de Lagrange de Taylor, U Prop. 3.2 y Def. 3.3, p. 111; comparación propia">U p.111</span>
+</div>
+
+<div class="box intu"><span class="h">Por qué es cierta: esquema con Rolle</span>
+  <ol class="steps">
+    <li><b>Si $x$ es un nodo</b> ambos lados valen 0. Supongamos que no lo es.</li>
+    <li>Sea $w(t)=(t-x_0)\cdots(t-x_n)$ y elige $K$ con $f(x)-p_n(x)=K\,w(x)$ (posible, porque $w(x)\neq0$). Hay que ver que $K=\frac{f^{(n+1)}(\xi)}{(n+1)!}$ para algún $\xi$.</li>
+    <li>La función $g(t)=f(t)-p_n(t)-K\,w(t)$ se anula en los $n+1$ nodos y en $t=x$: <b>$n+2$ ceros</b>.</li>
+    <li><b>Rolle</b> entre ceros consecutivos: $g'$ tiene al menos $n+1$ ceros; $g''$, al menos $n$; … ; $g^{(n+1)}$, al menos <b>uno</b>, $\xi$.</li>
+    <li>Derivando $n+1$ veces: $p_n^{(n+1)}=0$ (grado $\le n$) y $w^{(n+1)}=(n+1)!$. Así $g^{(n+1)}(t)=f^{(n+1)}(t)-K\,(n+1)!$.</li>
+    <li>En $\xi$: $0=f^{(n+1)}(\xi)-K(n+1)!$, o sea $K=\frac{f^{(n+1)}(\xi)}{(n+1)!}$. ∎</li>
+  </ol>
+  <p>Caso particular: si $f$ es un polinomio de grado $\le n$, $f^{(n+1)}=0$ y el error es 0, es decir, el interpolador <b>es</b> $f$ (otra forma de ver la unicidad).</p>
+  <span class="src" data-l="P" data-ref="Esquema de demostración propio; usa el teorema de Rolle, U §2.5.2, p. 95">P</span>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="fuera" class="fuera-h"><span class="n">5</span>Fuera de examen: splines <span class="src" data-l="U" data-ref="U §3.3, recuadro «Splines», p. 121">U p.121</span></h2>
+
+<details class="fuera"><summary>Fuera de examen: splines (recuadro de U, p. 121)</summary>
+  <p>Si los datos no son suaves y se sube el grado del polinomio, la curva puede oscilar mucho entre los datos. Una alternativa son los <b>splines</b>: polinomios <i>a trozos</i> (de grado bajo en cada tramo entre nodos) con condiciones de derivabilidad en los nodos para que la curva salga suave. No aparece en las preguntas de X ni en E.</p>
+</details>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="ejercicios"><span class="n">6</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.21-3.28, pp. 107-113">E pp.107-113</span></h2>
+
+<p>Orden de estudio recomendado: primero los de teoría (3.21, 3.22, 3.23, 3.26, solo razonar), luego los de cálculo (3.24, 3.25) y por último «añadir un nodo» (3.27, 3.28). Todos son de examen.</p>
+
+<details class="sol" id="ej-3-21"><summary>Ejercicio 3.21 · ¿9 puntos dan siempre grado 8? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.21, p. 107 · teoría: U §3.3.2, pp. 120-121">E p.107</span></summary>
+  <p class="enun">Razona si es cierto o falso que el polinomio interpolador que pasa por 9 puntos debe ser un polinomio exactamente de grado 8.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>«Grado 8» es el máximo, no lo obligatorio: si los 9 puntos están en una recta, el interpolador es esa recta.</p></div>
+  <ol class="steps">
+    <li><b>Grado máximo.</b> Con 9 datos, $n+1=9$, luego $n=8$: el interpolador es $a_0+a_1x+\dots+a_8x^8$ (9 incógnitas, 9 ecuaciones). U: «el grado … es $n$ como máximo».</li>
+    <li><b>Puede salir $a_8=0$.</b> Nada obliga a que el coeficiente de $x^8$ sea distinto de 0.</li>
+    <li><b>Contraejemplo</b> (el de E): los puntos $(a,2a)$, $a=1,\dots,9$.</li>
+    <li><b>Un candidato.</b> $q(x)=2x$ pasa por todos ($q(a)=2a$) y tiene grado $1\le8$.</li>
+    <li><b>Es el interpolador</b>, por unicidad (apartado 1). Así $p_8(x)=2x$, de grado 1.</li>
+    <li><b>Respuesta: falso.</b> (Comprobado: Newton con esos 9 datos da $2x$.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para refutar «el interpolador tiene grado exactamente $n$»: dar puntos sobre una recta (o sobre un polinomio de grado menor) y usar la unicidad.</div>
+</details>
+
+<details class="sol" id="ej-3-22"><summary>Ejercicio 3.22 · $n$ puntos de un polinomio de grado $n$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.22, p. 107 · teoría: U §3.3.2, pp. 120-121">E p.107</span></summary>
+  <p class="enun">Razona si es cierto o falso que si se interpolan $n$ puntos tomados de la gráfica de un polinomio de grado $n$ el resultado va a ser un polinomio de grado $n$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Con $n$ puntos el interpolador tiene grado <b>como mucho $n-1$</b>, así que <b>nunca</b> puede ser de grado $n$: es falso siempre, no solo en un ejemplo.</p></div>
+  <ol class="steps">
+    <li><b>Cuenta los datos.</b> Son $n$ puntos (índices $0,\dots,n-1$ en la notación de U).</li>
+    <li><b>Grado máximo.</b> El interpolador tiene $n$ coeficientes $a_0,\dots,a_{n-1}$: grado $\le n-1$ (U p. 121).</li>
+    <li><b>Conclusión.</b> Un polinomio de grado $\le n-1$ no puede ser de grado $n$. <b>Falso</b>, elijas los puntos que elijas.</li>
+    <li><b>Por qué no se recupera el original.</b> El polinomio original $P$ (grado $n$) pasa por los $n$ puntos, pero no es «el» interpolador (tiene grado $n$, no $\le n-1$). Harían falta $n+1$ puntos para recuperarlo (por unicidad).</li>
+    <li><b>Ejemplo concreto.</b> $P(x)=x^2$ ($n=2$) y los 2 puntos $(-1,1)$ y $(1,1)$: el interpolador es la constante $1$, no $x^2$.</li>
+  </ol>
+  <div class="box warn"><span class="h">Matiz sobre la solución impresa en E (p. 107)</span>
+    <p>E responde «es falso, el grado será menor o igual que $n$» con un contraejemplo (un polinomio con $n$ raíces: sus cortes con el eje $x$ dan $p\equiv0$). La conclusión «falso» es correcta, pero la cota es imprecisa: con $n$ puntos es $\le n-1$, lo que hace la afirmación <b>siempre</b> falsa. E llama «grado 0» al polinomio nulo, lo cual no es exacto (el polinomio nulo no tiene grado, o se le asigna $-\infty$ por convenio). Además, el contraejemplo de E necesita $n$ raíces reales distintas, cosa que no todo polinomio cumple ($x^2+1$ no tiene ninguna); el paso 2 no necesita nada.</p></div>
+  <div class="recipe"><b>Receta:</b> contar: $m$ datos $\Rightarrow$ grado $\le m-1$. Para recuperar un polinomio de grado $n$ hacen falta $n+1$ puntos de su gráfica.</div>
+</details>
+
+<details class="sol" id="ej-3-23"><summary>Ejercicio 3.23 · ¿puede haber más de un interpolador? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.23, p. 107 · teoría: U §3.3.2, p. 121">E p.107</span></summary>
+  <p class="enun">Dados los siguientes datos: $f(1)=1$, $f(3)=2$, $f(4)=-1$, $f(5)=0$, ¿puede haber más de un polinomio interpolador de grado 3 o menor que coincida con $f$ en 1, 3, 4 y 5?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>No: es el teorema de unicidad. Muchas <i>funciones</i> pasan por esos 4 puntos, pero solo <b>un polinomio de grado $\le3$</b>.</p></div>
+  <ol class="steps">
+    <li><b>Datos.</b> 4 nodos distintos ($1,3,4,5$): $n=3$.</li>
+    <li><b>Teorema.</b> El interpolador de grado $\le n$ existe y es único (U p. 121).</li>
+    <li><b>Respuesta: no.</b> Solo hay uno.</li>
+    <li><b>Matiz.</b> Si se permite grado 4 o más, sí hay infinitos: $p_3(x)+c\,(x-1)(x-3)(x-4)(x-5)$ para cualquier $c$ (el producto se anula en los cuatro nodos).</li>
+    <li><b>(Para practicar; no se pedía.)</b> Orden 1: $\frac12,\ -3,\ 1$; orden 2: $-\frac76,\ 2$; orden 3: $\frac{19}{24}$. Luego $p_3(x)=1+\frac12(x-1)-\frac76(x-1)(x-3)+\frac{19}{24}(x-1)(x-3)(x-4)=\frac{19}{24}x^3-\frac{15}2x^2+\frac{485}{24}x-\frac{25}2$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> «¿puede haber más de uno?» → unicidad, si el grado está limitado a $\le n$ con $n+1$ nodos distintos. Si el grado no está limitado, hay infinitos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Contestar «sí, porque hay muchas funciones que pasan por esos puntos»: cierto para funciones, falso para polinomios de grado $\le3$.</p></div>
+</details>
+
+<details class="sol" id="ej-3-24"><summary>Ejercicio 3.24 · polinomio de grado 3 por diferencias divididas <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.24, p. 108 (Figura 3.4 en p. 109). Equivale a U Ej. 3.18 y a X p. 57 · teoría: U p. 123 (definiciones, Ej. 3.17) y p. 124 (Ej. 3.18)">E p.108</span></summary>
+  <p class="enun">Determina, mediante diferencias divididas, el polinomio de grado 3 que interpola los siguientes datos: $k=0,1,2,3$; $x_k=1,5,8,10$; $f(x_k)=3,11,38,56$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Tabla de diferencias columna a columna, diagonal superior y forma de Newton.</p></div>
+  <ol class="steps">
+    <li><b>Orden 0:</b> $3,\ 11,\ 38,\ 56$.</li>
+    <li><b>Orden 1</b> (nodos vecinos): $f[x_0,x_1]=\frac{11-3}{5-1}=2$; $f[x_1,x_2]=\frac{38-11}{8-5}=9$; $f[x_2,x_3]=\frac{56-38}{10-8}=9$.</li>
+    <li><b>Orden 2</b> (denominador: extremos del grupo): $f[x_0,x_1,x_2]=\frac{9-2}{8-1}=1$; $f[x_1,x_2,x_3]=\frac{9-9}{10-5}=0$.</li>
+    <li><b>Orden 3:</b> $f[x_0,\dots,x_3]=\frac{0-1}{10-1}=-\frac19$.</li>
+    <li><b>Tabla</b> (en negrita, la diagonal superior):
+      <table>
+        <tr><th>$x_k$</th><th>$f[x_k]$</th><th>orden 1</th><th>orden 2</th><th>orden 3</th></tr>
+        <tr><td>1</td><td><b>3</b></td><td><b>2</b></td><td><b>1</b></td><td>$\mathbf{-\frac19}$</td></tr>
+        <tr><td>5</td><td>11</td><td>9</td><td>0</td><td></td></tr>
+        <tr><td>8</td><td>38</td><td>9</td><td></td><td></td></tr>
+        <tr><td>10</td><td>56</td><td></td><td></td><td></td></tr>
+      </table></li>
+    <li><b>Forma de Newton:</b> $\displaystyle p_3(x)=3+2(x-1)+(x-1)(x-5)-\tfrac19(x-1)(x-5)(x-8)$. Ya es una respuesta completa.</li>
+    <li><b>(Solo si se pide en potencias de $x$.)</b> $(x-1)(x-5)=x^2-6x+5$ y $(x-1)(x-5)(x-8)=x^3-14x^2+53x-40$. Sumando: $p_3(x)=-\tfrac19x^3+\tfrac{23}9x^2-\tfrac{89}9x+\tfrac{94}9$.</li>
+    <li><b>Comprobación:</b> $p_3(1)=3$, $p_3(5)=11$, $p_3(8)=38$, $p_3(10)=56$. E no tiene erratas aquí. (En U y en E las columnas de la tabla van desplazadas medio renglón entre filas; aquí se alinean arriba, con los mismos valores.)</li>
+  </ol>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_3_4.png" alt="Figura 3.4: gráfica del polinomio interpolador cúbico que pasa por los puntos (1,3), (5,11), (8,38) y (10,56)" loading="lazy">
+  <figcaption>Los cuatro puntos y la gráfica de su polinomio interpolador (el libro la imprime cortada por la cabecera de página). <span class="src" data-l="E" data-ref="Libro de ejercicios, Figura 3.4, p. 109">E p.109</span></figcaption>
+  </figure>
+  <div class="recipe"><b>Receta:</b> (1) columna de orden 0 = valores. (2) Cada casilla = (la de la columna anterior de abajo − la de arriba) / ($x_{k+m}-x_k$: la $x$ del último nodo del grupo menos la del primero). (3) Polinomio = diagonal superior × productos $(x-x_0)(x-x_1)\cdots$, con tantos factores como el orden. (4) Comprobar en dos o tres nodos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dividir entre nodos vecinos ($8-5$) en vez de entre extremos ($8-1$) en el orden 2; o poner en el término de orden $m$ el factor $(x-x_m)$, que no va. Este ejercicio es literalmente X p.57 (Feb. 2015, Modelo B, Ej. 5), con la misma solución (X tiene dos erratas de forma, ver el Examen 2).</p></div>
+</details>
+
+<details class="sol" id="ej-3-25"><summary>Ejercicio 3.25 · velocidad al frenar: recta frente a cúbica <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.25, pp. 109-110 · teoría: U p. 122 (recta, Ej. 3.16), p. 123 y p. 124">E pp.109-110</span></summary>
+  <p class="enun">Hemos medido la velocidad de un coche al frenar, tras haber pasado 1 segundo, a los 2 segundos y a los 4 segundos (variable $t$). Los valores obtenidos aparecen en la tabla siguiente: $t$ (s): 0, 1, 2, 4; $v$ (km/h): 210, 180, 160, 140. (1) Determina el polinomio interpolador que aproxima los datos mediante diferencias divididas considerando únicamente los instantes inicial y final. (2) Determina el polinomio interpolador que aproxima los datos mediante diferencias divididas considerando todos los datos. (3) Aproxima la velocidad transcurridos 3 segundos desde que comience el frenado mediante ambos polinomios.</p>
+  <div class="box warn"><span class="h">Aviso de lectura</span><p>El texto nombra los instantes 1, 2 y 4 s, pero la tabla incluye también $t=0$ con 210 km/h, que es el «instante inicial» del apartado 1. Se sigue la tabla (comprobado en la imagen de E p. 109).</p></div>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Con 2 nodos sale una recta; con 4, una cúbica. Las dos se evalúan en $t=3$ y dan valores distintos.</p></div>
+  <ol class="steps">
+    <li><b>Apartado 1: nodos $t_0=0$, $t_1=4$.</b> $f[t_0,t_1]=\frac{140-210}{4-0}=-\frac{35}2$.</li>
+    <li><b>Recta:</b> $p_1(t)=210-\frac{35}2t$ (la que une $(0,210)$ y $(4,140)$).</li>
+    <li><b>Apartado 2, orden 1</b> (nodos $0,1,2,4$): $\frac{180-210}{1-0}=-30$; $\frac{160-180}{2-1}=-20$; $\frac{140-160}{4-2}=-10$.</li>
+    <li><b>Orden 2:</b> $\frac{-20+30}{2-0}=5$; $\frac{-10+20}{4-1}=\frac{10}3$. <b>Orden 3:</b> $\frac{\frac{10}3-5}{4-0}=-\frac5{12}$.</li>
+    <li><b>Cúbica</b> (diagonal $210,-30,5,-\frac5{12}$): $p_3(t)=210-30t+5t(t-1)-\tfrac5{12}t(t-1)(t-2)$. Desarrollada: $-\frac5{12}t^3+\frac{25}4t^2-\frac{215}6t+210$.</li>
+    <li><b>Apartado 3, recta:</b> $p_1(3)=210-\frac{105}2=157{,}5$ km/h.</li>
+    <li><b>Apartado 3, cúbica</b> (en la forma de Newton): $210-90+5\cdot3\cdot2-\frac5{12}\cdot3\cdot2\cdot1=210-90+30-\frac52=147{,}5$ km/h.</li>
+    <li><b>Lectura.</b> La recta ignora que el coche frena cada vez menos (las pendientes pasan de $-30$ a $-10$); la cúbica lo recoge.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si piden comparar interpoladores con más y menos nodos: una tabla para cada conjunto de nodos y evaluar <b>en la forma de Newton</b>, sin desarrollar.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Usar en el apartado 1 los nodos $1$ y $4$ porque el enunciado «empieza en 1 segundo». El instante inicial de la tabla es $t=0$.</p></div>
+</details>
+
+<details class="sol" id="ej-3-26"><summary>Ejercicio 3.26 · interpolar $\cos2x$ en $0,\pi,2\pi$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.26, p. 110 · teoría: U §3.3.2, p. 121">E p.110</span></summary>
+  <p class="enun">El polinomio interpolador que pasa por los puntos de la gráfica de $f(x)=\cos 2x$ en los puntos: $x=0$, $x=\pi$, $x=2\pi$, ¿es el polinomio idénticamente nulo?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>El interpolador depende <b>solo de los valores en los nodos</b>, y en los tres $\cos2x$ vale $1$: es la constante $1$, no el $0$.</p></div>
+  <ol class="steps">
+    <li><b>Valores:</b> $f(0)=\cos0=1$, $f(\pi)=\cos2\pi=1$, $f(2\pi)=\cos4\pi=1$.</li>
+    <li><b>Un candidato:</b> $q(x)=1$ pasa por los tres puntos y tiene grado $0\le2$.</li>
+    <li><b>Es el interpolador</b> por unicidad. (Con la tabla: todas las diferencias de orden 1 y 2 son 0 y Newton da $p_2(x)=1$.)</li>
+    <li><b>Respuesta: no.</b> $p_2(x)=1$ no es el polinomio nulo ($p_2(0)=1\neq0$).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> antes de calcular nada, evaluar $f$ en los nodos. Si los valores son iguales, el interpolador es esa constante; si están alineados, es esa recta.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar en los ceros de la función: $\cos2x$ se anula en $\frac\pi4,\frac{3\pi}4,\dots$, pero esos no son los nodos. Solo si los nodos fueran ceros de $f$ saldría $p\equiv0$.</p></div>
+</details>
+
+<details class="sol" id="ej-3-27"><summary>Ejercicio 3.27 · población de España y nodo adicional <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.27, pp. 110-112 · teoría: U p. 123 y p. 124 (forma de Newton y «al añadir un nuevo nodo»)">E pp.110-112</span></summary>
+  <p class="enun">Los datos a 1 de enero de los años 2004 a 2008 del INE referentes a población de España son: 2004: 43197684; 2005: 44108530; 2006: 44708964; 2007: 45200737; 2008: 46157822. (1) Con estos datos, y utilizando interpolación ¿estima la población de España el 1 de julio de 2007? (2) Si conocemos el dato adicional de que la población el 1 de enero de 2009 es 46745809, ¿cuál sería la población estimada de España el 1 de julio de 2007?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Tabla con 5 nodos (los años), evaluar en $x=2007{,}5$ con la forma de Newton sin desarrollar y, para el apartado 2, añadir un nodo y un término.</p></div>
+  <ol class="steps">
+    <li><b>Datos.</b> $x_k=2004,\dots,2008$ (5 nodos, $n=4$). El 1 de julio de 2007 es la mitad del año: $x=2007{,}5$.</li>
+    <li><b>Denominadores.</b> Nodos a distancia 1: se divide entre 1, 2, 3 y 4 en los órdenes 1, 2, 3 y 4.</li>
+    <li><b>Orden 1:</b> $910846,\ 600434,\ 491773,\ 957085$.</li>
+    <li><b>Orden 2:</b> $\frac{600434-910846}2=-155206$; $\frac{491773-600434}2=-54330{,}5$; $\frac{957085-491773}2=232656$.</li>
+    <li><b>Orden 3:</b> $\frac{-54330{,}5+155206}3=\frac{201751}6\approx33625{,}17$; $\frac{232656+54330{,}5}3=\frac{573973}6\approx95662{,}17$. (E los escribe como decimales periódicos, $33625{,}1\overline6$.)</li>
+    <li><b>Orden 4:</b> $\frac{573973/6-201751/6}4=\frac{62037}4=15509{,}25$.</li>
+    <li><b>Newton:</b> $p_4(x)=43197684+910846(x-2004)-155206(x-2004)(x-2005)+\frac{201751}6(x-2004)(x-2005)(x-2006)+\frac{62037}4(x-2004)\cdots(x-2007)$.</li>
+    <li><b>Evaluar en 2007,5.</b> Factores: $3{,}5;\ 2{,}5;\ 1{,}5;\ 0{,}5$. Término a término: $43197684+3187961-1358052{,}5+441330{,}31+101779{,}45=45\,570\,702{,}27$. Se redondea a <b>45 570 702 personas</b>.</li>
+    <li><b>Apartado 2: nodo nuevo $x_5=2009$</b> al final. Diferencias nuevas (las que contienen 2009): $587987$; $-184549$; $-\frac{417205}3$; $-\frac{469461}8$; y $f[x_0,\dots,x_5]=-\frac{118707}8=-14838{,}375$. Son 5 cuentas.</li>
+    <li><b>Término nuevo:</b> $p_5(x)=p_4(x)-14838{,}375\,(x-2004)(x-2005)(x-2006)(x-2007)(x-2008)$.</li>
+    <li><b>Evaluar.</b> El producto en 2007,5 es $3{,}5\cdot2{,}5\cdot1{,}5\cdot0{,}5\cdot(-0{,}5)=-3{,}28125$ (el último factor es negativo porque $2007{,}5&lt;2008$). Término: $+48688{,}42$. Total: $45\,619\,390{,}68\approx$ <b>45 619 391 personas</b>.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> con nodos equiespaciados a distancia $h$, el denominador de orden $m$ es $m\cdot h$. Para estimar en un punto, evaluar la forma de Newton término a término. Al añadir un nodo, calcular solo la diagonal nueva y sumar un término.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Desarrollar el polinomio con números de 8 cifras (largo y con redondeos), u olvidar el signo del factor $(x-2008)$ cuando $x&lt;2008$.</p></div>
+</details>
+
+<details class="sol" id="ej-3-28"><summary>Ejercicio 3.28 · cuántas diferencias hay que calcular <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.28, p. 113 · teoría: U p. 124 («basta con calcular las diferencias que nos faltan (que son las diferencias donde está x_n)»)">E p.113</span></summary>
+  <p class="enun">Supón que en el ejercicio anterior en lugar de proporcionarte el dato de la población en 2009 te dan el dato de la población en 2003. A partir de la tabla de diferencias divididas de los años 2004 a 2008. ¿Cuántas diferencias divididas de orden mayor o igual que 1 debes calcular para estimar la población en 2007.5? ¿Y si te proporcionasen la población en 2005.5?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Se reutiliza toda diferencia cuyo grupo de nodos <b>no</b> contiene el nodo nuevo; las que lo contienen hay que calcularlas.</p></div>
+  <ol class="steps">
+    <li><b>Total.</b> Con 6 nodos ordenados hay $5+4+3+2+1=15$ diferencias de orden $\ge1$ (una por cada grupo de nodos consecutivos de tamaño $\ge2$).</li>
+    <li><b>Nodo 2003 (un extremo).</b> Los grupos que no lo contienen son los de la tabla vieja: $4+3+2+1=10$ reutilizables. Nuevas: $15-10=$ <b>5</b>.</li>
+    <li><b>Nodo 2005,5 (en medio).</b> Va entre 2005 y 2006 y «parte» la tabla. Solo se reutilizan los grupos dentro de $\{2004,2005\}$ (1) y dentro de $\{2006,2007,2008\}$ (3): <b>4</b>. Nuevas: $15-4=$ <b>11</b>. Es la respuesta de E.</li>
+  </ol>
+  <div class="box warn"><span class="h">Matiz que E omite (propio, verificado con sympy)</span>
+    <p>Como las diferencias divididas no dependen del orden de los nodos (apartado 3), <b>no hace falta</b> meter 2005,5 en su sitio: se añade <b>al final</b> de la lista ($x_5=2005{,}5$) y solo hay que calcular $f[x_4,x_5]$, $f[x_3,x_4,x_5]$, $f[x_2,\dots,x_5]$, $f[x_1,\dots,x_5]$ y $f[x_0,\dots,x_5]$: <b>5 nuevas</b>, igual que con 2003 o 2009, y $p_5=p_4+f[x_0,\dots,x_5](x-2004)\cdots(x-2008)$. La respuesta de E (11) es correcta <b>si se exige la tabla ordenada</b>; el mínimo es 5. En el examen, responde lo que E (5 y 11) y añade el matiz.</p></div>
+  <div class="recipe"><b>Receta:</b> nuevas = las que contienen el nodo nuevo. Si se puede elegir, poner el nodo nuevo al final: son tantas como nodos había.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Recalcular la tabla entera.</p></div>
+</details>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="propios"><span class="n">7</span>Ejemplos propios, de fácil a difícil <span class="src" data-l="P" data-ref="Ejemplos propios, todos verificados con sympy">P propios</span></h2>
+
+<details class="sol" id="p1"><summary>P1 · el mismo polinomio por sistema lineal y por Newton <span class="src" data-l="P" data-ref="Ejemplo propio; sistema de U p. 121 y método de U pp. 123-124">P</span></summary>
+  <p class="enun">Halla el polinomio interpolador de $(-1,4)$, $(1,0)$, $(2,1)$: (a) resolviendo el sistema lineal de U p. 121; (b) con diferencias divididas. Comprueba que salen iguales.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Son dos caminos al <b>mismo</b> polinomio (por unicidad); Newton evita resolver el sistema.</p></div>
+  <p><b>(a) Sistema.</b></p>
+  <ol class="steps">
+    <li>3 datos: $p_2(x)=a_0+a_1x+a_2x^2$.</li>
+    <li>Una ecuación por dato: $a_0-a_1+a_2=4$; $a_0+a_1+a_2=0$; $a_0+2a_1+4a_2=1$.</li>
+    <li>Restando las dos primeras: $2a_1=-4$, $a_1=-2$.</li>
+    <li>Sustituyendo: la segunda da $a_0+a_2=2$ y la tercera $a_0+4a_2=5$. Restando: $3a_2=3$, $a_2=1$, $a_0=1$. Resultado: $p_2(x)=1-2x+x^2$.</li>
+  </ol>
+  <p><b>(b) Diferencias divididas.</b></p>
+  <ol class="steps" start="5">
+    <li>Orden 1: $\frac{0-4}{1+1}=-2$ y $\frac{1-0}{2-1}=1$. Orden 2: $\frac{1-(-2)}{2-(-1)}=1$.</li>
+    <li>Newton: $p_2(x)=4-2(x+1)+(x+1)(x-1)=4-2x-2+x^2-1=x^2-2x+1$.</li>
+    <li>Iguales: $p_2(x)=(x-1)^2$ por los dos caminos. ✓</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> con 2 o 3 datos el sistema es viable; con 4 o más, Newton es más rápido y menos propenso a errores.</div>
+</details>
+
+<details class="sol" id="p2"><summary>P2 · añadir un dato a P1 sin repetir <span class="src" data-l="P" data-ref="Ejemplo propio; usa U p. 124 (añadir un nodo)">P</span></summary>
+  <p class="enun">A los datos de P1 se añade $(3,8)$. Halla $p_3$ aprovechando $p_2(x)=(x-1)^2$.</p>
+  <ol class="steps">
+    <li><b>Nodo nuevo al final:</b> $x_3=3$, $f_3=8$.</li>
+    <li><b>Diferencias nuevas</b> (solo las que contienen $x_3$): $f[x_2,x_3]=\frac{8-1}{3-2}=7$; $f[x_1,x_2,x_3]=\frac{7-1}{3-1}=3$; $f[x_0,\dots,x_3]=\frac{3-1}{3+1}=\frac12$. Son 3 cuentas; las otras 3 de la tabla se reutilizan.</li>
+    <li><b>Término nuevo:</b> $\frac12(x+1)(x-1)(x-2)$, que se anula en los nodos viejos.</li>
+    <li><b>Resultado:</b> $p_3(x)=(x-1)^2+\frac12(x+1)(x-1)(x-2)=\frac12x^3-\frac52x+2$. Comprobación: $p_3(3)=\frac{27}2-\frac{15}2+2=8$ ✓.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> añadir un nodo = calcular la nueva diagonal inferior (tantas diferencias como nodos había) + sumar un término.</div>
+</details>
+
+<details class="sol" id="p3"><summary>P3 · interpolar $e^x$ y acotar el error con Lagrange <span class="src" data-l="P" data-ref="Ejemplo propio; usa la forma de Lagrange del error (apartado 4), no verificada contra las notas adicionales">P</span></summary>
+  <p class="enun">Interpola $f(x)=e^x$ en $0,\frac12,1$; aproxima $e^{1/4}$ y acota el error con la forma de Lagrange del apartado 4.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>El error es $\frac{f'''(\xi)}{3!}$ por el producto de las distancias a los 3 nodos; se acota $f'''=e^\xi$ entre su mínimo y su máximo en $[0,1]$.</p></div>
+  <ol class="steps">
+    <li><b>Tabla</b> ($e^{1/2}\approx1{,}6487213$; $e\approx2{,}7182818$): orden 1: $\frac{1{,}6487213-1}{0{,}5}=1{,}2974425$ y $\frac{2{,}7182818-1{,}6487213}{0{,}5}=2{,}1391211$; orden 2: $\frac{2{,}1391211-1{,}2974425}{1-0}=0{,}8416786$.</li>
+    <li><b>Newton:</b> $p_2(x)=1+1{,}2974425\,x+0{,}8416786\,x\left(x-\frac12\right)$.</li>
+    <li><b>Aproximación:</b> $p_2(\frac14)=1+0{,}3243606-0{,}0526049=1{,}2717557$.</li>
+    <li><b>Error</b> ($n=2$): $e^{1/4}-p_2(\frac14)=\frac{e^{\xi}}{3!}\left(\frac14-0\right)\left(\frac14-\frac12\right)\left(\frac14-1\right)=\frac{e^\xi}{6}\cdot\frac{3}{64}$, con $\xi\in(0,1)$.</li>
+    <li><b>Acotar $f'''(\xi)=e^\xi$:</b> en $[0,1]$, $1\le e^\xi\le e$ (la exponencial es creciente).</li>
+    <li><b>Cota:</b> $0{,}0078\le e^{1/4}-p_2(\frac14)\le0{,}0212$. El error es positivo: el interpolador se queda por debajo.</li>
+    <li><b>Comprobación:</b> $e^{1/4}=1{,}2840254$; error real $0{,}0122697$, dentro de $[0{,}0078;\,0{,}0212]$ ✓.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> error en un punto: (1) contar nodos: $n+1$; (2) $M$ = máximo de $|f^{(n+1)}|$ en el intervalo que contiene nodos y punto; (3) cota $=\frac{M}{(n+1)!}\prod|x-x_i|$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Usar $(x-x_0)^{n+1}$ (la de Taylor) en lugar del producto de las distancias a <b>todos</b> los nodos.</p></div>
+</details>
+
+<details class="sol" id="p4"><summary>P4 · la cota de Lagrange frente al redondeo de los datos (ln 1,47) <span class="src" data-l="P" data-ref="Ejemplo propio sobre X pp. 119-121; usa la forma de Lagrange del error (apartado 4), sin verificar contra las notas adicionales">P</span></summary>
+  <p class="enun">Se interpola $\ln x$ en $1{,}3;\ 1{,}4;\ 1{,}5;\ 1{,}6$ con los valores redondeados a 4 decimales (X p.119; es el Examen 7 de abajo) y se estima $\ln1{,}47\approx0{,}3853$. ¿Qué error garantiza la forma de Lagrange? ¿Por qué el error real es mayor?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>La fórmula de Lagrange mide el error del <b>método</b> con datos exactos; aquí domina otro error, el del <b>redondeo de los datos</b>.</p></div>
+  <ol class="steps">
+    <li><b>Qué derivada.</b> 4 nodos, $n=3$, hace falta $f^{(4)}$: $f'=\frac1x$, $f''=-\frac1{x^2}$, $f'''=\frac2{x^3}$, $f^{(4)}=-\frac6{x^4}$.</li>
+    <li><b>Cota de $|f^{(4)}|$ en $[1{,}3;1{,}6]$:</b> $\frac6{x^4}$ decrece, el máximo está en $1{,}3$: $M=\frac6{1{,}3^4}\approx2{,}1008$.</li>
+    <li><b>Producto:</b> $0{,}17\cdot0{,}07\cdot0{,}03\cdot0{,}13=4{,}641\cdot10^{-5}$.</li>
+    <li><b>Cota:</b> $\frac{2{,}1008}{4!}\cdot4{,}641\cdot10^{-5}\approx4{,}06\cdot10^{-6}$ (si los datos fueran exactos). Con los $\ln x_k$ exactos el error real es $2{,}6\cdot10^{-6}$: dentro de la cota.</li>
+    <li><b>Pero los datos están redondeados</b> (error $\le5\cdot10^{-5}$ cada uno). $p_3(1{,}47)$ es una combinación de los cuatro datos con pesos $-0{,}0455;\ 0{,}3315;\ 0{,}7735;\ -0{,}0595$, cuya suma de valores absolutos es $1{,}21$: el redondeo puede mover el resultado hasta $\approx6\cdot10^{-5}$.</li>
+    <li><b>Conclusión.</b> El error real, $|0{,}385262-0{,}385300|\approx3{,}7\cdot10^{-5}$, lo explica el redondeo de los datos, no la interpolación. No tiene sentido dar más de 4 cifras: $\ln1{,}47\approx0{,}3853$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> la cota de Lagrange mide el error del <b>método</b>; si los datos vienen redondeados hay que sumar el error de los datos; en la práctica, no dar más cifras que los datos.</div>
+</details>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="examenes"><span class="n">8</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="X, Exámenes resueltos de Cálculo (Examenes-resueltos-Calculo.pdf); páginas del PDF">X exámenes</span></h2>
+
+<div class="box tip"><span class="h">Qué cubre esta sección</span>
+  <p>X tiene 9 problemas distintos de interpolación (10 apariciones, contando X p.122). De interpolación pura son X pp.5, 57, 101 y 119; los demás la mezclan con <b>trapecio y Simpson</b> (Tema 6, aún no estudiado). Basta saber que Simpson con 3 nodos equiespaciados es la integral exacta de la parábola interpoladora: $\int_a^b f\approx\frac{b-a}6\left(f(a)+4f\!\left(\tfrac{a+b}2\right)+f(b)\right)$ y que el trapecio integra la poligonal. Esa es la conexión con este tema. Todos los resultados están verificados con sympy.</p>
+  <span class="src" data-l="U" data-ref="U Def. 6.5-6.8, pp. 267-268 (trapecio y Simpson; Tema 6)">U pp.267-268</span>
+</div>
+
+<details class="sol" id="ex-1"><summary>Examen 1 · cuatro datos alineados: el «grado 3» es una recta <span class="src" data-l="X" data-ref="X p.5 (Febrero 2010, 2.ª semana, I. Eléctrica, Ej. 5, 3 puntos)">X p.5</span></summary>
+  <p class="enun">Determine, por diferencias divididas, el polinomio de grado 3 que aproxima los siguientes datos: $k=0,1,2,3$; $x_k=-2,0,1,3$; $f(x_k)=0,2,3,5$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Las tres pendientes salen iguales: los puntos están en una recta y el «polinomio de grado 3» es en realidad $x+2$.</p></div>
+  <ol class="steps">
+    <li><b>Orden 1:</b> $\frac{2-0}{0+2}=1$; $\frac{3-2}{1-0}=1$; $\frac{5-3}{3-1}=1$.</li>
+    <li><b>Orden 2:</b> $\frac{1-1}{1+2}=0$ y $\frac{1-1}{3-0}=0$. <b>Orden 3:</b> $0$.</li>
+    <li><b>Newton:</b> $p_3(x)=0+1\cdot(x+2)+0+0=x+2$.</li>
+    <li><b>Comprobación:</b> $x+2$ vale $0,2,3,5$ en $-2,0,1,3$ ✓. </li>
+  </ol>
+  <div class="box warn"><span class="h">Errata de forma en X p.5</span><p>La fórmula recursiva impresa pone $f[x_{k+1},\dots,x_m]$ en el numerador; debe ser $f[x_{k+1},\dots,x_{k+m}]$. Los resultados son correctos.</p></div>
+  <div class="recipe"><b>Receta:</b> si una columna de diferencias es toda ceros, las siguientes también y el grado es menor que el esperado (es E 3.21 en la práctica). No dudes de tu resultado solo porque pedían «grado 3».</div>
+</details>
+
+<details class="sol" id="ex-2"><summary>Examen 2 · polinomio de grado 3 con $(1,3),(5,11),(8,38),(10,56)$ <span class="src" data-l="X" data-ref="X p.57 (Febrero 2015, Modelo B, Ej. 5, 3 puntos)">X p.57</span></summary>
+  <p class="enun">Determínese, mediante diferencias divididas, el polinomio de grado 3 que interpola los siguientes datos: $k=0,1,2,3$; $x_k=1,5,8,10$; $f(x_k)=3,11,38,56$.</p>
+  <p>Es idéntico a E 3.24: $p_3(x)=3+2(x-1)+(x-1)(x-5)-\tfrac19(x-1)(x-5)(x-8)=-\tfrac19x^3+\tfrac{23}9x^2-\tfrac{89}9x+\tfrac{94}9$. Resultados correctos.</p>
+  <div class="box warn"><span class="h">Erratas de forma en X p.57</span><p>(i) La fórmula recursiva impresa pone $f[x_{k+1},\dots,x_m]$ en el numerador; debe ser $f[x_{k+1},\dots,x_{k+m}]$. (ii) En la tabla, la tercera casilla de orden 1 tiene denominador $x_3-x_1$; debe ser $x_3-x_2$ (el número, $10-8$, está bien).</p></div>
+  <div class="recipe"><b>Receta:</b> la del ejercicio 3.24.</div>
+</details>
+
+<details class="sol" id="ex-3"><summary>Examen 3 · parábola por tres puntos: $f(8)$, $f(1)$ y Simpson <span class="src" data-l="X" data-ref="X p.101 (I. Electrónica Industrial y Automática, «Electrónica 2», pregunta corta 3, 1 punto) y X p.107 («Electrónica 4», Ej. 5, 3 puntos)">X pp.101, 107</span></summary>
+  <p class="enun">(p.101) De una función $f$ se sabe que $f(0)=1$, $f(2)=3$ y $f(4)=2$. Aproxime el valor de $f(8)$ utilizando el polinomio interpolador. (p.107) Mismos datos: (a) aproxime $f(1)$ con el polinomio interpolador; (b) aproxime $\int_0^4f(x)\,dx$ mediante la fórmula de Simpson; (c) compruebe que obtiene el mismo resultado si integra el polinomio interpolador entre 0 y 4.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Tres datos, parábola por Newton y se evalúa; Simpson es exactamente integrar esa parábola.</p></div>
+  <ol class="steps">
+    <li><b>Orden 1:</b> $\frac{3-1}{2-0}=1$ y $\frac{2-3}{4-2}=-\frac12$. <b>Orden 2:</b> $\frac{-\frac12-1}{4-0}=-\frac38$.</li>
+    <li><b>Polinomio:</b> $p(x)=1+x-\frac38x(x-2)=-\frac38x^2+\frac74x+1$.</li>
+    <li><b>(p.101)</b> $f(8)\approx p(8)=1+8-\frac38\cdot8\cdot6=9-18=-9$.</li>
+    <li><b>(p.107 a)</b> $f(1)\approx p(1)=1+1-\frac38\cdot1\cdot(-1)=\frac{19}8=2{,}375$.</li>
+    <li><b>(p.107 b) Simpson:</b> $\frac{4-0}6\left(f(0)+4f(2)+f(4)\right)=\frac46(1+12+2)=10$.</li>
+    <li><b>(p.107 c)</b> $\int_0^4\left(-\frac38x^2+\frac74x+1\right)dx=-\frac38\cdot\frac{64}3+\frac74\cdot8+4=-8+14+4=10$. Iguales, porque Simpson se obtiene integrando el interpolador de grado 2 en $a,\frac{a+b}2,b$.</li>
+  </ol>
+  <div class="box warn"><span class="h">Errata (X p.101) y hueco (X p.107)</span>
+    <p><b>X p.101:</b> la última línea dice «el valor aproximado de $f(3)$ viene dado por $p(8)$»; debe decir $f(8)$. El número, $-9$, es correcto. <b>X p.107:</b> la solución impresa no da el valor de $f(1)$ pedido en (a); es $\frac{19}8$ (cálculo propio).</p></div>
+  <div class="box warn"><span class="h">Cuidado · extrapolar</span>
+    <p>$p(8)=-9$ es una <b>extrapolación</b> (8 está lejos de $[0,4]$). La forma de Lagrange (apartado 4, P) lo explica: el producto $|8-0||8-2||8-4|=192$ es enorme, frente a $|1-0||1-2||1-4|=3$ en $x=1$. Que salga negativo con datos entre 1 y 3 es una señal de alarma.</p></div>
+  <div class="recipe"><b>Receta:</b> interpolar y evaluar. Para Simpson con 3 nodos equiespaciados: o la fórmula, o integrar la parábola (salen iguales).</div>
+</details>
+
+<details class="sol" id="ex-4"><summary>Examen 4 · trapecio, Simpson y por qué $\int g$ coincide con Simpson <span class="src" data-l="X" data-ref="X pp.65-66 (Febrero 2016, Modelo B, Ej. 5, 3 puntos); mismo problema sin el apartado (c) en X pp.122-124 (Examen 5)">X pp.65-66</span></summary>
+  <p class="enun">Se consideran los siguientes valores de una función: $x=1,2,3$; $f(x)=31,26,43$. (a) Calcule $\int_1^3f$ por la regla del trapecio. (b) Calcule $\int_1^3f$ por la regla de Simpson con 3 nodos igualmente espaciados. (c) La función $g(x)=11x^2-38x+58$ verifica $f(1)=g(1)$, $f(2)=g(2)$, $f(3)=g(3)$. Calcule $\int_1^3g$ y compárelo con los valores obtenidos en los apartados anteriores. Justifique a qué se debe la diferencia.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>El trapecio integra la poligonal (rectas entre datos); Simpson integra la parábola interpoladora, y $g$ <b>es</b> esa parábola: por eso $\int g$ coincide con Simpson.</p></div>
+  <ol class="steps">
+    <li><b>(a) Trapecio compuesto</b> con 3 nodos, $h=1$: $\frac h2(f_0+2f_1+f_2)=\frac12(31+52+43)=63$.</li>
+    <li><b>(b) Simpson:</b> $\frac{3-1}6(31+4\cdot26+43)=\frac{178}3\approx59{,}333$.</li>
+    <li><b>(c) ¿Es $g$ el interpolador?</b> $g(1)=11-38+58=31$, $g(2)=44-76+58=26$, $g(3)=99-114+58=43$: sí, y como tiene grado 2, por unicidad es <b>el</b> interpolador. (Con Newton: orden 1: $-5$ y $17$; orden 2: $11$; $p_2=31-5(x-1)+11(x-1)(x-2)=11x^2-38x+58$.)</li>
+    <li><b>Integral:</b> $\int_1^3g=\left[\frac{11}3x^3-19x^2+58x\right]_1^3=\frac{178}3$.</li>
+    <li><b>Justificación:</b> Simpson es la integral exacta de la parábola que interpola en $a,\frac{a+b}2,b$; $g$ es esa parábola; luego $\int g=$ Simpson. El trapecio usa rectas y da otra cosa (63).</li>
+  </ol>
+  <div class="box warn"><span class="h">Erratas de X pp.65-66 y X p.123</span>
+    <p>En (a) y (b) de la solución se escribe «$f(0)=31$, $f(1)=26$, $f(3)=43$»; los nodos son $1,2,3$, debe ser $f(1)=31$, $f(2)=26$, $f(3)=43$. Los resultados (63 y $\frac{178}3$) son correctos. <b>Error de cálculo en X p.123</b> (Examen 5, Ej. 5, el mismo problema sin (c)): en el trapecio sustituye $f(x_1)=31$ en lugar de $26$ y obtiene <b>68</b>; lo correcto es <b>63</b>. La comparación de la p.124 arrastra el error y repite la errata de rotulado.</p></div>
+  <div class="recipe"><b>Receta:</b> «¿por qué coincide con Simpson?» → Simpson integra el interpolador de grado 2 y, por unicidad, la parábola dada es ese interpolador.</div>
+</details>
+
+<details class="sol" id="ex-5"><summary>Examen 5 · Simpson con $f(0)=1,f(1)=-2,f(2)=0$ <span class="src" data-l="X" data-ref="X p.85 (Septiembre 2017, Modelo A, Grado en Ing. Mecánica, pregunta corta 3, 1 punto)">X p.85</span></summary>
+  <p class="enun">Sea $f$ una función continua tal que $f(0)=1$, $f(1)=-2$, $f(2)=0$. Aproxime el valor de la integral $I=\int_0^2f(x)\,dx$ con el método de Simpson.</p>
+  <ol class="steps">
+    <li><b>Simpson</b> con $a=0$, $\frac{a+b}2=1$, $b=2$: $I\approx(2-0)\frac{1+4(-2)+0}6=\frac{2\cdot(-7)}6=-\frac73$.</li>
+    <li><b>Comprobación vía interpolación:</b> el interpolador es $p_2(x)=\frac52x^2-\frac{11}2x+1$ y $\int_0^2p_2=-\frac73$ ✓.</li>
+  </ol>
+  <div class="box warn"><span class="h">Erratas de X p.85</span>
+    <p>(i) La nota dice «en el enunciado ponía $f(3)=0$ y era una errata, debía ser $f(3)=0$»: es contradictoria; quiere decir «debía ser $f(2)=0$», que es lo que se usa. (ii) La última línea escribe $\int_1^2f$ en lugar de $\int_0^2f$. El resultado $-\frac73$ es correcto.</p></div>
+  <div class="recipe"><b>Receta:</b> Simpson = $\frac{b-a}6\,(f(a)+4f(\frac{a+b}2)+f(b))$, es decir, integrar la parábola por los tres datos.</div>
+</details>
+
+<details class="sol" id="ex-6"><summary>Examen 6 · una función por $(0,15),(1,18),(2,20),(4,23)$ y su integral <span class="src" data-l="X" data-ref="X p.100 (I. Electrónica Industrial y Automática, «Electrónica 1», Ej. 5, 3 puntos)">X p.100</span></summary>
+  <p class="enun">Encuentre una función $f$ cuya gráfica pase por los puntos $(0,15)$, $(1,18)$, $(2,20)$ y $(4,23)$. Aproxime $\int_0^2f(x)\,dx$ utilizando el método del trapecio y el método de Simpson. (No hay una errata, se trata de la integral entre 0 y 2.)</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Son los datos de U Ej. 3.17-3.18: la función pedida es el interpolador $p_3$; las integrales se hacen con los datos en $0,1,2$.</p></div>
+  <ol class="steps">
+    <li><b>Función</b> (U Ej. 3.18): $p_3(x)=15+3x-\frac12x(x-1)+\frac1{12}x(x-1)(x-2)=\frac1{12}x^3-\frac34x^2+\frac{11}3x+15$.</li>
+    <li><b>Trapecio simple:</b> $\frac{2-0}2(15+20)=35$. <b>Compuesto</b> con $h=1$: $\frac12(15+2\cdot18+20)=\frac{71}2=35{,}5$.</li>
+    <li><b>Simpson</b> en $0,1,2$: $\frac26(15+4\cdot18+20)=\frac{107}3\approx35{,}667$.</li>
+    <li><b>Comparación:</b> $\int_0^2p_3=\frac{107}3$, igual que Simpson (Simpson solo usa $f(0),f(1),f(2)$, que $p_3$ reproduce; que dé justo $\int_0^2p_3$ se debe a que Simpson es exacto para polinomios de grado $\le3$, propiedad del Tema 6 no demostrada aquí: <span class="src" data-l="P" data-ref="Propiedad del Tema 6 (U Teor. 6.4, p. 270, según el dossier), no verificada en este tema">P</span>).</li>
+  </ol>
+  <div class="box warn"><span class="h">Omisión de X</span><p>La solución impresa solo dice que el polinomio es el de U Ej. 3.18 y que la integral se aproxima «sin más que sustituir los datos»; <b>no da ningún valor</b>. Los números de arriba son cálculo propio (verificado con sympy).</p></div>
+  <div class="recipe"><b>Receta:</b> «encuentre una función por estos puntos» = interpolador de Newton; luego, trapecio y Simpson con los datos que caen en el intervalo.</div>
+</details>
+
+<details class="sol" id="ex-7"><summary>Examen 7 · interpolar $\ln x$ en $1{,}3;1{,}4;1{,}5;1{,}6$ y estimar $\ln1{,}47$ <span class="src" data-l="X" data-ref="X pp.119-121 (Examen 4 «elaborado con exámenes de asignaturas similares», Ej. 5, 3 puntos): enunciado p.119, solución pp.120-121">X pp.119-121</span></summary>
+  <p class="enun">Determínese un polinomio de grado 3 que aproxime a $f(x)=\ln x$ a partir de los valores de la función $\ln x$ en los nodos 1,3; 1,4; 1,5 y 1,6. Para ello, utilícense diferencias divididas y 4 cifras significativas. A partir de este polinomio, estímese el valor de $\ln 1{,}47$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Igual que E 3.24 pero con decimales: tabla, Newton y evaluar <b>sin desarrollar</b> para no acumular redondeos.</p></div>
+  <ol class="steps">
+    <li><b>Datos (4 decimales):</b> $0{,}2624;\ 0{,}3365;\ 0{,}4055;\ 0{,}4700$.</li>
+    <li><b>Orden 1</b> (entre $0{,}1$): $0{,}741;\ 0{,}690;\ 0{,}645$.</li>
+    <li><b>Orden 2</b> (entre $0{,}2$): $\frac{0{,}690-0{,}741}{0{,}2}=-0{,}255$; $\frac{0{,}645-0{,}690}{0{,}2}=-0{,}225$.</li>
+    <li><b>Orden 3</b> (entre $0{,}3$): $\frac{-0{,}225+0{,}255}{0{,}3}=0{,}1$.</li>
+    <li><b>Newton:</b> $p_3(x)=0{,}2624+0{,}741(x-1{,}3)-0{,}255(x-1{,}3)(x-1{,}4)+0{,}1(x-1{,}3)(x-1{,}4)(x-1{,}5)$.</li>
+    <li><b>Evaluar en 1,47</b> (factores $0{,}17;\ 0{,}07;\ -0{,}03$): $0{,}2624+0{,}12597-0{,}0030345-0{,}0000357=0{,}3852998\approx\mathbf{0{,}3853}$. Comparación: $\ln1{,}47=0{,}385262$.</li>
+  </ol>
+  <div class="box warn"><span class="h">Detalles de X (no cambian el resultado)</span>
+    <p>(i) En X p.120 los rangos de $k$ están desplazados una unidad: $x_{k+1}-x_k=0{,}1$ es para $k=0,1,2$ (X pone $0,\dots,3$); $x_{k+2}-x_k=0{,}2$ para $k=0,1$ (X: $0,\dots,2$); $x_{k+3}-x_k=0{,}3$ solo para $k=0$ (X: $0,1$). (ii) En X p.121 se redondea $0{,}741\cdot0{,}17=0{,}12597$ a $0{,}1260$ y sale $0{,}3853293$; sin ese redondeo, $0{,}3852998$. Con 4 cifras, ambos dan $0{,}3853$. (iii) X desarrolla también el polinomio ($\approx0{,}1x^3-0{,}675x^2+2{,}017x-1{,}438$; sympy da $2{,}0165$, que X redondea a $2{,}017$: no es error) y avisa, con razón, de que evaluar esa forma introduce más redondeo.</p></div>
+  <div class="recipe"><b>Receta:</b> con decimales, evaluar la forma de Newton directamente y redondear solo al final. Sobre el tamaño del error, ver el ejemplo propio P4.</div>
+</details>
+
+<details class="sol" id="ex-8"><summary>Examen 8 · $f(2)$ con nodos no equiespaciados y Simpson compuesta <span class="src" data-l="X" data-ref="X p.151 (Febrero 2019, 1.ª semana, Ej. 5, 3 puntos)">X p.151</span></summary>
+  <p class="enun">De una función $f$ se sabe que $f(1)=2$, $f(3)=3$, $f(4)=2$ y $f(8)=10$. (a) Aproxime el valor de $f(2)$ utilizando el polinomio interpolador (1,5 puntos). (b) Usando el valor de $f(2)$ obtenido en el apartado anterior, aproxime el valor de $\int_1^4f(x)\,dx$ mediante la fórmula compuesta de Simpson en dos subintervalos (1,5 puntos).</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>(a) Nodos no equiespaciados: cada división usa su propio denominador. (b) Con el interpolador se conoce $f$ «en cualquier punto» de $[1,4]$ y se aplica Simpson compuesta.</p></div>
+  <p><b>(a)</b></p>
+  <ol class="steps">
+    <li><b>Orden 1:</b> $\frac{3-2}{3-1}=\frac12$; $\frac{2-3}{4-3}=-1$; $\frac{10-2}{8-4}=2$.</li>
+    <li><b>Orden 2:</b> $\frac{-1-\frac12}{4-1}=-\frac12$; $\frac{2+1}{8-3}=\frac35$.</li>
+    <li><b>Orden 3:</b> $\frac{\frac35+\frac12}{8-1}=\frac{11}{70}$.</li>
+    <li><b>Newton:</b> $p(x)=2+\frac12(x-1)-\frac12(x-1)(x-3)+\frac{11}{70}(x-1)(x-3)(x-4)$.</li>
+    <li><b>En $x=2$</b> (factores $1,-1,-2$): $2+\frac12+\frac12+\frac{11}{70}\cdot2=3+\frac{11}{35}=\frac{116}{35}\approx\mathbf{3{,}3143}$.</li>
+  </ol>
+  <p><b>(b)</b> (X avisa de que el enunciado tiene una errata: debería decir «usando el polinomio interpolador»; admitió cualquier planteamiento razonable.)</p>
+  <ol class="steps" start="6">
+    <li><b>Simpson compuesta, 2 subintervalos</b> de $[1,4]$: $h=\frac{4-1}2=\frac32$; nodos $1,\ \frac74,\ \frac52,\ \frac{13}4,\ 4$ (extremos y puntos medios de cada subintervalo).</li>
+    <li><b>Fórmula:</b> $\frac h6\left(p(1)+4p(\tfrac74)+2p(\tfrac52)+4p(\tfrac{13}4)+p(4)\right)=\frac{2409}{280}\approx\mathbf{8{,}6036}$ (X escribe 8,6035, truncado).</li>
+    <li><b>Observación propia:</b> es exactamente $\int_1^4p(x)\,dx=\frac{2409}{280}$, porque Simpson es exacto para cúbicas (propiedad del Tema 6, P). Otra lectura que X admite: Simpson simple en $1,2,3$ (con $p(2)$) más trapecio en $[3,4]$, que da $\frac{601}{70}\approx8{,}5857$.</li>
+  </ol>
+  <div class="box warn"><span class="h">Erratas de X p.151</span>
+    <p>(i) En el desarrollo de $p(x)$ aparece «$+[x_0,x_1,x_2,x_3](x-x_0)\ldots$»: falta la $f$; es $f[x_0,x_1,x_2,x_3]$. (ii) $\frac{116}{35}=3{,}31428\ldots$ se redondea a $3{,}3143$ (X escribe $3{,}3142$, truncando). (iii) Errata del enunciado del apartado (b), reconocida por X. (iv) En $f[x_1,x_2]$ escribe $\frac{2-3}{4-3}=\frac{2-3}2=-1$: el «$/2$» debe ser «$/1$»; el resultado $-1$ es correcto.</p></div>
+  <div class="recipe"><b>Receta:</b> nodos no equiespaciados: el denominador es siempre $x_{\text{último}}-x_{\text{primero}}$ del grupo. Si un apartado necesita valores de $f$ que no se tienen, se sacan del interpolador.</div>
+</details>
+
+<!-- ============================ 9 ============================ -->
+<h2 id="chuleta"><span class="n">9</span>Errores frecuentes, erratas y chuleta</h2>
+
+<h3>Errores frecuentes</h3>
+<ul>
+  <li>Creer que $n+1$ datos dan siempre grado exactamente $n$ (es «$\le n$»); lo mismo con «$n$ datos de un polinomio de grado $n$» (E 3.21, 3.22).</li>
+  <li>Dividir entre nodos <b>vecinos</b> en lugar de entre los <b>extremos</b> del grupo en órdenes 2 y siguientes.</li>
+  <li>Poner el factor $(x-x_m)$ en el término de orden $m$: el último factor es $(x-x_{m-1})$.</li>
+  <li>Usar la fila equivocada: el polinomio usa la <b>diagonal superior</b> (primera fila de cada columna), con los nodos en el orden de la tabla.</li>
+  <li>Desarrollar el polinomio para evaluarlo (más errores y redondeos) en vez de sustituir en la forma de Newton.</li>
+  <li>Olvidar el signo de un factor $(x-x_k)$ cuando $x&lt;x_k$.</li>
+  <li>Fiarse de una <b>extrapolación</b> (evaluar fuera del intervalo de los nodos).</li>
+  <li>Responder «sí, hay muchos» en unicidad: son muchas <i>funciones</i>, no polinomios de grado $\le n$.</li>
+</ul>
+
+<h3>Erratas y avisos detectados en este tema</h3>
+<ol>
+  <li><b>E 3.22 (p. 107):</b> «el grado será menor o igual que $n$» es impreciso: con $n$ puntos el grado es $\le n-1$, y por eso la afirmación es siempre falsa. El contraejemplo de E supone que el polinomio tiene $n$ raíces reales.</li>
+  <li><b>E 3.28 (p. 113):</b> la respuesta «11» para el nodo 2005,5 supone la tabla ordenada; como las diferencias no dependen del orden de los nodos, añadiéndolo al final bastan 5.</li>
+  <li><b>E 3.25 (p. 109):</b> no es errata: el texto menciona 1, 2 y 4 s pero la tabla incluye $t=0$; se sigue la tabla (aviso de lectura en el ejercicio).</li>
+  <li><b>U Ej. 3.18 (p. 124):</b> «Su grado es 3, porque tenemos 4 datos»: lo preciso es «grado $\le3$; es 3 porque $f[x_0,\dots,x_3]=\frac1{12}\neq0$».</li>
+  <li><b>X pp.65-66:</b> «$f(0)=31$, $f(1)=26$» en lugar de $f(1)=31$, $f(2)=26$ (resultados correctos). <b>X p.123</b> (Examen 5, Ej. 5): trapecio $=68$ por sustituir $f(x_1)=31$; lo correcto es $63$.</li>
+  <li><b>X p.85:</b> nota contradictoria sobre $f(3)$/$f(2)$ y $\int_1^2$ en lugar de $\int_0^2$. Resultado $-\frac73$ correcto.</li>
+  <li><b>X p.100:</b> no da ningún valor numérico (trapecio 35 o 35,5; Simpson $\frac{107}3$). <b>X p.101:</b> «$f(3)$» en lugar de $f(8)$. <b>X p.107:</b> no da $f(1)=\frac{19}8$.</li>
+  <li><b>X pp.120-121:</b> rangos de $k$ desplazados una unidad y redondeo intermedio ($0{,}3853293$ frente a $0{,}3852998$); ambos dan $0{,}3853$.</li>
+  <li><b>X p.151:</b> falta la $f$ en $f[x_0,x_1,x_2,x_3]$; $\frac{116}{35}\approx3{,}3143$ (no $3{,}3142$).</li>
+  <li><b>Forma de Lagrange del error (apartado 4):</b> no está en U/S/L; viene de las notas adicionales del cronograma y <b>no se ha podido cotejar</b> con ellas.</li>
+</ol>
+
+<h3>Chuleta</h3>
+<table>
+  <tr><th>Concepto</th><th>Fórmula</th><th>Fuente</th></tr>
+  <tr><td>Problema</td><td>datos $(x_k,f_k)$, $k=0..n$; $p_n$ de grado $\le n$ con $p_n(x_k)=f_k$</td><td>U pp.120-121</td></tr>
+  <tr><td>Existencia y unicidad</td><td>existe y es único (grado $\le n$); $m$ datos $\Rightarrow$ grado $\le m-1$</td><td>U p.121</td></tr>
+  <tr><td>Diferencias divididas</td><td>$f[x_k]=f_k$; $f[x_k,..,x_{k+m}]=\frac{f[x_{k+1},..,x_{k+m}]-f[x_k,..,x_{k+m-1}]}{x_{k+m}-x_k}$</td><td>U p.123</td></tr>
+  <tr><td>Newton</td><td>$p_n=f[x_0]+f[x_0,x_1](x-x_0)+\dots+f[x_0..x_n](x-x_0)\cdots(x-x_{n-1})$</td><td>U p.124</td></tr>
+  <tr><td>Añadir un nodo</td><td>$p_n=p_{n-1}+f[x_0..x_n](x-x_0)\cdots(x-x_{n-1})$; nuevas = las que contienen $x_n$</td><td>U p.124</td></tr>
+  <tr><td>Orden de los nodos</td><td>las $f[\dots]$ no dependen del orden: el nodo nuevo puede ir al final</td><td>P</td></tr>
+  <tr><td>Nodos equiespaciados</td><td>el denominador de orden $m$ es $m\cdot h$</td><td>E 3.27 · P</td></tr>
+  <tr><td>Error (Lagrange)</td><td>$f(x)-p_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}\prod_{i=0}^n(x-x_i)$ (sin verificar con notas adicionales)</td><td>P</td></tr>
+  <tr><td>Simpson (3 nodos)</td><td>$\frac{b-a}6\left(f(a)+4f(\tfrac{a+b}2)+f(b)\right)$ = $\int_a^bp_2$</td><td>U p.268</td></tr>
+</table>
+
+<h3>Lista de comprobación</h3>
+<ul class="checklist">
+  <li>Sé qué es un nodo y qué es el polinomio interpolador, y por qué su grado es $\le n$ (no exactamente $n$).</li>
+  <li>Sé usar la unicidad para contestar sin calcular (E 3.21-3.23, 3.26).</li>
+  <li>Sé construir la tabla de diferencias divididas con nodos equiespaciados y no equiespaciados.</li>
+  <li>Sé escribir el polinomio de Newton con la diagonal superior y evaluarlo sin desarrollar.</li>
+  <li>Sé desarrollarlo en potencias de $x$ si me lo piden.</li>
+  <li>Sé añadir un nodo calculando solo las diferencias nuevas, y contar cuántas son (E 3.28).</li>
+  <li>Sé comprobar el resultado sustituyendo en los nodos.</li>
+  <li>Sé por qué Simpson con 3 nodos es integrar la parábola interpoladora (X pp.65-66, 101, 107).</li>
+  <li>Sé que la extrapolación es poco fiable y por qué (forma de Lagrange del error).</li>
+  <li>Sé que los splines no entran en examen.</li>
+</ul>
+
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<details class="fuentes-toggle">
+<summary>Mostrar lista de fuentes</summary>
+<div id="panel-fuentes"></div>
+</details>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro.</footer>
+</main>
+</div>
+</body>
+</html>
