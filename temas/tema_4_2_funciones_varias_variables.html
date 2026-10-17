@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 4.2 Funciones de varias variables</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo IV · Funciones de varias variables · Tema 4.2</div>
+  <h1>Funciones de varias variables</h1>
+  <p>Funciones con varias entradas y un número de salida: cómo hallar su dominio y su imagen, cómo «verlas» con la gráfica y las curvas de nivel, y, sobre todo, qué significa que tengan límite y sean continuas cuando hay infinitos caminos para acercarse a un punto.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §4.2 (pp. 152-167)</span><span>Ejercicios: E Ej. 4.9–4.24</span><span>Examen: 7 problemas de X</span><span>⏱ ~6 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (páginas del PDF)">X</span> exámenes
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §4.2.1 Motivación y objetivos, pp. 152-153">U pp.152-153</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Una función de dos variables es una «máquina» con <b>dos</b> botones de entrada, $x$ e $y$, y una pantalla de salida con un número $f(x,y)$ (la temperatura de cada punto de una placa metálica, por ejemplo). Todo lo que sabías de una variable (dominio, imagen, límite, continuidad) sigue teniendo sentido, con <b>una diferencia</b> que lo cambia casi todo: en la recta solo hay dos formas de acercarse a un punto (por la izquierda y por la derecha); en el plano hay <b>infinitos caminos</b>. Por eso los límites son la parte difícil del tema.</p>
+  <span class="src" data-l="U" data-ref="U §4.2.1 Motivación, p. 152 (placa con temperatura T(x,y)) y p. 153 (objetivos)">U pp.152-153</span>
+</div>
+
+<div class="box tip"><span class="h">Aviso sobre las fuentes</span>
+  <p>Ni Stewart (<i>Cálculo de una variable</i>) ni Larson (Tomo 1) tratan las funciones de varias variables: están en sus tomos de varias variables, que no son de este curso. Este tema se apoya solo en <b>U</b> (teoría), <b>E</b> (ejercicios) y <b>X</b> (exámenes). Las explicaciones extra, ejemplos y contraejemplos que no vienen de U llevan la etiqueta <b>P</b> (propio).</p>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li><b>Dominio y funciones elementales</b> en una variable: raíz par $\Rightarrow$ argumento $\ge0$; logaritmo $\Rightarrow$ argumento $>0$; denominador $\ne0$; arcoseno y arcocoseno: argumento en $[-1,1]$ (Temas 1-2).</li>
+  <li><b>Límites y continuidad en una variable</b> (§1.4): $\lim_{x\to a}f(x)=l$, límites laterales, regla del emparedado, «infinitésimo por acotada».</li>
+  <li><b>Distancia en $\mathbb R^2$</b>, disco abierto y <b>coordenadas polares</b> (<a href="tema_4_1_espacio_Rn.html">tema 4.1</a>): $x=\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$.</li>
+  <li>Cónicas elementales: circunferencia, parábola, elipse, hipérbola (se reconocen dividiendo para dejar «$=1$»).</li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <caption>Mapa del tema</caption>
+  <tr><th scope="col">Apartado</th><th scope="col">Qué contiene</th><th scope="col">Dónde está</th></tr>
+  <tr><td>1 Dominio e imagen</td><td>Def. 4.3, convenio del dominio, operaciones y composición</td><td>U pp.153-158</td></tr>
+  <tr><td>2 Gráfica y curvas de nivel</td><td>gráfica en $\mathbb R^3$, trazas, curvas de nivel</td><td>U pp.155-157</td></tr>
+  <tr><td>3 Límites</td><td>Def. 4.4, caminos, reiterados, emparedado, polares</td><td>U pp.158-165</td></tr>
+  <tr><td>4 Continuidad</td><td>Def. 4.5-4.7, propiedades, ejemplos</td><td>U pp.166-167</td></tr>
+  <tr><td>5 Ejercicios de E</td><td>4.9-4.24 (16 ejercicios)</td><td>E pp.142-153</td></tr>
+  <tr><td>6 Ejemplos propios</td><td>5 ejemplos</td><td>propio</td></tr>
+  <tr><td>7 Examen</td><td>7 problemas de X</td><td>X</td></tr>
+  <tr><td>8 Chuleta y comprobación</td><td>fórmulas, flujo del límite, errores, erratas, lista</td><td>síntesis</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios y en el examen</h3>
+<p>(A) <b>Dominio</b> (y a veces imagen) de una expresión con raíces y logaritmos, dibujándolo (X 2018, 2019; E 4.13-4.15, 4.21). (B) <b>Curvas de nivel</b>: despejar $f=C$ y reconocer la curva (X 2017; E 4.17-4.18). (C) <b>¿Existe el límite?</b>: demostrar que <b>no</b> con dos caminos (E 4.19, 4.20, 4.23; X 2013, 2014, 2018) o calcularlo con <b>polares</b> o emparedado (X 2016). (D) <b>Continuidad</b> de una función «a trozos» en el origen (E 4.21-4.24; X 2014, 2017, 2018). Es la mitad de un problema típico: casi todos los exámenes traen un límite o una continuidad.</p>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Función de dos variables: dominio e imagen <span class="src" data-l="U" data-ref="U §4.2.2 Funciones de varias variables, pp. 153-158 (Def. 4.3; Ejemplos 4.9-4.14; Figura 4.9)">U pp.153-158</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · la placa caliente</span>
+  <p>Coloca una placa metálica sobre el plano. En cada punto $(x,y)$ de la placa hay una temperatura $T(x,y)$: a cada <b>pareja</b> de coordenadas le corresponde <b>un único</b> número. Eso es una función de dos variables. El <b>dominio</b> es «dónde está la placa» (los puntos donde la función está definida); la <b>imagen</b> es el conjunto de temperaturas que realmente se alcanzan. Si además la temperatura depende del tiempo, $T(x,y,t)$, ya son tres variables: lo mismo, con una entrada más.</p>
+  <span class="src" data-l="U" data-ref="U §4.2.1, p. 152 (T(x,y) y T(x,y,t))">U p.152</span>
+</div>
+
+<div class="box def"><span class="h">Definición 4.3 · función de dos variables</span>
+  <p>Una función $f:D\subset\mathbb R^2\to\mathbb R$ asigna a cada $(x,y)\in D$ <b>un único</b> número real $f(x,y)$. $D$ es el <b>dominio</b> y $f(D)=\{f(x,y):(x,y)\in D\}$ es la <b>imagen</b>. Se escribe $z=f(x,y)$: $x,y$ son las <b>variables independientes</b> y $z$ la <b>dependiente</b>. Para $n$ variables, $f:D\subset\mathbb R^n\to\mathbb R$, igual.</p>
+  <p><b>Convenio:</b> si no se indica el dominio, es el <b>mayor conjunto</b> donde la expresión tiene sentido.</p>
+  <span class="src" data-l="U" data-ref="U Definición 4.3, p. 153; notación z=f(x,y), p. 154">U pp.153-154</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen · cómo se halla un dominio</span>
+  <p>Exactamente como en una variable: <b>raíz par</b> $\Rightarrow$ radicando $\ge0$ (¡cuidado!: la nota al margen de U p.153 dice «mayor que cero», pero $\sqrt0=0$ existe: lo correcto es $\ge0$); <b>logaritmo</b> $\Rightarrow$ argumento $>0$; <b>fracción</b> $\Rightarrow$ denominador $\ne0$; arcoseno/arcocoseno $\Rightarrow$ argumento en $[-1,1]$. Si hay varias piezas sumadas, multiplicadas o dividas, el dominio es la <b>intersección</b> de las condiciones. Después se dibujan las fronteras y se decide con un punto de prueba de qué lado está la región, y si el borde entra ($\le$, $\ge$) o no ($&lt;$, $>$).</p>
+  <span class="src" data-l="U" data-ref="U p. 153 (nota al margen sobre dominios)">U p.153</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 4.9 de U · polinomio</span>
+  <p>$f(x,y)=2x^2+3y^4$. Es un polinomio: dominio $\mathbb R^2$. Como $x^2\ge0$ e $y^4\ge0$, $f\ge0$; y $f(x,0)=2x^2$ toma todos los valores $\ge0$. Imagen: $[0,\infty)$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.9, p. 153">U p.153</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 4.10 de U · una raíz</span>
+  <p>$f(x,y)=\sqrt{1+x^2-y}$. Evaluar: $f(1,1)=\sqrt1=1$; $f(-3,0)=\sqrt{10}$; $f(t,t^2)=\sqrt1=1$ para todo $t$. Dominio: radicando $\ge0$, es decir $y\le1+x^2$: los puntos <b>sobre o debajo</b> de la parábola $y=1+x^2$ (Figura 4.9). Imagen: $[0,\infty)$ (una raíz nunca es negativa, y se alcanza cualquier valor $s\ge0$ con $y=1+x^2-s^2$).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.10, pp. 153-154; Figura 4.9, p. 154">U pp.153-154</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_9.png" alt="Región del plano sombrada por debajo de una parábola con vértice sobre el eje y, con la etiqueta D" loading="lazy">
+<figcaption>Figura 4.9 de U: dominio de $f(x,y)=\sqrt{1+x^2-y}$, la región $y\le1+x^2$ (incluida la parábola). <span class="src" data-l="U" data-ref="U Figura 4.9, p. 154">U p.154</span></figcaption>
+</figure>
+
+<h3>Operaciones y composición <span class="src" data-l="U" data-ref="U §4.2.2 Operaciones con funciones, pp. 157-158, Ejemplos 4.12-4.14">U pp.157-158</span></h3>
+<p>Se pueden sumar, restar, multiplicar, dividir y multiplicar por una constante (es operar con números, punto a punto): $(f+g)(x,y)=f(x,y)+g(x,y)$, $(f/g)(x,y)=f(x,y)/g(x,y)$ si $g(x,y)\ne0$. U pide que los dominios coincidan; en la práctica se toma la parte común, es decir, <b>el dominio de la suma o del producto es la intersección</b> de los dominios <span class="src" data-l="P" data-ref="Matiz propio sobre U p. 157 (que pide dominios coincidentes)">P</span> (y para el cociente se quitan además los ceros de $g$).</p>
+<div class="box ex"><span class="h">Ejemplos 4.12-4.14 de U</span>
+  <ol class="steps">
+    <li><b>4.12.</b> $f=x^2y$, $g=e^{xy}$: $3f=3x^2y$, $f+g=x^2y+e^{xy}$, $fg=x^2ye^{xy}$, $f/g=x^2ye^{-xy}$ (existe en todo $\mathbb R^2$ porque $e^{xy}\ne0$).</li>
+    <li><b>4.13 (composición con una función de una variable).</b> $f(x,y)=x^2-y^2+xy$, $g(x)=\cos x$: $g\circ f(x,y)=\cos(x^2-y^2+xy)$. Para poder componer, la imagen de $f$ debe estar en el dominio de $g$.</li>
+    <li><b>4.14 (cambio de variable).</b> $h(x,y)=x^2-y^2+xy$ y $g(\rho,\theta)=(\rho\cos\theta,\rho\operatorname{sen}\theta)$: $h\circ g=\rho^2\cos^2\theta-\rho^2\operatorname{sen}^2\theta+\rho^2\cos\theta\operatorname{sen}\theta$. Es la sustitución por polares que se usará en los límites.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplos 4.12-4.14, pp. 157-158">U pp.157-158</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>(i) Olvidar que <b>la función debe dar un único valor</b> por punto: no toda ecuación en $x,y,z$ define una función (E 4.12). (ii) Dar el dominio de una suma como la <b>unión</b> en vez de la intersección. (iii) Dividir una desigualdad por una variable sin mirar su signo (E 4.14, 4.21).</p>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Gráfica y curvas de nivel <span class="src" data-l="U" data-ref="U §4.2.2, pp. 155-157: gráfica, trazas, curvas de nivel; Ejemplo 4.11; Figuras 4.10-4.11">U pp.155-157</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · el mapa topográfico</span>
+  <p>En una variable, la gráfica de $y=f(x)$ es una curva dibujada en un plano. Con dos variables la gráfica necesita <b>una dimensión más</b>: a cada punto $(x,y)$ del suelo se le añade una altura $z=f(x,y)$ y queda una <b>superficie</b> en $\mathbb R^3$, como un paisaje de montañas y valles. Como dibujar superficies es difícil, se usa el truco de los <b>mapas topográficos</b>: se corta el paisaje con planos horizontales $z=k$ y se proyecta cada corte sobre el suelo. Cada línea resultante es una <b>curva de nivel</b> («todos los puntos a la misma altura $k$»). Las curvas de nivel están también en los mapas del tiempo (puntos con la misma presión).</p>
+  <span class="src" data-l="U" data-ref="U p. 155, texto y nota al margen «Curvas de nivel cotidianas»">U p.155</span>
+</div>
+
+<div class="box def"><span class="h">Gráfica y curvas de nivel</span>
+  <p>La <b>gráfica</b> de $f:D\subset\mathbb R^2\to\mathbb R$ es $\{(x,y,z)\in\mathbb R^3:(x,y)\in D,\ z=f(x,y)\}$. Su proyección sobre el plano $xy$ es el dominio y sobre el eje $z$, la imagen.</p>
+  <p>Las intersecciones de la gráfica con planos $z=k$ se llaman <b>trazas</b>. La proyección de la traza sobre el plano $xy$ es la <b>curva de nivel</b> $k$ (o curva de contorno): $\{(x,y)\in D: f(x,y)=k\}$. Con tres variables se habla de <b>superficies de nivel</b>.</p>
+  <span class="src" data-l="U" data-ref="U p. 155 (gráfica, trazas, curva de nivel, Figura 4.10)">U p.155</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_10.png" alt="Paraboloide cortado por tres planos horizontales z=2, 4 y 6; debajo, en el plano xy, las circunferencias concéntricas proyectadas, etiquetadas curvas de nivel" loading="lazy">
+<figcaption>Figura 4.10 de U: los planos $z=2,4,6$ cortan la gráfica; las proyecciones sobre el suelo son las curvas de nivel. <span class="src" data-l="U" data-ref="U Figura 4.10, p. 155">U p.155</span></figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo 4.11 de U · $f(x,y)=x^2+y^2+1$</span>
+  <p>Curva de nivel $k$: $x^2+y^2+1=k$, es decir $x^2+y^2=k-1$.</p>
+  <ol class="steps">
+    <li>$k&lt;1$: $x^2+y^2=k-1&lt;0$ es imposible. <b>Curva vacía</b>.</li>
+    <li>$k=1$: $x^2+y^2=0$, solo el punto $(0,0)$.</li>
+    <li>$k>1$: <b>circunferencia</b> de centro $(0,0)$ y radio $\sqrt{k-1}$.</li>
+    <li>Cortes con planos $x=c$: $z=y^2+c^2+1$, parábolas. Como las trazas son circunferencias, la gráfica es una parábola girada: el <b>paraboloide de revolución</b> (Figura 4.11).</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.11, pp. 155-157; Figura 4.11, p. 156">U pp.155-157</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_11.png" alt="Gráfica de un paraboloide con vértice sobre el eje z, dibujado con ejes x, y, z" loading="lazy">
+<figcaption>Figura 4.11 de U: gráfica de $f(x,y)=x^2+y^2+1$ (paraboloide de revolución). <span class="src" data-l="U" data-ref="U Figura 4.11, p. 156">U p.156</span></figcaption>
+</figure>
+
+<div class="box tip"><span class="h">Truco de examen · receta de las curvas de nivel</span>
+  <p>(1) Escribe $f(x,y)=C$. (2) Pasa las constantes a un lado y <b>despeja</b> hasta reconocer la curva. (3) Discute <b>según el signo</b> de lo que quede: normalmente «positivo: curva», «cero: punto, par de rectas…», «negativo: vacía». (4) Di para qué valores de $C$ hay curva: eso es la imagen de $f$.</p>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Confundir la curva de nivel (un conjunto del <b>plano $xy$</b>, $f=C$) con la gráfica (una superficie de $\mathbb R^3$), o con «fijar una variable»: $f(x,2)$ es una función de $x$ (un corte vertical), mientras que $f(x,y)=2$ es una curva del plano.</p>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Límite de una función de dos variables <span class="src" data-l="U" data-ref="U §4.2.3 Límite de una función en un punto, pp. 158-165 (Def. 4.4; Ejemplos 4.15-4.18; Figuras 4.12-4.14)">U pp.158-165</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · subir a la cima por muchos senderos</span>
+  <p>En una variable, para decidir si $f(x)\to l$ cuando $x\to a$ basta mirar por la izquierda y por la derecha. En el plano puedes acercarte al punto $(a,b)$ por una recta, por una parábola, por una espiral… (Figura 4.12). <b>Diremos que el límite es $l$ si, por cualquier camino, $f$ se acerca a $l$.</b> Si dos senderos llegan a «alturas» distintas, el límite <b>no existe</b>. Y, por muchos senderos que pruebes, probarlos no basta para <i>demostrar</i> que existe: hay infinitos caminos. Esta asimetría ordena todo el tema:</p>
+  <ul>
+    <li><b>Para demostrar que NO existe:</b> basta encontrar <b>dos caminos con límites distintos</b> (o un camino con un límite que depende de un parámetro).</li>
+    <li><b>Para demostrar que SÍ existe:</b> hay que <b>acotar</b> $|f-l|$ por algo que tiende a $0$ (emparedado, «infinitésimo por acotada», polares).</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U p. 158, «a lo largo de cualquier camino» (Figura 4.12), y p. 161">U pp.158-161</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_12.png" alt="Ejes x e y con una espiral que se enrolla hacia el origen y varias flechas grises que llegan al origen por caminos distintos" loading="lazy">
+<figcaption>Figura 4.12 de U: infinitos caminos que llegan al mismo punto. <span class="src" data-l="U" data-ref="U Figura 4.12, p. 159">U p.159</span></figcaption>
+</figure>
+
+<h3>La definición (Def. 4.4)</h3>
+
+<div class="box ex"><span class="h">Primero un caso concreto · $2x+y\to0$ en el origen</span>
+  <p>Sea $f(x,y)=2x+y$ y $(a,b)=(0,0)$; el candidato es $l=0$. Alguien nos reta: «quiero que $f$ esté a menos de $\varepsilon=0{,}3$ de $0$». ¿Hasta qué distancia del origen hay que quedarse? Probemos con $\delta=0{,}1$: si $d((0,0),(x,y))=\sqrt{x^2+y^2}&lt;0{,}1$, entonces $|x|&lt;0{,}1$ y $|y|&lt;0{,}1$, luego $|2x+y|\le2|x|+|y|&lt;0{,}2+0{,}1=0{,}3$. Funciona. No vale cualquier $\delta$: con $\delta=0{,}2$ falla, porque $(0{,}19;\,0)$ está a distancia $0{,}19&lt;0{,}2$ del origen y $2x+y=0{,}38>0{,}3$. Si el reto fuera cualquier $\varepsilon>0$, serviría $\delta=\varepsilon/3$ (la misma cuenta da $|f|&lt;3\delta=\varepsilon$).</p>
+  <span class="src" data-l="P" data-ref="Ejemplo propio previo a U Definición 4.4, p. 159">P</span>
+</div>
+
+<div class="box def"><span class="h">Definición 4.4 · límite</span>
+  <p>$\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=l$ si para todo $\varepsilon>0$ existe $\delta>0$ tal que
+  $$0&lt;d\big((a,b),(x,y)\big)&lt;\delta\ \Longrightarrow\ |f(x,y)-l|&lt;\varepsilon,$$
+  siempre que $(x,y)$ esté en el dominio de $f$. En palabras: dentro del disco abierto de centro $(a,b)$ y radio $\delta$ (<b>sin el centro</b>), $f$ está entre $l-\varepsilon$ y $l+\varepsilon$ (Figura 4.13). Para $n$ variables, igual con $d$ en $\mathbb R^n$.</p>
+  <span class="src" data-l="U" data-ref="U Definición 4.4, p. 159; Figura 4.13, p. 160">U pp.159-160</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_13.png" alt="Paraboloide con un disco de radio delta en el plano xy alrededor del punto (a,b) y los niveles z=l-epsilon, z=l, z=l+epsilon marcados sobre la superficie" loading="lazy">
+<figcaption>Figura 4.13 de U: el disco de radio $\delta$ en el suelo se manda dentro de la banda $l\pm\varepsilon$. <span class="src" data-l="U" data-ref="U Figura 4.13, p. 160">U p.160</span></figcaption>
+</figure>
+
+<div class="box thm"><span class="h">Álgebra de límites</span>
+  <p>Si $\lim_{(x,y)\to(a,b)}f(x,y)=l$ y $\lim_{(x,y)\to(a,b)}g(x,y)=m$, entonces $\lim_{(x,y)\to(a,b)}cf=cl$, $\lim_{(x,y)\to(a,b)}(f+g)=l+m$, $\lim_{(x,y)\to(a,b)}fg=lm$ y $\lim_{(x,y)\to(a,b)}\frac fg=\frac lm$ si $m\ne0$.</p>
+  <span class="src" data-l="U" data-ref="U Álgebra de límites, p. 160">U p.160</span>
+</div>
+
+<h3>Paso 1 · Sustituir; paso 2 · refutar con caminos <span class="src" data-l="U" data-ref="U pp. 161-162 (reiterados, rectas y curvas p.161; caso típico y=mx^k+c p.162) y Ejemplos 4.15-4.16, pp. 162-163">U pp.161-163</span></h3>
+<p>Si $f$ es continua en $(a,b)$ (polinomio, cociente cuyo denominador no se anula allí, composición de elementales definidas allí), el límite es simplemente $f(a,b)$ (ver apartado 4). Si sale $\tfrac00$ hay que trabajar. La herramienta más sencilla reduce el problema a <b>límites de una variable</b> (los «caminos»):</p>
+
+<div class="box thm"><span class="h">Condiciones necesarias para que exista el límite $l$</span>
+  <ol>
+    <li><b>Límites reiterados.</b> Mantén una variable fija, calcula el límite en la otra y luego en la primera: $\displaystyle\lim_{y\to b}\Big(\lim_{x\to a}f(x,y)\Big)$ y $\displaystyle\lim_{x\to a}\Big(\lim_{y\to b}f(x,y)\Big)$ deben coincidir (con $l$).</li>
+    <li><b>Rectas.</b> Por $y=mx+k$ con $b=ma+k$ (o $x=m'y+k'$) debe salir siempre $l=\lim_{x\to a}f(x,mx+k)$, sin depender de $m$.</li>
+    <li><b>Curvas.</b> Por $y=g(x)$ con $g(a)=b$ (o $x=h(y)$) debe salir el mismo $l=\lim_{x\to a}f(x,g(x))$.</li>
+  </ol>
+  <p>Si <b>alguno</b> de estos límites depende del camino, <b>el límite no existe</b>. Pero si todos coinciden, <b>NO</b> se puede afirmar que el límite exista: son condiciones <i>necesarias</i>, no <i>suficientes</i>.</p>
+  <span class="src" data-l="U" data-ref="U p. 161 (reiterados y condiciones necesarias), p. 162 (caso de las curvas)">U pp.161-162</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 4.15 de U · cuando el límite se calcula por sustitución</span>
+  <p>$f(x,y)=y-x+\tfrac12xy+1$ en $(1,1)$. Por la recta $y=1$: $\lim_{x\to1}\big(1-x+\tfrac12x+1\big)=\tfrac32$. Por la recta $x=1$: $\lim_{y\to1}\big(y-1+\tfrac12y+1\big)=\tfrac32$. Coinciden, pero eso no demuestra nada; el límite existe porque $f$ es un polinomio (continua) y vale $f(1,1)=\tfrac32$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.15, p. 162; Figura 4.14, p. 162">U p.162</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_14.png" alt="Dos copias de una gráfica con el plano xy y el eje z: a la izquierda la recta y=1 y su imagen sobre la superficie pasando por el punto (1,1,3/2); a la derecha lo mismo con la recta x=1" loading="lazy">
+<figcaption>Figura 4.14 de U: límite en $(1,1)$ por dos caminos distintos (las rectas $y=1$ y $x=1$) para $f(x,y)=y-x+\tfrac12xy+1$ (el pie impreso de U omite el «$+1$»). <span class="src" data-l="U" data-ref="U Figura 4.14, p. 162">U p.162</span></figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo 4.16 de U · reiterados y rectas no bastan</span>
+  <p>$f(x,y)=\dfrac{x^3y}{x^6+y^2}$ en $(0,0)$. <b>Reiterados:</b> ambos valen $0$. <b>Rectas $y=mx$:</b> $\dfrac{mx^4}{x^6+m^2x^2}=\dfrac{mx^2}{x^4+m^2}\to0$ para todo $m\ne0$. Todo parece indicar $l=0$, pero hay que seguir. <b>Curva $y=x^3$:</b> $f(x,x^3)=\dfrac{x^6}{2x^6}=\tfrac12$. Como $\tfrac12\ne0$, <b>no existe el límite</b>.</p>
+  <p><b>¿Por qué $y=x^3$?</b> En $f$, las potencias de $x$ en el numerador y el denominador son «el cubo» de las de $y$. Con $y=x^3$ todo queda con $x^6$ y se simplifica.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.16, pp. 162-163">U pp.162-163</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen · cómo elegir la curva</span>
+  <p>Mira el denominador: si compiten $x^2$ e $y^4$, el camino que los iguala es $x=y^2$ (cada término vale $y^4$). Si compiten $x^6$ e $y^2$, es $y=x^3$. U (p.162) señala como caso típico las curvas $y=mx^k+c$. Regla: <b>elegir la curva que haga que todos los sumandos tengan el mismo grado</b>. Si todos los caminos «naturales» dan el mismo valor, no hay conclusión todavía: toca probarlo (paso 3).</p>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>«Por todas las rectas sale $0$, luego el límite es $0$.» Falso: Ej. 4.16 de U ($\tfrac12$ por $y=x^3$) y Ej. 4.23 de E (rectas $0$, parábola $1$). Las rectas son infinitos caminos, pero no <b>todos</b>.</p>
+</div>
+
+<h3>Paso 3 · demostrar que existe: emparedado, acotada y polares <span class="src" data-l="U" data-ref="U pp. 163-165 (regla del emparedado, Ejemplo 4.17, propiedad, polares, Ejemplo 4.18)">U pp.163-165</span></h3>
+
+<div class="box thm"><span class="h">Regla del emparedado</span>
+  <p>Si $\displaystyle\lim_{(x,y)\to(a,b)}g(x,y)=\lim_{(x,y)\to(a,b)}h(x,y)=l$ y $g\le f\le h$ en los puntos del dominio de algún disco centrado en $(a,b)$, entonces $\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=l$.</p>
+  <span class="src" data-l="U" data-ref="U Regla del emparedado, p. 163">U p.163</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 4.17 de U · $\dfrac{x^2y}{x^2+y^4}\to0$</span>
+  <ol class="steps">
+    <li>Reiterados: ambos $0$. Rectas $y=mx$: $\dfrac{mx}{1+m^4x^2}\to0$. Todo indica $l=0$.</li>
+    <li><b>Acotar.</b> Como $x^2\le x^2+y^4$, resulta $\dfrac{x^2}{x^2+y^4}\le1$. Entonces $\left|\dfrac{x^2y}{x^2+y^4}\right|=\dfrac{x^2}{x^2+y^4}\,|y|\le|y|$.</li>
+    <li>Así $0\le\left|f(x,y)\right|\le|y|\to0$. Por el emparedado, $|f|\to0$ y, como $-|f|\le f\le|f|$, también $f\to0$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.17, pp. 163-164">U pp.163-164</span>
+</div>
+
+<div class="box thm"><span class="h">Infinitésimo por acotada</span>
+  <p>Si $\lim_{(x,y)\to(a,b)}f(x,y)=0$ y $g$ está acotada en los puntos de su dominio de algún disco centrado en $(a,b)$, entonces $\lim_{(x,y)\to(a,b)}f(x,y)g(x,y)=0$. (Ejemplo: $(x^2+y^2)\operatorname{sen}\frac1{x^2+y^2}\to0$ porque el seno vale entre $-1$ y $1$.)</p>
+  <span class="src" data-l="U" data-ref="U Propiedad, p. 165">U p.165</span>
+</div>
+
+<div class="box intu"><span class="h">Idea intuitiva · polares: mirar «cuánto me falta» solo por la distancia</span>
+  <p>Acercarse a $(a,b)$ es lo mismo que hacer pequeña la <b>distancia</b> $\rho$ a ese punto, sea cual sea la dirección $\theta$ por la que se llegue. Si escribimos $f$ en polares centradas en $(a,b)$ y conseguimos meter $|F-l|$ en algo que <b>depende solo de $\rho$</b> y que tiende a $0$, el ángulo ya no importa y el límite es $l$.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia del criterio de polares de U p. 165">P</span>
+</div>
+
+<div class="box thm"><span class="h">Límite en coordenadas polares (solo para dos variables)</span>
+  <p>Con $x=a+\rho\cos\theta$, $y=b+\rho\operatorname{sen}\theta$ y $F(\rho,\theta)=f(a+\rho\cos\theta,\,b+\rho\operatorname{sen}\theta)$:</p>
+  <ol>
+    <li>Si $\lim_{\rho\to0}F(\rho,\theta)$ <b>depende de $\theta$</b>, el límite <b>no existe</b>.</li>
+    <li>Si $0\le|F(\rho,\theta)-l|\le h(\rho)$ con $h(\rho)\to0$ cuando $\rho\to0$ (<b>$h$ sin $\theta$</b>), entonces $\lim_{(x,y)\to(a,b)}f(x,y)=l$.</li>
+    <li>En otro caso <b>no se puede concluir</b>.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U p. 165, criterio de polares (los tres casos)">U p.165</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 4.18 de U · $\dfrac{x^3}{x^2+y^2}\to0$</span>
+  <p>Con $x=\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$: $F(\rho,\theta)=\dfrac{\rho^3\cos^3\theta}{\rho^2(\cos^2\theta+\operatorname{sen}^2\theta)}=\rho\cos^3\theta$. Como $|\cos\theta|\le1$: $|F-0|\le\rho=:h(\rho)\to0$. Caso 2: el límite existe y vale $0$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.18, p. 165">U p.165</span>
+</div>
+
+<div class="box warn"><span class="h">La trampa de las polares</span><span class="src" data-l="P" data-ref="Aviso propio (ver Propio 3) sobre el caso 3 de U p. 165">P</span>
+  <p>Si, para <b>cada $\theta$ fijo</b>, $F\to0$ cuando $\rho\to0$, <b>no</b> se deduce que el límite sea $0$: eso equivale a probar solo las rectas. Hace falta una cota $h(\rho)$ <b>sin $\theta$</b> (ver Propio 3, donde $F\to0$ por cada rayo y sin embargo el límite no existe). Y si el punto no es el origen, las polares deben ir <b>centradas en $(a,b)$</b>.</p>
+</div>
+
+<div class="box tip" id="flujo"><span class="h">Cómo estudiar un límite en dos variables (el flujo completo)</span>
+  <ol class="steps">
+    <li><b>Sustituir.</b> Si $f$ es continua en $(a,b)$, el límite es $f(a,b)$. Fin.</li>
+    <li><b>Si sale $\tfrac00$: intentar refutar.</b> Ejes o reiterados $\to$ rectas $y-b=m(x-a)$ $\to$ curvas ($x=y^2$, $y=x^3$…) que igualen los grados. Dos caminos con valores distintos, o un valor que depende de $m$: <b>no existe</b>.</li>
+    <li><b>Si todos los caminos dan el mismo $l$: intentar probar.</b> Polares centradas en $(a,b)$ con cota $|F-l|\le h(\rho)$ sin $\theta$; o emparedado con desigualdades del tipo $\frac{x^2}{x^2+y^2}\le1$, $|y|\le\sqrt{x^2+y^2}$; o infinitésimo por acotada.</li>
+    <li><b>Continuidad en un punto especial:</b> además el valor debe coincidir con $f(a,b)$ (apartado 4). Para refutarla basta <b>un</b> camino cuyo límite sea distinto de $f(a,b)$.</li>
+  </ol>
+  <span class="src" data-l="P" data-ref="Síntesis propia del procedimiento de U pp. 161-165">P</span>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Continuidad <span class="src" data-l="U" data-ref="U §4.2.3 Continuidad, pp. 166-167 (Def. 4.5-4.7; Ejemplos 4.19-4.21)">U pp.166-167</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Una función es continua si «se puede dibujar sin levantar el lápiz»: no hay saltos ni agujeros. En un punto $(a,b)$ eso son <b>dos exigencias</b>: que el límite exista (todos los caminos acaban en el mismo valor) y que ese valor sea el que la función <b>de verdad vale</b> en el punto. Por eso en las funciones definidas «a trozos» (con una fórmula fuera del origen y un valor suelto en el origen) siempre hay que comparar el límite con ese valor suelto.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia sobre U Def. 4.5, p. 166">P</span>
+</div>
+
+<div class="box def"><span class="h">Definiciones 4.5, 4.6 y 4.7</span>
+  <p>$f:D\subset\mathbb R^2\to\mathbb R$ es <b>continua en $(a,b)\in D$</b> si $\displaystyle\lim_{(x,y)\to(a,b)}f(x,y)=f(a,b)$; <b>discontinua</b> en $(a,b)$ si no lo es; y <b>continua en $A\subset D$</b> si lo es en cada punto de $A$. Igual para $n$ variables.</p>
+  <span class="src" data-l="U" data-ref="U Definiciones 4.5-4.7, p. 166">U p.166</span>
+</div>
+
+<div class="box thm"><span class="h">Qué funciones son continuas «de regalo»</span>
+  <p>Producto por constante, suma, producto, cociente (donde el denominador no se anula) y composición de continuas son continuas donde estén definidas. Así: los <b>polinomios</b> son continuos en $\mathbb R^2$; las <b>funciones racionales</b> $P/Q$ lo son donde $Q\ne0$; y $e^{f}$, $\sqrt f$, $\ln f$, $\operatorname{sen}f$, $\cos f$… lo son donde $f$ sea continua y estén definidas.</p>
+  <span class="src" data-l="U" data-ref="U pp. 166-167, propiedades de la continuidad">U pp.166-167</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos 4.19-4.21 de U</span>
+  <ol class="steps">
+    <li><b>4.19.</b> $e^{x^2+y}$ es continua en $\mathbb R^2$ (exponencial de un polinomio).</li>
+    <li><b>4.20.</b> $f=\dfrac{x^3}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Fuera del origen: cociente de polinomios con denominador $\ne0$. En el origen: por el Ej. 4.18, $\lim_{(x,y)\to(0,0)}f=0=f(0,0)$. <b>Continua en $\mathbb R^2$.</b></li>
+    <li><b>4.21.</b> $f=\dfrac{x^2}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Por $x=0$ vale $0$; por $y=0$ vale $1$; por $y=x$ vale $\tfrac12$. Los caminos discrepan: el límite no existe y $f$ es <b>discontinua en $(0,0)$</b>, pero continua en $\mathbb R^2\setminus\{(0,0)\}$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplos 4.19-4.21, p. 167">U p.167</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen · la respuesta completa de una continuidad</span>
+  <p>Siempre en dos partes: «<b>fuera del punto especial</b> es continua porque …» (por las propiedades) y «<b>en el punto</b> hay que ver si $\lim_{(x,y)\to(a,b)}f=f(a,b)$» (con el flujo del apartado 3). Termina diciendo <b>en qué conjunto</b> es continua: «continua en $\mathbb R^2\setminus\{(0,0)\}$ y discontinua en $(0,0)$», o «continua en $\mathbb R^2$».</p>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Decir «el límite existe, luego es continua» sin comparar con $f(a,b)$ (X p.138: el límite es $0$ pero $f(0,0)=1$), o decir «discontinua» sin precisar el punto.</p>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="ejercicios"><span class="n">5</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.9-4.24, pp. 142-153">E pp.142-153</span></h2>
+<p>Están en el orden del libro. Orden recomendado para aprender: <b>4.11 → 4.12 → 4.9 → 4.10</b> (qué es una función de dos variables); <b>4.15 → 4.13 → 4.14 → 4.21</b> (dominio e imagen); <b>4.18 → 4.17 → 4.16</b> (curvas de nivel); <b>4.20 → 4.19 → 4.24 → 4.22 → 4.23</b> (límites y continuidad). El 4.25 y siguientes (E p. 153 en adelante) son de §4.3.</p>
+
+<details class="sol" id="ej-4-9"><summary>Ejercicio 4.9 · presión de un gas ideal, $P(273,2)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.9, p. 142 · teoría: U Def. 4.3, p. 153">E p.142</span></summary>
+  <p class="enun">La ley de los gases ideales es $PV=nRT$, con $n$ moles y $R=0{,}082$ atm·l/(K·mol). La presión (atm) como función de $T$ (K) y $V$ (l), $V>0$, es $P(T,V)=\dfrac{nRT}{V}$. ¿Cuál es el valor de $P(273,2)$ si $n=0{,}1$ y qué significa?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Evaluar una función de dos variables es sustituir <b>cada</b> variable por su valor, respetando el orden.</p></div>
+  <ol class="steps">
+    <li><b>Sustituir</b> $n=0{,}1$, $R=0{,}082$, $T=273$, $V=2$: $P(273,2)=\dfrac{0{,}1\cdot0{,}082\cdot273}{2}=\dfrac{2{,}2386}{2}=1{,}1193$ atm.</li>
+    <li><b>Significado:</b> es la presión que ejercen $0{,}1$ moles de gas ideal encerrados en $2$ litros a $273$ K (aprox. $0$ °C).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $f(a,b)$ se obtiene sustituyendo $x=a$, $y=b$ en el orden en que las variables aparecen en $f(x,y)$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Cambiar el orden: $P(273,2)$ es $T=273$ y $V=2$, no al revés.</p></div>
+</details>
+
+<details class="sol" id="ej-4-10"><summary>Ejercicio 4.10 · fijar una variable y curva de nivel de $P(T,V)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.10, pp. 142-143 · teoría: U p. 155 (curvas de nivel)">E pp.142-143</span></summary>
+  <p class="enun">Con los datos de 4.9: 1) Reformular y contestar «¿para qué valor de $T$ se cumple $P(T,2)=1$?». 2) ¿Qué significa la función $P(T,2)$? Descríbela. 3) ¿Qué significa $P(273,V)$? Descríbela. 4) Representar la curva de nivel $P(T,V)=1$ y decir qué verifican sus elementos.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Fijar una <b>variable</b> convierte la función de dos variables en una de una variable (un «corte» de la gráfica); fijar el <b>valor de $P$</b> da una curva de nivel.</p></div>
+  <ol class="steps">
+    <li><b>Apartado 1.</b> «¿A qué temperatura $0{,}1$ moles ocupan $2$ litros a $1$ atm?». Es una ecuación con una incógnita: $\dfrac{0{,}1\cdot0{,}082\,T}{2}=1\iff T=\dfrac2{0{,}0082}\approx243{,}9$ K.</li>
+    <li><b>Apartado 2.</b> Con $V=2$: $P(T,2)=0{,}0041\,T$, una <b>recta por el origen</b>: a volumen fijo, la presión es proporcional a la temperatura.</li>
+    <li><b>Apartado 3.</b> Con $T=273$: $P(273,V)=\dfrac{2{,}2386}{V}$, $V>0$: una <b>hipérbola</b> decreciente. Tiende a $0$ cuando $V\to+\infty$ y a $+\infty$ cuando $V\to0^+$ (más volumen, menos presión).</li>
+    <li><b>Apartado 4.</b> Curva de nivel $1$: $\dfrac{0{,}0082\,T}{V}=1\iff V=0{,}0082\,T$, con $T,V>0$: una <b>semirrecta</b> (sin el origen). Cada punto $(T,V)$ de ella es una pareja (temperatura, volumen) con presión exactamente $1$ atm. Comprobación: $(243{,}9;\,2)$ está en ella, coherente con el apartado 1.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> fijar una <b>variable</b> $\to$ función de una variable (corte). Fijar el <b>valor de $f$</b> $\to$ curva de nivel $f=k$ en el plano de las variables.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Confundir «$P(T,2)$» (función de $T$) con «$P=2$» (curva de nivel).</p></div>
+</details>
+
+<details class="sol" id="ej-4-11"><summary>Ejercicio 4.11 · ¿dónde vive la gráfica de $f:D\subset\mathbb R^2\to\mathbb R$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.11, p. 144 · teoría: U p. 155">E p.144</span></summary>
+  <p class="enun">La gráfica de $f:D\subset\mathbb R^2\to\mathbb R$ es: a) un conjunto de $\mathbb R$; b) un conjunto de $\mathbb R^2$; c) un conjunto de $\mathbb R^3$; d) ninguna de las anteriores.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Cada punto de la gráfica lleva las <b>dos</b> coordenadas de entrada y <b>una</b> de salida: tres números.</p></div>
+  <ol class="steps">
+    <li><b>Definición</b> (U p.155): gráfica $=\{(x,y,z):(x,y)\in D,\ z=f(x,y)\}$.</li>
+    <li><b>Contar coordenadas:</b> cada elemento es una terna $(x,y,z)$, un punto de $\mathbb R^3$.</li>
+  </ol>
+  <p><b>Respuesta: c).</b> (En una variable la gráfica de $y=f(x)$ es un conjunto de pares $(x,f(x))$, de $\mathbb R^2$.)</p>
+  <div class="recipe"><b>Receta:</b> gráfica de $f:\mathbb R^n\to\mathbb R$ está en $\mathbb R^{n+1}$ (entradas más salida).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Confundir la gráfica con el dominio ($\subset\mathbb R^2$) o con la imagen ($\subset\mathbb R$).</p></div>
+</details>
+
+<details class="sol" id="ej-4-12"><summary>Ejercicio 4.12 · ¿puede la gráfica tener forma de balón? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.12, p. 144 · teoría: U Def. 4.3, p. 153">E p.144</span></summary>
+  <p class="enun">¿Puede tener la gráfica de una función $f:D\subset\mathbb R^2\to\mathbb R$ forma de balón?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Encima de cada punto del dominio la gráfica tiene <b>un solo</b> punto; un balón tiene dos (arriba y abajo).</p></div>
+  <ol class="steps">
+    <li><b>Qué exige la Def. 4.3:</b> a cada $(x,y)\in D$ le corresponde un <b>único</b> $f(x,y)$.</li>
+    <li><b>Una esfera</b> $x^2+y^2+z^2=1$: sobre $(0,0)$ están $(0,0,1)$ y $(0,0,-1)$, que pedirían $f(0,0)=1$ y $f(0,0)=-1$ a la vez. Imposible.</li>
+    <li><b>Prueba de la recta vertical</b> en $\mathbb R^3$: toda recta vertical corta a la gráfica como mucho una vez. Es lo mismo que en una variable impide que una circunferencia sea la gráfica de $y=f(x)$.</li>
+  </ol>
+  <p><b>Respuesta: no.</b> Sí puede serlo la mitad superior, $z=\sqrt{1-x^2-y^2}$ en el disco $x^2+y^2\le1$.</p>
+  <div class="recipe"><b>Receta:</b> una superficie es una gráfica $z=f(x,y)$ si ninguna recta vertical la corta dos veces.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar que «función» es cualquier ecuación en $x,y,z$.</p></div>
+</details>
+
+<details class="sol" id="ej-4-13"><summary>Ejercicio 4.13 · dominio de $\sqrt{x^2-y^3}$ (con errata en E) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.13, pp. 144-145 · teoría: U p. 153 (dominio)">E pp.144-145</span></summary>
+  <p class="enun">Sea $f(x,y)=\sqrt{x^2-y^3}$. ¿Cuál es su dominio? Dar su expresión analítica y representarlo.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Raíz cuadrada $\Rightarrow$ radicando <b>mayor o igual</b> que $0$; luego se despeja $y$ con la raíz cúbica, que conserva el orden.</p></div>
+  <ol class="steps">
+    <li><b>Condición</b> (U p.153): $x^2-y^3\ge0\iff y^3\le x^2$.</li>
+    <li><b>Despejar $y$.</b> La raíz cúbica está definida para todo número (también negativos) y es estrictamente creciente, así que conserva las desigualdades: $y^3\le x^2\iff y\le\sqrt[3]{x^2}=x^{2/3}$.</li>
+    <li><b>Dominio:</b> $D=\{(x,y)\in\mathbb R^2:y\le x^{2/3}\}$: los puntos <b>sobre o debajo</b> de la curva $y=x^{2/3}$ (con un «pico» en el origen y simétrica respecto del eje $y$). Todo el semiplano $y\le0$ está dentro.</li>
+    <li><b>Comprobación:</b> $(1,1)$: $1-1=0\ge0$, está en $D$ (sobre la curva) y $f(1,1)=0$. $(8,4)$: $64-64=0$, también. $(0,1)$: $0-1&lt;0$, no está.</li>
+  </ol>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_13.png" alt="Región gris del plano por debajo de la curva y = x elevado a 2/3, con un pico en el origen" loading="lazy">
+  <figcaption>Figura de E: la región del dominio es la zona gris por debajo de $y=x^{2/3}$; la curva <b>sí</b> pertenece al dominio. <span class="src" data-l="E" data-ref="Libro de ejercicios, figura del Ej. 4.13, p. 145">E p.145</span></figcaption>
+  </figure>
+  <div class="box warn"><span class="h">Errata de E</span><p>E escribe la condición como $x^2>y^3$ y el dominio con $y^3&lt;x^2$, $y&lt;x^{2/3}$ (<b>estrictas</b>), justo después de decir que el argumento «debe ser positivo o 0». Es incorrecto: $\sqrt0=0$ existe y los puntos de la curva, como $(1,1)$, pertenecen al dominio. Lo correcto es $\ge$ y $\le$.</p></div>
+  <div class="recipe"><b>Receta:</b> raíz par: $\ge0$. Despeja usando funciones crecientes. Dibuja la frontera, decide el lado con un punto de prueba y di si el borde entra.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Poner $>0$ en una raíz: es el logaritmo el que pide $>0$.</p></div>
+</details>
+
+<details class="sol" id="ej-4-14"><summary>Ejercicio 4.14 · dominio de $\sqrt{\ln(xy)}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.14, pp. 145-146 · teoría: U p. 153">E pp.145-146</span></summary>
+  <p class="enun">Sea $f(x,y)=\sqrt{\ln(xy)}$. ¿Cuál es su dominio?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Dos condiciones encadenadas: el logaritmo pide $xy>0$ y la raíz pide $\ln(xy)\ge0$, es decir $xy\ge1$; luego se dibuja $xy\ge1$ separando signos.</p></div>
+  <ol class="steps">
+    <li><b>Logaritmo:</b> $xy>0$ (mismo signo y ninguno nulo: cuadrantes I y III <b>sin</b> los ejes).</li>
+    <li><b>Raíz:</b> $\ln(xy)\ge0\iff xy\ge e^0=1$ (porque $\ln$ es creciente y $\ln1=0$). Esto ya implica $xy>0$.</li>
+    <li><b>Caso $x>0$</b> (entonces $y>0$): dividir por $x>0$ no cambia el sentido: $y\ge\dfrac1x$ (por encima de la rama del primer cuadrante, incluida).</li>
+    <li><b>Caso $x&lt;0$</b> (entonces $y&lt;0$): dividir por $x&lt;0$ <b>sí cambia</b> el sentido: $y\le\dfrac1x$ (por debajo de la rama del tercer cuadrante, incluida).</li>
+    <li><b>Dominio:</b> $D=\{x>0,\ y\ge\tfrac1x\}\cup\{x&lt;0,\ y\le\tfrac1x\}=\{(x,y):xy\ge1\}$.</li>
+    <li><b>Comprobación:</b> $(2,1)$: $2\ge1$ ✓. $(-1,-3)$: $3\ge1$ ✓. $(1,\tfrac12)$: $\tfrac12&lt;1$ ✗ (su $\ln$ es negativo).</li>
+  </ol>
+  <div class="box warn"><span class="h">Errata menor de E</span><p>La primera condición se escribe «$xy\ge0$», que incluye los ejes, donde $\ln(xy)=\ln0$ no existe. Debe ser $xy>0$. El dominio y la figura finales de E son correctos.</p></div>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_14.png" alt="Dos regiones grises del plano: una por encima de la rama de la hipérbola y=1/x en el primer cuadrante y otra por debajo de la rama del tercer cuadrante" loading="lazy">
+  <figcaption>Figura de E 4.14: el dominio $xy\ge1$ (zonas grises, curvas incluidas). <span class="src" data-l="E" data-ref="Libro de ejercicios, figura del Ej. 4.14, p. 146">E p.146</span></figcaption>
+  </figure>
+  <div class="recipe"><b>Receta:</b> funciones anidadas: condición de la de <b>fuera</b> aplicada a la de dentro ($\ln(\dots)\ge0$) <b>y</b> condición de la de dentro ($\dots>0$). Al dividir una desigualdad por una variable, separa casos según su signo.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dividir $xy\ge1$ entre $x$ sin mirar el signo y dar $y\ge1/x$ también en el tercer cuadrante (eso incluiría puntos como $(-1,0)$).</p></div>
+</details>
+
+<details class="sol" id="ej-4-15"><summary>Ejercicio 4.15 · dominio e imagen de $\cos(xz+\ln y)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.15, pp. 146-147 · teoría: U p. 153 (dominio e imagen)">E pp.146-147</span></summary>
+  <p class="enun">Determina el dominio y la imagen de $f(x,y,z)=\cos(xz+\ln y)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>El coseno acepta cualquier número; solo el logaritmo pone condiciones. Y el coseno de «algo que recorre todos los reales» recorre $[-1,1]$.</p></div>
+  <ol class="steps">
+    <li><b>Dominio:</b> $\cos$ y $xz$ están definidos siempre; $\ln y$ exige $y>0$. $D=\{(x,y,z)\in\mathbb R^3:y>0\}$ (un semiespacio).</li>
+    <li><b>Imagen, cota:</b> $-1\le\cos u\le1$, luego $f(D)\subset[-1,1]$.</li>
+    <li><b>Imagen, se alcanza todo:</b> con puntos $(x,1,1)\in D$ queda $f(x,1,1)=\cos(x+0)=\cos x$, que, para $x\in[0,\pi]$, toma todos los valores entre $1$ y $-1$ (es continua: valores intermedios). Así $[-1,1]\subset f(D)$.</li>
+    <li><b>Resultado:</b> $D=\{y>0\}$, imagen $[-1,1]$.</li>
+  </ol>
+  <div class="recipe"><b>Receta (imagen):</b> dos mitades: (i) <b>cota</b> ($f(D)\subset I$) y (ii) <b>se alcanza</b> (una «recta» de puntos del dominio donde $f$ se reduce a una función de una variable que recorre $I$).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dar solo la mitad (i): saber que $|\cos|\le1$ no prueba que se alcancen todos los valores.</p></div>
+</details>
+
+<details class="sol" id="ej-4-16"><summary>Ejercicio 4.16 · leer curvas de nivel: ¿crece, decrece o se mantiene? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.16, pp. 147-148 (figura p. 147) · teoría: U p. 155">E pp.147-148</span></summary>
+  <p class="enun">En la figura se representan 6 curvas de nivel $\{f=k\}$, $k=1,\dots,6$, de una función $f$. Estima si $f$ crece, decrece o se mantiene prácticamente sin cambios en: 1. punto $(0,2)$, dirección $\mathbf j=(0,1)$; 2. punto $(4,0)$, dirección $\mathbf j$; 3. punto $(4,-1)$, dirección $-\mathbf i$; 4. punto $(4,-1)$, dirección $\mathbf i-2\mathbf j$.</p>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_16.png" alt="Elipses aproximadamente concéntricas centradas en el origen con etiquetas 1 a 6 crecientes hacia fuera; se marcan los puntos (0,2), (4,0) y (4,-1) con flechas grises en las direcciones pedidas" loading="lazy">
+  <figcaption>Figura de la solución de E 4.16: curvas de nivel (etiquetas crecientes hacia fuera) y los puntos con las direcciones. <span class="src" data-l="E" data-ref="Libro de ejercicios, figura de la solución del Ej. 4.16, p. 147">E p.147</span></figcaption>
+  </figure>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Como en un mapa topográfico: los niveles <b>aumentan hacia fuera</b>. Cruzar hacia una curva de etiqueta mayor es «subir», hacia una menor es «bajar», y avanzar a lo largo de una curva es no cambiar de altura.</p></div>
+  <ol class="steps">
+    <li><b>Leer la figura.</b> Las curvas son elipses aproximadamente centradas en $(0,0)$, con etiquetas $1,\dots,6$ crecientes hacia fuera. Según E (p.148), $(0,2)$ está sobre la curva $4$ y $(4,-1)$ sobre la $5$.</li>
+    <li><b>$(0,2)$, dirección $(0,1)$:</b> es el punto más alto de su elipse; al subir verticalmente se cruzan la $5$ y la $6$: <b>crece</b>.</li>
+    <li><b>$(4,0)$, dirección $(0,1)$:</b> está en el extremo derecho de una elipse, donde la tangente es <b>vertical</b>. Moverse en vertical es moverse <b>tangente</b> a la curva de nivel: <b>prácticamente sin cambios</b> (de primer orden).</li>
+    <li><b>$(4,-1)$, dirección $-\mathbf i=(-1,0)$:</b> estamos sobre la $5$ y hacia la izquierda se entra en la $4$: <b>decrece</b>.</li>
+    <li><b>$(4,-1)$, dirección $\mathbf i-2\mathbf j=(1,-2)$:</b> a la derecha y abajo se sale de la elipse hacia la $6$: <b>crece</b>.</li>
+  </ol>
+  <p><b>Respuestas:</b> crece, se mantiene, decrece, crece (coinciden con E).</p>
+  <div class="box warn"><span class="h">Imprecisión de E</span><p>En el apartado 2, E dice que es un punto donde «pasa de crecer a decrecer o al revés». Sobre la recta vertical $x=4$ lo que ocurre es que pasa de <b>decrecer a crecer</b> (mínimo en $y=0$). Las respuestas finales son correctas. Este ejercicio anticipa el <b>gradiente</b> (§4.3): la dirección perpendicular a la curva de nivel es la de máxima variación.</p></div>
+  <div class="recipe"><b>Receta:</b> mira hacia dónde aumentan las etiquetas. Dirección que cruza hacia niveles mayores: crece; hacia menores: decrece; tangente a la curva: (casi) constante.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Leer la figura como si fuera la gráfica (confundir «estar más arriba en el dibujo» con «valor mayor de $f$»).</p></div>
+</details>
+
+<details class="sol" id="ej-4-17"><summary>Ejercicio 4.17 · curvas de nivel de $x^2-\frac{y^2}3+8$ (omisión en E) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.17, p. 148 (figura p. 149) · teoría: U p. 155">E pp.148-149</span></summary>
+  <p class="enun">Sea $f(x,y)=x^2-\dfrac{y^2}3+8$. Determina las curvas de nivel. ¿Qué tipo de curvas son?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>$f=C$ da $x^2-\frac{y^2}3=C-8$: según el signo de $C-8$ salen hipérbolas «horizontales», «verticales» o, si $C=8$, <b>dos rectas</b>.</p></div>
+  <ol class="steps">
+    <li><b>Ecuación:</b> $x^2-\dfrac{y^2}3=C'$, con $C'=C-8$.</li>
+    <li><b>$C'>0$ ($C>8$):</b> dividiendo por $C'$, $\dfrac{x^2}{C'}-\dfrac{y^2}{3C'}=1$: hipérbola que corta al eje $x$ en $(\pm\sqrt{C'},0)$ y se abre a izquierda y derecha.</li>
+    <li><b>$C'&lt;0$ ($C&lt;8$):</b> $\dfrac{y^2}{3|C'|}-\dfrac{x^2}{|C'|}=1$: hipérbola que corta al eje $y$ en $(0,\pm\sqrt{3|C'|})$ y se abre arriba y abajo.</li>
+    <li><b>$C'=0$ ($C=8$):</b> $x^2=\dfrac{y^2}3\iff y=\pm\sqrt3\,x$: <b>dos rectas</b> que se cortan en el origen (las asíntotas de todas las hipérbolas). Contienen al punto $(0,0)$, donde $f=8$.</li>
+  </ol>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_17.png" alt="Familia de hipérbolas: dos ramas arriba y abajo en trazo continuo y gris, y dos ramas a izquierda y derecha en trazo discontinuo, con asíntotas comunes" loading="lazy">
+  <figcaption>Figura de E 4.17: hipérbolas de nivel; las de trazo discontinuo cortan al eje $x$ en $\pm1$ ($C>8$), las de trazo continuo (azules y grises) al eje $y$ ($C&lt;8$). La figura de E es aproximada: sus asíntotas son $y=\pm x$; las verdaderas son $y=\pm\sqrt3\,x$. <span class="src" data-l="E" data-ref="Libro de ejercicios, figura del Ej. 4.17, p. 149">E p.149</span></figcaption>
+  </figure>
+  <div class="box warn"><span class="h">Omisión de E</span><p>E dice que «son hipérbolas» y dibuja varias, pero no trata el caso $C'=0$ (par de rectas, no hipérbola) ni explica qué eje corta cada familia. <b>Errata de la figura:</b> las hipérbolas dibujadas tienen asíntotas $y=\pm x$ (corresponden a $x^2-y^2=C'$), no $y=\pm\sqrt3\,x$, y la leyenda de E ($C'=0{,}25$ gris, $1{,}5$ azul, $-1{,}5$ discontinua) no casa con el dibujo: las grises y azules cortan al eje $y$ ($C'&lt;0$) y las discontinuas cortan al eje $x$ en $\pm1$ ($C'>0$). Úsala solo para ver la forma. En el examen conviene decir qué eje corta cada familia.</p></div>
+  <div class="recipe"><b>Receta:</b> pasa la constante al otro lado y estudia su <b>signo</b>: $>0$, $&lt;0$ y $=0$ dan tipos distintos; el caso $0$ suele ser degenerado (punto, rectas o vacío).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar el caso $C'=0$, o dividir por $C'$ sin haberlo excluido.</p></div>
+</details>
+
+<details class="sol" id="ej-4-18"><summary>Ejercicio 4.18 · curvas de nivel de $x^2-y$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.18, p. 149 · teoría: U p. 155">E p.149</span></summary>
+  <p class="enun">Determina las curvas de nivel de $f(x,y)=x^2-y$. ¿Qué tipo de curvas son?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Igualar $f$ a una constante y despejar: aquí se despeja $y$ y sale una parábola para cada valor.</p></div>
+  <ol class="steps">
+    <li><b>Curva de nivel $C$:</b> $x^2-y=C$, $C\in\mathbb R$.</li>
+    <li><b>Despejar:</b> $y=x^2-C$: la parábola $y=x^2$ <b>trasladada verticalmente</b> (vértice $(0,-C)$).</li>
+    <li><b>Todas son parábolas</b> (no hay casos especiales). Imagen de $f$: $\mathbb R$ (por ejemplo $f(0,y)=-y$).</li>
+  </ol>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_18.png" alt="Cuatro parábolas idénticas con vértices sobre el eje y a alturas 1, 0, -1 y -2" loading="lazy">
+  <figcaption>Figura de E 4.18: parábolas $y=x^2-C$ con vértices en $y=1,0,-1,-2$ (es decir, $C=-1,0,1,2$). <span class="src" data-l="E" data-ref="Libro de ejercicios, figura del Ej. 4.18, p. 149">E p.149</span></figcaption>
+  </figure>
+  <div class="recipe"><b>Receta:</b> $f(x,y)=C$, despejar y reconocer la curva; revisar si para algún $C$ es vacía, un punto o se degenera.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dibujar la gráfica de $f$ (una superficie) en lugar de curvas en el plano $xy$.</p></div>
+</details>
+
+<details class="sol" id="ej-4-19"><summary>Ejercicio 4.19 · $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^2+y^3}{x^2+y^2}$ no existe (reiterados) <span class="src" data-l="E" data-ref="E Ej. 4.19, pp. 149-150 (teoría: U p. 161, reiterados) y X p. 4 (Febrero 2010, 2.ª semana, Ing. Eléctrica, PC3): misma pregunta">E pp.149-150 · X p.4</span></summary>
+  <p class="enun">Estudia si existe $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^2+y^3}{x^2+y^2}$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Sustituir da $\tfrac00$; probamos a refutar con los reiterados y salen valores distintos.</p></div>
+  <ol class="steps">
+    <li><b>Sustituir:</b> $\tfrac00$, indeterminado. Hay que estudiar caminos.</li>
+    <li><b>Reiterado «primero $y$»:</b> con $x\ne0$ fijo, $\lim_{y\to0}\dfrac{x^2+y^3}{x^2+y^2}=\dfrac{x^2}{x^2}=1$; luego $\lim_{x\to0}1=1$.</li>
+    <li><b>Reiterado «primero $x$»:</b> con $y\ne0$ fijo, $\lim_{x\to0}\dfrac{x^2+y^3}{x^2+y^2}=\dfrac{y^3}{y^2}=y$; luego $\lim_{y\to0}y=0$.</li>
+    <li><b>Conclusión:</b> $1\ne0$; por la condición necesaria (U p.161) <b>el límite no existe</b>.</li>
+    <li><i>Alternativa con rectas</i> (si los reiterados coincidieran): $y=mx$ da $\dfrac{1+m^3x}{1+m^2}\to\dfrac1{1+m^2}$, que depende de $m$.</li>
+  </ol>
+  <p>E resuelve igual (correcto). Es exactamente la pregunta X p.4 (feb. 2010).</p>
+  <div class="recipe"><b>Receta:</b> reiterados: congela una variable (distinta del valor límite), haz el límite en la otra y luego en la congelada. Si difieren, no hay límite.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Sustituir $x=0$ e $y=0$ a la vez en el paso interior (otra vez $\tfrac00$): en el límite interior la otra variable es una constante <b>no nula</b>.</p></div>
+</details>
+
+<details class="sol" id="ej-4-20"><summary>Ejercicio 4.20 · los reiterados iguales no bastan (E sin contraejemplo) <span class="src" data-l="E" data-ref="E Ej. 4.20, p. 150 (teoría: U p. 161); el contraejemplo xy/(x²+y²) es propio, E no da ninguno">E p.150 · P</span></summary>
+  <p class="enun">Razona si es cierto que cualquier $f:D\subset\mathbb R^2\to\mathbb R$ tiene límite en $(x_0,y_0)$ si los reiterados existen y coinciden: $\lim_{y\to y_0}\big(\lim_{x\to x_0}f\big)=\lim_{x\to x_0}\big(\lim_{y\to y_0}f\big)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Los reiterados son, en el fondo, acercarse «por los ejes»; otros caminos pueden dar otro valor.</p></div>
+  <ol class="steps">
+    <li><b>Qué dice la teoría</b> (U p.161): si el límite existe, los reiterados (si existen) coinciden con él. Es una condición <b>necesaria</b>, no <b>suficiente</b>.</li>
+    <li><b>Contraejemplo:</b> $f(x,y)=\dfrac{xy}{x^2+y^2}$ en $(0,0)$. Reiterado 1: con $y\ne0$ fijo, $\lim_{x\to0}\frac{xy}{x^2+y^2}=0$; luego $0$. Reiterado 2: por simetría, $0$. Camino $y=x$: $f(x,x)=\frac{x^2}{2x^2}=\frac12\to\frac12\ne0$.</li>
+    <li>Dos caminos con límites distintos: no existe el límite aunque los reiterados coinciden.</li>
+  </ol>
+  <p><b>Respuesta: falso.</b></p>
+  <div class="box warn"><span class="h">Omisión de E</span><p>E responde «No es cierto» repitiendo la teoría, sin contraejemplo. En un verdadero/falso de examen conviene dar uno (el anterior, o el Ej. 4.16 de U).</p></div>
+  <div class="recipe"><b>Receta:</b> ante un «si pasa A, entonces existe el límite», busca un contraejemplo concreto; $\frac{xy}{x^2+y^2}$ es el comodín.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Creer que, porque los reiterados (o todas las rectas) dan lo mismo, el límite existe.</p></div>
+</details>
+
+<details class="sol" id="ej-4-21"><summary>Ejercicio 4.21 · dominio y continuidad de tres funciones (errata en $h$) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.21, pp. 150-151 · teoría: U pp. 153 y 166-167">E pp.150-151</span></summary>
+  <p class="enun">Para $f(x,y)=y\operatorname{sen}(x^2+1)$, $g(x,y)=\dfrac{\ln(3+x^2y^2)}{3+x^2+y^4}$, $h(x,y)=\sqrt{x^2y}$, determina su dominio y estudia cuáles son continuas.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Las tres están hechas con operaciones y composiciones de funciones elementales: son continuas <b>en todo su dominio</b>. El trabajo es hallar el dominio.</p></div>
+  <ol class="steps">
+    <li><b>$f$:</b> $y$, $x^2+1$ y $\operatorname{sen}$ están definidos siempre: dominio $\mathbb R^2$. Composición y producto de continuas: <b>continua en $\mathbb R^2$</b>.</li>
+    <li><b>$g$, dominio:</b> $3+x^2y^2\ge3>0$ (el logaritmo existe) y $3+x^2+y^4\ge3>0$ (el denominador no se anula): dominio $\mathbb R^2$. Cociente de continuas con denominador $\ne0$: <b>continua en $\mathbb R^2$</b>.</li>
+    <li><b>$h$, dominio:</b> raíz $\Rightarrow x^2y\ge0$. Como $x^2\ge0$: si $x\ne0$, la condición es $y\ge0$; si $x=0$, $x^2y=0\ge0$ <b>para cualquier $y$</b>. Así $D_h=\{y\ge0\}\cup\{(0,y):y\in\mathbb R\}$: el semiplano superior <b>más</b> el eje $y$ entero. Por ejemplo $(0,-5)\in D_h$ y $h(0,-5)=0$.</li>
+    <li><b>$h$, continuidad:</b> composición de un polinomio con $\sqrt{\cdot}$, continua en $[0,\infty)$: <b>continua en todo $D_h$</b>. (En los puntos $(0,y)$, $y&lt;0$, los únicos puntos del dominio cercanos están en el eje $y$, donde $h=0$; la Def. 4.4 solo mira puntos del dominio.)</li>
+  </ol>
+  <div class="box warn"><span class="h">Errata de E</span><p>E da para $h$ el dominio $\{y\ge0\}$ (p.151). Le falta la semirrecta $\{x=0,\ y&lt;0\}$.</p></div>
+  <div class="recipe"><b>Receta:</b> con productos dentro de una raíz, <b>no dividas</b> por un factor que pueda ser $0$: separa el caso en que se anula.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>«Simplificar» $x^2y\ge0$ a $y\ge0$ dividiendo por $x^2$ sin considerar $x=0$.</p></div>
+</details>
+
+<details class="sol" id="ej-4-22"><summary>Ejercicio 4.22 · continuidad de $(x^2+y^2)\operatorname{sen}\frac1{x^2+y^2}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.22, pp. 151-152 · teoría: U p. 165 (polares, acotada)">E pp.151-152</span></summary>
+  <p class="enun">Sea $f(x,y)=(x^2+y^2)\operatorname{sen}\dfrac1{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Estudia su continuidad.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>«Algo que tiende a $0$» ($x^2+y^2$) por «algo acotado» (el seno) tiende a $0$, que es justamente $f(0,0)$.</p></div>
+  <ol class="steps">
+    <li><b>Fuera del origen:</b> composición, cociente (denominador $\ne0$) y producto de continuas. <b>Continua en $\mathbb R^2\setminus\{(0,0)\}$.</b></li>
+    <li><b>En el origen</b> hay que ver si $\lim_{(x,y)\to(0,0)}f=0=f(0,0)$. Sustituir da «$0\cdot\operatorname{sen}(\infty)$», sin sentido: hay que acotar.</li>
+    <li><b>Polares</b> (U p.165): $x^2+y^2=\rho^2$, así que $F(\rho,\theta)=\rho^2\operatorname{sen}\dfrac1{\rho^2}$ (ni siquiera depende de $\theta$).</li>
+    <li><b>Acotar:</b> $|F-0|=\rho^2\left|\operatorname{sen}\dfrac1{\rho^2}\right|\le\rho^2=:h(\rho)\to0$. Por el caso 2 de U p.165, $\lim_{(x,y)\to(0,0)}f=0$.</li>
+    <li><i>Sin polares:</i> $\lim_{(x,y)\to(0,0)}(x^2+y^2)=0$ y el seno está acotado por $1$; «infinitésimo por acotada» (U p.165).</li>
+    <li><b>Conclusión:</b> el límite vale $0=f(0,0)$: <b>$f$ es continua en todo $\mathbb R^2$.</b></li>
+  </ol>
+  <p>E resuelve igual (correcto).</p>
+  <div class="recipe"><b>Receta:</b> si aparece $\operatorname{sen}(\text{algo que explota})$ o $\cos(\dots)$ multiplicado por algo que tiende a $0$: «infinitésimo por acotada».</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Intentar calcular el límite de $\operatorname{sen}\frac1{x^2+y^2}$ (no existe) y concluir que el producto tampoco lo tiene.</p></div>
+</details>
+
+<details class="sol" id="ej-4-23"><summary>Ejercicio 4.23 · $\dfrac{y^2}x$ no es continua en el origen <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.23, p. 152 · teoría: U pp. 162-163 (curvas), 166">E p.152</span></summary>
+  <p class="enun">Sea $f(x,y)=\dfrac{y^2}x$ si $x\ne0$, $f(x,y)=0$ si $x=0$. Estudia su continuidad en el origen.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Todas las rectas dan $0$, pero la parábola $x=y^2$ (que iguala «$y^2$» con «$x$») da $1\ne0$.</p></div>
+  <ol class="steps">
+    <li><b>Qué hay que ver:</b> continua en $(0,0)\iff \lim_{(x,y)\to(0,0)}f=f(0,0)=0$.</li>
+    <li><b>Rectas $y=mx$:</b> $f(x,mx)=\dfrac{m^2x^2}x=m^2x\to0$ para todo $m$. <b>Eje $y$</b> ($x=0$): $f(0,y)=0\to0$.</li>
+    <li><b>Todas las rectas dan $0$, pero eso no prueba nada.</b> Busquemos una curva que haga $y^2$ y $x$ «del mismo tamaño»: $x=y^2$. Entonces $f(y^2,y)=\dfrac{y^2}{y^2}=1\to1$.</li>
+    <li><b>Conclusión:</b> por $x=y^2$ el límite es $1\ne0=f(0,0)$: <b>$f$ no es continua en $(0,0)$</b> (y el límite ni existe).</li>
+    <li><i>Más aún:</i> por $x=y^2/k$ ($k\ne0$) sale $f=k$: acercándose por parábolas se consigue <b>cualquier</b> valor.</li>
+  </ol>
+  <p>E resuelve igual (correcto).</p>
+  <div class="recipe"><b>Receta (elegir la curva):</b> si hay $y^p$ frente a $x^q$, prueba $x=y^{p/q}$ o $y=x^{q/p}$ para que todo quede con la misma potencia y se simplifique.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Quedarse en las rectas y afirmar «límite $0$, continua».</p></div>
+</details>
+
+<details class="sol" id="ej-4-24"><summary>Ejercicio 4.24 · $\dfrac{x^2-y^2}{x^2+y^2}$ no es continua en el origen (errata) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.24, p. 153 · teoría: U Ejemplo 4.21, p. 167">E p.153</span></summary>
+  <p class="enun">Sea $f(x,y)=\dfrac{x^2-y^2}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. ¿Es continua?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Fuera del origen no hay problema (cociente de polinomios); en el origen, los dos ejes dan $1$ y $-1$.</p></div>
+  <ol class="steps">
+    <li><b>En $(x,y)\ne(0,0)$:</b> cociente de polinomios con denominador $x^2+y^2\ne0$: continua (U p.166).</li>
+    <li><b>Eje $y$</b> ($x=0$, $y\ne0$): $f(0,y)=\dfrac{-y^2}{y^2}=-1\to-1$.</li>
+    <li><b>Eje $x$</b> ($y=0$, $x\ne0$): $f(x,0)=\dfrac{x^2}{x^2}=1\to1$.</li>
+    <li><b>Conclusión:</b> dos caminos con límites distintos: no existe $\lim_{(x,y)\to(0,0)}f$, luego <b>$f$ no es continua en $(0,0)$</b>. Es continua en $\mathbb R^2\setminus\{(0,0)\}$.</li>
+    <li><i>En polares:</i> $F=\cos^2\theta-\operatorname{sen}^2\theta=\cos2\theta$ depende de $\theta$ (caso 1 de U p.165).</li>
+  </ol>
+  <div class="box warn"><span class="h">Errata de redacción de E</span><p>«Luego <b>el producto</b> resulta ser también una función continua» debe decir «<b>el cociente</b>».</p></div>
+  <div class="recipe"><b>Receta:</b> continuidad de una función «a trozos» en un punto: (i) fuera del punto, por las propiedades; (ii) en el punto, ¿existe el límite y vale $f(a,b)$?</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Concluir «discontinua» sin decir en qué puntos: la respuesta completa es «continua en $\mathbb R^2\setminus\{(0,0)\}$, discontinua en $(0,0)$».</p></div>
+</details>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="propios"><span class="n">6</span>Ejemplos propios (de fácil a difícil) <span class="src" data-l="P" data-ref="Ejemplos propios">P</span></h2>
+
+<details class="sol" id="p1"><summary>Propio 1 · dominio con raíz y logaritmo (y una variante con cociente) <span class="src" data-l="P" data-ref="Ejemplo propio sobre U Def. 4.3 y nota al margen, p. 153">P</span></summary>
+  <p class="enun">Halla y dibuja el dominio de $f(x,y)=\sqrt{y-x^2}+\ln(4-x^2-y^2)$. Variante: ¿qué cambia si es $g(x,y)=\dfrac{\sqrt{y-x^2}}{\ln(4-x^2-y^2)}$?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Cada pieza impone una condición y el dominio es la intersección; si el logaritmo está en un denominador, además no puede valer $0$.</p></div>
+  <ol class="steps">
+    <li><b>Raíz:</b> $y-x^2\ge0\iff y\ge x^2$: sobre o por encima de la parábola (con la parábola).</li>
+    <li><b>Logaritmo:</b> $4-x^2-y^2>0\iff x^2+y^2&lt;4$: disco abierto de radio $2$ (sin la circunferencia).</li>
+    <li><b>Dominio de $f$:</b> $\{y\ge x^2,\ x^2+y^2&lt;4\}$: una «gota» limitada abajo por la parábola (incluida) y arriba por la circunferencia (excluida). Se cortan en $y+y^2=4$, $y=\frac{-1+\sqrt{17}}2\approx1{,}56$, $x\approx\pm1{,}25$; esos dos puntos <b>no</b> están en $D_f$.</li>
+    <li><b>Comprobación:</b> $(0,1)$ ✓; $(1{,}5;\,1{,}5)$: $1{,}5-2{,}25&lt;0$ ✗; $(0,2)$: $\ln0$ ✗.</li>
+    <li><b>Variante $g$:</b> además $\ln(4-x^2-y^2)\ne0\iff x^2+y^2\ne3$: hay que <b>quitar</b> el arco de la circunferencia de radio $\sqrt3$ que queda dentro de la región (por ejemplo, el punto $(0,\sqrt3)$).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> lista de condiciones (raíz $\ge0$, log $>0$, denominador $\ne0$) $\to$ intersección $\to$ dibujar fronteras y decidir qué bordes entran.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar la condición «denominador $\ne0$» cuando el denominador es un logaritmo ($\ln u=0$ para $u=1$).</p></div>
+</details>
+
+<details class="sol" id="p2"><summary>Propio 2 · curvas de nivel de $x^2+4y^2$ y de $xy$ <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 155 y Ejemplo 4.11, pp. 155-156">P</span></summary>
+  <p class="enun">Describe las curvas de nivel de (a) $f(x,y)=x^2+4y^2$ y (b) $g(x,y)=xy$, e indica la imagen de cada función.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>(a) elipses que se reducen a un punto en $k=0$; (b) hipérbolas que degeneran en los ejes en $k=0$.</p></div>
+  <ol class="steps">
+    <li><b>(a) Nivel $k$:</b> $x^2+4y^2=k$. Si $k&lt;0$: vacía. Si $k=0$: solo $(0,0)$. Si $k>0$: $\dfrac{x^2}k+\dfrac{y^2}{k/4}=1$, <b>elipse</b> de semiejes $\sqrt k$ (en $x$) y $\frac{\sqrt k}2$ (en $y$); por ejemplo, $k=4$ pasa por $(\pm2,0)$ y $(0,\pm1)$. Imagen: $[0,\infty)$.</li>
+    <li><b>(b) Nivel $k$:</b> $xy=k$. Si $k\ne0$: $y=k/x$, <b>hipérbola</b> (cuadrantes I y III si $k>0$; II y IV si $k&lt;0$). Si $k=0$: $x=0$ o $y=0$, los <b>dos ejes</b>. Imagen: $\mathbb R$ ($g(x,1)=x$).</li>
+    <li><b>Lectura:</b> en (a), como en E 4.16, las elipses crecen hacia fuera. En (b) el signo de $g$ cambia al cruzar los ejes (silla de montar).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $f=k$; casos según $k$ (vacía / punto o degenerada / curva); reconoce la cónica dividiendo para dejar «$=1$».</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dar «circunferencias» en (a): el $4$ delante de $y^2$ achata la curva en elipse.</p></div>
+</details>
+
+<details class="sol" id="p3"><summary>Propio 3 · límite que no existe aunque fallen las rectas y engañen las polares <span class="src" data-l="P" data-ref="Ejemplo propio análogo a U Ejemplo 4.16, pp. 162-163, y criterio de polares, p. 165">P</span></summary>
+  <p class="enun">Estudia $\displaystyle\lim_{(x,y)\to(0,0)}\frac{xy^2}{x^2+y^4}$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Rectas y reiterados dan $0$, pero la parábola $x=y^2$ da $\tfrac12$; y las polares, aplicadas a la ligera, harían creer que el límite es $0$.</p></div>
+  <ol class="steps">
+    <li><b>Sustituir:</b> $\tfrac00$.</li>
+    <li><b>Reiterados:</b> con $y\ne0$ fijo, $\lim_{x\to0}\frac{xy^2}{x^2+y^4}=\frac0{y^4}=0$; con $x\ne0$ fijo, $\lim_{y\to0}=\frac0{x^2}=0$. Ambos $0$.</li>
+    <li><b>Rectas $y=mx$:</b> $\dfrac{m^2x^3}{x^2+m^4x^4}=\dfrac{m^2x}{1+m^4x^2}\to0$. Todas $0$; aún no se sabe nada.</li>
+    <li><b>Curva que iguala grados:</b> en el denominador compiten $x^2$ e $y^4$; con $x=y^2$ valen lo mismo: $f(y^2,y)=\dfrac{y^4}{y^4+y^4}=\dfrac12$. Con $x=-y^2$ sale $-\frac12$.</li>
+    <li><b>Conclusión:</b> $\frac12\ne0$: <b>no existe</b>.</li>
+    <li><b>Trampa de las polares:</b> $F(\rho,\theta)=\dfrac{\rho\cos\theta\operatorname{sen}^2\theta}{\cos^2\theta+\rho^2\operatorname{sen}^4\theta}$. Para cada $\theta$ <b>fijo</b> con $\cos\theta\ne0$, $F\to0$ (el denominador tiende a $\cos^2\theta\ne0$); si $\cos\theta=0$, $F=0$. ¡Todos los rayos dan $0$! Pero no hay cota $|F|\le h(\rho)$ sin $\theta$: cuando $\cos\theta$ es muy pequeño, el denominador también. Es el caso 3 de U p.165 (no se concluye).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> las polares solo <b>prueban</b> el límite si la cota final no depende de $\theta$. Si el denominador conserva un término en $\theta$ que puede anularse, desconfía y busca curvas.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>«$\lim_{\rho\to0}F=0$ para todo $\theta$, luego el límite es $0$»: eso equivale a probar solo las rectas.</p></div>
+</details>
+
+<details class="sol" id="p4"><summary>Propio 4 · límite en un punto distinto del origen: polares trasladadas <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 165 (polares con a, b) y Def. 4.5, p. 166">P</span></summary>
+  <p class="enun">Sea $f(x,y)=\dfrac{(x-1)\,y^2}{(x-1)^2+y^2}$ si $(x,y)\ne(1,0)$, $f(1,0)=c$. ¿Para qué valor de $c$ es $f$ continua en $\mathbb R^2$?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Centrar las polares en $(1,0)$: el cociente $\frac{y^2}{(x-1)^2+y^2}$ está entre $0$ y $1$ y el factor $(x-1)$ tiende a $0$.</p></div>
+  <ol class="steps">
+    <li><b>Fuera de $(1,0)$:</b> cociente de polinomios con denominador $(x-1)^2+y^2\ne0$: continua.</li>
+    <li><b>Caminos (para intuir):</b> recta $x=1$: $f=0$; rectas $y=m(x-1)$: $\dfrac{m^2(x-1)}{1+m^2}\to0$. Candidato $l=0$.</li>
+    <li><b>Probarlo con polares centradas en $(1,0)$:</b> $x=1+\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$. El denominador es $\rho^2$ y el numerador $\rho^3\cos\theta\operatorname{sen}^2\theta$: $F=\rho\cos\theta\operatorname{sen}^2\theta$ y $|F-0|\le\rho\to0$ (cota sin $\theta$). Límite $0$.</li>
+    <li><i>Alternativa (emparedado):</i> $\dfrac{y^2}{(x-1)^2+y^2}\le1$, luego $|f|\le|x-1|\to0$.</li>
+    <li><b>Continuidad en $(1,0)$:</b> $\lim_{(x,y)\to(1,0)}f=0$, así que es continua $\iff c=0$. <b>Respuesta: $c=0$.</b> Para otro $c$, $f$ es discontinua en $(1,0)$ y continua en el resto.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si el punto no es el origen, trasládalo: polares $x=a+\rho\cos\theta$, $y=b+\rho\operatorname{sen}\theta$ (o renombra $u=x-a$, $v=y-b$) y razona como en el origen.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Usar $x=\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$ (centradas en el origen) para un límite en $(1,0)$: eso mide la cercanía a $(0,0)$.</p></div>
+</details>
+
+<details class="sol" id="p5"><summary>Propio 5 · continuidad con denominador $x^2+2y^2$ (polares) <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 165 y Def. 4.5, p. 166; mismo tipo que X pp. 61-63, 71-72 y 90-92">P</span></summary>
+  <p class="enun">Sea $f(x,y)=\dfrac{x^3}{x^2+2y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Estudia su continuidad.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>En polares el denominador es $\rho^2$ por algo que nunca baja de $1$; el numerador aporta $\rho^3$, y sobra un $\rho$ que tiende a $0$.</p></div>
+  <ol class="steps">
+    <li><b>Fuera del origen:</b> cociente de polinomios con denominador $\ne0$: continua.</li>
+    <li><b>Polares:</b> $x^2+2y^2=\rho^2(\cos^2\theta+2\operatorname{sen}^2\theta)=\rho^2(1+\operatorname{sen}^2\theta)$, porque $\cos^2\theta+\operatorname{sen}^2\theta=1$. Así $F(\rho,\theta)=\dfrac{\rho\cos^3\theta}{1+\operatorname{sen}^2\theta}$.</li>
+    <li><b>Acotar sin $\theta$:</b> el denominador es $\ge1$ y $|\cos\theta|\le1$, luego $|F-0|\le\rho=:h(\rho)\to0$. El límite es $0=f(0,0)$: <b>continua en $\mathbb R^2$</b>.</li>
+  </ol>
+  <p>Mismo truco en las variantes de examen: $\dfrac{x^2y^2}{x^2+2y^2}$ da $F=\dfrac{\rho^2\cos^2\theta\operatorname{sen}^2\theta}{1+\operatorname{sen}^2\theta}$, con $|F|\le\rho^2$ (X pp.61-63, feb. 2016, Modelo A); e $y^3\operatorname{sen}\frac1{x^2+2y^2}$ da $|F|\le\rho^3$ (X pp.71-72, sept. 2016, Modelo A; «infinitésimo por acotada»). X pp.90-92 (feb. 2018, Modelo A) usa justo $\frac{x^3}{x^2+2y^2}$, pero en esa pregunta lo que se pide son derivadas parciales y diferenciabilidad (§4.3 y Tema 5); la parte de §4.2 es la continuidad de las parciales por reiterados y rectas.</p>
+  <div class="recipe"><b>Receta:</b> si el denominador es $x^2+k y^2$ con $k>0$, en polares es $\rho^2(\cos^2\theta+k\operatorname{sen}^2\theta)\ge\rho^2\min(1,k)$: acota sin $\theta$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar justificar que $\cos^2\theta+2\operatorname{sen}^2\theta$ no se anula (es $\ge1$); sin eso no hay cota.</p></div>
+</details>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="examen"><span class="n">7</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<p>Las preguntas de este tema se reducen a cuatro: <b>dominio</b> (a veces con imagen), <b>curvas de nivel</b>, <b>«estudie si existe el límite»</b> (casi siempre en el origen, y casi siempre la respuesta es «no existe» con dos caminos, o «vale 0» con polares) y <b>continuidad de una función a trozos</b>. Aquí van siete problemas de menor a mayor dificultad, con el estilo de resolución que se espera. Son del mismo tipo, además: X p.4 (= E 4.19), X p.143 (dominio de $\ln(36-x^2-y^2)$, un disco abierto de radio 6), X pp.130-131 (continuidad de $\frac{x^2}{x^2+y^2}$, = Ej. 4.21 de U), X p.39 (continuidad de $x^2\operatorname{sen}\frac1{x^2+y^2}$, igual que E 4.22 con la cota $|f|\le x^2$) y X p.16 (V/F «si existen y coinciden los límites por todos los caminos, ¿es continua?»: <b>falso</b>, falta comparar con $f(a,b)$; contraejemplo $x^2+y$ si $(x,y)\ne(0,0)$, $f(0,0)=1$). Existe además un tipo de pregunta con denominador $x^2+2y^2$ y continuidad por polares (X pp.61-63, 71-72 y 90-92; ver Propio 5), cuyos otros apartados (parciales, diferenciabilidad) son de §4.3 y Tema 5. Este tema no cubre derivadas parciales ni diferenciabilidad (§4.3 y Tema 5), que aparecen en los otros apartados de algunos de estos exámenes.</p>
+
+<details class="sol" id="x1"><summary>X1 · dominio de una suma: la corona $1\le x^2+y^2&lt;4$ <span class="src" data-l="X" data-ref="X p.148 (Febrero 2019, 2.ª semana, I. Electrónica Industrial y Automática, Ej. 6, primer apartado, 1 punto)">X p.148 (feb. 2019)</span></summary>
+  <p class="enun">Sean $f(x,y)=\ln(4-x^2-y^2)$ y $g(x,y)=\sqrt{x^2+y^2-1}$. Calcule el dominio de $h(x,y)=f(x,y)+g(x,y)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>La suma existe donde existen <b>las dos</b>: «dentro del círculo de radio 2 (sin el borde)» y «fuera del de radio 1 (con el borde)».</p></div>
+  <ol class="steps">
+    <li><b>Dominio de $f$:</b> logaritmo $\Rightarrow4-x^2-y^2>0\iff x^2+y^2&lt;4$: disco abierto de centro $(0,0)$ y radio $2$.</li>
+    <li><b>Dominio de $g$:</b> raíz $\Rightarrow x^2+y^2\ge1$: puntos a distancia $\ge1$ del origen (el exterior del disco de radio 1, con su circunferencia).</li>
+    <li><b>Dominio de $h$:</b> la intersección, $D=\{1\le x^2+y^2&lt;4\}$: una <b>corona circular</b> que <b>incluye</b> la circunferencia de radio 1 y <b>no incluye</b> la de radio 2.</li>
+    <li><b>Comprobación:</b> $(1,0)$: $h=\ln3+0$ ✓. $(2,0)$: $\ln0$ ✗. $(0,\tfrac32)$: $\ln(1{,}75)+\sqrt{1{,}25}$ ✓.</li>
+  </ol>
+  <p>X da lo mismo (correcto).</p>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f$ definida $\iff x^2+y^2&lt;4$; $g$ definida $\iff x^2+y^2\ge1$. $\operatorname{dom}h=\{(x,y):1\le x^2+y^2&lt;4\}$ (corona; incluye el borde interior, no el exterior).»</p></div>
+  <div class="recipe"><b>Receta:</b> el dominio de una suma o producto es la intersección de dominios. $x^2+y^2$ es el cuadrado de la distancia al origen: da discos y coronas. Di siempre qué bordes entran.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Poner $\le4$ (el logaritmo de $0$ no existe) o $>1$ (la raíz de $0$ sí existe).</p></div>
+</details>
+
+<details class="sol" id="x2"><summary>X2 · dominio e imagen de $x\ln y+y\ln x$ <span class="src" data-l="X" data-ref="X p.140 (Febrero 2018, 2.ª semana, I. Electrónica Industrial y Automática, P4, 1 punto)">X p.140 (feb. 2018)</span></summary>
+  <p class="enun">Determinar el dominio y la imagen de $f(x,y)=x\ln y+y\ln x$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Cada logaritmo pide su variable positiva; para la imagen basta hallar una recta del dominio en la que $f$ sea el propio $\ln x$.</p></div>
+  <ol class="steps">
+    <li><b>Dominio:</b> $\ln y$ exige $y>0$ y $\ln x$ exige $x>0$: $D=\{x>0,\ y>0\}$ (primer cuadrante abierto, sin ejes).</li>
+    <li><b>Imagen:</b> tomemos los puntos $(x,1)$ con $x>0$, que están en $D$. Ahí $f(x,1)=x\ln1+1\cdot\ln x=\ln x$. Cuando $x$ recorre $(0,\infty)$, $\ln x$ recorre <b>todo</b> $\mathbb R$ (por ejemplo, $f(e^c,1)=c$ para cualquier $c$). La imagen es $\mathbb R$.</li>
+  </ol>
+  <div class="box warn"><span class="h">Comentario sobre X</span><p>X llega al resultado correcto, pero justifica la imagen con «la imagen del logaritmo es $(-\infty,\infty)$, por tanto…», lo cual es insuficiente: que cada sumando pueda tomar todos los valores no implica que la suma los tome. El argumento con $f(x,1)=\ln x$ sí lo demuestra.</p></div>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$\operatorname{dom}f=\{x>0,y>0\}$. Imagen: $f(x,1)=\ln x$ y $x\in(0,\infty)$ recorre todo $\mathbb R$; luego $f(D)=\mathbb R$.»</p></div>
+  <div class="recipe"><b>Receta:</b> imagen = restringir $f$ a una recta sencilla del dominio ($y=1$, $x=1$, $y=x$…) donde quede una función conocida de una variable.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dar el dominio con $\ge$ (los ejes no entran: $\ln0$ no existe).</p></div>
+</details>
+
+<details class="sol" id="x3"><summary>X3 · curvas de nivel de $2x^2+2y^2-4$ (X omite dos casos) <span class="src" data-l="X" data-ref="X p.137 (Febrero 2017, 1.ª semana, I. Electrónica Industrial y Automática, P4, 1 punto)">X p.137 (feb. 2017)</span></summary>
+  <p class="enun">Sea $f:\mathbb R^2\to\mathbb R$ dada por $f(x,y)=2x^2+2y^2-4$. Dibuje sus curvas de nivel.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>$f=C$ es $x^2+y^2=\frac{C+4}2$: circunferencias centradas en el origen, salvo cuando el segundo miembro es $0$ (un punto) o negativo (nada).</p></div>
+  <ol class="steps">
+    <li><b>Curva de nivel $C$:</b> $2x^2+2y^2-4=C\iff x^2+y^2=\dfrac{C+4}2$.</li>
+    <li><b>$C>-4$:</b> circunferencia de centro $(0,0)$ y radio $\sqrt{\frac{C+4}2}$. Por ejemplo $C=-2$: radio $1$; $C=4$: radio $2$; $C=14$: radio $3$.</li>
+    <li><b>$C=-4$:</b> $x^2+y^2=0$, el punto $(0,0)$ (el mínimo de $f$).</li>
+    <li><b>$C&lt;-4$:</b> $x^2+y^2&lt;0$ es imposible: <b>vacía</b>.</li>
+    <li><b>Dibujo:</b> circunferencias concéntricas; los radios crecen como $\sqrt{C+4}$, así que a igual salto de $C$ las curvas se van <b>juntando</b> (la gráfica, un paraboloide, se hace más empinada). Imagen de $f$: $[-4,\infty)$.</li>
+  </ol>
+  <div class="box warn"><span class="h">Omisión de X</span><p>X dice solo «$x^2+y^2=C'$: familia de circunferencias», sin decir que $C'=\frac{C+4}2$ ni tratar $C=-4$ (un punto) ni $C&lt;-4$ (vacío). En el examen se deben indicar.</p></div>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f=C\iff x^2+y^2=\frac{C+4}2$. Si $C>-4$: circunferencia de radio $\sqrt{(C+4)/2}$. Si $C=-4$: el punto $(0,0)$. Si $C&lt;-4$: vacía.» (Y un dibujo con tres o cuatro circunferencias.)</p></div>
+  <div class="recipe"><b>Receta:</b> como U Ej. 4.11: despeja $x^2+y^2=$ (expresión en $C$) y discute su signo: $>0$ circunferencia, $=0$ punto, $&lt;0$ vacío.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Escribir «radio $C$» o «radio $C+4$» en lugar de $\sqrt{(C+4)/2}$.</p></div>
+</details>
+
+<details class="sol" id="x4"><summary>X4 · $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^2-y^2}{x^2+y^2}$ no existe (por los ejes) <span class="src" data-l="X" data-ref="X p.33 (Febrero 2013, 1.ª semana, Mecánica, Modelo A, PC4)">X p.33 (feb. 2013)</span></summary>
+  <p class="enun">Estúdiese si existe el límite $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^2-y^2}{x^2+y^2}$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Por el eje $x$ vale siempre $1$ y por el eje $y$ vale siempre $-1$: no puede tener límite.</p></div>
+  <ol class="steps">
+    <li><b>Sustituir:</b> $\tfrac00$.</li>
+    <li><b>Eje $y$</b> ($x=0$, $y\ne0$): $f(0,y)=\dfrac{-y^2}{y^2}=-1\to-1$.</li>
+    <li><b>Eje $x$</b> ($y=0$, $x\ne0$): $f(x,0)=\dfrac{x^2}{x^2}=1\to1$.</li>
+    <li><b>No existe:</b> dos caminos, dos valores (U p.161).</li>
+  </ol>
+  <p>Es la misma función que E 4.24. <b>Imprecisión de X:</b> llama «límites laterales» a los límites a lo largo de los ejes; «laterales» se usa en una variable ($x\to a^\pm$). Lo correcto: «límites a lo largo de los ejes».</p>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«Por $x=0$: $f(0,y)=-1\to-1$. Por $y=0$: $f(x,0)=1\to1$. Los límites por dos caminos son distintos, luego el límite no existe.»</p></div>
+  <div class="recipe"><b>Receta:</b> prueba primero los ejes: es lo más rápido y a menudo basta.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Calcular un solo eje y concluir.</p></div>
+</details>
+
+<details class="sol" id="x5"><summary>X5 · continuidad de $\operatorname{arctg}\frac{xy}{x^2+y^2}$ (a trozos) <span class="src" data-l="X" data-ref="X p.45 (Febrero 2014, Mecánica, Modelo B, Ej. 6 a) y X p.98 (Septiembre 2018, Mecánica, Modelo A, Ej. 6 a): mismo enunciado">X pp.45 y 98</span></summary>
+  <p class="enun">Sea $f(x,y)=\operatorname{arctg}\dfrac{xy}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Estudiar la continuidad de $f$ en $\mathbb R^2$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Por la recta $y=mx$ el cociente vale la constante $\frac m{1+m^2}$, que cambia con $m$; el arcotangente no lo arregla.</p></div>
+  <ol class="steps">
+    <li><b>Fuera del origen:</b> $\frac{xy}{x^2+y^2}$ es un cociente de polinomios con denominador $\ne0$ y $\operatorname{arctg}$ es continua en $\mathbb R$: composición continua. <b>Continua en $\mathbb R^2\setminus\{(0,0)\}$.</b></li>
+    <li><b>Origen, rectas $y=mx$</b> ($x\ne0$): $\dfrac{x\cdot mx}{x^2+m^2x^2}=\dfrac m{1+m^2}$ (constante). Luego $f(x,mx)=\operatorname{arctg}\dfrac m{1+m^2}$ para todo $x\ne0$ y su límite es ese mismo número.</li>
+    <li><b>Depende de $m$:</b> $m=0$ da $\operatorname{arctg}0=0$; $m=1$ da $\operatorname{arctg}\frac12\approx0{,}4636$. Distintos (el arcotangente es estrictamente creciente).</li>
+    <li><b>Conclusión:</b> no existe $\lim_{(x,y)\to(0,0)}f$, luego <b>$f$ no es continua en $(0,0)$</b> y es continua en $\mathbb R^2\setminus\{(0,0)\}$.</li>
+    <li><i>En polares:</i> $F=\operatorname{arctg}\dfrac{\operatorname{sen}2\theta}2$ depende de $\theta$ (caso 1).</li>
+  </ol>
+  <div class="box warn"><span class="h">Avisos</span><p>X resuelve igual (correcto). La solución impresa de la p.98 dice claramente <b>no continua</b>. (Fuera de §4.2: en el apartado b) de X p.45, la segunda derivada parcial aparece rotulada $\partial f/\partial x$ en vez de $\partial f/\partial y$.)</p></div>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«Fuera del origen, $f$ es continua por ser composición y cociente de continuas. En el origen, por $y=mx$: $f(x,mx)=\operatorname{arctg}\frac m{1+m^2}$, que depende de $m$; el límite no existe y $f$ es discontinua en $(0,0)$.»</p></div>
+  <div class="recipe"><b>Receta:</b> si $f=\varphi(\text{cociente})$ con $\varphi$ continua y estrictamente monótona (arctg, exp…), basta estudiar el cociente: si su límite depende del camino, el de $f$ también.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Creer que, como $\operatorname{arctg}$ está acotada, el límite es $0$: acotada sí, pero no multiplicada por nada que tienda a $0$.</p></div>
+</details>
+
+<details class="sol" id="x6"><summary>X6 · $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^3+y^4}{x^2+y^2}=0$ (polares) <span class="src" data-l="X" data-ref="X p.65 (Febrero 2016, Mecánica, Modelo B, P4, 1 punto)">X p.65 (feb. 2016)</span></summary>
+  <p class="enun">Calcule el límite $\displaystyle\lim_{(x,y)\to(0,0)}\frac{x^3+y^4}{x^2+y^2}$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>En polares el denominador es $\rho^2$ y el numerador tiene al menos $\rho^3$: sobra al menos un $\rho$, que tiende a $0$.</p></div>
+  <ol class="steps">
+    <li><b>Sustituir:</b> $\tfrac00$. Los caminos (eje $x$: $f=x\to0$; eje $y$: $f=y^2\to0$; rectas: $\to0$) sugieren $l=0$. Hay que <b>probarlo</b>.</li>
+    <li><b>Polares</b> (U p.165): $x^2+y^2=\rho^2$ y $F(\rho,\theta)=\dfrac{\rho^3\cos^3\theta+\rho^4\operatorname{sen}^4\theta}{\rho^2}=\rho\cos^3\theta+\rho^2\operatorname{sen}^4\theta$.</li>
+    <li><b>Acotar sin $\theta$:</b> como $|\cos\theta|\le1$ y $|\operatorname{sen}\theta|\le1$, $|F-0|\le\rho+\rho^2=:h(\rho)\to0$.</li>
+    <li><b>Conclusión</b> (caso 2 de U p.165): el límite vale $0$.</li>
+  </ol>
+  <p>X da lo mismo (correcto); su frase «$\cos^3\theta+\rho\operatorname{sen}^4\theta$ está acotado» es cierta para $\rho\le1$; con la $h(\rho)$ explícita queda más claro.</p>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$x=\rho\cos\theta,\ y=\rho\operatorname{sen}\theta$: $F=\rho\cos^3\theta+\rho^2\operatorname{sen}^4\theta$. $|F|\le\rho+\rho^2\to0$ cuando $\rho\to0$ (cota independiente de $\theta$). Por tanto $\lim_{(x,y)\to(0,0)}f=0$.»</p></div>
+  <div class="recipe"><b>Receta:</b> polares: simplifica el $\rho^2$ del denominador, acota senos y cosenos por $1$ y comprueba que queda una $h(\rho)$ <b>sin $\theta$</b> que tiende a $0$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Escribir «$\lim_{\rho\to0}\rho\cos^3\theta=0$» para un $\theta$ fijo y darlo por probado sin la cota uniforme (ver Propio 3: puede fallar).</p></div>
+</details>
+
+<details class="sol" id="x7"><summary>X7 · continuidad de $\frac{x^2y^3}{x^4+y^2}$ con $f(0,0)=1$ <span class="src" data-l="X" data-ref="X p.138 (Febrero 2017, 1.ª semana, I. Electrónica Industrial y Automática, Ej. 6, primer apartado, 1,5 puntos)">X p.138 (feb. 2017)</span></summary>
+  <p class="enun">Sea $f(x,y)=\dfrac{x^2y^3}{x^4+y^2}$ si $(x,y)\ne(0,0)$ y $f(0,0)=1$. Estudiar la continuidad de $f$ en $(0,0)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Cerca del origen $f$ se acerca a $0$ por cualquier camino, pero la función vale $1$ en el origen: hay un «salto» de valor.</p></div>
+  <ol class="steps">
+    <li><b>Lo que hay que comparar:</b> continua en $(0,0)\iff \lim_{(x,y)\to(0,0)}f=f(0,0)=1$.</li>
+    <li><b>Rectas $y=mx$:</b> $f(x,mx)=\dfrac{m^3x^5}{x^4+m^2x^2}=\dfrac{m^3x^3}{x^2+m^2}\to0$ (para $m\ne0$ el denominador tiende a $m^2\ne0$; para $m=0$, $f=0$). Eje $y$: $f(0,y)=0$.</li>
+    <li><b>Basta para la discontinuidad.</b> Si el límite existiera, valdría lo mismo que por las rectas, $0$, y $0\ne1$. Si no existiera, tampoco habría continuidad. <b>En los dos casos $f$ no es continua en $(0,0)$.</b></li>
+    <li><i>Extra (no necesario):</i> el límite sí existe y vale $0$. Como $\frac{y^2}{x^4+y^2}\le1$, $|f|=x^2|y|\cdot\frac{y^2}{x^4+y^2}\le x^2|y|\to0$ (emparedado). Con $f(0,0)=0$ sería continua.</li>
+  </ol>
+  <p>X: resultado correcto. Escribe «$\lim_{(x,mx)\to(0,0)}$», notación poco habitual (mejor $\lim_{x\to0}f(x,mx)$).</p>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«Por $y=mx$: $f(x,mx)=\frac{m^3x^3}{x^2+m^2}\to0\ne1=f(0,0)$. Si el límite existiera valdría $0$, distinto de $f(0,0)$; luego $f$ es discontinua en $(0,0)$.»</p></div>
+  <div class="recipe"><b>Receta:</b> para <b>refutar</b> la continuidad no hace falta saber si el límite existe: basta <b>un</b> camino cuyo límite no sea $f(a,b)$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Concluir «continua» porque «todas las rectas dan lo mismo», sin mirar el valor $f(0,0)$ que da el enunciado.</p></div>
+</details>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="chuleta"><span class="n">8</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+
+<h3>Errores frecuentes</h3>
+<ul>
+  <li>Dar el dominio de una raíz con $>0$ o el de un logaritmo con $\ge0$; olvidar la condición «denominador $\ne0$» cuando es un logaritmo; dividir una desigualdad por una variable sin separar casos por su signo.</li>
+  <li>Dar solo la mitad de una imagen (la cota) sin mostrar que se alcanza.</li>
+  <li>Confundir curva de nivel ($f=C$, en el plano) con gráfica (superficie en $\mathbb R^3$) o con un corte ($f(x,2)$).</li>
+  <li>Olvidar los casos degenerados de las curvas de nivel ($C'=0$: punto o rectas; $C'&lt;0$: vacía).</li>
+  <li>«Las rectas (o los reiterados) dan lo mismo, luego el límite existe.» Solo sirven para <b>refutar</b>.</li>
+  <li>Aplicar polares y cantar victoria porque «para cada $\theta$, $F\to0$»: hace falta una cota sin $\theta$.</li>
+  <li>Usar polares centradas en el origen cuando el punto del límite no es el origen.</li>
+  <li>Calcular el límite y olvidar compararlo con $f(a,b)$ al estudiar la continuidad; no decir en qué conjunto es continua.</li>
+</ul>
+
+<h3>Erratas y avisos de este tema</h3>
+<ol>
+  <li><b>E 4.13 (pp.144-145):</b> desigualdades estrictas ($x^2>y^3$, $y&lt;x^{2/3}$); deben ser $\ge$, $\le$: el borde sí pertenece al dominio.</li>
+  <li><b>E 4.14 (p.145):</b> «$xy\ge0$» debe ser «$xy>0$» (el resultado final es correcto).</li>
+  <li><b>E 4.16 (p.148):</b> en el punto $(4,0)$ la función pasa de decrecer a crecer (mínimo), no «de crecer a decrecer o al revés» sin precisar.</li>
+  <li><b>E 4.17 (p.148):</b> omite el nivel $C=8$ (par de rectas $y=\pm\sqrt3x$) y no distingue las hipérbolas según el eje que cortan; además su figura tiene asíntotas $y=\pm x$ (no $\pm\sqrt3x$) y la leyenda ($C'=0{,}25$; $1{,}5$; $-1{,}5$) no casa con el dibujo.</li>
+  <li><b>E 4.20 (p.150):</b> no da contraejemplo (aquí, $\frac{xy}{x^2+y^2}$, propio).</li>
+  <li><b>E 4.21 (p.151):</b> $\operatorname{dom}h=\{y\ge0\}\cup\{x=0\}$, no solo $\{y\ge0\}$.</li>
+  <li><b>E 4.24 (p.153):</b> «el producto» debe decir «el cociente».</li>
+  <li><b>X p.33 (feb. 2013), imprecisión:</b> «límites laterales» debe decir «límites a lo largo de los ejes».</li>
+  <li><b>X p.137 (feb. 2017):</b> faltan $C=-4$ (punto) y $C&lt;-4$ (vacío) y la relación $C'=(C+4)/2$.</li>
+  <li><b>X p.138 (feb. 2017):</b> el razonamiento por rectas es válido para la discontinuidad, pero no dice que el límite existe y vale $0$.</li>
+  <li><b>X p.140 (feb. 2018):</b> la justificación de la imagen es insuficiente (hay que usar $f(x,1)=\ln x$).</li>
+  <li><b>X p.143 (sept. 2018):</b> «círculo sin frontera» es, en terminología de U, un disco abierto.</li>
+  <li><b>X pp.45 y 98:</b> la solución impresa de la p.98 es correcta (no continua). En X p.45 apdo. b) hay una errata de rotulado fuera de este tema.</li>
+  <li><b>X pp.122-125 (Examen 5):</b> continuidad de $\frac{x^3+xy^2+3y^4}{x^2+y^2}$ por polares: $F=\rho\cos\theta+3\rho^2\operatorname{sen}^4\theta$, cota $\rho+3\rho^2\to0$; X escribe el límite sin paréntesis y sin dar la cota independiente de $\theta$.</li>
+  <li><b>X pp.61-62 (feb. 2016 A, Ej. 6):</b> el paso intermedio impreso de la continuidad de $\frac{x^2y^2}{x^2+2y^2}$ (con un factor $\rho^3$ y $\rho\operatorname{sen}^4\theta$) no corresponde a esa $f$ (parece copiado de otro ejercicio); la correcta es $F=\frac{\rho^2\cos^2\theta\operatorname{sen}^2\theta}{1+\operatorname{sen}^2\theta}$. La conclusión (continua) es correcta. <b>X p.71 (sept. 2016 A):</b> escribe $\rho\to\infty$ en lugar de $\rho\to0$ en una frase e intercambia $\cos^2$ y $\operatorname{sen}^2$ en el denominador (no afecta: el seno va acotado).</li>
+  <li><b>U Fig. 4.14 (p.162):</b> el pie de figura impreso omite el «$+1$» de $f$.</li>
+  <li><b>Fuentes:</b> Stewart y Larson (Tomo 1) no tratan este tema.</li>
+</ol>
+
+<h3>Chuleta</h3>
+<table>
+  <caption>Chuleta de fórmulas del tema</caption>
+  <tr><th scope="col">Concepto</th><th scope="col">Enunciado</th><th scope="col">Fuente</th></tr>
+  <tr><td>Función de dos variables</td><td>$f:D\subset\mathbb R^2\to\mathbb R$, un único $f(x,y)$ por punto; dominio $D$, imagen $f(D)$; sin dominio dado, el mayor posible</td><td>U p.153</td></tr>
+  <tr><td>Dominio</td><td>raíz par: $\ge0$; log: $>0$; fracción: denominador $\ne0$; suma/producto: intersección</td><td>U p.153</td></tr>
+  <tr><td>Gráfica</td><td>$\{(x,y,z):(x,y)\in D,\ z=f(x,y)\}\subset\mathbb R^3$</td><td>U p.155</td></tr>
+  <tr><td>Curva de nivel $k$</td><td>$\{f(x,y)=k\}$ en el plano $xy$; discutir según el signo de lo que quede</td><td>U p.155</td></tr>
+  <tr><td>Límite (Def. 4.4)</td><td>$0&lt;d((a,b),(x,y))&lt;\delta\Rightarrow|f-l|&lt;\varepsilon$</td><td>U p.159</td></tr>
+  <tr><td>Condiciones necesarias</td><td>reiterados, rectas $y=mx+k$ y curvas $y=g(x)$ deben coincidir; si coinciden, no se concluye que exista</td><td>U pp.161-162</td></tr>
+  <tr><td>Emparedado</td><td>$g\le f\le h$ y $\lim_{(x,y)\to(a,b)}g=\lim_{(x,y)\to(a,b)}h=l\Rightarrow \lim_{(x,y)\to(a,b)}f=l$</td><td>U p.163</td></tr>
+  <tr><td>Infinitésimo por acotada</td><td>$\lim_{(x,y)\to(a,b)}f=0$, $g$ acotada $\Rightarrow \lim_{(x,y)\to(a,b)}fg=0$</td><td>U p.165</td></tr>
+  <tr><td>Polares en $(a,b)$</td><td>$x=a+\rho\cos\theta$, $y=b+\rho\operatorname{sen}\theta$; depende de $\theta$: no existe; $|F-l|\le h(\rho)\to0$: existe y vale $l$; otro caso: nada</td><td>U p.165</td></tr>
+  <tr><td>Continuidad (Def. 4.5)</td><td>$\lim_{(x,y)\to(a,b)}f(x,y)=f(a,b)$; suma, producto, cociente (den. $\ne0$) y composición de continuas son continuas</td><td>U p.166</td></tr>
+</table>
+
+<div class="box tip"><span class="h">Flujo: cómo estudiar un límite en dos variables</span>
+  <ol class="steps">
+    <li>¿$f$ es continua en $(a,b)$? Sustituir: el límite es $f(a,b)$.</li>
+    <li>Si sale $\tfrac00$: reiterados y ejes $\to$ rectas $y-b=m(x-a)$ $\to$ curvas que igualen grados ($x=y^2$, $y=x^3$). Valores distintos o dependientes de $m$: <b>no existe</b>.</li>
+    <li>Si todo da $l$: polares centradas en $(a,b)$ con $|F-l|\le h(\rho)\to0$ <b>sin $\theta$</b>; o emparedado; o infinitésimo por acotada. Si lo consigues: <b>vale $l$</b>.</li>
+    <li>Continuidad: compara además con $f(a,b)$; basta un camino distinto para la discontinuidad. Di en qué conjunto es continua.</li>
+  </ol>
+</div>
+
+<h3>Lista de comprobación</h3>
+<ul class="checklist">
+  <li>Sé evaluar una función de dos variables y explicar qué significa fijar una variable (corte) o fijar el valor (curva de nivel).</li>
+  <li>Sé hallar y dibujar el dominio de expresiones con raíces, logaritmos y fracciones, diciendo qué bordes entran, y probar una imagen con cota y valores alcanzados.</li>
+  <li>Sé hallar las curvas de nivel de una función, con los casos degenerados (punto, rectas, vacío), y leer en un mapa de curvas si $f$ crece o decrece según la dirección.</li>
+  <li>Sé demostrar que un límite <b>no existe</b> con reiterados, rectas y una curva que iguale grados.</li>
+  <li>Sé demostrar que un límite <b>existe</b> con polares (cota sin $\theta$), emparedado o «infinitésimo por acotada».</li>
+  <li>Sé estudiar la continuidad de una función a trozos: propiedades fuera del punto, límite frente a $f(a,b)$ en el punto, y la respuesta completa.</li>
+  <li>Sé que «todas las rectas dan lo mismo» o «los reiterados coinciden» no prueban que el límite exista, y sé dar un contraejemplo.</li>
+  <li>Sé trasladar las polares cuando el punto no es el origen.</li>
+</ul>
+
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<details class="fuentes-toggle">
+<summary>Mostrar lista de fuentes</summary>
+<div id="panel-fuentes"></div>
+</details>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro (en X, la página del PDF).</footer>
+</main>
+</div>
+</body>
+</html>
