@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 4.1 El espacio ℝⁿ</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo IV · Funciones de varias variables · Tema 4.1</div>
+  <h1>El espacio $\mathbb R^n$</h1>
+  <p>El «escenario» donde viven las funciones de varias variables: puntos y vectores con $n$ coordenadas, cómo medir longitudes, distancias y ángulos, qué significa «abierto», «cerrado» y «frontera» en el plano, y tres formas de dar las coordenadas de un punto (polares, cilíndricas y esféricas).</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §4.1 (pp. 142-152)</span><span>Ejercicios: E Ej. 4.1–4.8</span><span>Examen: 7 problemas de X</span><span>⏱ ~4 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (páginas del PDF)">X</span> exámenes
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §4.1.1 Motivación y objetivos, p. 142">U p.142</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Hasta ahora las funciones tenían <b>una</b> entrada, un número $x$ de la recta. Pero casi todo lo real depende de varias cosas a la vez (la presión de un gas depende de la temperatura <i>y</i> del volumen). Para estudiarlo necesitamos «rectas con más dimensiones»: $\mathbb R^2$ (el plano), $\mathbb R^3$ (el espacio) y, en general, $\mathbb R^n$. Este tema construye ese escenario: <b>vectores, longitudes, distancias, ángulos y conjuntos</b>, copiando lo que ya sabes de la recta (intervalos abiertos y cerrados, extremos de un intervalo, valor absoluto como distancia).</p>
+  <span class="src" data-l="U" data-ref="U §4.1.1 Motivación y objetivos, p. 142">U p.142</span>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li>Suma de vectores y producto por un número (Álgebra); idea de espacio vectorial y base (U p.143 lo da por sabido).</li>
+  <li>Trigonometría básica: seno, coseno y tangente de ángulos usuales ($\pi/6,\pi/4,\pi/3,\pi/2\dots$) y cuadrantes; en <b>radianes</b>.</li>
+  <li>Intervalos abiertos y cerrados y valor absoluto como distancia (Tema 1.1): $|x-a|&lt;r$ es el intervalo $(a-r,a+r)$. Aquí ese «intervalo» se vuelve un disco.</li>
+  <li>Teorema de Pitágoras: de ahí sale la fórmula de la distancia.</li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <caption>Mapa del tema</caption>
+  <tr><th scope="col">Apartado</th><th scope="col">Qué contiene</th><th scope="col">Dónde está</th></tr>
+  <tr><td>1 El espacio $\mathbb R^n$</td><td>$n$-uplas, suma, producto por escalares, base canónica</td><td>U pp.142-144</td></tr>
+  <tr><td>2 Producto escalar, norma, distancia y ángulo</td><td>Def. 4.1 y 4.2, ortogonalidad, desigualdad triangular</td><td>U pp.143-147</td></tr>
+  <tr><td>3 Discos y topología del plano</td><td>disco, punto interior, frontera, abierto, cerrado, acotado</td><td>U pp.145-147</td></tr>
+  <tr><td>4 Polares, cilíndricas y esféricas</td><td>los tres cambios de coordenadas y sus trampas</td><td>U pp.148-152</td></tr>
+  <tr><td>5 Ejercicios de E</td><td>4.1-4.8</td><td>E pp.136-141</td></tr>
+  <tr><td>6 Ejemplos propios</td><td>4 ejemplos</td><td>propio</td></tr>
+  <tr><td>7 Examen</td><td>7 problemas de X</td><td>X</td></tr>
+  <tr><td>8 Chuleta y comprobación</td><td>fórmulas, errores, erratas, lista</td><td>síntesis</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios y en el examen</h3>
+<p>(A) <b>Producto escalar, norma y ortogonalidad</b> de dos vectores concretos (E 4.3, 4.4; X 2010, 2012, 2018). (B) <b>Distancia</b> entre dos puntos de $\mathbb R^3$ (X 2015, 2016, 2018). (C) <b>Ángulo</b> entre dos vectores (E 4.6; X 2018). (D) <b>Cambios de coordenadas</b>: polares, cilíndricas y esféricas, en los dos sentidos (E 4.6-4.8; X 2011). (E) <b>Abierto, cerrado, frontera</b> de un conjunto del plano (E 4.5); no suele preguntarse suelto, pero se usa luego para extremos absolutos (Tema 5). (F) Preguntas de «tipo test» conceptuales sobre qué operaciones tienen sentido (E 4.1, 4.2). Casi todo son preguntas cortas de 1 punto: cuentas simples que hay que hacer sin fallar.</p>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>El espacio $\mathbb R^n$ <span class="src" data-l="U" data-ref="U §4.1.2 El espacio Rⁿ. Primeras definiciones, pp. 142-144 (Ejemplos 4.1-4.2)">U pp.142-144</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · la dirección de una casa</span>
+  <p>Para decir dónde está un punto de la recta basta <b>un</b> número. Para un punto de un mapa, <b>dos</b> (calle y número, o latitud y longitud). Para un dron en el aire, <b>tres</b> (los dos anteriores y la altura). $\mathbb R^n$ es el conjunto de todas las «direcciones» con $n$ números: no hace falta poder dibujarlo para $n\ge4$; las fórmulas funcionan igual y es lo que se usa, por ejemplo, para describir la posición y la velocidad de un objeto que se mueve en un plano: $2+2$ números.</p>
+  <span class="src" data-l="P" data-ref="Analogía propia">P</span>
+</div>
+
+<div class="box def"><span class="h">El espacio $\mathbb R^n$</span>
+  <p>Para $n\in\mathbb N$, $\mathbb R^n=\mathbb R\times\overset{n}{\cdots}\times\mathbb R$ es el conjunto de las <b>$n$-uplas</b> $\bar x=(x_1,\dots,x_n)$ con cada $x_i\in\mathbb R$. Escribimos $\bar x$ para indicar que es un <b>elemento de $\mathbb R^n$</b> (un vector o un punto), <b>no un número</b>. Las $x_i$ son las coordenadas cartesianas.</p>
+  <p><b>Operaciones</b> (componente a componente): $\bar x+\bar y=(x_1+y_1,\dots,x_n+y_n)$ y $\lambda\bar x=(\lambda x_1,\dots,\lambda x_n)$, con $\lambda\in\mathbb R$ (un número, «escalar»). Con ellas $\mathbb R^n$ es un espacio vectorial de dimensión $n$.</p>
+  <p><b>Base canónica:</b> $\bar e_1=(1,0,\dots,0),\ \bar e_2=(0,1,0,\dots,0),\dots,\bar e_n=(0,\dots,0,1)$. Todo vector se escribe $\bar x=x_1\bar e_1+\dots+x_n\bar e_n$. En U los vectores también se denotan $\vec u$ o $u$.</p>
+  <span class="src" data-l="U" data-ref="U §4.1.2, pp. 142-143">U pp.142-143</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 4.1 de U · sumar y escalar en $\mathbb R^2$</span>
+  <p>$\bar x=(1,2)=\bar e_1+2\bar e_2$ y $\bar y=(3,1)=3\bar e_1+\bar e_2$. Entonces $\bar z=\bar x+\bar y=(4,3)$ y $\bar v=2\bar x=(2,4)$. Geométricamente, $\bar z$ es la diagonal del paralelogramo de lados $\bar x$ e $\bar y$ y $\bar v$ es $\bar x$ estirado al doble (Figura 4.1). Norma y distancia: $\|\bar y\|=\sqrt{3^2+1^2}=\sqrt{10}$ y $d((1,2),(3,1))=\sqrt{2^2+1^2}=\sqrt5$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.1, p. 144">U p.144</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_1.png" alt="Plano con los vectores x, y, su suma z (diagonal del paralelogramo punteado) y v, doble de x, junto a los vectores de la base canónica e1 y e2" loading="lazy">
+<figcaption>Figura 4.1 de U: vectores en $\mathbb R^2$ y suma por el paralelogramo. <span class="src" data-l="U" data-ref="U Figura 4.1, p. 144">U p.144</span></figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo 4.2 de U · $\mathbb R^3$</span>
+  <p>En $\mathbb R^3$, $\bar e_1=(1,0,0)$, $\bar e_2=(0,1,0)$, $\bar e_3=(0,0,1)$ apuntan en los ejes $x,y,z$ positivos. Para $\bar x=(1,2,1)$: $\|\bar x\|=\sqrt{1+4+1}=\sqrt6$. Distancia entre $(0,1,3)$ y $(1,2,1)$: $\sqrt{(0-1)^2+(1-2)^2+(3-1)^2}=\sqrt6$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.2, pp. 144-145">U pp.144-145</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_2.png" alt="Caja rectangular en el espacio con ejes x, y, z y el vector (1,2,1) dibujado como diagonal de la caja" loading="lazy">
+<figcaption>Figura 4.2 de U: el vector $(1,2,1)$ en $\mathbb R^3$ como diagonal de una caja de aristas $1,2,1$. <span class="src" data-l="U" data-ref="U Figura 4.2, p. 145">U p.145</span></figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Tratar $\bar x$ como un número: no se puede «dividir por un vector», ni escribir $\bar x&gt;\bar y$ (no hay un orden natural en $\mathbb R^n$ como en $\mathbb R$). Solo se comparan <b>números</b>: normas, distancias, productos escalares.</p>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Producto escalar, norma, distancia y ángulo <span class="src" data-l="U" data-ref="U §4.1.2 Definición 4.1 p. 143, Definición 4.2 p. 147, Ejemplos 4.1-4.2 pp. 144-145">U pp.143-147</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>En la recta, $|x|$ es la «longitud» de $x$ y $|x-y|$ la distancia entre $x$ e $y$. En $\mathbb R^n$ queremos lo mismo. El truco: el <b>producto escalar</b> multiplica «lo que un vector tiene de común con otro» y devuelve <b>un número</b>. Si lo calculas de un vector consigo mismo, obtienes el cuadrado de su longitud (Pitágoras generalizado). Y compara direcciones: es $0$ si son perpendiculares, positivo si apuntan «más o menos al mismo lado» y negativo si apuntan «a lados opuestos».</p>
+  <span class="src" data-l="P" data-ref="Explicación propia">P</span>
+</div>
+
+<div class="box def"><span class="h">Definición 4.1 · producto escalar y norma</span>
+  <p>El <b>producto escalar</b> de $\bar x=(x_1,\dots,x_n)$ e $\bar y=(y_1,\dots,y_n)$ de $\mathbb R^n$ es el <b>número</b>
+  $$\bar x\cdot\bar y=x_1y_1+\dots+x_ny_n=\sum_{i=1}^nx_iy_i.$$
+  La <b>norma</b> (longitud) de $\bar x$ es $\|\bar x\|=\sqrt{\bar x\cdot\bar x}=\sqrt{x_1^2+\dots+x_n^2}$. Los vectores de norma $1$ se llaman <b>unitarios</b>.</p>
+  <p><b>Distancia</b> entre $\bar x$ e $\bar y$: $d(\bar x,\bar y)=\|\bar y-\bar x\|=\sqrt{(y_1-x_1)^2+\dots+(y_n-x_n)^2}$.</p>
+  <span class="src" data-l="U" data-ref="U §4.1.2 Definición 4.1 y distancia, p. 143">U p.143</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen · los dos objetos distintos</span>
+  <p>$\bar x\cdot\bar y$ es un <b>número</b> (multiplicar parejas y <b>sumar</b>). $\lambda\bar x$ es un <b>vector</b> (multiplicar cada componente por $\lambda$). El producto escalar necesita <b>dos vectores del mismo $\mathbb R^n$</b>. Antes de operar, mira qué «tipo» sale en cada paso.</p>
+</div>
+
+<div class="box def"><span class="h">Definición 4.2 · ángulo y ortogonalidad</span>
+  <p>El <b>ángulo</b> $\alpha$ que forman dos vectores no nulos $\bar x,\bar y$ cumple
+  $$\cos\alpha=\frac{\bar x\cdot\bar y}{\|\bar x\|\,\|\bar y\|},\qquad \alpha=\arccos\Big(\frac{\bar x\cdot\bar y}{\|\bar x\|\|\bar y\|}\Big)\in[0,\pi].$$
+  Dos vectores son <b>ortogonales</b> si y solo si su producto escalar es $0$. (Recuerda: por convención $\arccos x\in[0,\pi]$ para $x\in[-1,1]$.)</p>
+  <span class="src" data-l="U" data-ref="U Definición 4.2 y nota al margen, p. 147">U p.147</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_5.png" alt="Plano con dos vectores x e y que parten del origen y el ángulo alfa entre ellos" loading="lazy">
+<figcaption>Figura 4.5 de U: el ángulo $\alpha$ entre dos vectores $\bar x$ e $\bar y$. <span class="src" data-l="U" data-ref="U Figura 4.5, p. 147">U p.147</span></figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo resuelto · todo con números</span>
+  <p>$\bar a=(1,2,2)$, $\bar b=(2,0,-1)$ en $\mathbb R^3$.</p>
+  <ol class="steps">
+    <li>$\bar a\cdot\bar b=1\cdot2+2\cdot0+2\cdot(-1)=0$: <b>ortogonales</b> ($\alpha=\pi/2$).</li>
+    <li>$\|\bar a\|=\sqrt{1+4+4}=3$ y $\|\bar b\|=\sqrt{4+0+1}=\sqrt5$.</li>
+    <li>$d(\bar a,\bar b)=\|\bar b-\bar a\|=\|(1,-2,-3)\|=\sqrt{14}$.</li>
+  </ol>
+  <span class="src" data-l="P" data-ref="Ejemplo numérico propio sobre U Def. 4.1 p. 143 y Def. 4.2 p. 147">P</span>
+</div>
+
+<h3>Propiedades que U da por sabidas <span class="src" data-l="P" data-ref="Propiedades que U (p. 143) da por conocidas del Álgebra y no enuncia; la desigualdad triangular aparece en el margen de E p. 137 (Ej. 4.4). Análogo en R: S Apéndice A, p. A8">propia</span></h3>
+<p>U dice (p. 143) que «se limita a enunciar» las operaciones y sus propiedades porque son conocidas del Álgebra, pero no las enuncia. Estas tres se usan en los ejercicios:</p>
+<div class="box thm"><span class="h">Propiedades de la norma y del producto escalar</span>
+<ul>
+  <li><b>Homogeneidad.</b> $\|\lambda\bar u\|=|\lambda|\,\|\bar u\|$. Ojo al valor absoluto: una norma nunca es negativa. (Razón: $\sqrt{\lambda^2u_1^2+\dots+\lambda^2u_n^2}=\sqrt{\lambda^2}\,\|\bar u\|$.)</li>
+  <li><b>Desigualdad triangular.</b> $\|\bar u+\bar v\|\le\|\bar u\|+\|\bar v\|$. Dibuja $\bar u$, luego $\bar v$ a continuación: $\bar u+\bar v$ es el tercer lado del triángulo, y un lado nunca supera a la suma de los otros dos. Hay igualdad solo si $\bar u$ y $\bar v$ apuntan en el mismo sentido (o uno de ellos es nulo). Es la versión vectorial de $|a+b|\le|a|+|b|$ (S App. A, p. A8). Útil después: $\|\bar q\|\ge\|\bar p\|-\|\bar p-\bar q\|$.</li>
+  <li><b>Cauchy-Schwarz.</b> $|\bar u\cdot\bar v|\le\|\bar u\|\,\|\bar v\|$. Es lo que garantiza que el cociente de la Def. 4.2 está en $[-1,1]$ y, por tanto, que el $\arccos$ existe. No hace falta demostrarla para el examen.</li>
+</ul>
+  <span class="src" data-l="P" data-ref="Propiedades que U (p. 143) da por conocidas y no enuncia; triangular: margen de E p. 137; análogo en R: S App. A, p. A8">P</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>(i) Creer que $\|\bar u+\bar v\|=\|\bar u\|+\|\bar v\|$ («la longitud es lineal»): en general es <b>menor</b>. (ii) Escribir $\|-3\bar u\|=-3\|\bar u\|$. (iii) Dejar el producto escalar como vector, sin sumar. (iv) Dar el ángulo en grados cuando U y E trabajan en radianes.</p>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Discos y conjuntos abiertos y cerrados <span class="src" data-l="U" data-ref="U §4.1.2, pp. 145-147: disco, punto interior, frontera, abierto, cerrado, acotado; Ejemplo 4.3 pp. 146-147; Figuras 4.3-4.4">U pp.145-147</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · el borde de un charco</span>
+  <p>En la recta, el intervalo $(0,1)$ es «abierto» (sus extremos no le pertenecen) y $[0,1]$ «cerrado» (los contiene). En el plano, un conjunto es como un <b>charco</b>: el <b>borde</b> es la <b>frontera</b>. Si estás en un punto de dentro y puedes dar un pasito en cualquier dirección sin salirte, el punto es <b>interior</b>. Si, por pequeño que sea el pasito, hay direcciones que te sacan del charco y otras que te dejan dentro, estás en la <b>frontera</b>. Un charco es <b>abierto</b> si no incluye su borde, y <b>cerrado</b> si lo incluye. Estas ideas serán necesarias al estudiar extremos de funciones de varias variables.</p>
+  <span class="src" data-l="P" data-ref="Analogía propia; U Nota 1 p. 145 (para qué se usan)">P</span>
+</div>
+
+<div class="box def"><span class="h">Discos y puntos interiores</span>
+  <p>El <b>disco abierto</b> de centro $(a,b)$ y radio $r$ es $\{(x,y)\in\mathbb R^2: d((a,b),(x,y))&lt;r\}$ (el círculo sin su circunferencia). El <b>disco cerrado</b>, con $\le$, la incluye. En $\mathbb R^3$ (y $\mathbb R^n$) se habla de <b>bola</b> abierta o cerrada, con las mismas definiciones.</p>
+  <p>Dado $C\subset\mathbb R^2$, $(a,b)$ es un <b>punto interior</b> de $C$ si <b>existe</b> un disco abierto de centro $(a,b)$ incluido en $C$.</p>
+  <span class="src" data-l="U" data-ref="U §4.1.2, p. 145">U p.145</span>
+  <p>Un punto es <b>exterior</b> a $C$ si <b>existe</b> un disco abierto centrado en él sin ningún punto de $C$. Todo punto del plano es <b>exactamente una</b> de estas tres cosas respecto de $C$: interior, exterior o frontera. U (p. 142, objetivos) nombra «interior, exterior y frontera» pero no define «exterior»; esa definición es propia.</p>
+  <span class="src" data-l="U" data-ref="U §4.1.1 Objetivos, p. 142 (nombra interior, exterior y frontera)">U p.142</span> <span class="src" data-l="P" data-ref="Definición de punto exterior propia, por analogía con U p. 145">P</span>
+</div>
+
+<div class="box def"><span class="h">Frontera, abierto, cerrado, acotado</span>
+  <ul>
+    <li><b>Punto frontera</b> de $C$: aquel $(a,b)$ tal que <b>todo</b> disco abierto centrado en él tiene puntos de $C$ <b>y</b> puntos que no están en $C$. Su conjunto es la <b>frontera</b> de $C$.</li>
+    <li><b>Abierto</b>: $C$ es vacío o todos sus puntos son interiores. $\mathbb R^2$ es abierto.</li>
+    <li><b>Cerrado</b>: $C$ contiene a su frontera. Si no tiene puntos frontera (como $\mathbb R^2$), es cerrado.</li>
+    <li><b>Acotado</b>: se puede incluir en un disco (su «extensión» es finita).</li>
+  </ul>
+  <span class="src" data-l="U" data-ref="U §4.1.2, p. 146">U p.146</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_3.png" alt="Cinco dibujos de un conjunto con forma de riñón: (a) punto interior con un disco pequeño dentro; (b) punto frontera con discos que sobresalen; (c) conjunto abierto con borde discontinuo; (d) conjunto cerrado con borde continuo; (e) conjunto acotado dentro de un círculo" loading="lazy">
+<figcaption>Figura 4.3 de U: punto interior y punto frontera (arriba); conjunto abierto, cerrado y acotado (abajo). <span class="src" data-l="U" data-ref="U Figura 4.3, p. 146">U p.146</span></figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplo 4.3 de U · un disco abierto</span>
+  <p>$\{(x,y):(x-1)^2+(y+2)^2&lt;9\}$ es el círculo de radio $3$ centrado en $(1,-2)$, <b>sin</b> la circunferencia. Su frontera es $\{(x-1)^2+(y+2)^2=9\}$; son frontera, por ejemplo, $(-2,-2)$, $(1,1)$ y $(2,2\sqrt2-2)$. El punto $(0,0)$ es interior (se puede rodear con un disco contenido). Todos sus puntos son interiores: el conjunto es <b>abierto</b>.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.3, pp. 146-147; Figura 4.4, p. 147">U pp.146-147</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_4.png" alt="Círculo azul de radio 3 centrado en (1,-2) con borde punteado, y los puntos frontera (-2,-2), (1,1) y (2, 2 raíz de 2 menos 2) marcados sobre la circunferencia" loading="lazy">
+<figcaption>Figura 4.4 de U: el conjunto $\{(x-1)^2+(y+2)^2&lt;9\}$, con borde punteado (no incluido). <span class="src" data-l="U" data-ref="U Figura 4.4, p. 147">U p.147</span></figcaption>
+</figure>
+
+<div class="box tip"><span class="h">Truco de examen · cómo leer una desigualdad</span>
+  <p>$(x-a)^2+(y-b)^2\ \square\ r^2$ significa «distancia al centro $(a,b)$ $\square$ $r$». Con «$&lt;$» o «$&gt;$»: sin borde (abierto). Con «$\le$» o «$\ge$»: con borde (cerrado). La frontera es siempre la igualdad.</p>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>«Abierto» y «cerrado» <b>no</b> son contrarios: un conjunto puede ser ninguno de los dos (una corona con un borde dentro y otro fuera: ver Propio 2), y $\mathbb R^2$ y $\emptyset$ son ambos. Tampoco confundas frontera con «exterior»: la frontera es el borde, no «todo lo que no es $C$».</p>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Coordenadas polares, cilíndricas y esféricas <span class="src" data-l="U" data-ref="U §4.1.3, pp. 148-152; Ejemplos 4.4-4.8; Figuras 4.6-4.8">U pp.148-152</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · «cuánto a la derecha y arriba» frente a «a qué distancia y hacia dónde»</span>
+  <p>Las coordenadas cartesianas $(x,y)$ dicen cuánto avanzar en horizontal y en vertical. Las <b>polares</b> dicen: «mira en la dirección $\theta$ (un ángulo) y camina una distancia $\rho$». Son como el radar de un barco. Las <b>cilíndricas</b> añaden la altura $z$ (como un ascensor en un edificio redondo) y las <b>esféricas</b> dan, además de la distancia, la «longitud» $\theta$ y la «latitud» $\varphi$ (como en el globo terráqueo). Se usan porque ciertas curvas y superficies (círculos, cilindros, esferas) tienen ecuaciones mucho más simples.</p>
+  <span class="src" data-l="P" data-ref="Analogía propia; la de la latitud: U p. 150">P</span>
+</div>
+
+<h3>Polares en $\mathbb R^2$ <span class="src" data-l="U" data-ref="U §4.1.3 Coordenadas polares, p. 148; Ejemplos 4.4-4.5, p. 149">U pp.148-149</span></h3>
+
+<div class="box def"><span class="h">Coordenadas polares</span>
+  <p>Todo $(x,y)\in\mathbb R^2\setminus\{(0,0)\}$ queda determinado de forma única por un radio $\rho>0$ y un ángulo $\theta\in[0,2\pi)$: $\rho$ es la distancia al origen y $\theta$ el ángulo que forma $(x,y)$ con el semieje $x$ positivo, medido en sentido <b>contrario a las agujas del reloj</b>.
+  $$\begin{cases}x=\rho\cos\theta\\ y=\rho\operatorname{sen}\theta\end{cases}\ \longleftrightarrow\ \begin{cases}\rho=\sqrt{x^2+y^2}=\|(x,y)\|\\ \operatorname{tg}\theta=\dfrac yx\end{cases}$$
+  Para elegir $\theta$ hay que fijarse en los signos de $x$ e $y$. Si $x=0$: $\theta=\pi/2$ ($y>0$) o $\theta=3\pi/2$ ($y&lt;0$).</p>
+  <span class="src" data-l="U" data-ref="U §4.1.3, p. 148">U p.148</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_6.png" alt="Punto en el plano con el vector desde el origen, su longitud rho y el ángulo theta con el eje x positivo, con las proyecciones x e y punteadas" loading="lazy">
+<figcaption>Figura 4.6 de U: coordenadas polares $(\rho,\theta)$. <span class="src" data-l="U" data-ref="U Figura 4.6, p. 148">U p.148</span></figcaption>
+</figure>
+
+<div class="box warn"><span class="h">La trampa del ángulo $\theta$</span>
+  <p>La calculadora da $\arctan(y/x)\in(-\pi/2,\pi/2)$, que solo es el $\theta$ correcto en el <b>primer cuadrante</b>. Los <b>dos</b> ángulos de $[0,2\pi)$ con la misma tangente están en cuadrantes opuestos (I y III, o II y IV). Regla segura con $\theta_0=\arctan|y/x|\in[0,\pi/2)$:</p>
+  <table>
+    <caption>Elección de $\theta$ según el cuadrante</caption>
+    <tr><th scope="col">Signos</th><th scope="col">Cuadrante</th><th scope="col">$\theta$</th></tr>
+    <tr><td>$x>0,\ y\ge0$</td><td>I</td><td>$\theta_0$</td></tr>
+    <tr><td>$x&lt;0,\ y\ge0$</td><td>II</td><td>$\pi-\theta_0$</td></tr>
+    <tr><td>$x&lt;0,\ y&lt;0$</td><td>III</td><td>$\pi+\theta_0$</td></tr>
+    <tr><td>$x>0,\ y&lt;0$</td><td>IV</td><td>$2\pi-\theta_0$</td></tr>
+    <tr><td>$x=0$</td><td>eje $y$</td><td>$\pi/2$ si $y>0$; $3\pi/2$ si $y&lt;0$</td></tr>
+  </table>
+  <p>Siempre se puede <b>comprobar</b> sustituyendo: $\rho\cos\theta$ debe devolver $x$ y $\rho\operatorname{sen}\theta$ debe devolver $y$. La tabla es un resumen propio de la regla de U.</p>
+  <span class="src" data-l="P" data-ref="Tabla propia a partir de la regla de signos de U p. 148">P</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos 4.4 y 4.5 de U</span>
+  <ol class="steps">
+    <li><b>De cartesianas a polares:</b> $(2,2\sqrt3)$. $\rho=\sqrt{4+12}=4$; $\operatorname{tg}\theta=\sqrt3$, y como $x,y>0$ (primer cuadrante) $\theta=\pi/3$. Polares: $(4,\pi/3)$.</li>
+    <li><b>De polares a cartesianas:</b> $(\rho,\theta)=(2,7\pi/4)$. $x=2\cos\frac{7\pi}4=\sqrt2$, $y=2\operatorname{sen}\frac{7\pi}4=-\sqrt2$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplos 4.4 y 4.5, p. 149">U p.149</span>
+</div>
+
+<div class="box intu"><span class="h">Otro libro · Stewart</span>
+  <p>Stewart (§10.3, pp. 654-656) presenta las polares con $(r,\theta)$ y permite $r$ negativo (el punto $(r,\theta)$ coincide con $(-r,\theta+\pi)$). <b>En U $\rho>0$ siempre</b>: gana U. Las fórmulas son las mismas: $x=r\cos\theta$, $y=r\operatorname{sen}\theta$, $r^2=x^2+y^2$, $\operatorname{tg}\theta=y/x$.</p>
+  <span class="src" data-l="S" data-ref="Stewart §10.3 Coordenadas polares, pp. 654-656 (r negativo: p. 654; ecuaciones (1): p. 655; ecuaciones (2): p. 656)">S pp.654-656</span>
+</div>
+
+<h3>Cilíndricas en $\mathbb R^3$ <span class="src" data-l="U" data-ref="U §4.1.3 Coordenadas cilíndricas, p. 149; Ejemplo 4.6, pp. 149-150; Figura 4.7, p. 150">U pp.149-150</span></h3>
+
+<div class="box def"><span class="h">Coordenadas cilíndricas $(\rho,\theta,z)$</span>
+  <p>Son las polares de $(x,y)$ más la tercera coordenada <b>sin cambiar</b>:
+  $$x=\rho\cos\theta,\quad y=\rho\operatorname{sen}\theta,\quad z=z\ \ \longleftrightarrow\ \ \rho=\sqrt{x^2+y^2},\quad\operatorname{tg}\theta=\frac yx,\quad z=z.$$
+  Aquí $\rho$ es la distancia del punto al <b>eje $z$</b> (no al origen). Muy convenientes para cilindros y superficies de revolución.</p>
+  <span class="src" data-l="U" data-ref="U §4.1.3, p. 149">U p.149</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 4.6 de U</span>
+  <p>$(\rho,\theta,z)=(2,2\pi/3,-1)$: $x=2\cos\frac{2\pi}3=-1$, $y=2\operatorname{sen}\frac{2\pi}3=\sqrt3$, $z=-1$. Cartesianas: $(-1,\sqrt3,-1)$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.6, pp. 149-150">U pp.149-150</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_7.png" alt="Ejes x, y, z con un cilindro rosa semitransparente, un punto (x,y,z), su altura z, el radio rho en el plano xy y el ángulo theta" loading="lazy">
+<figcaption>Figura 4.7 de U: coordenadas cilíndricas. <span class="src" data-l="U" data-ref="U Figura 4.7, p. 150">U p.150</span></figcaption>
+</figure>
+
+<h3>Esféricas en $\mathbb R^3$ <span class="src" data-l="U" data-ref="U §4.1.3 Coordenadas esféricas, pp. 150-152; Ejemplos 4.7-4.8; Figura 4.8, p. 151">U pp.150-152</span></h3>
+
+<div class="box def"><span class="h">Coordenadas esféricas $(\rho,\theta,\varphi)$</span>
+  <p>Con $\rho>0$, $\theta\in[0,2\pi)$ y $\varphi\in[-\pi/2,\pi/2]$. $\rho$ es la distancia al <b>origen</b>; $\theta$ es el ángulo de la proyección sobre el plano $xy$ con el semieje $x$ positivo (la «longitud»); $\varphi$ es el ángulo que forma $(x,y,z)$ con su proyección sobre el plano $xy$ (la «latitud»: positivo hacia arriba).
+  $$\begin{cases}x=\rho\cos\varphi\cos\theta\\ y=\rho\cos\varphi\operatorname{sen}\theta\\ z=\rho\operatorname{sen}\varphi\end{cases}\longleftrightarrow\ \begin{cases}\rho=\sqrt{x^2+y^2+z^2}\\ \operatorname{tg}\theta=y/x\\ \operatorname{sen}\varphi=\dfrac z{\sqrt{x^2+y^2+z^2}}\end{cases}$$
+  $\theta$ se calcula como en cilíndricas. Como $\varphi\in[-\pi/2,\pi/2]$, queda determinado de forma única por $\operatorname{sen}\varphi=z/\rho$ (en ese intervalo el seno toma cada valor una sola vez); su signo es el de $z$. U escribe $\varphi$ como «ϕ»; E, «φ».</p>
+  <span class="src" data-l="U" data-ref="U §4.1.3, pp. 150-151">U pp.150-151</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_4_8.png" alt="Ejes x, y, z con una semiesfera de malla rosa, un punto (x,y,z), la distancia rho al origen, el ángulo theta en el plano xy y el ángulo varphi sobre el plano xy" loading="lazy">
+<figcaption>Figura 4.8 de U: coordenadas esféricas; $\varphi$ se mide <b>desde el plano $xy$</b>. <span class="src" data-l="U" data-ref="U Figura 4.8, p. 151">U p.151</span></figcaption>
+</figure>
+
+<div class="box ex"><span class="h">Ejemplos 4.7 y 4.8 de U</span>
+  <ol class="steps">
+    <li><b>Ej. 4.7.</b> Punto $(3,-4,-1)$. Cilíndricas: $\rho=\sqrt{9+16}=5$, $z=-1$, $\operatorname{tg}\theta=-4/3$ con $x>0$, $y&lt;0$ (cuarto cuadrante, fila IV de la tabla): $\theta_0=\arctan\frac43\approx0{,}9273$ y $\theta=2\pi-\theta_0\approx5{,}3559$ rad. Esféricas: $\rho=\sqrt{26}$ (es otra $\rho$), el mismo $\theta$ y $\varphi=\operatorname{arcsen}(-1/\sqrt{26})\approx-0{,}1974$ rad.</li>
+    <li><b>Ej. 4.8.</b> $(\rho,\theta,\varphi)=(1,5\pi/4,\pi/6)$: $x=\cos\frac\pi6\cos\frac{5\pi}4=-\frac{\sqrt6}4$, $y=\cos\frac\pi6\operatorname{sen}\frac{5\pi}4=-\frac{\sqrt6}4$, $z=\operatorname{sen}\frac\pi6=\frac12$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 4.7, pp. 151-152; Ejemplo 4.8, p. 152">U pp.151-152</span>
+</div>
+
+<div class="box warn"><span class="h">Errores típicos</span>
+  <ul>
+    <li><b>Otra convención de $\varphi$.</b> Muchos libros miden el ángulo esférico desde el eje $z$ ($z=\rho\cos\varphi$, $\varphi\in[0,\pi]$). <b>En U</b>, $\varphi$ se mide desde el plano $xy$ y $z=\rho\operatorname{sen}\varphi$. En el examen manda U.</li>
+    <li><b>Dos $\rho$ distintas.</b> En cilíndricas $\rho=\sqrt{x^2+y^2}$; en esféricas $\rho=\sqrt{x^2+y^2+z^2}$.</li>
+    <li><b>El eje $z$.</b> U dice que valen en $\mathbb R^3\setminus\{(0,0,0)\}$, pero en los puntos $(0,0,z)$ del eje $z$ es $\rho=0$ en cilíndricas y $\theta$ no está determinado. La unicidad solo se tiene fuera de ese eje (no afecta a los ejercicios).</li>
+    <li>La calculadora en <b>grados</b>: aquí siempre radianes.</li>
+  </ul>
+  <span class="src" data-l="P" data-ref="Aviso propio sobre U pp. 149-150 (omisión del eje z); radianes: E p. 141">P</span>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="ejercicios"><span class="n">5</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.1-4.8, pp. 136-141">E pp.136-141</span></h2>
+<p>Orden recomendado para aprender: 4.1 → 4.2 → 4.3 → 4.4 → 4.6 → 4.7 → 4.8 → 4.5 (el 4.5, de conjuntos, es el más conceptual). El 4.9 y siguientes (E p. 142 en adelante) son de §4.2.</p>
+
+<details class="sol" id="ej-4-1"><summary>Ejercicio 4.1 · ¿se pueden multiplicar escalarmente tres vectores? ¿Y uno de $\mathbb R^2$ con uno de $\mathbb R^3$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.1, p. 136 · teoría: U Def. 4.1, p. 143">E p.136</span></summary>
+  <p class="enun">¿Se pueden multiplicar escalarmente tres vectores? ¿Y un vector de $\mathbb R^2$ con uno de $\mathbb R^3$?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>El producto escalar toma <b>dos vectores del mismo $\mathbb R^n$</b> y devuelve <b>un número</b>; cualquier otra cosa no encaja en la definición.</p></div>
+  <ol class="steps">
+    <li><b>Qué dice la definición</b> (Def. 4.1, U p.143): $\bar x\cdot\bar y=x_1y_1+\dots+x_ny_n$ con $\bar x,\bar y\in\mathbb R^n$: <b>dos</b> vectores con <b>el mismo número $n$</b> de componentes, porque se multiplican «la primera con la primera, la segunda con la segunda…».</li>
+    <li><b>Tres vectores.</b> Si intentamos $(\bar u\cdot\bar v)\cdot\bar w$, el primer paréntesis ya es un <b>número</b> $\lambda$. Queda $\lambda\bar w$, que no es un producto escalar sino un número por un vector (da un vector, ver 4.2). No existe un «producto escalar de tres vectores».</li>
+    <li><b>$\mathbb R^2$ con $\mathbb R^3$.</b> Por ejemplo $(1,2)$ y $(3,4,5)$: la tercera componente $5$ no tiene pareja. La definición no se aplica.</li>
+  </ol>
+  <p><b>Respuesta:</b> no en ambos casos.</p>
+  <div class="recipe"><b>Receta:</b> antes de operar, mira el <i>tipo</i> de cada objeto: vector·vector (mismo $n$) $\to$ número; número·vector $\to$ vector; nada más.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Rellenar con ceros el vector corto ($(1,2)\to(1,2,0)$) y «multiplicar»: eso identifica $\mathbb R^2$ con un plano de $\mathbb R^3$, que no es la Def. 4.1.</p></div>
+</details>
+
+<details class="sol" id="ej-4-2"><summary>Ejercicio 4.2 · el vector $(\bar u\cdot\bar v)\,\bar w$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.2, p. 136 · teoría: U p. 143 (operaciones y Def. 4.1)">E p.136</span></summary>
+  <p class="enun">El vector $(\bar u\cdot\bar v)\,\bar w$, con $\bar u,\bar v,\bar w\in\mathbb R^n$, verifica: a) es nulo o paralelo al vector $\bar w$; b) es nulo o paralelo a $\bar v$; c) es nulo o paralelo a $\bar u$; d) esa expresión no da lugar a un vector.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Lo del paréntesis es un número $\lambda$, y «número por $\bar w$» es $\bar w$ estirado, encogido o dado la vuelta: paralelo a $\bar w$, o el vector cero.</p></div>
+  <ol class="steps">
+    <li><b>Tipo del paréntesis.</b> $\bar u\cdot\bar v$ es un producto escalar: un número. Llámalo $\lambda$.</li>
+    <li><b>Tipo del total.</b> $\lambda\bar w=(\lambda w_1,\dots,\lambda w_n)$ es un producto por escalar: <b>es un vector</b>. Queda descartada la d).</li>
+    <li><b>Cuándo es nulo:</b> si $\lambda=0$ (es decir, $\bar u\perp\bar v$) o si $\bar w=\bar 0$.</li>
+    <li><b>Si no es nulo</b>, es un múltiplo no nulo de $\bar w$: eso es exactamente «paralelo a $\bar w$» (mismo sentido si $\lambda>0$, opuesto si $\lambda&lt;0$).</li>
+    <li><b>Por qué no b) ni c).</b> Contraejemplo: $\bar u=\bar v=(1,0)$ y $\bar w=(0,1)$ dan $1\cdot(0,1)=(0,1)$, que no es nulo ni paralelo a $(1,0)$.</li>
+  </ol>
+  <p><b>Respuesta: a).</b></p>
+  <div class="box warn"><span class="h">Matiz sobre E</span><p>La solución impresa dice «siempre es paralelo al vector $\bar w$» y luego corrige con el caso nulo. Lo exacto es «nulo o paralelo», como dice a).</p></div>
+  <div class="recipe"><b>Receta:</b> en una expresión con varios productos, ve de dentro afuera anotando qué sale en cada paso (número o vector). Un número por un vector es siempre «nulo o paralelo» a ese vector.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Elegir d) por leer «algo entre tres vectores», o decir «paralelo a $\bar w$» olvidando el caso $\bar u\cdot\bar v=0$.</p></div>
+</details>
+
+<details class="sol" id="ej-4-3"><summary>Ejercicio 4.3 · ¿son ortogonales $(0,1,2)$ y $(-3,-4,2)$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.3, p. 136 · teoría: U Def. 4.1 p. 143 y Def. 4.2 p. 147">E p.136</span></summary>
+  <p class="enun">¿Son ortogonales los vectores $(0,1,2)$ y $(-3,-4,2)$?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Ortogonal = producto escalar cero: multiplicar componente a componente y sumar.</p></div>
+  <ol class="steps">
+    <li><b>Criterio</b> (Def. 4.2): ortogonales $\iff\bar x\cdot\bar y=0$.</li>
+    <li><b>Cálculo</b> (Def. 4.1): $(0,1,2)\cdot(-3,-4,2)=0\cdot(-3)+1\cdot(-4)+2\cdot2=0-4+4=0$.</li>
+    <li><b>Conclusión:</b> sí, son ortogonales.</li>
+  </ol>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$(0,1,2)\cdot(-3,-4,2)=0\cdot(-3)+1\cdot(-4)+2\cdot2=0$. Como el producto escalar es $0$, los vectores son ortogonales.»</p></div>
+  <div class="recipe"><b>Receta:</b> para saber si dos vectores son ortogonales, calcula $\bar u\cdot\bar v$ y comprueba si es $0$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Multiplicar componentes y dar el vector $(0,-4,4)$: falta <b>sumar</b>.</p></div>
+  <p>Este mismo ejercicio cayó en examen (<a href="#x1">X1</a>, X p.1, feb. 2010), ver apartado 7.</p>
+</details>
+
+<details class="sol" id="ej-4-4"><summary>Ejercicio 4.4 · suma, normas y desigualdad triangular con $\bar u=(-1,1)$, $\bar v=(2,3)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.4, pp. 136-137 (desigualdad triangular en el margen de p. 137) · teoría: U p. 143">E pp.136-137</span></summary>
+  <p class="enun">Dados $\bar u=(-1,1)$ y $\bar v=(2,3)$: 1) calcular $\bar u+\bar v$, $\|\bar u\|$, $\|\bar v\|$ y $\|\bar u+\bar v\|$; ¿se cumple $\|\bar u\|+\|\bar v\|=\|\bar u+\bar v\|$? ¿contradice esto que cumpla la desigualdad triangular? 2) calcular $3\bar u$ y $\|3\bar u\|$; ¿se cumple $\|3\bar u\|=3\|\bar u\|$? 3) representar $\bar u$, $\bar v$, $\bar u+\bar v$ y $3\bar u$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>La longitud de la suma no es la suma de longitudes (un lado de un triángulo es más corto que los otros dos juntos), pero multiplicar por $3$ sí multiplica la longitud por $3$.</p></div>
+  <ol class="steps">
+    <li><b>Suma</b> (componente a componente): $\bar u+\bar v=(-1+2,\,1+3)=(1,4)$.</li>
+    <li><b>Normas</b> (raíz de la suma de cuadrados): $\|\bar u\|=\sqrt{(-1)^2+1^2}=\sqrt2\approx1{,}414$; $\|\bar v\|=\sqrt{4+9}=\sqrt{13}\approx3{,}606$; $\|\bar u+\bar v\|=\sqrt{1+16}=\sqrt{17}\approx4{,}123$.</li>
+    <li><b>Igualdad.</b> $\|\bar u\|+\|\bar v\|\approx5{,}020\ne4{,}123\approx\|\bar u+\bar v\|$. <b>No</b> se cumple. (Sin calculadora: si $\sqrt2+\sqrt{13}=\sqrt{17}$, al elevar al cuadrado saldría $15+2\sqrt{26}=17$, es decir $\sqrt{26}=1$, falso.)</li>
+    <li><b>Desigualdad triangular</b> (margen de E p. 137): $\|\bar u+\bar v\|\le\|\bar u\|+\|\bar v\|$ — «menor o igual», no «igual». Aquí $4{,}12\le5{,}02$: se cumple con desigualdad estricta. <b>No hay contradicción.</b> La igualdad solo ocurre si $\bar u$ y $\bar v$ apuntan en el mismo sentido (o uno de ellos es nulo); $(-1,1)$ y $(2,3)$ no.</li>
+    <li><b>Apartado 2.</b> $3\bar u=(-3,3)$ y $\|3\bar u\|=\sqrt{9+9}=\sqrt{18}=3\sqrt2=3\|\bar u\|$. <b>Sí</b> se cumple (en general $\|\lambda\bar u\|=|\lambda|\|\bar u\|$).</li>
+    <li><b>Apartado 3.</b> Flechas desde el origen hasta $(-1,1)$, $(2,3)$, $(1,4)$ y $(-3,3)$: $\bar u+\bar v$ es la diagonal del paralelogramo de lados $\bar u$ y $\bar v$ y $3\bar u$ está sobre la misma recta que $\bar u$, mismo sentido, triple de largo (figura en E p. 137).</li>
+  </ol>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_4.png" alt="Plano con los vectores u=(-1,1), v=(2,3), su suma (1,4) y 3u=(-3,3) partiendo del origen, con el paralelogramo punteado" loading="lazy">
+  <figcaption>Figura de E p. 137: $\bar u$, $\bar v$, $\bar u+\bar v$ y $3\bar u$. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.4, figura de la p. 137">E p.137</span></figcaption>
+  </figure>
+  <div class="recipe"><b>Receta:</b> norma $=\sqrt{\text{suma de cuadrados}}$. Recuerda $\|\bar u+\bar v\|\le\|\bar u\|+\|\bar v\|$ (en general $&lt;$) y $\|\lambda\bar u\|=|\lambda|\|\bar u\|$.</div>
+  <div class="box warn"><span class="h">Errores típicos</span><p>(i) Creer $\|\bar u+\bar v\|=\|\bar u\|+\|\bar v\|$. (ii) $\|-3\bar u\|=-3\|\bar u\|$: es $|-3|\|\bar u\|=3\sqrt2$. (iii) $\sqrt{(-1)^2+1^2}=\sqrt{-1+1}$: el cuadrado de $-1$ es $+1$.</p></div>
+</details>
+
+<details class="sol" id="ej-4-5"><summary>Ejercicio 4.5 · el disco $x^2+y^2\le4$: frontera, abierto o cerrado <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.5, pp. 138-139 · teoría: U pp. 145-146 (disco, interior, frontera, abierto/cerrado)">E pp.138-139</span></summary>
+  <p class="enun">Dado $C=\{(x,y)\in\mathbb R^2:x^2+y^2\le4\}$: 1) representarlo; 2) determinar y representar su frontera; 3) razonar si es abierto o cerrado.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>$C$ es el disco de radio $2$ <b>con</b> su borde; la frontera es la circunferencia del borde y, como $C$ la contiene, $C$ es cerrado.</p></div>
+  <ol class="steps">
+    <li><b>Apartado 1.</b> $x^2+y^2=d\big((0,0),(x,y)\big)^2$, así que $x^2+y^2\le4$ significa «distancia al origen $\le2$»: el <b>disco cerrado</b> de centro $(0,0)$ y radio $2$, relleno y con borde continuo.</li>
+    <li><b>Apartado 2</b> (los pasos 2-4 son la <i>justificación analítica</i>; E solo pide el argumento gráfico y deja la demostración «para el lector»). <b>Cada punto de la circunferencia $S=\{x^2+y^2=4\}$ es frontera.</b> <i>Ejemplo:</i> $P=(2,0)$ y un disco de radio $0{,}1$ centrado en él contiene a $P\in C$ ($4\le4$) y a $(2{,}05;0)$, que no es de $C$ ($4{,}2025>4$). <i>En general:</i> si $\|P\|=2$ y el disco tiene radio $r$, el punto $Q=(1+\tfrac r4)P$ está a distancia $\tfrac r4\cdot2=\tfrac r2&lt;r$ de $P$ y cumple $\|Q\|=2+\tfrac r2>2$, o sea $Q\notin C$. Así todo disco centrado en $P$ tiene puntos de $C$ ($P$) y de fuera ($Q$).</li>
+    <li><b>Un punto de dentro no es frontera.</b> <i>Ejemplo:</i> $P''=(1,0)$ y disco de radio $1$: si $Q$ dista menos de $1$ de $(1,0)$ entonces $\|Q\|&lt;1+1=2$, luego $Q\in C$. <i>En general:</i> sea $s=\|P''\|&lt;2$ y toma el disco de radio $\delta=2-s$. Si $Q$ está en él, $\|Q-P''\|&lt;2-s$ y, por la desigualdad triangular, $\|Q\|\le\|P''\|+\|Q-P''\|&lt;s+(2-s)=2$, luego $Q\in C$. Todo el disco está en $C$: es punto interior.</li>
+    <li><b>Un punto de fuera no es frontera.</b> <i>Ejemplo:</i> $P'=(3,0)$ y disco de radio $1$: si $\|Q-P'\|&lt;1$ entonces $\|Q\|\ge\|P'\|-\|P'-Q\|>3-1=2$, luego $Q\notin C$. <i>En general:</i> con $s=\|P'\|>2$ y $\delta=s-2$: si $\|Q-P'\|&lt;\delta$, entonces $\|Q\|\ge\|P'\|-\|P'-Q\|>s-(s-2)=2$, así que $Q\notin C$. El disco no tiene puntos de $C$.</li>
+    <li><b>Frontera</b> $=S=\{x^2+y^2=4\}$ (por ejemplo $(2,0)$ y $(\sqrt2,\sqrt2)$). Se dibuja solo la circunferencia.</li>
+    <li><b>Apartado 3.</b> $C$ es <b>cerrado</b> porque contiene a su frontera: todos los puntos de $S$ cumplen $x^2+y^2=4\le4$. No es abierto: $(2,0)\in C$ no es interior (todo disco centrado en él se sale de $C$).</li>
+  </ol>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_5a.png" alt="Disco azul relleno de radio 2 centrado en el origen" loading="lazy">
+  <figcaption>Apartado 1 (figura de E p. 138): el disco cerrado $x^2+y^2\le4$. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.5, figura de la p. 138">E p.138</span></figcaption>
+  </figure>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_5c.png" alt="Circunferencia de radio 2 con los puntos (raíz de 2, raíz de 2) y (2,0) marcados" loading="lazy">
+  <figcaption>Apartado 2 (figura de E p. 138): la frontera es la circunferencia; $(\sqrt2,\sqrt2)$ y $(2,0)$ están en ella. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.5, figura de la p. 138">E p.138</span></figcaption>
+  </figure>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_4_5b.png" alt="Disco gris de radio 2 centrado en el origen con un disco azul pequeño totalmente dentro (centro P doble prima) y otro disco azul pequeño totalmente fuera (centro P prima)" loading="lazy">
+  <figcaption>Figura de E p. 139: $P''$ dentro de $C$ (con un disco que cabe dentro) y $P'$ fuera de $C$ (con un disco que no corta a $C$): ninguno es frontera. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.5, figura de la p. 139">E p.139</span></figcaption>
+  </figure>
+  <div class="box warn"><span class="h">Errata en E (p. 139)</span><p>El texto dice «elegimos dos que no estén en la circunferencia: $P'\in C$ y $P''\notin C$… un círculo centrado en $P'$ cuya intersección con $C$ sea vacía… otro centrado en $P''$ incluido en $C$». Las pertenencias están <b>intercambiadas</b>: un disco centrado en un punto de $C$ siempre corta a $C$. Debe decir <b>$P'\notin C$ y $P''\in C$</b>, que es lo que muestra la figura.</p></div>
+  <div class="recipe"><b>Receta:</b> (1) traduce la desigualdad a «distancia al centro $\le$ / $&lt;$ radio»; (2) frontera = puntos con distancia <b>igual</b> al radio; (3) con $\le$ contiene el borde: cerrado; con $&lt;$: abierto.</div>
+  <div class="box warn"><span class="h">Errores típicos</span><p>(i) Pensar que abierto y cerrado son contrarios. (ii) Decir que la frontera es «el exterior». (iii) Dibujar el disco con borde discontinuo (eso indica que el borde <b>no</b> está incluido).</p></div>
+</details>
+
+<details class="sol" id="ej-4-6"><summary>Ejercicio 4.6 · polares de $(-1,1)$ y ángulo entre $\bar u$ y $\bar v$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.6, p. 140 · teoría: U §4.1.3 p. 148 y Def. 4.2 p. 147">E p.140</span></summary>
+  <p class="enun">Dados $\bar u=(-1,1)$ y $\bar v=(2,3)$: 1) expresar $\bar u$ en coordenadas polares; 2) determinar el ángulo que forman $\bar u$ y $\bar v$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Polares = (distancia al origen, ángulo con el eje $x$), eligiendo el ángulo por el cuadrante; el ángulo entre dos vectores sale del producto escalar.</p></div>
+  <ol class="steps">
+    <li><b>Radio:</b> $\rho=\sqrt{(-1)^2+1^2}=\sqrt2$.</li>
+    <li><b>Tangente:</b> $\operatorname{tg}\theta=1/(-1)=-1$.</li>
+    <li><b>Cuadrante:</b> $x=-1&lt;0$, $y=1>0$: segundo cuadrante.</li>
+    <li><b>Ángulo:</b> en $[0,2\pi)$ hay dos con tangente $-1$: $3\pi/4$ (II) y $7\pi/4$ (IV). Como estamos en el II, $\theta=3\pi/4$. (Con la tabla: $\theta_0=\pi/4$, $\theta=\pi-\pi/4$.)</li>
+    <li><b>Comprobación:</b> $\sqrt2\cos\frac{3\pi}4=\sqrt2\cdot(-\frac{\sqrt2}2)=-1$ y $\sqrt2\operatorname{sen}\frac{3\pi}4=1$. ✓ Resultado: $(\rho,\theta)=(\sqrt2,3\pi/4)$.</li>
+    <li><b>Apartado 2.</b> $\bar u\cdot\bar v=(-1)\cdot2+1\cdot3=1$; $\|\bar u\|=\sqrt2$, $\|\bar v\|=\sqrt{13}$.</li>
+    <li>$\cos\alpha=\dfrac1{\sqrt2\sqrt{13}}=\dfrac1{\sqrt{26}}\approx0{,}1961$, así que $\alpha=\arccos\frac1{\sqrt{26}}\approx1{,}3734$ rad $\approx78{,}69^\circ$. Aquí no hay que elegir cuadrante: $\arccos$ ya devuelve un valor en $[0,\pi]$ (U p.147). Como $\cos\alpha>0$, el ángulo es agudo.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> polares: $\rho=\sqrt{x^2+y^2}$, $\theta$ por la tangente <b>y</b> el cuadrante (comprobar sustituyendo). Ángulo entre vectores: $\alpha=\arccos\frac{\bar u\cdot\bar v}{\|\bar u\|\|\bar v\|}$.</div>
+  <div class="box warn"><span class="h">Errores típicos</span><p>(i) $\theta=\arctan(-1)=-\pi/4$: ni está en $[0,2\pi)$ ni en el cuadrante correcto. (ii) Calculadora en grados. (iii) Confundir el ángulo polar de $\bar u$ ($3\pi/4$, con el eje $x$) con el ángulo entre $\bar u$ y $\bar v$.</p></div>
+</details>
+
+<details class="sol" id="ej-4-7"><summary>Ejercicio 4.7 · cilíndricas de $(1,1,1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.7, p. 140 · teoría: U §4.1.3 p. 149">E p.140</span></summary>
+  <p class="enun">Si las coordenadas cartesianas de un punto son $(1,1,1)$, ¿cuáles son sus coordenadas cilíndricas?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Cilíndricas = polares de $(x,y)$ + la misma $z$.</p></div>
+  <ol class="steps">
+    <li>Fórmulas (U p.149): $\rho=\sqrt{x^2+y^2}$, $\operatorname{tg}\theta=y/x$ (con el cuadrante), $z=z$.</li>
+    <li>$\rho=\sqrt{1+1}=\sqrt2$.</li>
+    <li>$\operatorname{tg}\theta=1$ con $x>0$, $y>0$ (primer cuadrante): $\theta=\pi/4$.</li>
+    <li>$z=1$. Comprobación: $\sqrt2\cos\frac\pi4=1$, $\sqrt2\operatorname{sen}\frac\pi4=1$. ✓</li>
+  </ol>
+  <p><b>Resultado:</b> $(\rho,\theta,z)=(\sqrt2,\pi/4,1)$.</p>
+  <div class="recipe"><b>Receta:</b> de cartesianas a cilíndricas, trabaja solo con $(x,y)$ como en polares y copia $z$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Poner $\rho=\sqrt{x^2+y^2+z^2}=\sqrt3$: esa es la $\rho$ de las <b>esféricas</b>. En cilíndricas $\rho$ es la distancia al <b>eje $z$</b>.</p></div>
+</details>
+
+<details class="sol" id="ej-4-8"><summary>Ejercicio 4.8 · cambios entre cartesianas, cilíndricas y esféricas <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.8, p. 141 · teoría: U §4.1.3 pp. 149-151">E p.141</span></summary>
+  <p class="enun">1) Dado $(1,2,-1)$ en cartesianas, determinar sus coordenadas cilíndricas y esféricas. 2) Dado $(1,\pi,0)$ en cilíndricas, hallar sus cartesianas. 3) Dado $(1,\pi/2,0)$ en esféricas, hallar sus cartesianas.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Ir hacia cartesianas es solo sustituir en las fórmulas; salir de cartesianas exige elegir bien los ángulos ($\theta$ por el cuadrante, $\varphi$ por el signo de $z$).</p></div>
+  <ol class="steps">
+    <li><b>Cilíndricas de $(1,2,-1)$.</b> $\rho=\sqrt{1+4}=\sqrt5$; $\operatorname{tg}\theta=2$ con $x,y>0$ (primer cuadrante): $\theta=\arctan2\approx1{,}1071$; $z=-1$. Cilíndricas: $(\sqrt5,\arctan2,-1)\approx(2{,}2361;1{,}1071;-1)$.</li>
+    <li><b>Esféricas.</b> $\rho=\sqrt{1+4+1}=\sqrt6$ (ahora es la distancia al origen). $\theta$ es <b>el mismo</b> que en cilíndricas: $\arctan2\approx1{,}1071$.</li>
+    <li>$\operatorname{sen}\varphi=z/\rho=-1/\sqrt6$; como $\varphi\in[-\pi/2,\pi/2]$, $\varphi=\operatorname{arcsen}(-1/\sqrt6)\approx-0{,}4205$ rad (negativo: el punto está <b>por debajo</b> del plano $xy$). Esféricas: $(\sqrt6,\arctan2,\operatorname{arcsen}(-1/\sqrt6))\approx(2{,}4495;1{,}1071;-0{,}4205)$.</li>
+    <li><b>Comprobación:</b> $\cos\varphi=\sqrt{5/6}$, luego $\rho\cos\varphi=\sqrt5$, y $\sqrt5\cos\theta=1$, $\sqrt5\operatorname{sen}\theta=2$, $z=\sqrt6\cdot(-1/\sqrt6)=-1$. ✓</li>
+    <li><b>Apartado 2</b> (cilíndricas $(1,\pi,0)$): $x=1\cdot\cos\pi=-1$, $y=\operatorname{sen}\pi=0$, $z=0$. Cartesianas: $(-1,0,0)$.</li>
+    <li><b>Apartado 3</b> (esféricas $(1,\pi/2,0)$): $x=\cos0\cos\frac\pi2=0$, $y=\cos0\operatorname{sen}\frac\pi2=1$, $z=\operatorname{sen}0=0$. Cartesianas: $(0,1,0)$ ($\varphi=0$: en el plano $xy$; $\theta=\pi/2$: semieje $y$ positivo).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> cartesianas $\to$ cilíndricas/esféricas: $\theta$ con tangente + cuadrante; $\rho_{\text{cil}}=\sqrt{x^2+y^2}$, $\rho_{\text{esf}}=\sqrt{x^2+y^2+z^2}$; $\varphi=\operatorname{arcsen}(z/\rho)$. Al revés: sustituir.</div>
+  <div class="box warn"><span class="h">Errores típicos</span><p>(i) Usar la convención de otros libros ($z=\rho\cos\varphi$): en U, $z=\rho\operatorname{sen}\varphi$. (ii) Usar la misma $\rho$ en cilíndricas y esféricas.</p></div>
+</details>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="propios"><span class="n">6</span>Ejemplos propios (de fácil a difícil) <span class="src" data-l="P" data-ref="Ejemplos propios">P</span></h2>
+
+<details class="sol" id="p1"><summary>Propio 1 · producto escalar, norma, unitario, ángulo y desigualdad triangular en $\mathbb R^3$ <span class="src" data-l="P" data-ref="Ejemplo propio sobre U Def. 4.1 p. 143 y Def. 4.2 p. 147">P</span></summary>
+  <p class="enun">$\bar a=(1,2,2)$ y $\bar b=(2,-1,2)$. Calcula $\bar a\cdot\bar b$, las normas, un vector unitario en la dirección de $\bar a$, el ángulo y comprueba la desigualdad triangular.</p>
+  <ol class="steps">
+    <li>$\bar a\cdot\bar b=2-2+4=4$.</li>
+    <li>$\|\bar a\|=\sqrt{1+4+4}=3$ y $\|\bar b\|=\sqrt{4+1+4}=3$.</li>
+    <li><b>Unitario:</b> $\bar a/\|\bar a\|=(\tfrac13,\tfrac23,\tfrac23)$; su norma es $\sqrt{\tfrac19+\tfrac49+\tfrac49}=1$. ✓</li>
+    <li>$\cos\alpha=\tfrac4{9}$, $\alpha=\arccos\tfrac49\approx1{,}1102$ rad $\approx63{,}61^\circ$ (agudo, porque $\bar a\cdot\bar b>0$).</li>
+    <li>$\bar a+\bar b=(3,1,4)$, $\|\bar a+\bar b\|=\sqrt{26}\approx5{,}10\le6=\|\bar a\|+\|\bar b\|$. ✓</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> unitario = vector dividido por su norma. Signo de $\bar a\cdot\bar b$: $>0$ agudo, $=0$ recto, $&lt;0$ obtuso.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dividir por la suma de componentes ($1+2+2=5$) en vez de por la norma.</p></div>
+</details>
+
+<details class="sol" id="p2"><summary>Propio 2 · una corona: ni abierta ni cerrada <span class="src" data-l="P" data-ref="Ejemplo propio sobre U pp. 145-146">P</span></summary>
+  <p class="enun">$A=\{(x,y)\in\mathbb R^2:1&lt;x^2+y^2\le4\}$. Descríbelo, halla su frontera y decide si es abierto, cerrado y acotado.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Es el anillo entre la circunferencia de radio $1$ (excluida) y la de radio $2$ (incluida): un borde no le pertenece y el otro sí.</p></div>
+  <ol class="steps">
+    <li>La condición es $1&lt;\|(x,y)\|\le2$: corona circular, borde interior discontinuo y exterior continuo.</li>
+    <li><b>Frontera:</b> las dos circunferencias $x^2+y^2=1$ y $x^2+y^2=4$ (mismo razonamiento que en E 4.5). Un punto con $1&lt;\|P\|&lt;2$ es interior: el disco de radio $\min(\|P\|-1,2-\|P\|)$ queda dentro. <i>Ejemplo:</i> $P=(1{,}5;0)$ con radio $0{,}5$.</li>
+    <li><b>Abierto: no.</b> $(2,0)\in A$ es frontera, no interior.</li>
+    <li><b>Cerrado: no.</b> $(1,0)$ es frontera y no está en $A$ (no cumple $1&lt;1$).</li>
+    <li><b>Acotado: sí</b>, cabe en el disco de centro $(0,0)$ y radio $3$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> cada desigualdad aporta un trozo de frontera; «$&lt;$» lo deja fuera, «$\le$» lo mete. Si hay de las dos clases, no es ni abierto ni cerrado.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Concluir «no es abierto, luego es cerrado».</p></div>
+</details>
+
+<details class="sol" id="p3"><summary>Propio 3 · reconocer una bola en $\mathbb R^3$ completando cuadrados <span class="src" data-l="P" data-ref="Ejemplo propio sobre U pp. 145-147">P</span></summary>
+  <p class="enun">$B=\{(x,y,z):x^2+y^2+z^2-2z&lt;3\}$. Demuestra que es una bola abierta (centro y radio) y clasifica $(0,0,0)$, $(1,1,1)$, $(0,0,3)$, $(2,0,1)$ y $(0,0,5)$ en interiores, frontera o exteriores.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Completar el cuadrado en $z$ para que aparezca «distancia al centro».</p></div>
+  <ol class="steps">
+    <li>$z^2-2z=(z-1)^2-1$, luego la condición es $x^2+y^2+(z-1)^2&lt;4$, es decir $d\big((x,y,z),(0,0,1)\big)&lt;2$: <b>bola abierta</b> de centro $(0,0,1)$ y radio $2$. Es abierta y acotada.</li>
+    <li>Frontera: la esfera $x^2+y^2+(z-1)^2=4$.</li>
+    <li>Con $g=x^2+y^2+z^2-2z$ (interior si $g&lt;3$, frontera si $g=3$, exterior si $g>3$): $(0,0,0)$: $g=0$, interior. $(1,1,1)$: $g=1$, interior. $(0,0,3)$: $g=3$, frontera (y no pertenece a $B$). $(2,0,1)$: $g=3$, frontera. $(0,0,5)$: $g=15$, exterior.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> completa cuadrados: $z^2-2kz=(z-k)^2-k^2$. Luego lee centro y radio de $\|\bar x-\bar c\|&lt;r$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar el $-1$ al completar el cuadrado y obtener radio $\sqrt3$.</p></div>
+</details>
+
+<details class="sol" id="p4"><summary>Propio 4 · conversiones con el cuadrante «trampa» <span class="src" data-l="P" data-ref="Ejemplo propio sobre U §4.1.3 pp. 148-151">P</span></summary>
+  <p class="enun">a) Pasa a polares $(-1,-\sqrt3)$ y $(0,-3)$. b) Pasa $(-\sqrt3,-1,2)$ a cilíndricas y esféricas y comprueba volviendo a cartesianas. c) Escribe en cilíndricas el cilindro $x^2+y^2=9$ y en esféricas la esfera $x^2+y^2+z^2=4$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>La calculadora no sabe en qué cuadrante estás: hay que decírselo con los signos de $x$ e $y$.</p></div>
+  <ol class="steps">
+    <li><b>a)</b> $(-1,-\sqrt3)$: $\rho=2$, $\operatorname{tg}\theta=\sqrt3$. La calculadora da $\pi/3$, pero $x&lt;0,y&lt;0$ es el tercer cuadrante: $\theta=\pi+\pi/3=4\pi/3$. Comprobación: $2\cos\frac{4\pi}3=-1$, $2\operatorname{sen}\frac{4\pi}3=-\sqrt3$. ✓ Polares $(2,4\pi/3)$.</li>
+    <li>$(0,-3)$: $x=0$, no se puede dividir; por la regla de U (p. 148), $y&lt;0$ da $\theta=3\pi/2$, $\rho=3$. Polares $(3,3\pi/2)$.</li>
+    <li><b>b) Cilíndricas:</b> $\rho=\sqrt{3+1}=2$, $\operatorname{tg}\theta=\frac1{\sqrt3}$ con $\theta_0=\pi/6$; tercer cuadrante: $\theta=7\pi/6$; $z=2$. Cilíndricas $(2,7\pi/6,2)$.</li>
+    <li><b>Esféricas:</b> $\rho=\sqrt{3+1+4}=2\sqrt2$, $\theta=7\pi/6$, $\operatorname{sen}\varphi=\frac2{2\sqrt2}=\frac{\sqrt2}2$, luego $\varphi=\pi/4$. Esféricas $(2\sqrt2,7\pi/6,\pi/4)$.</li>
+    <li><b>Vuelta:</b> $x=2\sqrt2\cdot\frac{\sqrt2}2\cdot(-\frac{\sqrt3}2)=-\sqrt3$; $y=2\operatorname{sen}\frac{7\pi}6=-1$; $z=2\sqrt2\cdot\frac{\sqrt2}2=2$. ✓</li>
+    <li><b>c)</b> $x^2+y^2=\rho^2\cos^2\theta+\rho^2\operatorname{sen}^2\theta=\rho^2$: el cilindro es $\rho=3$ ($\theta$ y $z$ libres). Y $x^2+y^2+z^2=\rho^2\cos^2\varphi+\rho^2\operatorname{sen}^2\varphi=\rho^2$: la esfera es $\rho=2$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\theta$: tangente, ángulo de referencia $\theta_0$, ajustar por cuadrante y comprobar sustituyendo. Superficies: sustituir y simplificar con $\cos^2+\operatorname{sen}^2=1$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dar $\theta=\pi/3$ para $(-1,-\sqrt3)$: ese ángulo corresponde a $(1,\sqrt3)$, el punto opuesto.</p></div>
+</details>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="examen"><span class="n">7</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<p>Las preguntas de $\mathbb R^n$ son siempre cortas (1 punto) y de cuatro tipos: <b>producto escalar y normas</b>, <b>distancia</b>, <b>ángulo u ortogonalidad</b> y <b>teoría de polares</b>. En X no hay preguntas sueltas de abiertos, cerrados y frontera: ese tipo se practica con E 4.5 y reaparece como paso intermedio en extremos absolutos de temas posteriores (justificar que un conjunto es cerrado y acotado, p. ej. X p.25 y X p.97). Las demás preguntas con polares (X pp.47, 57, 65, 143) pertenecen a §4.2-4.4 y se verán más adelante.</p>
+
+<details class="sol" id="x1"><summary>X1 · ortogonalidad de $(0,1,2)$ y $(-3,-4,2)$ <span class="src" data-l="X" data-ref="X p.1 (Febrero 2010, 1.ª semana, Ing. Eléctrica, pregunta corta 4, 1 punto)">X p.1 (feb. 2010)</span></summary>
+  <p class="enun">¿Son ortogonales los vectores $(0,1,2)$ y $(-3,-4,2)$? Justifíquese la respuesta.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Ortogonal significa producto escalar cero: se multiplica componente a componente y se suma.</p></div>
+  <p>Es <b>idéntico al Ejercicio 4.3</b> de E: $(0,1,2)\cdot(-3,-4,2)=0-4+4=0$, luego son ortogonales (Def. 4.2). La solución de X es correcta.</p>
+  <div class="recipe"><b>Receta:</b> ortogonalidad = producto escalar nulo; «justificar» es nombrar el criterio.</div>
+</details>
+
+<details class="sol" id="x2"><summary>X2 · teoría de las coordenadas polares (referencia a otra edición de U) <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2.ª semana, Mecánica Modelo B, pregunta corta 4, 1 punto)">X p.13 (feb. 2011)</span></summary>
+  <p class="enun">Describa brevemente las coordenadas polares en $\mathbb R^2$. Indique también cómo se cambia de coordenadas polares a cartesianas y viceversa.</p>
+  <div class="box warn"><span class="h">Referencia a otra edición de U</span><p>La solución impresa solo dice «Vea la página 194 del libro Cálculo para Ingenieros». En la edición actual de U (2023) la p. 194 es de §5.2 (regla de la cadena); las polares están en <b>U §4.1.3, pp. 148-149</b>. Aquí se da la respuesta completa.</p></div>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>En vez de «cuánto a la derecha y cuánto arriba» $(x,y)$, se dice «a qué distancia del origen y en qué dirección» $(\rho,\theta)$.</p></div>
+  <div class="box tip"><span class="h">Respuesta modelo (lo que hay que escribir)</span>
+    <ol class="steps">
+      <li><b>Descripción.</b> Todo punto $(x,y)\ne(0,0)$ queda determinado de forma única por un radio $\rho>0$ y un ángulo $\theta\in[0,2\pi)$: $\rho=\|(x,y)\|$ es la distancia al origen y $\theta$ el ángulo que forma el vector $(x,y)$ con el semieje $x$ positivo, medido en sentido antihorario.</li>
+      <li><b>Polares a cartesianas:</b> $x=\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$.</li>
+      <li><b>Cartesianas a polares:</b> $\rho=\sqrt{x^2+y^2}$; $\operatorname{tg}\theta=y/x$ si $x\ne0$, eligiendo de los dos ángulos de $[0,2\pi)$ con esa tangente el del cuadrante que indican los signos de $x$ e $y$; si $x=0$, $\theta=\pi/2$ ($y>0$) o $3\pi/2$ ($y&lt;0$).</li>
+      <li><b>Ejemplo:</b> $(2,2\sqrt3)\mapsto\rho=4$, $\theta=\pi/3$; $(\rho,\theta)=(2,7\pi/4)\mapsto(\sqrt2,-\sqrt2)$.</li>
+    </ol>
+  </div>
+  <div class="recipe"><b>Receta:</b> pregunta de teoría = definición (qué son $\rho$ y $\theta$ y sus rangos) + las dos fórmulas + el aviso del cuadrante + un ejemplo.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dar $\theta=\arctan(y/x)$ sin más (falla en los cuadrantes II, III y IV y para $x=0$), u olvidar que el origen no tiene ángulo definido.</p></div>
+</details>
+
+<details class="sol" id="x3"><summary>X3 · producto escalar y normas en $\mathbb R^4$ <span class="src" data-l="X" data-ref="X pp.22-23 (Febrero 2012, 2.ª semana, Mecánica Modelo B, pregunta corta 4, 1 punto)">X pp.22-23 (feb. 2012)</span></summary>
+  <p class="enun">Calcule el producto escalar de $(1,2,3,4)$ y $(-1,-2,-3,-4)$ y la norma de estos dos vectores.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Las fórmulas de $\mathbb R^2$ y $\mathbb R^3$ valen igual en $\mathbb R^4$: multiplicar y sumar; raíz de la suma de cuadrados.</p></div>
+  <ol class="steps">
+    <li>Producto escalar: $1\cdot(-1)+2\cdot(-2)+3\cdot(-3)+4\cdot(-4)=-1-4-9-16=-30$.</li>
+    <li>$\|(1,2,3,4)\|=\sqrt{1+4+9+16}=\sqrt{30}$.</li>
+    <li>$\|(-1,-2,-3,-4)\|=\sqrt{30}$ (es el primero por $-1$ y $\|-\bar x\|=|-1|\|\bar x\|$).</li>
+    <li><i>Comentario:</i> $\bar x\cdot\bar y=-30=-\|\bar x\|\|\bar y\|$, luego $\cos\alpha=-1$, $\alpha=\pi$: vectores opuestos.</li>
+  </ol>
+  <p>X da los mismos resultados (correctos).</p>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$\bar x\cdot\bar y=-1-4-9-16=-30$; $\|\bar x\|=\sqrt{1+4+9+16}=\sqrt{30}$; $\|\bar y\|=\sqrt{30}$.»</p></div>
+  <div class="recipe"><b>Receta:</b> en $\mathbb R^n$, mismas fórmulas con más sumandos. Un producto escalar <b>puede ser negativo</b>; una norma <b>no</b>.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Escribir $\|(-1,-2,-3,-4)\|=-\sqrt{30}$.</p></div>
+</details>
+
+<details class="sol" id="x4"><summary>X4 · distancia entre $(1,-1,0)$ y $(1,3,5)$ <span class="src" data-l="X" data-ref="X p.53 (Septiembre 2015, Modelo A, pregunta corta 4, 1 punto)">X p.53 (sept. 2015)</span></summary>
+  <p class="enun">Calcular la distancia euclídea entre los puntos $(1,-1,0)$ y $(1,3,5)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>La distancia entre dos puntos es la longitud (norma) del vector que va de uno al otro: se restan y se hace la raíz de la suma de cuadrados.</p></div>
+  <ol class="steps">
+    <li>Fórmula (U p.143): $d(\bar x,\bar y)=\|\bar y-\bar x\|$.</li>
+    <li>Diferencia: $(1,3,5)-(1,-1,0)=(0,4,5)$ (X resta al revés y obtiene $(0,-4,-5)$; da igual porque $\|-\bar w\|=\|\bar w\|$).</li>
+    <li>Norma: $\sqrt{0+16+25}=\sqrt{41}\approx6{,}403$.</li>
+  </ol>
+  <p>X: correcto.</p>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$d=\|(1,3,5)-(1,-1,0)\|=\|(0,4,5)\|=\sqrt{0+16+25}=\sqrt{41}$.»</p></div>
+  <div class="recipe"><b>Receta:</b> distancia = norma de la resta (en cualquier orden).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Restar mal un negativo: $3-(-1)=4$, no $2$.</p></div>
+</details>
+
+<details class="sol" id="x5"><summary>X5 · distancia entre $(4,2,0)$ y $(1,-1,3)$ <span class="src" data-l="X" data-ref="X p.70 (Septiembre 2016, Modelo A, pregunta corta 4, 1 punto)">X p.70 (sept. 2016)</span></summary>
+  <p class="enun">Calcule la distancia entre los elementos $(4,2,0)$ y $(1,-1,3)\in\mathbb R^3$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Es la misma cuenta que X4: restar, elevar al cuadrado, sumar y raíz.</p></div>
+  <ol class="steps">
+    <li>Diferencia: $(4,2,0)-(1,-1,3)=(3,3,-3)$.</li>
+    <li>$d=\sqrt{9+9+9}=\sqrt{27}=3\sqrt3\approx5{,}196$.</li>
+  </ol>
+  <p>X da $\sqrt{27}$ (correcto; conviene simplificar a $3\sqrt3$).</p>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$d=\|(4,2,0)-(1,-1,3)\|=\|(3,3,-3)\|=\sqrt{27}=3\sqrt3$.»</p></div>
+  <div class="recipe"><b>Receta y error típico:</b> como X4; además $\sqrt{27}=\sqrt{9\cdot3}=3\sqrt3$.</div>
+</details>
+
+<details class="sol" id="x6"><summary>X6 · distancia y ángulo (con errata en la solución impresa) <span class="src" data-l="X" data-ref="X p.89 (Febrero 2018, Modelo A, pregunta corta 4, 1 punto)">X p.89 (feb. 2018)</span></summary>
+  <p class="enun">Calcule la distancia entre los puntos $(1,0,-1)$ y $(2,0,-1)$ con la métrica euclídea. Determine el ángulo que forman los vectores $(0,1,2)$ y $(1,-1,1)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Dos cuentas independientes: norma de una resta y $\arccos$ del producto escalar dividido entre el producto de normas.</p></div>
+  <ol class="steps">
+    <li><b>Distancia:</b> $(1,0,-1)-(2,0,-1)=(-1,0,0)$, $d=1$ (solo difieren en una unidad en $x$).</li>
+    <li><b>Producto escalar:</b> $(0,1,2)\cdot(1,-1,1)=0-1+2=1$.</li>
+    <li><b>Normas:</b> $\sqrt5$ y $\sqrt3$.</li>
+    <li><b>Coseno</b> (Def. 4.2): $\cos\alpha=\dfrac1{\sqrt5\sqrt3}=\dfrac1{\sqrt{15}}\approx0{,}2582$.</li>
+    <li><b>Ángulo:</b> $\alpha=\arccos\frac1{\sqrt{15}}\approx\mathbf{1{,}3096}$ rad $\approx75{,}04^\circ$.</li>
+  </ol>
+  <div class="box warn"><span class="h">Errata de X</span><p>La solución impresa termina con «$\alpha=1.209$ radianes». Es <b>incorrecto</b>: $\cos(1{,}209)\approx0{,}354\ne0{,}258\approx1/\sqrt{15}$. El valor correcto es $\arccos(1/\sqrt{15})\approx1{,}3096$ rad. Lo anterior de la solución de X, incluido $\cos\alpha=1/\sqrt{15}$, es correcto. (El enunciado impreso ha perdido además el símbolo del ángulo.)</p></div>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$d=\|(1,0,-1)-(2,0,-1)\|=1$. $\cos\alpha=\dfrac{(0,1,2)\cdot(1,-1,1)}{\sqrt5\sqrt3}=\dfrac1{\sqrt{15}}$, luego $\alpha=\arccos\frac1{\sqrt{15}}\approx1{,}3096$ rad.»</p></div>
+  <div class="recipe"><b>Receta:</b> $\cos\alpha=\frac{\bar u\cdot\bar v}{\|\bar u\|\|\bar v\|}$ y $\alpha=\arccos(\dots)\in[0,\pi]$, en radianes; <b>comprueba</b> calculando el coseno del resultado.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Teclear mal la calculadora (o usarla en grados) y no comprobar. Dejarlo en «$\alpha=\arccos(1/\sqrt{15})$» es una respuesta exacta válida.</p></div>
+</details>
+
+<details class="sol" id="x7"><summary>X7 · producto escalar y normas en $\mathbb R^4$ (sin solución en X) <span class="src" data-l="X" data-ref="X p.139 (Septiembre 2018, Modelo B, Mecánica, pregunta corta 4, 1 punto); sin solución en el PDF, cálculo propio">X p.139 (sept. 2018)</span></summary>
+  <p class="enun">Calcule el producto escalar de $(1,2,0,1)$ y $(-1,-2,3,0)$ y la norma de estos dos vectores.</p>
+  <p><i>X no trae solución; esta es propia (verificada con sympy).</i></p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Es el mismo tipo de pregunta que X3, con un cero escondido en cada vector: multiplicar y sumar, y raíz de la suma de cuadrados.</p></div>
+  <ol class="steps">
+    <li>Producto escalar: $1\cdot(-1)+2\cdot(-2)+0\cdot3+1\cdot0=-1-4+0+0=-5$.</li>
+    <li>$\|(1,2,0,1)\|=\sqrt{1+4+0+1}=\sqrt6\approx2{,}449$.</li>
+    <li>$\|(-1,-2,3,0)\|=\sqrt{1+4+9+0}=\sqrt{14}\approx3{,}742$.</li>
+    <li><i>Extra:</i> $\cos\alpha=-5/\sqrt{84}\approx-0{,}546$, $\alpha\approx2{,}148$ rad: obtuso, coherente con el signo negativo.</li>
+  </ol>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$\bar x\cdot\bar y=-1-4+0+0=-5$; $\|\bar x\|=\sqrt6$; $\|\bar y\|=\sqrt{14}$.»</p></div>
+  <div class="recipe"><b>Receta:</b> como X3. <b>Error típico:</b> saltarse los sumandos con un $0$ y desordenar las parejas de componentes.</div>
+</details>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="chuleta"><span class="n">8</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+
+<h3>Errores frecuentes</h3>
+<ul>
+  <li>Multiplicar componentes y no sumar (producto escalar como vector), o confundir número·vector con vector·vector.</li>
+  <li>$\|\bar u+\bar v\|=\|\bar u\|+\|\bar v\|$, o $\|\lambda\bar u\|=\lambda\|\bar u\|$ con $\lambda&lt;0$.</li>
+  <li>Usar $\theta=\arctan(y/x)$ sin mirar el cuadrante, o con $x=0$.</li>
+  <li>Dos $\rho$ distintas: al eje $z$ (cilíndricas) y al origen (esféricas).</li>
+  <li>Medir $\varphi$ desde el eje $z$ (otros libros) en vez de desde el plano $xy$ (U).</li>
+  <li>Calculadora en grados.</li>
+  <li>Decir «no abierto, luego cerrado»; o llamar frontera al exterior; o ignorar si el borde pertenece al conjunto ($&lt;$ frente a $\le$).</li>
+</ul>
+
+<h3>Erratas y avisos de este tema</h3>
+<ol>
+  <li><b>U §4.1</b> ocupa las pp. 142-152 (el Ej. 4.8 está en la p. 152; §4.2 empieza al pie de esa página).</li>
+  <li><b>U p. 143</b> no enuncia la desigualdad triangular, la homogeneidad de la norma ni Cauchy-Schwarz («conocidas del Álgebra»). La triangular aparece en el margen de E p. 137; aquí van marcadas como propias.</li>
+  <li><b>U pp. 149-150:</b> las cilíndricas y esféricas «valen en $\mathbb R^3\setminus\{(0,0,0)\}$», pero en el eje $z$ el ángulo $\theta$ no está determinado.</li>
+  <li><b>E 4.2 (p. 136):</b> «siempre es paralelo a $\bar w$» es impreciso; lo correcto es «nulo o paralelo».</li>
+  <li><b>E 4.5 (p. 139):</b> $P'\in C$ y $P''\notin C$ están intercambiados; debe ser $P'\notin C$, $P''\in C$.</li>
+  <li><b>X p.13 (feb. 2011):</b> remite a «la página 194» de U; las polares están en U pp. 148-149.</li>
+  <li><b>X p.89 (feb. 2018):</b> $\alpha=1.209$ rad es incorrecto; $\alpha=\arccos(1/\sqrt{15})\approx1{,}3096$ rad.</li>
+  <li><b>X p.139 (sept. 2018):</b> sin solución en el PDF (aquí: $-5$, $\sqrt6$, $\sqrt{14}$).</li>
+  <li>E trae «φ» y U «ϕ» para el ángulo esférico: es el mismo.</li>
+  <li><b>Larson</b> (tomo 1) no cubre esta materia y el Stewart de una variable solo trata las polares (§10.3); vectores y cilíndricas/esféricas están en su tomo de varias variables.</li>
+</ol>
+
+<h3>Chuleta</h3>
+<table>
+  <caption>Chuleta de fórmulas del tema</caption>
+  <tr><th scope="col">Concepto</th><th scope="col">Enunciado</th><th scope="col">Fuente</th></tr>
+  <tr><td>$\mathbb R^n$</td><td>$n$-uplas; suma y producto por escalar componente a componente; base canónica $\bar e_i$</td><td>U pp.142-143</td></tr>
+  <tr><td>Producto escalar</td><td>$\bar x\cdot\bar y=\sum x_iy_i$ (un <b>número</b>)</td><td>U p.143</td></tr>
+  <tr><td>Norma, unitario</td><td>$\|\bar x\|=\sqrt{\bar x\cdot\bar x}=\sqrt{\sum x_i^2}$; unitario: $\|\bar x\|=1$; $\bar x/\|\bar x\|$ es unitario</td><td>U p.143</td></tr>
+  <tr><td>Distancia</td><td>$d(\bar x,\bar y)=\|\bar y-\bar x\|$</td><td>U p.143</td></tr>
+  <tr><td>Ángulo, ortogonalidad</td><td>$\cos\alpha=\frac{\bar x\cdot\bar y}{\|\bar x\|\|\bar y\|}$, $\alpha\in[0,\pi]$; ortogonales $\iff\bar x\cdot\bar y=0$</td><td>U p.147</td></tr>
+  <tr><td>Propiedades de la norma</td><td>$\|\lambda\bar u\|=|\lambda|\|\bar u\|$; $\|\bar u+\bar v\|\le\|\bar u\|+\|\bar v\|$; $|\bar u\cdot\bar v|\le\|\bar u\|\|\bar v\|$</td><td>propia (E p.137)</td></tr>
+  <tr><td>Disco/bola</td><td>abierto: $d&lt;r$; cerrado: $d\le r$</td><td>U pp.145-146</td></tr>
+  <tr><td>Interior, frontera</td><td>interior: <b>existe</b> un disco dentro; frontera: <b>todo</b> disco tiene puntos de $C$ y de fuera</td><td>U pp.145-146</td></tr>
+  <tr><td>Abierto, cerrado, acotado</td><td>todos los puntos interiores; contiene su frontera; cabe en un disco</td><td>U p.146</td></tr>
+  <tr><td>Polares</td><td>$x=\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$; $\rho=\sqrt{x^2+y^2}$, $\operatorname{tg}\theta=y/x$ (cuadrante); $\theta\in[0,2\pi)$</td><td>U p.148</td></tr>
+  <tr><td>Cilíndricas</td><td>polares + $z$; $\rho$ = distancia al eje $z$</td><td>U p.149</td></tr>
+  <tr><td>Esféricas</td><td>$x=\rho\cos\varphi\cos\theta$, $y=\rho\cos\varphi\operatorname{sen}\theta$, $z=\rho\operatorname{sen}\varphi$; $\rho=\sqrt{x^2+y^2+z^2}$, $\operatorname{sen}\varphi=z/\rho$; $\varphi\in[-\pi/2,\pi/2]$</td><td>U pp.150-151</td></tr>
+</table>
+
+<h3>Lista de comprobación</h3>
+<ul class="checklist">
+  <li>Sé calcular un producto escalar, una norma y una distancia en $\mathbb R^2$, $\mathbb R^3$ y $\mathbb R^4$ sin fallar signos.</li>
+  <li>Sé decidir si dos vectores son ortogonales y calcular el ángulo entre dos vectores (en radianes).</li>
+  <li>Sé qué operaciones tienen sentido (vector·vector $\to$ número; número·vector $\to$ vector) y por qué no hay producto escalar de tres vectores ni entre $\mathbb R^2$ y $\mathbb R^3$.</li>
+  <li>Sé usar $\|\lambda\bar u\|=|\lambda|\|\bar u\|$ y la desigualdad triangular, y sé que la igualdad en la triangular es excepcional.</li>
+  <li>Sé leer una desigualdad $(x-a)^2+(y-b)^2\ \square\ r^2$ como un disco, hallar su frontera y decir si es abierto, cerrado o ninguno de los dos.</li>
+  <li>Sé pasar de cartesianas a polares eligiendo $\theta$ por el cuadrante, y comprobar sustituyendo.</li>
+  <li>Sé convertir entre cartesianas, cilíndricas y esféricas en los dos sentidos, con la convención de U ($\varphi$ desde el plano $xy$).</li>
+  <li>Sé responder la pregunta de teoría de polares (X 2011) con definición, fórmulas, aviso del cuadrante y ejemplo.</li>
+</ul>
+
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<details class="fuentes-toggle">
+<summary>Mostrar lista de fuentes</summary>
+<div id="panel-fuentes"></div>
+</details>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro (en X, la página del PDF).</footer>
+</main>
+</div>
+</body>
+</html>
