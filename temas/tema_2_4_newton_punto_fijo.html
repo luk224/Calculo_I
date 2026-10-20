@@ -260,7 +260,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
 </div>
 
 <div class="box warn"><span class="h">Error típico: comprobar solo $|g'|&lt;1$</span>
-  <p>Hacen falta <b>todas</b> las hipótesis. Si $g$ no lleva $[a,b]$ en sí mismo, una iteración puede <i>salir</i> del intervalo y ya no vale la cota de $g'$ para el paso siguiente. Además, $k$ debe ser un número que de verdad acote a $|g'|$ en <i>todo</i> $(a,b)$: se toma el <b>máximo</b> (o un número mayor), nunca el mínimo. E tiene una errata precisamente en esto (Ejercicio 2.38).</p>
+  <p>Hacen falta <b>todas</b> las hipótesis. Si $g$ no lleva $[a,b]$ en sí mismo, una iteración puede <i>salir</i> del intervalo y ya no vale la cota de $g'$ para el paso siguiente. Además, $k$ debe ser un número que de verdad acote a $|g'|$ en <i>todo</i> $(a,b)$: se toma el <b>máximo</b> (o un número mayor), nunca el mínimo.</p>
   <p><b>Y (H0) no sobra.</b> Sea $g(0)=1$ y $g(x)=x/2$ para $x\in(0,1]$. Lleva $[0,1]$ en $[0,1]$ y $|g'(x)|=\frac12$ en $(0,1)$, pero <b>no tiene ningún punto fijo</b> ($g(0)=1\neq0$ y $x/2=x$ solo si $x=0$): (H1) y (H2) se cumplen y falla la continuidad en $0$. Casi siempre $g$ es una función elemental continua en su dominio y (H0) se comprueba diciéndolo.</p>
 </div>
 
@@ -492,7 +492,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>(H1).</b> $g'(x)=-e^{-x}&lt;0$: $g$ es estrictamente decreciente, e invierte las desigualdades. Para $0.1\le x\le2$:
       $$g(2)\le g(x)\le g(0.1)\iff 0.1353\approx e^{-2}\le e^{-x}\le e^{-0.1}\approx0.9048.$$
       Como $0.1&lt;0.1353$ y $0.9048&lt;2$, se cumple $g(x)\in[0.1,2]$. <i>Por qué importa:</i> si una iteración saliera de $[a,b]$, ya no podríamos usar la cota de $g'$ en el paso siguiente.</li>
-    <li><b>(H2).</b> $|g'(x)|=e^{-x}$ es decreciente, así que su mayor valor en $(0.1,2)$ está cerca de $x=0.1$: $|g'(x)|&lt;e^{-0.1}\approx0.9048&lt;1$. Tomamos $k=e^{-0.1}\approx0.905$. <b>(E escribe «$k=0.091$», que es una errata:</b> sirve cualquier $k\in[e^{-0.1},1)$ (con $k=0.905$ vale), pero $0.091$ no acota a $|g'|$.)</li>
+    <li><b>(H2).</b> $|g'(x)|=e^{-x}$ es decreciente, así que su mayor valor en $(0.1,2)$ está cerca de $x=0.1$: $|g'(x)|&lt;e^{-0.1}\approx0.9048&lt;1$. Tomamos $k=e^{-0.1}\approx0.905$.</li>
     <li><b>Conclusión.</b> Por el Teorema 2.2, $g$ tiene un <b>único</b> punto fijo en $[0.1,2]$ y $x_{n+1}=e^{-x_n}$ converge a él para <b>cualquier</b> $x_0\in[0.1,2]$.</li>
   </ol>
   <p><b>Apartado 2.</b> Iteraciones con $x_0=1$ (y cuatro más para ver la tendencia; $\tilde x=0.567143\ldots$):</p>
@@ -514,7 +514,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>¿Qué garantiza la teoría con 4 pasos?</b> Teorema 2.3: $\frac{k^4}{1-k}(b-a)=\frac{0.9048^4}{0.0952}\cdot1.9\approx13.4$: <b>inútil</b> (el intervalo mide $1.9$). Para garantizar error $&lt;0.01$ harían falta $n&gt;\ln\!\big(0.01(1-k)/1.9\big)/\ln k\approx75.99$, o sea $76$ iteraciones; en la práctica bastan $7$ (según la tabla, $|x_6-\tilde x|=0.0125$ no basta y $|x_7-\tilde x|=0.0070$ sí).</li>
   </ol>
   <div class="recipe"><b>Receta (convergencia del punto fijo en $[a,b]$):</b> (1) pasa la ecuación a $x=g(x)$; (2) estudia la monotonía de $g$ y calcula $g(a)$, $g(b)$ para ver que $g([a,b])\subset[a,b]$; (3) acota $|g'|$ en $(a,b)$ por su valor mayor $k$ y comprueba $k&lt;1$; (4) cita el Teorema 2.2.</div>
-  <p><b>Error típico:</b> comprobar solo $|g'|&lt;1$ y olvidar que $g$ debe llevar $[a,b]$ en sí mismo; o dar como $k$ un número que no acota realmente a $|g'|$ (la errata de E).</p>
+  <p><b>Error típico:</b> comprobar solo $|g'|&lt;1$ y olvidar que $g$ debe llevar $[a,b]$ en sí mismo; o dar como $k$ un número que no acota realmente a $|g'|$.</p>
   <div class="box intu"><span class="h">Dónde está la teoría</span><p>U §2.4.3 pp.90-93 (Definición 2.4, ec. (2.3) p.90; Teoremas 2.2 y 2.3 p.91; el Ejemplo 2.17 es el modelo exacto de este ejercicio).</p><span class="src" data-l="U" data-ref="U pp. 90-93: Definición 2.4, Teoremas 2.2 y 2.3, Ejemplo 2.17">U pp.90-93</span></div>
 </details>
 
@@ -529,23 +529,13 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
       El primer natural es $n=21$. Comprobación: $n=20$ da cota $0.1153$ (no basta); $n=21$ da $0.0922&lt;0.1$.</li>
     <li><b>Caso $k=0.2$.</b> $\dfrac{2\cdot0.2^n}{0.8}&lt;0.1\iff0.2^n&lt;0.04$. Como $0.2^2=0.04$ <b>no</b> es $&lt;0.04$ y $0.2^3=0.008&lt;0.04$, sale $n=3$. (Cotas: $n=2\to0.1$, $n=3\to0.02$.)</li>
     <li><b>Moraleja.</b> Con el mismo intervalo, pasar de $k=0.8$ a $k=0.2$ reduce la garantía de $21$ a $3$ iteraciones: cuanto menor es $k$, más rápida es la convergencia.</li>
-    <li><b>Matiz de rigor (omisión en E).</b> El Teorema 2.3 de U tiene desigualdad <i>estricta</i>. Con $k=0.2$ y $n=2$ la cota vale exactamente $0.1$, y como el teorema dice «error $&lt;$ cota», en rigor ya daría error $&lt;0.1$. Pero la receta de U (p.92) pide el natural más pequeño para el que la <i>cota</i> $\frac{k^n}{1-k}(b-a)$ sea $&lt;\varepsilon$, y con $n=2$ la cota es $=0.1$, no menor. La respuesta esperada es <b>3</b>, que es la de E y la que se da en el examen. (Con la cota más fina $k^n(b-a)$ de la demostración bastarían $14$ y $2$, pero no es la fórmula del libro: no la uses salvo que la justifiques.)</li>
+    <li><b>Matiz de rigor.</b> El Teorema 2.3 de U tiene desigualdad <i>estricta</i>. Con $k=0.2$ y $n=2$ la cota vale exactamente $0.1$, y como el teorema dice «error $&lt;$ cota», en rigor ya daría error $&lt;0.1$. Pero la receta de U (p.92) pide el natural más pequeño para el que la <i>cota</i> $\frac{k^n}{1-k}(b-a)$ sea $&lt;\varepsilon$, y con $n=2$ la cota es $=0.1$, no menor. La respuesta esperada es <b>3</b>, que es la de E y la que se da en el examen. (Con la cota más fina $k^n(b-a)$ de la demostración bastarían $14$ y $2$, pero no es la fórmula del libro: no la uses salvo que la justifiques.)</li>
   </ol>
   <div class="recipe"><b>Receta:</b> resuelve $\frac{k^n}{1-k}(b-a)&lt;\varepsilon\Rightarrow n&gt;\dfrac{\ln\big(\varepsilon(1-k)/(b-a)\big)}{\ln k}$ y toma el <b>primer natural estrictamente mayor</b>. Recuerda que $\ln k&lt;0$ invierte la desigualdad.</div>
   <p><b>Error típico:</b> no invertir la desigualdad al dividir entre $\ln k$ (sale $n&lt;20.6$, absurdo); redondear $20.64$ a $20$ en vez de a $21$; olvidar el factor $(b-a)=2$ o el $1/(1-k)$.</p>
   <div class="box intu"><span class="h">Dónde está la teoría</span><p>U §2.4.3, Teorema 2.3 p.91 y procedimiento p.92 (Ejemplo 2.17 d, p.93).</p><span class="src" data-l="U" data-ref="U Teorema 2.3, p. 91; procedimiento p. 92; Ejemplo 2.17 d, p. 93">U pp.91-93</span></div>
 </details>
 
-<div class="box warn"><span class="h">Erratas y omisiones de E en este tema</span>
-  <ul>
-    <li><b>Ej. 2.38 (p.76):</b> «$k=0.091$» es errata; debe ser $k=e^{-0.1}\approx0.905$ (vale cualquier $k\in[e^{-0.1},1)$). La conclusión (convergencia) sigue siendo correcta.</li>
-    <li><b>Ej. 2.36 (p.74):</b> con $x_0=5$, $x_1=0.0401571\ldots$ redondea a $0.0402$; E trunca. No afecta a $x_2$, $x_3$ ni a $\varepsilon_r\approx0.1004$. El «$\varepsilon_r=0$» con $x_0=0.5$ es solo redondeo a 4 decimales.</li>
-    <li><b>Errata de U, Ej. 2.15 (p.88):</b> la tabla imprime $f(1{,}5173)=-6{,}5241\cdot10^{-4}$, pero el valor correcto es $f(1.5173)=1.5173^4-5\approx+0.3001$ (confirmado en el PDF). El resto de la tabla es correcto; por eso aquí solo se reproducen $x_i$ y errores.</li>
-    <li><b>Ej. 2.37 (p.75):</b> con $k=0.2$ y $n=2$ la cota vale exactamente $0.1$; E da $3$ aplicando la receta de U. Se mantiene $3$.</li>
-    <li><b>Omisiones:</b> E no explica por qué $x_0=2$ en 2.34 (Bolzano), que $0$ es raíz doble en 2.35, ni el valor del error de $x_4$ en 2.38 ($0.039$).</li>
-  </ul>
-  <span class="src" data-l="E" data-ref="Libro de ejercicios, pp. 72-76 (erratas y omisiones señaladas al revisar las soluciones)">E pp.72-76</span>
-</div>
 
 <h3>Ejemplos propios (de fácil a difícil)</h3>
 
@@ -672,8 +662,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <details class="sol"><summary>Extra (solo si piden justificar): ¿por qué converge?</summary>
     <p>En $[0,1]$: (H0) $f$ es continua; (H1) $f$ es creciente y $f(0)=\frac12$, $f(1)=\frac23$, así que $f$ lleva $[0,1]$ dentro de $[0,1]$; (H2) $|f'(x)|=\frac{2x}{(x^2+2)^2}\le\frac12=k&lt;1$ (numerador $\le2$, denominador $\ge4$). Teorema 2.2 (U p.91): hay un único punto fijo y la iteración converge. Cota del Teorema 2.3: $|x_5-\tilde x|&lt;\frac{(1/2)^5}{1/2}\cdot1=0.0625$ (pesimista: el error real es $\approx1.3\cdot10^{-4}$).</p></details>
   <div class="recipe"><b>Receta:</b> punto fijo con $g$ dada: itera $x_{n+1}=g(x_n)$ guardando todas las cifras; si piden justificar, comprueba H0-H2 en un intervalo que contenga a $x_0$.</div>
-  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span><p>X redondea $x_2$ a $0.5556$ y por eso imprime $x_3\approx0.56685$; con todas las cifras es $0.56684$. No cambia nada.</p></div>
-  <p><i>Parte del tema:</i> §2, Teoremas 2.2 y 2.3 (U pp.90-92).</p>
+    <p><i>Parte del tema:</i> §2, Teoremas 2.2 y 2.3 (U pp.90-92).</p>
 </details>
 
 <details class="sol"><summary>X4 (medio) — Newton con criterio de parada: $x-2^{-x}=0$ desde $x_0=0$ <span class="src" data-l="X" data-ref="X p.20 (Febrero 2012, 1ª semana, Ing. Mecánica, Modelo A, ejercicio 5, 3 puntos)">X p.20</span></summary>
@@ -696,7 +685,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <div class="box tip"><span class="h">Lo que escribes en el examen</span>
     <p>«$f$ continua con cambio de signo en $[0,1]$; $f'\ne0$; fórmula de Newton; tabla; como $|x_2-x_1|=0.050$ y $|x_3-x_2|=0&lt;10^{-3}$, la raíz es $0.641$.»</p></div>
   <div class="recipe"><b>Receta:</b> Newton «hasta $|x_n-x_{n-1}|&lt;$ tol»: tabla con una columna para la diferencia entre iterados y parar en la primera fila que cumpla la tolerancia.</div>
-  <div class="box warn"><span class="h">Ojo</span><p>Este criterio de parada es práctico: <b>no garantiza</b> que el error real sea $&lt;10^{-3}$. La solución impresa tiene una errata de escritura que no afecta al resultado.</p></div>
+  <div class="box warn"><span class="h">Ojo</span><p>Este criterio de parada es práctico: <b>no garantiza</b> que el error real sea $&lt;10^{-3}$.</p></div>
   <p><i>Parte del tema:</i> §1, «Cuándo parar» (U pp.89-90).</p>
 </details>
 
@@ -717,8 +706,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <div class="box tip"><span class="h">Lo que escribes en el examen</span>
     <p>Las tres líneas (H0), (H1), (H2) con su cuenta, «Teorema 2.2», la lista de iterados y la cota $\frac{k^n}{1-k}(b-a)$ con los números sustituidos.</p></div>
   <div class="recipe"><b>Receta:</b> despeja $x=g(x)$, comprueba <b>las tres</b> hipótesis (continuidad, $g([a,b])\subset[a,b]$, $|g'|\le k&lt;1$) y cita el Teorema 2.2; para el error, sustituye en $\frac{k^n}{1-k}(b-a)$.</div>
-  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span><p>X <b>omite (H1)</b>, que en el examen sí hay que escribir; además tiene dos erratas menores ($g(1)$ por $g(2)$ y la página del teorema).</p></div>
-  <p><i>Parte del tema:</i> §2, Teoremas 2.2 y 2.3; mismo esquema que el Ejemplo 2.17 de U (pp.92-93) y el Ej. 2.38 de E.</p>
+    <p><i>Parte del tema:</i> §2, Teoremas 2.2 y 2.3; mismo esquema que el Ejemplo 2.17 de U (pp.92-93) y el Ej. 2.38 de E.</p>
 </details>
 
 <details class="sol"><summary>X6 (difícil) — punto fijo: número de iteraciones para error $\le0.1$ en $\cos(x^2)\operatorname{sen}(x+1)-2x=0$ <span class="src" data-l="X" data-ref="X pp.29-30 (Septiembre 2012, reserva, Ing. Mecánica, Modelo A, ejercicio 5, 3 puntos)">X pp.29-30</span></summary>
@@ -738,17 +726,12 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <div class="box tip"><span class="h">Lo que escribes en el examen</span>
     <p>$g$, el intervalo $[0,\frac12]$ con (H0), (H1), (H2) y $k=\frac12$; la desigualdad $\frac1{2^n}\le0.1$ con $n=4$; y la lista $x_1,\dots,x_4$.</p></div>
   <div class="recipe"><b>Receta:</b> para «¿cuántas iteraciones garantizan error $&lt;\varepsilon$?», elige el intervalo $[a,b]$ más pequeño que contenga a $x_0$ y que $g$ lleve en sí mismo, acota $|g'|$ por $k&lt;1$ y toma el menor natural con $\frac{k^n}{1-k}(b-a)&lt;\varepsilon$.</div>
-  <div class="box warn"><span class="h">Aviso sobre la solución impresa</span>
-    <ul>
-      <li>X trabaja en $[0,1]$ con $k=\frac12$ y obtiene $n=5$ (calcula hasta $x_5=0.48448$). El $5$ también garantiza el error, pero la justificación es incorrecta.</li>
-      <li>Falta el factor $2x$ de la regla de la cadena en $(\cos x^2)'=-2x\operatorname{sen}x^2$. Con la derivada bien, $|g'(1)|\approx0.878&gt;\frac12$: $k=\frac12$ <b>no vale en $[0,1]$</b> (haría falta $k=0.88$ y $35$ iteraciones).</li>
-      <li>X afirma $g([0,1])\subset[0,1]$ sin comprobarlo; hay que escribirlo (paso 2).</li></ul></div>
-  <p><i>Parte del tema:</i> §2 y §3, «Lista de pasos para garantizar error $&lt;\varepsilon$» (U pp.91-92).</p>
+    <p><i>Parte del tema:</i> §2 y §3, «Lista de pasos para garantizar error $&lt;\varepsilon$» (U pp.91-92).</p>
 </details>
 
 <div class="box intu"><span class="h">Tipos que también caen y no están en el PDF resuelto</span>
   <ul>
-    <li><b>Teoría (pregunta corta):</b> «describa el método de Newton: para qué sirve y cómo se usa» (X p.129); «condiciones para que $g:[a,b]\to[a,b]$ tenga un único punto fijo» (Febrero 2014, Modelo B, P1); «describa el método del punto fijo y sus condiciones» e «importancia de la cota de error» (X p.9, sin solución impresa). Se responden con los Teoremas 2.2-2.3 y la deducción geométrica de Newton (recta tangente).</li>
+    <li><b>Teoría (pregunta corta):</b> «describa el método de Newton: para qué sirve y cómo se usa» (X p.129); «condiciones para que $g:[a,b]\to[a,b]$ tenga un único punto fijo» (Febrero 2014, Modelo B, P1); «describa el método del punto fijo y sus condiciones» e «importancia de la cota de error». Se responden con los Teoremas 2.2-2.3 y la deducción geométrica de Newton (recta tangente).</li>
     <li><b>Newton para raíces cúbicas:</b> $\sqrt[3]9$ con $x_0=1$ (Septiembre 2018, Modelo A, X pp.96-97; $x_1=3.6667$, $x_2=2.6676$) y $\sqrt[3]5$ con $x_0=2$ (Febrero 2013, X p.32): como X2 y el Ej. 2.34.</li>
     <li><b>Newton dentro de un ejercicio largo:</b> función a trozos (continuidad y derivabilidad) y después Newton para $f(x)=1$ (Febrero 2017, Modelo B, X pp.82-83); una iteración para $x^5-x^4+2x^3-1=0$ (Febrero 2016, Modelo A).</li>
     <li><b>Punto fijo dentro de un estudio de funciones:</b> $g(x)=1/(x^2+4)$, 3 iteraciones en $[0,1]$ (Febrero 2018, Modelo A, X pp.89-90).</li>
@@ -780,7 +763,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <li>Decir qué significa $\varepsilon_r$ y por qué no es el error verdadero.</li>
   <li>Explicar por qué falla Newton en un caso dado ($f'(x_n)=0$, ciclo, raíz doble).</li>
   <li>Pasar una ecuación a $x=g(x)$ y comprobar (H0), (H1) y (H2) del Teorema 2.2 en un intervalo $[a,b]$.</li>
-  <li>Acotar $|g'|$ por su máximo en el intervalo, y no por un valor cualquiera (errata de E 2.38).</li>
+  <li>Acotar $|g'|$ por su máximo en el intervalo, y no por un valor cualquiera.</li>
   <li>Calcular con el Teorema 2.3 el número de iteraciones (invirtiendo la desigualdad al dividir entre $\ln k$) y comprobarlo con $n-1$ y $n$.</li>
   <li>Distinguir «$n$ iteraciones pedidas», «hasta $\varepsilon_r&lt;$ tol» y «garantizar error $&lt;\varepsilon$».</li>
   <li>Comparar bisección, punto fijo y Newton: qué exigen, qué garantizan y cómo de rápidos son.</li>

@@ -15,3 +15,5 @@ Comprueba:
 5. **HTML/maquetación**: HTML bien formado, `id` únicos, `$` balanceados, rutas `../assets/…` correctas, `src` como hijo directo de caja/h2/h3/summary, sin CSS/JS externo, contraste y responsive razonables por inspección del código.
 
 No edites ningún archivo: devuelve solo el informe.
+
+- **Sin erratas ni comparativas entre fuentes** (CLAUDE.md regla 8 bis): no escribas erratas de libros/solucionarios/exámenes, ni diferencias o incoherencias entre fuentes (U vs Lay/Stewart/Larson…), ni cajas «Aviso sobre el libro»/«Cómo lo cuenta Lay»/«Tabla Lay ↔ U». Si una fuente falla, escribe lo correcto sin mencionarlo.

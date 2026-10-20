@@ -14,3 +14,5 @@ Para cada ejercicio solicitado:
 4. Añade además 2-3 **ejemplos propios** de dificultad creciente para el tema (con solución verificada), marcados como «propio».
 
 Ordena los ejercicios de fácil a difícil si eso ayuda a aprender, pero conserva su numeración. Sé riguroso: no des un paso «porque sí». No modifiques archivos del proyecto salvo el archivo `fuentes_txt/soluciones_X_Y.md` que se te indique: escríbelo con Write/Bash. Si no puedes escribirlo, devuelve todo su contenido como respuesta.
+
+- **Sin erratas ni comparativas entre fuentes** (CLAUDE.md regla 8 bis): no escribas erratas de libros/solucionarios/exámenes, ni diferencias o incoherencias entre fuentes (U vs Lay/Stewart/Larson…), ni cajas «Aviso sobre el libro»/«Cómo lo cuenta Lay»/«Tabla Lay ↔ U». Si una fuente falla, escribe lo correcto sin mencionarlo.
