@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 5.2 Regla de la cadena. Teorema del valor medio</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo V · Aplicaciones de la diferencial · Tema 5.2</div>
+  <h1>Regla de la cadena. Teorema del valor medio</h1>
+  <p>Cómo se derivan funciones compuestas de varias variables (diagrama de caminos y producto de matrices) y cómo se controla cuánto cambia una función entre dos puntos usando su gradiente sobre el segmento que los une.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §5.2 (pp. 194-203)</span><span>Ejercicios: E Ej. 5.13–5.22</span><span>Examen: 11 problemas de X</span><span>⏱ ~4 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (páginas del PDF)">X</span> exámenes
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §5.2.1 Motivación y objetivos, p. 194">U p.194</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Una función de varias variables suele estar «construida en capas»: por ejemplo, la temperatura $f$ depende de la posición $(x,y)$, y la posición depende del tiempo $t$. Si quieres saber a qué ritmo cambia la temperatura <b>con el tiempo</b>, tienes que sumar dos efectos: lo que cambia $f$ porque se mueve $x$ y lo que cambia porque se mueve $y$. Eso es la <b>regla de la cadena</b>: un sumando por cada «camino» que une el tiempo con la temperatura. La segunda mitad del tema responde a otra pregunta: si conozco el gradiente, ¿puedo comparar los valores de $f$ en dos puntos sin calcularlos? El <b>teorema del valor medio</b> lo permite: la diferencia $f(\bar a)-f(\bar b)$ es «gradiente en un punto intermedio por el desplazamiento».</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U §5.2.1, p. 194">P</span>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li><b>Diferencial, gradiente y plano tangente</b> (<a href="tema_5_1_diferencial.html">tema 5.1</a>): $Df(\bar a)(\bar x)=\nabla f(\bar a)\cdot\bar x$.</li>
+  <li><b>Derivadas parciales y gradiente</b> (<a href="tema_4_3_derivadas_parciales.html">tema 4.3</a>), y <b>polares</b> (<a href="tema_4_1_espacio_Rn.html">tema 4.1</a>): $x=\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$.</li>
+  <li><b>Regla de la cadena de una variable</b> (<a href="tema_2_2_reglas_derivacion.html">tema 2.2</a>): $(g\circ f)'(a)=g'(f(a))\,f'(a)$.</li>
+  <li><b>Teorema del valor medio de una variable</b> y funciones crecientes (<a href="tema_2_5_rolle_valor_medio.html">tema 2.5</a>): $f'(c)=\frac{f(b)-f(a)}{b-a}$, y $f'>0\Rightarrow f$ creciente.</li>
+  <li><b>Producto de matrices</b> (fila $1\times2$ por matriz $2\times n$) y desigualdad triangular $|x+y|\le|x|+|y|$.</li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <caption>Mapa del tema</caption>
+  <tr><th scope="col">Apartado</th><th scope="col">Qué contiene</th><th scope="col">Dónde está</th></tr>
+  <tr><td>1 Reglas de la diferencial</td><td>suma, producto, cociente; Ej. 5.5</td><td>U pp.194-195</td></tr>
+  <tr><td>2 Cadena: diagrama de caminos</td><td>una y dos variables finales; Ej. 5.6, 5.7</td><td>U pp.196-199</td></tr>
+  <tr><td>3 Cadena como producto de matrices</td><td>caso general; Ej. 5.8; jacobiana de la composición</td><td>U pp.198-200</td></tr>
+  <tr><td>4 Teorema del valor medio</td><td>segmento, convexo, TVM, signo del gradiente; Ej. 5.9</td><td>U pp.200-203</td></tr>
+  <tr><td>5 Recetas</td><td>cómo derivar una composición y cómo usar el TVM</td><td>síntesis</td></tr>
+  <tr><td>6 Ejercicios de E</td><td>5.13-5.22 (10 ejercicios)</td><td>E pp.179-186</td></tr>
+  <tr><td>7 Ejemplos propios</td><td>4 ejemplos</td><td>propio</td></tr>
+  <tr><td>8 Examen</td><td>11 problemas de X</td><td>X</td></tr>
+  <tr><td>9 Chuleta y comprobación</td><td>fórmulas, errores, lista</td><td>síntesis</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios y en el examen</h3>
+<p>(A) <b>Gradiente de una composición</b> en un punto o en general, con la regla de la cadena (E 5.15-5.19; X: «calcule el gradiente de…» casi cada convocatoria). (B) <b>Reglas de la diferencial</b> para combinar valores y gradientes conocidos (E 5.13-5.14). (C) <b>Teorema del valor medio</b>: demostraciones y preguntas del tipo «¿crece $f$ si me muevo hacia el primer cuadrante?» (E 5.20-5.22; X p.86). Esta sección es la base de la función implícita (§5.3).</p>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Las reglas de la diferencial: suma, producto y cociente <span class="src" data-l="U" data-ref="U §5.2.2, pp. 194-195; Ejemplo 5.5, p. 195">U pp.194-195</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · las reglas de siempre, con gradiente</span>
+  <p>En una variable sabes que $(fg)'=f'g+fg'$. Para derivar parcialmente en $x$ se deja $y$ fija y se deriva como en una variable, así que la misma regla vale en cada parcial; al juntar las dos parciales en un vector, el $'$ se convierte en $\nabla$. No hay nada nuevo salvo una cosa: hay que saber que $f+g$, $cf$, $fg$ y $f/g$ <b>siguen siendo diferenciables</b>, y por eso su plano tangente y su diferencial se calculan con estas reglas.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U pp. 194-195">P</span>
+</div>
+
+<div class="box thm"><span class="h">Reglas de la diferencial (suma, múltiplo, producto, cociente)</span>
+  <p>Si $f,g$ son diferenciables en $\bar a$ y $c\in\mathbb R$, entonces $f+g$, $cf$ y $f\cdot g$ son diferenciables en $\bar a$ y
+  $$D(f+g)(\bar a)=Df(\bar a)+Dg(\bar a),\quad D(cf)(\bar a)=c\,Df(\bar a),\quad D(f\cdot g)(\bar a)=Df(\bar a)\,g(\bar a)+f(\bar a)\,Dg(\bar a).$$
+  Si además $g(\bar a)\neq0$, $f/g$ es diferenciable y
+  $$D\!\left(\frac fg\right)(\bar a)=\frac{Df(\bar a)\,g(\bar a)-f(\bar a)\,Dg(\bar a)}{\big(g(\bar a)\big)^2}.$$
+  Como $Df(\bar a)(\bar x)=\nabla f(\bar a)\cdot\bar x$, lo mismo vale para gradientes: $\nabla(fg)=g\nabla f+f\nabla g$, $\nabla(f/g)=\dfrac{g\nabla f-f\nabla g}{g^2}$.</p>
+  <span class="src" data-l="U" data-ref="U §5.2.2, pp. 194-195 (la diferencial en términos del gradiente: Def. 5.3, p. 193)">U pp.194-195</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.5 de U · $f=x+2y$, $g=\frac y{x+1}$ en $(0,0)$</span>
+  <ol class="steps">
+    <li>Con $m(x,y)=x$ y $j(x,y)=y$: $Dm(0,0)(h,k)=h$ y $Dj(0,0)(h,k)=k$.</li>
+    <li>Suma y múltiplo: $Df(0,0)(h,k)=h+2k$.</li>
+    <li>Cociente con $g=\frac jn$, $n=m+1$ ($n(0,0)=1$): $Dg(0,0)(h,k)=\dfrac{k\cdot(0+1)-0\cdot h}{(0+1)^2}=k$.</li>
+  </ol>
+  <p>Calcular directamente el gradiente es más corto; el interés de estas reglas es teórico (saber que la combinación es diferenciable) y para datos «abstractos» como en E 5.14.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.5, p. 195">U p.195</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>En el producto, multiplicar cada gradiente por <b>su propia</b> función ($f\nabla f+g\nabla g$) en lugar de por la otra ($g\nabla f+f\nabla g$). En el cociente, olvidar el $g^2$ o cambiar el orden de la resta del numerador (es «de arriba por la derivada de abajo» con signo menos).</p>
+  <span class="src" data-l="P" data-ref="Error típico propio sobre U p. 195">P</span>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Regla de la cadena: un sumando por cada camino <span class="src" data-l="U" data-ref="U §5.2.2, pp. 196-199; Figuras 5.2 y 5.3, pp. 196-197; Ejemplos 5.6-5.7, pp. 197-199">U pp.196-199</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · el diagrama de caminos</span>
+  <p>Dibuja $f$ arriba, las variables intermedias en medio y las variables finales abajo. Para saber cómo influye una variable de abajo en $f$, recorre <b>todos los caminos</b> que suben hasta $f$. Cada camino aporta un sumando: el producto de las derivadas de cada tramo. Es como contar las vías por las que una noticia llega de una persona a otra: cada vía contribuye, y todas se suman. Con $t$ abajo, $x=g(t)$ e $y=h(t)$ en medio y $f$ arriba, hay dos caminos ($t\to x\to f$ y $t\to y\to f$), así que dos sumandos.</p>
+  <span class="src" data-l="U" data-ref="U p. 196 (diagrama) y p. 198 (regla general del diagrama)">U pp.196-198</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_5_2.png" alt="Diagrama de árbol: arriba f; debajo g(t) y h(t); debajo de cada uno, t" loading="lazy">
+<figcaption>Dos caminos de $t$ a $f$: uno pasa por $g(t)$ y otro por $h(t)$. <span class="src" data-l="U" data-ref="U Figura 5.2, p. 196">U p.196</span></figcaption>
+</figure>
+
+<div class="box thm"><span class="h">Cadena con una variable final</span>
+  <p>Si $f(x,y)$ es de dos variables y se compone con $x=g(t)$, $y=h(t)$:
+  $$\frac{df}{dt}\big(g(t),h(t)\big)=\frac{\partial f}{\partial x}\big(g(t),h(t)\big)\,g'(t)+\frac{\partial f}{\partial y}\big(g(t),h(t)\big)\,h'(t).$$
+  Las letras $x,y$ son «variables mudas»: las parciales de $f$ se calculan con ellas y después se <b>evalúan en $(g(t),h(t))$</b>.</p>
+  <span class="src" data-l="U" data-ref="U p. 196, fórmula de df/dt">U p.196</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.6 de U · derivada respecto de $t$ de $f(e^t,1+t^2)$, con $f(x,y)=\sqrt{x+2y}$</span>
+  <ol class="steps">
+    <li><b>Intermedias:</b> $g(t)=e^t$, $h(t)=1+t^2$; $g'(t)=e^t$, $h'(t)=2t$.</li>
+    <li><b>Parciales de $f$:</b> $\frac{\partial f}{\partial x}=\frac1{2\sqrt{x+2y}}$, $\frac{\partial f}{\partial y}=\frac1{\sqrt{x+2y}}$.</li>
+    <li><b>Cadena y sustituir</b> $x=e^t$, $y=1+t^2$:
+    $$\frac{df}{dt}=\frac1{2\sqrt{e^t+2(1+t^2)}}\,e^t+\frac1{\sqrt{e^t+2(1+t^2)}}\,2t.$$</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.6, p. 197">U p.197</span>
+</div>
+
+<h3>Dos variables finales</h3>
+<figure class="bookfig">
+<img src="../assets/img/fig_u_5_3.png" alt="Diagrama de árbol: arriba f; debajo g(u,v) y h(u,v); debajo de cada una, u y v" loading="lazy">
+<figcaption>Cuatro ramas de abajo: desde $u$ hay dos caminos a $f$ (por $g$ y por $h$), y desde $v$ también. <span class="src" data-l="U" data-ref="U Figura 5.3, p. 197">U p.197</span></figcaption>
+</figure>
+
+<div class="box thm"><span class="h">Cadena con dos variables finales · regla del diagrama</span>
+  <p>Para $f\big(g(u,v),h(u,v)\big)$:
+  $$\frac{\partial f}{\partial u}=\frac{\partial f}{\partial x}\,\frac{\partial g}{\partial u}+\frac{\partial f}{\partial y}\,\frac{\partial h}{\partial u},\qquad \frac{\partial f}{\partial v}=\frac{\partial f}{\partial x}\,\frac{\partial g}{\partial v}+\frac{\partial f}{\partial y}\,\frac{\partial h}{\partial v},$$
+  con $\frac{\partial f}{\partial x},\frac{\partial f}{\partial y}$ evaluadas en $(g(u,v),h(u,v))$. <b>Regla del diagrama:</b> la derivada respecto de una variable de la base tiene tantos sumandos como caminos hay desde ella hasta $f$, y cada sumando es el producto de las derivadas a lo largo del camino.</p>
+  <span class="src" data-l="U" data-ref="U pp. 197-198">U pp.197-198</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>(i) Evaluar las parciales de $f$ en $(u,v)$ en lugar de en $(g(u,v),h(u,v))$. (ii) Olvidar un camino (por ejemplo, si una entrada de $f$ es la propia variable, $x$, ese camino también cuenta, con derivada $1$). (iii) Dejar el resultado mezclando $x$, $y$ con $t$ (o $u,v$).</p>
+  <span class="src" data-l="P" data-ref="Error típico propio sobre U pp. 196-199">P</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.7 de U · $\frac{d}{dx}f(x,h(x))$</span>
+  <p>Aquí la primera intermedia es $g(x)=x$ (derivada $1$): $\dfrac d{dx}f(x,h(x))=\dfrac{\partial f}{\partial x}(x,h(x))+\dfrac{\partial f}{\partial y}(x,h(x))\,h'(x)$. Con $f=xy^2$ y $h=e^x$: $y^2+2xy\,e^x$ evaluado en $y=e^x$ da $e^{2x}+2xe^{2x}=(2x+1)e^{2x}$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.7, p. 199">U p.199</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>La cadena como producto de matrices <span class="src" data-l="U" data-ref="U regla de la cadena, p. 198; Ejemplo 5.8, p. 199; regla general, p. 200">U pp.198-200</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · «derivada de fuera por derivada de dentro»</span>
+  <p>En una variable, $(f\circ g)'=f'(g)\cdot g'$: derivada de fuera (evaluada en lo que hay dentro) por derivada de dentro. En varias variables ocurre lo mismo, pero «derivada» pasa a ser una <b>matriz</b>: el gradiente de $f$ es una fila $1\times2$ y las derivadas de las dos intermedias forman una matriz $2\times n$ (una fila por intermedia, una columna por variable final). El producto fila $\times$ matriz hace automáticamente la suma «un sumando por camino» del apartado anterior.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U p. 198">P</span>
+</div>
+
+<div class="box thm"><span class="h">Regla de la cadena (dos funciones intermedias)</span>
+  <p>Si $g,h$ son diferenciables en $\bar a=(a_1,\dots,a_n)$ y $f$ es diferenciable en $(g(\bar a),h(\bar a))$, entonces $f(g,h)$ es diferenciable en $\bar a$ y
+  $$\nabla\big(f(g,h)\big)(\bar a)=\nabla f\big(g(\bar a),h(\bar a)\big)\begin{pmatrix}\nabla g(\bar a)\\[2pt]\nabla h(\bar a)\end{pmatrix}.$$
+  ($\nabla f$ es $1\times2$; la matriz es $2\times n$ con filas $\nabla g(\bar a)$ y $\nabla h(\bar a)$.) Con $n=1$, la matriz es la columna $(g';h')$ y se recupera la fórmula de $\frac d{dx}f(g(x),h(x))$.</p>
+  <span class="src" data-l="U" data-ref="U p. 198, regla de la cadena para funciones de dos variables">U p.198</span>
+</div>
+
+<div class="box thm"><span class="h">Regla de la cadena general ($m$ funciones intermedias)</span>
+  <p>Si $g_1,\dots,g_m$ son diferenciables en $\bar a$ y $f$ (de $m$ variables) es diferenciable en $(g_1(\bar a),\dots,g_m(\bar a))$, entonces $f(g_1,\dots,g_m)$ es diferenciable en $\bar a$ y
+  $$\nabla\big(f(g_1,\dots,g_m)\big)(\bar a)=\nabla f\big(g_1(\bar a),\dots,g_m(\bar a)\big)\begin{pmatrix}\nabla g_1(\bar a)\\ \vdots\\ \nabla g_m(\bar a)\end{pmatrix}.$$
+  Generaliza la regla de una variable, porque allí el gradiente es la derivada.</p>
+  <span class="src" data-l="U" data-ref="U p. 200, regla de la cadena general">U p.200</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.8 de U · $f=2x+2y$, $g=uv$, $h=\operatorname{sen}u+3$ en $(0,0)$</span>
+  <ol class="steps">
+    <li><b>Punto imagen:</b> $(g(0,0),h(0,0))=(0,3)$, y $\nabla f=(2,2)$ en todas partes.</li>
+    <li><b>Gradientes en $(0,0)$:</b> $\nabla g=(v,u)=(0,0)$; $\nabla h=(\cos u,0)=(1,0)$.</li>
+    <li><b>Producto:</b> $\nabla\big(f(g,h)\big)(0,0)=(2,2)\begin{pmatrix}0&0\\1&0\end{pmatrix}=(2,0)$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.8, p. 199">U p.199</span>
+</div>
+
+<div class="box thm"><span class="h">Jacobiana de una composición = producto de matrices</span>
+  <p>Si hay <b>varias</b> funciones de fuera $f_1,\dots,f_p$ (todas de $m$ variables) y llamamos $F_i=f_i(g_1,\dots,g_m)$, cada $F_i$ se deriva con la regla anterior; apilando las filas resulta (la <b>matriz jacobiana</b> de una función con varias componentes es la que tiene por filas los gradientes de sus componentes)
+  $$\begin{pmatrix}\nabla F_1\\ \vdots\\ \nabla F_p\end{pmatrix}(\bar a)=\underbrace{\begin{pmatrix}\nabla f_1\\ \vdots\\ \nabla f_p\end{pmatrix}\!\big(g_1(\bar a),\dots,g_m(\bar a)\big)}_{\text{la de fuera, en el punto imagen}}\ \underbrace{\begin{pmatrix}\nabla g_1(\bar a)\\ \vdots\\ \nabla g_m(\bar a)\end{pmatrix}}_{\text{la de dentro}}$$
+  Orden: <b>fuera $\times$ dentro</b>. (Ver Propio 2.)</p>
+  <span class="src" data-l="P" data-ref="Consecuencia propia de aplicar a cada componente la regla de U p. 200">P</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen · qué forma usar</span>
+  <p>Para el <b>gradiente en un punto concreto</b>, la forma matricial es la más limpia (evalúas todo en números y multiplicas). Para una derivada <b>en función de $t$</b> o para identidades con una $f$ genérica, escribe los sumandos con el diagrama. Si todo sale en función de una fórmula sencilla, sustituir antes de derivar sirve de <b>comprobación</b>.</p>
+  <span class="src" data-l="P" data-ref="Consejo propio">P</span>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Teorema del valor medio en dos variables <span class="src" data-l="U" data-ref="U §5.2.3, pp. 200-203; Definición 5.5, p. 200; Definición 5.6, p. 201; Teorema del valor medio, p. 202; Ejemplo 5.9, p. 203">U pp.200-203</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · el TVM como cota de variación</span>
+  <p>En una variable: si recorres 100 km en 2 h, en algún instante ibas exactamente a 50 km/h (velocidad media = velocidad en algún punto). Dicho al revés: $f(b)-f(a)=f'(c)(b-a)$, y por tanto, si sabes que $|f'|\le M$, la variación nunca supera $M|b-a|$. En el plano, el «intervalo» pasa a ser el <b>segmento</b> que une dos puntos, y la derivada, el <b>gradiente</b>: a lo largo del segmento la función cambia como si el gradiente tuviera un valor «medio» $\nabla f(c,d)$ en algún punto del segmento. Con eso se puede <b>acotar</b> cuánto cambia $f$ (tamaño del gradiente) y decidir si <b>sube o baja</b> (signo de sus componentes), sin calcular $f$.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U p. 202, con el TVM de una variable de U §2.5.3, p. 96">P</span>
+</div>
+
+<div class="box def"><span class="h">Definición 5.5 · segmento</span>
+  <p>El <b>segmento</b> que une $(a_1,\dots,a_n)$ y $(b_1,\dots,b_n)$ es el conjunto de puntos $(1-\lambda)(a_1,\dots,a_n)+\lambda(b_1,\dots,b_n)$, con $\lambda\in[0,1]$. En $\mathbb R^2$: $(x_1,x_2)$ está en el segmento si existe $\lambda\in[0,1]$ con $x_1=(1-\lambda)a_1+\lambda b_1$ y $x_2=(1-\lambda)a_2+\lambda b_2$ (con $\lambda=0$ sale $\bar a$ y con $\lambda=1$, $\bar b$). En $\mathbb R$, el segmento entre $0$ y $1$ es $[0,1]$.</p>
+  <span class="src" data-l="U" data-ref="U Definición 5.5, p. 200; ecuación (5.4), p. 201">U pp.200-201</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_5_4.png" alt="Plano con ejes; segmento de (a1,a2) a (b1,b2) y un punto intermedio (x1,x2) con sus proyecciones sobre los ejes" loading="lazy">
+<figcaption>Un punto $(x_1,x_2)$ del segmento: $x_1$ queda entre $a_1$ y $b_1$, y $x_2$ entre $a_2$ y $b_2$. <span class="src" data-l="U" data-ref="U Figura 5.4, p. 201">U p.201</span></figcaption>
+</figure>
+
+<div class="box def"><span class="h">Definición 5.6 · conjunto convexo</span>
+  <p>$D\subset\mathbb R^n$ es <b>convexo</b> si para cualquier par de puntos de $D$ el segmento que los une está contenido en $D$. Son convexos los discos, las bolas, las rectas, los planos (y $\mathbb R^2$); la circunferencia no lo es. <b>Prueba mental:</b> pon una goma elástica entre dos puntos del conjunto; si alguna vez se sale, no es convexo.</p>
+  <span class="src" data-l="U" data-ref="U Definición 5.6 y ejemplos, pp. 201-202">U p.201</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_5_5.png" alt="Dos conjuntos con un segmento entre dos puntos: el círculo, donde el segmento queda dentro, y una región con forma de riñón, donde el segmento se sale" loading="lazy">
+<figcaption>Un convexo (el segmento queda dentro) y un no convexo (el segmento sale de la región). <span class="src" data-l="U" data-ref="U Figura 5.5, p. 202">U p.202</span></figcaption>
+</figure>
+
+<div class="box thm"><span class="h">Teorema del valor medio</span>
+  <p>Sea $f:D\subset\mathbb R^2\to\mathbb R$ continua y con derivadas parciales continuas en $D$. Si el segmento que une $(a_1,a_2)$ y $(b_1,b_2)$ de $D$ está contenido en $D$, existe un punto $(c,d)$ de ese segmento tal que
+  $$f(a_1,a_2)-f(b_1,b_2)=\nabla f(c,d)\cdot(a_1-b_1,\,a_2-b_2).$$
+  <b>Qué hay que comprobar al usarlo:</b> (1) $f$ y sus parciales continuas; (2) el segmento <b>entero</b> está en el conjunto donde valen esas hipótesis (por eso se trabaja en convexos). No se sabe dónde está $(c,d)$; solo que existe.</p>
+  <span class="src" data-l="U" data-ref="U Teorema del valor medio, p. 202">U p.202</span>
+</div>
+
+<div class="box thm"><span class="h">Consecuencia · signo del gradiente</span>
+  <p>En un conjunto convexo $A$ donde $f$ cumple las hipótesis del TVM: si las <b>dos</b> componentes de $\nabla f$ son estrictamente positivas, entonces $f(a_1,a_2)>f(b_1,b_2)$ para cualesquiera $(a_1,a_2),(b_1,b_2)\in A$ con $a_1>b_1$ y $a_2>b_2$. Si las dos son estrictamente negativas, $f(a_1,a_2)\lt f(b_1,b_2)$. <b>Lectura:</b> moverse en la dirección de cualquier vector del primer cuadrante hace crecer $f$ (positivas) o decrecer $f$ (negativas).</p>
+  <p><b>Por qué:</b> en el TVM, $\nabla f(c,d)\cdot(a_1-b_1,a_2-b_2)=f_x(c,d)(a_1-b_1)+f_y(c,d)(a_2-b_2)$ es una suma de dos productos de números positivos.</p>
+  <span class="src" data-l="U" data-ref="U pp. 202-203, consecuencias del TVM">U pp.202-203</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.9 de U · $f=x^3+y^3$</span>
+  <p>$\nabla f=(3x^2,3y^2)$: las dos componentes son $>0$ cuando $x\ne0$ e $y\ne0$. Cada cuadrante abierto es convexo; por ejemplo, en el primero ($x>0,y>0$), $f$ crece al moverse en la dirección de vectores del primer cuadrante. En los ejes ($xy=0$) una componente se anula y el criterio no se puede aplicar (es solo una condición suficiente: aquí $f$ crece de todos modos al aumentar las dos coordenadas, porque $x^3$ e $y^3$ son crecientes).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.9 y Figura 5.6, p. 203">U p.203</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_5_6.png" alt="Superficie de la gráfica de x al cubo más y al cubo con los ejes de coordenadas" loading="lazy">
+<figcaption>Gráfica de $f(x,y)=x^3+y^3$. <span class="src" data-l="U" data-ref="U Figura 5.6, p. 203">U p.203</span></figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>(i) Aplicar el TVM sin comprobar que el segmento está dentro de un conjunto donde las parciales son continuas. (ii) Mirar solo <b>una</b> componente del gradiente: si una es positiva y la otra negativa, no se concluye nada. (iii) Creer que $(c,d)$ es el punto medio o que se puede calcular.</p>
+  <span class="src" data-l="P" data-ref="Error típico propio sobre U pp. 202-203">P</span>
+</div>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="recetas"><span class="n">5</span>Recetas del tema <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §5.2, pp. 194-203">P</span></h2>
+
+<div class="box tip"><span class="h">Receta · derivar una composición $f(g_1,\dots,g_m)$</span>
+  <ol class="steps">
+    <li><b>Nombrar:</b> variables intermedias ($x=g(\dots)$, $y=h(\dots)$) y finales ($t$, o $u,v$).</li>
+    <li><b>Dibujar el árbol:</b> $f$ arriba, intermedias en medio, finales abajo.</li>
+    <li><b>Contar caminos</b> desde la variable final hasta $f$: cada camino es un sumando, producto de las derivadas que recorre.</li>
+    <li><b>Evaluar bien:</b> las parciales de $f$ en $(g(\bar a),h(\bar a))$, <b>no</b> en $\bar a$.</li>
+    <li>En un punto concreto: $\nabla\big(f(g,h)\big)(\bar a)=\nabla f(\text{punto imagen})\cdot\big[\nabla g(\bar a);\nabla h(\bar a)\big]$.</li>
+  </ol>
+</div>
+
+<div class="box tip"><span class="h">Receta · comparar valores de $f$ en dos puntos (TVM)</span>
+  <p>Comprobar que $f$ y sus parciales son continuas en un convexo que contiene el segmento. Entonces $f(\bar a)-f(\bar b)=\nabla f(\bar c)\cdot(\bar a-\bar b)$, y el <b>signo</b> (gradiente con componentes de un solo signo) o el <b>tamaño</b> (cota de las parciales y desigualdad triangular) de ese producto escalar responde a la pregunta. Para «gradiente nulo $\Rightarrow$ constante»: TVM entre dos puntos cualesquiera.</p>
+</div>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="ejercicios"><span class="n">6</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.13-5.22, pp. 179-186">E pp.179-186</span></h2>
+<p>Están en el orden del libro. Orden recomendado para aprender: <b>5.13 → 5.14</b> (reglas suma/producto/cociente) <b>→ 5.16 → 5.15</b> (cadena con una variable final) <b>→ 5.18 → 5.19</b> (gradiente de una composición en un punto) <b>→ 5.17</b> (cadena con $f$ genérica) <b>→ 5.21 → 5.22</b> (signo del gradiente) <b>→ 5.20</b> (demostración con el TVM).</p>
+
+<details class="sol" id="ej-5-13"><summary>Ejercicio 5.13 · gradiente de un producto <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.13, p. 179 · teoría: U pp. 194-195">E p.179</span></summary>
+  <p class="enun">Si $f$ y $g$ son funciones de dos variables diferenciables en un punto $(a,b)$, entonces el gradiente en $(a,b)$ de la función producto $fg$ verifica: a) $\nabla(fg)(a,b)=\nabla f(a,b)\nabla g(a,b)$. b) $\nabla(fg)(a,b)=\nabla f(a,b)+\nabla g(a,b)$. c) $\nabla(fg)(a,b)=g(a,b)\nabla f(a,b)+f(a,b)\nabla g(a,b)$. d) $\nabla(fg)(a,b)=g(a,b)\nabla f(a,b)-f(a,b)\nabla g(a,b)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Es la regla del producto de una variable, $(fg)'=f'g+fg'$, aplicada a cada derivada parcial.</p></div>
+  <ol class="steps">
+    <li><b>Por qué vale en cada parcial.</b> Para $\frac{\partial(fg)}{\partial x}$ se deja $y$ fija y se deriva en $x$ como en una variable: $\frac{\partial(fg)}{\partial x}=\frac{\partial f}{\partial x}g+f\frac{\partial g}{\partial x}$; lo mismo en $y$.</li>
+    <li><b>Juntar en un vector:</b> $\nabla(fg)=g\,\nabla f+f\,\nabla g$. Es lo que dice U para la diferencial (p. 195).</li>
+    <li><b>Descartar las demás con un ejemplo numérico:</b> $f=x$, $g=y$, punto $(2,3)$: $\nabla(xy)(2,3)=(3,2)$. Opción c): $3(1,0)+2(0,1)=(3,2)$, coincide. b): $(1,1)$, no. d): $(3,-2)$, no. a): el «producto» de dos vectores fila no es un vector.</li>
+  </ol>
+  <p><b>Respuesta: c).</b></p>
+  <div class="recipe"><b>Receta:</b> las reglas de suma, producto y cociente de una variable se copian con $\nabla$ en lugar de $'$; para elegir entre opciones, probar con $f=x$, $g=y$ en un punto sin simetrías.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Elegir d), que es el numerador de la regla del <b>cociente</b>.</p></div>
+</details>
+
+<details class="sol" id="ej-5-14"><summary>Ejercicio 5.14 · planos tangentes de $f+g$, $fg$ y $f/g$ con datos en un punto <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.14, pp. 180-181 · teoría: U pp. 194-195 y (5.2), p. 189">E pp.180-181</span></summary>
+  <p class="enun">De dos funciones diferenciables $f,g:\mathbb R^2\to\mathbb R$ se sabe que $f(1,2)=9$, $g(1,2)=2$, $\nabla f(1,2)=(1,9)$ y $\nabla g(1,2)=(2,5)$. Calcula las ecuaciones del plano tangente a las gráficas de las funciones $f+g$, $fg$ y $f/g$ en el punto de su gráfica $(1,2,(f+g)(1,2))$, $(1,2,(fg)(1,2))$ y $(1,2,(f/g)(1,2))$, respectivamente.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>No hace falta conocer las fórmulas de $f$ y $g$: el plano tangente solo necesita el <b>valor</b> y el <b>gradiente</b> en el punto, y ambos salen de las reglas de la diferencial.</p></div>
+  <ol class="steps">
+    <li><b>Son diferenciables en $(1,2)$:</b> suma y producto de diferenciables lo son; el cociente también porque $g(1,2)=2\ne0$ (U pp. 194-195). Plano: $z=h(1,2)+\nabla h(1,2)\cdot(x-1,y-2)$.</li>
+    <li><b>Suma.</b> Valor $9+2=11$; gradiente $(1,9)+(2,5)=(3,14)$. $$z=11+3(x-1)+14(y-2).$$</li>
+    <li><b>Producto.</b> Valor $9\cdot2=18$; gradiente $g\nabla f+f\nabla g=2(1,9)+9(2,5)=(2,18)+(18,45)=(20,63)$. $$z=18+20(x-1)+63(y-2).$$</li>
+    <li><b>Cociente.</b> Valor $\frac92$; gradiente $\dfrac{g\nabla f-f\nabla g}{g^2}=\dfrac{2(1,9)-9(2,5)}{4}=\dfrac{(-16,-27)}4=\left(-4,-\tfrac{27}4\right)$. $$z=\tfrac92-4(x-1)-\tfrac{27}4(y-2).$$</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> plano tangente de una combinación: (1) valor en el punto; (2) gradiente con la regla de suma/producto/cociente; (3) $z=\text{valor}+\nabla\cdot(x-a,y-b)$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>En el producto, multiplicar cada gradiente por su propia función; en el cociente, olvidar dividir por $g^2$ o cambiar el orden de la resta.</p></div>
+</details>
+
+<details class="sol" id="ej-5-15"><summary>Ejercicio 5.15 · $F(t)=f(x(t),y(t))$ por sustitución y por la cadena <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.15, pp. 181-182 · teoría: U p. 196">E pp.181-182</span></summary>
+  <p class="enun">Sean las funciones dadas por $f(x,y)=x(1-y^2)-y$, $x(t)=e^{2t}$, $y(t)=\frac1t$. A partir de ellas se define $F$ mediante $F(t)=f(x(t),y(t))$. Se pide calcular la derivada de $F(t)$ respecto a $t$ mediante dos procedimientos: 1) sustitución de las expresiones de $x(t)$ e $y(t)$ y derivación posterior y 2) aplicando la regla de la cadena.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Dos caminos al mismo resultado: sustituir y derivar en una variable, o sumar «derivada de $f$ por derivada de la intermedia» por cada camino del árbol.</p></div>
+  <p><b>Procedimiento 1 (sustituir).</b></p>
+  <ol class="steps">
+    <li>$F(t)=e^{2t}\left(1-\frac1{t^2}\right)-\frac1t$ (para $t\ne0$).</li>
+    <li>Producto y cadena de una variable: $F'(t)=2e^{2t}\left(1-\frac1{t^2}\right)+e^{2t}\frac2{t^3}+\frac1{t^2}=2e^{2t}\left(1-\frac1{t^2}+\frac1{t^3}\right)+\frac1{t^2}$.</li>
+  </ol>
+  <p><b>Procedimiento 2 (regla de la cadena).</b></p>
+  <ol class="steps">
+    <li><b>Árbol:</b> dos caminos de $t$ a $f$ (por $x$ y por $y$): $F'(t)=\frac{\partial f}{\partial x}x'(t)+\frac{\partial f}{\partial y}y'(t)$.</li>
+    <li><b>Parciales:</b> $\frac{\partial f}{\partial x}=1-y^2$, $\frac{\partial f}{\partial y}=-2xy-1$. <b>Intermedias:</b> $x'=2e^{2t}$, $y'=-\frac1{t^2}$.</li>
+    <li><b>Sustituir $x=e^{2t}$, $y=\frac1t$ en las parciales</b> (el paso que más se olvida): $$F'(t)=\left(1-\tfrac1{t^2}\right)2e^{2t}+\left(-\tfrac{2e^{2t}}t-1\right)\left(-\tfrac1{t^2}\right)=2e^{2t}\left(1-\tfrac1{t^2}\right)+\tfrac{2e^{2t}}{t^3}+\tfrac1{t^2}.$$</li>
+    <li><b>Coincide</b> con el procedimiento 1.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\frac d{dt}f(x(t),y(t))=f_x\,x'+f_y\,y'$ con $f_x,f_y$ evaluadas en $(x(t),y(t))$; al final todo debe quedar en función de $t$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dejar el resultado mezclando $x$, $y$ y $t$, o equivocarse de signo en $y'(t)=-1/t^2$.</p></div>
+</details>
+
+<details class="sol" id="ej-5-16"><summary>Ejercicio 5.16 · derivada de $f(x,h(x))$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.16, p. 182 · teoría: U Ejemplo 5.7, p. 199">E p.182</span></summary>
+  <p class="enun">Sean $f$ y $h$ las funciones dadas por $f(x,y)=x^2+\cos y$ y $h(x)=e^{-x}$. Se pide calcular, aplicando la regla de la cadena, la derivada respecto de $x$ de la composición $f(x,h(x))$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>La primera entrada de $f$ es «la propia $x$»: se ve como la función $g(x)=x$, con derivada $1$ (U Ej. 5.7).</p></div>
+  <ol class="steps">
+    <li><b>Forma de U:</b> $f(g(x),h(x))$ con $g(x)=x$, $h(x)=e^{-x}$. Una variable final, dos intermedias.</li>
+    <li><b>Ingredientes:</b> $\nabla f=(2x,-\operatorname{sen}y)$; $g'=1$; $h'=-e^{-x}$.</li>
+    <li><b>Evaluar $\nabla f$ en $(x,e^{-x})$:</b> $(2x,-\operatorname{sen}e^{-x})$.</li>
+    <li><b>Cadena:</b> $\dfrac d{dx}f(x,h(x))=(2x,-\operatorname{sen}e^{-x})\begin{pmatrix}1\\-e^{-x}\end{pmatrix}=2x+e^{-x}\operatorname{sen}(e^{-x})$.</li>
+    <li><b>Comprobación:</b> $f(x,e^{-x})=x^2+\cos(e^{-x})$ se deriva a $2x-\operatorname{sen}(e^{-x})\cdot(-e^{-x})$. Lo mismo.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si una entrada de $f$ es la propia variable, tratarla como $g(x)=x$, $g'=1$: $\frac d{dx}f(x,h(x))=f_x(x,h(x))+f_y(x,h(x))\,h'(x)$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar el sumando $f_x$ («porque $x$ no es una función»), o evaluar $\operatorname{sen}y$ en $y$ en lugar de en $y=h(x)=e^{-x}$.</p></div>
+</details>
+
+<details class="sol" id="ej-5-17"><summary>Ejercicio 5.17 · identidad con $f$ genérica: $2z_u+z_v=0$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.17, p. 183 · teoría: U p. 198">E p.183</span></summary>
+  <p class="enun">Sea la función $z$ dada por $z(u,v)=f(u-2v,\,2v-u)$, donde $f:\mathbb R^2\to\mathbb R$ es una función diferenciable, demuestra que $2\dfrac{\partial z}{\partial u}+\dfrac{\partial z}{\partial v}=0$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>No se conoce $f$, pero la regla de la cadena expresa $z_u$ y $z_v$ con $f_x$ y $f_y$; al combinarlas, se cancelan.</p></div>
+  <ol class="steps">
+    <li><b>Intermedias:</b> $x=u-2v$, $y=2v-u$ (polinomios: diferenciables). $f$ es diferenciable por hipótesis, así que se puede aplicar la regla.</li>
+    <li><b>Sus derivadas:</b> $x_u=1$, $x_v=-2$, $y_u=-1$, $y_v=2$.</li>
+    <li><b>Árbol:</b> de $u$ a $z$ hay dos caminos (por $x$ y por $y$); igual desde $v$: $$z_u=f_x\cdot1+f_y\cdot(-1)=f_x-f_y,\qquad z_v=f_x\cdot(-2)+f_y\cdot2=-2f_x+2f_y,$$ con $f_x,f_y$ evaluadas en $(u-2v,\,2v-u)$.</li>
+    <li><b>Combinar:</b> $2(f_x-f_y)+(-2f_x+2f_y)=0$. Queda demostrado.</li>
+    <li><b>Comprobación con un ejemplo</b> (no es demostración): $f=x^2$ da $z=(u-2v)^2$, $z_u=2(u-2v)$, $z_v=-4(u-2v)$ y $2z_u+z_v=0$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> ecuaciones con una $f$ «genérica»: nombrar las intermedias, escribir cada derivada de $z$ como combinación de $f_x$ y $f_y$, sustituir en lo que piden y simplificar.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar que hace falta conocer $f$, o escribir $z_u=f_x$ (olvidando el camino por $y$).</p></div>
+</details>
+
+<details class="sol" id="ej-5-18"><summary>Ejercicio 5.18 · gradiente de $f(g,h)$ en $(0,0)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.18, pp. 183-184 · teoría: U p. 198">E pp.183-184</span></summary>
+  <p class="enun">Sean $f,g,h$ las funciones dadas por $f(x,y)=x-y^2$, $g(u,v)=u+uv$ y $h(u,v)=\operatorname{tg}u$. ¿Cuál es el gradiente de $f(g,h)$ en $(u,v)=(0,0)$?</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Gradiente de la composición = (gradiente de $f$ en el punto imagen) $\times$ (matriz con los gradientes de $g$ y $h$ en el punto de partida).</p></div>
+  <ol class="steps">
+    <li><b>Fórmula:</b> $\nabla\big(f(g,h)\big)(0,0)=\nabla f\big(g(0,0),h(0,0)\big)\begin{pmatrix}\nabla g(0,0)\\\nabla h(0,0)\end{pmatrix}$.</li>
+    <li><b>Punto imagen:</b> $g(0,0)=0$, $h(0,0)=\operatorname{tg}0=0$. Hay que evaluar $\nabla f$ en $(0,0)$ (aquí coincide con el punto de partida por casualidad).</li>
+    <li><b>$\nabla f=(1,-2y)$</b>, así que $\nabla f(0,0)=(1,0)$.</li>
+    <li><b>$\nabla g=(1+v,u)$</b>, $\nabla g(0,0)=(1,0)$; <b>$\nabla h=\big(\frac1{\cos^2u},0\big)$</b>, $\nabla h(0,0)=(1,0)$.</li>
+    <li><b>Producto:</b> $(1,0)\begin{pmatrix}1&0\\1&0\end{pmatrix}=(1\cdot1+0\cdot1,\ 1\cdot0+0\cdot0)=(1,0)$.</li>
+    <li><b>Comprobación:</b> $f(g,h)=u+uv-\operatorname{tg}^2u$; en $(0,0)$: $\partial_u=1+v-2\operatorname{tg}u\frac1{\cos^2u}=1$, $\partial_v=u=0$.</li>
+  </ol>
+  <p><b>Respuesta: $(1,0)$.</b></p>
+  <div class="recipe"><b>Receta:</b> (1) punto imagen $(g(\bar a),h(\bar a))$; (2) $\nabla f$ <b>allí</b>; (3) gradientes de $g,h$ en $\bar a$ como filas de una matriz; (4) fila $\times$ matriz.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Evaluar $\nabla f$ en $\bar a$ en lugar de en el punto imagen (aquí no se nota porque ambos son $(0,0)$; en el Ej. 5.19 sí).</p></div>
+</details>
+
+<details class="sol" id="ej-5-19"><summary>Ejercicio 5.19 · tres funciones intermedias, gradiente en $(1,0)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.19, pp. 184-185 · teoría: U p. 200">E pp.184-185</span></summary>
+  <p class="enun">Calcula el gradiente en $(u,v)=(1,0)$ de $f(g(u,v),h(u,v),k(u,v))$ para $f(x,y,z)=3x+y+z^2$, $g(u,v)=uv$, $h(u,v)=\operatorname{sen}u+3$ y $k(u,v)=e^u$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Igual que 5.18 pero con <b>tres</b> intermedias: la matriz tiene tres filas (regla general, U p. 200).</p></div>
+  <ol class="steps">
+    <li><b>Fórmula ($m=3$, $n=2$):</b> fila $1\times3$ por matriz $3\times2$ da una fila $1\times2$.</li>
+    <li><b>Punto imagen:</b> $g(1,0)=0$, $h(1,0)=3+\operatorname{sen}1$, $k(1,0)=e$.</li>
+    <li><b>$\nabla f=(3,1,2z)$</b> en el punto imagen: $(3,1,2e)$.</li>
+    <li><b>Gradientes en $(1,0)$:</b> $\nabla g=(v,u)=(0,1)$; $\nabla h=(\cos u,0)=(\cos1,0)$; $\nabla k=(e^u,0)=(e,0)$.</li>
+    <li><b>Producto:</b> $$(3,1,2e)\begin{pmatrix}0&1\\\cos1&0\\e&0\end{pmatrix}=\big(3\cdot0+\cos1+2e\cdot e,\ 3\cdot1\big)=(\cos1+2e^2,\ 3).$$</li>
+  </ol>
+  <p><b>Respuesta: $(\cos1+2e^2,\,3)$.</b></p>
+  <div class="recipe"><b>Receta:</b> matriz de la cadena: <b>una fila por cada función intermedia</b>, <b>una columna por cada variable final</b>.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Escribir $2z=2$ (evaluando en $u=1$ sin aplicar $k$) en lugar de $2z=2e$.</p></div>
+</details>
+
+<details class="sol" id="ej-5-20"><summary>Ejercicio 5.20 · gradiente nulo en un convexo implica función constante <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.20, p. 185 · teoría: U Definición 5.6, p. 201, y Teorema del valor medio, p. 202">E p.185</span></summary>
+  <p class="enun">El teorema del valor medio para funciones de una variable se utiliza para demostrar que una función con derivada cero en un intervalo es constante en ese intervalo. Muestra que una función continua $f:\mathbb R^2\to\mathbb R$ con gradiente nulo en un conjunto convexo es constante en ese conjunto.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>El TVM dice que la diferencia de valores es «gradiente por desplazamiento»; si el gradiente es cero, la diferencia es cero.</p></div>
+  <ol class="steps">
+    <li><b>Ejemplo concreto primero.</b> $f=7$ en el disco unidad: $\nabla f=(0,0)$ y es constante. ¿Pasa solo con funciones así?</li>
+    <li><b>Hipótesis del TVM</b> en el convexo $A$: $f$ continua; las parciales existen y valen $0$, y una función nula es continua. Hipótesis cumplidas.</li>
+    <li><b>Dos puntos cualesquiera</b> $\bar a,\bar b\in A$. Como $A$ es convexo, el segmento que los une está en $A$.</li>
+    <li><b>TVM:</b> existe $\bar c$ en el segmento con $f(\bar a)-f(\bar b)=\nabla f(\bar c)\cdot(\bar a-\bar b)$.</li>
+    <li><b>Hipótesis:</b> $\bar c\in A$, luego $\nabla f(\bar c)=(0,0)$ y $f(\bar a)-f(\bar b)=0$.</li>
+    <li><b>Conclusión:</b> $f(\bar a)=f(\bar b)$ para todo par de puntos de $A$: $f$ es constante en $A$.</li>
+    <li><b>Por qué importa «convexo»:</b> en un conjunto formado por dos discos separados, $f=0$ en uno y $f=1$ en el otro tiene gradiente nulo y no es constante.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> «gradiente nulo en un convexo $\Rightarrow$ constante»: TVM en el segmento entre dos puntos arbitrarios.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>No justificar que el segmento está en el conjunto: ahí es donde se usa la convexidad.</p></div>
+</details>
+
+<details class="sol" id="ej-5-21"><summary>Ejercicio 5.21 · comportamiento de $-x-y$ hacia el primer cuadrante <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.21, p. 185 · teoría: U pp. 202-203">E p.185</span></summary>
+  <p class="enun">Indica cómo se comportará la función $f(x,y)=-x-y$ si nos movemos en la dirección de vectores del primer cuadrante.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>El gradiente $(-1,-1)$ tiene las dos componentes negativas en todo el plano (convexo): $f$ <b>disminuye</b>.</p></div>
+  <ol class="steps">
+    <li><b>Gradiente:</b> $\nabla f=(-1,-1)$, continuo; las dos componentes son $<0$ en todo $\mathbb R^2$.</li>
+    <li>$\mathbb R^2$ es convexo.</li>
+    <li><b>Consecuencia del TVM:</b> si $a_1>b_1$, $a_2>b_2$, entonces $f(a_1,a_2)\lt f(b_1,b_2)$. Pasar de $\bar b$ a $\bar a$ es moverse con el vector $(a_1-b_1,a_2-b_2)$, del primer cuadrante.</li>
+    <li><b>Comprobación directa:</b> $f(\bar b+\bar w)-f(\bar b)=-w_1-w_2<0$ si $w_1,w_2\ge0$ no ambos nulos.</li>
+  </ol>
+  <p><b>Respuesta: decrece</b> al movernos en la dirección de cualquier vector del primer cuadrante.</p>
+  <div class="recipe"><b>Receta:</b> signo de las dos componentes del gradiente en un convexo: ambas $>0$, crece hacia el primer cuadrante; ambas $<0$, decrece.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Mirar solo una componente del gradiente.</p></div>
+</details>
+
+<details class="sol" id="ej-5-22"><summary>Ejercicio 5.22 · $x^2-y^3$: ¿crece o decrece? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.22, pp. 185-186 · teoría: U pp. 202-203">E pp.185-186</span></summary>
+  <p class="enun">Encuentra la afirmación correcta para la función $f(x,y)=x^2-y^3$ si nos movemos en la dirección de vectores del primer cuadrante: a) Los valores de $f$ decrecen. b) Los valores de $f$ crecen. c) Los valores de $f$ en el interior del segundo cuadrante decrecen. d) Ninguna de las anteriores.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>El signo del gradiente cambia de una zona a otra: hay que buscar una zona <b>convexa</b> donde las dos componentes tengan el mismo signo.</p></div>
+  <ol class="steps">
+    <li><b>Gradiente:</b> $\nabla f=(2x,-3y^2)$.</li>
+    <li><b>Signos:</b> $-3y^2<0$ si $y\ne0$; $2x<0$ si $x<0$. En el interior del segundo cuadrante, $\{x<0,\ y>0\}$, ambas son estrictamente negativas.</li>
+    <li><b>Ese conjunto es convexo:</b> si dos puntos tienen $x<0$ e $y>0$, cualquier punto del segmento tiene $x<0$ (media de negativos) e $y>0$ (media de positivos).</li>
+    <li><b>TVM:</b> allí $f$ decrece hacia el primer cuadrante. Ejemplo: $f(-2,1)=3$ y $f(-1,2)=-7$; al sumar $(1,1)$ baja. <b>c) es cierta.</b></li>
+    <li><b>a) es falsa:</b> de $(\frac12,\frac12)$ a $(2,1)$ el desplazamiento $(\frac32,\frac12)$ es del primer cuadrante y $f$ pasa de $\frac18$ a $3$: sube.</li>
+    <li><b>b) es falsa:</b> el ejemplo del paso 4 baja. <b>d)</b> es falsa porque c) es cierta.</li>
+  </ol>
+  <p><b>Respuesta: c).</b></p>
+  <div class="recipe"><b>Receta:</b> estudiar el signo de cada componente del gradiente por zonas y quedarse con una zona convexa de signos iguales; para desmentir una afirmación global basta un par de puntos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Concluir «decrece» en todo $\mathbb R^2$ porque la segunda componente es siempre $\le0$, sin mirar la primera.</p></div>
+</details>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="propios"><span class="n">7</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></h2>
+
+<details class="sol" id="p1"><summary>Propio 1 · cadena con polares en un punto <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 198; polares, U p. 148">P</span></summary>
+  <p class="enun">Sea $f(x,y)=x^2+xy$ y $z(\rho,\theta)=f(\rho\cos\theta,\rho\operatorname{sen}\theta)$. Calcula $\frac{\partial z}{\partial\rho}$ y $\frac{\partial z}{\partial\theta}$ en $\rho=2$, $\theta=\frac\pi4$ con la regla de la cadena.</p>
+  <ol class="steps">
+    <li><b>Intermedias:</b> $x=\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$. $x_\rho=\cos\theta$, $y_\rho=\operatorname{sen}\theta$, $x_\theta=-\rho\operatorname{sen}\theta$, $y_\theta=\rho\cos\theta$.</li>
+    <li><b>Punto imagen:</b> $(x,y)=(\sqrt2,\sqrt2)$.</li>
+    <li><b>Parciales de $f$ allí:</b> $f_x=2x+y=3\sqrt2$, $f_y=x=\sqrt2$.</li>
+    <li>$z_\rho=f_x\cos\theta+f_y\operatorname{sen}\theta=3\sqrt2\frac{\sqrt2}2+\sqrt2\frac{\sqrt2}2=3+1=4$.</li>
+    <li>$z_\theta=f_x(-\rho\operatorname{sen}\theta)+f_y(\rho\cos\theta)=-6+2=-4$.</li>
+    <li><b>Comprobación:</b> $z=\rho^2(\cos^2\theta+\cos\theta\operatorname{sen}\theta)$ da $z_\rho=2\rho(\dots)=4\left(\frac12+\frac12\right)=4$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> en polares, $z_\rho=f_x\cos\theta+f_y\operatorname{sen}\theta$ y $z_\theta=\rho(-f_x\operatorname{sen}\theta+f_y\cos\theta)$.</div>
+</details>
+
+<details class="sol" id="p2"><summary>Propio 2 · dos intermedias, dos finales y matriz de la cadena <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 198">P</span></summary>
+  <p class="enun">Sean $x=u+v$, $y=uv$. (a) Calcula $\nabla F(1,2)$ para $F(u,v)=f(x,y)$ con $f(x,y)=x^2y$. (b) Si además $G(u,v)=x+y$, escribe en una sola matriz las derivadas de $(F,G)$ respecto de $(u,v)$ en $(1,2)$.</p>
+  <ol class="steps">
+    <li><b>Punto imagen:</b> $(x,y)=(3,2)$.</li>
+    <li><b>$\nabla f=(2xy,x^2)$ allí:</b> $(12,9)$.</li>
+    <li><b>Matriz de las intermedias en $(1,2)$:</b> $\nabla x=(1,1)$, $\nabla y=(v,u)=(2,1)$; $M=\begin{pmatrix}1&1\\2&1\end{pmatrix}$.</li>
+    <li><b>(a)</b> $\nabla F(1,2)=(12,9)M=(12+18,\ 12+9)=(30,21)$.</li>
+    <li><b>(b)</b> $\nabla(x+y)=(1,1)$, así que $\nabla G(1,2)=(1,1)M=(3,2)$. Apilando: $$\begin{pmatrix}12&9\\1&1\end{pmatrix}\begin{pmatrix}1&1\\2&1\end{pmatrix}=\begin{pmatrix}30&21\\3&2\end{pmatrix}.$$</li>
+    <li><b>Comprobación:</b> $F=(u+v)^2uv$, $F_u=2(u+v)uv+(u+v)^2v=12+18=30$; $G=u+v+uv$, $G_u=1+v=3$, $G_v=1+u=2$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> composición vectorial = matriz de fuera (en el punto imagen) $\times$ matriz de dentro. Orden: fuera $\times$ dentro.</div>
+</details>
+
+<details class="sol" id="p3"><summary>Propio 3 · identidad en polares para cualquier $f$ <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 198">P</span></summary>
+  <p class="enun">Sea $f$ diferenciable y $z(\rho,\theta)=f(\rho\cos\theta,\rho\operatorname{sen}\theta)$. Prueba que, para $\rho>0$, $\left(\frac{\partial z}{\partial\rho}\right)^2+\frac1{\rho^2}\left(\frac{\partial z}{\partial\theta}\right)^2=\left(\frac{\partial f}{\partial x}\right)^2+\left(\frac{\partial f}{\partial y}\right)^2$.</p>
+  <ol class="steps">
+    <li><b>Cadena</b> (como en Propio 1, con $f$ genérica): $z_\rho=f_x\cos\theta+f_y\operatorname{sen}\theta$ y $\frac1\rho z_\theta=-f_x\operatorname{sen}\theta+f_y\cos\theta$.</li>
+    <li><b>Elevar al cuadrado:</b> $z_\rho^2=f_x^2\cos^2\theta+2f_xf_y\cos\theta\operatorname{sen}\theta+f_y^2\operatorname{sen}^2\theta$ y $\frac1{\rho^2}z_\theta^2=f_x^2\operatorname{sen}^2\theta-2f_xf_y\cos\theta\operatorname{sen}\theta+f_y^2\cos^2\theta$.</li>
+    <li><b>Sumar:</b> los términos cruzados se cancelan y $\cos^2\theta+\operatorname{sen}^2\theta=1$: queda $f_x^2+f_y^2$.</li>
+    <li><b>Ejemplo concreto</b> (Propio 1): $4^2+\frac14(-4)^2=20$ y $f_x^2+f_y^2=18+2=20$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> el tamaño del gradiente, $\|\nabla f\|$, se calcula igual en polares con $z_\rho$ y $\frac1\rho z_\theta$.</div>
+</details>
+
+<details class="sol" id="p4"><summary>Propio 4 · cota del cambio de una función con el TVM <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 202 (TVM) y p. 16 (desigualdad triangular)">P</span></summary>
+  <p class="enun">Sea $f(x,y)=\operatorname{sen}x\cos y$. (a) Prueba que $|f(a_1,a_2)-f(b_1,b_2)|\le|a_1-b_1|+|a_2-b_2|$ para todo par de puntos. (b) Acota $|f(1{,}1;\,0{,}9)-f(1,1)|$ sin calculadora y compara con el valor real.</p>
+  <ol class="steps">
+    <li><b>Hipótesis del TVM:</b> $f$ es continua con parciales $f_x=\cos x\cos y$, $f_y=-\operatorname{sen}x\operatorname{sen}y$ continuas en $\mathbb R^2$, que es convexo.</li>
+    <li><b>TVM:</b> existe $(c,d)$ en el segmento con $f(\bar a)-f(\bar b)=f_x(c,d)(a_1-b_1)+f_y(c,d)(a_2-b_2)$.</li>
+    <li><b>Acotar cada parcial:</b> $|f_x(c,d)|\le1$ y $|f_y(c,d)|\le1$. No hace falta saber dónde está $(c,d)$.</li>
+    <li><b>Desigualdad triangular:</b> $|f(\bar a)-f(\bar b)|\le|a_1-b_1|+|a_2-b_2|$. Queda (a).</li>
+    <li><b>(b)</b> Con $\bar a=(1{,}1;0{,}9)$, $\bar b=(1,1)$: la cota es $0{,}1+0{,}1=0{,}2$. El valor real es $\approx0{,}0993$, por debajo, como debe ser (la cota es del «peor caso»).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $|f(\bar a)-f(\bar b)|\le M_1|a_1-b_1|+M_2|a_2-b_2|$, con $M_1,M_2$ cotas de $|f_x|,|f_y|$ en el segmento.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Aplicar el TVM sin comprobar que el segmento está dentro de un conjunto donde las parciales son continuas.</p></div>
+</details>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="examen"><span class="n">8</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<p>Este tema aparece de tres maneras: (1) <b>calcular un gradiente</b> de una función con productos y funciones compuestas (X1-X4, de 1 punto, a veces dentro de un ejercicio largo); (2) <b>composición con datos abstractos</b> ($f(0)=\pi$, $f'(0)=2$…), que es la regla de la cadena de una variable (X7-X10, refuerzo); (3) el <b>teorema del valor medio</b> (X6 de varias variables; X11, enunciado en una variable). En los exámenes recopilados en X no aparecen preguntas de «cadena con $\frac{\partial z}{\partial u}$ y $f$ genérica» como E 5.17; esa práctica es para ganar soltura.</p>
+
+<details class="sol" id="x1"><summary>X1 · gradiente de $x^2e^{x+y}$ en $(1,-1)$ <span class="src" data-l="X" data-ref="X p.20 (Febrero 2012, 1.ª semana, Mecánica, Modelo A, P4, 1 punto)">X p.20 (feb. 2012)</span></summary>
+  <p class="enun">Sea $f:\mathbb R^2\to\mathbb R$ una función continua y con derivadas parciales continuas en $\mathbb R^2$. Defina gradiente de $f$ en un punto. Calcule el gradiente de $f(x,y)=x^2e^{x+y}$ en el punto $(x_0,y_0)=(1,-1)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Producto ($x^2$ por $e^{x+y}$) y cadena en la exponencial.</p></div>
+  <ol class="steps">
+    <li><b>Definición:</b> $\nabla f(x_0,y_0)=\left(\frac{\partial f}{\partial x}(x_0,y_0),\frac{\partial f}{\partial y}(x_0,y_0)\right)$.</li>
+    <li>$f_x=2xe^{x+y}+x^2e^{x+y}$ (producto; la derivada interior de $x+y$ respecto de $x$ es $1$).</li>
+    <li>$f_y=x^2e^{x+y}$ ($x^2$ es constante respecto de $y$).</li>
+    <li>En $(1,-1)$, $e^0=1$: $\nabla f(1,-1)=(2+1,\,1)=(3,1)$.</li>
+  </ol>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>La definición, las dos parciales con la regla del producto y el valor $(3,1)$.</p></div>
+  <div class="recipe"><b>Receta:</b> producto + cadena: derivar el factor «de fuera» y multiplicar por la derivada interior.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar el término $2xe^{x+y}$ del producto.</p></div>
+</details>
+
+<details class="sol" id="x2"><summary>X2 · gradiente de $(x+y^3)\cos(\pi x^2)$ en $(1,0)$ <span class="src" data-l="X" data-ref="X p.82 (Febrero 2017, Mecánica, Modelo B, P4, 1 punto)">X p.82 (feb. 2017)</span></summary>
+  <p class="enun">Determine el gradiente de la función $f(x,y)=(x+y^3)\cos(\pi x^2)$ en el punto $(1,0)$.</p>
+  <ol class="steps">
+    <li>$f_x=1\cdot\cos(\pi x^2)+(x+y^3)\cdot\big(-\operatorname{sen}(\pi x^2)\big)\cdot2\pi x$ (producto y cadena: la derivada interior de $\pi x^2$ es $2\pi x$).</li>
+    <li>$f_y=3y^2\cos(\pi x^2)$.</li>
+    <li>En $(1,0)$: $\cos\pi=-1$, $\operatorname{sen}\pi=0$: $\nabla f(1,0)=(-1-0,\,0)=(-1,0)$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> como X1; al evaluar, simplificar primero $\cos\pi$ y $\operatorname{sen}\pi$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar el factor $2\pi x$ de la derivada interior.</p></div>
+</details>
+
+<details class="sol" id="x3"><summary>X3 · gradiente de $y\operatorname{tg}e^x+\cos^2(x+y)$ <span class="src" data-l="X" data-ref="X p.8 (Septiembre 2010, Grado en Ing. Eléctrica, P4, 1 punto)">X p.8 (sept. 2010)</span></summary>
+  <p class="enun">Calcule el gradiente de la función $f(x,y)=y\operatorname{tg}e^x+\cos^2(x+y)$.</p>
+  <ol class="steps">
+    <li><b>Primer sumando respecto de $x$:</b> $y$ es constante; cadena en $\operatorname{tg}(e^x)$, con $(\operatorname{tg}u)'=\frac1{\cos^2u}$ y $u'=e^x$: $y\frac{e^x}{\cos^2e^x}$.</li>
+    <li><b>Segundo sumando:</b> $\cos^2(x+y)=\big(\cos(x+y)\big)^2$; cadena doble: $2\cos(x+y)\cdot(-\operatorname{sen}(x+y))\cdot1$. Respecto de $y$ la derivada interior también es $1$.</li>
+    <li><b>Primer sumando respecto de $y$:</b> $\operatorname{tg}e^x$.</li>
+  </ol>
+  $$\nabla f=\left(\frac{y\,e^x}{\cos^2e^x}-2\cos(x+y)\operatorname{sen}(x+y),\ \operatorname{tg}e^x-2\cos(x+y)\operatorname{sen}(x+y)\right)$$
+  <p>(donde $\cos e^x\ne0$; además $-2\cos(x+y)\operatorname{sen}(x+y)=-\operatorname{sen}(2x+2y)$).</p>
+  <div class="recipe"><b>Receta:</b> potencia de una función: $(u^2)'=2u\,u'$; tangente: $(\operatorname{tg}u)'=\frac{u'}{\cos^2u}$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Derivar $\cos^2(x+y)$ como $-\operatorname{sen}^2(x+y)$ o como $2\cos(x+y)$ (olvidando la derivada del coseno).</p></div>
+</details>
+
+<details class="sol" id="x4"><summary>X4 · $f=\ln g$, gradientes y ángulo entre ellos <span class="src" data-l="X" data-ref="X pp.107-108 (Ing. Electrónica Industrial y Automática, examen «Electrónica 4», Ej. 6, 3 puntos)">X pp.107-108</span></summary>
+  <p class="enun">Para la función dada por $g(x,y)=x^2y$: calcule el dominio de $f(x,y)=\ln(g(x,y))$; calcule los gradientes de $f$ y $g$ en el punto $(1,1)$; calcule el coseno del ángulo formado por los vectores gradientes del apartado anterior.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>$f=\ln\circ g$, así que por la cadena $\nabla f=\frac1g\nabla g$: los dos gradientes son <b>paralelos</b> y apuntan igual.</p></div>
+  <ol class="steps">
+    <li><b>Dominio:</b> $\ln s$ existe si $s>0$: $x^2y>0$. Como $x^2\ge0$, es $x\ne0$ e $y>0$: $D=\{(x,y):x\ne0,\ y>0\}$.</li>
+    <li><b>$\nabla g=(2xy,x^2)$</b>; $\nabla g(1,1)=(2,1)$.</li>
+    <li><b>Cadena con una intermedia:</b> $\nabla f=\frac1g\nabla g=\left(\frac2x,\frac1y\right)$; $\nabla f(1,1)=(2,1)$.</li>
+    <li><b>Coseno:</b> $\cos\alpha=\dfrac{(2,1)\cdot(2,1)}{\sqrt5\sqrt5}=\dfrac55=1$. El ángulo es $0$.</li>
+    <li><b>Explicación:</b> $\nabla f=\frac1g\nabla g$ con $g>0$ en el dominio: son paralelos y del mismo sentido en todo punto.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\nabla\big(\varphi(g)\big)=\varphi'(g)\,\nabla g$. Dominio de $\ln(\cdot)$: argumento $>0$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Poner como dominio $x>0$, $y>0$ (olvidando que $x^2>0$ también si $x<0$), o incluir $x=0$.</p></div>
+</details>
+
+<details class="sol" id="x5"><summary>X5 · $\ln(36-x^2-y^2)$: dominio, gradiente y composición con polares <span class="src" data-l="X" data-ref="X p.143 (Septiembre 2018, Ing. Electrónica Industrial y Automática, Ej. 6, 3 puntos)">X p.143 (sept. 2018)</span></summary>
+  <p class="enun">Para la función dada por $f(x,y)=\ln(36-x^2-y^2)$: (1 punto) determine y dibuje su dominio; (1 punto) calcule el gradiente de $f$ en el punto $(1,5)$; (1 punto) calcule $f\circ g$ donde $g(\rho,\theta)=(\rho\cos\theta,\rho\operatorname{sen}\theta)$.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>$f$ solo depende de la distancia al origen; en polares queda una función de $\rho$ solo.</p></div>
+  <ol class="steps">
+    <li><b>Dominio:</b> $36-x^2-y^2>0\iff x^2+y^2<36$: disco abierto de centro $(0,0)$ y radio $6$ (borde a trazos en el dibujo).</li>
+    <li><b>Gradiente</b> (cadena con $\ln$): $f_x=\frac{-2x}{36-x^2-y^2}$, $f_y=\frac{-2y}{36-x^2-y^2}$. En $(1,5)$: $36-1-25=10$, $\nabla f(1,5)=\left(-\frac15,-1\right)$ (el punto está en el dominio: $1+25<36$).</li>
+    <li><b>Composición:</b> «calcule $f\circ g$» pide <b>sustituir</b>: $f(g(\rho,\theta))=\ln(36-\rho^2\cos^2\theta-\rho^2\operatorname{sen}^2\theta)=\ln(36-\rho^2)$, para $0\le\rho<6$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> componer = sustituir y simplificar con $\cos^2\theta+\operatorname{sen}^2\theta=1$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Incluir la frontera $x^2+y^2=36$ en el dominio ($\ln0$ no existe).</p></div>
+</details>
+
+<details class="sol" id="x6"><summary>X6 · parciales positivas: ¿crece $f$? (TVM) <span class="src" data-l="X" data-ref="X p.86 (Septiembre 2017, Mecánica, Modelo A, P4, 1 punto)">X p.86 (sept. 2017)</span></summary>
+  <p class="enun">Sea $f:\mathbb R^2\to\mathbb R$ una función tal que las derivadas parciales son positivas en cualquier $(x,y)\in\mathbb R^2$. Razone si es cierto que si para cada par de puntos $(x,y)$ y $(x_0,y_0)$ con $x>x_0$, $y>y_0$, se tiene que cumplir: $f(x,y)>f(x_0,y_0)$. Nota: se recomienda aplicar el teorema del valor medio.</p>
+  <div class="box intu"><span class="h">Idea en una frase</span><p>Ir de $(x_0,y_0)$ a $(x,y)$ es avanzar en las dos coordenadas; si $f$ crece al avanzar en cada una, sube.</p></div>
+  <p><b>Lo que hay que escribir en el examen</b> (con el TVM; este necesita parciales continuas, que el enunciado no da: si no se suponen, usa la «otra forma» de abajo):</p>
+  <ol class="steps">
+    <li>$\mathbb R^2$ es convexo, así que el segmento que une $(x,y)$ y $(x_0,y_0)$ está en $\mathbb R^2$.</li>
+    <li>TVM: existe $(c,d)$ en el segmento con $$f(x,y)-f(x_0,y_0)=\frac{\partial f}{\partial x}(c,d)\,(x-x_0)+\frac{\partial f}{\partial y}(c,d)\,(y-y_0).$$</li>
+    <li>Los cuatro factores son positivos (parciales por hipótesis; $x-x_0>0$, $y-y_0>0$ por enunciado), luego la suma es $>0$.</li>
+    <li><b>Es cierto:</b> $f(x,y)>f(x_0,y_0)$.</li>
+  </ol>
+  <p><b>Otra forma</b>, que no necesita parciales continuas (solo el TVM de una variable):</p>
+  <ol class="steps">
+    <li>Separar el cambio en dos pasos: $f(x,y)-f(x_0,y_0)=\big[f(x,y)-f(x_0,y)\big]+\big[f(x_0,y)-f(x_0,y_0)\big]$ (primero en horizontal, luego en vertical).</li>
+    <li>$\varphi(s)=f(s,y)$ tiene $\varphi'(s)=\frac{\partial f}{\partial x}(s,y)>0$: es estrictamente creciente, y como $x>x_0$, el primer corchete es $>0$.</li>
+    <li>Igual con $\psi(s)=f(x_0,s)$: $\psi'>0$ e $y>y_0$: el segundo corchete es $>0$. La suma es positiva.</li>
+  </ol>
+  <p>Ejemplo numérico: $f=x^3+y^3+x+y$ tiene parciales $3x^2+1>0$, $3y^2+1>0$; $f(-1,-2)=-12$ y $f(0,0)=0$: al aumentar las dos coordenadas, sube.</p>
+  <div class="recipe"><b>Receta:</b> «parciales positivas $\Rightarrow$ $f$ crece hacia el primer cuadrante»: TVM en el segmento (en un convexo) o dos pasos paralelos a los ejes.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Responder «cierto» sin citar la convexidad, o creer que basta con $x>x_0$ (si una coordenada aumenta y la otra disminuye, no se puede concluir nada).</p></div>
+</details>
+
+<details class="sol" id="x7"><summary>X7 · $g(x)=f^2(\operatorname{sen}x)$, $g'(0)$ (refuerzo, una variable) <span class="src" data-l="X" data-ref="X p.25 (Septiembre 2012, Mecánica, Modelo A, P1, 1 punto)">X p.25 (sept. 2012)</span></summary>
+  <p class="enun">Sea $f$ una función derivable y que verifica $f(0)=1$ y $f'(0)=-2$ y sea $g$ una función definida en $\mathbb R$. Calcule, aplicando la regla de la cadena, $g'(0)$ para $g(x)=f^2(\operatorname{sen}(x))$.</p>
+  <ol class="steps">
+    <li><b>Capas</b> (de fuera a dentro): cuadrado, $f$, seno. Tres factores.</li>
+    <li>$g'(x)=2f(\operatorname{sen}x)\cdot f'(\operatorname{sen}x)\cdot\cos x$.</li>
+    <li>En $0$: $\operatorname{sen}0=0$, $\cos0=1$: $g'(0)=2\cdot1\cdot(-2)\cdot1=-4$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> derivar capa a capa, evaluando cada derivada en lo que tiene dentro.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Escribir $f'(x)$ en lugar de $f'(\operatorname{sen}x)$.</p></div>
+</details>
+
+<details class="sol" id="x8"><summary>X8 · $f(x)=x\,g(2x)$: calcular $g'(2)$ (refuerzo) <span class="src" data-l="X" data-ref="X p.64 (Febrero 2016, Mecánica, Modelo B, P2, 1 punto)">X p.64 (feb. 2016)</span></summary>
+  <p class="enun">Se sabe que $f$ y $g$ son funciones derivables, $g(2)=-1$, $f'(1)=2$ y que $f(x)=xg(2x)$. Calcule $g'(2)$.</p>
+  <ol class="steps">
+    <li><b>Derivar</b> (producto y cadena): $f'(x)=g(2x)+x\,g'(2x)\cdot2$.</li>
+    <li><b>Evaluar en $x=1$</b> (porque se conoce $f'(1)$ y $2x=2$ da justo $g(2)$, $g'(2)$): $2=g(2)+2g'(2)=-1+2g'(2)$.</li>
+    <li><b>Despejar:</b> $g'(2)=\frac32$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> derivar la relación y evaluar en el punto que hace aparecer los datos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar el factor $2$ de la derivada interior de $g(2x)$.</p></div>
+</details>
+
+<details class="sol" id="x9"><summary>X9 · $g(x)=\cos(f(\cos x))$, $g'(\pi/2)$ (refuerzo) <span class="src" data-l="X" data-ref="X pp.122-123 (Examen 5, elaborado con exámenes de asignaturas similares, Ej. 4)">X pp.122-123</span></summary>
+  <p class="enun">Sabiendo que $f$ es derivable y verifica $f(0)=\pi$ y $f'(0)=2$ calcule $g'(\pi/2)$ para $g(x)=\cos(f(\cos(x)))$: A) $g'(\pi/2)=0$; B) $g'(\pi/2)=\pi$; C) $g'(\pi/2)=2\pi$; D) Ninguna de las anteriores.</p>
+  <ol class="steps">
+    <li>$g'(x)=-\operatorname{sen}\big(f(\cos x)\big)\cdot f'(\cos x)\cdot(-\operatorname{sen}x)=\operatorname{sen}\big(f(\cos x)\big)f'(\cos x)\operatorname{sen}x$.</li>
+    <li>En $\frac\pi2$: $\cos\frac\pi2=0$, $\operatorname{sen}\frac\pi2=1$: $g'\left(\frac\pi2\right)=\operatorname{sen}(f(0))\cdot f'(0)=2\operatorname{sen}\pi=0$.</li>
+  </ol>
+  <p><b>Respuesta: A.</b></p>
+  <div class="box warn"><span class="h">Error típico</span><p>Perder uno de los dos signos menos (dan $+$ al multiplicarse).</p></div>
+</details>
+
+<details class="sol" id="x10"><summary>X10 · $g(x)=\operatorname{sen}(f(5x^2-8))$, $g'(\sqrt2)$ (refuerzo) <span class="src" data-l="X" data-ref="X p.144 (Febrero 2018, 1.ª semana, Ing. Electrónica Industrial y Automática, P2, 1 punto)">X p.144 (feb. 2018)</span></summary>
+  <p class="enun">Sabiendo que $f$ es derivable y verifica $f(2)=\pi$ y $f'(2)=3$, calcular $g'(\sqrt2)$ siendo $g(x)=\operatorname{sen}(f(5x^2-8))$.</p>
+  <ol class="steps">
+    <li>$g'(x)=\cos\big(f(5x^2-8)\big)\cdot f'(5x^2-8)\cdot10x$.</li>
+    <li>En $\sqrt2$: $5\cdot2-8=2$, así que $g'(\sqrt2)=\cos(f(2))\cdot f'(2)\cdot10\sqrt2=\cos\pi\cdot3\cdot10\sqrt2=-30\sqrt2$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> elegir el punto para que lo de dentro caiga justo en el valor donde se conocen los datos.</div>
+</details>
+
+<details class="sol" id="x11"><summary>X11 · enunciar el TVM (una variable) e interpretarlo <span class="src" data-l="X" data-ref="X p.137 (Febrero 2017, 1.ª semana, Ing. Electrónica Industrial y Automática, P3, 1 punto); U §2.5.3, p. 96">X p.137 (feb. 2017)</span></summary>
+  <p class="enun">Enuncie el Teorema del Valor Medio (para funciones de una variable) y explique la interpretación geométrica de este resultado.</p>
+  <ol class="steps">
+    <li><b>Enunciado:</b> si $f:[a,b]\to\mathbb R$ es continua en $[a,b]$ y derivable en $(a,b)$, existe al menos un $c\in(a,b)$ con $f'(c)=\dfrac{f(b)-f(a)}{b-a}$.</li>
+    <li><b>Interpretación:</b> la recta tangente en $(c,f(c))$ es <b>paralela</b> a la cuerda que une $(a,f(a))$ y $(b,f(b))$ (pendiente de la tangente = pendiente de la cuerda).</li>
+    <li><b>Relación con este tema:</b> escrito $f(b)-f(a)=f'(c)(b-a)$, es el caso de una variable de $f(\bar a)-f(\bar b)=\nabla f(\bar c)\cdot(\bar a-\bar b)$: el intervalo pasa a ser el segmento y la derivada, el gradiente.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> al enunciar, no olvidar las hipótesis: continua en el cerrado y derivable en el abierto.</div>
+</details>
+
+<!-- ============================ 9 ============================ -->
+<h2 id="chuleta"><span class="n">9</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+
+<h3>Errores frecuentes</h3>
+<ul>
+  <li>Evaluar las parciales de $f$ en el punto de partida en lugar de en el punto imagen $(g(\bar a),h(\bar a))$.</li>
+  <li>Olvidar un camino del diagrama (sobre todo cuando una entrada de $f$ es la propia variable, con derivada $1$).</li>
+  <li>Dejar el resultado mezclando $x$, $y$ con $t$ (o $u,v$).</li>
+  <li>Multiplicar las matrices en orden inverso: es $\nabla f\,(1\times m)$ por la matriz de las intermedias ($m\times n$).</li>
+  <li>En el producto, $f\nabla f+g\nabla g$ en lugar de $g\nabla f+f\nabla g$; en el cociente, olvidar $g^2$.</li>
+  <li>Usar el TVM sin comprobar que el segmento está dentro del conjunto donde las parciales son continuas.</li>
+  <li>Concluir «crece» o «decrece» mirando solo una componente del gradiente.</li>
+  <li>Creer que el punto $(c,d)$ del TVM es calculable (solo se sabe que existe).</li>
+</ul>
+
+<h3>Chuleta</h3>
+<table>
+  <caption>Chuleta de fórmulas y enunciados del tema</caption>
+  <tr><th scope="col">Concepto</th><th scope="col">Enunciado</th><th scope="col">Fuente</th></tr>
+  <tr><td>Suma, múltiplo, producto</td><td>$D(f+g)=Df+Dg$, $D(cf)=c\,Df$, $D(fg)=Df\,g+f\,Dg$ (igual con $\nabla$)</td><td>U p.195</td></tr>
+  <tr><td>Cociente</td><td>$D(f/g)=\dfrac{Df\,g-f\,Dg}{g^2}$, si $g(\bar a)\ne0$</td><td>U p.195</td></tr>
+  <tr><td>Cadena, una variable final</td><td>$\frac{df}{dt}=f_x(g,h)\,g'+f_y(g,h)\,h'$</td><td>U p.196</td></tr>
+  <tr><td>Cadena, dos finales</td><td>$\frac{\partial f}{\partial u}=f_x\,g_u+f_y\,h_u$; igual en $v$. Un sumando por camino</td><td>U pp.197-198</td></tr>
+  <tr><td>Cadena (dos intermedias)</td><td>$\nabla\big(f(g,h)\big)(\bar a)=\nabla f(g(\bar a),h(\bar a))\begin{pmatrix}\nabla g(\bar a)\\\nabla h(\bar a)\end{pmatrix}$</td><td>U p.198</td></tr>
+  <tr><td>Cadena general</td><td>igual con $m$ filas $\nabla g_1,\dots,\nabla g_m$</td><td>U p.200</td></tr>
+  <tr><td>Jacobiana de composición</td><td>(matriz de fuera en el punto imagen) $\times$ (matriz de dentro)</td><td>propia</td></tr>
+  <tr><td>Segmento (Def. 5.5)</td><td>$(1-\lambda)\bar a+\lambda\bar b$, $\lambda\in[0,1]$</td><td>U p.200</td></tr>
+  <tr><td>Convexo (Def. 5.6)</td><td>el segmento entre dos puntos cualesquiera queda dentro</td><td>U p.201</td></tr>
+  <tr><td>TVM en $\mathbb R^2$</td><td>$f(\bar a)-f(\bar b)=\nabla f(c,d)\cdot(\bar a-\bar b)$, $(c,d)$ en el segmento</td><td>U p.202</td></tr>
+  <tr><td>Signo del gradiente</td><td>componentes $>0$ en un convexo: $f$ crece hacia el primer cuadrante; $<0$: decrece</td><td>U pp.202-203</td></tr>
+  <tr><td>Gradiente nulo</td><td>en un convexo, $f$ constante (TVM)</td><td>E 5.20</td></tr>
+  <tr><td>Cota de variación</td><td>$|f(\bar a)-f(\bar b)|\le M_1|a_1-b_1|+M_2|a_2-b_2|$</td><td>propia</td></tr>
+</table>
+
+<h3>Lista de comprobación</h3>
+<ul class="checklist">
+  <li>Sé dibujar el diagrama de caminos de una composición y escribir un sumando por camino.</li>
+  <li>Sé evaluar las parciales de $f$ en el punto imagen y no en el de partida.</li>
+  <li>Sé calcular el gradiente de $f(g,h)$ (y con tres o más intermedias) como producto fila $\times$ matriz.</li>
+  <li>Sé derivar $f(x,h(x))$ tratando la primera entrada como $g(x)=x$.</li>
+  <li>Sé probar identidades con una $f$ genérica (E 5.17).</li>
+  <li>Sé aplicar las reglas de suma, producto y cociente para gradientes y planos tangentes con datos en un punto (E 5.14).</li>
+  <li>Sé definir segmento y convexo y decir si un conjunto es convexo.</li>
+  <li>Sé enunciar el TVM en $\mathbb R^2$ con sus hipótesis y usarlo para decidir si $f$ crece o decrece (E 5.21, 5.22, X p.86).</li>
+  <li>Sé demostrar que gradiente nulo en un convexo implica función constante (E 5.20).</li>
+  <li>Sé acotar la variación de una función con el TVM y la desigualdad triangular.</li>
+</ul>
+
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<details class="fuentes-toggle">
+<summary>Mostrar lista de fuentes</summary>
+<div id="panel-fuentes"></div>
+</details>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro (en X, la página del PDF).</footer>
+</main>
+</div>
+</body>
+</html>
