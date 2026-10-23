@@ -122,7 +122,7 @@ Cada tema retocado se publica con su commit propio (`CLAUDE.md` §4b).
 - **Pendiente:** primera escena real (propuesta: 4.2 o 4.3), flujo para generar las capturas estáticas.
 
 ### Escenas hechas (octubre 2026)
-- `newton` y `telarana` en el tema 2.4; `tvm` (con `"modo":"rolle"` para Rolle) en el 2.5. Son 2D (`data-params {"dim":2}`: cámara ortográfica, sin giro), con helpers `cinta`, `punto`, `grafica`, `ejes2D` y, en el contexto, `vista` y `selector`.
+- `secante-tangente` en el tema 2.1 (sustituye al SVG+JS inicial); `newton` y `telarana` en el tema 2.4; `tvm` (con `"modo":"rolle"` para Rolle) en el 2.5. Son 2D (`data-params {"dim":2}`: cámara ortográfica, sin giro), con helpers `cinta`, `punto`, `grafica`, `ejes2D` y, en el contexto, `vista` y `selector`.
 - Valores comprobados con sympy (raíces, puntos fijos, ciclo 0↔1 de x³−2x+2, Newton de ∛x → −2x). Probadas en Chromium headless (WebGL por software).
 - Falta la captura estática (`.int-static`) para el PDF.
 - **Zoom y desplazamiento en 2D** (motor): rueda del ratón, pellizco táctil, arrastrar para mover, doble clic o botón «Restablecer vista». El grosor de líneas, trazos y puntos se mantiene en píxeles al hacer zoom (`reescalar(f)` en `cinta` y `punto`; todo objeto 2D nuevo debe definirlo). Se puede acercar hasta ×25 y alejar hasta ×4 (las escenas dibujan una región 4 veces más ancha y alta que la vista inicial: usar `W(v)` como en `newton.js`); el movimiento queda dentro de lo dibujado.

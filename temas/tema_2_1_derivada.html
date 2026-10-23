@@ -16,24 +16,12 @@ svg.fig .d21-lab.a{fill:var(--acc);stroke:none;font-weight:700}
 .d21-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:.6em 0}
 .d21-cols>div{border:1px solid var(--bd);border-radius:8px;background:var(--card);padding:6px 12px;font:.92rem/1.5 var(--sans)}
 .d21-cols>div b{display:block;color:var(--acc)}
-.d21-int{border:1px solid var(--bd);border-radius:10px;background:var(--card);padding:10px 14px;margin:1em 0;font:.95rem/1.5 var(--sans)}
-.d21-int svg{width:100%;height:auto;display:block;touch-action:none}
-.d21-int .ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:6px 18px;margin:.4em 0}
-.d21-int label{display:flex;flex-direction:column;gap:2px}
-.d21-int output{font-weight:700;color:var(--acc)}
-.d21-int .ro{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px 18px;margin-top:.4em}
-.d21-int .ro b{color:var(--acc)}
-.d21-int svg .g{stroke:var(--bd);stroke-width:1}
-.d21-int svg .fx{stroke:var(--fg);stroke-width:2.5;fill:none}
-.d21-int svg .sc{stroke:var(--mut);stroke-width:1.6;stroke-dasharray:6 4}
-.d21-int svg .tg{stroke:var(--S);stroke-width:2.8}
-.d21-int svg .nm{stroke:var(--L);stroke-width:2.8}
-.d21-int svg text{fill:var(--fg);font-size:12px}
-@media print{.d21-int{display:none}}
 </style>
 <script defer src="../assets/katex/katex.min.js"></script>
 <script defer src="../assets/katex/auto-render.min.js"></script>
 <script defer src="../assets/resumen.js"></script>
+<link rel="stylesheet" href="../assets/interactivos.css">
+<script defer src="../assets/interactivos.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -249,67 +237,9 @@ svg.fig .d21-lab.a{fill:var(--acc);stroke:none;font-weight:700}
   <span class="src" data-l="S" data-ref="Stewart §2.7, Ejemplo 1, p. 144 (tangente y = 2x − 1); la normal es cálculo propio">S p.144</span>
 </div>
 
-<figure class="d21-int" id="d21-int" aria-label="Interactivo: secante, tangente y normal a una gráfica">
-  <div class="ctl">
-    <label>Función
-      <select id="d21f"><option value="0">x²</option><option value="1">x³ − x</option><option value="2">sen x</option><option value="3">eˣ</option></select></label>
-    <label>Punto a = <output id="d21aO"></output><input type="range" id="d21a" min="-2" max="2" step="0.05" value="1"></label>
-    <label>Incremento h = <output id="d21hO"></output><input type="range" id="d21h" min="-1.5" max="1.5" step="0.05" value="1"></label>
-  </div>
-  <svg id="d21svg" viewBox="0 0 600 340" role="img" aria-label="Gráfica de la función con la secante por P y Q, la tangente en P y la normal en P">
-    <g id="d21grid"></g>
-    <path class="fx" id="d21curve"/>
-    <line class="nm" id="d21n"/><line class="tg" id="d21t"/><line class="sc" id="d21s"/>
-    <circle id="d21P" r="5.5" fill="var(--S)"/><circle id="d21Q" r="5" fill="var(--bg)" stroke="var(--fg)" stroke-width="2"/>
-    <text x="10" y="18" id="d21lg"></text>
-  </svg>
-  <div class="ro">
-    <div>Pendiente de la secante: <b id="d21ms"></b></div>
-    <div>Pendiente de la tangente f′(a): <b id="d21mt"></b></div>
-    <div>Tangente: <b id="d21et"></b></div>
-    <div>Normal: <b id="d21en"></b></div>
-  </div>
-  <figcaption>Interactivo propio. Mueve <i>h</i> hacia 0 (por ambos lados): la secante (gris, discontinua) se pega a la tangente (naranja) y su pendiente se acerca a $f'(a)$. La normal (verde) es perpendicular a la tangente; en un punto con $f'(a)=0$ queda vertical. Las escalas de los ejes son distintas para que se vea bien la gráfica, así que el ángulo recto puede no parecerlo en pantalla. <span class="src" data-l="P" data-ref="Explicación propia; ecuaciones: U §2.4.2 p. 87 (tangente), S §3.1 pp. 176-177 (normal)">P</span></figcaption>
+<figure class="interactivo" data-escena="secante-tangente" data-params='{"dim":2}' aria-label="Interactivo: secante, tangente y normal a una gráfica">
+  <figcaption>Interactivo propio. Mueve <i>h</i> hacia 0 (por ambos lados): la secante (gris, discontinua) se pega a la tangente (naranja) y su pendiente se acerca a $f'(a)$. La normal (verde) es perpendicular a la tangente; en un punto con $f'(a)=0$ queda vertical. <span class="src" data-l="P" data-ref="Explicación propia; ecuaciones: U §2.4.2 p. 87 (tangente), S §3.1 pp. 176-177 (normal)">P</span></figcaption>
 </figure>
-<script>
-(function(){
-  var F=[{f:function(x){return x*x},d:function(x){return 2*x}},
-         {f:function(x){return x*x*x-x},d:function(x){return 3*x*x-1}},
-         {f:Math.sin,d:Math.cos},
-         {f:Math.exp,d:Math.exp}];
-  var X0=-3,X1=3,Y0=-3,Y1=5,W=600,H=340;
-  function px(x){return (x-X0)/(X1-X0)*W} function py(y){return H-(y-Y0)/(Y1-Y0)*H}
-  function $(i){return document.getElementById(i)}
-  function fmt(v){return (Math.round(v*100)/100).toString().replace('-','−')}
-  function sgn(v,t){return (v<0?'− ':'+ ')+fmt(Math.abs(v))+t}
-  function line(el,x1,y1,x2,y2){el.setAttribute('x1',x1);el.setAttribute('y1',y1);el.setAttribute('x2',x2);el.setAttribute('y2',y2)}
-  var g=$('d21grid'),ns='http://www.w3.org/2000/svg',h='';
-  for(var i=X0;i<=X1;i++)h+='<line class="g" x1="'+px(i)+'" y1="0" x2="'+px(i)+'" y2="'+H+'"/>';
-  for(var j=Y0;j<=Y1;j++)h+='<line class="g" x1="0" y1="'+py(j)+'" x2="'+W+'" y2="'+py(j)+'"/>';
-  h+='<line x1="0" y1="'+py(0)+'" x2="'+W+'" y2="'+py(0)+'" stroke="var(--fg)"/><line x1="'+px(0)+'" y1="0" x2="'+px(0)+'" y2="'+H+'" stroke="var(--fg)"/>';
-  g.innerHTML=h;
-  function upd(){
-    var k=F[+$('d21f').value],a=+$('d21a').value,hh=+$('d21h').value;
-    if(Math.abs(hh)<0.025)hh=hh<0?-0.025:0.025; // h=0 no tiene secante
-    $('d21aO').textContent=fmt(a);$('d21hO').textContent=fmt(+$('d21h').value);
-    var d='';for(var x=X0;x<=X1+1e-9;x+=0.05){var y=k.f(x);d+=(d?'L':'M')+px(x)+','+py(Math.max(Y0-5,Math.min(Y1+5,y)))}
-    $('d21curve').setAttribute('d',d);
-    var fa=k.f(a),m=k.d(a),q=a+hh,fq=k.f(q),ms=(fq-fa)/hh;
-    // rectas dibujadas de borde a borde del recuadro
-    function seg(el,m0){line(el,px(X0),py(fa+m0*(X0-a)),px(X1),py(fa+m0*(X1-a)))}
-    seg($('d21s'),ms);seg($('d21t'),m);
-    if(Math.abs(m)<1e-9)line($('d21n'),px(a),py(Y0),px(a),py(Y1));else seg($('d21n'),-1/m);
-    $('d21P').setAttribute('cx',px(a));$('d21P').setAttribute('cy',py(fa));
-    $('d21Q').setAttribute('cx',px(q));$('d21Q').setAttribute('cy',py(fq));
-    $('d21ms').textContent=fmt(ms);$('d21mt').textContent=fmt(m);
-    $('d21et').textContent='y = '+fmt(fa)+' '+sgn(m,'·(x − '+fmt(a)+')');
-    $('d21en').textContent=Math.abs(m)<1e-9?'x = '+fmt(a)+' (vertical)':'y = '+fmt(fa)+' '+sgn(-1/m,'·(x − '+fmt(a)+')');
-    $('d21lg').textContent='P = ('+fmt(a)+', '+fmt(fa)+')   Q = ('+fmt(q)+', '+fmt(fq)+')';
-  }
-  ['d21f','d21a','d21h'].forEach(function(i){$(i).addEventListener('input',upd)});
-  upd();
-})();
-</script>
 
 <div class="box warn"><span class="h">Error típico</span>
   <p>(i) Escribir la tangente como $y=f'(a)(x-a)$ y olvidar el $+f(a)$: esa recta pasa por $(a,0)$, no por el punto de la gráfica. (ii) Tomar la pendiente de la normal como $-f'(a)$ o como $1/f'(a)$ en lugar de $-1/f'(a)$. (iii) Confundir el ángulo con la pendiente: igualar $f'(x)=\pi/4$ en vez de $f'(x)=\tan\frac\pi4$.</p>
