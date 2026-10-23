@@ -191,6 +191,27 @@
         pendiente = false; if (!visible) return;
         if (dos) scene.traverse(function (o) { if (o.reescalar) o.reescalar(z.s); });
         renderer.render(scene, camera);
+        if (dos && params.marcas !== false) marcas();
+      }
+      /* Números en los ejes (solo 2D): etiquetas HTML sobre el lienzo, con paso 1·2·5·10ᵏ según la zona visible. */
+      var capaM = null, usadas = [];
+      function paso(r) { var e = Math.pow(10, Math.floor(Math.log(r / 6) / Math.LN10)), m = r / 6 / e; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * e; }
+      function marcas() {
+        var W = stage.clientWidth, Hh = stage.clientHeight, L = camera.left, R = camera.right, T2 = camera.top, B = camera.bottom;
+        if (!W || !Hh || !(R > L) || !(T2 > B)) return;
+        if (!capaM) { capaM = document.createElement('div'); capaM.className = 'int-ticks'; capaM.setAttribute('aria-hidden', 'true'); stage.appendChild(capaM); }
+        var n = 0;
+        function poner(txt, x, y, cls) {
+          var e = usadas[n++]; if (!e) { e = document.createElement('span'); capaM.appendChild(e); usadas.push(e); }
+          e.className = cls; e.style.display = ''; e.style.left = x + 'px'; e.style.top = y + 'px'; if (e.textContent !== txt) e.textContent = txt;
+        }
+        function fmtN(v, st) { var d = Math.max(0, -Math.floor(Math.log(st) / Math.LN10 + 1e-9)); return (Math.abs(v) < st * 1e-6 ? '0' : v.toFixed(d)).replace('-', '−').replace('.', ','); }
+        var sx = paso(R - L), sy = paso(T2 - B), yx = (0 - B) / (T2 - B), xy = (0 - L) / (R - L), i, v;
+        var py = Math.min(Hh - 16, Math.max(2, (1 - yx) * Hh + 3)), px = Math.min(W - 4, Math.max(4, xy * W - 4));
+        for (i = Math.ceil(L / sx); i * sx <= R; i++) { v = i * sx; if (Math.abs(v) < sx * 1e-6) continue; poner(fmtN(v, sx), (v - L) / (R - L) * W, py, 'x'); }
+        for (i = Math.ceil(B / sy); i * sy <= T2; i++) { v = i * sy; if (Math.abs(v) < sy * 1e-6) continue; poner(fmtN(v, sy), px, (T2 - v) / (T2 - B) * Hh, 'y'); }
+        if (L < 0 && R > 0 && B < 0 && T2 > 0) poner('0', px, py, 'o');
+        for (; n < usadas.length; n++) usadas[n].style.display = 'none';
       }
       function ajustar() {
         var w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
