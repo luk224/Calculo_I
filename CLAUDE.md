@@ -69,6 +69,8 @@ E:\UNED\CALCULO\claude\
   index.html                      índice de todos los temas (actualizarlo al terminar cada tema)
   assets/resumen.css, resumen.js  estilo y comportamiento COMPARTIDOS (no duplicar en cada tema)
   assets/katex/                   KaTeX local (offline)
+  assets/three/                   three.js local (por crear; ver threejs_interactivos.md)
+  threejs_interactivos.md         catálogo de ejemplos interactivos por tema y criterios
   plantilla_tema.html             esqueleto que se copia para cada tema
   temas/tema_1_1_espacio_R.html   …
   fuentes_txt/                    texto de los PDF
@@ -95,6 +97,8 @@ Reglas de contenido (para alguien que estudia por primera vez):
 10. Estilo de las cajas y componentes: ver `assets/resumen.css` y `plantilla_tema.html` (no reinventar).
 
 11. **Figuras: preferir recortes de los libros a SVG.** Si el libro (U, E, S o L) ya tiene la figura, se recorta con `python herramientas/extraer_figura.py` (`list` para ver candidatas, `auto <libro> <pág PDF> "<pie>" <nombre>` o `crop`/`page`; ver cabecera del script; páginas PDF: U impresa−2, E igual, L impresa+17) y se guarda en `assets/img/`. En el HTML: `<figure class="bookfig"><img src="../assets/img/nombre.png" alt="descripción" loading="lazy"><figcaption>… <span class="src" …></span></figcaption></figure>` (la etiqueta de fuente va en el pie; comprobar con la imagen que el recorte es correcto). SVG inline **solo** para figuras propias que no existan en los libros (o que haya que adaptar). Las imágenes son solo para uso personal de estudio: no publicar los HTML con ellas.
+
+12. **Ejemplos interactivos con three.js (desde los temas nuevos en adelante).** Al crear un tema, el redactor valora si algún concepto gana con un interactivo (3D: superficies, planos tangentes, gradiente, curvas de nivel, sólidos de revolución; o dinámico: Taylor, Newton, Rolle/TVM, interpolación, ε-δ) y, si es relevante, lo incluye como `<figure class="interactivo">` tras la explicación del concepto, con fuente (`src="propia"` si no viene de los libros), captura estática para impresión y valores verificados con sympy. Si no aporta nada (temas algebraicos), no se fuerza. Máx. 2-3 por tema; nunca sustituye a los ejercicios ni a las figuras del libro. Criterios, infraestructura común (three local en `assets/three/`, sin CDN, carga perezosa, claro/oscuro, impresión) y catálogo por tema (hechos y futuros) en `threejs_interactivos.md`. Los temas ya hechos se retocan siguiendo ese catálogo, no al vuelo.
 
 ## 4. Flujo de trabajo por tema (subagentes en `.claude/agents/`)
 
