@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 6.5 Integrales impropias</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<link rel="stylesheet" href="../assets/interactivos.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+<script defer src="../assets/interactivos.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo VI · Integral de Riemann · Tema 6.5</div>
+  <h1>Integrales impropias</h1>
+  <p>¿Puede una región que se extiende «hasta el infinito», o que se dispara hacia arriba junto a una asíntota, tener un área finita? A veces sí. Aprenderás a definir esas integrales con un límite, a decidir si convergen (con la integral de referencia $\frac1{x^p}$ y los criterios de comparación) y a reconocer enseguida de qué especie es cada una.</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §6.5.2 (pp. 271-278)</span><span>Ejercicios: E Ej. 6.42–6.48</span><span>Examen: 6 problemas de X (+2 afines)</span><span title="orientativo: 7 ejercicios de E, 10 ejemplos de U, 8 de X (6 resueltos y 2 citados), 4 tipos extra y 4 propios">⏱ ~4 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
+    <span class="src" data-l="L" data-ref="Larson, Cálculo Tomo 1">L</span> Larson
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (páginas del PDF)">X</span> exámenes
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.5.1 Motivación, p. 271">U p.271</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>La integral de Riemann está pensada para funciones <b>acotadas</b> en intervalos <b>acotados</b>. Si falla una de las dos cosas, no se puede aplicar la definición, pero sí se puede <b>acercarse con un límite</b>: calcular la integral hasta un extremo $M$ (o $c$) y ver si el resultado se estabiliza cuando $M\to\infty$ (o $c$ se acerca a la asíntota). Si se estabiliza, esa es el área; si crece sin tope o no se decide, la integral diverge.</p>
+  <span class="src" data-l="U" data-ref="U §6.5.1, p. 271">U p.271</span>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li><b>Regla de Barrow y primitivas</b> (<a href="tema_6_2_teoremas_fundamentales.html">tema 6.2</a> y <a href="tema_6_3_calculo_integrales.html">tema 6.3</a>): casi todas las integrales de este tema se resuelven con una primitiva y un límite.</li>
+  <li><b>Límites en el infinito y L'Hôpital</b> ($\frac\infty\infty$ y $0\cdot\infty$; <a href="tema_2_3_lhopital.html">tema 2.3</a>) y límites laterales (<a href="tema_1_4_limites_continuidad.html">tema 1.4</a>).</li>
+  <li><b>Función acotada</b> y asíntota vertical (<a href="tema_1_4_limites_continuidad.html">tema 1.4</a>): decidir la especie depende de ello.</li>
+  <li><b>Series</b> (<a href="tema_1_3_series.html">tema 1.3</a>): el criterio de comparación de las integrales impropias es el mismo que el de las series.</li>
+</ul>
+
+<h3>Mapa del Tema 6 completo (este es su último apartado)</h3>
+<table>
+  <caption>Tema 6 · Integral de Riemann</caption>
+  <tr><th scope="col">Apartado</th><th scope="col">Qué resuelve</th><th scope="col">Resumen</th></tr>
+  <tr><td>6.1 Definición de la integral de Riemann</td><td>qué es el área bajo una gráfica (sumas de Riemann), qué funciones son integrables</td><td><a href="tema_6_1_integral_riemann.html">tema 6.1</a></td></tr>
+  <tr><td>6.2 Teoremas fundamentales del Cálculo</td><td>integral y derivada son operaciones inversas; regla de Barrow</td><td><a href="tema_6_2_teoremas_fundamentales.html">tema 6.2</a></td></tr>
+  <tr><td>6.3 Cálculo de integrales</td><td>primitivas: inmediatas, cambio de variable, partes, racionales, trigonométricas</td><td><a href="tema_6_3_calculo_integrales.html">tema 6.3</a></td></tr>
+  <tr><td>6.4 Integración numérica</td><td>aproximar cuando no hay primitiva: rectángulos, trapecio, Simpson, cotas de error</td><td><a href="tema_6_4_integracion_numerica.html">tema 6.4</a></td></tr>
+  <tr><td><b>6.5 Integrales impropias</b> (estás aquí)</td><td>integrar en intervalos no acotados o con funciones no acotadas</td><td>este tema</td></tr>
+</table>
+
+<h3>Mapa del tema</h3>
+<table>
+  <caption>Mapa del tema</caption>
+  <tr><th scope="col">Apartado</th><th scope="col">Qué contiene</th><th scope="col">Dónde está</th></tr>
+  <tr><td><a href="#s1">1 Por qué hacen falta</a></td><td>área finita bajo una región infinita; las dos causas</td><td>U pp.271-272</td></tr>
+  <tr><td><a href="#s2">2 Primera especie</a></td><td>Def. 6.9; Ej. 6.36-6.40; $(-\infty,b]$, $\mathbb R$; condición necesaria</td><td>U pp.272-274</td></tr>
+  <tr><td><a href="#s3">3 Segunda y tercera especie</a></td><td>Def. 6.10; asíntota interior; precaución; Ej. 6.41-6.42</td><td>U pp.275-276</td></tr>
+  <tr><td><a href="#s4">4 Ver cómo se estabiliza</a></td><td>interactivo: $\frac1{x^p}$, $c$ y $M$</td><td>propio</td></tr>
+  <tr><td><a href="#s5">5 Convergencia por comparación</a></td><td>criterio, límite del cociente; Ej. 6.43-6.45; integrales de referencia</td><td>U pp.277-278</td></tr>
+  <tr><td><a href="#ejercicios">6 Ejercicios de E</a></td><td>E 6.42–6.48</td><td>E pp.246-252</td></tr>
+  <tr><td><a href="#propios">7 Ejemplos propios y tipos que pueden caer</a></td><td>4 propios; 4 tipos de comparación; autoevaluación</td><td>propio, U p.282</td></tr>
+  <tr><td><a href="#examen">8 Así lo preguntan en el examen</a></td><td>6 problemas de X (+2 afines)</td><td>X</td></tr>
+  <tr><td><a href="#fuera">9 Fuera de examen</a></td><td>§6.5.3 y E 6.49–6.51 (colapsado)</td><td>U pp.279-281</td></tr>
+  <tr><td><a href="#chuleta">10 Chuleta y comprobación</a></td><td>receta, fórmulas, errores frecuentes, lista</td><td>—</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios y en el examen</h3>
+<ul>
+  <li><b>Clasificar</b> una integral: ¿es impropia? ¿de primera, de segunda o de tercera especie? Hay que justificarlo con las dos comprobaciones (intervalo y función). Es lo que más sale en X.</li>
+  <li><b>Calcular</b> el valor con la definición: primitiva, Barrow en el intervalo recortado y límite.</li>
+  <li><b>Decidir si converge</b> sin calcularla, con las integrales de referencia $\frac1{x^p}$, $e^{-kx}$ y los criterios de comparación (U pp.277-278). En X no hay preguntas de este tipo, pero es materia de U y sale en E 6.47-6.48.</li>
+  <li><b>Detectar el punto malo</b> dentro del intervalo y no aplicar Barrow «a ciegas».</li>
+</ul>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Por qué hacen falta las integrales impropias <span class="src" data-l="U" data-ref="U §6.5.1 y Ej. 6.36, pp. 271-272">U pp.271-272</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Piensa en una pared que se va estrechando: cada metro de largo es más bajo que el anterior. Pintar «toda» la pared, que no se acaba nunca, ¿necesita infinita pintura? Depende de lo deprisa que se estreche. Si baja rápido (como $\frac1{x^2}$), la pintura total es finita; si baja despacio (como $\frac1x$), no alcanza ninguna cantidad. Lo mismo ocurre con una región <b>muy alta pero muy estrecha</b>, pegada a una asíntota vertical.</p>
+</div>
+
+<p>U lo resume así: hasta ahora se han integrado funciones acotadas sobre intervalos acotados, pero a menudo hace falta integrar <b>sobre intervalos no acotados</b> o <b>funciones no acotadas</b> <span class="src" data-l="U" data-ref="U §6.5.1, p. 271">U p.271</span>. Eso da dos causas de «impropiedad», que se estudian siempre por separado:</p>
+
+<table>
+  <caption>Las dos causas y el nombre de la integral</caption>
+  <tr><th scope="col">Causa</th><th scope="col">Ejemplo</th><th scope="col">Especie</th></tr>
+  <tr><td>un límite de integración es $\pm\infty$ (intervalo no acotado)</td><td>$\displaystyle\int_1^\infty\frac{dx}{x^2}$</td><td><b>primera</b> (Def. 6.9)</td></tr>
+  <tr><td>la función no está acotada en el intervalo (asíntota vertical)</td><td>$\displaystyle\int_0^1\frac{dx}{\sqrt x}$</td><td><b>segunda</b> (Def. 6.10)</td></tr>
+  <tr><td>las dos a la vez</td><td>$\displaystyle\int_0^\infty\ln x\,dx$</td><td><b>tercera</b> (se parte)</td></tr>
+</table>
+<p>Las definiciones exactas están en los apartados 2 y 3. <span class="src" data-l="U" data-ref="U Defs. 6.9 y 6.10 y margen de la p. 275">U pp.272-275</span></p>
+
+<div class="box ex"><span class="h">Ejemplo 6.36 de U · ¿Es finita el área bajo $\frac1{x^2}$ entre $x=1$ y $x=\infty$?</span>
+  <p>Hasta $t$ el área es una integral ordinaria: $\displaystyle\int_1^t\frac{dx}{x^2}=\Big[-\frac1x\Big]_1^t=1-\frac1t$. Para $t=10,100,1000$ da $\frac9{10},\ \frac{99}{100},\ \frac{999}{1000}$: parece que tiende a $1$. Y, de hecho, $\displaystyle\lim_{t\to\infty}\Big(1-\frac1t\Big)=1$.</p>
+  <figure class="bookfig"><img src="../assets/img/fig_u_6_4_area_1_x2.png" alt="Tres gráficas del área bajo y=1/x² entre x=1 y x=t, para t=10, 100 y 1000, con áreas 9/10, 99/100 y 999/1000" loading="lazy">
+  <figcaption>Área bajo $y=\frac1{x^2}$ entre $x=1$ y $x=t$: cada vez más extensa, pero siempre por debajo de $1$. <span class="src" data-l="U" data-ref="U Figura 6.4, p. 272">U p.272</span></figcaption></figure>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.36, p. 272">U p.272</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Pensar que una región infinita «tiene que» tener área infinita (o, al revés, que «impropia» significa «divergente»). Impropia solo indica <b>cómo se define</b> la integral (con un límite); después puede converger o no.</p>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Primera especie: intervalos no acotados <span class="src" data-l="U" data-ref="U §6.5.2, Def. 6.9 y Ej. 6.36-6.40, pp. 272-274">U pp.272-274</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>No sabemos integrar «hasta el infinito», pero sí hasta un número $M$ tan grande como queramos. Calculamos $\int_a^M f$ y miramos hacia dónde va ese número cuando $M$ crece. Si se acerca a un número real, ese número es el área. Si se escapa a $\infty$ o baila sin decidirse, no hay área finita.</p>
+</div>
+
+<div class="box def"><span class="h">Definición 6.9 · Integral impropia de primera especie</span>
+  <p>Si $f:[a,\infty)\to\mathbb R$ es una función <b>continua y acotada</b>,
+  $$\int_a^\infty f(x)\,dx=\lim_{M\to\infty}\int_a^M f(x)\,dx.$$
+  Si el límite es un número real, la integral es <b>convergente</b>; en otro caso, <b>divergente</b>.</p>
+  <span class="src" data-l="U" data-ref="U Definición 6.9, p. 272">U p.272</span>
+</div>
+
+<div class="box def"><span class="h">Extensiones a $(-\infty,b]$ y a $\mathbb R$</span>
+  <p>En $(-\infty,b]$: $\displaystyle\int_{-\infty}^b f=\lim_{M\to-\infty}\int_M^b f$. En todo $\mathbb R$ se parte en un número real $c$:
+  $$\int_{-\infty}^{\infty}f=\int_{-\infty}^cf+\int_c^\infty f,$$
+  que «es convergente si ambas lo son y es divergente si alguna lo es».</p>
+  <span class="src" data-l="U" data-ref="U p. 274 (tras el Ejemplo 6.39)">U p.274</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplos 6.37 y 6.38 de U · $\int_1^\infty\frac{dx}{x^p}$ (la integral modelo)</span>
+  <p>Estudia, según $p$, si $\displaystyle\int_1^\infty\frac{dx}{x^p}$ converge.</p>
+  <ol class="steps">
+    <li><b>$p=1$ (Ej. 6.37):</b> $\displaystyle\int_1^M\frac{dx}x=\ln M-\ln1=\ln M\to\infty$. <b>Diverge</b>. (Aunque $\frac1x\to0$, no baja lo bastante deprisa.)</li>
+    <li><b>$p\ne1$:</b> $\displaystyle\int_1^Mx^{-p}dx=\Big[\frac{x^{1-p}}{1-p}\Big]_1^M=\frac1{1-p}\big(M^{1-p}-1\big)$.</li>
+    <li><b>Si $p&lt;1$:</b> $1-p&gt;0$ y $M^{1-p}\to\infty$: <b>diverge</b>.</li>
+    <li><b>Si $p&gt;1$:</b> $1-p&lt;0$, $M^{1-p}=\frac1{M^{p-1}}\to0$ y el límite es $\frac{-1}{1-p}=\frac1{p-1}$: <b>converge</b>.</li>
+  </ol>
+  <p><b>Conclusión (Ej. 6.38):</b> $\displaystyle\int_1^\infty\frac{dx}{x^p}$ converge $\iff p&gt;1$, y entonces vale $\dfrac1{p-1}$.</p>
+  <p>Intuitivamente: $\frac1{x^2}$ ($p=2$) baja deprisa y el área se estabiliza en $1$; $\frac1x$ baja demasiado despacio.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplos 6.37 y 6.38, p. 273">U p.273</span> <span class="src" data-l="S" data-ref="Stewart §7.8, Ej. 1 y 4, pp. 520-523">S pp.520-523</span> <span class="src" data-l="L" data-ref="Larson §8.8, Ej. 1-2 y Teor. 8.5, pp. 569-574">L pp.569-574</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 6.39 de U · $\int_0^\infty e^{-kx}dx$</span>
+  <ol class="steps">
+    <li><b>$k=0$:</b> $\int_0^M1\,dx=M\to\infty$: diverge.</li>
+    <li><b>$k\ne0$:</b> $\displaystyle\int_0^Me^{-kx}dx=\Big[-\frac1ke^{-kx}\Big]_0^M=\frac1k\big(1-e^{-kM}\big)$.</li>
+    <li><b>$k&gt;0$:</b> $e^{-kM}\to0$: el límite es $\frac1k$. <b>Converge</b> y vale $\frac1k$.</li>
+    <li><b>$k&lt;0$:</b> $e^{-kM}\to\infty$: <b>diverge</b>.</li>
+  </ol>
+  <p>Es la segunda integral de referencia, junto a $\frac1{x^p}$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.39, pp. 273-274">U pp.273-274</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 6.40 de U · $\int_{-\infty}^{\infty}\frac{dx}{1+x^2}$ (dos extremos infinitos)</span>
+  <ol class="steps">
+    <li><b>Partir en $c=0$:</b> hay <b>dos</b> problemas ($-\infty$ y $+\infty$), uno en cada trozo: $\int_{-\infty}^0+\int_0^\infty$.</li>
+    <li><b>Trozo derecho:</b> $\displaystyle\lim_{N\to\infty}\big(\operatorname{arctg}N-\operatorname{arctg}0\big)=\frac\pi2$.</li>
+    <li><b>Trozo izquierdo:</b> $\displaystyle\lim_{M\to-\infty}\big(\operatorname{arctg}0-\operatorname{arctg}M\big)=0-\Big(-\frac\pi2\Big)=\frac\pi2$.</li>
+    <li><b>Los dos convergen</b>, luego la integral converge y vale $\frac\pi2+\frac\pi2=\pi$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.40, p. 274">U p.274</span> <span class="src" data-l="S" data-ref="Stewart §7.8, Ej. 3, p. 522">S p.522</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Calcular $\displaystyle\lim_{M\to\infty}\int_{-M}^{M}f$ con <b>un solo</b> límite simétrico. Para $f(x)=x$ da $0$, pero $\int_0^\infty x\,dx$ diverge, así que $\int_{-\infty}^\infty x\,dx$ <b>diverge</b> según la definición. Cada extremo infinito lleva su propio límite, con letras distintas ($M$ y $N$), independientes.</p>
+</div>
+
+<div class="box thm"><span class="h">Condición necesaria de convergencia (solo para descartar)</span>
+  <p>Una condición necesaria para que converja $\int_a^{+\infty}f$ es que $\displaystyle\lim_{x\to\infty}f(x)=0$, <b>siempre que ese límite exista</b>. Es decir: si el límite existe y no es $0$, diverge. Si es $0$, <b>no se sabe nada</b> ($\frac1x\to0$ y diverge).</p>
+  <p><b>Ejemplo:</b> en $\int_1^\infty\frac x{x+1}dx$ el integrando tiende a $1\ne0$, luego <b>diverge</b>. (Comprobación: $\int_1^M\big(1-\frac1{x+1}\big)dx=M-1-\ln\frac{M+1}2\to\infty$.)</p>
+  <span class="src" data-l="U" data-ref="U recuadro de la p. 274">U p.274</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen</span>
+  <p>Cambiar el extremo «bueno» no cambia el carácter: $\int_a^\infty f$ e $\int_{a'}^\infty f$ difieren en $\int_a^{a'}f$, que es una integral ordinaria (un número). Por eso $\int_2^\infty\frac{dx}{x^2}$ converge igual que $\int_1^\infty\frac{dx}{x^2}$.</p>
+  <span class="src" data-l="P" data-ref="Consecuencia de la aditividad de la integral (U §6.1) y la Def. 6.9">propio</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Segunda y tercera especie: funciones no acotadas <span class="src" data-l="U" data-ref="U §6.5.2, Def. 6.10 y Ej. 6.41-6.42, pp. 275-276">U pp.275-276</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Ahora el intervalo es acotado, pero la función se dispara a $\pm\infty$ junto a un punto (una asíntota vertical). No podemos integrar hasta el mismo punto, pero sí hasta una distancia $c$ de él, y mirar qué pasa cuando $c$ se acerca. Otra vez: si el resultado se estabiliza, es el área; si no, diverge.</p>
+</div>
+
+<div class="box def"><span class="h">Definición 6.10 · Integral impropia de segunda especie</span>
+  <p>Si $f:(a,b]\to\mathbb R$ es una función <b>continua y no acotada</b>,
+  $$\int_a^bf(x)\,dx=\lim_{c\to a^+}\int_c^bf(x)\,dx.$$
+  Convergente si el límite es un número real; divergente en otro caso. Si la asíntota está en $b$ (función en $[a,b)$): $\displaystyle\int_a^bf=\lim_{c\to b^-}\int_a^cf$.</p>
+  <span class="src" data-l="U" data-ref="U Definición 6.10, pp. 275-276">U pp.275-276</span>
+</div>
+
+<div class="box def"><span class="h">Asíntota interior y tercera especie</span>
+  <p>Si $f$ tiene una asíntota vertical $x=c$ con $c\in[a,b]$ <b>dentro</b> del intervalo, la integral se divide en dos de segunda especie, $\int_a^c+\int_c^b$, y converge solo si convergen las dos <span class="src" data-l="U" data-ref="U pp. 274, 276 (tras el Ej. 6.42)">U pp.274, 276</span>. Si, además, un extremo es $\pm\infty$ y la función no está acotada, es de <b>tercera especie</b>: «la dividimos en la suma de una integral de cada especie» <span class="src" data-l="U" data-ref="U margen de la p. 275">U p.275</span>.</p>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 6.41 de U · $\int_0^1\frac{dx}{x^p}$ (la otra integral modelo)</span>
+  <p>Estudia la convergencia de $\displaystyle\int_0^1\frac{dx}{x^p}$ según $p$.</p>
+  <ol class="steps">
+    <li><b>$p\le0$:</b> $\frac1{x^p}=x^{-p}$ es continua en $[0,1]$: integral ordinaria, no es impropia.</li>
+    <li><b>$p=1$:</b> $\displaystyle\int_c^1\frac{dx}x=-\ln c\to+\infty$ cuando $c\to0^+$: <b>diverge</b>.</li>
+    <li><b>$p&gt;0$, $p\ne1$:</b> $\displaystyle\int_c^1x^{-p}dx=\frac1{1-p}\big(1-c^{1-p}\big)$. Si $p&lt;1$: $c^{1-p}\to0$ y el límite es $\frac1{1-p}$: <b>converge</b>. Si $p&gt;1$: $c^{1-p}=\frac1{c^{p-1}}\to\infty$: <b>diverge</b>.</li>
+    <li><b>Otra vía (U):</b> con $t=\frac1x$, $\int_0^1\frac{dx}{x^p}=\int_1^\infty\frac{dt}{t^{2-p}}$, que converge $\iff2-p&gt;1\iff p&lt;1$ (Ej. 6.38): una de segunda especie se convierte en una de primera.</li>
+  </ol>
+  <p><b>Conclusión:</b> $\displaystyle\int_0^1\frac{dx}{x^p}$ converge $\iff p&lt;1$, con valor $\frac1{1-p}$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.41, p. 275">U p.275</span> <span class="src" data-l="L" data-ref="Larson §8.8, Ej. 6, p. 572">L p.572</span>
+</div>
+
+<div class="box tip"><span class="h">Regla mnemotécnica</span>
+  <p><b>En el infinito hace falta que $f$ baje deprisa ($p&gt;1$); cerca de $0$ basta que suba despacio ($p&lt;1$); $p=1$ ($\frac1x$) diverge en los dos sitios.</b></p>
+  <span class="src" data-l="P" data-ref="Resumen de los Ej. 6.38 y 6.41 de U, pp. 273 y 275">propio</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 6.42 de U · $\int_{-1}^{1}\frac{dx}{x^2}$ (asíntota en el interior)</span>
+  <ol class="steps">
+    <li><b>Mirar la continuidad:</b> $\frac1{x^2}$ no está definida en $x=0\in[-1,1]$ y $\displaystyle\lim_{x\to0}\frac1{x^2}=\infty$. Hay una asíntota <b>dentro</b> del intervalo.</li>
+    <li><b>Partir en $0$:</b> $\int_{-1}^1=\int_{-1}^0+\int_0^1$.</li>
+    <li><b>Trozo derecho:</b> $\displaystyle\lim_{c\to0^+}\Big[-\frac1x\Big]_c^1=\lim_{c\to0^+}\Big(-1+\frac1c\Big)=\infty$: diverge. (El izquierdo también; con uno que diverja ya basta.)</li>
+    <li><b>Conclusión: diverge.</b></li>
+  </ol>
+  <p>Si se aplicara Barrow «a ciegas» saldría $\big[-\frac1x\big]_{-1}^1=-1-1=-2$, un número <b>negativo</b> como área de una función positiva. Es falso porque $\frac1{x^2}$ no es continua en $[-1,1]$.</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.42, p. 276">U p.276</span> <span class="src" data-l="S" data-ref="Stewart §7.8, Ej. 7 (∫₀³ dx/(x−1)), p. 524">S p.524</span> <span class="src" data-l="L" data-ref="Larson §8.8, Ej. 8 (∫₋₁² dx/x³), p. 572">L p.572</span>
+</div>
+
+<div class="box warn"><span class="h">Precaución de U</span>
+  <p>«Antes de resolver una integral definida hay que comprobar la continuidad del integrando. Si no lo hacemos así, podemos llegar a resultados falsos al haber aplicado el teorema fundamental sin cumplirse alguna hipótesis.» <span class="src" data-l="U" data-ref="U recuadro de la p. 276">U p.276</span> Una asíntota <b>interior</b> es fácil de olvidar: busca ceros del denominador dentro de $[a,b]$ antes de aplicar Barrow.</p>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>Un punto donde $f$ <b>no está definida pero tiene límite finito</b> (como $\frac{\operatorname{sen}x}{x}$ en $0$) <b>no</b> es causa de impropiedad: $f$ sigue acotada cerca de él. Antes de decir «segunda especie», calcula el límite de $f$ en el punto sospechoso.</p>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Ver cómo se estabiliza (o no) el área <span class="src" data-l="P" data-ref="Interactivo propio; valores de forma cerrada (U Ej. 6.38 y 6.41; E 6.44), verificados con sympy">propio</span></h2>
+
+<p>Prueba el interactivo con $\frac1{x^p}$: en <b>primera especie</b> sube $M$ hasta $1000$ y mira cuánto falta para el valor límite $\frac1{p-1}$ (con $p=2$ casi nada; con $p=1{,}2$ se queda lejos incluso con $M=1000$; con $p=1$ el área sigue creciendo sin parar, aunque despacio). En <b>segunda especie</b> baja $c$ hacia $0$: con $p&lt;1$ el área se estabiliza; con $p\ge1$ la «pared» pegada al eje $y$ no deja de aportar área. La tercera opción es el ejercicio E 6.44: el área acumulada $F(M)=\int_0^M\cos(2\pi x)dx$ <b>oscila</b>.</p>
+
+<figure class="interactivo" data-escena="impropias" data-params='{"dim":2}' aria-label="Interactivo: área acumulada bajo 1/x^p entre 1 y M, entre c y 1, y bajo cos(2πx), con el valor al que tiende o la divergencia">
+  <img class="int-static" src="../assets/img/int_impropias.png" alt="Interactivo: área acumulada bajo 1/x^p entre 1 y M, entre c y 1, y bajo cos(2πx), con el valor al que tiende o la divergencia">
+  <figcaption>Interactivo propio. Primera especie con $p=2$ y $M=10$: área $0{,}9$ frente al límite $1$ (U Ej. 6.36). Segunda especie con $p=\frac12$ y $c=0{,}01$: área $1{,}8$ frente al límite $2$. Con $p=1$ el área hasta $M=1000$ es $\ln1000\approx6{,}91$ y sigue creciendo. En la tercera opción, $F(M)=\frac{\operatorname{sen}(2\pi M)}{2\pi}$ vale $0$ en los enteros pero $\pm\frac1{2\pi}\approx\pm0{,}159$ en $M=k+\frac14$, $k+\frac34$ (E 6.44; aquí $M$ llega hasta $4$ y el exponente $p$ no interviene). La recta vertical discontinua marca el extremo móvil. La parte de la gráfica que se sale de la ventana (por la derecha en primera especie, por arriba en segunda) no se dibuja, pero sí cuenta en el valor numérico. <span class="src" data-l="P" data-ref="Explicación propia; fórmulas de U Ej. 6.38 y 6.41 (pp. 273, 275) y E Ej. 6.44 (pp. 247-248)">propio</span></figcaption>
+</figure>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="s5"><span class="n">5</span>Convergencia y divergencia por comparación <span class="src" data-l="U" data-ref="U §6.5.2, Convergencia y divergencia, Ej. 6.43-6.45, pp. 277-278">U pp.277-278</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva</span>
+  <p>Muchas integrales no tienen primitiva elemental, pero basta saber <b>si</b> convergen. Es como comparar el contenido de dos depósitos: si el depósito grande es finito, el pequeño que cabe dentro también; si el pequeño ya es infinito, el grande también. Se compara con una integral que sí conocemos ($\frac1{x^p}$, $e^{-kx}$).</p>
+</div>
+
+<div class="box thm"><span class="h">Criterio de comparación (primera especie)</span>
+  <p>Sean $0\le f(x)\le g(x)$ continuas para $x\in[a,\infty)$.</p>
+  <ul>
+    <li>Si $\displaystyle\int_a^\infty g$ converge, entonces también converge $\displaystyle\int_a^\infty f$.</li>
+    <li>Si $\displaystyle\int_a^\infty f$ diverge, entonces también diverge $\displaystyle\int_a^\infty g$.</li>
+  </ul>
+  <p>Hace falta que $f$ y $g$ tomen valores mayores que $0$ (en otro caso, valor absoluto y otras definiciones). Para segunda especie hay un criterio equivalente: con $0\le f\le g$ en $(a,b]$, si $\int_a^bg$ converge, converge $\int_a^bf$; si $\int_a^bf$ diverge, diverge $\int_a^bg$.</p>
+  <span class="src" data-l="U" data-ref="U criterio de comparación, p. 277; versión de segunda especie, p. 278">U pp.277-278</span>
+</div>
+
+<figure class="bookfig"><img src="../assets/img/fig_u_6_5_comparacion.png" alt="Gráficas de f(x) por debajo de g(x) en [a, infinito)" loading="lazy">
+  <figcaption>Comparación entre las áreas bajo $f(x)$ y $g(x)$ en $[a,\infty)$: la de $f$ queda dentro de la de $g$. <span class="src" data-l="U" data-ref="U Figura 6.5, p. 277">U p.277</span></figcaption></figure>
+
+<div class="box thm"><span class="h">Comparación mediante límite</span>
+  <p>Sean $f(x)\ge0$ y $g(x)&gt;0$ continuas para $x\in[a,\infty)$ y $\displaystyle\lim_{x\to\infty}\frac{f(x)}{g(x)}=l$.</p>
+  <ul>
+    <li><b>(i)</b> Si $l\in(0,\infty)$, $\int_a^\infty f$ y $\int_a^\infty g$ son ambas convergentes o ambas divergentes.</li>
+    <li><b>(ii)</b> Si $l=0$ y $\int_a^\infty g$ converge, también converge $\int_a^\infty f$.</li>
+    <li><b>(iii)</b> Si $l=\infty$ y $\int_a^\infty g$ diverge, también diverge $\int_a^\infty f$.</li>
+  </ul>
+  <p>Para segunda especie con la asíntota en $a$, se cambia $\lim_{x\to\infty}$ por $\lim_{x\to a^+}$.</p>
+  <span class="src" data-l="U" data-ref="U recuadro de la p. 278">U p.278</span>
+</div>
+
+<h3>Integrales de referencia</h3>
+<table>
+  <caption>Con quién comparar</caption>
+  <tr><th scope="col">Integral</th><th scope="col">Converge si… (valor)</th><th scope="col">Diverge si…</th><th scope="col">Fuente</th></tr>
+  <tr><td>$\displaystyle\int_1^\infty\frac{dx}{x^p}$</td><td>$p&gt;1$ (vale $\frac1{p-1}$)</td><td>$p\le1$</td><td>U Ej. 6.38, p.273</td></tr>
+  <tr><td>$\displaystyle\int_0^1\frac{dx}{x^p}$</td><td>$p&lt;1$ (vale $\frac1{1-p}$)</td><td>$p\ge1$</td><td>U Ej. 6.41, p.275</td></tr>
+  <tr><td>$\displaystyle\int_0^\infty\frac{dx}{x^p}$</td><td>nunca (siempre falla uno de los dos trozos)</td><td>todo $p$</td><td>propio (Propio 4)</td></tr>
+  <tr><td>$\displaystyle\int_0^\infty e^{-kx}dx$</td><td>$k&gt;0$ (vale $\frac1k$)</td><td>$k\le0$</td><td>U Ej. 6.39, pp.273-274</td></tr>
+  <tr><td>$\displaystyle\int_{-\infty}^\infty\frac{dx}{1+x^2}$</td><td>converge, vale $\pi$</td><td>—</td><td>U Ej. 6.40, p.274</td></tr>
+  <tr><td>$\displaystyle\int_0^1\ln x\,dx$</td><td>converge, vale $-1$</td><td>—</td><td>E 6.46, p.248</td></tr>
+</table>
+
+<h3>Cómo elegir $g$ <span class="src" data-l="P" data-ref="Resumen propio a partir de U pp. 273-278 y de L'Hôpital (U p. 82)">propio</span></h3>
+<ul>
+  <li><b>En $\pm\infty$: quedarse con lo que crece más deprisa.</b> En polinomios y raíces, la mayor potencia: $\sqrt{x^4+x^2+1}\approx x^2$, $\sqrt{x^3+1}\approx x^{3/2}$, $\frac{2x+1}{x^3-5}\approx\frac2{x^2}$ (para $x$ grande, en $[2,\infty)$, donde $f&gt;0$). Se toma $g=\frac1{x^q}$ con esa potencia $q$ y el cociente $f/g$ tiende a un $l\in(0,\infty)$ (caso (i)).</li>
+  <li><b>Exponenciales:</b> $e^{-x}$ baja más deprisa que cualquier potencia, $\lim_{x\to\infty}x^ne^{-x}=0$ (L'Hôpital $n$ veces). Para $x^ne^{-x}$ o $e^{-x^2}$ se compara con $g=\frac1{x^2}$: límite $0$ y $\int_1^\infty\frac{dx}{x^2}$ converge (caso (ii)).</li>
+  <li><b>Logaritmos:</b> $\ln x$ crece más despacio que cualquier potencia: $\frac1{\ln x}$ es «más grande» que $\frac1x$ (límite $\infty$ con $g=\frac1x$: diverge); $\frac{\ln x}{x^2}$ es «más pequeña» que $\frac1{x^{3/2}}$ (límite $0$: converge).</li>
+  <li><b>Cerca de $0^+$: quedarse con la menor potencia</b> (manda cuando $x$ es pequeño): $x^3+x^2+x\approx x$. Equivalencias útiles (cada cociente tiende a $1$): $\operatorname{sen}x\approx x$, $e^x-1\approx x$, $\ln(1+x)\approx x$, $1-\cos x\approx\frac{x^2}2$.</li>
+  <li><b>Si el criterio «no decide»</b> (límite $0$ con $\int g$ divergente, o límite $\infty$ con $\int g$ convergente), se prueba con otra $g$ (E 6.47).</li>
+  <li><b>Signo:</b> los criterios piden $f\ge0$. Si $f\le0$ en todo el intervalo, se estudia $-f$. Si $f$ cambia de signo infinitas veces ($\operatorname{sen}x$, $\cos x$), no se pueden aplicar tal cual.</li>
+</ul>
+
+<div class="box ex"><span class="h">Ejemplo 6.43 de U · $\int_1^\infty\frac{dx}{\sqrt{x^4+x^2+1}}$</span>
+  <ol class="steps">
+    <li><b>Qué es:</b> $f&gt;0$ continua y acotada en $[1,\infty)$: primera especie. No hay primitiva sencilla: se compara.</li>
+    <li><b>Desigualdad:</b> quitar sumandos positivos al denominador hace la fracción <b>mayor</b>: $x^4+x^2+1\ge x^4\Rightarrow\sqrt{x^4+x^2+1}\ge x^2\Rightarrow f(x)\le\frac1{x^2}$.</li>
+    <li><b>Referencia:</b> $\int_1^\infty\frac{dx}{x^2}$ converge ($p=2&gt;1$). Por comparación, <b>converge</b>. (Su valor, $\approx0{,}8429$, es menor que $1$.)</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.43, p. 277">U p.277</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 6.44 de U · $\int_0^1\frac{dx}{\sqrt[4]{x^3+x^2+x}}$ (segunda especie)</span>
+  <ol class="steps">
+    <li><b>Por qué es impropia:</b> el denominador se anula en $x=0$ y $f\to\infty$ cuando $x\to0^+$: segunda especie.</li>
+    <li><b>Desigualdad en $(0,1)$:</b> $x^3+x^2+x\ge x^3\Rightarrow f(x)\le\frac1{\sqrt[4]{x^3}}=\frac1{x^{3/4}}$.</li>
+    <li><b>Referencia:</b> $\int_0^1\frac{dx}{x^{3/4}}$ converge ($p=\frac34&lt;1$). Por comparación, <b>converge</b> ($\approx1{,}1882$, menor que $4$).</li>
+  </ol>
+  <p>La mejor comparación sería con $\frac1{x^{1/4}}$ (cerca de $0$ domina el sumando $x$); pero basta una $g$ <b>mayor</b> cuya integral converja, aunque sea una cota «floja».</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.44, p. 278">U p.278</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 6.45 de U · $\int_0^\infty\frac{dx}{e^x+1}$ (comparación por límite)</span>
+  <ol class="steps">
+    <li><b>Idea:</b> para $x$ grande, $e^x+1\approx e^x$, luego $f\approx e^{-x}$. Se toma $f=\frac1{e^x+1}\ge0$, $g=e^{-x}&gt;0$, continuas en $[0,\infty)$.</li>
+    <li><b>Límite:</b> $\displaystyle\lim_{x\to\infty}\frac fg=\lim_{x\to\infty}\frac{e^x}{e^x+1}=\lim_{x\to\infty}\frac1{1+e^{-x}}=1$.</li>
+    <li><b>Caso (i)</b> con $l=1\in(0,\infty)$: mismo carácter que $\int_0^\infty e^{-x}dx=1$, que converge. <b>Converge.</b></li>
+    <li><b>(Extra: valor.)</b> $\frac{e^{-x}}{1+e^{-x}}=-\frac{(1+e^{-x})'}{1+e^{-x}}$, primitiva $-\ln(1+e^{-x})$: valor $0-(-\ln2)=\ln2\approx0{,}693$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.45, p. 278">U p.278</span>
+</div>
+
+<div class="box warn"><span class="h">Errores típicos con los criterios</span>
+  <ul>
+    <li>Usar la desigualdad <b>al revés</b>: $f\ge g$ con $\int g$ convergente no dice nada.</li>
+    <li>Con límite $l=0$, concluir «diverge» porque $\int g$ diverge: con $l=0$ solo se transmite la convergencia.</li>
+    <li>Calcular el límite del cociente en el punto que <b>no</b> es el problemático ($x\to0$ en vez de $x\to\infty$, o al revés).</li>
+    <li>Comparar con $\frac1{x^3}$ olvidando una raíz: $\frac1{\sqrt{x^3+1}}\le\frac1{x^3}$ solo se cumple en $[1;1{,}174]$ y es falso para $x$ grande (desde $x\approx1{,}17$).</li>
+  </ul>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen</span>
+  <p><b>Receta general del tema.</b></p>
+  <ol class="steps">
+    <li><b>Clasificar.</b> (a) ¿Algún límite de integración es $\pm\infty$? $\Rightarrow$ primera especie. (b) ¿Se anula un denominador, hay $\ln$ en $0$…? Calcula el límite de $f$ allí: si es $\pm\infty$, $f$ no está acotada $\Rightarrow$ segunda especie. Las dos cosas $\Rightarrow$ tercera. Ninguna: integral ordinaria, Barrow directamente.</li>
+    <li><b>Partir</b> en los puntos problemáticos, de modo que cada trozo tenga <b>un solo problema y en un extremo</b>. La integral total converge <b>solo si convergen todos los trozos</b>.</li>
+    <li><b>Si piden el valor:</b> primitiva $F$, Barrow en el intervalo «recortado» y límite: $\lim_{M\to\infty}\big(F(M)-F(a)\big)$ o $\lim_{c\to a^+}\big(F(b)-F(c)\big)$. Real $\Rightarrow$ converge; $\pm\infty$ o no existe $\Rightarrow$ diverge.</li>
+    <li><b>Si solo piden el carácter</b> (o no hay primitiva): comprobar el signo y comparar con $\frac1{x^p}$ o $e^{-kx}$ (desigualdad o límite del cociente).</li>
+  </ol>
+</div>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="ejercicios"><span class="n">6</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.42-6.48, pp. 246-252">E pp.246-252</span></h2>
+<p>Los siete ejercicios de E de esta sección (6.49–6.51 son de §6.5.3 y van <a href="#fuera">fuera de examen</a>), con su numeración y de fácil a difícil. Haz clic en cada uno (o en «Mostrar soluciones»).</p>
+<p><b>Índice rápido:</b> <a href="#e642">6.42</a> · <a href="#e643">6.43</a> · <a href="#e644">6.44</a> · <a href="#e645">6.45</a> · <a href="#e646">6.46</a> · <a href="#e647">6.47</a> · <a href="#e648">6.48</a>.</p>
+
+<details class="sol" id="e642"><summary>Ejercicio 6.42 · Función continua y acotada en $\mathbb R$: ¿qué impropias? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.42, p. 246">E p.246</span></summary>
+  <p class="enun">Si la función $f$ es una función continua y acotada en todo $\mathbb R$, ¿es posible hablar de integrales impropias de primera y segunda especie para ella?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir qué especies pueden aparecer con una $f$ continua y acotada en $\mathbb R$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada especie tiene su causa: primera = intervalo no acotado; segunda = función no acotada.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 (U p.272), extensiones (U p.274) y Def. 6.10 (U p.275).</dd>
+    <dt>Por dónde empiezo</dt><dd>Leer la Def. 6.10 y ver qué hipótesis tendría que fallar ($f$ no acotada) para que haya segunda especie.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Primera especie: sí.</b> El dominio es $\mathbb R$, así que tiene sentido $\int_a^\infty f$, $\int_{-\infty}^bf$ o $\int_{-\infty}^\infty f$, p. ej. $\int_{-\infty}^{-3}f$. (Que converjan depende de $f$: $\int_0^\infty\cos x\,dx$ diverge; $\int_0^\infty\frac{dx}{1+x^2}$ converge.)</li>
+    <li><b>Segunda especie: no.</b> La Def. 6.10 exige que $f$ <b>no esté acotada</b>. Como $f$ es acotada, en cualquier $[a,b]$ es continua y acotada: $\int_a^bf$ es ordinaria.</li>
+    <li><b>Tercera: tampoco</b> (necesitaría también $f$ no acotada).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> primera especie $\iff$ algún límite infinito; segunda especie $\iff$ $f$ no acotada en el intervalo. Se comprueban por separado.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Creer que «impropia» significa «divergente»: es una forma de definir la integral; luego puede converger o no.</p></div>
+</details>
+
+<details class="sol" id="e645"><summary>Ejercicio 6.45 · ¿Está acotado el intervalo en la segunda especie? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.45, p. 248">E p.248</span></summary>
+  <p class="enun">¿En una integral impropia de segunda especie el intervalo de integración está acotado?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Sí o no, razonado con la definición.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.10 y margen sobre la tercera especie (U p.275).</dd>
+    <dt>Por dónde empiezo</dt><dd>Leer la Def. 6.10: ¿qué dice del dominio de $f$ y qué hipótesis falla?</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Sí.</b> La Def. 6.10 se plantea para $f:(a,b]\to\mathbb R$ (o $[a,b)$) con $a,b$ números reales: el intervalo es <b>acotado</b> y lo que falla es que $f$ no está acotada.</li>
+    <li>Si además un extremo fuese $\pm\infty$, sería de <b>tercera especie</b> (U margen p.275): se parte en una de primera y otra de segunda.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> segunda especie pura = intervalo acotado + función no acotada.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Llamar «de segunda especie» a $\int_0^\infty\ln x\,dx$: tiene las dos causas, es de tercera (autoevaluación de U, ítem 9; ver el apartado 7).</p></div>
+</details>
+
+<details class="sol" id="e643"><summary>Ejercicio 6.43 · $\int_0^{+\infty}xe^{-x^2}dx$ por la definición <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.43, p. 247">E p.247</span></summary>
+  <p class="enun">Utilizando la definición, calcula la integral impropia $\int_0^{+\infty}xe^{-x^2}dx$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El valor (o la divergencia) con el límite de la Def. 6.9.</dd>
+    <dt>Cómo lo pienso</dt><dd>$x$ es, salvo el factor $-2$, la derivada de $-x^2$: la primitiva es inmediata. La exponencial baja tan deprisa que el área total será finita.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 (U p.272); tabla de inmediatas, fila $\int e^ff'=e^f$ (U p.248).</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar que es de primera especie: $xe^{-x^2}$ es continua en $[0,\infty)$ y acotada (vale $0$ en $0$, tiende a $0$ en el infinito; máximo $\approx0{,}43$ en $x=\frac1{\sqrt2}$).</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Definición:</b> $\int_0^{+\infty}xe^{-x^2}dx=\lim_{M\to+\infty}\int_0^Mxe^{-x^2}dx$.</li>
+    <li><b>Primitiva:</b> $\int xe^{-x^2}dx=-\frac12\int(-2x)e^{-x^2}dx=-\frac12e^{-x^2}$.</li>
+    <li><b>Barrow en $[0,M]$:</b> $\Big[-\frac12e^{-x^2}\Big]_0^M=-\frac12e^{-M^2}+\frac12$.</li>
+    <li><b>Límite:</b> $e^{-M^2}\to0$, luego el límite es $\frac12$.</li>
+    <li><b>Conclusión:</b> converge y vale $\frac12$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> primera especie con primitiva conocida: Barrow en $[a,M]$ y límite $M\to\infty$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Escribir «$F(\infty)$» sin el límite, o poner la primitiva $-2e^{-x^2}$ (multiplicar en lugar de dividir por $-2$).</p></div>
+</details>
+
+<details class="sol" id="e646"><summary>Ejercicio 6.46 · $\int_0^1\ln x\,dx$ por la definición <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.46, pp. 248-249">E pp.248-249</span></summary>
+  <p class="enun">Utilizando la definición calcula la integral impropia $\int_0^1\ln x\,dx$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El valor por la definición de segunda especie.</dd>
+    <dt>Cómo lo pienso</dt><dd>$\ln x\to-\infty$ cuando $x\to0^+$: el «área» está bajo el eje y es una pared infinitamente profunda pero estrecha.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.10 (U p.275); primitiva de $\ln x$ por partes (U Ej. 6.18, p.252); L'Hôpital para $0\cdot\infty$ (U pp.82-84).</dd>
+    <dt>Por dónde empiezo</dt><dd>$\ln x$ es continua en $(0,1]$ y $\lim_{x\to0^+}\ln x=-\infty$: segunda especie con el problema en $a=0$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Definición:</b> $\int_0^1\ln x\,dx=\lim_{c\to0^+}\int_c^1\ln x\,dx$.</li>
+    <li><b>Primitiva (partes, $u=\ln x$, $v'=1$):</b> $\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x$.</li>
+    <li><b>Barrow en $[c,1]$:</b> $(1\cdot\ln1-1)-(c\ln c-c)=-1-c\ln c+c$.</li>
+    <li><b>Límite delicado:</b> $c\ln c$ es $0\cdot(-\infty)$. Se escribe $c\ln c=\frac{\ln c}{1/c}$ y L'Hôpital: $\lim_{c\to0^+}\frac{1/c}{-1/c^2}=\lim_{c\to0^+}(-c)=0$.</li>
+    <li><b>Resultado:</b> $\lim_{c\to0^+}(-1-c\ln c+c)=-1$. <b>Converge y vale $-1$.</b></li>
+    <li><b>Comprobación de sentido:</b> $\ln x&lt;0$ en $(0,1)$, el resultado debe ser negativo. ✓</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> segunda especie: Barrow en $[c,b]$ y $c\to a^+$; los límites $0\cdot\infty$ se pasan a cociente para L'Hôpital.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Decir que $c\ln c\to0\cdot(-\infty)=-\infty$ (o $=0$) «porque sí»: es una indeterminación y hay que resolverla.</p></div>
+</details>
+
+<details class="sol" id="e644"><summary>Ejercicio 6.44 · $\int_0^n\cos(2\pi x)dx\to0$, pero ¿converge la impropia? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.44, pp. 247-248">E pp.247-248</span></summary>
+  <p class="enun">Para la sucesión de término general $a_n=\int_0^n\cos(2\pi x)\,dx$: 1. Comprueba que la sucesión converge a cero, es decir, $\lim_{n\to+\infty}\int_0^n\cos(2\pi x)\,dx=0$. 2. ¿Garantiza el apartado anterior que $\int_0^{+\infty}\cos(2\pi x)\,dx$ converge?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Un límite de una <b>sucesión</b> y decidir si de él se deduce la convergencia de la impropia.</dd>
+    <dt>Cómo lo pienso</dt><dd>La Def. 6.9 pide el límite de la <b>función</b> $F(M)=\int_0^M\cos(2\pi x)dx$ cuando $M$ recorre <b>todos</b> los reales grandes, no solo los enteros. El coseno tiene periodo $1$: en cada periodo se compensan área positiva y negativa, pero entre dos enteros el área acumulada sube y baja.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 (U p.272); límite en el infinito (U p.47); Prop. 2.3 (U p.85): si $\lim_{x\to\infty}F(x)=l$ entonces $\lim_{n\to\infty}F(n)=l$; el recíproco no es cierto.</dd>
+    <dt>Por dónde empiezo</dt><dd>La primitiva $\frac{\operatorname{sen}(2\pi x)}{2\pi}$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Apartado 1:</b> $a_n=\Big[\frac{\operatorname{sen}(2\pi x)}{2\pi}\Big]_0^n=\frac{\operatorname{sen}(2\pi n)-\operatorname{sen}0}{2\pi}=0$ para todo $n$ (porque $2\pi n$ es múltiplo de $2\pi$). Una sucesión constante $0$ tiene límite $0$.</li>
+    <li><b>Apartado 2, la función que importa:</b> $F(M)=\frac{\operatorname{sen}(2\pi M)}{2\pi}$.</li>
+    <li><b>Probar con valores no enteros:</b> $M=k+\frac14$: $F=\frac{\operatorname{sen}(2\pi k+\frac\pi2)}{2\pi}=\frac1{2\pi}\approx0{,}159$. Con $M=k+\frac34$: $F=-\frac1{2\pi}$. Con $M=k$: $F=0$.</li>
+    <li><b>No hay límite:</b> si $F(M)$ tendiera a un número $L$, para $M$ suficientemente grande (entero o no) estaría tan cerca de $L$ como se quiera. Pero hay valores de $M$ tan grandes como se quiera con $F(M)=0$ y otros con $F(M)=\frac1{2\pi}$: $L$ no puede estar cerca de los dos. $F(M)$ oscila entre $-\frac1{2\pi}$ y $\frac1{2\pi}$ (puedes verlo en la tercera opción del interactivo).</li>
+    <li><b>Conclusión:</b> $\int_0^{+\infty}\cos(2\pi x)dx$ <b>diverge</b> («diverge» incluye «el límite no existe»). El apartado 1 <b>no</b> lo garantiza: los enteros son «momentos de suerte» en los que el área acumulada vuelve a $0$.</li>
+    <li><b>Condición necesaria (U p.274):</b> aquí $\lim_{x\to\infty}\cos(2\pi x)$ no existe, así que no se puede aplicar; hay que ir a la definición.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para la convergencia de $\int_a^\infty f$ se estudia $\lim_{M\to\infty}F(M)$ con $M$ <b>real</b>. Para probar que no existe, basta hallar dos formas de hacer crecer $M$ con resultados distintos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Calcular solo $\lim_{n\to\infty}F(n)$ con $n$ natural y concluir que converge.</p></div>
+</details>
+
+<details class="sol" id="e647"><summary>Ejercicio 6.47 · Comparación por límite: $\int_1^\infty\frac{dx}{\ln(x+1)}$ y $\int_1^\infty e^{-x^2}dx$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.47, pp. 249-250">E pp.249-250</span></summary>
+  <p class="enun">Utiliza el <i>criterio de comparación mediante límites</i> (y la pista al margen) para estudiar si son convergentes o divergentes $\int_1^{+\infty}\frac1{\ln(x+1)}dx$ y $\int_1^{+\infty}e^{-x^2}dx$. (Pista: para cualquier $a&gt;0$, $\int_a^{+\infty}\frac{dx}x$ diverge y $\int_a^{+\infty}\frac{dx}{x^2}$ converge.)</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El carácter de dos integrales sin primitiva elemental, con el límite del cociente.</dd>
+    <dt>Cómo lo pienso</dt><dd>$\ln(x+1)$ crece más despacio que $x$: $\frac1{\ln(x+1)}$ baja <b>más despacio</b> que $\frac1x$ (que ya diverge) $\Rightarrow$ diverge. $e^{-x^2}$ baja muchísimo más deprisa que $\frac1{x^2}$ $\Rightarrow$ converge.</dd>
+    <dt>Qué uso</dt><dd>Comparación mediante límite, casos (ii) y (iii) (U p.278); L'Hôpital (U p.82); Ej. 6.38.</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar hipótesis: en $[1,\infty)$ ambas son continuas y positivas ($\ln(x+1)\ge\ln2&gt;0$), y $g=\frac1x$, $g=\frac1{x^2}$ son $&gt;0$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Primera, $g=\frac1x$:</b> $\lim_{x\to\infty}\frac{1/\ln(x+1)}{1/x}=\lim_{x\to\infty}\frac{x}{\ln(x+1)}$, tipo $\frac\infty\infty$. L'Hôpital: $\lim_{x\to\infty}\frac1{1/(x+1)}=\lim_{x\to\infty}(x+1)=+\infty$.</li>
+    <li><b>Caso (iii):</b> $l=\infty$ y $\int_1^\infty\frac{dx}x$ diverge $\Rightarrow$ $\int_1^{+\infty}\frac{dx}{\ln(x+1)}$ <b>diverge</b>. (Alternativa: $\ln(1+x)\le x$ para $x&gt;0$, luego $\frac1{\ln(x+1)}\ge\frac1x$ y la de abajo ya diverge.)</li>
+    <li><b>Segunda, primer intento con $g=\frac1x$:</b> $\lim_{x\to\infty}\frac{e^{-x^2}}{1/x}=\lim_{x\to\infty}\frac{x}{e^{x^2}}=\lim_{x\to\infty}\frac1{2xe^{x^2}}=0$. Pero $l=0$ con $\int g$ <b>divergente</b> no es ninguno de los tres casos: <b>el criterio no decide</b>.</li>
+    <li><b>Segundo intento, $g=\frac1{x^2}$:</b> $\lim_{x\to\infty}\frac{x^2}{e^{x^2}}=\lim_{x\to\infty}\frac{2x}{2xe^{x^2}}=\lim_{x\to\infty}\frac1{e^{x^2}}=0$.</li>
+    <li><b>Caso (ii):</b> $l=0$ y $\int_1^\infty\frac{dx}{x^2}$ converge $\Rightarrow$ $\int_1^{+\infty}e^{-x^2}dx$ <b>converge</b> (vale $\approx0{,}1394$, sin primitiva elemental).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> con $l=0$ hay que comparar con una $g$ <b>convergente</b>; con $l=\infty$, con una $g$ <b>divergente</b>. Si sale el caso equivocado, probar con otra potencia.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Concluir «diverge» en el paso 3 porque $\int\frac{dx}x$ diverge: con $l=0$ solo se transmite la convergencia.</p></div>
+</details>
+
+<details class="sol" id="e648"><summary>Ejercicio 6.48 · La función Gamma: convergencia, $\Gamma(p+1)=p\Gamma(p)$ y $\Gamma(n+1)=n!$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.48, pp. 250-252">E pp.250-252</span></summary>
+  <p class="enun">Demuestra que para $p&gt;0$ la siguiente integral impropia converge: $\Gamma(p)=\int_0^{+\infty}e^{-x}x^{p-1}dx$. Probar que para cada $p&gt;0$ se tiene $\Gamma(p+1)=p\Gamma(p)$. Probar que $\Gamma(1)=1$ y deducir que para todo $n\in\mathbb N$ se tiene $\Gamma(n+1)=n!$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>(a) Convergencia para todo $p&gt;0$; (b) la fórmula $\Gamma(p+1)=p\Gamma(p)$; (c) $\Gamma(1)=1$ y $\Gamma(n+1)=n!$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Hay dos posibles problemas: el $+\infty$ (siempre) y el $0$ (solo si $p-1&lt;0$, porque $x^{p-1}=\frac1{x^{1-p}}$ explota). Se parte en $1$ y cada trozo se compara con una referencia: cerca de $0$, $e^{-x}\approx1$ y $f\approx\frac1{x^{1-p}}$; en el infinito manda $e^{-x}$.</dd>
+    <dt>Qué uso</dt><dd>Tercera especie: partir (U p.275); comparación (U pp.277-278); Ej. 6.38, 6.39, 6.41; partes en la definida (U p.254); L'Hôpital (U p.82).</dd>
+    <dt>Por dónde empiezo</dt><dd>$\Gamma(p)=\int_0^1e^{-x}x^{p-1}dx+\int_1^\infty e^{-x}x^{p-1}dx$.</dd>
+  </dl></div>
+  <p><b>(a) Convergencia.</b></p>
+  <ol class="steps">
+    <li><b>Signo:</b> $f(x)=e^{-x}x^{p-1}&gt;0$ y continua en $(0,\infty)$: se pueden usar los criterios.</li>
+    <li><b>Trozo $[0,1]$.</b> Si $p\ge1$, $x^{p-1}$ es continua en $[0,1]$: integral ordinaria. Si $0&lt;p&lt;1$, $f\to\infty$ cuando $x\to0^+$: segunda especie.</li>
+    <li><b>Comparación en $(0,1]$ ($0&lt;p&lt;1$):</b> como $0&lt;e^{-x}\le1$, $0&lt;f(x)\le\frac1{x^{1-p}}$, y $\int_0^1\frac{dx}{x^{1-p}}$ converge porque $1-p&lt;1$ (Ej. 6.41; aquí se usa $p&gt;0$). Así $\int_0^1f$ <b>converge</b>.</li>
+    <li><b>Trozo $[1,\infty)$.</b> $f$ es continua y acotada. Con $g=\frac1{x^2}$: $\lim_{x\to\infty}\frac fg=\lim_{x\to\infty}\frac{x^{p+1}}{e^x}=0$ (L'Hôpital repetido hasta que el exponente de $x$ sea $\le0$).</li>
+    <li><b>Caso (ii):</b> $l=0$ y $\int_1^\infty\frac{dx}{x^2}$ converge $\Rightarrow$ $\int_1^\infty f$ <b>converge</b>.</li>
+    <li><b>Conclusión:</b> los dos trozos convergen: $\Gamma(p)$ converge para todo $p&gt;0$.</li>
+  </ol>
+  <p><b>(b) $\Gamma(p+1)=p\,\Gamma(p)$.</b></p>
+  <ol class="steps">
+    <li><b>Planteamiento:</b> $\Gamma(p+1)=\int_0^\infty e^{-x}x^p\,dx$. Se trabaja en $[c,M]$ con $0&lt;c&lt;M$ (allí todo es continuo) y al final $c\to0^+$, $M\to\infty$.</li>
+    <li><b>Partes</b> con $u=x^p$, $v'=e^{-x}$: $$\begin{aligned}\int_c^Me^{-x}x^p\,dx&=\Big[-x^pe^{-x}\Big]_c^M+p\int_c^Me^{-x}x^{p-1}dx\\&=-M^pe^{-M}+c^pe^{-c}+p\int_c^Me^{-x}x^{p-1}dx.\end{aligned}$$</li>
+    <li><b>Límites:</b> $M^pe^{-M}\to0$ (L'Hôpital); $c^pe^{-c}\to0\cdot1=0$ porque $p&gt;0$; y $\int_c^Me^{-x}x^{p-1}dx\to\Gamma(p)$ por (a).</li>
+    <li><b>Resultado:</b> $\Gamma(p+1)=0+0+p\,\Gamma(p)$.</li>
+  </ol>
+  <p><b>(c) $\Gamma(1)$ y factoriales.</b></p>
+  <ol class="steps">
+    <li>$\Gamma(1)=\int_0^\infty e^{-x}dx=1$ (Ej. 6.39 con $k=1$).</li>
+    <li><b>Bajando de uno en uno con (b):</b> $\Gamma(n+1)=n\Gamma(n)=n(n-1)\Gamma(n-1)=\dots=n(n-1)\cdots2\cdot1\cdot\Gamma(1)=n!$. Ejemplos: $\Gamma(2)=1$, $\Gamma(3)=2$, $\Gamma(5)=24=4!$.</li>
+    <li>(Cultura.) $\Gamma$ extiende el factorial a cualquier $p&gt;0$; por ejemplo $\Gamma(\frac12)=\sqrt\pi$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> integral con dos problemas: partir en un punto intermedio y comparar en cada trozo con la referencia adecuada ($\frac1{x^q}$ cerca de $0$; $\frac1{x^2}$ en el infinito si hay una exponencial que decrece).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Estudiar solo el infinito y olvidar el $0$ cuando $p&lt;1$; o hacer partes en $[0,M]$ directamente cuando $\int_0^Me^{-x}x^{p-1}dx$ todavía es impropia.</p></div>
+</details>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="propios"><span class="n">7</span>Ejemplos propios y tipos que pueden caer <span class="src" data-l="P" data-ref="Ejemplos propios, resueltos y comprobados con sympy y mpmath; autoevaluación de U, p. 282">propio</span></h2>
+
+<details class="sol" id="p1"><summary>Propio 1 · $\int_1^\infty\frac{dx}{x(x+1)}$ <span class="src" data-l="P" data-ref="Ejemplo propio comprobado con sympy">propio</span></summary>
+  <p class="enun">Calcula $\int_1^\infty\frac{dx}{x(x+1)}$ usando la definición.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El valor.</dd>
+    <dt>Cómo lo pienso</dt><dd>$\frac1{x(x+1)}\approx\frac1{x^2}$ en el infinito: converge. Es racional: fracciones simples.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 (U p.272); fracciones simples (U p.255).</dd>
+    <dt>Por dónde empiezo</dt><dd>Raíces del denominador $0$ y $-1$, fuera de $[1,\infty)$; $0&lt;f\le\frac12$: primera especie.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Fracciones simples:</b> $\frac1{x(x+1)}=\frac1x-\frac1{x+1}$.</li>
+    <li><b>Primitiva:</b> $\ln x-\ln(x+1)=\ln\frac x{x+1}$.</li>
+    <li><b>Barrow en $[1,M]$:</b> $\ln\frac M{M+1}-\ln\frac12$.</li>
+    <li><b>Límite:</b> $\frac M{M+1}\to1$, $\ln1=0$; resultado $-\ln\frac12=\ln2\approx0{,}693$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> juntar los logaritmos en uno solo antes del límite.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Separar $\lim_{M\to\infty}\ln M-\lim_{M\to\infty}\ln(M+1)=\infty-\infty$ y declarar «diverge».</p></div>
+</details>
+
+<details class="sol" id="p2"><summary>Propio 2 · $\int_2^\infty\frac{dx}{x(\ln x)^q}$: la frontera fina <span class="src" data-l="P" data-ref="Ejemplo propio comprobado con sympy">propio</span></summary>
+  <p class="enun">Estudia, según $q&gt;0$, la convergencia de $\int_2^\infty\frac{dx}{x(\ln x)^q}$ y calcula su valor cuando converja.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El carácter según $q$ y el valor.</dd>
+    <dt>Cómo lo pienso</dt><dd>Baja un poco más deprisa que $\frac1x$ (dividido por una potencia de $\ln x$, que crece muy despacio). Comparar con $\frac1x$ o $\frac1{x^2}$ no decide: hay que integrar.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 (U p.272); tabla, fila $\int f^af'$ con $f=\ln x$ (U p.248); Ej. 6.37-6.38.</dd>
+    <dt>Por dónde empiezo</dt><dd>$\frac1x$ es la derivada de $\ln x$: cambio $t=\ln x$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Cambio</b> $t=\ln x$, $dt=\frac{dx}x$; $x=2\to t=\ln2$, $x=M\to t=\ln M\to\infty$: $\int_2^M\frac{dx}{x(\ln x)^q}=\int_{\ln2}^{\ln M}\frac{dt}{t^q}$.</li>
+    <li>Es la integral modelo $\int\frac{dt}{t^q}$ desde $\ln2&gt;0$ hasta el infinito: converge $\iff q&gt;1$.</li>
+    <li><b>$q=1$:</b> $\big[\ln t\big]_{\ln2}^{\ln M}=\ln(\ln M)-\ln(\ln2)\to\infty$: diverge (muy despacio: para $M=10^{100}$ solo vale $\approx5{,}8$).</li>
+    <li><b>$q&gt;1$:</b> $\Big[\frac{t^{1-q}}{1-q}\Big]_{\ln2}^{\ln M}\to\frac{(\ln2)^{1-q}}{q-1}$. Ej.: $q=2$: $\frac1{\ln2}\approx1{,}443$.</li>
+    <li><b>$0&lt;q&lt;1$:</b> $(\ln M)^{1-q}\to\infty$: diverge.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si aparece $\frac{f'}{f^q}$, el cambio $t=f(x)$ convierte la integral en una de referencia.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Comparar con $\frac1x$ «porque se parece» y concluir divergente para todo $q$; o pensar que una integral que «crece tan despacio» converge.</p></div>
+</details>
+
+<details class="sol" id="p3"><summary>Propio 3 · Asíntota interior: $\int_{-1}^1\frac{dx}{\sqrt[3]x}$ frente a $\int_{-1}^1\frac{dx}x$ <span class="src" data-l="P" data-ref="Ejemplo propio comprobado con sympy y mpmath">propio</span></summary>
+  <p class="enun">(a) Estudia $\int_{-1}^1\frac{dx}{\sqrt[3]x}$ ($\sqrt[3]x$ es la raíz cúbica real, definida también para $x&lt;0$). (b) Estudia $\int_{-1}^1\frac{dx}x$. (c) ¿Por qué no basta decir «la función es impar, la integral vale $0$»?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El carácter de dos integrales con una asíntota en $x=0$, interior al intervalo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Hay que partir en $0$ y estudiar cada mitad <b>por separado</b> (U p.276). La simetría solo sirve si las dos mitades convergen.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.10 y asíntota interior (U pp.275-276); Ej. 6.41.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>(a) Partir:</b> $\int_{-1}^1=\int_{-1}^0+\int_0^1$. Primitiva de $x^{-1/3}$: $\frac32x^{2/3}=\frac32\sqrt[3]{x^2}$ (continua en todo $\mathbb R$).</li>
+    <li><b>(a) Trozo derecho:</b> $\lim_{c\to0^+}\big(\frac32-\frac32c^{2/3}\big)=\frac32$: converge ($p=\frac13&lt;1$).</li>
+    <li><b>(a) Trozo izquierdo:</b> $\lim_{c\to0^-}\big(\frac32\sqrt[3]{c^2}-\frac32\big)=-\frac32$: converge.</li>
+    <li><b>(a) Conclusión:</b> las dos mitades convergen $\Rightarrow$ <b>converge</b> y vale $\frac32-\frac32=0$.</li>
+    <li><b>(b)</b> $\lim_{c\to0^+}\int_c^1\frac{dx}x=\lim_{c\to0^+}(-\ln c)=+\infty$: diverge. Entonces $\int_{-1}^1\frac{dx}x$ <b>diverge</b>.</li>
+    <li><b>(c)</b> En (b), $\frac1x$ es impar y «el área de la izquierda cancela la de la derecha», pero son <b>dos áreas infinitas</b>: $\infty-\infty$ no es $0$. La definición exige que cada trozo converja por separado. En (a) la simetría sí da $0$ porque cada mitad es finita.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> asíntota interior: partir, calcular cada mitad con su propio límite lateral y solo si las dos son números sumarlas.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Usar un único límite simétrico $\lim_{\varepsilon\to0^+}\Big(\int_{-1}^{-\varepsilon}+\int_\varepsilon^1\Big)\frac{dx}x=0$ y concluir que (b) vale $0$. Ese límite no es la definición.</p></div>
+</details>
+
+<details class="sol" id="p4"><summary>Propio 4 · Tercera especie: $\int_0^\infty\frac{dx}{\sqrt x(1+x)}$ y por qué $\int_0^\infty\frac{dx}{x^p}$ nunca converge <span class="src" data-l="P" data-ref="Ejemplo propio comprobado con sympy">propio</span></summary>
+  <p class="enun">(a) Clasifica y calcula $\int_0^\infty\frac{dx}{\sqrt x\,(1+x)}$. (b) Demuestra que $\int_0^\infty\frac{dx}{x^p}$ diverge para todo $p$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Una de tercera especie con valor, y un resultado general.</dd>
+    <dt>Cómo lo pienso</dt><dd>En $0$, $f\approx\frac1{\sqrt x}$ (sube despacio, bien); en el infinito, $f\approx\frac1{x^{3/2}}$ (baja deprisa, bien). Pero $\frac1{x^p}$ no puede estar bien en los dos sitios: en $0$ necesita $p&lt;1$ y en el infinito $p&gt;1$.</dd>
+    <dt>Qué uso</dt><dd>Tercera especie (U margen p.275); comparación (U pp.277-278); Ej. 6.38 y 6.41; cambio de variable (U p.251).</dd>
+    <dt>Por dónde empiezo</dt><dd>Partir en $1$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>(a) Clasificación:</b> límite $\infty$ y $f\to\infty$ cuando $x\to0^+$: tercera especie. $\int_0^\infty=\int_0^1+\int_1^\infty$.</li>
+    <li><b>Carácter de $\int_0^1$:</b> $1+x\ge1\Rightarrow f\le\frac1{\sqrt x}$, y $\int_0^1\frac{dx}{\sqrt x}$ converge: converge.</li>
+    <li><b>Carácter de $\int_1^\infty$:</b> $1+x\ge x\Rightarrow f\le\frac1{x^{3/2}}$, y $\int_1^\infty\frac{dx}{x^{3/2}}$ converge: converge.</li>
+    <li><b>Valor:</b> con $t=\sqrt x$ ($dx=2t\,dt$): $\int\frac{2t\,dt}{t(1+t^2)}=2\operatorname{arctg}t=2\operatorname{arctg}\sqrt x$. Entonces $\int_0^1f=2\cdot\frac\pi4-0=\frac\pi2$ y $\int_1^\infty f=\lim_{M\to\infty}\big(2\operatorname{arctg}\sqrt M-\frac\pi2\big)=\pi-\frac\pi2=\frac\pi2$. Total: $\pi$.</li>
+    <li><b>(b)</b> $\int_0^\infty\frac{dx}{x^p}=\int_0^1+\int_1^\infty$. Si $p\le1$, $\int_1^\infty$ diverge (Ej. 6.38). Si $p\ge1$, $\int_0^1$ diverge (Ej. 6.41). Todo $p$ cae en algún caso: siempre diverge algún trozo, luego <b>siempre diverge</b>.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> tercera especie: un trozo con cada problema; en cada uno, la referencia $\frac1{x^q}$ con la desigualdad que toca ($q&lt;1$ cerca de $0$, $q&gt;1$ en el infinito).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Comparar toda la integral con una sola $\frac1{x^q}$ en $(0,\infty)$: esa referencia siempre diverge, no sirve para probar convergencia.</p></div>
+</details>
+
+<h3>Cuatro tipos de pregunta que no aparecen en X (y pueden caer)</h3>
+<p>Se resuelven solo con los criterios de U (pp. 277-278) y las integrales de referencia.</p>
+
+<details class="sol" id="ta"><summary>Tipo A · Comparación en el infinito: $\int_1^\infty\frac{dx}{\sqrt{x^3+1}}$ <span class="src" data-l="P" data-ref="Tipo propio; criterio de comparación de U p. 277">propio</span></summary>
+  <p class="enun">Estudia el carácter de $\int_1^\infty\frac{dx}{\sqrt{x^3+1}}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El carácter (no hay primitiva elemental).</dd>
+    <dt>Cómo lo pienso</dt><dd>$\sqrt{x^3+1}\approx x^{3/2}$; $\frac1{x^{3/2}}$ tiene exponente $&gt;1$: converge.</dd>
+    <dt>Qué uso</dt><dd>Comparación (U p.277); Ej. 6.38.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f&gt;0$, continua y acotada en $[1,\infty)$: primera especie.</li>
+    <li><b>Desigualdad:</b> $x^3+1\ge x^3\Rightarrow f(x)\le\frac1{x^{3/2}}$.</li>
+    <li><b>Referencia:</b> $\int_1^\infty\frac{dx}{x^{3/2}}$ converge ($p=\frac32&gt;1$, vale $2$). Por tanto <b>converge</b> (valor $\approx1{,}8948&lt;2$).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> con $f&gt;0$ y el denominador sin anularse en el intervalo, si (grado del denominador) $-$ (grado del numerador), contando raíces como fracciones, es $&gt;1$, converge en el infinito.</div>
+</details>
+
+<details class="sol" id="tb"><summary>Tipo B · Comparación de segunda especie: $\int_0^1\frac{dx}{\sqrt{x(1+x)}}$ <span class="src" data-l="P" data-ref="Tipo propio; criterio de segunda especie de U p. 278">propio</span></summary>
+  <p class="enun">Estudia el carácter de $\int_0^1\frac{dx}{\sqrt{x(1+x)}}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El carácter (y el valor, si se puede).</dd>
+    <dt>Cómo lo pienso</dt><dd>Cerca de $0$, $x(1+x)\approx x$ y $f\approx\frac1{\sqrt x}$: exponente $\frac12&lt;1$, converge.</dd>
+    <dt>Qué uso</dt><dd>Comparación de segunda especie (U p.278); Ej. 6.41.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f\to+\infty$ cuando $x\to0^+$: segunda especie en $0$.</li>
+    <li><b>Desigualdad en $(0,1]$:</b> $1+x\ge1\Rightarrow x(1+x)\ge x\Rightarrow f(x)\le\frac1{\sqrt x}$.</li>
+    <li>$\int_0^1\frac{dx}{\sqrt x}=2$ converge $\Rightarrow$ <b>converge</b>.</li>
+    <li>(Valor.) Con $t=\sqrt x$: $2\int\frac{dt}{\sqrt{1+t^2}}=2\ln\big(t+\sqrt{1+t^2}\big)$; valor $2\ln(1+\sqrt2)\approx1{,}7627&lt;2$. ✓</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> cerca de $0$, quedarse con la <b>menor</b> potencia de $x$ en cada factor.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Tomar el término de mayor grado ($x^2$) como en el infinito: daría $\frac1x$, cuya integral diverge, y comparar con algo divergente por arriba no sirve.</p></div>
+</details>
+
+<details class="sol" id="tc"><summary>Tipo C · Un punto que no es problema: $\int_0^\infty\frac{\operatorname{sen}^2x}{x^2}dx$ <span class="src" data-l="P" data-ref="Tipo propio; Def. 6.9 y comparación de U pp. 272 y 277">propio</span></summary>
+  <p class="enun">Clasifica y estudia la convergencia de $\int_0^\infty\frac{\operatorname{sen}^2x}{x^2}dx$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Clasificar y estudiar la convergencia.</dd>
+    <dt>Cómo lo pienso</dt><dd>En $x=0$ el cociente no está definido, pero $\frac{\operatorname{sen}x}x\to1$: la función está acotada cerca de $0$. El único problema es el infinito, y ahí $0\le\frac{\operatorname{sen}^2x}{x^2}\le\frac1{x^2}$.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 (U p.272); comparación (U p.277); $\lim_{x\to0}\frac{\operatorname{sen}x}x=1$ (U Ej. 2.8, pp.82-83).</dd>
+    <dt>Por dónde empiezo</dt><dd>Partir en $1$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>En $0$:</b> $\lim_{x\to0^+}\frac{\operatorname{sen}^2x}{x^2}=1$. Definiendo $f(0)=1$, $f$ es continua en $[0,1]$: $\int_0^1f$ es <b>ordinaria</b> (no es de segunda especie).</li>
+    <li><b>En $[1,\infty)$:</b> $f\ge0$ y $\operatorname{sen}^2x\le1\Rightarrow f(x)\le\frac1{x^2}$, y $\int_1^\infty\frac{dx}{x^2}$ converge $\Rightarrow$ $\int_1^\infty f$ converge.</li>
+    <li><b>Conclusión:</b> impropia <b>solo de primera especie</b> y <b>convergente</b>. (Su valor, $\frac\pi2$, no se obtiene con primitivas elementales; no se pide.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> ante un denominador que se anula, calcular el <b>límite</b> de $f$ en ese punto: si es finito, no hay segunda especie.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Clasificarla como de tercera especie por el $x^2$ del denominador; o usar «$f\to0$» como prueba de convergencia (solo sirve para probar divergencia).</p></div>
+</details>
+
+<details class="sol" id="td"><summary>Tipo D · Comparación por límite en $0^+$: $\int_0^1\frac{dx}{\operatorname{sen}x}$ y $\int_0^1\frac{dx}{\sqrt{\operatorname{sen}x}}$ <span class="src" data-l="P" data-ref="Tipo propio; comparación por límite de U, margen de la p. 278">propio</span></summary>
+  <p class="enun">Estudia el carácter de $\int_0^1\frac{dx}{\operatorname{sen}x}$ y de $\int_0^1\frac{dx}{\sqrt{\operatorname{sen}x}}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El carácter de las dos.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cerca de $0$, $\operatorname{sen}x\approx x$: la primera se parece a $\frac1x$ (diverge) y la segunda a $\frac1{\sqrt x}$ (converge).</dd>
+    <dt>Qué uso</dt><dd>Comparación por límite extendida a segunda especie (U margen p.278: $\lim_{x\to a^+}\frac fg$); Ej. 6.41.</dd>
+    <dt>Por dónde empiezo</dt><dd>En $(0,1]$, $\operatorname{sen}x&gt;0$ (porque $1&lt;\pi$): ambas positivas, continuas y no acotadas en $0^+$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Primera, $g=\frac1x$:</b> $\lim_{x\to0^+}\frac{1/\operatorname{sen}x}{1/x}=\lim_{x\to0^+}\frac x{\operatorname{sen}x}=1\in(0,\infty)$. Mismo carácter que $\int_0^1\frac{dx}x$, que diverge $\Rightarrow$ <b>diverge</b>.</li>
+    <li><b>Segunda, $g=\frac1{\sqrt x}$:</b> $\lim_{x\to0^+}\sqrt{\frac x{\operatorname{sen}x}}=1$. Mismo carácter que $\int_0^1\frac{dx}{\sqrt x}$, que converge $\Rightarrow$ <b>converge</b> ($\approx2{,}0348$).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> cerca de $0$, sustituir cada función por su equivalente ($\operatorname{sen}x\approx x$, $e^x-1\approx x$, $\ln(1+x)\approx x$, $1-\cos x\approx\frac{x^2}2$) para elegir $g=\frac1{x^q}$; luego comprobar el límite del cociente.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Calcular el límite del cociente en $x\to\infty$ (copiando el recuadro) cuando el problema está en $0^+$.</p></div>
+</details>
+
+<h3>Autoevaluación de U (p. 282), ítems de impropias</h3>
+<details class="sol" id="auto"><summary>Ítems 9 y 10 · ¿Verdadero o falso? <span class="src" data-l="U" data-ref="U Autoevaluación del Tema 6, p. 282">U p.282</span></summary>
+  <p class="enun"><b>9.</b> La integral impropia $\int_0^\infty\ln(x)\,dx$ es de segunda especie. <b>10.</b> Si $f$ es continua decreciente en $[1,\infty)$ y $\lim_{x\to\infty}f(x)=0$, entonces $\int_1^\infty f(x)\,dx$ es convergente.</p>
+  <ol class="steps">
+    <li><b>9. Falso.</b> Tiene las dos causas: límite $\infty$ y $\ln x\to-\infty$ cuando $x\to0^+$. Es de <b>tercera especie</b> (U margen p.275). Partiendo en $1$: $\int_0^1\ln x=-1$ converge (E 6.46), pero $\int_1^M\ln x\,dx=M\ln M-M+1\to\infty$ diverge; luego la integral <b>diverge</b>.</li>
+    <li><b>10. Falso.</b> Contraejemplo: $f(x)=\frac1x$ es continua, decreciente, tiende a $0$ y $\int_1^\infty\frac{dx}x$ diverge (U Ej. 6.37). La condición $f\to0$ es <b>necesaria</b> (U p.274), no suficiente.</li>
+  </ol>
+</details>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="examen"><span class="n">8</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<p>En X, las integrales impropias aparecen sobre todo como «<b>clasifíquela y, si puede, calcule su valor</b>». Los seis problemas siguientes van de clasificar sin calcular a calcular con tercera especie. <b>En X no hay preguntas de convergencia por comparación</b>: para eso están los ejercicios E 6.47-6.48 y los tipos A-D del apartado anterior.</p>
+
+<details class="sol" id="x1"><summary>X1 · ¿Puede ser impropia con límites finitos? <span class="src" data-l="X" data-ref="X p.25 (Septiembre 2012, Ing. Mecánica, Modelo A, Pregunta corta 2)">X p.25 (sept. 2012)</span></summary>
+  <p class="enun">(1 punto) Sean $a$ y $b$ dos números reales del intervalo $(-10,10)$. Razone si la integral $\int_a^bf(x)\,dx$ puede ser impropia.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir qué tipo de impropiedad es posible con límites de integración finitos.</dd>
+    <dt>Cómo lo pienso</dt><dd>Las causas son dos: límite infinito (imposible aquí) o $f$ no acotada (posible, no sabemos nada de $f$).</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 y 6.10 (U pp.272, 275).</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps"><li>$a$ y $b$ son reales: el intervalo es acotado, no hay primera especie.</li><li>Si $f$ no está acotada en $[a,b]$ (p. ej. $\int_0^1\frac{dx}{\sqrt x}$), hay segunda especie.</li><li><b>Respuesta:</b> sí puede ser impropia, solo de segunda especie.</li></ol></div>
+  <p><b>Explicación paso a paso</b></p>
+  <ol class="steps">
+    <li><b>Primera especie: no.</b> $a$ y $b$ son números reales: el intervalo es acotado.</li>
+    <li><b>Segunda especie: sí puede,</b> si $f$ no está acotada en $[a,b]$. Ejemplo: $\int_0^1\frac{dx}{\sqrt x}$ (converge, vale $2$); o $\int_{-1}^1\frac{dx}{x^2}$, con asíntota interior (diverge).</li>
+    <li><b>Respuesta:</b> sí, pero solo de <b>segunda especie</b>.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> límites finitos $\Rightarrow$ solo puede haber segunda especie, y solo si $f$ no está acotada en $[a,b]$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Contestar «no, porque el intervalo es acotado» olvidando la otra causa.</p></div>
+</details>
+
+<details class="sol" id="x2"><summary>X2 · Clasificar $\int_0^\infty e^{-x}dx$ <span class="src" data-l="X" data-ref="X p.73 (Septiembre 2016, Ing. Mecánica, Modelo B, Pregunta corta 3)">X p.73 (sept. 2016)</span></summary>
+  <p class="enun">(1 punto) Clasifique la integral impropia siguiente: $\int_0^\infty e^{-x}dx$. Explique por qué es de ese tipo.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>La especie y su justificación.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 (U p.272); Ej. 6.39 (U pp.273-274).</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps"><li>$e^{-x}$ es continua y $0&lt;e^{-x}\le1$: acotada, no es de segunda especie.</li><li>$[0,\infty)$ no está acotado: <b>primera especie</b>.</li><li>(Valor) $\lim_{M\to\infty}\big(1-e^{-M}\big)=1$: converge.</li></ol></div>
+  <p><b>Explicación paso a paso</b></p>
+  <ol class="steps">
+    <li><b>Función:</b> $e^{-x}$ es continua en $[0,\infty)$ y $0&lt;e^{-x}\le1$: <b>acotada</b>. No hay segunda especie.</li>
+    <li><b>Intervalo:</b> $[0,\infty)$ no está acotado. Es de <b>primera especie</b>.</li>
+    <li>(Si piden el valor) $\lim_{M\to\infty}\big(1-e^{-M}\big)=1$: converge y vale $1$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> clasificar = mirar intervalo (¿infinito?) y función (¿acotada?) por separado y decirlo con esas palabras.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Decir solo «es de primera especie» sin explicar las dos comprobaciones (piden el porqué).</p></div>
+</details>
+
+<details class="sol" id="x3"><summary>X3 · $\int_1^e\frac{\ln x}x dx$: ¿es impropia? <span class="src" data-l="X" data-ref="X p.105 (Ing. Electrónica, Examen 3, Ejercicio 5)">X p.105 (Electrónica 3)</span></summary>
+  <p class="enun">(3 puntos) Dada la integral $\int_1^e\frac{\ln x}{x}dx$: razone si es una integral impropia; aproxime su valor con la fórmula del trapecio; calcule el valor real; razone si la aproximación por el trapecio puede ser irracional cuando la integral que aproxima tiene valor racional.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Clasificar, aproximar con el trapecio, calcular el valor exacto y una reflexión.</dd>
+    <dt>Cómo lo pienso</dt><dd>El único punto «peligroso» de $\frac{\ln x}x$ es $x=0$, fuera de $[1,e]$.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9-6.10 (U pp.272, 275); trapecio (U Def. 6.5, p.267); tabla, fila $\int f^af'$ (U p.248); Barrow (U p.244).</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps"><li>$[1,e]$ es acotado y $\frac{\ln x}x$ es continua en él: <b>no es impropia</b>.</li><li>Trapecio: $\frac{e-1}2\cdot\frac1e=\frac12-\frac1{2e}$. Exacto: $\Big[\frac{(\ln x)^2}2\Big]_1^e=\frac12$.</li><li>Sí puede: $\frac12$ es racional y $\frac12-\frac1{2e}$ no.</li></ol></div>
+  <p><b>Explicación paso a paso</b></p>
+  <ol class="steps">
+    <li><b>¿Impropia? No:</b> $[1,e]$ es acotado y $\frac{\ln x}x$ es continua en él, luego acotada (Weierstrass). Integral ordinaria.</li>
+    <li><b>Trapecio:</b> $f(1)=0$, $f(e)=\frac1e$: $\approx\frac{0+\frac1e}2(e-1)=\frac12-\frac1{2e}\approx0{,}3161$.</li>
+    <li><b>Valor exacto:</b> $\frac{\ln x}x=\ln x\cdot(\ln x)'$, primitiva $\frac{(\ln x)^2}2$. Barrow: $\frac12-0=\frac12$.</li>
+    <li><b>Reflexión:</b> sí puede: el exacto $\frac12$ es racional y la aproximación $\frac12-\frac1{2e}$ es irracional (porque $e$ lo es).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> «¿es impropia?» se contesta siempre con las dos comprobaciones; si las dos fallan, Barrow directamente.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Ver un $\ln$ o una fracción y declarar impropia sin mirar si el punto malo está en el intervalo.</p></div>
+</details>
+
+<details class="sol" id="x4"><summary>X4 · $\int_{-\infty}^{-1}\frac2{x(x-1)}dx$: clasificar y valor <span class="src" data-l="X" data-ref="X pp.46-47 (Septiembre 2014, Modelo A, Ejercicio 5 c)">X pp.46-47 (sept. 2014)</span></summary>
+  <p class="enun">Sea $f(x)=\frac2{x(x-1)}$. Estúdiese si la integral $\int_{-\infty}^{-1}f(x)\,dx$ es impropia. En caso de que lo sea, indíquese de qué especie. (En el apartado a) se obtenía $\int\frac2{x(x-1)}dx=2\ln\lvert x-1\rvert-2\ln\lvert x\rvert+C$.)</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Clasificar (y, como extra, el valor).</dd>
+    <dt>Cómo lo pienso</dt><dd>Los ceros del denominador, $0$ y $1$, quedan fuera de $(-\infty,-1]$: el único problema es el $-\infty$.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 y extensión a $(-\infty,b]$ (U pp.272, 274); fracciones simples (U p.255).</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps"><li>Para $x\le-1$, $0&lt;f(x)\le1$: acotada. El intervalo no está acotado: <b>primera especie</b>.</li><li>$F(x)=2\ln\Big\lvert\frac{x-1}x\Big\rvert$; $\displaystyle\int_{-\infty}^{-1}f=\lim_{M\to-\infty}\big(F(-1)-F(M)\big)=2\ln2-0=2\ln2$: converge.</li></ol></div>
+  <p><b>Explicación paso a paso</b></p>
+  <ol class="steps">
+    <li><b>Función acotada:</b> para $x\le-1$, $x(x-1)\ge(-1)(-2)=2$, luego $0&lt;f(x)\le1$: continua y acotada. No hay segunda especie.</li>
+    <li><b>Intervalo no acotado</b> (límite $-\infty$): <b>primera especie</b>, única causa.</li>
+    <li><b>Valor (extra):</b> $F(x)=2\ln\Big\lvert\frac{x-1}x\Big\rvert$; $F(-1)=2\ln2$; cuando $M\to-\infty$, $\frac{M-1}M\to1$ y $F(M)\to0$.</li>
+    <li><b>Conclusión:</b> $\int_{-\infty}^{-1}f=\lim_{M\to-\infty}\big(F(-1)-F(M)\big)=2\ln2\approx1{,}386$: converge.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> en racionales, localizar las raíces del denominador y ver si caen en el intervalo; juntar los logaritmos en uno solo antes del límite ($\infty-\infty$ desaparece).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Calcular por separado $\lim_{M\to-\infty}2\ln\lvert M-1\rvert$ y $\lim_{M\to-\infty}2\ln\lvert M\rvert$ ($\infty-\infty$).</p></div>
+</details>
+
+<details class="sol" id="x5"><summary>X5 · $\int_0^{+\infty}\frac x{\sqrt{e^x}}dx$: especie y valor <span class="src" data-l="X" data-ref="X p.150 (Febrero 2019, 1.ª semana, Ing. Electrónica Industrial y Automática, Pregunta corta 2)">X p.150 (feb. 2019)</span></summary>
+  <p class="enun">(1 punto) Decida si la siguiente integral impropia es de primera o de segunda especie, y calcule su valor: $\int_0^{+\infty}\frac x{\sqrt{e^x}}dx$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>La especie y el valor.</dd>
+    <dt>Cómo lo pienso</dt><dd>$\frac x{\sqrt{e^x}}=xe^{-x/2}$: potencia por exponencial decreciente, que gana. Es como $\Gamma(2)$ con $x/2$.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 (U p.272); partes (U p.252); L'Hôpital (U p.82).</dd>
+    <dt>Por dónde empiezo</dt><dd>Reescribir $\sqrt{e^x}=e^{x/2}$.</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps"><li>$f=xe^{-x/2}$ es acotada y el intervalo no: <b>primera especie</b>.</li><li>Primitiva (por partes): $(-2x-4)e^{-x/2}$.</li><li>$\displaystyle\int_0^M=4-\frac{2M+4}{e^{M/2}}\to4$: converge y vale $4$.</li></ol></div>
+  <p><b>Explicación paso a paso</b></p>
+  <ol class="steps">
+    <li><b>Clasificación:</b> $f(x)=xe^{-x/2}$ es continua en $[0,\infty)$, $\ge0$, tiende a $0$ y tiene máximo $\frac2e$ en $x=2$: acotada. Intervalo no acotado: <b>primera especie</b>.</li>
+    <li><b>Primitiva por partes</b> ($u=x$, $v'=e^{-x/2}$, $v=-2e^{-x/2}$): $\int xe^{-x/2}dx=-2xe^{-x/2}+\int2e^{-x/2}dx=(-2x-4)e^{-x/2}$.</li>
+    <li><b>Barrow en $[0,M]$:</b> $(-2M-4)e^{-M/2}+4=4-\frac{2M+4}{e^{M/2}}$.</li>
+    <li><b>Límite:</b> $\frac{2M+4}{e^{M/2}}$ es $\frac\infty\infty$; L'Hôpital: $\frac2{\frac12e^{M/2}}\to0$.</li>
+    <li><b>Valor:</b> $4$. Converge.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> polinomio por exponencial decreciente: partes (derivando el polinomio); el límite final siempre da $0$ en el infinito.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Signo en $v$: $\int e^{-x/2}dx=-2e^{-x/2}$, no $-\frac12e^{-x/2}$.</p></div>
+</details>
+
+<details class="sol" id="x6"><summary>X6 · $\int_{-\infty}^{-2}\frac2{x(x+2)}dx$: primera y segunda especie a la vez <span class="src" data-l="X" data-ref="X pp.93-94 (Febrero 2018, Ing. Mecánica, Modelo B, Ejercicio 5 c)">X pp.93-94 (feb. 2018)</span></summary>
+  <p class="enun">Sea $f(x)=\frac2{x(x+2)}$. (c) (0,75 puntos) Estudie si $\int_{-\infty}^{-2}f(x)\,dx$ es impropia. En caso de que lo sea, indique de qué especie o especies. (En el apartado a) se obtenía $\int\frac2{x(x+2)}dx=-\ln\lvert x+2\rvert+\ln\lvert x\rvert+C$.)</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Clasificar (y, como extra, estudiar si converge).</dd>
+    <dt>Cómo lo pienso</dt><dd>Dos problemas: el $-\infty$ y la raíz $x=-2$ del denominador, que es justo el extremo derecho.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.9 y 6.10 (U pp.272, 275); tercera especie (U margen p.275).</dd>
+    <dt>Por dónde empiezo</dt><dd>$\lim_{x\to-2^-}\frac2{x(x+2)}$: $x\to-2$, $x+2\to0^-$, $x(x+2)\to0^+$, luego $f\to+\infty$.</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps"><li>Límite $-\infty$ y $f\to+\infty$ en $-2^-$: <b>primera y segunda especie a la vez</b> (tercera).</li><li>Se parte en $-3$; en el trozo $[-3,-2)$: $\lim_{c\to-2^-}\big(\ln\lvert c\rvert-\ln\lvert c+2\rvert-\ln3\big)=+\infty$.</li><li>Un trozo diverge: <b>diverge</b> toda la integral.</li></ol></div>
+  <p><b>Explicación paso a paso</b></p>
+  <ol class="steps">
+    <li><b>Clasificación:</b> límite $-\infty$ (primera especie) <b>y</b> $f$ no acotada en $-2$ (segunda especie): <b>primera y segunda a la vez</b> (tercera especie).</li>
+    <li><b>Partir</b> en un punto intermedio, p. ej. $-3$: $\int_{-\infty}^{-2}=\int_{-\infty}^{-3}+\int_{-3}^{-2}$.</li>
+    <li><b>Trozo de segunda especie:</b> con $F(x)=\ln\lvert x\rvert-\ln\lvert x+2\rvert$, $F(c)-F(-3)=\ln\lvert c\rvert-\ln\lvert c+2\rvert-\ln3$. Cuando $c\to-2^-$, $\ln\lvert c\rvert\to\ln2$ y $-\ln\lvert c+2\rvert\to+\infty$: el límite es $+\infty$. <b>Diverge.</b></li>
+    <li><b>Conclusión:</b> como un trozo diverge, $\int_{-\infty}^{-2}f$ <b>diverge</b> (el otro converge y vale $\ln3$, pero da igual).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> tercera especie: partir, y en cuanto un trozo diverja, la integral diverge.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Usar Barrow con la primitiva en $[-\infty,-2]$ como si nada: $F(-2)$ no existe.</p></div>
+</details>
+
+<p><b>Otros del mismo tipo.</b> <span class="src" data-l="X" data-ref="X p.81 (Febrero 2017, Ing. Mecánica, Modelo B, Pregunta corta 3)">X p.81</span> $\int_1^\infty\frac1{x^p}dx$ con $p&gt;1$, ¿primera y/o segunda especie? Solo primera: $0&lt;\frac1{x^p}\le1$ en $[1,\infty)$ y la asíntota de $x=0$ queda fuera del intervalo. <span class="src" data-l="X" data-ref="X pp.115-116 (Examen 3, Ejercicio 3)">X pp.115-116</span> $\int_0^{\pi/2}\frac{\cos x}{\sqrt{\operatorname{sen}x}}dx=2$ (segunda especie escondida en $0$; primitiva $2\sqrt{\operatorname{sen}x}$).</p>
+
+<!-- ============================ 9 ============================ -->
+<h2 id="fuera" class="fuera-h"><span class="n">9</span>Fuera de examen: §6.5.3 y E 6.49–6.51 <span class="src" data-l="U" data-ref="U §6.5.3, pp. 279-281; E Ej. 6.49-6.51, pp. 252-254">U pp.279-281; E pp.252-254</span></h2>
+<details class="fuera"><summary>Fuera de examen: sucesiones funcionales e integración, series de potencias término a término (U §6.5.3, pp. 279-281) y E 6.49–6.51</summary>
+  <p>Esta parte pertenece a sucesiones y series de funciones, que <b>no entra en examen</b>. Solo se resume.</p>
+  <ul>
+    <li><b>U §6.5.3 (pp. 279-280):</b> cuándo se puede pasar el límite dentro de la integral, $\lim_{n\to\infty}\int f_n=\int\lim_{n\to\infty} f_n$: si las $f_n$ son continuas en $[a,b]$ y convergen uniformemente en $[a,b]$ a $f$, entonces $\lim_{n\to\infty}\int_a^bf_n=\int_a^bf$. <b>U pp. 280-281 (Prop. 6.1):</b> si $f(x)=\sum_{n=0}^\infty a_nx^n$ en $(-c,c)$, entonces $\int f=k+\sum_{n=0}^\infty\frac{a_n}{n+1}x^{n+1}$ en $(-c,c)$. <span class="src" data-l="U" data-ref="U §6.5.3 y Prop. 6.1, pp. 279-281">U pp.279-281</span></li>
+    <li><b>E 6.49 (E pp. 252-253).</b> Calcula $\lim_{n\to+\infty}\int_2^3\frac{\cos n+\operatorname{sen}(nx)}{x^n}dx$. <b>Resultado: $0$.</b> En $[2,3]$, $\Big\lvert\frac{\cos n+\operatorname{sen}(nx)}{x^n}\Big\rvert\le\frac2{2^n}\to0$: convergencia uniforme a $0$. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.49, pp. 252-253">E pp.252-253</span></li>
+    <li><b>E 6.50 (E p. 253).</b> Para $f_n(x)=\cos(nx)$ en $[0,2\pi]$, ¿puede existir $\lim_{n\to+\infty}\int_0^{2\pi}f_n$ sin convergencia uniforme? <b>Sí:</b> $\int_0^{2\pi}\cos(nx)dx=\frac{\operatorname{sen}(2\pi n)}n=0$ para todo $n$, límite $0$, aunque $\{f_n\}$ ni siquiera converge puntualmente. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.50, p. 253">E p.253</span></li>
+    <li><b>E 6.51 (E p. 254).</b> Calcula una primitiva de $f(x)=\sum_{n=0}^{+\infty}\frac{2^n}{n!}x^n$. <b>Resultado:</b> radio de convergencia $\infty$; integrando término a término, $\int f=\sum_{n=0}^\infty\frac{2^n}{(n+1)!}x^{n+1}=\frac12f(x)-\frac12$, y como $f(x)=e^{2x}$, es $\frac12e^{2x}-\frac12$. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.51, p. 254">E p.254</span></li>
+  </ul>
+</details>
+
+<!-- ============================ 10 ============================ -->
+<h2 id="chuleta"><span class="n">10</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+
+<h3>Errores frecuentes</h3>
+<ul>
+  <li>Aplicar Barrow sin ver la asíntota <b>interior</b> ($\int_{-1}^1\frac{dx}{x^2}=-2$ es falso).</li>
+  <li>Creer que $f$ no acotada solo importa en los extremos del intervalo.</li>
+  <li>Usar <b>un único límite simétrico</b> ($\int_{-\infty}^\infty x\,dx$, $\int_{-1}^1\frac{dx}x$): cada trozo lleva su propio límite y todos deben converger.</li>
+  <li>Comparar con funciones que cambian de signo, con la desigualdad al revés, o usar $l=0$ con $g$ divergente.</li>
+  <li>Calcular el límite del cociente en el punto que no es el problemático.</li>
+  <li>Separar logaritmos y obtener $\infty-\infty$: juntarlos antes del límite.</li>
+  <li>Llamar «impropia» a una integral cuyo punto malo está fuera del intervalo o cuya función tiene límite finito en él.</li>
+  <li>Pensar que $f\to0$ basta para converger ($\frac1x$), o que «impropia» significa «divergente».</li>
+</ul>
+
+<h3>Chuleta</h3>
+<table>
+  <caption>Integrales impropias</caption>
+  <tr><th scope="col">Concepto</th><th scope="col">Enunciado</th><th scope="col">Fuente</th></tr>
+  <tr><td>Primera especie</td><td>$\int_a^\infty f=\lim_{M\to\infty}\int_a^Mf$, $f$ continua y acotada</td><td>U Def. 6.9, p.272</td></tr>
+  <tr><td>Segunda especie</td><td>$\int_a^bf=\lim_{c\to a^+}\int_c^bf$, $f$ continua y no acotada en $(a,b]$</td><td>U Def. 6.10, p.275</td></tr>
+  <tr><td>Tercera especie</td><td>las dos causas a la vez; se parte en una de cada</td><td>U margen p.275</td></tr>
+  <tr><td>Converge / diverge</td><td>converge: el límite es un número real; diverge: es $\pm\infty$ <b>o no existe</b> (E 6.44)</td><td>U p.272</td></tr>
+  <tr><td>Partir</td><td>en $\mathbb R$, en asíntotas interiores y en tercera especie; converge solo si convergen <b>todos</b> los trozos (límites independientes)</td><td>U pp.274, 276</td></tr>
+  <tr><td>Referencias</td><td>$\int_1^\infty\frac{dx}{x^p}$ converge $\iff p&gt;1$ ($\frac1{p-1}$); $\int_0^1\frac{dx}{x^p}$ converge $\iff p&lt;1$ ($\frac1{1-p}$); $\int_0^\infty e^{-kx}dx=\frac1k$ ($k&gt;0$); $\int_{-\infty}^\infty\frac{dx}{1+x^2}=\pi$; $\int_0^1\ln x\,dx=-1$; $\int_0^\infty\frac{dx}{x^p}$ diverge siempre</td><td>U pp.273-275; E 6.46</td></tr>
+  <tr><td>Comparación</td><td>$0\le f\le g$: $\int g$ conv $\Rightarrow$ $\int f$ conv; $\int f$ div $\Rightarrow$ $\int g$ div</td><td>U p.277</td></tr>
+  <tr><td>Comparación por límite</td><td>$\frac fg\to l\in(0,\infty)$: mismo carácter; $l=0$ y $\int g$ conv: conv; $l=\infty$ y $\int g$ div: div. En $0^+$, igual con $\lim_{x\to a^+}$</td><td>U p.278</td></tr>
+  <tr><td>Condición necesaria</td><td>si $\lim_{x\to\infty}f$ existe y no es $0$, diverge; si es $0$, no se sabe</td><td>U p.274</td></tr>
+</table>
+
+<h3>Lista de comprobación</h3>
+<ul class="checklist">
+  <li>Sé clasificar una integral como ordinaria, de primera, de segunda o de tercera especie, justificando con el intervalo y con la función (E 6.42, 6.45; X1-X3, X6).</li>
+  <li>Sé calcular una impropia de primera especie con la definición (U Ej. 6.36-6.40; E 6.43; X2, X4, X5).</li>
+  <li>Sé calcular una impropia de segunda especie con límites laterales (U Ej. 6.41; E 6.46; X p.115).</li>
+  <li>Sé detectar una asíntota interior, partir y no aplicar Barrow a ciegas (U Ej. 6.42; propio 3).</li>
+  <li>Sé estudiar $\int\frac{dx}{x^p}$ en $[1,\infty)$, en $(0,1]$ y por qué en $(0,\infty)$ nunca converge (U Ej. 6.38, 6.41; propio 4).</li>
+  <li>Sé aplicar la comparación y la comparación por límite eligiendo bien $g$ y el caso (i), (ii) o (iii) (U Ej. 6.43-6.45; E 6.47, 6.48; tipos A-D).</li>
+  <li>Sé explicar por qué $\lim_{n\to\infty}F(n)$ no basta (E 6.44) y por qué $f\to0$ no garantiza convergencia (autoevaluación 10).</li>
+  <li>Sé tratar la función Gamma: convergencia, $\Gamma(p+1)=p\Gamma(p)$ y $\Gamma(n+1)=n!$ (E 6.48).</li>
+</ul>
+
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<details class="fuentes-toggle">
+<summary>Mostrar lista de fuentes</summary>
+<div id="panel-fuentes"></div>
+</details>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro (en X, la página del PDF).</footer>
+</main>
+</div>
+</body>
+</html>
