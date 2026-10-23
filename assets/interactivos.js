@@ -160,7 +160,7 @@
     var msg = document.createElement('div'); msg.className = 'int-msg'; msg.textContent = 'Cargando interactivo…'; stage.appendChild(msg);
     fig.insertBefore(stage, fig.firstChild);
     function fallo(t) { msg.textContent = t; if (!msg.parentNode) stage.appendChild(msg); }
-    if (!webgl()) return fallo('Tu navegador no tiene WebGL: usa la imagen del libro o la versión impresa.');
+    if (!webgl()) { fig.classList.add('int-sinwebgl'); return fallo('Tu navegador no tiene WebGL: se muestra una imagen fija.'); }
 
     Promise.all([script(base + 'three/three.min.js')]).then(function () {
       return script(base + 'three/OrbitControls.js');
