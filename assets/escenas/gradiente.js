@@ -19,18 +19,6 @@ Interactivos.registrar('gradiente', function (c) {
     for (i = 0; i < pos.count; i++) { u = (pos.getZ(i) - g.z[0]) / (g.z[1] - g.z[0]); t.copy(u1).lerp(u2, Math.max(0, Math.min(1, u))); col.push(t.r, t.g, t.b); }
     malla.geometry.setAttribute('color', new T.Float32BufferAttribute(col, 3));
   }
-  // flecha = tubo + cono; flecha.poner(desde, hasta)
-  function flecha(col, r) {
-    var g = new T.Group(), eje = H.tubo(T, [], r, col), cono = new T.Mesh(new T.ConeGeometry(r * 3, r * 8, 14), new T.MeshBasicMaterial({ color: col }));
-    g.add(eje, cono); g.userData = { eje: eje, cono: cono };
-    g.poner = function (p, q) {
-      var dir = new T.Vector3(q[0] - p[0], q[1] - p[1], q[2] - p[2]), L = dir.length(); g.visible = L > 1e-9; if (!g.visible) return;
-      dir.normalize(); var base = new T.Vector3(q[0], q[1], q[2]).addScaledVector(dir, -r * 8);
-      eje.set([p, [base.x, base.y, base.z]]);
-      cono.position.set(q[0], q[1], q[2]).addScaledVector(dir, -r * 4); cono.quaternion.setFromUnitVectors(new T.Vector3(0, 1, 0), dir);
-    };
-    return g;
-  }
   function nuevo() {
     [malla, rejilla, nivelL, plano, curva, tang, pt, flG, flV].forEach(limpia);
     var g = F[k], d = g.d, zm = (g.z[0] + g.z[1]) / 2, r = 0.035 * d / 2;
@@ -42,7 +30,7 @@ Interactivos.registrar('gradiente', function (c) {
     plano.rotation.order = 'ZXY'; plano.position.z = zm; c.scene.add(plano);
     curva = H.tubo(T, [], r, P.acc); tang = H.tubo(T, [], r * 1.2, P.acc); c.scene.add(curva, tang);
     pt = new T.Mesh(new T.SphereGeometry(r * 2.4, 16, 12), new T.MeshBasicMaterial({ color: P.fg })); c.scene.add(pt);
-    flG = flecha(P.S, r * 2.2); flV = flecha(P.acc, r * 2.2); c.scene.add(flG, flV);
+    flG = H.flecha(T, P.S, r * 2.2); flV = H.flecha(T, P.acc, r * 2.2); c.scene.add(flG, flV);
     c.camera.position.set(d * 4.2, -d * 5, zm + (g.z[1] - g.z[0]) * 1 + d * 1.5); c.controls.target.set(0, 0, zm); c.controls.update();
   }
   function calc() {

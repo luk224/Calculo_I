@@ -82,6 +82,18 @@
       };
       m.set(pts); return m;
     },
+    /* Flecha 3D (tubo + cono) de color col y grosor r. f.poner([x,y,z],[x,y,z]) la coloca; f.userData.eje / .cono son las mallas. */
+    flecha: function (THREE, col, r) {
+      var g = new THREE.Group(), eje = H.tubo(THREE, [], r, col), cono = new THREE.Mesh(new THREE.ConeGeometry(r * 3, r * 8, 14), new THREE.MeshBasicMaterial({ color: col }));
+      g.add(eje, cono); g.userData = { eje: eje, cono: cono };
+      g.poner = function (p, q) {
+        var dir = new THREE.Vector3(q[0] - p[0], q[1] - p[1], q[2] - p[2]), L = dir.length(); g.visible = L > r * 8; if (!g.visible) return;
+        dir.normalize(); var base = new THREE.Vector3(q[0], q[1], q[2]).addScaledVector(dir, -r * 8);
+        eje.set([p, [base.x, base.y, base.z]]);
+        cono.position.set(q[0], q[1], q[2]).addScaledVector(dir, -r * 4); cono.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+      };
+      return g;
+    },
     /* ---- 2D (cámara ortográfica, data-params {"dim":2}) ---- */
     /* Cinta de grosor w (unidades de mundo) sobre una lista de polilíneas [[ [x,y],… ],…].
        dash=[trazo,hueco] la hace discontinua. m.set(polilíneas) la reconstruye. */
