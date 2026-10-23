@@ -217,7 +217,8 @@
       fn(ctx);
       /* Zoom con rueda o pellizco, desplazamiento arrastrando, doble clic o botón para restablecer. */
       function activarZoom() {
-        var cv = renderer.domElement, ptrs = {};
+        var cv = renderer.domElement, ptrs = {}, arr = null;
+        function mundo(x, y) { var q = frac(x, y); return [camera.left + q[0] * (camera.right - camera.left), camera.top - q[1] * (camera.top - camera.bottom)]; }
         cv.classList.add('zoom2d');
         btnReset = document.createElement('button'); btnReset.type = 'button'; btnReset.className = 'int-reset';
         btnReset.textContent = 'Restablecer vista'; btnReset.style.display = 'none'; stage.appendChild(btnReset);
@@ -241,8 +242,18 @@
           e.preventDefault(); var q = frac(e.clientX, e.clientY);
           zoomEn(q[0], q[1], Math.exp(e.deltaY * (e.deltaMode === 1 ? 0.03 : 0.0015)));
         }, { passive: false });
-        cv.addEventListener('pointerdown', function (e) { ptrs[e.pointerId] = { x: e.clientX, y: e.clientY }; cv.setPointerCapture(e.pointerId); });
+        /* Si la escena define ctx.arrastre = { coger(wx, wy, radio) → índice o −1, mover(i, wx, wy) }, un dedo o ratón
+           que empieza sobre un objeto lo arrastra en vez de mover la vista. */
+        cv.addEventListener('pointerdown', function (e) {
+          if (ctx.arrastre && !Object.keys(ptrs).length) {
+            var m = mundo(e.clientX, e.clientY), rc = cv.getBoundingClientRect();
+            var i = ctx.arrastre.coger(m[0], m[1], 18 * (camera.right - camera.left) / rc.width);
+            if (i >= 0) { arr = { id: e.pointerId, i: i }; cv.setPointerCapture(e.pointerId); return; }
+          }
+          ptrs[e.pointerId] = { x: e.clientX, y: e.clientY }; cv.setPointerCapture(e.pointerId);
+        });
         cv.addEventListener('pointermove', function (e) {
+          if (arr && arr.id === e.pointerId) { var m = mundo(e.clientX, e.clientY); ctx.arrastre.mover(arr.i, m[0], m[1]); pedir(); return; }
           var p = ptrs[e.pointerId]; if (!p) return; var ids = Object.keys(ptrs);
           if (ids.length === 1) { mover(e.clientX - p.x, e.clientY - p.y); p.x = e.clientX; p.y = e.clientY; return; }
           if (ids.length !== 2) return;
@@ -251,7 +262,7 @@
           var d1 = Math.hypot(a.x - b.x, a.y - b.y), m1x = (a.x + b.x) / 2, m1y = (a.y + b.y) / 2, q = frac(m1x, m1y);
           if (d0 > 0 && d1 > 0) zoomEn(q[0], q[1], d0 / d1); mover(m1x - m0x, m1y - m0y);
         });
-        function suelta(e) { delete ptrs[e.pointerId]; }
+        function suelta(e) { delete ptrs[e.pointerId]; if (arr && arr.id === e.pointerId) arr = null; }
         cv.addEventListener('pointerup', suelta); cv.addEventListener('pointercancel', suelta);
         cv.addEventListener('dblclick', reset); btnReset.addEventListener('click', reset);
       }
