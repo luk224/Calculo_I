@@ -377,7 +377,19 @@ svg.fig .d21-lab.a{fill:var(--acc);stroke:none;font-weight:700}
 
 <h3>Reglas mínimas (para calcular sin usar la definición) <span class="src" data-l="U" data-ref="U §2.2.2 Reglas de derivación, Proposición 2.1, regla de la cadena y tabla, p. 79 (pertenece al tema 2.2)">U p.79</span></h3>
 <div class="box thm"><span class="h">Proposición 2.1, regla de la cadena y tabla (resumen)</span>
-  <p>Si $f$ y $g$ son derivables en $a$: $(f+g)'(a)=f'(a)+g'(a)$; $(f\cdot g)'(a)=f'(a)g(a)+f(a)g'(a)$; si $g(a)\neq0$, $\left(\dfrac fg\right)'(a)=\dfrac{f'(a)g(a)-f(a)g'(a)}{[g(a)]^2}$. <b>Cadena:</b> si $f$ es derivable en $a$ y $g$ en $f(a)$, entonces $(g\circ f)'(a)=g'(f(a))\cdot f'(a)$.</p>
+  <p>Si $f$ y $g$ son derivables en $a$:</p>
+  <ul>
+    <li><b>Suma:</b> $(f+g)'(a)=f'(a)+g'(a)$.</li>
+    <li><b>Producto:</b> $(f\cdot g)'(a)=f'(a)\,g(a)+f(a)\,g'(a)$.</li>
+    <li><b>Cociente</b> (si $g(a)\neq0$): $\left(\dfrac fg\right)'(a)=\dfrac{f'(a)\,g(a)-f(a)\,g'(a)}{[g(a)]^2}$.</li>
+    <li><b>Cadena:</b> se explica justo debajo.</li>
+  </ul>
+  <p><b>Regla de la cadena.</b> Una función compuesta es «una función dentro de otra»: primero se aplica la <b>interior</b> $u=g(x)$ y al resultado se le aplica la <b>exterior</b> $y=f(u)$, de modo que $y=f(g(x))$. Por ejemplo, en $y=\operatorname{sen}(6x)$ la interior es $u=6x$ y la exterior es $y=\operatorname{sen}u$.</p>
+  <p><i>Idea:</i> si $y$ cambia $\frac{dy}{du}$ veces más rápido que $u$, y $u$ cambia $\frac{du}{dx}$ veces más rápido que $x$, entonces $y$ cambia el producto de ambas veces más rápido que $x$. Como en dos engranajes: si el primer eje da 3 vueltas por cada una del segundo ($\frac{dy}{du}=3$) y el segundo da 2 por cada una del tercero ($\frac{du}{dx}=2$), el primero da $3\cdot2=6$ por cada una del tercero.</p>
+  <p>Si $u=g(x)$ es derivable en $x$ e $y=f(u)$ es derivable en $u=g(x)$, entonces $y=f(g(x))$ es derivable en $x$ y</p>
+  $$\frac{dy}{dx}=\frac{dy}{du}\cdot\frac{du}{dx}\qquad\text{o, equivalentemente,}\qquad \frac{d}{dx}\,f(g(x))=f'(g(x))\cdot g'(x).$$
+  <p>En palabras: <b>derivada de la exterior, evaluada en la interior, por la derivada de la interior.</b> Con la notación de U, $(f\circ g)'(a)=f'(g(a))\cdot g'(a)$.</p>
+  <p><i>Ejemplo:</i> $y=\operatorname{sen}(6x)$. Exterior $f(u)=\operatorname{sen}u$, $f'(u)=\cos u$; interior $g(x)=6x$, $g'(x)=6$. Entonces $y'=\cos(6x)\cdot 6$. El error típico es olvidar el factor $g'(x)=6$.</p>
   <table>
     <tr><th>$f(x)$</th><th>$f'(x)$</th><th>$f(x)$</th><th>$f'(x)$</th></tr>
     <tr><td>$c$ (constante)</td><td>$0$</td><td>$x^c$</td><td>$c\,x^{c-1}$</td></tr>
@@ -386,6 +398,7 @@ svg.fig .d21-lab.a{fill:var(--acc);stroke:none;font-weight:700}
     <tr><td>$\operatorname{sen}x$</td><td>$\cos x$</td><td>$\cos x$</td><td>$-\operatorname{sen}x$</td></tr>
   </table>
   <span class="src" data-l="U" data-ref="U §2.2.2, Proposición 2.1, regla de la cadena y tabla de derivadas, p. 79">U p.79</span>
+  <span class="src" data-l="L" data-ref="L §2.4 La regla de la cadena, Teorema 2.10, pp. 129-130 (explicación de función interior/exterior y engranajes)">L pp.129-130</span>
 </div>
 <p>Estas reglas se estudian en el tema 2.2; aquí se usan en los ejercicios 2.7-2.9, 2.20 c) y 2.23 y en los ejemplos propios 2 y 3. Recuerda que una regla como esta vale <b>en los puntos donde $f$ y $g$ son derivables</b>: no las apliques en un punto donde la función tenga una esquina.</p>
 
