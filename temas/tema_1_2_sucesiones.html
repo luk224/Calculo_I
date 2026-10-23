@@ -785,16 +785,22 @@ svg.fig .sm{font-size:15px}
 <!-- ============================ 13 ============================ -->
 <h2 id="ejercicios"><span class="n">13</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.6-1.16, pp. 10-20">E pp.10-20</span></h2>
 
-<p>Los once ejercicios de E de la sección 1.2, <b>del más fácil al más difícil</b> (el número entre paréntesis es el de E). Todos los resultados están comprobados con cálculo simbólico (sympy) y, los que tienen sumas, también numéricamente. Pulsa «Mostrar soluciones» arriba para abrirlos todos a la vez. Ojo: en la extracción del texto de E se pierden las raíces; los enunciados de aquí se han copiado del PDF.</p>
+<p>Los once ejercicios de E de la sección 1.2, <b>del más fácil al más difícil</b> (el número entre paréntesis es el de E). Todos los resultados están comprobados con cálculo simbólico (sympy) y, los que tienen sumas, también numéricamente. Pulsa «Mostrar soluciones» arriba para abrirlos todos a la vez.</p>
 
 <details class="sol" id="ej1-6"><summary>Ejercicio 1.6 — ¿puede converger $\{x_ny_n\}$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.6, pp. 10-11">E pp.10-11</span></summary>
   <p class="enun">La sucesión $\{x_n\}$ es convergente y la sucesión $\{y_n\}$ es divergente. Razone si puede ser convergente la sucesión $\{x_ny_n\}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si el producto de una sucesión convergente por una divergente puede converger, y justificarlo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una pregunta «¿puede…?» se contesta con un ejemplo. Si el factor convergente se va a 0 y el otro crece despacio, el 0 puede «ganar» y el producto converger; si el convergente se va a un número distinto de 0, la divergencia se contagia.</dd>
+    <dt>Qué uso</dt><dd>Álgebra de límites (Prop. 1.3), límites $\frac1{n^2}\to0$ y $\frac1n\to0$ (U Ejemplos 1.17-1.18), definición de límite (Def. 1.10).</dd>
+    <dt>Por dónde empiezo</dt><dd>Elijo $y_n=n$ (divergente) y busco un $x_n$ convergente que lo compense.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Qué se pregunta.</b> «¿Puede ser…?» es una pregunta de <b>existencia</b>: basta <b>un ejemplo</b>. No hace falta que ocurra siempre (y no ocurre siempre; ver el paso 5).</li>
     <li><b>«Divergente»</b> = no convergente (apartado 2): tiende a $\pm\infty$ o oscila. El ejemplo que sigue vale con cualquiera de los dos sentidos.</li>
     <li><b>Divergente:</b> $y_n=n$, con límite $+\infty$ (U p. 28), luego no convergente.</li>
     <li><b>Convergente:</b> $x_n=\frac1{n^2}\to0$ (U Ejemplo 1.18). Entonces $x_ny_n=\frac n{n^2}=\frac1n\to0$ (U Ejemplo 1.17). <b>Sí puede ser convergente.</b> Otro ejemplo: con $x_n=\frac1n$ sale $x_ny_n=1$, constante y convergente.</li>
-    <li><b>El factor convergente tiene que tender a 0</b> (E no lo dice). Supón $x_n\to l\ne0$ y $x_ny_n\to m$. Con $\varepsilon=|l|/2$ en la Def. 1.10, $x_n\ne0$ desde cierto $n$ (solo importa el final). Entonces $y_n=\frac{x_ny_n}{x_n}\to\frac ml$ por la Prop. 1.3 (cociente): absurdo, porque $\{y_n\}$ diverge. Conclusión: <b>si $\{x_ny_n\}$ converge, necesariamente $x_n\to0$.</b></li>
+    <li><b>El factor convergente tiene que tender a 0</b>. Supón $x_n\to l\ne0$ y $x_ny_n\to m$. Con $\varepsilon=|l|/2$ en la Def. 1.10, $x_n\ne0$ desde cierto $n$ (solo importa el final). Entonces $y_n=\frac{x_ny_n}{x_n}\to\frac ml$ por la Prop. 1.3 (cociente): absurdo, porque $\{y_n\}$ diverge. Conclusión: <b>si $\{x_ny_n\}$ converge, necesariamente $x_n\to0$.</b></li>
   </ol>
   <p><b>Respuesta:</b> sí puede (ejemplo $x_n=\frac1{n^2}$, $y_n=n$), pero solo si $x_n\to0$.</p>
   <div class="recipe"><b>Receta:</b> ante «¿puede ocurrir…?», construye un ejemplo con las sucesiones más sencillas ($n$, $\frac1n$, $\frac1{n^2}$, $(-1)^n$). Ante «¿ocurre siempre?», busca un contraejemplo o razona por reducción al absurdo con la Prop. 1.3.</div>
@@ -803,6 +809,12 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ej1-8"><summary>Ejercicio 1.8 — cociente con exponenciales <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.8, p. 12">E p.12</span></summary>
   <p class="enun">Sea $x_n=\dfrac{e^{\,n+\frac3n}+5}{2e^n}$. Se pide calcular su límite cuando $n\to+\infty$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\frac{e^{n+3/n}+5}{2e^n}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Arriba y abajo manda $e^n$. Si lo saco como factor, lo que sobra es $e^{3/n}$, que se parece a $e^0=1$, y $\frac5{e^n}$, que desaparece.</dd>
+    <dt>Qué uso</dt><dd>$e^{a+b}=e^ae^b$; continuidad de la exponencial; $\frac5\infty=0$ (Def. 1.12); álgebra de límites (Prop. 1.3).</dd>
+    <dt>Por dónde empiezo</dt><dd>Separo $e^{n+3/n}=e^n\,e^{3/n}$ y reparto el denominador en dos sumandos.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Sustituir.</b> Numerador y denominador tienden a $+\infty$ ($e^\infty=\infty$ por Def. 1.12): sale $\frac\infty\infty$, indeterminación.</li>
     <li><b>Separar lo que domina.</b> $e^{n+3/n}=e^n\,e^{3/n}$, luego $$x_n=\frac{e^ne^{3/n}}{2e^n}+\frac5{2e^n}=\frac{e^{3/n}}2+\frac5{2e^n}.$$ (La misma idea que «dividir entre el término de mayor grado», pero aquí manda $e^n$.)</li>
@@ -816,6 +828,12 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ej1-7"><summary>Ejercicio 1.7 — cociente con una raíz <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.7, pp. 11-12">E pp.11-12</span></summary>
   <p class="enun">Sea $\{a_n\}$ la sucesión de término general $a_n=\dfrac n{\sqrt{n^3+4}}$. ¿Es convergente?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si $a_n=\frac n{\sqrt{n^3+4}}$ converge y, en tal caso, hallar el límite.</dd>
+    <dt>Cómo lo pienso</dt><dd>Dentro de la raíz el $4$ es un grano de arena frente a $n^3$, así que $\sqrt{n^3+4}\approx n^{3/2}$. Arriba hay $n$ y abajo algo mayor: el cociente se va a 0.</dd>
+    <dt>Qué uso</dt><dd>Álgebra de límites (Prop. 1.3), continuidad de la raíz, regla del emparedado (U Teorema 1.2).</dd>
+    <dt>Por dónde empiezo</dt><dd>Saco $n^3$ como factor común dentro de la raíz.</dd>
+  </dl></div>
   <ol class="steps">
     <li>Al sustituir sale $\frac{+\infty}{+\infty}$, indeterminación.</li>
     <li><b>Intuición.</b> Dentro de la raíz domina $n^3$: $\sqrt{n^3+4}\approx n^{3/2}$ y $a_n\approx\frac n{n^{3/2}}=\frac1{\sqrt n}\to0$. Ahora se demuestra.</li>
@@ -830,6 +848,12 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ej1-9"><summary>Ejercicio 1.9 — cociente con dos raíces <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.9, pp. 12-13">E pp.12-13</span></summary>
   <p class="enun">Sea $\{a_n\}$ la sucesión de término general $a_n=\dfrac{\sqrt{16n^4-4}}{n\sqrt{4n^2+5}}$. Se pide calcular su límite cuando $n\to\infty$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\frac{\sqrt{16n^4-4}}{n\sqrt{4n^2+5}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada raíz se comporta como su término dominante: arriba $4n^2$, abajo $n\cdot2n=2n^2$. Se espera un cociente de $4n^2$ entre $2n^2$, es decir, 2.</dd>
+    <dt>Qué uso</dt><dd>Álgebra de límites (Prop. 1.3), continuidad de la raíz; $\sqrt{n^4}=n^2$ y $\sqrt{n^2}=n$ para $n>0$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Saco $n^4$ y $n^2$ como factor común dentro de cada radicando.</dd>
+  </dl></div>
   <ol class="steps">
     <li>Sustituir da $\frac\infty\infty$.</li>
     <li><b>Intuición.</b> Arriba domina $\sqrt{16n^4}=4n^2$; abajo, $n\sqrt{4n^2}=2n^2$. Esperamos $\frac{4n^2}{2n^2}=2$.</li>
@@ -843,6 +867,12 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ej1-10"><summary>Ejercicio 1.10 — conjugado para $\infty-\infty$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.10, pp. 13-14">E pp.13-14</span></summary>
   <p class="enun">Calcular $\displaystyle\lim_{n\to+\infty}\left(\sqrt{n^2+4n+8}-n\right)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\bigl(\sqrt{n^2+4n+8}-n\bigr)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Son dos cantidades enormes y casi iguales: la resta depende de la pequeña diferencia entre ellas, que no se ve a ojo. Con el conjugado la resta se transforma en una fracción donde sí se ve.</dd>
+    <dt>Qué uso</dt><dd>Conjugado: $(A-B)(A+B)=A^2-B^2$ (nota al margen de U p. 29); luego, dividir entre la potencia dominante.</dd>
+    <dt>Por dónde empiezo</dt><dd>Multiplico y divido por $\sqrt{n^2+4n+8}+n$.</dd>
+  </dl></div>
   <ol class="steps">
     <li>Sale $+\infty-(+\infty)$: indeterminación. Aquí no basta mirar lo que domina: los términos dominantes ($\sqrt{n^2}=n$ y $n$) <b>se cancelan</b> y el límite lo decide lo que queda.</li>
     <li><b>Conjugado</b> (nota al margen de U p. 29), con $(A-B)(A+B)=A^2-B^2$: $$\sqrt{n^2+4n+8}-n=\frac{(n^2+4n+8)-n^2}{\sqrt{n^2+4n+8}+n}=\frac{4n+8}{\sqrt{n^2+4n+8}+n}.$$ El denominador es positivo, así que la operación es válida.</li>
@@ -854,6 +884,12 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ej1-12"><summary>Ejercicio 1.12 — conjugado con parámetros <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.12, pp. 15-16">E pp.15-16</span></summary>
   <p class="enun">Encontrar la relación entre $a$ y $b$ para que $\displaystyle\lim_{n\to+\infty}\left(\sqrt{n^2+an+1}-\sqrt{n^2+bn}\right)$ valga 2.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar la relación entre $a$ y $b$ para que $\lim_{n\to\infty}\bigl(\sqrt{n^2+an+1}-\sqrt{n^2+bn}\bigr)=2$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es el mismo tipo de resta que el 1.10 pero con letras. Calculo el límite en función de $a$ y $b$ como si fueran números y después lo igualo a 2.</dd>
+    <dt>Qué uso</dt><dd>Conjugado $(A-B)(A+B)=A^2-B^2$; dividir entre $n$; álgebra de límites (Prop. 1.3).</dd>
+    <dt>Por dónde empiezo</dt><dd>Multiplico y divido por $\sqrt{n^2+an+1}+\sqrt{n^2+bn}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li>Es $+\infty-(+\infty)$. Para $n$ grande los dos radicandos son positivos sean cuales sean $a$ y $b$, y el límite solo depende del final.</li>
     <li><b>Conjugado:</b> $$\frac{(n^2+an+1)-(n^2+bn)}{\sqrt{n^2+an+1}+\sqrt{n^2+bn}}=\frac{(a-b)n+1}{\sqrt{n^2+an+1}+\sqrt{n^2+bn}}.$$</li>
@@ -866,19 +902,30 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ej1-14"><summary>Ejercicio 1.14 — una potencia que NO es indeterminación <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.14, pp. 17-18">E pp.17-18</span></summary>
   <p class="enun">Calcular el límite de $a_n=\left(\dfrac{n^4-n+1}{2n^4-n+2}\right)^{\frac{n^2}{n+1}}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\bigl(\frac{n^4-n+1}{2n^4-n+2}\bigr)^{n^2/(n+1)}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Antes de pensar en el número $e$, miro qué hacen la base y el exponente. Si la base se acerca a $\frac12$ y el exponente crece sin freno, multiplicar $\frac12$ por sí mismo muchísimas veces da casi 0.</dd>
+    <dt>Qué uso</dt><dd>Fórmula (1.1) $x^y=e^{y\ln x}$; $x^\infty=0$ si $x\in(0,1)$ (Def. 1.12); lista de indeterminaciones de U p. 30.</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo por separado $\lim_{n\to\infty}$ de la base y del exponente.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Estudia base y exponente por separado</b> (siempre, antes de lanzarte con el número $e$). Base: $u_n=\dfrac{1-\frac1{n^3}+\frac1{n^4}}{2-\frac1{n^3}+\frac2{n^4}}\to\frac12$ (dividiendo entre $n^4$) y $u_n&gt;0$. Exponente: $t_n=\dfrac{n^2}{n+1}=\dfrac n{1+1/n}\to+\infty$.</li>
     <li><b>¿Indeterminación?</b> La forma es $\left(\frac12\right)^{+\infty}$, que <b>no</b> está en la lista de U (p. 30): $0^0$, $1^{\pm\infty}$, $\infty^0$. La Def. 1.12 dice $x^\infty=0$ si $x\in(0,1)$.</li>
     <li><b>Justificación con (1.1):</b> $a_n=e^{t_n\ln u_n}$. Por la continuidad de $\ln$, $\ln u_n\to\ln\frac12&lt;0$; luego $t_n\ln u_n\to(+\infty)\cdot\ln\frac12=-\infty$ y $e^{-\infty}=0$. Así $\lim_{n\to\infty} a_n=\boxed0$.</li>
     <li><b>Comprobación elemental (emparedado).</b> $u_n\le\frac35\iff5(n^4-n+1)\le3(2n^4-n+2)\iff0\le n^4+2n+1$ (siempre cierto). Además $t_n=\frac{n^2}{n+1}\ge n-1$, porque $n^2\ge n^2-1$. Con base en $(0,1)$, mayor exponente da menor valor: $0&lt;a_n\le\left(\frac35\right)^{n-1}\to0$.</li>
   </ol>
-  <p>El resultado es correcto, pero la forma rigurosa es la del paso 3.</p>
   <div class="recipe"><b>Receta:</b> ante $u_n^{t_n}$ calcula por separado $\lim_{n\to\infty} u_n$ y $\lim_{n\to\infty} t_n$. Solo necesitas técnica especial si sale $1^{\pm\infty}$, $0^0$ o $\infty^0$; en otro caso bastan (1.1) y las reglas de $\overline{\mathbb R}$.</div>
   <p><b>Error típico:</b> aplicar mecánicamente la técnica del número $e$ (como en el 1.13) a algo que no es $1^\infty$.</p>
 </details>
 
 <details class="sol" id="ej1-13"><summary>Ejercicio 1.13 — indeterminación $1^\infty$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.13, pp. 16-17">E pp.16-17</span></summary>
   <p class="enun">Calcular, si existe, $\displaystyle\lim_{n\to+\infty}\left(\frac{5n+2}{5n+3}\right)^{3n+1}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\bigl(\frac{5n+2}{5n+3}\bigr)^{3n+1}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La base está cerquísima de 1 y el exponente es enorme: se enfrentan «casi 1» y «muchas veces». El resultado es una potencia de $e$ cuyo exponente se calcula como (exponente)·(base $-1$).</dd>
+    <dt>Qué uso</dt><dd>Prop. 1.5: $\bigl(1+\frac1{a_n}\bigr)^{a_n}\to e$ si $|a_n|\to\infty$; fórmula (1.1); lista de indeterminaciones de U p. 30.</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo la base como $1+\frac1{a_n}$, con $a_n=-(5n+3)$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Clasificar.</b> La base tiende a 1 y el exponente a $+\infty$: forma $1^{+\infty}$, indeterminada (U p. 30).</li>
     <li><b>Herramienta:</b> Prop. 1.5. Hay que escribir la base como $1+\frac1{a_n}$.</li>
@@ -892,9 +939,15 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ej1-11"><summary>Ejercicio 1.11 — regla del emparedado con una suma <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.11, pp. 14-15">E pp.14-15</span></summary>
   <p class="enun">Sea $b_n=\dfrac1{\sqrt{n^2+1}}+\dfrac1{\sqrt{n^2+2}}+\cdots+\dfrac1{\sqrt{n^2+n}}$. ¿Cuál es su límite cuando $n\to\infty$?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar $\lim_{n\to\infty}b_n$, con $b_n$ la suma de los $n$ términos $\frac1{\sqrt{n^2+k}}$, $k=1,\dots,n$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada sumando es casi $\frac1n$ y hay $n$ sumandos: la suma queda cerca de $n\cdot\frac1n=1$. Para demostrarlo, atrapo la suma entre otras dos que tienden a 1.</dd>
+    <dt>Qué uso</dt><dd>Regla del emparedado (U Teorema 1.2); monotonía de la raíz y de $\frac1x$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Acoto cada sumando entre el menor ($k=n$) y el mayor ($k=1$).</dd>
+  </dl></div>
   <ol class="steps">
-    <li><b>Por qué no sirve «suma de límites».</b> La Prop. 1.3 vale para un número <b>fijo</b> de sumandos. Aquí hay $n$ sumandos: cada uno tiende a 0 pero cada vez hay más. (E lo llama «equivalente a $0\cdot\infty$»: es una analogía, no una igualdad.)</li>
-    <li><b>Comparar cada sumando.</b> Para $1\le k\le n$: $n^2+1\le n^2+k\le n^2+n$. La raíz es creciente y $x\mapsto\frac1x$ decreciente en $(0,\infty)$, luego $$\frac1{\sqrt{n^2+n}}\le\frac1{\sqrt{n^2+k}}\le\frac1{\sqrt{n^2+1}}.$$ (Paso que E da por evidente.)</li>
+    <li><b>Por qué no sirve «suma de límites».</b> La Prop. 1.3 vale para un número <b>fijo</b> de sumandos. Aquí hay $n$ sumandos: cada uno tiende a 0 pero cada vez hay más.</li>
+    <li><b>Comparar cada sumando.</b> Para $1\le k\le n$: $n^2+1\le n^2+k\le n^2+n$. La raíz es creciente y $x\mapsto\frac1x$ decreciente en $(0,\infty)$, luego $$\frac1{\sqrt{n^2+n}}\le\frac1{\sqrt{n^2+k}}\le\frac1{\sqrt{n^2+1}}.$$</li>
     <li><b>Sumar las $n$ desigualdades</b> ($k=1,\dots,n$): quedan $n$ copias de cada cota, $$a_n:=\frac n{\sqrt{n^2+n}}\le b_n\le\frac n{\sqrt{n^2+1}}=:c_n.$$</li>
     <li><b>Límite de los «panes».</b> $a_n=\dfrac1{\sqrt{1+1/n}}\to1$ y $c_n=\dfrac1{\sqrt{1+1/n^2}}\to1$.</li>
     <li><b>Regla del emparedado:</b> $\lim_{n\to\infty} b_n=\boxed1$. Comprobación numérica: $b_{10}\approx0{,}9739$, $b_{100}\approx0{,}99749$, $b_{10^4}\approx0{,}999975$.</li>
@@ -905,19 +958,30 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ej1-15"><summary>Ejercicio 1.15 — $\sqrt[n]n$ con el criterio de Stolz <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.15, pp. 18-19">E pp.18-19</span></summary>
   <p class="enun">Calcular el límite de $a_n=\sqrt[n]n$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\sqrt[n]n$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es $\infty^0$: la base crece pero el exponente se anula; no se sabe quién gana. Con logaritmos se convierte en un cociente $\frac{\ln n}n$, y el denominador crece mucho más deprisa.</dd>
+    <dt>Qué uso</dt><dd>Fórmula (1.1) $x^y=e^{y\ln x}$; criterio de Stolz (U p. 32); continuidad de $\ln$ y de $\exp$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo $\sqrt[n]n=e^{(\ln n)/n}$ y estudio el exponente.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Clasificar.</b> $\sqrt[n]n=n^{1/n}$: base $\to+\infty$, exponente $\to0$. Forma $\infty^0$, indeterminada.</li>
     <li><b>Fórmula (1.1):</b> $n^{1/n}=e^{\frac1n\ln n}$. Si $L=\lim_{n\to\infty}\frac{\ln n}n$, el límite pedido es $e^L$ (continuidad de la exponencial).</li>
     <li><b>Stolz</b> para $\frac{\ln n}n$ (forma $\frac\infty\infty$), con $a_n=\ln n$, $b_n=n$. Hipótesis: $b_n$ es estrictamente creciente, $b_n\to\infty$ y $b_{n+1}-b_n=1\ne0$ ✓. Cociente de incrementos: $\dfrac{\ln(n+1)-\ln n}{(n+1)-n}=\ln\!\left(1+\tfrac1n\right)\to\ln1=0$ (continuidad del $\ln$). Por Stolz, $\lim_{n\to\infty}\frac{\ln n}n=0$.</li>
     <li><b>Conclusión:</b> $\lim_{n\to\infty}\sqrt[n]n=e^0=\boxed1$.</li>
   </ol>
-  <p>Además, la nota al margen enuncia Stolz con $l\in\overline{\mathbb R}$ y U (p. 32) solo con $l\in\mathbb R$; aquí $l=0$, así que no afecta.</p>
   <div class="recipe"><b>Receta:</b> ante $\infty^0$, $0^0$ o $1^\infty$, pasa a $e^{\,b_n\ln a_n}$ con (1.1) y calcula el límite del exponente; si es un cociente $\frac\infty\infty$ con sumas o logaritmos, prueba con <b>Stolz</b>.</div>
-  <p><b>Error típico:</b> afirmar «$\infty^0=1$» sin más, o «$n^{1/n}\to n^0=1$» (sustituir solo en el exponente). (S resuelve $\frac{\ln n}n$ con la regla de l'Hôpital, S Ejemplo 6 p. 694, que es del tema 2: aquí solo sirve de contraste.)</p>
+  <p><b>Error típico:</b> afirmar «$\infty^0=1$» sin más, o «$n^{1/n}\to n^0=1$» (sustituir solo en el exponente).</p>
 </details>
 
 <details class="sol" id="ej1-16"><summary>Ejercicio 1.16 — Stolz con una suma de $n$ términos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.16, pp. 19-20">E pp.19-20</span></summary>
   <p class="enun">Calcular, si existe, $\displaystyle\lim_{n\to+\infty}\frac1{n^2}\left(\frac21+\frac{3^2}2+\frac{4^3}{3^2}+\cdots+\frac{(n+1)^n}{n^{n-1}}\right)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\frac1{n^2}\sum_{k=1}^n\frac{(k+1)^k}{k^{k-1}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es una suma de $n$ términos distintos entre sí dividida entre $n^2$. Con Stolz, al restar dos valores consecutivos de la suma queda solo el último sumando, y el problema se reduce a un límite normal.</dd>
+    <dt>Qué uso</dt><dd>Criterio de Stolz (U p. 32); Prop. 1.5 ($1^\infty$); álgebra de límites (Prop. 1.3).</dd>
+    <dt>Por dónde empiezo</dt><dd>Llamo $A_n$ a la suma y $B_n=n^2$; compruebo las hipótesis de Stolz.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Término $k$-ésimo:</b> $\frac{(k+1)^k}{k^{k-1}}$ (para $k=1,2,3$ da $\frac21,\frac{3^2}2,\frac{4^3}{3^2}$ ✓).</li>
     <li><b>Como cociente:</b> $s_n=\frac{A_n}{B_n}$ con $A_n=\sum_{k=1}^n\frac{(k+1)^k}{k^{k-1}}$ y $B_n=n^2$. Cada sumando es $\ge1$, luego $A_n\ge n\to\infty$: forma $\frac\infty\infty$. Los sumandos son muy distintos entre sí, así que el emparedado del 1.11 no funciona bien.</li>
@@ -927,7 +991,6 @@ svg.fig .sm{font-size:15px}
     <li><b>Segundo factor</b> ($1^\infty$). Con $m=n+1$: $\left(\frac{n+2}{n+1}\right)^n=\left(1+\frac1m\right)^{m-1}=\dfrac{(1+\frac1m)^m}{1+\frac1m}\to\dfrac e1=e$ (Prop. 1.5 con $a_m=m$ y Prop. 1.3).</li>
     <li><b>Conclusión</b> (Stolz): $\lim_{n\to\infty} s_n=\frac12\cdot e=\boxed{\dfrac e2}\approx1{,}35914$. Comprobación numérica: $s_{100}\approx1{,}35967$, $s_{1000}\approx1{,}359149$.</li>
   </ol>
-  <p>(p. 19) y, en la p. 20, «límite de una serie de números racionales»: es una <b>sucesión</b> (contiene una suma finita, no una serie).</p>
   <div class="recipe"><b>Receta:</b> si el numerador (o el denominador) es una <b>suma de $n$ términos</b>, usa Stolz: al restar términos consecutivos, la suma se reduce a su último sumando.</div>
   <p><b>Error típico:</b> no comprobar la hipótesis sobre el denominador (monótono y con límite $\pm\infty$, o numerador y denominador con límite 0), o calcular $B_{n+1}-B_n$ como $1$ en lugar de $2n+1$.</p>
 </details>
@@ -935,6 +998,12 @@ svg.fig .sm{font-size:15px}
 <h3>Ejemplos propios (de fácil a difícil)</h3>
 
 <details class="sol"><summary>Ejemplos propios A — cocientes («lo que domina») <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></summary>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular tres límites de cocientes.</dd>
+    <dt>Cómo lo pienso</dt><dd>En cada cociente manda un término; divido entre él y el resto tiende a 0.</dd>
+    <dt>Qué uso</dt><dd>Álgebra de límites (Prop. 1.3); $x^\infty=0$ si $x\in(0,1)$ (Def. 1.12).</dd>
+    <dt>Por dónde empiezo</dt><dd>Identifico el término dominante arriba y abajo.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>P1 (fácil).</b> $\lim_{n\to\infty}\dfrac{3n^2-n+2}{5n^2+4}$. Dividimos entre $n^2$: $\dfrac{3-\frac1n+\frac2{n^2}}{5+\frac4{n^2}}\to\dfrac35$.</li>
     <li><b>P2 (media).</b> $\lim_{n\to\infty}\dfrac{\sqrt{9n^2+n}}{2n+1}$. Como $\sqrt{9n^2+n}=n\sqrt{9+1/n}$, dividimos entre $n$: $\dfrac{\sqrt{9+1/n}}{2+1/n}\to\dfrac32$.</li>
@@ -944,6 +1013,12 @@ svg.fig .sm{font-size:15px}
 </details>
 
 <details class="sol"><summary>Ejemplos propios B — conjugado <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></summary>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular límites con resta de raíces.</dd>
+    <dt>Cómo lo pienso</dt><dd>La resta de dos cantidades casi iguales se «arregla» multiplicando por el conjugado.</dd>
+    <dt>Qué uso</dt><dd>$(A-B)(A+B)=A^2-B^2$; dividir entre la potencia dominante.</dd>
+    <dt>Por dónde empiezo</dt><dd>Multiplico y divido por la suma de las raíces.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>P4 (fácil).</b> $\lim_{n\to\infty}(\sqrt{n^2+n}-n)=\lim_{n\to\infty}\dfrac n{\sqrt{n^2+n}+n}=\lim_{n\to\infty}\dfrac1{\sqrt{1+1/n}+1}=\dfrac12$.</li>
     <li><b>P5 (media).</b> $\lim_{n\to\infty}\sqrt n\,(\sqrt{n+1}-\sqrt n)=\lim_{n\to\infty}\dfrac{\sqrt n}{\sqrt{n+1}+\sqrt n}=\lim_{n\to\infty}\dfrac1{\sqrt{1+1/n}+1}=\dfrac12$. (Forma $\infty\cdot0$.)</li>
@@ -952,6 +1027,12 @@ svg.fig .sm{font-size:15px}
 </details>
 
 <details class="sol"><summary>Ejemplos propios C — emparedado e infinitésimo por acotada <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy y numéricamente">P</span></summary>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular límites con emparedado o con una acotada por un infinitésimo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Si algo está atrapado entre dos sucesiones con el mismo límite, tiene ese límite; y acotada por algo que tiende a 0 tiende a 0.</dd>
+    <dt>Qué uso</dt><dd>Regla del emparedado y producto acotada por infinitésimo (U Teorema 1.2); fórmula (1.1).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo las desigualdades que dejan la sucesión entre dos cotas sencillas.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>P7 (fácil).</b> $\lim_{n\to\infty}\dfrac{\operatorname{sen}n}n=0$: $\frac1n\to0$ y $\operatorname{sen}n$ acotada (Teorema 1.2); o $-\frac1n\le\frac{\operatorname{sen}n}n\le\frac1n$ y emparedado.</li>
     <li><b>P8 (media).</b> $\lim_{n\to\infty}\displaystyle\sum_{k=1}^n\frac n{n^2+k}=1$. Cada sumando está entre $\frac n{n^2+n}$ y $\frac n{n^2+1}$; multiplicando por $n$ sumandos, $\frac{n^2}{n^2+n}\le b_n\le\frac{n^2}{n^2+1}$, y las dos cotas tienden a 1.</li>
@@ -960,6 +1041,12 @@ svg.fig .sm{font-size:15px}
 </details>
 
 <details class="sol"><summary>Ejemplos propios D — potencias: $1^\infty$ y casos que no son indeterminación <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></summary>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular límites de potencias $x_n^{y_n}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Primero miro a qué tienden base y exponente. Solo si es $1^\infty$ hay que hacer algo especial; en otro caso decide la base ($>1$ o entre 0 y 1).</dd>
+    <dt>Qué uso</dt><dd>Prop. 1.5 y fórmula $e^{\lim y_n(x_n-1)}$; Def. 1.12 ($x^\infty$); fórmula (1.1).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo $\lim_{n\to\infty}x_n$ y $\lim_{n\to\infty}y_n$ por separado.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>P10 (fácil).</b> $\lim_{n\to\infty}\left(1+\frac2n\right)^n=\lim_{n\to\infty}\Big[\big(1+\frac1{a_n}\big)^{a_n}\Big]^2$ con $a_n=\frac n2$: es $e^2$ (como el Ejemplo 1.29).</li>
     <li><b>P11 (media).</b> $\lim_{n\to\infty}\left(\frac{n+3}{n-1}\right)^{2n}$. Como $\frac{n+3}{n-1}=1+\frac4{n-1}$, la receta da $2n\cdot\frac4{n-1}\to8$: el límite es $e^8$.</li>
@@ -969,6 +1056,12 @@ svg.fig .sm{font-size:15px}
 </details>
 
 <details class="sol"><summary>Ejemplos propios E — criterio de Stolz <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy y numéricamente">P</span></summary>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular límites con sumas de $n$ términos o con logaritmos usando Stolz.</dd>
+    <dt>Cómo lo pienso</dt><dd>Restar dos valores consecutivos del numerador y del denominador simplifica el problema: la suma desaparece.</dd>
+    <dt>Qué uso</dt><dd>Criterio de Stolz (U p. 32), con denominador creciente y tendiendo a $\infty$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Elijo $b_n$ (el denominador) y calculo $\frac{a_{n+1}-a_n}{b_{n+1}-b_n}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>P14 (fácil).</b> $\lim_{n\to\infty}\dfrac{1^2+2^2+\cdots+n^2}{n^3}$. Stolz con $b_n=n^3$: $\dfrac{(n+1)^2}{(n+1)^3-n^3}=\dfrac{(n+1)^2}{3n^2+3n+1}\to\dfrac13$. Igual, $\dfrac{1+2+\cdots+n}{n^2}\to\dfrac12$.</li>
     <li><b>P15 (difícil).</b> $\lim_{n\to\infty}\dfrac{\ln n}{\sqrt n}=0$. Stolz con $b_n=\sqrt n$ (creciente, $\to\infty$): $$\frac{\ln(n+1)-\ln n}{\sqrt{n+1}-\sqrt n}=\ln\!\left(1+\tfrac1n\right)(\sqrt{n+1}+\sqrt n)=\underbrace{n\ln\!\left(1+\tfrac1n\right)}_{=\ln(1+1/n)^n\to\ln e=1}\cdot\underbrace{\frac{\sqrt{n+1}+\sqrt n}n}_{\to0}\to0.$$</li>
@@ -983,8 +1076,12 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ex-test"><summary>Examen 1 — Teoría: convergente, acotada, monótona (test) <span class="src" data-l="X" data-ref="X p.119 (Examen 4, elaborado con exámenes de asignaturas similares, sin fecha, Ejercicio 1, test, sin puntuación indicada)">X p.119</span></summary>
   <p class="enun">Una sucesión de números reales puede ser a la vez: <b>A)</b> convergente y no acotada; <b>B)</b> no convergente y acotada; <b>C)</b> estrictamente creciente y estrictamente decreciente; <b>D)</b> ninguna de las anteriores.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Hay que decidir cuál de las opciones puede pasar. Las imposibles chocan con un teorema; la posible se demuestra con un ejemplo sencillo.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir qué combinación de propiedades de una sucesión es posible.</dd>
+    <dt>Cómo lo pienso</dt><dd>Las opciones imposibles chocan con un teorema; la posible se demuestra con un ejemplo sencillo.</dd>
+    <dt>Qué uso</dt><dd>Convergente $\Rightarrow$ acotada (U Prop. 1.1, p. 24); definición de sucesión estrictamente creciente/decreciente (U Def. 1.13, p. 31).</dd>
+    <dt>Por dónde empiezo</dt><dd>Pruebo cada opción: ¿hay un teorema que la impide o un ejemplo que la cumple?</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>A es imposible.</b> Una sucesión que converge se acerca a un número y no puede escaparse hacia el infinito: <b>convergente $\Rightarrow$ acotada</b> (U Prop. 1.1, p. 24).</li>
     <li><b>B es posible.</b> $a_n=(-1)^n$ vale $-1,1,-1,1,\dots$: nunca pasa de $1$ en valor absoluto (acotada) y no se decide por ningún límite (no converge) (U p. 24).</li>
@@ -997,8 +1094,12 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ex-cociente"><summary>Examen 2 — Cociente $\frac\infty\infty$ con raíces <span class="src" data-l="X" data-ref="X p.4 (Febrero 2010, 2ª semana, Ingeniería Eléctrica, pregunta corta 1, 1 punto)">X p.4</span></summary>
   <p class="enun">Calcular $\displaystyle\lim_{n\to\infty}\frac{\sqrt{n^2+1}-\sqrt{9n^2+2}}{3n-2+\sqrt{4n^2-3}}$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Para $n$ enorme, cada raíz «vale casi» un múltiplo de $n$: $\sqrt{n^2+1}\approx n$, $\sqrt{9n^2+2}\approx3n$, $\sqrt{4n^2-3}\approx2n$. Se divide todo entre $n$ y lo que sobra tiende a 0.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\frac{\sqrt{n^2+1}-\sqrt{9n^2+2}}{3n-2+\sqrt{4n^2-3}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Para $n$ enorme, cada raíz vale casi un múltiplo de $n$: $\sqrt{n^2+1}\approx n$, $\sqrt{9n^2+2}\approx3n$, $\sqrt{4n^2-3}\approx2n$. Se divide todo entre $n$ y lo que sobra tiende a 0.</dd>
+    <dt>Qué uso</dt><dd>Álgebra de límites (U pp. 26-27) y continuidad de la raíz (U p. 29).</dd>
+    <dt>Por dónde empiezo</dt><dd>Divido numerador y denominador entre $n$, metiendo $n=\sqrt{n^2}$ dentro de cada raíz.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Dividir arriba y abajo entre $n$</b>, metiendo $n$ dentro de cada raíz como $n=\sqrt{n^2}$: $$\frac{\sqrt{1+\frac1{n^2}}-\sqrt{9+\frac2{n^2}}}{3-\frac2n+\sqrt{4-\frac3{n^2}}}.$$</li>
     <li><b>Pasar al límite.</b> Los términos $\frac1{n^2},\frac2n,\frac3{n^2}$ tienden a 0 y las raíces conservan el límite (U p. 29; álgebra de límites, U pp. 26-27): $$\frac{1-3}{3+2}=\boxed{-\tfrac25}.$$</li>
@@ -1009,8 +1110,12 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ex-conjugado"><summary>Examen 3 — $\infty-\infty$ con raíces: el conjugado <span class="src" data-l="X" data-ref="X p.19 (Febrero 2012, 1ª semana, Ingeniería Mecánica, Modelo A, pregunta corta 1, 1 punto)">X p.19</span></summary>
   <p class="enun">Calcular $\displaystyle\lim_{n\to\infty}\left(\sqrt{n^2-2n}-\sqrt{n^2+4}\right)$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Restar dos raíces casi iguales no se puede hacer «a ojo»: se multiplica y divide por la suma de las mismas raíces (el conjugado) para que la resta desaparezca.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\bigl(\sqrt{n^2-2n}-\sqrt{n^2+4}\bigr)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Restar dos raíces casi iguales no se puede hacer «a ojo»: se multiplica y divide por la suma de las mismas raíces (el conjugado) para que la resta desaparezca.</dd>
+    <dt>Qué uso</dt><dd>Indeterminación $\infty-\infty$ (U p. 29); conjugado $(A-B)(A+B)=A^2-B^2$ (U Ej. 1.25, p. 30).</dd>
+    <dt>Por dónde empiezo</dt><dd>Multiplico y divido por $\sqrt{n^2-2n}+\sqrt{n^2+4}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Reconocer el tipo.</b> Las dos raíces tienden a $+\infty$: es $\infty-\infty$ (U p. 29).</li>
     <li><b>Multiplicar y dividir por el conjugado</b> $\sqrt{n^2-2n}+\sqrt{n^2+4}$, usando $(A-B)(A+B)=A^2-B^2$ (U Ej. 1.25, p. 30): $$\frac{(n^2-2n)-(n^2+4)}{\sqrt{n^2-2n}+\sqrt{n^2+4}}=\frac{-2n-4}{\sqrt{n^2-2n}+\sqrt{n^2+4}}.$$</li>
@@ -1022,22 +1127,29 @@ svg.fig .sm{font-size:15px}
 
 <details class="sol" id="ex-acotada"><summary>Examen 4 — Acotada por algo que tiende a 0 <span class="src" data-l="X" data-ref="X p.115 (Examen 3, elaborado con exámenes de asignaturas similares, sin fecha, Ejercicio 1, test)">X p.115</span></summary>
   <p class="enun">Señalar el valor de $\displaystyle\lim_{n\to\infty}\frac{\cos^2\!\left(\dfrac{\exp\dfrac{n^2}{\sqrt[n]{(n+1)!}}}{\ln|n|}\right)}{n}$: A) $\infty$; B) $0$; C) $1$; D) ninguno de los anteriores.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>El coseno al cuadrado, lleve dentro lo que lleve, es un número entre 0 y 1. Dividirlo entre $n$ lo aplasta hacia 0. <b>No hay que calcular nada de lo de dentro.</b></p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar el valor de un límite con un $\cos^2$ de argumento complicado dividido entre $n$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El coseno al cuadrado, lleve dentro lo que lleve, es un número entre 0 y 1. Dividirlo entre $n$ lo aplasta hacia 0. No hay que calcular nada de lo de dentro.</dd>
+    <dt>Qué uso</dt><dd>Regla del emparedado (U Teorema 1.2, p. 25) o acotada por infinitésimo (U Prop. 1.2, p. 26).</dd>
+    <dt>Por dónde empiezo</dt><dd>Acoto $0\le\cos^2(\cdots)\le1$ y divido entre $n$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Acotar.</b> Sea $b_n=\cos^2(\cdots)$. Como $-1\le\cos t\le1$, $0\le b_n\le1$.</li>
     <li><b>Emparedar.</b> Entonces $0\le\dfrac{b_n}{n}\le\dfrac1n$ y ambos extremos tienden a 0, luego el límite es 0 (U Teorema 1.2, p. 25; o «acotada por infinitésimo», U Prop. 1.2, p. 26). <b>Respuesta: B) 0.</b></li>
   </ol>
   <p><b>Lo que escribes en el examen:</b> $0\le\frac{\cos^2(\cdots)}{n}\le\frac1n\to0$, luego el límite es 0.</p>
   <div class="recipe"><b>Receta:</b> un seno o coseno (o cualquier factor acotado) por algo que tiende a 0 da límite 0. Acota antes de ponerte a calcular: estudiar el interior es una trampa. Ver Ejercicio 1.11 de E (emparedado).</div>
-  <div class="box warn"><span class="h">Aviso</span>
-    <p>(El argumento solo está definido para $n\ge2$; no afecta al límite.)</p></div>
+  <p>(El argumento solo está definido para $n\ge2$; no afecta al límite.)</p>
 </details>
 
 <details class="sol" id="ex-uno-infinito"><summary>Examen 5 — Indeterminación $1^\infty$ (y su contraste: base que no tiende a 1) <span class="src" data-l="X" data-ref="X p.40 (Febrero 2014, Grado en Ingeniería Mecánica, Modelo A, pregunta corta 1, 1 punto); contraste: X p.13 (Febrero 2011, 2ª semana, Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.40, p.13</span></summary>
   <p class="enun">Sea $a_n=\left(\dfrac{n^2+n+1}{n^2-n-1}\right)^{\frac{n^2}{n+2}}$. ¿Cuánto vale $\lim_{n\to\infty} a_n$? Justifique la respuesta.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Base $\to1$ elevada a exponente $\to\infty$: el resultado es $e$ elevado a «(exponente)·(base $-\,1$)». Solo hay que calcular ese producto.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\bigl(\frac{n^2+n+1}{n^2-n-1}\bigr)^{n^2/(n+2)}$ y justificarlo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Base $\to1$ elevada a exponente $\to\infty$: el resultado es $e$ elevado a «(exponente)·(base $-1$)». Solo hay que calcular ese producto.</dd>
+    <dt>Qué uso</dt><dd>Prop. 1.5 (U p. 31): si $x_n\to1$ e $y_n\to\infty$, $\lim_{n\to\infty}x_n^{y_n}=e^{\lim_{n\to\infty}y_n(x_n-1)}$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Compruebo que la base tiende a 1 y el exponente a $\infty$; después calculo $y_n(x_n-1)$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Reconocer el tipo.</b> La base $x_n=\frac{n^2+n+1}{n^2-n-1}\to1$ y el exponente $y_n=\frac{n^2}{n+2}\to+\infty$: es $1^\infty$ (U Prop. 1.5, p. 31).</li>
     <li><b>Calcular el producto $y_n(x_n-1)$.</b> Como $x_n-1=\frac{2n+1}{n^2-n-1}$: $$y_n(x_n-1)=\frac{n^2(2n+1)}{(n+2)(n^2-n-1)}=\frac{2n^3+n^2}{n^3+n^2-3n-2}\to2,$$ porque numerador y denominador tienen el mismo grado y se divide entre $n^3$.</li>
@@ -1046,25 +1158,27 @@ svg.fig .sm{font-size:15px}
   <p><b>Lo que escribes en el examen:</b> «Forma $1^\infty$; $\lim_{n\to\infty} y_n(x_n-1)=2$; luego el límite es $e^2$.»</p>
   <p><b>Contraste: cuando NO es $1^\infty$</b> (Febrero 2011, <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2ª semana, Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.13</span>). Calcular $\lim_{n\to\infty}\left(\frac{n^2+2n}{16n^2+4n-7}\right)^{n}$. La base tiende a $\frac1{16}\ne1$: no hay indeterminación. Para $n$ grande la base es positiva y menor que $\frac12$, luego $0&lt;a_n\le(\tfrac12)^n\to0$. El límite es <b>0</b> (es $r^n$ con $|r|&lt;1$).</p>
   <div class="recipe"><b>Receta:</b> ante $x_n^{y_n}$, calcula primero $\lim_{n\to\infty} x_n$ y $\lim_{n\to\infty} y_n$. Solo si sale $1^{\pm\infty}$, usa $\lim_{n\to\infty} x_n^{y_n}=e^{\lim_{n\to\infty} y_n(x_n-1)}$. Si la base tiende a un número distinto de 1, basta (1.1) o $r^n$. Como los Ejercicios 1.13-1.14 de E.</div>
-  <div class="box warn"><span class="h">Avisos sobre las soluciones impresas</span>
+  <div class="box warn"><span class="h">Al escribirlo en el examen</span>
     <ul>
-      <li>X p.40 es correcta pero no justifica el paso al límite del corchete y el exponente (Prop. 1.5 + (1.1)), ni comprueba que $x_n-1$ tenga signo constante. Además $a_1=(-3)^{1/3}$ no está definida como potencia real: es irrelevante, pero di «para $n\ge2$».</li>
-      <li>X p.13: la vía alternativa escribe «$\ln l=n\ln\lim_{n\to\infty}(\dots)$», con la $n$ fuera del límite, lo que no tiene sentido. Lo correcto es $\ln l=\lim_{n\to\infty}\big(n\ln x_n\big)=-\infty$, luego $l=0$.</li>
+      <li>Justifica el paso al límite (Prop. 1.5 y fórmula (1.1)) y di «para $n\ge2$», porque la potencia no está definida para todo $n$.</li>
+      <li>En la vía con logaritmos, la $n$ va dentro del límite: $\ln l=\lim_{n\to\infty}\big(n\ln x_n\big)=-\infty$, luego $l=0$.</li>
     </ul></div>
 </details>
 
 <details class="sol" id="ex-parametro"><summary>Examen 6 — Límite con parámetro: $(\cos a)^n$ <span class="src" data-l="X" data-ref="X p.150 (Febrero 2019, 1ª semana, Ingeniería Electrónica Industrial y Automática, pregunta corta 1, 1 punto)">X p.150</span></summary>
   <p class="enun">Calcular, en función de $a\in\mathbb R$, el límite $\displaystyle\lim_{n\to+\infty}(\cos a)^n$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Para cada $a$ fijo, $\cos a$ es un número fijo $r$ entre $-1$ y $1$, y $(\cos a)^n=r^n$ es una sucesión geométrica que ya conoces. Solo hay que separar los casos.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular, según el valor de $a$, el límite $\lim_{n\to\infty}(\cos a)^n$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Para cada $a$ fijo, $\cos a$ es un número fijo $r$ entre $-1$ y $1$, y $(\cos a)^n=r^n$ es una sucesión geométrica que ya conoces. Solo hay que separar los casos.</dd>
+    <dt>Qué uso</dt><dd>Comportamiento de $r^n$: tiende a 0 si $|r|<1$, vale 1 si $r=1$ y oscila si $r=-1$ (tabla de límites básicos del tema).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo $r=\cos a$ y distingo $r=1$, $r=-1$ y $|r|<1$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Casos de $r^n$.</b> Si $|r|&lt;1$, $r^n\to0$ (p. ej. $0{,}5^n=0{,}5;\,0{,}25;\,0{,}125;\dots$). Si $r=1$, todos los términos valen $1$. Si $r=-1$, vale $-1,1,-1,\dots$ y no converge.</li>
     <li><b>Traducir a $a$.</b> $\cos a=1$ cuando $a=2k\pi$: el límite es <b>1</b>. $\cos a=-1$ cuando $a=(2k+1)\pi$: el límite <b>no existe</b>. Para cualquier otro $a$, $|\cos a|&lt;1$ y el límite es <b>0</b>.</li>
   </ol>
   <p><b>Lo que escribes en el examen:</b> los tres casos del paso 2, con $k\in\mathbb Z$.</p>
   <div class="recipe"><b>Receta:</b> con un parámetro, fíjalo, reconoce la sucesión modelo ($r^n$, $n^p$…) y separa los casos en que cambia el comportamiento. Ver Ejercicio 1.12 de E.</div>
-  <div class="box warn"><span class="h">Aviso</span>
-    </div>
 </details>
 
 <div class="box tip"><span class="h">Tipos que también caen y no están en el PDF</span>
