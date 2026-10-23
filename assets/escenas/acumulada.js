@@ -1,7 +1,7 @@
 /* Función área acumulada F(x) = ∫ₐˣ f(t) dt (tema 6.2): el área sombreada hasta x, la curva F y su tangente, cuya pendiente es f(x) (primer teorema fundamental). */
 Interactivos.registrar('acumulada', function (c) {
   var T = c.THREE, H = c.H;
-  function simpson(f, a, b) { var n = 2000, h = (b - a) / n, s = f(a) + f(b), i; for (i = 1; i < n; i++) s += f(a + i * h) * (i % 2 ? 4 : 2); return s * h / 3; }
+  function simpson(f, a, b, n) { n = n || 2000; var h = (b - a) / n, s = f(a) + f(b), i; for (i = 1; i < n; i++) s += f(a + i * h) * (i % 2 ? 4 : 2); return s * h / 3; }
   var G = [
     { n: 'cos t desde 0  (F = sen x)', f: Math.cos, a: 0, xm: 6.2, v: [-0.5, 6.5, -1.6, 1.6] },
     { n: 't·sen t desde 0  (E 6.13)', f: function (t) { return t * Math.sin(t); }, a: 0, xm: 23, v: [-1, 24, -26, 26] },
@@ -13,7 +13,18 @@ Interactivos.registrar('acumulada', function (c) {
   var ejes, curvaf, curvaF, tg, relP, relN, pf, pF, vert;
   var lF = c.lectura('F(x) = ∫ₐˣ f'), lf = c.lectura('f(x)'), ld = c.lectura('Pendiente de F en x (cociente con h = 0,001)');
   var fm = function (t) { return (Math.round(t * 10000) / 10000).toString().replace('-', '−').replace('.', ','); };
-  var F = function (u) { var g = G[k]; return simpson(g.f, g.a, u); };
+  var F;
+  /* Tabla de F precalculada por trozos (una vez por función): F(u) = F(nodo) + Simpson corto desde el nodo anterior. */
+  var tabla = null;
+  function hacerTabla() {
+    var g = G[k], M = 600, h = (g.xm - g.a) / M, i; tabla = [0];
+    for (i = 1; i <= M; i++) tabla.push(tabla[i - 1] + simpson(g.f, g.a + (i - 1) * h, g.a + i * h, 8));
+    tabla.h = h;
+  }
+  F = function (u) {
+    var g = G[k], i = Math.min(tabla.length - 2, Math.max(0, Math.floor((u - g.a) / tabla.h)));
+    return tabla[i] + simpson(g.f, g.a + i * tabla.h, u, 8);
+  };
 
   function malla(color) {
     var mesh = new T.Mesh(new T.BufferGeometry(), new T.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.38, side: T.DoubleSide }));
@@ -27,7 +38,7 @@ Interactivos.registrar('acumulada', function (c) {
   }
   function nuevo() {
     [ejes, curvaf, curvaF, tg, relP, relN, pf, pF, vert].forEach(function (o) { if (o) c.scene.remove(o); });
-    var g = G[k], v = g.v, vw = W(v); w = 0.0055 * (v[3] - v[2]); c.vista(v[0], v[1], v[2], v[3]);
+    hacerTabla(); var g = G[k], v = g.v, vw = W(v); w = 0.0055 * (v[3] - v[2]); c.vista(v[0], v[1], v[2], v[3]);
     ejes = H.ejes2D(T, vw, w, P.fg, P.bd); c.scene.add(ejes);
     relP = malla(P.S); relP.position.z = 0.02; c.scene.add(relP);
     relN = malla(P.E); relN.position.z = 0.03; c.scene.add(relN);

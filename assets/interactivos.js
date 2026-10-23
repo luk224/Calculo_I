@@ -157,19 +157,21 @@
     var nombre = fig.dataset.escena, params = {};
     try { params = JSON.parse(fig.dataset.params || '{}'); } catch (e) {}
     var stage = document.createElement('div'); stage.className = 'int-stage';
-    var msg = document.createElement('div'); msg.className = 'int-msg'; msg.textContent = 'Cargando interactivo…'; stage.appendChild(msg);
+    var msg = document.createElement('div'); msg.className = 'int-msg'; msg.innerHTML = '<span class="int-spin" aria-hidden="true"></span><span>Cargando interactivo…</span>'; msg.setAttribute('role', 'status'); stage.appendChild(msg);
     fig.insertBefore(stage, fig.firstChild);
-    function fallo(t) { msg.textContent = t; if (!msg.parentNode) stage.appendChild(msg); }
+    function fallo(t) { msg.textContent = t; msg.classList.add('int-fallo'); if (!msg.parentNode) stage.appendChild(msg); }
     if (!webgl()) { fig.classList.add('int-sinwebgl'); return fallo('Tu navegador no tiene WebGL: se muestra una imagen fija.'); }
 
     Promise.all([script(base + 'three/three.min.js')]).then(function () {
       return script(base + 'three/OrbitControls.js');
     }).then(function () { return script(base + 'escenas/' + nombre + '.js'); }).then(function () {
+      return new Promise(function (r) { setTimeout(r, 40); }); /* deja pintar el indicador de carga antes de construir la escena */
+    }).then(function () {
       var fn = registro[nombre]; if (!fn) return fallo('Escena «' + nombre + '» no registrada.');
       var THREE = window.THREE;
       var renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      stage.removeChild(msg); stage.appendChild(renderer.domElement);
+      stage.insertBefore(renderer.domElement, msg);
       var dos = params.dim === 2, vista = [-1, 1, -1, 1], controls = null;
       var z = { s: 1, px: 0, py: 0 }, base = null, btnReset = null, crudo = [-1, 1, -1, 1];
       var scene = new THREE.Scene(), camera;
@@ -250,6 +252,7 @@
       };
       if (dos) activarZoom();
       fn(ctx);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { if (msg.parentNode) stage.removeChild(msg); }); });
       /* Zoom con rueda o pellizco, desplazamiento arrastrando, doble clic o botón para restablecer. */
       function activarZoom() {
         var cv = renderer.domElement, ptrs = {}, arr = null;
