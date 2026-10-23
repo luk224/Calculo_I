@@ -419,6 +419,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
   <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to+\infty}\left(\frac{\ln x^2+1}{2\ln x}\right)^{\ln x}$.</p>
   <p>Aquí $\ln x^2+1$ significa $\ln(x^2)+1$ (así lo usa la solución de E).</p>
   <p><b>Camino 1: el número $e$ (Prop. 2.2 de U).</b></p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar el límite de una potencia $\left(\frac{\ln x^2+1}{2\ln x}\right)^{\ln x}$ cuando $x\to+\infty$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La base se acerca a $1$ y el exponente crece sin parar: forma $1^\infty$. Hay una carrera entre «base casi 1» y «exponente enorme»; el truco es escribir la base como $1+\frac1{\text{algo grande}}$, que es justo el límite que define $e$.</dd>
+    <dt>Qué uso</dt><dd>Proposición 2.2 (U p.85): si $f\to\pm\infty$, $\left(1+\frac1f\right)^f\to e$. Alternativa: $f^g=e^{g\ln f}$ (U p.84-85).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $\ln x^2=2\ln x$ y la base como $1+\frac1{2\ln x}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Tipo.</b> Como $\ln(x^2)=2\ln x$, la base es $\dfrac{2\ln x+1}{2\ln x}=1+\dfrac1{2\ln x}\to1$ y el exponente $\ln x\to+\infty$: $1^{+\infty}$.</li>
     <li><b>Forzar la forma de la Prop. 2.2.</b> Tomamos $f(x)=\ln x^2=2\ln x\to+\infty$. El exponente es $\ln x=\frac12\ln x^2$, luego
@@ -440,6 +446,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.25 · $\tfrac00$ con raíz y logaritmo <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.25, p. 67">E p.67</span></summary>
   <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to0}\frac{\ln(1+x)-x}{1-\sqrt{1-x^2}}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0}\frac{\ln(1+x)-x}{1-\sqrt{1-x^2}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Arriba y abajo valen $0$ en $x=0$: no sé quién gana. La regla compara «a qué velocidad» se acercan a $0$ comparando sus derivadas. Conviene simplificar tras derivar, porque el cociente de derivadas se arregla mucho.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar que sale $\tfrac00$ y que $g'$ no se anula cerca de $0$; luego derivar numerador y denominador por separado.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Tipo.</b> Numerador: $\ln1-0=0$. Denominador: $1-\sqrt1=0$. Ambas son continuas en $0$: $\tfrac00$.</li>
     <li><b>Hipótesis.</b> En $(-1,1)$ ambas son derivables. $f'(x)=\dfrac1{1+x}-1=\dfrac{-x}{1+x}$ y $g'(x)=-\dfrac1{2\sqrt{1-x^2}}\cdot(-2x)=\dfrac{x}{\sqrt{1-x^2}}$. $g'(x)=0$ solo en $x=0$; luego $g'(x)\neq0$ en $(-1,1)\setminus\{0\}$, que es lo que exige U («esta última condición no excluye que $g'(a)$ pueda ser $0$»).</li>
@@ -456,6 +468,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.26 · $\tfrac00$ con polinomios <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.26, p. 67 (solución p. 68)">E p.67</span></summary>
   <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to-1}\dfrac{x^5+x^4-x^2+1}{x^4-1}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to-1}\frac{x^5+x^4-x^2+1}{x^4-1}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Son polinomios y ambos se anulan en $-1$: tienen un factor común $(x+1)$ que causa el $\tfrac00$. Derivar equivale a «quitar» ese factor y mirar lo que queda.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Sustituir $x=-1$ en numerador y denominador y comprobar $\tfrac00$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Sustituir primero.</b> Numerador en $x=-1$: $-1+1-1+1=0$. Denominador: $1-1=0$. Son polinomios (continuos): $\tfrac00$. No vale el «cociente de límites» porque el del denominador es $0$.</li>
     <li><b>Condiciones.</b> Ambos son polinomios, derivables en $\mathbb R$; $g'(x)=4x^3$ solo se anula en $x=0$, así que $g'\neq0$ en un entorno de $-1$ (por ejemplo en $(-2,0)$).</li>
@@ -473,6 +491,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.27 · cuando L'Hôpital da vueltas <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.27, p. 68">E p.68</span></summary>
   <p class="enun">Calcula el valor del límite $\displaystyle\lim_{x\to+\infty}\frac{\operatorname{sen}x+e^x}{\cos x+e^x}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to+\infty}\frac{\operatorname{sen}x+e^x}{\cos x+e^x}$ (y decidir si L'Hôpital sirve).</dd>
+    <dt>Cómo lo pienso</dt><dd>$e^x$ crece tanto que $\operatorname{sen}x$ y $\cos x$, siempre entre $-1$ y $1$, son migajas. Derivar solo cambia seno por coseno y vuelve al principio: la regla «da vueltas» y no resuelve. Hay que sacar factor común $e^x$.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital (U p.82) para ver que no avanza; álgebra de límites y «cero por acotada» (U Prop. 1.10-1.11, pp.45-46).</dd>
+    <dt>Por dónde empiezo</dt><dd>Aplicar la regla una vez, ver que reaparecen seno y coseno, y abandonarla: dividir arriba y abajo por $e^x$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Tipo.</b> $e^x\to+\infty$ y $\operatorname{sen}x,\cos x\in[-1,1]$; así $\operatorname{sen}x+e^x\ge e^x-1\to+\infty$ y lo mismo el denominador: $\tfrac\infty\infty$.</li>
     <li><b>Intento con L'Hôpital.</b> Las condiciones se cumplen ($g'(x)=-\operatorname{sen}x+e^x\ge e^x-1&gt;0$ para $x&gt;0$), pero $\ \dfrac{f'}{g'}=\dfrac{\cos x+e^x}{-\operatorname{sen}x+e^x}$, $\ \dfrac{f''}{g''}=\dfrac{-\operatorname{sen}x+e^x}{-\cos x+e^x},\dots$ Tras cuatro derivaciones se vuelve al cociente de partida: no simplifica nada.</li>
@@ -489,6 +513,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.28 · $\tfrac\infty\infty$ lateral <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.28, p. 68 (solución p. 69)">E p.68</span></summary>
   <p class="enun">Calcula el valor del límite $\displaystyle\lim_{x\to\frac\pi2^-}\frac{2-\ln(\cos x)}{2+\operatorname{tg}x}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to\frac\pi2^-}\frac{2-\ln(\cos x)}{2+\operatorname{tg}x}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cuando $x$ se acerca a $\frac\pi2$ por la izquierda, $\cos x\to0^+$: el logaritmo cae a $-\infty$ y la tangente sube a $+\infty$. Es $\tfrac\infty\infty$ y hay que ver cuál crece más rápido; derivar ayuda a compararlos. Solo vale el límite lateral porque a la derecha $\cos x<0$.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe. Vale para límites laterales (nota al margen, p.82). Derivada de $\operatorname{tg}$: tabla U pp.79-80.</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar el dominio $(0,\pi/2)$ y el tipo $\tfrac{+\infty}{+\infty}$; derivar numerador y denominador.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Dominio.</b> Para $x\in(0,\pi/2)$, $\cos x&gt;0$ y $\ln(\cos x)$ está definido: tiene sentido el límite <b>por la izquierda</b>.</li>
     <li><b>Tipo.</b> Cuando $x\to\frac\pi2^-$, $\cos x\to0^+$, luego $\ln(\cos x)\to-\infty$ y el numerador $2-\ln(\cos x)\to+\infty$. Además $\operatorname{tg}x=\frac{\operatorname{sen}x}{\cos x}\to\frac1{0^+}=+\infty$. Es $\tfrac{+\infty}{+\infty}$.</li>
@@ -503,6 +533,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.29 · $\infty^0$ (test) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.29, p. 69">E p.69</span></summary>
   <p class="enun">Señala el valor del límite $\displaystyle\lim_{x\to+\infty}x^{\frac1{x+1}}$: <b>a)</b> $0$. <b>b)</b> $1$. <b>c)</b> $e$. <b>d)</b> $e^e$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Elegir entre $0,1,e,e^e$ el valor de $\lim_{x\to+\infty}x^{1/(x+1)}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La base crece pero el exponente $\frac1{x+1}$ se hunde hacia $0$: forma $\infty^0$. Tirar a un lado o a otro depende de quién manda; pasando a exponencial se estudia solo el exponente.</dd>
+    <dt>Qué uso</dt><dd>Potencias: $f^g=e^{g\ln f}$ (U §2.3.2, Ej. 2.12, p.84-85) y continuidad de $\exp$. Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $x^{1/(x+1)}=e^{\frac{\ln x}{x+1}}$ y estudiar $\frac{\ln x}{x+1}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Tipo.</b> Base $\to+\infty$, exponente $\frac1{x+1}\to0$: $\infty^0$.</li>
     <li><b>Exponencial.</b> Para $x&gt;0$: $x^{\frac1{x+1}}=e^{\frac{\ln x}{x+1}}$.</li>
@@ -519,6 +555,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.30 · $0\cdot\infty$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.30, p. 70">E p.70</span></summary>
   <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to0^+}x\ln x$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0^+}x\ln x$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Un factor tiende a $0$ y el otro a $-\infty$: $0\cdot\infty$ no es una indeterminación a la que se aplique la regla. Pasamos uno de los factores al denominador como inverso para obtener un cociente $\tfrac\infty\infty$.</dd>
+    <dt>Qué uso</dt><dd>Producto $\to$ cociente: $fg=\frac f{1/g}$ (U §2.3.2, p.84, Ej. 2.11). Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $x\ln x=\frac{\ln x}{1/x}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Tipo.</b> $x\to0^+$ y $\ln x\to-\infty$: $0\cdot(-\infty)$. L'Hôpital no se aplica a productos.</li>
     <li><b>Convertir en cociente.</b> Pasamos al denominador el factor $x$: $x\ln x=\dfrac{\ln x}{1/x}$, de tipo $\tfrac{-\infty}{+\infty}$.</li>
@@ -535,6 +577,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.31 · $0^0$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.31, p. 70">E p.70</span></summary>
   <p class="enun">Calcula el valor de $\displaystyle\lim_{x\to0^+}x^{x^2}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0^+}x^{x^2}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una base que tiende a $0$ elevada a un exponente que también tiende a $0$ ($0^0$) no tiene un valor obvio. Con $f^g=e^{g\ln f}$ la potencia se convierte en un producto cuyo comportamiento sí sabemos estudiar.</dd>
+    <dt>Qué uso</dt><dd>Potencias: $f^g=e^{g\ln f}$ (U §2.3.2, Ej. 2.12, p.84-85) y continuidad de $\exp$. Producto $0\cdot\infty$ a cociente (U p.84).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $x^{x^2}=e^{x^2\ln x}$ y calcular $\lim x^2\ln x$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Tipo.</b> Base $x\to0^+$, exponente $x^2\to0$: $0^0$.</li>
     <li><b>Escribir como exponencial.</b> Para $x&gt;0$: $x^{x^2}=e^{\ln(x^{x^2})}=e^{x^2\ln x}$.</li>
@@ -550,6 +598,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.32 · potencia frente a exponencial <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.32, p. 70 (solución p. 71)">E p.70</span></summary>
   <p class="enun">Calcula para $n\in\mathbb N$ y $a&gt;1$ el límite $\displaystyle\lim_{x\to+\infty}\frac{x^n}{a^x}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Probar que $\lim_{x\to+\infty}\frac{x^n}{a^x}$ vale lo mismo para todo $n\in\mathbb N$ y $a>1$, y hallarlo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una exponencial con base mayor que $1$ crece más rápido que cualquier potencia. Cada derivada baja un grado de la potencia sin tocar la exponencial, así que tras $n$ pasos el numerador es una constante y gana $a^x$.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe. Derivada de $a^x$: $a^x\ln a$ (tabla U pp.79-80). Inducción sobre $n$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Verificar $\tfrac\infty\infty$ y aplicar la regla una vez para ver cómo baja $n$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Qué es la variable.</b> $n$ está fijo; la variable es $x$.</li>
     <li><b>Tipo.</b> $a^x=e^{x\ln a}$ con $\ln a&gt;0$ (porque $a&gt;1$), luego $a^x\to+\infty$; y $x^n\to+\infty$: $\tfrac\infty\infty$.</li>
@@ -566,6 +620,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Ejercicio 2.33 · una sucesión <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.33, p. 71 (solución p. 72)">E p.71</span></summary>
   <p class="enun">Utilizando la regla de L'Hôpital calcula el valor del límite de la sucesión $\left\{\dfrac{\ln\frac{n+1}{n}}{\ln\frac{n+2}{n+1}}\right\}$ cuando $n$ tiende a $+\infty$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular, con L'Hôpital, el límite de la sucesión $\frac{\ln\frac{n+1}{n}}{\ln\frac{n+2}{n+1}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una sucesión solo existe en los enteros, así que no se puede derivar. Se sustituye $n$ por una variable real $x$, se calcula el límite de esa función (donde sí se puede derivar) y el límite de la sucesión es el mismo.</dd>
+    <dt>Qué uso</dt><dd>Proposición 2.3 (U p.85): si $\lim_{x\to\infty}f(x)=l$, entonces $\lim_{n\to\infty}f(n)=l$. Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Definir $f(x)=\frac{\ln\frac{x+1}x}{\ln\frac{x+2}{x+1}}$ y comprobar que es $\tfrac00$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Por qué no se deriva la sucesión.</b> Solo está definida en $\mathbb N$. Pasamos a una función de variable real con la Prop. 2.3 de U: si $\lim_{x\to\infty}f(x)=l$, entonces $\lim_{n\to\infty}f(n)=l$.</li>
     <li><b>Función asociada:</b> $f(x)=\dfrac{\ln\frac{x+1}{x}}{\ln\frac{x+2}{x+1}}$, $x&gt;0$.</li>
@@ -585,6 +645,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Propio 1 · $\tfrac00$ con dos derivaciones <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con cálculo simbólico)">P</span></summary>
   <p class="enun">Calcula $\displaystyle\lim_{x\to0}\frac{e^x-1-x}{x^2}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0}\frac{e^x-1-x}{x^2}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Numerador y denominador valen $0$ en $x=0$, y $e^x-1-x$ se parece a $\frac{x^2}2$ cerca de $0$. Hay que derivar hasta que deje de salir $\tfrac00$.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Sustituir $x=0$ y comprobar $\tfrac00$.</dd>
+  </dl></div>
   <ol class="steps">
     <li>En $0$: $\frac{1-1-0}{0}$, tipo $\tfrac00$. Derivables; $(x^2)'=2x\neq0$ si $x\neq0$.</li>
     <li>L'Hôpital: $\lim_{x\to0}\dfrac{e^x-1}{2x}$, otra vez $\tfrac00$; $(2x)'=2\neq0$.</li>
@@ -595,6 +661,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Propio 2 · $\infty-\infty$ <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con cálculo simbólico)">P</span></summary>
   <p class="enun">Calcula $\displaystyle\lim_{x\to0}\left(\frac1x-\frac1{e^x-1}\right)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0}\left(\frac1x-\frac1{e^x-1}\right)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Dos términos enormes que se restan: no se sabe cuál gana. Si se pone todo en una fracción, la resta desaparece y queda un $\tfrac00$.</dd>
+    <dt>Qué uso</dt><dd>Diferencia $\infty-\infty$: denominador común (U §2.3.2, p.83-84, Ej. 2.10). Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Poner $\frac1x-\frac1{e^x-1}=\frac{e^x-1-x}{x(e^x-1)}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li>Por la derecha es $+\infty-(+\infty)$ (y por la izquierda $-\infty-(-\infty)$). <b>Restamos:</b> $\dfrac{e^x-1-x}{x(e^x-1)}$, de tipo $\tfrac00$.</li>
     <li>Derivadas: numerador $e^x-1$; denominador $h(x)=e^x-1+xe^x$. Como $h'(x)=(2+x)e^x&gt;0$ cerca de $0$, $h$ es estrictamente creciente allí y solo se anula en $0$: condiciones cumplidas.</li>
@@ -605,6 +677,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Propio 3 · $1^\infty$ <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con cálculo simbólico)">P</span></summary>
   <p class="enun">Calcula $\displaystyle\lim_{x\to0}(\cos x)^{1/x^2}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0}(\cos x)^{1/x^2}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La base se acerca a $1$ y el exponente se dispara: $1^\infty$. Con logaritmos se estudia solo el exponente $\frac{\ln\cos x}{x^2}$, que es un cociente normal.</dd>
+    <dt>Qué uso</dt><dd>Potencias: $f^g=e^{g\ln f}$ (U §2.3.2, Ej. 2.12, p.84-85) y continuidad de $\exp$. Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $(\cos x)^{1/x^2}=e^{\ln(\cos x)/x^2}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li>Base $\to1$, exponente $\to+\infty$: $1^\infty$. Cerca de $0$, $\cos x&gt;0$, luego $(\cos x)^{1/x^2}=e^{\ln(\cos x)/x^2}$.</li>
     <li>Exponente: $\dfrac{\ln\cos x}{x^2}$ es $\tfrac00$. L'Hôpital: $\dfrac{-\operatorname{tg}x}{2x}=-\dfrac12\cdot\dfrac{\operatorname{sen}x}{x}\cdot\dfrac1{\cos x}\to-\dfrac12$ (usando $\frac{\operatorname{sen}x}x\to1$, U Ej. 2.8).</li>
@@ -615,6 +693,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Propio 4 · sucesión $n\left(a^{1/n}-1\right)$ <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con cálculo simbólico)">P</span></summary>
   <p class="enun">Para $a&gt;0$, calcula $\displaystyle\lim_{n\to\infty}n\left(a^{1/n}-1\right)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}n\left(a^{1/n}-1\right)$ para $a>0$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es $\infty\cdot0$ y además una sucesión. Primero se pasa a variable real; luego, como producto, se convierte en cociente poniendo $1/x$ abajo.</dd>
+    <dt>Qué uso</dt><dd>Proposición 2.3 (U p.85) y Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Definir $f(x)=\frac{a^{1/x}-1}{1/x}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li>Función asociada: $f(x)=x\left(a^{1/x}-1\right)=\dfrac{a^{1/x}-1}{1/x}$. Como $a^{1/x}=e^{(\ln a)/x}\to1$, es $\tfrac00$.</li>
     <li>Derivadas: numerador $a^{1/x}\ln a\cdot\left(-\frac1{x^2}\right)$; denominador $-\frac1{x^2}\neq0$. Cociente: $a^{1/x}\ln a\to\ln a$.</li>
@@ -630,8 +714,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Examen 1 · $\tfrac00$: aplicar la regla dos veces <span class="src" data-l="X" data-ref="X p.88 (Febrero 2018, Grado Ing. Mecánica, cód. 68031029, Modelo A, pregunta corta 2, 1 punto)">X p.88</span></summary>
   <p class="enun">Calcule el límite $\displaystyle\lim_{x\to0}\frac{e^x-x-1}{x^2}$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Al sustituir $x=0$ sale $\tfrac00$, que no dice nada. La regla de L'Hôpital permite <b>derivar arriba y abajo</b> y volver a mirar; si sigue saliendo $\tfrac00$, se repite.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0}\frac{e^x-x-1}{x^2}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Al sustituir $x=0$ sale $\tfrac00$, que no dice nada. La regla de L'Hôpital permite derivar arriba y abajo y volver a mirar; si sigue saliendo $\tfrac00$, se repite.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe. Reiterada (U Ej. 2.9, p.83).</dd>
+    <dt>Por dónde empiezo</dt><dd>Sustituir $x=0$ arriba y abajo para confirmar $\tfrac00$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Sustituir.</b> Arriba: $e^0-0-1=0$. Abajo: $0^2=0$. Sale $\tfrac00$, así que se puede usar la regla.</li>
     <li><b>Derivar arriba y abajo por separado</b> (no es la regla del cociente): $\dfrac{e^x-1}{2x}$.</li>
@@ -649,8 +737,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Examen 2 · $\tfrac\infty\infty$ con exponenciales <span class="src" data-l="X" data-ref="X p.10 (Febrero 2011, 1ª semana, Ing. Mecánica, Modelo A, pregunta corta 2, 1 punto)">X p.10</span></summary>
   <p class="enun">Calcule el valor del límite $\displaystyle\lim_{x\to\infty}\frac{x+e^x}{2x+e^x}$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Para $x$ enorme, $e^x$ es gigantesca y $x$ es una miseria al lado. Por ejemplo, con $x=20$: $e^{20}\approx485\,000\,000$ frente a $20$. Así que arriba y abajo «casi solo hay $e^x$», y el cociente se acerca a $\tfrac{e^x}{e^x}=1$.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to\infty}\frac{x+e^x}{2x+e^x}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Para $x$ enorme, $e^x$ es gigantesca y $x$ es una miseria al lado. Por ejemplo, con $x=20$: $e^{20}\approx485\,000\,000$ frente a $20$. Así que arriba y abajo «casi solo hay $e^x$», y el cociente se acerca a $\tfrac{e^x}{e^x}=1$.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Ver que arriba y abajo tienden a $+\infty$ ($\tfrac\infty\infty$) y derivar.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Tipo.</b> Arriba y abajo tienden a $+\infty$: es $\tfrac\infty\infty$.</li>
     <li><b>Derivar arriba y abajo:</b> $\dfrac{1+e^x}{2+e^x}$. Sigue siendo $\tfrac\infty\infty$.</li>
@@ -668,8 +760,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Examen 3 · $\infty-\infty$: restar y aplicar la regla <span class="src" data-l="X" data-ref="X p.104 (examen sin fecha, I. Electrónica Industrial y Automática, pregunta corta 1, 1 punto)">X p.104</span></summary>
   <p class="enun">Calcule el límite $\displaystyle\lim_{x\to0}\left(\frac1x-\frac1{1-\cos x}\right)$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Una resta $\infty-\infty$ no se puede resolver tal cual. Se <b>junta en una sola fracción</b> y entonces sale un $\tfrac00$ que ya sabemos tratar con L'Hôpital.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0}\left(\frac1x-\frac1{1-\cos x}\right)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una resta $\infty-\infty$ no se puede resolver tal cual. Se junta en una sola fracción y entonces sale un $\tfrac00$ que ya sabemos tratar con L'Hôpital. Si tras derivar queda «número$/0$», hay que mirar el signo del cero.</dd>
+    <dt>Qué uso</dt><dd>Diferencia $\infty-\infty$: denominador común (U Ej. 2.10, pp.83-84). Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Poner ambas fracciones sobre el denominador común $x(1-\cos x)$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Juntar</b> las dos fracciones (denominador común): $$\frac1x-\frac1{1-\cos x}=\frac{1-\cos x-x}{x(1-\cos x)} .$$</li>
     <li><b>Sustituir $x=0$.</b> Arriba: $1-1-0=0$. Abajo: $0\cdot0=0$. Sale $\tfrac00$.</li>
@@ -687,8 +783,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Examen 4 · $0^0$: exponencial y $0\cdot\infty$ <span class="src" data-l="X" data-ref="X p.8 (Septiembre 2010, Grado Ing. Eléctrica, cód. 63011021, ejercicio 5, 3 puntos)">X p.8</span></summary>
   <p class="enun">Calcule $\displaystyle\lim_{x\to0^+}x^{x^2}$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Una potencia con $0^0$ es difícil de manejar. Escribimos $x^{x^2}=e^{x^2\ln x}$ y calculamos solo el <b>exponente</b> $x^2\ln x$, que ya es un límite normal; al final se pone $e^{\text{(resultado)}}$.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0^+}x^{x^2}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una potencia con $0^0$ es difícil de manejar. Escribimos $x^{x^2}=e^{x^2\ln x}$ y calculamos solo el exponente $x^2\ln x$, que ya es un límite normal; al final se pone $e^{\text{(resultado)}}$.</dd>
+    <dt>Qué uso</dt><dd>Potencias: $f^g=e^{g\ln f}$ (U §2.3.2, Ej. 2.12, p.84-85) y continuidad de $\exp$. Producto $0\cdot\infty$ a cociente (U p.84). Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $x^{x^2}=e^{x^2\ln x}$ y llamar $L=\lim_{x\to0^+}x^2\ln x$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Pasar a exponencial.</b> Para $x>0$: $x^{x^2}=e^{x^2\ln x}$. Hay que hallar $L=\lim_{x\to0^+}x^2\ln x$; la respuesta será $e^L$.</li>
     <li><b>Ver qué tipo es el exponente.</b> $x^2\to0$ y $\ln x\to-\infty$: es $0\cdot\infty$. Se pasa a fracción poniendo la potencia abajo: $$x^2\ln x=\frac{\ln x}{x^{-2}},\qquad\text{tipo }\tfrac{-\infty}{+\infty}.$$</li>
@@ -706,8 +806,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Examen 5 · $1^\infty$ en $x\to\infty$ <span class="src" data-l="X" data-ref="X p.132 (Septiembre 2017, I. Electrónica Industrial y Automática, pregunta corta 1, 1 punto)">X p.132</span></summary>
   <p class="enun">Calcule el límite $\displaystyle\lim_{x\to\infty}\left(\frac{x-1}{x+2}\right)^x$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>Es el truco de la potencia otra vez: se escribe $f^g=e^{g\ln f}$ y se calcula solo el exponente. Aquí la base se acerca a $1$ y el exponente crece sin parar ($1^\infty$).</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to\infty}\left(\frac{x-1}{x+2}\right)^x$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es el truco de la potencia otra vez: se escribe $f^g=e^{g\ln f}$ y se calcula solo el exponente. Aquí la base se acerca a $1$ y el exponente crece sin parar ($1^\infty$).</dd>
+    <dt>Qué uso</dt><dd>Potencias: $f^g=e^{g\ln f}$ (U §2.3.2, Ej. 2.12, p.84-85) y continuidad de $\exp$. Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir la potencia como $e^{x\ln\frac{x-1}{x+2}}$ y calcular $L=\lim_{x\to\infty}x\ln\frac{x-1}{x+2}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>Pasar a exponencial.</b> $\left(\frac{x-1}{x+2}\right)^x=e^{\,x\ln\frac{x-1}{x+2}}$. Hay que hallar $L=\lim_{x\to\infty}x\ln\frac{x-1}{x+2}$.</li>
     <li><b>Pasar a fracción.</b> $x$ pasa abajo como $\frac1x$, y el logaritmo se separa en dos: $$L=\lim_{x\to\infty}\frac{\ln(x-1)-\ln(x+2)}{1/x},\qquad\text{tipo }\tfrac00.$$</li>
@@ -726,8 +830,12 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 <details class="sol"><summary>Examen 6 · la regla dentro de un problema de continuidad y derivabilidad <span class="src" data-l="X" data-ref="X pp.86-87 (Septiembre 2017, Grado Ing. Mecánica, cód. 68031029, Modelo A, ejercicio 5, 3 puntos: (a) 1, (b) 0.75, (c) 1.25)">X pp.86-87</span></summary>
   <p class="enun">Dada $f(x)=\dfrac{x}{e^x-1}$ si $x\neq0$, $f(0)=1$. (a) (1 punto) Demuestre que es continua en $\mathbb R$. (b) (0.75 puntos) Demuestre que tiene derivada continua en $\mathbb R-\{0\}$. (c) (1.25 puntos) Demuestre que la derivada es continua en $x=0$.</p>
-  <div class="box intu"><span class="h">La idea en una frase</span>
-    <p>La función cambia de fórmula en $x=0$, y justo ahí la fórmula da $\tfrac00$. Así que en $0$ hay que comprobar tres cosas con límites: que $f$ encaja (a), que $f'$ existe y cuánto vale (c) y que $f'$ también encaja; la regla de L'Hôpital resuelve cada límite.</p></div>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Probar que $f(x)=\frac x{e^x-1}$, $f(0)=1$, es continua en $\mathbb R$ y que $f'$ es continua en $\mathbb R$ (incluido $x=0$).</dd>
+    <dt>Cómo lo pienso</dt><dd>La función cambia de fórmula en $x=0$, y justo ahí la fórmula da $\tfrac00$. En $0$ hay que comprobar tres cosas con límites: que $f$ encaja (a), cuánto vale $f'(0)$ por definición (c) y que la fórmula de $f'$ tiende a ese mismo valor; L'Hôpital resuelve cada límite.</dd>
+    <dt>Qué uso</dt><dd>Continuidad en un punto: $\lim f=f(a)$. Derivada por definición: $f'(0)=\lim_{h\to0}\frac{f(h)-f(0)}h$. Regla de L'Hôpital (U §2.3.2, p.82): si $\tfrac00$ o $\tfrac\infty\infty$, $f,g$ derivables y $g'\neq0$ cerca del punto, $\lim\frac fg=\lim\frac{f'}{g'}$ cuando este existe.</dd>
+    <dt>Por dónde empiezo</dt><dd>Parte (a): fuera de $0$ es cociente de continuas; en $0$ calcular $\lim_{x\to0}\frac x{e^x-1}$.</dd>
+  </dl></div>
   <ol class="steps">
     <li><b>(a) Fuera de $0$.</b> Si $x\neq0$, entonces $e^x\neq1$: $f$ es un cociente de funciones continuas con denominador no nulo, luego es continua.</li>
     <li><b>(a) En $0$: qué hay que probar.</b> Que $\lim_{x\to0}f(x)=f(0)=1$.</li>
