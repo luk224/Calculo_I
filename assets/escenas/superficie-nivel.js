@@ -32,19 +32,6 @@ Interactivos.registrar('superficie-nivel', function (c) {
     c.scene.add(plano);
     c.camera.position.set(d * 3.4, -d * 4, zm + (g.z[1] - g.z[0]) * 0.8 + d * 1.2); c.controls.target.set(0, 0, zm); c.controls.update();
   }
-  /* Curva de nivel f = k por «marching squares»: segmentos [x1,y1,x2,y2]. */
-  function nivel(f, k, d, n) {
-    var seg = [], i, j, h = 2 * d / n;
-    for (j = 0; j < n; j++) for (i = 0; i < n; i++) {
-      var x0 = -d + i * h, y0 = -d + j * h, x1 = x0 + h, y1 = y0 + h;
-      var v = [f(x0, y0) - k, f(x1, y0) - k, f(x1, y1) - k, f(x0, y1) - k], px = [x0, x1, x1, x0], py = [y0, y0, y1, y1];
-      var idx = (v[0] > 0 ? 1 : 0) | (v[1] > 0 ? 2 : 0) | (v[2] > 0 ? 4 : 0) | (v[3] > 0 ? 8 : 0);
-      var T_ = [[], [[3, 0]], [[0, 1]], [[3, 1]], [[1, 2]], [[3, 0], [1, 2]], [[0, 2]], [[2, 3]], [[2, 3]], [[0, 2]], [[0, 1], [2, 3]], [[1, 2]], [[1, 3]], [[0, 1]], [[3, 0]], []][idx];
-      var pt = function (e) { var a = e, b = (e + 1) % 4, t = v[a] / (v[a] - v[b]); return [px[a] + (px[b] - px[a]) * t, py[a] + (py[b] - py[a]) * t]; };
-      T_.forEach(function (s) { var p = pt(s[0]), q = pt(s[1]); seg.push([p[0], p[1], q[0], q[1]]); });
-    }
-    return seg;
-  }
   function lineas(seg, z, col) {
     var pts = []; seg.forEach(function (s) { pts.push(s[0], s[1], z, s[2], s[3], z); });
     var geo = new T.BufferGeometry(); geo.setAttribute('position', new T.Float32BufferAttribute(pts, 3));
@@ -52,7 +39,7 @@ Interactivos.registrar('superficie-nivel', function (c) {
   }
   function calc() {
     var g = F[k]; limpia(traza); limpia(proy);
-    var seg = nivel(g.f, lvl, g.d, 160);
+    var seg = H.nivel(g.f, lvl, g.d, 160);
     traza = lineas(seg, lvl, P.S); proy = lineas(seg, g.z[0], P.L); c.scene.add(traza, proy);
     plano.position.z = lvl; lc(g.info(lvl));
   }

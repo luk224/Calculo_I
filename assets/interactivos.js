@@ -59,6 +59,18 @@
       var geo = new THREE.BufferGeometry().setFromPoints(pts.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
       return new THREE.Line(geo, new THREE.LineBasicMaterial({ color: col, linewidth: w || 1 }));
     },
+    /* Curva de nivel f(x,y) = k en [-d,d]² por «marching squares» con n×n celdas: lista de segmentos [x1,y1,x2,y2]. */
+    nivel: function (f, k, d, n) {
+      var seg = [], i, j, h = 2 * d / n, tab = [[], [[3, 0]], [[0, 1]], [[3, 1]], [[1, 2]], [[3, 0], [1, 2]], [[0, 2]], [[2, 3]], [[2, 3]], [[0, 2]], [[0, 1], [2, 3]], [[1, 2]], [[1, 3]], [[0, 1]], [[3, 0]], []];
+      for (j = 0; j < n; j++) for (i = 0; i < n; i++) {
+        var x0 = -d + i * h, y0 = -d + j * h, x1 = x0 + h, y1 = y0 + h;
+        var v = [f(x0, y0) - k, f(x1, y0) - k, f(x1, y1) - k, f(x0, y1) - k], px = [x0, x1, x1, x0], py = [y0, y0, y1, y1];
+        var idx = (v[0] > 0 ? 1 : 0) | (v[1] > 0 ? 2 : 0) | (v[2] > 0 ? 4 : 0) | (v[3] > 0 ? 8 : 0);
+        var pt = function (e) { var b = (e + 1) % 4, t = v[e] / (v[e] - v[b]); return [px[e] + (px[b] - px[e]) * t, py[e] + (py[b] - py[e]) * t]; };
+        tab[idx].forEach(function (s) { var p = pt(s[0]), q = pt(s[1]); seg.push([p[0], p[1], q[0], q[1]]); });
+      }
+      return seg;
+    },
     /* Tubo de radio r por una lista de puntos [x,y,z] (curvas o segmentos gruesos en 3D). m.set(pts) lo rehace. */
     tubo: function (THREE, pts, r, col) {
       var m = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: col }));
