@@ -59,6 +59,17 @@
       var geo = new THREE.BufferGeometry().setFromPoints(pts.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
       return new THREE.Line(geo, new THREE.LineBasicMaterial({ color: col, linewidth: w || 1 }));
     },
+    /* Tubo de radio r por una lista de puntos [x,y,z] (curvas o segmentos gruesos en 3D). m.set(pts) lo rehace. */
+    tubo: function (THREE, pts, r, col) {
+      var m = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: col }));
+      m.set = function (ps) {
+        m.geometry.dispose();
+        if (ps.length < 2) { m.geometry = new THREE.BufferGeometry(); return; }
+        var cur = new THREE.CatmullRomCurve3(ps.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }), false, 'centripetal');
+        m.geometry = new THREE.TubeGeometry(cur, Math.max(2, ps.length * 2), r, 6, false);
+      };
+      m.set(pts); return m;
+    },
     /* ---- 2D (cámara ortográfica, data-params {"dim":2}) ---- */
     /* Cinta de grosor w (unidades de mundo) sobre una lista de polilíneas [[ [x,y],… ],…].
        dash=[trazo,hueco] la hace discontinua. m.set(polilíneas) la reconstruye. */
