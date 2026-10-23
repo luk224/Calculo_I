@@ -248,6 +248,15 @@
           if (etiqueta) d.appendChild(document.createTextNode(etiqueta + ': ')); d.appendChild(b); ro.appendChild(d);
           return function (t) { b.textContent = t; };
         },
+        /* Leyenda bajo el lienzo: leyenda([['var(--L)', 'F(x)', 'linea'|'area'|'punto'], …]); los colores son variables CSS, siguen el tema. */
+        leyenda: function (items) {
+          var d = document.createElement('div'); d.className = 'int-leg'; d.setAttribute('aria-label', 'Leyenda');
+          items.forEach(function (it) {
+            var e = document.createElement('span'), m = document.createElement('i');
+            m.className = 'int-sw ' + (it[2] || 'linea'); m.style.setProperty('--c', it[0]); e.appendChild(m); e.appendChild(document.createTextNode(it[1])); d.appendChild(e);
+          });
+          (ro || ctl || stage).after(d); return d;
+        },
         alCambiarTema: function (cb) { temaCbs.push(cb); cb(paleta()); }
       };
       if (dos) activarZoom();

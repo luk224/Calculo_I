@@ -66,6 +66,8 @@ Interactivos.registrar('acumulada', function (c) {
   }
   sx = c.slider('x (extremo superior)', 0, 1, 0.01, x, function (v) { x = v; if (tg) calc(); });
   c.selector('Función ', G.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); calc(); });
+  c.leyenda([['var(--fg)', 'f(t): la función', 'linea'], ['var(--L)', 'F(x): área acumulada', 'linea'], ['var(--acc)', 'tangente a F en x (pendiente f(x))', 'linea'],
+    ['var(--S)', 'área sobre el eje (suma)', 'area'], ['var(--E)', 'área bajo el eje (resta)', 'area'], ['var(--fg)', 'punto de f en x', 'punto'], ['var(--L)', 'punto de F en x', 'punto']]);
   c.alCambiarTema(function (p) {
     P = p; c.renderer.setClearColor(p.bg);
     if (!ejes) return;
