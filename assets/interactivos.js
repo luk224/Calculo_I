@@ -65,6 +65,7 @@
     cinta: function (THREE, pols, col, w, dash) {
       var mat = new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide });
       var m = new THREE.Mesh(new THREE.BufferGeometry(), mat);
+      var w0 = w, dash0 = dash, fc = 1, last = pols;
       function trozos(a, b, out) {
         var dx = b[0] - a[0], dy = b[1] - a[1], L = Math.sqrt(dx * dx + dy * dy);
         if (!(L > 0) || !isFinite(L)) return;
@@ -76,7 +77,7 @@
         }
       }
       m.set = function (ps) {
-        var seg = [], pos = [], i, j, k;
+        var seg = [], pos = [], i, j, k; last = ps;
         for (i = 0; i < ps.length; i++) for (j = 0; j + 1 < ps[i].length; j++) trozos(ps[i][j], ps[i][j + 1], seg);
         for (k = 0; k < seg.length; k++) {
           var q = seg[k], nx = -q[5] * w / 2, ny = q[4] * w / 2;
@@ -86,12 +87,17 @@
         m.geometry.dispose(); m.geometry = new THREE.BufferGeometry();
         m.geometry.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
       };
+      /* Zoom: el grosor y los trazos se mantienen en píxeles al cambiar la escala f de la vista. */
+      m.reescalar = function (f) {
+        if (f === fc) return; fc = f; w = w0 * f; dash = dash0 && [dash0[0] * f, dash0[1] * f]; m.set(last);
+      };
       m.set(pols); return m;
     },
     /* Punto (disco) de radio r en mundo; p.mover(x,y). */
     punto: function (THREE, x, y, r, col) {
       var m = new THREE.Mesh(new THREE.CircleGeometry(r, 24), new THREE.MeshBasicMaterial({ color: col }));
-      m.position.set(x, y, 0); m.mover = function (a, b) { m.position.x = a; m.position.y = b; }; return m;
+      m.position.set(x, y, 0); m.mover = function (a, b) { m.position.x = a; m.position.y = b; };
+      m.reescalar = function (f) { if (m.scale.x !== f) m.scale.set(f, f, 1); }; return m;
     },
     /* Polilíneas de y=f(x) en [x0,x1], cortadas donde f no es finita o se sale de [-ylim,ylim]. */
     grafica: function (f, x0, x1, n, ylim) {
@@ -130,6 +136,7 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       stage.removeChild(msg); stage.appendChild(renderer.domElement);
       var dos = params.dim === 2, vista = [-1, 1, -1, 1], controls = null;
+      var z = { s: 1, px: 0, py: 0 }, base = null, btnReset = null;
       var scene = new THREE.Scene(), camera;
       if (dos) { camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -10, 10); }
       else {
@@ -143,23 +150,39 @@
 
       var ctl = null, ro = null, temaCbs = [], visible = true, pendiente = false;
       function pedir() { if (!pendiente) { pendiente = true; requestAnimationFrame(pintar); } }
-      function pintar() { pendiente = false; if (visible) renderer.render(scene, camera); }
+      function pintar() {
+        pendiente = false; if (!visible) return;
+        if (dos) scene.traverse(function (o) { if (o.reescalar) o.reescalar(z.s); });
+        renderer.render(scene, camera);
+      }
       function ajustar() {
         var w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
         renderer.setSize(w, h, false);
         if (dos) {
           var cx = (vista[0] + vista[1]) / 2, cy = (vista[2] + vista[3]) / 2, vw = vista[1] - vista[0], vh = vista[3] - vista[2];
           if (vw / vh < w / h) vw = vh * w / h; else vh = vw * h / w;
-          camera.left = cx - vw / 2; camera.right = cx + vw / 2; camera.bottom = cy - vh / 2; camera.top = cy + vh / 2;
-        } else camera.aspect = w / h;
-        camera.updateProjectionMatrix(); pedir();
+          base = { cx: cx, cy: cy, vw: vw, vh: vh }; aplicarVista();
+        } else { camera.aspect = w / h; camera.updateProjectionMatrix(); pedir(); }
+      }
+      /* Cámara 2D = vista base escalada por z.s y desplazada por (z.px, z.py), sin salirse de lo dibujado
+         (el ancho dibujado es el triple del de la vista; el alto, el de la vista). */
+      function lim(c, mitad, a, b) { return 2 * mitad >= b - a ? (a + b) / 2 : Math.max(a + mitad, Math.min(b - mitad, c)); }
+      function aplicarVista() {
+        if (!base) return;
+        var vw = base.vw * z.s, vh = base.vh * z.s, dx = vista[1] - vista[0];
+        var cx = lim(base.cx + z.px, vw / 2, vista[0] - dx, vista[1] + dx), cy = lim(base.cy + z.py, vh / 2, vista[2], vista[3]);
+        z.px = cx - base.cx; z.py = cy - base.cy;
+        camera.left = cx - vw / 2; camera.right = cx + vw / 2; camera.bottom = cy - vh / 2; camera.top = cy + vh / 2;
+        camera.updateProjectionMatrix();
+        if (btnReset) btnReset.style.display = z.s < 1 || z.px || z.py ? '' : 'none';
+        pedir();
       }
       var ctx = {
         el: fig, THREE: THREE, scene: scene, camera: camera, renderer: renderer, controls: controls, params: params, H: H,
         colores: paleta, reducirMovimiento: reducir, pedir: pedir,
         /* Solo 2D: caja del mundo que debe verse (se amplía para respetar la proporción del lienzo). */
         vista: function (x0, x1, y0, y1) {
-          var px = (x1 - x0) * 0.04, py = (y1 - y0) * 0.04; vista = [x0 - px, x1 + px, y0 - py, y1 + py];
+          var px = (x1 - x0) * 0.04, py = (y1 - y0) * 0.04; vista = [x0 - px, x1 + px, y0 - py, y1 + py]; z.s = 1; z.px = 0; z.py = 0;
           var r = (vista[1] - vista[0]) / (vista[3] - vista[2]); stage.style.aspectRatio = Math.max(1.3, Math.min(2, r)).toFixed(3);
           ajustar();
         },
@@ -190,7 +213,47 @@
         },
         alCambiarTema: function (cb) { temaCbs.push(cb); cb(paleta()); }
       };
+      if (dos) activarZoom();
       fn(ctx);
+      /* Zoom con rueda o pellizco, desplazamiento arrastrando, doble clic o botón para restablecer. */
+      function activarZoom() {
+        var cv = renderer.domElement, ptrs = {};
+        cv.classList.add('zoom2d');
+        btnReset = document.createElement('button'); btnReset.type = 'button'; btnReset.className = 'int-reset';
+        btnReset.textContent = 'Restablecer vista'; btnReset.style.display = 'none'; stage.appendChild(btnReset);
+        var ayuda = document.createElement('div'); ayuda.className = 'int-hint';
+        ayuda.textContent = 'Rueda o pellizco: zoom · arrastrar: mover · doble clic: restablecer'; stage.appendChild(ayuda);
+        function reset() { z.s = 1; z.px = 0; z.py = 0; aplicarVista(); }
+        function zoomEn(fx, fy, f) {
+          if (!base) return;
+          var ns = Math.max(0.04, Math.min(1, z.s * f)), vw0 = base.vw * z.s, vh0 = base.vh * z.s;
+          var wx = base.cx + z.px - vw0 / 2 + fx * vw0, wy = base.cy + z.py + vh0 / 2 - fy * vh0;
+          var vw1 = base.vw * ns, vh1 = base.vh * ns; z.s = ns;
+          z.px = wx - fx * vw1 + vw1 / 2 - base.cx; z.py = wy + fy * vh1 - vh1 / 2 - base.cy; aplicarVista();
+        }
+        function mover(dx, dy) {
+          if (!base) return; var r = cv.getBoundingClientRect();
+          z.px -= dx / r.width * base.vw * z.s; z.py += dy / r.height * base.vh * z.s; aplicarVista();
+        }
+        function frac(x, y) { var r = cv.getBoundingClientRect(); return [(x - r.left) / r.width, (y - r.top) / r.height]; }
+        cv.addEventListener('wheel', function (e) {
+          e.preventDefault(); var q = frac(e.clientX, e.clientY);
+          zoomEn(q[0], q[1], Math.exp(e.deltaY * (e.deltaMode === 1 ? 0.03 : 0.0015)));
+        }, { passive: false });
+        cv.addEventListener('pointerdown', function (e) { ptrs[e.pointerId] = { x: e.clientX, y: e.clientY }; cv.setPointerCapture(e.pointerId); });
+        cv.addEventListener('pointermove', function (e) {
+          var p = ptrs[e.pointerId]; if (!p) return; var ids = Object.keys(ptrs);
+          if (ids.length === 1) { mover(e.clientX - p.x, e.clientY - p.y); p.x = e.clientX; p.y = e.clientY; return; }
+          if (ids.length !== 2) return;
+          var a = ptrs[ids[0]], b = ptrs[ids[1]], d0 = Math.hypot(a.x - b.x, a.y - b.y), m0x = (a.x + b.x) / 2, m0y = (a.y + b.y) / 2;
+          p.x = e.clientX; p.y = e.clientY;
+          var d1 = Math.hypot(a.x - b.x, a.y - b.y), m1x = (a.x + b.x) / 2, m1y = (a.y + b.y) / 2, q = frac(m1x, m1y);
+          if (d0 > 0 && d1 > 0) zoomEn(q[0], q[1], d0 / d1); mover(m1x - m0x, m1y - m0y);
+        });
+        function suelta(e) { delete ptrs[e.pointerId]; }
+        cv.addEventListener('pointerup', suelta); cv.addEventListener('pointercancel', suelta);
+        cv.addEventListener('dblclick', reset); btnReset.addEventListener('click', reset);
+      }
       new MutationObserver(function () { var p = paleta(); temaCbs.forEach(function (cb) { cb(p); }); pedir(); })
         .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
       new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) pedir(); }).observe(stage);
