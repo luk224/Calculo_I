@@ -159,7 +159,7 @@
     var stage = document.createElement('div'); stage.className = 'int-stage';
     var msg = document.createElement('div'); msg.className = 'int-msg'; msg.textContent = 'Cargando interactivo…'; stage.appendChild(msg);
     fig.insertBefore(stage, fig.firstChild);
-    function fallo(t) { msg.textContent = t; }
+    function fallo(t) { msg.textContent = t; if (!msg.parentNode) stage.appendChild(msg); }
     if (!webgl()) return fallo('Tu navegador no tiene WebGL: usa la imagen del libro o la versión impresa.');
 
     Promise.all([script(base + 'three/three.min.js')]).then(function () {
@@ -306,7 +306,7 @@
       new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) pedir(); }).observe(stage);
       if (window.ResizeObserver) new ResizeObserver(ajustar).observe(stage); else window.addEventListener('resize', ajustar);
       ajustar();
-    }).catch(function () { fallo('No se pudo cargar el interactivo.'); });
+    }).catch(function (e) { if (window.console) console.error(e); fallo('No se pudo cargar el interactivo.' + (e && e.message ? ' (' + e.message + ')' : '')); });
   }
 
   window.Interactivos = {
