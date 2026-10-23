@@ -21,7 +21,7 @@ Interactivos.registrar('tvm', function (c) {
   function nuevo() {
     [ejes, curva, cuerda, tg, pa, pb, pc].forEach(function (o) { if (o) c.scene.remove(o); });
     validos.forEach(function (o) { c.scene.remove(o); }); validos = [];
-    var v = G[k].v; w = 0.009 * (v[3] - v[2]); c.vista(v[0], v[1], v[2], v[3]);
+    var v = G[k].v; w = 0.0055 * (v[3] - v[2]); c.vista(v[0], v[1], v[2], v[3]);
     var vw = W(v);
     ejes = H.ejes2D(T, vw, w, P.fg, P.bd); c.scene.add(ejes);
     var g = G[k], pols = g.salto

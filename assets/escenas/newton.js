@@ -15,7 +15,7 @@ Interactivos.registrar('newton', function (c) {
   function nuevo() {
     [ejes, curva, tang, vert, raizPt].forEach(function (o) { if (o) c.scene.remove(o); });
     dots.forEach(function (o) { c.scene.remove(o); }); dots = [];
-    var v = F[k].v; w = 0.009 * (v[3] - v[2]); c.vista(v[0], v[1], v[2], v[3]);
+    var v = F[k].v; w = 0.0055 * (v[3] - v[2]); c.vista(v[0], v[1], v[2], v[3]);
     var vw = W(v);
     ejes = H.ejes2D(T, vw, w, P.fg, P.bd); c.scene.add(ejes);
     curva = H.cinta(T, H.grafica(F[k].f, vw[0], vw[1], 800, 1e3), P.fg, w * 1.4); curva.position.z = 0.1; c.scene.add(curva);

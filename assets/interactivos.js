@@ -160,7 +160,7 @@
         /* Solo 2D: caja del mundo que debe verse (se amplía para respetar la proporción del lienzo). */
         vista: function (x0, x1, y0, y1) {
           var px = (x1 - x0) * 0.04, py = (y1 - y0) * 0.04; vista = [x0 - px, x1 + px, y0 - py, y1 + py];
-          var r = (vista[1] - vista[0]) / (vista[3] - vista[2]); stage.style.aspectRatio = Math.max(1, Math.min(2, r)).toFixed(3);
+          var r = (vista[1] - vista[0]) / (vista[3] - vista[2]); stage.style.aspectRatio = Math.max(1.3, Math.min(2, r)).toFixed(3);
           ajustar();
         },
         /* Desplegable; cb(índice). */
