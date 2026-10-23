@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cálculo · 5.4-5.5 Extremos y multiplicadores de Lagrange</title>
+<link rel="stylesheet" href="../assets/katex/katex.min.css">
+<link rel="stylesheet" href="../assets/resumen.css">
+<script defer src="../assets/katex/katex.min.js"></script>
+<script defer src="../assets/katex/auto-render.min.js"></script>
+<script defer src="../assets/resumen.js"></script>
+<link rel="stylesheet" href="../assets/interactivos.css">
+<script defer src="../assets/interactivos.js"></script>
+</head>
+<body>
+<div class="topbar"><div class="in">
+  <a href="../index.html">← Índice de temas</a>
+  <span><button id="btn-sol" type="button">Mostrar soluciones</button> <button id="btn-tema" type="button">Claro / oscuro</button></span>
+</div></div>
+
+<div class="layout">
+<nav class="side-toc" aria-label="Índice del tema"><b>En esta página</b></nav>
+<main>
+
+<header class="hero">
+  <div class="kick">Módulo V · Aplicaciones de la diferencial · Temas 5.4 y 5.5</div>
+  <h1>Valores extremos y extremos condicionados (Lagrange)</h1>
+  <p>Cómo encontrar y clasificar los máximos y mínimos de una función de varias variables: primero «a campo abierto» (puntos críticos y matriz Hessiana), después sobre un conjunto cerrado y acotado (interior + frontera) y por último «atados» a una curva o superficie (multiplicadores de Lagrange).</p>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §5.4 (pp. 212-222) y §5.5 (pp. 223-231)</span><span>Ejercicios: E Ej. 5.28–5.48</span><span>Examen: 6 problemas de X</span><span>⏱ ~6 h de estudio</span></div>
+  <div class="legend">
+    <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
+    <span class="src" data-l="E" data-ref="Libro de ejercicios UNED curso 24-25">E</span> ejercicios
+    <span class="src" data-l="P" data-ref="Explicación o ejemplo propio, sin página en los libros">P</span> propio
+    <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (páginas del PDF)">X</span> exámenes
+    — pasa el ratón (o toca) por cada etiqueta para ver libro y página; en pantallas anchas aparecen en el margen derecho.
+  </div>
+</header>
+
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §5.4.1 Motivación, p. 212, y §5.5.1 Motivación, p. 223">U pp.212, 223</span></h2>
+
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Una función de dos variables es un <b>paisaje</b>: $z=f(x,y)$ es la altura sobre el punto $(x,y)$. Un máximo es una cima, un mínimo es el fondo de un valle y un <b>punto de silla</b> es un puerto de montaña (subes por un lado y bajas por el otro). Para encontrarlos se sigue el mismo guion que con una variable: <b>(1)</b> se buscan los puntos con «pendiente cero» en todas las direcciones (gradiente nulo), que son los únicos <i>candidatos</i>; <b>(2)</b> se decide qué es cada uno mirando cómo se curva el terreno (matriz Hessiana). Si además solo se puede caminar por un sendero concreto (una curva $g(x,y)=0$) o por un recinto cerrado, se añade la comprobación de la <b>frontera</b>, y para la frontera se usa el método de <b>Lagrange</b>: el punto más alto de un sendero está donde el sendero deja de subir, es decir, donde es <b>tangente a una curva de nivel</b>.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U §5.4.1 (p. 212) y §5.5.1 (p. 223)">P</span>
+</div>
+
+<h3>Qué necesitas saber ya</h3>
+<ul>
+  <li><b>Derivadas parciales y gradiente</b> (<a href="tema_4_3_derivadas_parciales.html">tema 4.3</a>): $\nabla f=\left(\frac{\partial f}{\partial x},\frac{\partial f}{\partial y}\right)$, y que el gradiente es perpendicular a las curvas de nivel.</li>
+  <li><b>Diferencial y plano tangente</b> (<a href="tema_5_1_diferencial.html">tema 5.1</a>): si $f$ es diferenciable, el plano tangente es $z=f(a,b)+\nabla f(a,b)\cdot(x-a,y-b)$. Será <i>horizontal</i> exactamente en los puntos críticos.</li>
+  <li><b>Función implícita</b> (<a href="tema_5_3_funcion_implicita.html">tema 5.3</a>): para reducir un problema condicionado a una variable despejando $y=h(x)$ de la restricción.</li>
+  <li><b>Extremos de una variable</b> (<a href="tema_3_4_optimizacion_extremos.html">tema 3.4</a>): $f'=0$ y $f''$; y el teorema de Weierstrass (continua en $[a,b]$ ⇒ máximo y mínimo), que aquí se generaliza.</li>
+  <li><b>Sistemas de ecuaciones y casos</b>: «un producto vale $0$ si y solo si lo vale algún factor», y $e^t\gt0$ siempre.</li>
+</ul>
+
+<h3>Mapa del tema</h3>
+<table>
+  <caption>Mapa del tema</caption>
+  <tr><th scope="col">Apartado</th><th scope="col">Qué contiene</th><th scope="col">Dónde está</th></tr>
+  <tr><td>1 Extremos absolutos y relativos</td><td>definiciones; Ej. 5.15, 5.16</td><td>U pp.213-215</td></tr>
+  <tr><td>2 Puntos críticos</td><td>$\nabla f=\bar0$; Ej. 5.17, 5.18</td><td>U pp.216-217</td></tr>
+  <tr><td>3 Condición necesaria y punto de silla</td><td>solo los críticos pueden ser extremos; Ej. 5.19</td><td>U pp.218-219</td></tr>
+  <tr><td>4 Condición suficiente: la Hessiana</td><td>criterio $d$, $r$; Ej. 5.20</td><td>U pp.220-222</td></tr>
+  <tr><td>5 Teorema de los valores extremos</td><td>extremos absolutos en un compacto; Ej. 5.21</td><td>U pp.222-223</td></tr>
+  <tr><td>6 Extremos condicionados: despejar</td><td>Ej. 5.22 (frontera de un disco)</td><td>U pp.223-225</td></tr>
+  <tr><td>7 Multiplicadores de Lagrange</td><td>teorema, demostración geométrica, método</td><td>U pp.226-228</td></tr>
+  <tr><td>8 Ejemplos de U con Lagrange</td><td>Ej. 5.23-5.26</td><td>U pp.226-232</td></tr>
+  <tr><td>9 Recetas</td><td>qué hacer ante cada tipo de pregunta</td><td>síntesis</td></tr>
+  <tr><td>10 Ejercicios de E</td><td>5.28-5.48 (21 ejercicios)</td><td>E pp.191-212</td></tr>
+  <tr><td>11 Ejemplos propios</td><td>5 ejemplos</td><td>propio</td></tr>
+  <tr><td>12 Examen</td><td>6 problemas de X (y 6 más que repiten E)</td><td>X</td></tr>
+  <tr><td>13 Chuleta y comprobación</td><td>fórmulas, errores, lista</td><td>síntesis</td></tr>
+</table>
+
+<h3>Qué se pide en los ejercicios y en el examen</h3>
+<p>(A) <b>Puntos críticos</b>: resolver $\nabla f=\bar0$ (E 5.29, 5.30, 5.35; X Feb 2018). (B) <b>Clasificarlos con la Hessiana</b> (E 5.31, 5.32, 5.34, 5.36, 5.37; X Feb 2018, Feb 2014, Feb 2011). (C) <b>Extremos absolutos</b>: «¿existen?» (teorema de los valores extremos, E 5.38; X Sept 2018) y «¿dónde están?» (interior + frontera; E 5.41, 5.43, 5.48; X Feb 2017, Feb 2016). (D) <b>Lagrange</b> con una restricción, en $\mathbb R^2$ y en $\mathbb R^3$ (E 5.39-5.47; X Sept 2017, Feb 2013, Feb 2012, p. 9). En el examen este tema suele ser el <b>Ejercicio 6</b> (3 puntos de 10). Resolver el sistema es la parte difícil: no hay regla general (U p.216).</p>
+
+<!-- ============================ 1 ============================ -->
+<h2 id="s1"><span class="n">1</span>Extremos absolutos y relativos <span class="src" data-l="U" data-ref="U §5.4.2, Definiciones 5.7-5.12, pp. 213-214; Ejemplos 5.15 y 5.16, pp. 213-215; Figura 5.9, p. 215">U pp.213-215</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · cima de la montaña y cima del cerro</span>
+  <p>En un mapa montañoso, el <b>máximo absoluto</b> es la cumbre más alta de <i>toda</i> la región (el Everest). Un <b>máximo relativo</b> es una cumbre que solo es la más alta <i>de su entorno</i>: si estás en lo alto de un cerro, a tu alrededor todo es más bajo, aunque a lo lejos haya montañas mayores. Todo máximo absoluto es también relativo, pero no al revés. Con los mínimos (fondos de valle) igual.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U Def. 5.7-5.12, pp. 213-214">P</span>
+</div>
+
+<div class="box def"><span class="h">Extremos absolutos (U Def. 5.7-5.9)</span>
+  <p>Sea $f:D\subset\mathbb R^2\to\mathbb R$. Alcanza un <b>máximo absoluto</b> en $(a,b)$ si $f(x,y)\le f(a,b)$ para todo $(x,y)\in D$, y un <b>mínimo absoluto</b> si $f(x,y)\ge f(a,b)$ para todo $(x,y)\in D$. Se llaman, juntos, <b>extremos absolutos</b>. En $\mathbb R^n$: $f(x_1,\dots,x_n)\le f(a_1,\dots,a_n)$ (o $\ge$) para todo punto de $D$. Si las desigualdades son estrictas (salvo en el propio punto), el extremo es <b>estricto</b>.</p>
+  <span class="src" data-l="U" data-ref="U Definiciones 5.7, 5.8 y 5.9, p. 213">U p.213</span>
+</div>
+
+<div class="box def"><span class="h">Extremos relativos (U Def. 5.10-5.12)</span>
+  <p>$f$ alcanza un <b>máximo relativo</b> en $(a,b)$ si existe un <b>disco abierto</b> $A$ con $(a,b)\in A$ tal que $f(x,y)\le f(a,b)$ para todo $(x,y)\in A\cap D$. <b>Mínimo relativo</b>: igual con $f(x,y)\ge f(a,b)$. Juntos, <b>extremos relativos</b>; en $\mathbb R^n$ se usa una bola en lugar del disco. Si las desigualdades son estrictas, son <b>estrictos</b>.</p>
+  <span class="src" data-l="U" data-ref="U Definiciones 5.10, 5.11 y 5.12, p. 214">U p.214</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.15 de U · $f(x,y)=x^2+y^2$</span>
+  <ol class="steps">
+    <li><b>Mínimo:</b> $f(x,y)=x^2+y^2\ge0$ y vale $0$ solo si $x=y=0$. Luego en $(0,0)$ hay un <b>mínimo absoluto estricto</b>.</li>
+    <li><b>Máximo:</b> para cualquier número $t\gt0$, en el punto $(0,\sqrt t)$ la función vale $t$, y se pueden tomar valores tan grandes como se quiera. Ningún valor es el mayor: <b>no hay máximo absoluto</b>.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.15, pp. 213-214">U pp.213-214</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.16 de U · tres máximos y tres mínimos relativos</span>
+  <p>La función del ejemplo, $f(x,y)=15\left(x^3+xy^4\right)e^{-(x^2+y^2)}$ (representada en la Figura 5.9, para $(x,y)\in[-4,4]\times[-4,4]$) alcanza <b>tres máximos relativos</b>, uno de ellos también absoluto, y <b>tres mínimos relativos</b>, uno de ellos el mínimo absoluto.</p>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_u_5_9.png" alt="Gráfica de una superficie en forma de malla con tres cimas y tres hondonadas, etiquetadas máximo absoluto y relativo, máximo relativo, mínimo relativo y mínimo absoluto y relativo" loading="lazy">
+  <figcaption>Gráfica de la función del Ejemplo 5.16: extremos relativos y absolutos. <span class="src" data-l="U" data-ref="U Figura 5.9, p. 215">U p.215</span></figcaption>
+  </figure>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.16, p. 215">U p.215</span>
+</div>
+
+<div class="box warn"><span class="h">Errores típicos</span>
+  <p>(i) Confundir «relativo» con «absoluto»: que un punto gane a sus vecinos no significa que gane a todos. (ii) Pensar que un extremo absoluto siempre existe: $x^2+y^2$ no tiene máximo. (iii) Decir que los extremos son únicos: puede haber varios puntos con el mismo valor máximo (E 5.28 tiene infinitos mínimos).</p>
+  <span class="src" data-l="P" data-ref="Errores típicos propios sobre U pp. 213-215">P</span>
+</div>
+
+<!-- ============================ 2 ============================ -->
+<h2 id="s2"><span class="n">2</span>Puntos críticos <span class="src" data-l="U" data-ref="U §5.4.2, Definición 5.13, p. 216; Ejemplos 5.17 y 5.18, pp. 216-217">U pp.216-217</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · el suelo está horizontal</span>
+  <p>En una variable, los extremos de una función derivable están donde la tangente es horizontal: $f'(a)=0$. En dos variables es lo mismo, pero en <b>todas</b> las direcciones: el plano tangente debe ser horizontal, es decir, las dos pendientes (en la dirección $x$ y en la dirección $y$) valen $0$. Esos puntos se llaman <b>críticos</b> y son los candidatos. Encontrarlos es resolver un sistema de dos ecuaciones, y esa es la parte difícil: no hay regla general (U p.216) y a veces exige ingenio.</p>
+  <span class="src" data-l="U" data-ref="U p. 216, comentario junto a la Def. 5.13">U p.216</span>
+</div>
+
+<div class="box def"><span class="h">Punto crítico (U Def. 5.13)</span>
+  <p>Una función regular $f:D\subset\mathbb R^2\to\mathbb R$ tiene un <b>punto crítico</b> en $(a,b)$ si se anulan sus derivadas parciales:
+  $$\frac{\partial f}{\partial x}(a,b)=\frac{\partial f}{\partial y}(a,b)=0,\qquad\text{es decir,}\qquad\nabla f(a,b)=(0,0).$$
+  En $\mathbb R^n$: $\nabla f(a_1,\dots,a_n)=\bar0$.</p>
+  <p>Si $f$ no fuese regular, los puntos críticos son también aquellos donde la función <b>no está definida o no es diferenciable</b>.</p>
+  <span class="src" data-l="U" data-ref="U Definición 5.13 y comentario posterior, p. 216">U p.216</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo propio · un mínimo sin gradiente nulo: $f(x,y)=\sqrt{x^2+y^2}$</span>
+  <p>$f\ge0$ y $f(0,0)=0$: en el origen hay un <b>mínimo absoluto</b> (un cono con la punta hacia abajo). Pero $f$ no es diferenciable en $(0,0)$ (la punta no tiene plano tangente), así que ahí no hay gradiente que anular: el origen es un punto crítico en el sentido de «no diferenciable». Fuera del origen, $\nabla f=\left(\frac x{\sqrt{x^2+y^2}},\frac y{\sqrt{x^2+y^2}}\right)$ nunca se anula. <b>Moraleja:</b> en un punto donde $f$ no es diferenciable, la condición necesaria no se aplica y hay que estudiarlo a mano.</p>
+  <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 216 (puntos donde f no es diferenciable)">P</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.17 de U · $f(x,y)=(x^2+2y^2)\,e^{1-(x^2+y^2)}$</span>
+  <ol class="steps">
+    <li><b>Derivadas</b> (producto: derivada del polinomio por la exponencial, más el polinomio por la derivada de la exponencial, que lleva $-2x$ o $-2y$): $$f_x=2x\,(1-x^2-2y^2)\,e^{1-(x^2+y^2)},\qquad f_y=2y\,(2-x^2-2y^2)\,e^{1-(x^2+y^2)}.$$</li>
+    <li><b>Quitar la exponencial</b>: como $e^t\gt0$ siempre, $f_x=0\iff x(1-x^2-2y^2)=0$ y $f_y=0\iff y(2-x^2-2y^2)=0$.</li>
+    <li><b>Casos</b> (cada ecuación es un producto igual a $0$):
+      <ul>
+        <li>$x=0$ e $y=0$: el punto $(0,0)$.</li>
+        <li>$x=0$, $y\ne0$: la 2.ª da $2-2y^2=0$, $y=\pm1$: puntos $(0,\pm1)$.</li>
+        <li>$y=0$, $x\ne0$: la 1.ª da $1-x^2=0$, $x=\pm1$: puntos $(\pm1,0)$.</li>
+        <li>$x\ne0$, $y\ne0$: tendría que ser a la vez $x^2+2y^2=1$ y $x^2+2y^2=2$: imposible.</li>
+      </ul></li>
+    <li><b>Puntos críticos:</b> $(0,0)$, $(\pm1,0)$ y $(0,\pm1)$ (cinco puntos). Se clasifican en el apartado 4 (Ej. 5.20).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si todas las derivadas llevan un factor que nunca se anula (una exponencial), se quita; el resto se resuelve por casos «este factor $=0$ / este otro $=0$».</div>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.17, pp. 216-217">U pp.216-217</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.18 de U · infinitos puntos críticos</span>
+  <p>$f(x,y)=\dfrac{x^2y^2}{x^2+y^2}$ si $(x,y)\ne(0,0)$ y $f(0,0)=0$.</p>
+  <ol class="steps">
+    <li>Fuera del origen: $f_x=\dfrac{2xy^4}{(x^2+y^2)^2}$, $\ f_y=\dfrac{2x^4y}{(x^2+y^2)^2}$.</li>
+    <li>El denominador es positivo. Ambas se anulan si y solo si $x=0$ o $y=0$: <b>todos los puntos de los ejes</b> son críticos.</li>
+    <li><b>Para entenderlo:</b> en los ejes $f=0$ y fuera de ellos $f\gt0$; así que todos son mínimos (no estrictos). Aquí la Hessiana no hace falta: basta mirar el signo.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> los puntos críticos no tienen por qué ser aislados; si $f\ge0$ y se anula en ellos, son mínimos sin más cuentas.</div>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.18, p. 217">U p.217</span>
+</div>
+
+<!-- ============================ 3 ============================ -->
+<h2 id="s3"><span class="n">3</span>Condición necesaria y punto de silla <span class="src" data-l="U" data-ref="U §5.4.2, Teorema condición necesaria, p. 218; punto de silla y Ejemplo 5.19, p. 219; Figura 5.11, p. 220">U pp.218-220</span></h2>
+
+<div class="box thm"><span class="h">Condición necesaria de extremo relativo</span>
+  <p>Sea $f:D\subset\mathbb R^2\to\mathbb R$ una función <b>diferenciable</b> en el <b>abierto</b> $D$. Si $f$ alcanza un extremo relativo en $(a,b)\in D$, entonces $\nabla f(a,b)=\bar0$. Vale también en $\mathbb R^n$.</p>
+  <p><b>Por qué (idea de la demostración de U):</b> se «corta» la superficie con el plano $y=b$ y con el plano $x=a$. Si $(a,b)$ es un máximo, la curva $F(x)=f(x,b)$ de una variable tiene un máximo en $x=a$, luego $F'(a)=f_x(a,b)=0$; igual con $G(y)=f(a,y)$ y $G'(b)=f_y(a,b)=0$.</p>
+  <span class="src" data-l="U" data-ref="U Teorema (condición necesaria de extremo relativo) y su demostración, p. 218">U p.218</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_5_10.png" alt="Superficie con forma de cúpula y un plano horizontal tangente a ella en su punto más alto, marcado como máximo" loading="lazy">
+<figcaption>Plano tangente a la gráfica de $f$ en un punto crítico (un máximo): es horizontal. <span class="src" data-l="U" data-ref="U Figura 5.10, p. 218">U p.218</span></figcaption>
+</figure>
+
+<div class="box intu"><span class="h">Cómo se usa: «solo los críticos pueden ser extremos»</span>
+  <p>El teorema <b>descarta</b>: si el gradiente no es nulo en un punto, ahí <b>no hay extremo</b> (hay una dirección en la que sube y otra en la que baja). Pero <b>no es recíproco</b>: que el gradiente se anule no garantiza nada. Para conocer la naturaleza del punto hace falta la condición suficiente (apartado 4). Además, el teorema exige que el dominio sea abierto: los extremos de la <i>frontera</i> no tienen por qué ser críticos (apartados 5-7).</p>
+  <span class="src" data-l="P" data-ref="Explicación propia sobre U p. 218">P</span>
+</div>
+
+<div class="box def"><span class="h">Punto de silla</span>
+  <p>Un punto crítico que <b>no</b> es extremo relativo se llama <b>punto de silla</b> (también «de ensilladura» o «estacionario»). Alrededor de él hay puntos con valor mayor y puntos con valor menor. Es la forma de un <b>puerto de montaña</b>: de un lado hacia otro de la cordillera subes, y a lo largo de ella bajas.</p>
+  <span class="src" data-l="U" data-ref="U p. 219">U p.219</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.19 de U · $f(x,y)=3x^2-y^2$ (paraboloide hiperbólico)</span>
+  <ol class="steps">
+    <li>$\nabla f=(6x,-2y)=(0,0)\iff x=y=0$: el único punto crítico es $(0,0)$, con $f(0,0)=0$.</li>
+    <li>Sobre el eje $x$: $f(x,0)=3x^2\gt0$ (por encima de $f(0,0)$). Sobre el eje $y$: $f(0,y)=-y^2\lt0$ (por debajo).</li>
+    <li>Hay puntos tan cerca como se quiera con valores mayores y menores: <b>no es extremo; es punto de silla</b>.</li>
+  </ol>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_u_5_11.png" alt="Superficie del paraboloide hiperbólico 3x al cuadrado menos y al cuadrado, con forma de silla de montar" loading="lazy">
+  <figcaption>Paraboloide hiperbólico $z=3x^2-y^2$: silla en el origen. <span class="src" data-l="U" data-ref="U Figura 5.11, p. 220">U p.220</span></figcaption>
+  </figure>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.19, p. 219">U p.219</span>
+</div>
+
+<div class="box warn"><span class="h">Error típico</span>
+  <p>«Gradiente cero ⇒ extremo.» Falso: $3x^2-y^2$ tiene gradiente nulo en el origen y es una silla. (Es una pregunta clásica de verdadero o falso: «$f$ diferenciable con $\nabla f(a,b)=\bar0$ ⇒ extremo relativo», <b>falso</b>; X p.140, feb. 2018, 2.ª semana.)</p>
+  <span class="src" data-l="P" data-ref="Error típico propio sobre U pp. 218-219; pregunta tipo V/F en X p. 140">P</span>
+</div>
+
+<!-- ============================ 4 ============================ -->
+<h2 id="s4"><span class="n">4</span>Condición suficiente: la matriz Hessiana <span class="src" data-l="U" data-ref="U §5.4.2, Teorema condición suficiente de extremo, p. 220; nota p. 221; Ejemplo 5.20, pp. 221-222">U pp.220-222</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · cómo se curva el suelo</span>
+  <p>En una variable, en un punto con $f'=0$ la segunda derivada decide: $f''\gt0$ es un cuenco (mínimo), $f''\lt0$ es una cúpula (máximo). En dos variables hay <b>tres</b> segundas derivadas que importan: la curvatura en la dirección $x$ ($f_{xx}$), en la dirección $y$ ($f_{yy}$) y la «torsión» cruzada $f_{xy}$. Se organizan en la <b>Hessiana</b>. Cuando $f_{xy}=0$ es sencillo: si las dos curvaturas son positivas, cuenco (mínimo); si las dos son negativas, cúpula (máximo); si una es positiva y otra negativa, silla. El número $d=f_{xx}f_{yy}-f_{xy}^2$ resume esto aunque $f_{xy}\ne0$: $d\gt0$ significa que $f_{xx}$ y $f_{yy}$ tienen el mismo signo y que el suelo se curva igual en todas las direcciones (cuenco o cúpula); $d\lt0$ significa que en alguna dirección sube y en otra baja. Ojo: esas direcciones no tienen por qué ser las de los ejes $x$ e $y$. Por ejemplo, $x^2+4xy+y^2$ tiene $f_{xx}=f_{yy}=2\gt0$ pero $d=4-16=-12\lt0$: es una silla (sube a lo largo de $y=x$ y baja a lo largo de $y=-x$, donde vale $-2t^2$).</p>
+  <span class="src" data-l="P" data-ref="Explicación propia sobre U p. 220">P</span>
+</div>
+
+<div class="box thm"><span class="h">Condición suficiente de extremo (U p. 220)</span>
+  <p>Sea $f:D\subset\mathbb R^2\to\mathbb R$ con un punto crítico en $(a,b)$. Se llama <b>matriz Hessiana</b> de $f$ en $(a,b)$ a
+  $$Hf(a,b)=\begin{pmatrix}\dfrac{\partial^2f}{\partial x^2}&\dfrac{\partial^2f}{\partial x\partial y}\\[2mm]\dfrac{\partial^2f}{\partial y\partial x}&\dfrac{\partial^2f}{\partial y^2}\end{pmatrix}(a,b)=\begin{pmatrix}r&s\\t&u\end{pmatrix},\qquad d=|Hf(a,b)|=ru-st.$$
+  Entonces:</p>
+  <table>
+    <tr><th scope="col">Si…</th><th scope="col">entonces en $(a,b)$ hay…</th></tr>
+    <tr><td>$d\gt0$ y $r\gt0$</td><td><b>mínimo relativo</b></td></tr>
+    <tr><td>$d\gt0$ y $r\lt0$</td><td><b>máximo relativo</b></td></tr>
+    <tr><td>$d\lt0$</td><td><b>punto de silla</b></td></tr>
+    <tr><td>$d=0$</td><td>caso dudoso: el criterio no decide</td></tr>
+  </table>
+  <p>Si $d\gt0$, entonces $ru\gt s^2\ge0$: $r$ y $u$ son distintos de $0$ y <b>del mismo signo</b> (por eso el caso «$d\gt0$ y $r=0$» no puede darse). (U nota que se puede usar $u$ en lugar de $r$ y el resultado es igual de válido. Como $f_{xy}=f_{yx}$ cuando son continuas, $d=f_{xx}f_{yy}-f_{xy}^2$.) En $\mathbb R^n$ la condición usa la forma cuadrática de la Hessiana; no se trata en el curso.</p>
+  <span class="src" data-l="U" data-ref="U Teorema condición suficiente de extremo, p. 220; nota sobre r y u, p. 221">U pp.220-221</span>
+</div>
+
+<div class="box tip"><span class="h">Truco de examen · el orden en que se mira</span>
+  <p>Primero $d$. Si $d\lt0$, <b>silla</b> y se acabó (no hace falta $r$). Si $d\gt0$, mirar el signo de $r$ (o de $u$: tienen el mismo signo). Si $d=0$, no se puede concluir con la Hessiana: hay que <b>comparar $f(x,y)$ con $f(a,b)$ a mano</b> (por ejemplo, si $f\ge f(a,b)$ en todas partes, es un mínimo; E 5.33).</p>
+  <span class="src" data-l="P" data-ref="Consejo propio sobre U p. 220">P</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.20 de U · clasificar los cinco críticos de $f=(x^2+2y^2)e^{1-(x^2+y^2)}$</span>
+  <ol class="steps">
+    <li>Hessiana en cada punto crítico del Ej. 5.17 (derivando otra vez; las cuentas se comprueban con sympy):
+      <ul>
+        <li>$Hf(0,0)=\begin{pmatrix}2e&0\\0&4e\end{pmatrix}$: $d=8e^2\gt0$, $r=2e\gt0$: <b>mínimo relativo</b> ($f=0$).</li>
+        <li>$Hf(\pm1,0)=\begin{pmatrix}-4&0\\0&2\end{pmatrix}$: $d=-8\lt0$: <b>punto de silla</b>.</li>
+        <li>$Hf(0,\pm1)=\begin{pmatrix}-2&0\\0&-8\end{pmatrix}$: $d=16\gt0$, $r=-2\lt0$: <b>máximo relativo</b> ($f=2$).</li>
+      </ul></li>
+    <li>La Hessiana es diagonal en los cinco: se lee mirando los signos de la diagonal (ambos $+$, ambos $-$, o uno de cada).</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.20, pp. 221-222">U pp.221-222</span>
+</div>
+
+<figure class="interactivo" data-escena="extremos" data-params='{"punto":4}' aria-label="Interactivo: superficie z=f(x,y) con sus puntos críticos, plano tangente horizontal, Hessiana y clasificación">
+  <img class="int-static" src="../assets/img/int_extremos.png" alt="Interactivo: superficie z=f(x,y) con sus puntos críticos, plano tangente horizontal, Hessiana y clasificación">
+  <figcaption>Interactivo propio. Gira la superficie arrastrando. Elige una función y recorre sus puntos críticos con el deslizador: el plano gris es el plano tangente (horizontal en todos), y debajo salen la Hessiana, $d$ y la clasificación. Con la primera función (se abre en el punto nº 4, $(0,1)$, un máximo) se ven la cuenca (mínimo), las dos cimas y los dos puertos del Ejemplo 5.20; con $x^3+y^2-xy$ el mínimo $\left(\frac16,\frac1{12}\right)$ y la silla del origen (E 5.31). <span class="src" data-l="P" data-ref="Explicación propia; ejemplos de U Ej. 5.17, 5.19, 5.20 (pp. 216-222) y E Ej. 5.31 (p. 193)">P</span></figcaption>
+</figure>
+
+<!-- ============================ 5 ============================ -->
+<h2 id="s5"><span class="n">5</span>Extremos absolutos en un conjunto cerrado y acotado <span class="src" data-l="U" data-ref="U §5.4.2, Teorema de los valores extremos y procedimiento, p. 222; Ejemplo 5.21, p. 223">U pp.222-223</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · una isla con costa</span>
+  <p>Si la región es una <b>isla</b> (un conjunto cerrado, con su costa incluida, y acotado: no se extiende hasta el infinito), el punto más alto de la isla existe, y solo puede estar en uno de dos sitios: en una cima del <b>interior</b> (un punto crítico) o en la <b>costa</b> (la frontera). Por eso hay que mirar las dos cosas. Si olvidas la costa, puedes perder el máximo; si olvidas el interior, puedes perder un mínimo.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia sobre U p. 222">P</span>
+</div>
+
+<div class="box thm"><span class="h">Teorema de los valores extremos</span>
+  <p>Si una función <b>continua</b> $f$ está definida en un subconjunto $S\subset\mathbb R^n$ <b>cerrado y acotado</b>, entonces alcanza el máximo y el mínimo absolutos en $S$. Además, los extremos absolutos se alcanzan en la <b>frontera</b> de $S$ o en un <b>punto crítico de $f$ que sea del interior</b> de $S$.</p>
+  <span class="src" data-l="U" data-ref="U Teorema de los valores extremos, p. 222">U p.222</span>
+</div>
+
+<div class="box tip"><span class="h">Procedimiento para hallar los extremos absolutos (U p. 222)</span>
+  <ol class="steps">
+    <li><b>Existencia:</b> $f$ continua, $S$ cerrado y acotado (decirlo).</li>
+    <li><b>Interior:</b> hallar los puntos críticos de $f$ que estén en el <b>interior</b> de $S$ (comprobar que lo están).</li>
+    <li><b>Frontera:</b> hallar los puntos de la frontera donde pueden alcanzarse extremos. Es el paso más difícil; se trata en §5.5 (Lagrange, o despejar y reducir a una variable; si la frontera son segmentos, una variable en cada segmento más los vértices).</li>
+    <li><b>Comparar:</b> evaluar $f$ en todos los candidatos; el mayor valor es el máximo absoluto y el menor, el mínimo absoluto. <b>No hace falta la Hessiana.</b></li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Procedimiento, p. 222">U p.222</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.21 de U · $f(x,y)=x^2+2y^2$ en el disco $S=\{x^2+y^2\le1\}$ (primera parte)</span>
+  <ol class="steps">
+    <li>$f$ es continua y $S$ es cerrado y acotado: existen máximo y mínimo absolutos.</li>
+    <li><b>Interior:</b> $\nabla f=(2x,4y)=(0,0)\iff(x,y)=(0,0)$, que es un punto del interior con $f(0,0)=0$.</li>
+    <li>Como $f\ge0$ en todas partes, $0$ es el <b>mínimo absoluto</b>, en $(0,0)$.</li>
+    <li>El máximo no está en el interior (el único crítico es el mínimo): <b>tiene que estar en la circunferencia</b> $x^2+y^2=1$. Se estudia en el apartado siguiente (U Ej. 5.22) y de nuevo con Lagrange (Ej. 5.24).</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.21, p. 223">U p.223</span>
+</div>
+
+<div class="box warn"><span class="h">Errores típicos</span>
+  <p>(i) Dar como máximo/mínimo absoluto un extremo <b>relativo</b> del interior sin comparar con la frontera. (ii) Aplicar el teorema a un conjunto que no es cerrado (p. ej. $1\lt x^2+y^2\le4$ no incluye la circunferencia interior) o no es acotado. (iii) Creer que, si no se cumplen las hipótesis, «no hay máximo»: es condición <b>suficiente</b>; sin ella no se puede asegurar nada con el teorema. (iv) Dar como candidatos puntos críticos que están en la frontera, o fuera de $S$.</p>
+  <span class="src" data-l="P" data-ref="Errores típicos propios sobre U p. 222">P</span>
+</div>
+
+<!-- ============================ 6 ============================ -->
+<h2 id="s6"><span class="n">6</span>Extremos condicionados: primera idea, despejar <span class="src" data-l="U" data-ref="U §5.5.1 p. 223 y §5.5.2, Ejemplo 5.22, pp. 224-225; Figura 5.12, p. 225">U pp.223-225</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · caminar por un sendero</span>
+  <p>Un extremo <b>condicionado</b> es un máximo o mínimo de $f$ <i>cuando solo se permite moverse por un conjunto</i> dado por una condición $g(x,y)=0$: la costa de una isla, un sendero, una carretera. El máximo «a campo abierto» y el máximo «sobre el sendero» son cosas distintas (Figura 5.12 de U): el sendero puede no pasar por la cima. La primera forma de resolverlo es la más natural: si la condición permite <b>despejar</b> una variable ($y=h(x)$), se sustituye y se vuelve al caso de una variable.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U §5.5.1, p. 223, y p. 225">P</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.22 de U · la frontera del disco: máximo de $f=x^2+2y^2$ en $x^2+y^2=1$</span>
+  <ol class="steps">
+    <li>La frontera es $g(x,y)=x^2+y^2-1=0$. Donde $\frac{\partial g}{\partial y}=2y\ne0$ se puede despejar $y=\pm\sqrt{1-x^2}$ (teorema de la función implícita, tema 5.3).</li>
+    <li><b>Sustituir:</b> $f(x,y)=x^2+2y^2=x^2+2(1-x^2)=2-x^2=:F(x)$, para $x\in(-1,1)$.</li>
+    <li><b>Una variable:</b> $F'(x)=-2x=0\iff x=0$, y entonces $y=\pm1$: candidatos $(0,\pm1)$.</li>
+    <li><b>Donde no se puede despejar</b> ($\frac{\partial g}{\partial y}=0$, es decir $y=0$): los puntos $(\pm1,0)$, que se estudian aparte.</li>
+    <li><b>Valores:</b> $f(0,0)=0$ (interior, Ej. 5.21), $f(\pm1,0)=1$, $f(0,\pm1)=2$.</li>
+    <li><b>Conclusión:</b> el <b>máximo absoluto</b> en el disco es $2$, en $(0,\pm1)$. El mínimo absoluto es $0$, en $(0,0)$. (Sobre la circunferencia sola, el mínimo condicionado es $1$ en $(\pm1,0)$.)</li>
+  </ol>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_u_5_12.png" alt="Superficie en forma de cúpula cortada por un plano vertical; sobre la curva de corte se marca el máximo condicionado, distinto del máximo no condicionado en lo alto de la cúpula" loading="lazy">
+  <figcaption>Máximo condicionado (sobre la curva de corte con el plano $y=k$) frente al máximo no condicionado. <span class="src" data-l="U" data-ref="U Figura 5.12, p. 225">U p.225</span></figcaption>
+  </figure>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.22, pp. 224-225">U pp.224-225</span>
+</div>
+
+<div class="box intu"><span class="h">Cuándo no basta despejar</span>
+  <p>Despejar solo funciona si se sabe (y se puede) despejar, y deja casos aparte. Cuando la condición es complicada, el conjunto no es cerrado o acotado, o intervienen más variables, hace falta un método sistemático: <b>Lagrange</b>.</p>
+  <span class="src" data-l="U" data-ref="U p. 225">U p.225</span>
+</div>
+
+<!-- ============================ 7 ============================ -->
+<h2 id="s7"><span class="n">7</span>El método de los multiplicadores de Lagrange <span class="src" data-l="U" data-ref="U §5.5.2, Teorema de Lagrange, pp. 226-228; Figura 5.13, p. 227; método con una condición, p. 228">U pp.226-228</span></h2>
+
+<div class="box intu"><span class="h">Idea intuitiva · el sendero deja de subir donde es tangente a una curva de nivel</span>
+  <p>Dibuja las curvas de nivel de $f$ (los «contornos» del mapa topográfico) y la curva $g=0$ (tu sendero). Al caminar por el sendero cruzas contornos: subes cuando pasas a uno más alto y bajas cuando pasas a uno más bajo. Estás en lo más alto del sendero cuando <b>ya no cruzas más contornos hacia arriba</b>: el sendero llega a un contorno, lo roza (sin cruzarlo) y se aleja. En ese punto el sendero y el contorno son <b>tangentes</b>. Como el gradiente es perpendicular al contorno y $\nabla g$ lo es al sendero, tangentes significa que los dos gradientes <b>apuntan en la misma dirección o en direcciones opuestas</b>: $\nabla f$ es un múltiplo de $\nabla g$. Ese múltiplo es el <b>multiplicador $\lambda$</b>.</p>
+  <span class="src" data-l="U" data-ref="U Demostración geométrica, p. 227">U p.227</span>
+</div>
+
+<div class="box thm"><span class="h">Teorema de Lagrange (dos variables, U p. 226)</span>
+  <p>Sean $f$ y $g$ funciones continuas con derivadas parciales continuas. Supongamos que $f$ tiene un extremo relativo en $(a,b)$ <b>sobre la curva</b> $g(x,y)=0$ y que $\nabla g(a,b)\ne\bar0$. Entonces existe un número $\lambda$ tal que
+  $$\nabla f(a,b)=-\lambda\,\nabla g(a,b).$$
+  Equivalentemente, $(a,b,\lambda)$ es un <b>punto crítico</b> de la función $F(x,y,\lambda)=f(x,y)+\lambda\,g(x,y)$ (porque $\nabla F=\bar0$ dice $F_x=F_y=0$, que es $\nabla f=-\lambda\nabla g$, y $F_\lambda=g=0$, que es la restricción). El número $\lambda$ es el <b>multiplicador de Lagrange</b>.</p>
+  <p><b>Versión en $\mathbb R^n$ (U p. 228):</b> $f,g:D\subset\mathbb R^n\to\mathbb R$ continuas con derivadas parciales continuas; si $f$ tiene un extremo relativo en $(a_1,\dots,a_n)$ sobre $g(x_1,\dots,x_n)=0$ y $\nabla g(a_1,\dots,a_n)\ne\bar0$, existe $\lambda$ con $\nabla f(a_1,\dots,a_n)=-\lambda\nabla g(a_1,\dots,a_n)$.</p>
+  <span class="src" data-l="U" data-ref="U Teorema de Lagrange, p. 226 (dos variables) y p. 228 (n variables)">U pp.226, 228</span>
+</div>
+
+<figure class="bookfig">
+<img src="../assets/img/fig_u_5_13.png" alt="Curvas de nivel discontinuas de f etiquetadas c1, c2, c3 con c creciente hacia arriba a la derecha, y una curva continua g igual a cero que toca tangencialmente a una de ellas" loading="lazy">
+<figcaption>Curvas de nivel $f(x,y)=c_i$ y la curva $g(x,y)=0$: el máximo condicionado se alcanza donde se tocan tangencialmente. <span class="src" data-l="U" data-ref="U Figura 5.13, p. 227">U p.227</span></figcaption>
+</figure>
+
+<div class="box tip"><span class="h">Método de los multiplicadores de Lagrange (una condición, U p. 228)</span>
+  <p>Para hallar los extremos de $f(x,y)$ sujeta a $g(x,y)=0$:</p>
+  <ol class="steps">
+    <li>Definir $F(x,y,\lambda)=f(x,y)+\lambda\,g(x,y)$.</li>
+    <li>Resolver $\nabla F(x,y,\lambda)=(0,0,0)$, es decir, $F_x=0$, $F_y=0$ y $g=0$. Son los puntos críticos de $F$ y los <b>candidatos</b>.</li>
+    <li>Si el conjunto $g=0$ es <b>cerrado y acotado</b>, evaluar $f$ en los puntos del paso 2: donde $f$ sea mayor está el máximo absoluto, y donde sea menor, el mínimo absoluto. (Si no es cerrado y acotado, el método solo da candidatos; para decidir se usa el sentido del problema, o se despeja.)</li>
+    <li><b>Alternativa:</b> si $g=0$ define $y=h(x)$, se estudian los extremos de $f(x,h(x))$ (una variable). En tres variables, si $g=0$ define $z=h(x,y)$, se puede estudiar la Hessiana de $f(x,y,h(x,y))$ con el criterio del apartado 4 (U p.231).</li>
+  </ol>
+  <p>Vale igual en $\mathbb R^n$ (una ecuación más por variable). Con más de una condición se añade un multiplicador por cada una (U lo menciona y no lo desarrolla). <b>Siempre</b> hay que comprobar que $\nabla g\ne\bar0$ en los puntos de la restricción.</p>
+  <span class="src" data-l="U" data-ref="U Método, p. 228; observaciones, pp. 225 y 229">U pp.228-229</span>
+</div>
+
+<figure class="interactivo" data-escena="lagrange" data-params='{"dim":2}' aria-label="Interactivo: curvas de nivel de f, restricción g=0, punto móvil sobre la restricción y gradientes de f y g; se ven paralelos solo en los candidatos de Lagrange">
+  <img class="int-static" src="../assets/img/int_lagrange.png" alt="Interactivo: curvas de nivel de f, restricción g=0, punto móvil sobre la restricción y gradientes de f y g; se ven paralelos solo en los candidatos de Lagrange">
+  <figcaption>Interactivo propio. El punto recorre la restricción $g=0$ (curva del mismo color que el texto). La curva naranja es la curva de nivel de $f$ que pasa por él; la flecha azul es $\nabla f$ y la verde $\nabla g$. Mueve el deslizador: en general la curva naranja <i>corta</i> a la restricción (y $\nabla f$, $\nabla g$ no son paralelos, el producto $f_xg_y-f_yg_x$ no es $0$); solo en los candidatos de Lagrange la curva naranja <i>roza</i> la restricción y las flechas quedan alineadas, y se muestra $\lambda$. Cuatro problemas de este tema (E 5.42, U Ej. 5.24, X sept. 2017 y X p. 9). Rueda: zoom. <span class="src" data-l="P" data-ref="Explicación propia sobre U pp. 226-228 (Figura 5.13, p. 227); problemas de E 5.42 (p. 203), U Ej. 5.24 (p. 229), X p.134 y X p.9">P</span></figcaption>
+</figure>
+
+<div class="box warn"><span class="h">Errores típicos</span>
+  <p>(i) <b>Olvidar la ecuación de la restricción</b> ($F_\lambda=g=0$): sin ella el sistema tiene infinitas soluciones. (ii) <b>Dividir entre $x$, $y$ o $\lambda$ sin comprobar que no valen $0$</b>: se pierden soluciones (el caso $\lambda=0$ en el Ej. 5.26 de U es de hecho el que da tres candidatos). (iii) Creer que Lagrange dice si es máximo o mínimo: solo da candidatos; se decide comparando valores (conjunto cerrado y acotado) o con el sentido del problema. (iv) No comprobar $\nabla g\ne\bar0$: si se anula en un punto de la restricción, el teorema no se aplica allí y ese punto <b>se añade a mano</b> como candidato (Propio 5, apartado 11). (v) Pensar que el signo de $\lambda$ decide el tipo de punto: no es así (U dice que el valor de $\lambda$ no importa para localizar los extremos).</p>
+  <span class="src" data-l="P" data-ref="Errores típicos propios sobre U pp. 226-231">P</span>
+</div>
+
+<!-- ============================ 8 ============================ -->
+<h2 id="s8"><span class="n">8</span>Ejemplos de U resueltos con Lagrange <span class="src" data-l="U" data-ref="U §5.5.2, Ejemplos 5.23-5.26, pp. 226-232; Figura 5.14, p. 230">U pp.226-232</span></h2>
+
+<div class="box ex"><span class="h">Ejemplo 5.23 de U · la lata de 300 ml (solo planteamiento)</span>
+  <p>Se quiere una lata cilíndrica cerrada de volumen $300\ \mathrm{ml}$ con la menor cantidad de material. Variables $r$ (radio) y $h$ (altura): volumen $V(r,h)=\pi r^2h$ y superficie $S(r,h)=2\pi r^2+2\pi rh$. El problema es: <b>minimizar $S$ con la restricción $\pi r^2h=300$</b>. U solo lo plantea; la resolución completa está en el Ejercicio 5.40 (apartado 10).</p>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.23, p. 226">U p.226</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.24 de U · $f=x^2+2y^2$ en la circunferencia $x^2+y^2=1$</span>
+  <ol class="steps">
+    <li>$g=x^2+y^2-1$, $\nabla g=(2x,2y)\ne\bar0$ en la circunferencia. $F=x^2+2y^2+\lambda(x^2+y^2-1)$.</li>
+    <li>$F_x=2x(1+\lambda)=0$, $\ F_y=2y(2+\lambda)=0$, $\ x^2+y^2=1$.</li>
+    <li><b>Casos:</b> $\lambda=-1\Rightarrow y=0$, $x=\pm1$. $\ \lambda=-2\Rightarrow x=0$, $y=\pm1$. (Si $\lambda\ne-1$ y $\lambda\ne-2$, $x=y=0$, que no está en la restricción.)</li>
+    <li>Candidatos: $(\pm1,0)$ con $\lambda=-1$ y $(0,\pm1)$ con $\lambda=-2$: <b>los mismos que al despejar</b> (Ej. 5.22), sin tener que «añadir a mano» los puntos donde no se podía despejar. Valores: $f(\pm1,0)=1$ (mínimo condicionado) y $f(0,\pm1)=2$ (máximo condicionado).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> Lagrange evita el problema de «dónde no se puede despejar»; despejar evita el $\lambda$. Los dos dan los mismos candidatos.</div>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.24, p. 229">U p.229</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.25 de U · dos números positivos con suma $9$ y producto máximo</span>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_u_5_14.png" alt="Segmento de recta que une el punto (0,9) del eje vertical con el punto (9,0) del eje horizontal, en el primer cuadrante" loading="lazy">
+  <figcaption>El conjunto $\{x+y-9=0,\ x\ge0,\ y\ge0\}$ es un segmento: cerrado y acotado. <span class="src" data-l="U" data-ref="U Figura 5.14, p. 230">U p.230</span></figcaption>
+  </figure>
+  <ol class="steps">
+    <li>$f(x,y)=xy$, $g(x,y)=x+y-9$, con $x,y\ge0$. El conjunto es el segmento de la figura: <b>cerrado y acotado</b>, así que el máximo existe y está entre los candidatos (puntos críticos de $F$ o extremos del segmento).</li>
+    <li>$F=xy+\lambda(x+y-9)$: $F_x=y+\lambda=0$, $F_y=x+\lambda=0$, $x+y=9$.</li>
+    <li>La única solución es $x=y=\frac92$, $\lambda=-\frac92$, con $f\left(\frac92,\frac92\right)=\frac{81}4$.</li>
+    <li>En los extremos del segmento, $f(9,0)=f(0,9)=0$.</li>
+    <li><b>Máximo</b> en $\left(\frac92,\frac92\right)$, con producto $\frac{81}4$.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.25, pp. 229-230; Figura 5.14, p. 230">U pp.229-230</span>
+</div>
+
+<div class="box ex"><span class="h">Ejemplo 5.26 de U · tres números no negativos con suma $9$ y producto máximo</span>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_u_5_15.png" alt="Triángulo en el primer octante con vértices (9,0,0), (0,9,0) y (0,0,9)" loading="lazy">
+  <figcaption>El conjunto $\{x+y+z-9=0;\ x,y,z\ge0\}$ es un triángulo: cerrado y acotado. <span class="src" data-l="U" data-ref="U Figura 5.15, p. 232">U p.232</span></figcaption>
+  </figure>
+  <ol class="steps">
+    <li>$f=xyz$, $g=x+y+z-9$, con $x,y,z\ge0$ (un triángulo en el espacio: cerrado y acotado). $F=xyz+\lambda(x+y+z-9)$.</li>
+    <li>$F_x=yz+\lambda=0$, $F_y=xz+\lambda=0$, $F_z=xy+\lambda=0$, $x+y+z=9$.</li>
+    <li><b>Caso $\lambda=0$:</b> $yz=xz=xy=0$: al menos dos de las variables valen $0$; con la suma $9$, salen $(9,0,0)$, $(0,9,0)$ y $(0,0,9)$, con producto $0$.</li>
+    <li><b>Caso $\lambda\ne0$:</b> ninguna variable es $0$; de $yz=xz$ sale $x=y$ y de $xz=xy$ sale $y=z$. Con la suma, $x=y=z=3$ y $\lambda=-9$, con $f=27$.</li>
+    <li><b>Producto máximo $27$ en $x=y=z=3$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> en los sistemas de Lagrange hay que mirar siempre el caso $\lambda=0$ por separado (no se puede dividir entre $\lambda$).</div>
+  <span class="src" data-l="U" data-ref="U Ejemplo 5.26, p. 231 (Figura 5.15, p. 232)">U pp.231-232</span>
+</div>
+
+<!-- ============================ 9 ============================ -->
+<h2 id="recetas"><span class="n">9</span>Recetas del tema <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §5.4-5.5, pp. 212-231">P</span></h2>
+
+<div class="box tip"><span class="h">Receta A · extremos relativos de $f(x,y)$ en un abierto</span>
+  <ol class="steps">
+    <li>Calcular $f_x$, $f_y$ e igualarlas a $0$. Resolver el sistema <b>por casos</b> (factor común; «producto $=0$ ⇒ algún factor $=0$»). Así salen los <b>puntos críticos</b>, los únicos candidatos.</li>
+    <li>Calcular $f_{xx}$, $f_{xy}$, $f_{yy}$ y, en <b>cada</b> punto crítico, $d=f_{xx}f_{yy}-f_{xy}^2$ y $r=f_{xx}$.</li>
+    <li>Clasificar: $d\lt0$ silla; $d\gt0$ y $r\gt0$ mínimo; $d\gt0$ y $r\lt0$ máximo; $d=0$ dudoso (mirar a mano el signo de $f-f(a,b)$).</li>
+    <li>Añadir como candidatos los puntos donde $f$ no está definida o no es diferenciable (p. ej. la punta de un cono), y estudiarlos a mano.</li>
+    <li>Si piden «¿es extremo en estos puntos?»: primero gradiente en <b>cada</b> punto dado (descartar los no críticos).</li>
+  </ol>
+</div>
+
+<div class="box tip"><span class="h">Receta B · extremos absolutos en un conjunto cerrado y acotado $S$</span>
+  <ol class="steps">
+    <li>$f$ continua y $S$ cerrado y acotado ⇒ existen (citar el teorema).</li>
+    <li>Puntos críticos del <b>interior</b> de $S$.</li>
+    <li>Frontera: Lagrange, o parametrizar/despejar y reducir a una variable; si la frontera es un polígono, cada lado como función de una variable (críticos + extremos del intervalo = vértices).</li>
+    <li>Tabla con todos los candidatos y sus valores; máximo y mínimo = mayor y menor.</li>
+  </ol>
+</div>
+
+<div class="box tip"><span class="h">Receta C · Lagrange con una restricción $g=0$</span>
+  <ol class="steps">
+    <li>$F=f+\lambda g$ y comprobar $\nabla g\ne\bar0$ en la restricción; los puntos de $g=0$ donde $\nabla g=\bar0$ se <b>añaden a mano</b> como candidatos.</li>
+    <li>Resolver $F_x=0$, $F_y=0$ ($F_z=0$) y $g=0$. Trucos: despejar $\lambda$ en dos ecuaciones e igualar; multiplicar cada ecuación por su variable; restar ecuaciones simétricas; separar siempre los casos «variable $=0$» y «$\lambda=0$».</li>
+    <li>Si la restricción es cerrada y acotada: comparar los valores de $f$. Si no: usar el sentido del problema o despejar y pasar a una variable (E 5.40).</li>
+    <li>Problemas de distancia: optimizar el <b>cuadrado</b> de la distancia (sin raíz) y poner la raíz al final.</li>
+  </ol>
+</div>
+
+<!-- ============================ 10 ============================ -->
+<h2 id="ejercicios"><span class="n">10</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.28-5.48, pp. 191-212">E pp.191-212</span></h2>
+<p>Orden recomendado para aprender (de lo más sencillo a lo más largo): <b>sin derivadas</b> (5.28, 5.38, 5.33) → <b>puntos críticos</b> (5.29, 5.30, 5.35) → <b>Hessiana</b> (5.31, 5.32, 5.37, 5.36, 5.34) → <b>Lagrange</b> (5.44, 5.39, 5.42, 5.40, 5.46, 5.47) → <b>absolutos en un compacto</b> (5.41, 5.43, 5.48) → <b>una variable</b> (5.45).</p>
+
+<p><b>Índice rápido:</b> <a href="#ej-5-28">5.28</a> · <a href="#ej-5-29">5.29</a> · <a href="#ej-5-30">5.30</a> · <a href="#ej-5-31">5.31</a> · <a href="#ej-5-32">5.32</a> · <a href="#ej-5-33">5.33</a> · <a href="#ej-5-34">5.34</a> · <a href="#ej-5-35">5.35</a> · <a href="#ej-5-36">5.36</a> · <a href="#ej-5-37">5.37</a> · <a href="#ej-5-38">5.38</a> · <a href="#ej-5-39">5.39</a> · <a href="#ej-5-40">5.40</a> · <a href="#ej-5-41">5.41</a> · <a href="#ej-5-42">5.42</a> · <a href="#ej-5-43">5.43</a> · <a href="#ej-5-44">5.44</a> · <a href="#ej-5-45">5.45</a> · <a href="#ej-5-46">5.46</a> · <a href="#ej-5-47">5.47</a> · <a href="#ej-5-48">5.48</a>.</p>
+
+<h3>A · Sin derivadas: signo y teorema</h3>
+
+<details class="sol" id="ej-5-28"><summary>Ejercicio 5.28 · ¿extremos absolutos de $y^2x^2+y^2+4\operatorname{sen}^2x$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.28, p. 191 · teoría: U Def. 5.7-5.8, p. 213">E p.191</span></summary>
+  <p class="enun">¿Alcanza la función $f(x,y)=y^2x^2+y^2+4\operatorname{sen}^2x$ los valores mínimo y máximo absolutos en $\mathbb R^2$?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si existe un punto donde $f$ es la menor de todas y otro donde es la mayor.</dd>
+    <dt>Cómo lo pienso</dt><dd>Los tres sumandos son cuadrados (o múltiplos positivos de cuadrados): $f\ge0$. Si llega a valer $0$, ese es el mínimo. Para el máximo, buscar una recta por la que $f$ crezca sin límite.</dd>
+    <dt>Qué uso</dt><dd>Definiciones de máximo y mínimo absolutos (U Def. 5.7-5.8, p. 213).</dd>
+    <dt>Por dónde empiezo</dt><dd>Ver cuándo vale $0$ cada sumando.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Signo:</b> $y^2x^2\ge0$, $y^2\ge0$, $4\operatorname{sen}^2x\ge0$. Luego $f(x,y)\ge0$ para todo $(x,y)$.</li>
+    <li><b>¿Cuándo vale $0$?</b> Una suma de números $\ge0$ es $0$ solo si cada sumando es $0$: $y^2=0\Rightarrow y=0$; $\operatorname{sen}x=0\Rightarrow x=k\pi$, $k\in\mathbb Z$ (el primer sumando ya es $0$ con $y=0$).</li>
+    <li><b>Mínimo absoluto:</b> $f(k\pi,0)=0\le f(x,y)$ para todo $(x,y)$: por la Def. 5.8, $f$ alcanza el mínimo absoluto $0$ en todos los puntos $(k\pi,0)$, $k\in\mathbb Z$ (infinitos puntos).</li>
+    <li><b>Máximo absoluto:</b> sobre el eje $x=0$, $f(0,y)=y^2$, que supera cualquier número $M$ (basta $y=\sqrt M+1$). Si hubiera máximo $f(a,b)$, tomando $M=f(a,b)$ habría un punto con valor mayor: contradicción. <b>No hay máximo absoluto.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> antes de derivar, mirar el signo: si $f\ge0$ y se anula en algún punto, ahí está el mínimo absoluto. Para negar el máximo, encontrar una recta en la que $f\to+\infty$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Concluir «no hay máximo porque $\mathbb R^2$ no es acotado»: el teorema de los valores extremos da una condición <b>suficiente</b>; si no se cumple, no se puede concluir nada sin más (p. ej. $e^{-x^2-y^2}$ sí tiene máximo en $\mathbb R^2$).</p></div>
+</details>
+
+<details class="sol" id="ej-5-38"><summary>Ejercicio 5.38 · ¿alcanza $x^2y$ el máximo en el disco unidad? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.38, p. 200 · teoría: U p. 222">E p.200</span></summary>
+  <p class="enun">La función $f(x,y)=x^2y$ está definida sobre el conjunto $S=\{(x,y)\in\mathbb R^2:x^2+y^2\le1\}$. ¿Alcanza el máximo absoluto en este conjunto? Justifica la respuesta.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Solo <b>si existe</b> el máximo, no cuánto vale.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es exactamente la situación del teorema de los valores extremos: función continua sobre un disco cerrado.</dd>
+    <dt>Qué uso</dt><dd>Teorema de los valores extremos (U p. 222).</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar las tres hipótesis.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>$f$ es continua:</b> es un polinomio.</li>
+    <li><b>$S$ es cerrado:</b> contiene su frontera, la circunferencia $x^2+y^2=1$ (el «$\le$» la incluye).</li>
+    <li><b>$S$ es acotado:</b> todos sus puntos están a distancia $\le1$ del origen.</li>
+    <li>Por el teorema de los valores extremos, <b>sí</b>: $f$ alcanza en $S$ el máximo y el mínimo absolutos.</li>
+  </ol>
+  <p><b>Para ir más allá (no se pide):</b> en el interior, $\nabla f=(2xy,x^2)=\bar0$ solo en $x=0$, donde $f=0$. En la frontera, $x^2=1-y^2$ y $f=(1-y^2)y$; su derivada $1-3y^2$ se anula en $y=\pm\frac1{\sqrt3}$. El máximo es $\frac{2\sqrt3}9$ en $\left(\pm\sqrt{2/3},\,\frac1{\sqrt3}\right)$ y el mínimo $-\frac{2\sqrt3}9$ en $\left(\pm\sqrt{2/3},\,-\frac1{\sqrt3}\right)$.</p>
+  <div class="recipe"><b>Receta:</b> «¿alcanza…?» en un conjunto ⇒ comprobar continua + cerrado + acotado y citar el teorema.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Contestar calculando los puntos críticos del interior y decir «no hay máximo porque en el interior no hay extremos»: el máximo puede estar en la frontera.</p></div>
+</details>
+
+<details class="sol" id="ej-5-33"><summary>Ejercicio 5.33 · tipo de punto de $x^2\operatorname{sen}^2y$ en el origen <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.33, pp. 195-196 · teoría: U pp. 214, 220">E pp.195-196</span></summary>
+  <p class="enun">La función de dos variables dada por $f(x,y)=x^2\operatorname{sen}^2y$ verifica: a) Alcanza en $(0,0)$ un mínimo relativo. b) Alcanza en $(0,0)$ un máximo relativo. c) Tiene en $(0,0)$ un punto de silla. d) Ninguna de las opciones anteriores.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Qué tipo de punto es $(0,0)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La Hessiana puede no decidir (todo es «muy plano» en el origen); pero $f$ es un producto de cuadrados: nunca es negativa.</dd>
+    <dt>Qué uso</dt><dd>Condición suficiente (U p. 220); si es dudosa, la Def. 5.11 de mínimo relativo (U p. 214).</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar que $(0,0)$ es crítico.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Gradiente:</b> $f_x=2x\operatorname{sen}^2y$, $f_y=2x^2\operatorname{sen}y\cos y=x^2\operatorname{sen}2y$. En $(0,0)$ ambas valen $0$: es punto crítico.</li>
+    <li><b>Hessiana:</b> $Hf(x,y)=\begin{pmatrix}2\operatorname{sen}^2y&2x\operatorname{sen}2y\\2x\operatorname{sen}2y&2x^2\cos2y\end{pmatrix}$; en $(0,0)$ es la matriz nula, $d=0$: <b>caso dudoso</b>, el criterio no dice nada.</li>
+    <li><b>Mirar el signo:</b> $f(0,0)=0$ y $f(x,y)=x^2\operatorname{sen}^2y\ge0$ siempre (producto de dos cuadrados).</li>
+    <li>Entonces $f(x,y)\ge f(0,0)$ para todo $(x,y)$: mínimo absoluto, y por tanto relativo. <b>Respuesta a).</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si $d=0$, comparar $f(x,y)$ con $f(a,b)$ cerca del punto: si $f-f(a,b)\ge0$ es mínimo; si $\le0$, máximo; si toma los dos signos, silla.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Elegir d) («no se puede saber») porque la Hessiana es nula. «Dudoso» significa que <b>el criterio</b> no decide, no que el punto no sea extremo.</p></div>
+</details>
+
+<h3>B · Hallar puntos críticos</h3>
+
+<details class="sol" id="ej-5-29"><summary>Ejercicio 5.29 · críticos de $x^3+y^3+xy$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.29, pp. 191-192 · teoría: U p. 218">E pp.191-192</span></summary>
+  <p class="enun">Localiza los puntos en los que la función dada por $f(x,y)=x^3+y^3+xy$ puede alcanzar los extremos relativos.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Los candidatos, es decir, los puntos críticos (no clasificarlos).</dd>
+    <dt>Cómo lo pienso</dt><dd>$f$ es un polinomio, diferenciable en todo $\mathbb R^2$ (abierto): los extremos relativos solo pueden estar donde $\nabla f=\bar0$.</dd>
+    <dt>Qué uso</dt><dd>Condición necesaria de extremo (U p. 218).</dd>
+    <dt>Por dónde empiezo</dt><dd>Despejar $y$ en $f_x=0$, que queda «limpio».</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f_x=3x^2+y$, $f_y=3y^2+x$. Sistema: $3x^2+y=0$, $3y^2+x=0$.</li>
+    <li>De la 1.ª, $y=-3x^2$. Se sustituye en la 2.ª: $3\cdot9x^4+x=0\iff x(27x^3+1)=0$.</li>
+    <li>Producto nulo: $x=0$ o $27x^3=-1\iff x=-\frac13$ (raíz cúbica real única).</li>
+    <li>Se vuelve a $y=-3x^2$: $x=0\Rightarrow y=0$; $x=-\frac13\Rightarrow y=-3\cdot\frac19=-\frac13$.</li>
+    <li><b>Puntos críticos:</b> $(0,0)$ y $\left(-\frac13,-\frac13\right)$.</li>
+  </ol>
+  <p><b>Para ir más allá:</b> $Hf=\begin{pmatrix}6x&1\\1&6y\end{pmatrix}$; en $(0,0)$, $d=-1$: silla; en $\left(-\frac13,-\frac13\right)$, $d=4-1=3\gt0$, $r=-2\lt0$: máximo relativo.</p>
+  <div class="recipe"><b>Receta:</b> sistema polinómico: despejar en la ecuación más sencilla, sustituir, factorizar la ecuación de una variable y volver atrás con cada raíz.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dividir entre $x$ en $27x^4+x=0$ y perder la solución $x=0$.</p></div>
+</details>
+
+<details class="sol" id="ej-5-30"><summary>Ejercicio 5.30 · críticos de $xy(x^2+y^2)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.30, pp. 192-193 · teoría: U p. 216">E pp.192-193</span></summary>
+  <p class="enun">Determina los puntos críticos de la función dada por $f(x,y)=xy\,(x^2+y^2)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Los puntos con $\nabla f=\bar0$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Las dos derivadas salen con un factor $y$ y otro $x$; lo que queda son sumas de cuadrados, que solo se anulan en el origen.</dd>
+    <dt>Qué uso</dt><dd>Def. 5.13 (U p. 216).</dd>
+    <dt>Por dónde empiezo</dt><dd>Desarrollar $f=x^3y+xy^3$ y derivar.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f_x=3x^2y+y^3=y(3x^2+y^2)$ y $f_y=x^3+3xy^2=x(x^2+3y^2)$.</li>
+    <li><b>Si $x=0$:</b> la 1.ª queda $y^3=0$, luego $y=0$.</li>
+    <li><b>Si $y=0$:</b> la 2.ª queda $x^3=0$, luego $x=0$.</li>
+    <li><b>Si $x\ne0$ e $y\ne0$:</b> tendría que ser $3x^2+y^2=0$, pero es una suma de cuadrados con $x\ne0$: es $\gt0$. Imposible.</li>
+    <li><b>Único punto crítico: $(0,0)$.</b></li>
+  </ol>
+  <p><b>Para entenderlo:</b> $f(0,0)=0$ y $f$ tiene el signo de $xy$: positiva en el 1.er y 3.er cuadrantes y negativa en los otros dos. Es un punto de silla (la Hessiana es nula: el criterio no decide; se ve por el signo).</p>
+  <div class="recipe"><b>Receta:</b> sacar factor común y separar casos; «suma de cuadrados $=0$» solo si cada uno es $0$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar algún caso o dar por soluciones $(x,0)$ sin comprobar la otra ecuación.</p></div>
+</details>
+
+<details class="sol" id="ej-5-35"><summary>Ejercicio 5.35 · $\nabla f(\pi,0)$ y el origen de $x(1-\cos y)+y(1-\cos x)+xy$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.35, pp. 197-198 · teoría: U pp. 216, 220">E pp.197-198</span></summary>
+  <p class="enun">Sea $f:\mathbb R^2\to\mathbb R$, $f(x,y)=x(1-\cos y)+y(1-\cos x)+xy$. Calcula $\nabla f(\pi,0)$; ¿es $(\pi,0)$ un punto crítico? Estudia si en $(0,0)$ la función $f$ alcanza un extremo relativo.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Un gradiente en un punto, y clasificar el origen.</dd>
+    <dt>Cómo lo pienso</dt><dd>El origen será crítico; la Hessiana dirá su tipo. El término $xy$ (silla clásica) hace sospechar que es silla.</dd>
+    <dt>Qué uso</dt><dd>Def. 5.13 (U p. 216) y condición suficiente (U p. 220).</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivar término a término.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f_x=(1-\cos y)+y\operatorname{sen}x+y$, $\quad f_y=x\operatorname{sen}y+(1-\cos x)+x$.</li>
+    <li><b>En $(\pi,0)$:</b> $f_x=0+0+0=0$; $f_y=0+(1-\cos\pi)+\pi=2+\pi$. $\nabla f(\pi,0)=(0,\,2+\pi)\ne\bar0$: <b>no es crítico</b>.</li>
+    <li><b>En $(0,0)$:</b> $f_x=0$, $f_y=0$: sí es crítico.</li>
+    <li><b>Derivadas segundas:</b> $f_{xx}=y\cos x$, $f_{xy}=\operatorname{sen}y+\operatorname{sen}x+1$, $f_{yy}=x\cos y$. En $(0,0)$: $Hf(0,0)=\begin{pmatrix}0&1\\1&0\end{pmatrix}$.</li>
+    <li>$d=0\cdot0-1\cdot1=-1\lt0$: <b>punto de silla</b>, no hay extremo relativo en $(0,0)$.</li>
+  </ol>
+  <p><b>Para entenderlo:</b> cerca del origen $1-\cos t\approx\frac{t^2}2$, así que $f\approx xy$: positiva en la diagonal $y=x$ y negativa en $y=-x$.</p>
+  <div class="recipe"><b>Receta:</b> si $d\lt0$ ya no hace falta mirar $r$: silla.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Ver $r=0$ y decir «caso dudoso». Lo primero es mirar $d$: si $d\lt0$ es silla, valga lo que valga $r$.</p></div>
+</details>
+
+<h3>C · Clasificar con la Hessiana</h3>
+
+<details class="sol" id="ej-5-31"><summary>Ejercicio 5.31 · $x^3+y^2-xy$ en tres puntos; ¿absolutos? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.31, pp. 193-194 · teoría: U pp. 213, 218, 220">E pp.193-194</span></summary>
+  <p class="enun">Sea $f(x,y)=x^3+y^2-xy$. Estudia si la función alcanza sus extremos relativos en los puntos $(0,0)$, $(1,-1)$ y $\left(\frac16,\frac1{12}\right)$ y, en caso de que así sea, razona si son máximos o mínimos. ¿Es alguno de estos puntos un extremo absoluto de $f$ en $\mathbb R^2$? ¿Se alcanzan en $\mathbb R^2$ extremos absolutos?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>(1) Cuáles de los tres puntos son críticos; (2) clasificarlos; (3) decidir si hay extremos absolutos.</dd>
+    <dt>Cómo lo pienso</dt><dd>Un punto no crítico no puede ser extremo (condición necesaria). A los críticos, Hessiana. Para lo absoluto: un $x^3$ «suelto» hace que $f$ no esté acotada.</dd>
+    <dt>Qué uso</dt><dd>Condición necesaria (U p. 218), condición suficiente (U p. 220), Def. 5.7-5.8 (U p. 213).</dd>
+    <dt>Por dónde empiezo</dt><dd>Hallar todos los puntos críticos.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f_x=3x^2-y$, $f_y=2y-x$.</li>
+    <li>De $f_y=0$: $x=2y$. En $f_x=0$: $12y^2-y=y(12y-1)=0$, $y=0$ o $y=\frac1{12}$. Puntos críticos: $(0,0)$ y $\left(\frac16,\frac1{12}\right)$.</li>
+    <li><b>$(1,-1)$:</b> $\nabla f(1,-1)=(3+1,\,-2-1)=(4,-3)\ne\bar0$. Por la condición necesaria, <b>no es extremo relativo</b>.</li>
+    <li><b>Hessiana:</b> $f_{xx}=6x$, $f_{xy}=-1$, $f_{yy}=2$.</li>
+    <li><b>$(0,0)$:</b> $Hf=\begin{pmatrix}0&-1\\-1&2\end{pmatrix}$, $d=-1\lt0$: <b>silla</b>.</li>
+    <li><b>$\left(\frac16,\frac1{12}\right)$:</b> $Hf=\begin{pmatrix}1&-1\\-1&2\end{pmatrix}$, $d=2-1=1\gt0$ y $r=1\gt0$: <b>mínimo relativo</b>, con $f=\frac1{216}+\frac1{144}-\frac1{72}=-\frac1{432}$.</li>
+    <li><b>¿Absoluto?</b> $f(-1,0)=-1\lt-\frac1{432}$: hay un valor menor, así que el mínimo relativo no es absoluto.</li>
+    <li><b>Sin extremos absolutos:</b> sobre el eje $y=0$, $f(x,0)=x^3$, que toma valores tan grandes y tan negativos como se quiera ($x\to\pm\infty$). Ningún valor puede ser el mayor ni el menor.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> «¿es extremo en estos puntos?» ⇒ primero gradiente en cada punto (descartar los no críticos), después Hessiana. «¿Absoluto?» ⇒ buscar un punto con valor mejor, o una recta donde $f$ no esté acotada.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Clasificar $(1,-1)$ con la Hessiana sin comprobar que es crítico: el criterio solo vale en puntos críticos.</p></div>
+</details>
+
+<details class="sol" id="ej-5-32"><summary>Ejercicio 5.32 · $y+x^2y^2-x^2+y^2$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.32, pp. 194-195 · teoría: U pp. 216, 220">E pp.194-195</span></summary>
+  <p class="enun">Determina los puntos críticos, y estudia si se alcanza algún extremo en ellos, para la función dada por $f(x,y)=y+x^2y^2-x^2+y^2$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Críticos y su clasificación.</dd>
+    <dt>Cómo lo pienso</dt><dd>$f_x$ factoriza como $2x(y^2-1)$: dos casos, $x=0$ o $y=\pm1$; cada uno se lleva a $f_y=0$.</dd>
+    <dt>Qué uso</dt><dd>Def. 5.13 (U p. 216), condición suficiente (U p. 220).</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivar y sacar factor común.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f_x=2xy^2-2x=2x(y^2-1)$, $\quad f_y=1+2x^2y+2y=1+2y(x^2+1)$.</li>
+    <li><b>Caso $x=0$:</b> $f_y=1+2y=0\Rightarrow y=-\frac12$. Punto $\left(0,-\frac12\right)$.</li>
+    <li><b>Caso $y=1$:</b> $f_y=1+2(x^2+1)\ge3\gt0$: sin solución.</li>
+    <li><b>Caso $y=-1$:</b> $f_y=1-2(x^2+1)=-1-2x^2\le-1\lt0$: sin solución.</li>
+    <li>Único crítico: $\left(0,-\frac12\right)$.</li>
+    <li><b>Hessiana:</b> $f_{xx}=2y^2-2$, $f_{xy}=4xy$, $f_{yy}=2x^2+2$. En el punto: $f_{xx}=\frac12-2=-\frac32$, $f_{xy}=0$, $f_{yy}=2$.</li>
+    <li>$d=-\frac32\cdot2-0=-3\lt0$: <b>punto de silla</b>; $f$ no alcanza extremos relativos.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> factorizar la derivada más sencilla y llevar cada caso a la otra ecuación; si en un caso la otra ecuación es «positivo $=0$», ese caso no da puntos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar que $y^2=1$ da <b>dos</b> casos ($y=1$ e $y=-1$).</p></div>
+</details>
+
+<details class="sol" id="ej-5-37"><summary>Ejercicio 5.37 · punto que minimiza la suma de distancias al cuadrado <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.37, pp. 199-200 · teoría: U pp. 216, 220">E pp.199-200</span></summary>
+  <p class="enun">Se quieren instalar tres segmentos de cable que conecten cada uno de los puntos $A=(0,0)$, $B=(4,0)$ y $C=(1,3)$ con un punto $P=(x,y)$. Los segmentos tienen longitudes $d_1$, $d_2$ y $d_3$, respectivamente. Se busca que la suma de las tres longitudes al cuadrado, $d_1^2+d_2^2+d_3^2$, sea mínima. ¿Cuáles son las coordenadas de $P$?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El punto $P$ que minimiza una función de dos variables.</dd>
+    <dt>Cómo lo pienso</dt><dd>Al elevar al cuadrado desaparecen las raíces: queda un polinomio de grado 2 («paraboloide»), con un único mínimo.</dd>
+    <dt>Qué uso</dt><dd>Puntos críticos (U p. 216) y Hessiana (U p. 220).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $f(x,y)$ con la fórmula de la distancia.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$d_1^2=x^2+y^2$, $d_2^2=(x-4)^2+y^2$, $d_3^2=(x-1)^2+(y-3)^2$.</li>
+    <li>Suma: $f(x,y)=3x^2+3y^2-10x-6y+26$.</li>
+    <li>$f_x=6x-10=0\Rightarrow x=\frac53$; $f_y=6y-6=0\Rightarrow y=1$.</li>
+    <li>$Hf=\begin{pmatrix}6&0\\0&6\end{pmatrix}$ en todo punto: $d=36\gt0$, $r=6\gt0$: <b>mínimo</b>. $P=\left(\frac53,1\right)$, con $f=\frac{44}3$.</li>
+  </ol>
+  <p><b>Para entenderlo:</b> $\left(\frac53,1\right)=\left(\frac{0+4+1}3,\frac{0+0+3}3\right)$ es el <b>baricentro</b> del triángulo $ABC$. Además, como $f=3\left(x-\frac53\right)^2+3(y-1)^2+\frac{44}3$, el mínimo es absoluto.</p>
+  <div class="recipe"><b>Receta:</b> problema geométrico: escribir la magnitud en función de las coordenadas, simplificar (cuadrados en lugar de raíces) y aplicar crítico + Hessiana.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Minimizar $d_1+d_2+d_3$ (con raíces) en lugar de la suma de cuadrados que pide el enunciado.</p></div>
+</details>
+
+<details class="sol" id="ej-5-36"><summary>Ejercicio 5.36 · precios que maximizan la ganancia <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.36, pp. 198-199 · teoría: U pp. 216, 220">E pp.198-199</span></summary>
+  <p class="enun">Se van a introducir dos tipos de componentes electrónicos en el mercado, A y B. Si $x$ es el precio de A e $y$ el de B, durante el primer mes se venderán $12-4x+3y$ miles de unidades de A y $15+x-10y$ miles de unidades de B. Si el precio de fabricación de A es 1 euro y el de B es 0.9 euros, ¿qué precio deberían tener para maximizar las ganancias?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Los precios $(x,y)$ que hacen máxima la ganancia.</dd>
+    <dt>Cómo lo pienso</dt><dd>Ganancia = (beneficio por unidad) × (unidades vendidas), sumado en A y B. Sale un polinomio de grado 2 con un solo punto crítico.</dd>
+    <dt>Qué uso</dt><dd>Puntos críticos (U p. 216) y Hessiana (U p. 220).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir la función ganancia.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Modelo:</b> beneficio por unidad $x-1$ (A) e $y-0.9$ (B). Ganancia (en miles de euros): $$f(x,y)=(x-1)(12-4x+3y)+(y-0.9)(15+x-10y)=-4x^2+4xy-10y^2+15.1x+21y-25.5.$$</li>
+    <li>$f_x=15.1-8x+4y$, $\quad f_y=4x+21-20y$.</li>
+    <li>De $f_y=0$: $x=5y-\frac{21}4$. En $f_x=0$: $15.1-40y+42+4y=0\iff57.1=36y\iff y=\frac{571}{360}\approx1.5861$.</li>
+    <li>$x=5\cdot\frac{571}{360}-\frac{21}4=\frac{193}{72}\approx2.6806$.</li>
+    <li><b>Hessiana</b> (constante): $\begin{pmatrix}-8&4\\4&-20\end{pmatrix}$, $d=160-16=144\gt0$, $r=-8\lt0$: <b>máximo</b>.</li>
+    <li><b>Respuesta:</b> A a $2.68$ € y B a $1.59$ € (ganancia $\approx11.39$ miles de euros).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> problemas de economía: escribir «beneficio unitario × cantidad», desarrollar, y crítico + Hessiana. Con un polinomio de grado 2 la Hessiana es constante.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Tomar como ganancia «precio × cantidad» (ingresos) sin restar el coste de fabricación.</p></div>
+</details>
+
+<details class="sol" id="ej-5-34"><summary>Ejercicio 5.34 · plano tangente, críticos y polares de $\frac{x^2+3y^2}{(x^2+y^2+1)^2}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.34, pp. 196-197 · teoría: U (5.2) p. 189, Def. 5.13 p. 216">E pp.196-197</span></summary>
+  <p class="enun">Para la función $f(x,y)=\dfrac{x^2+3y^2}{(x^2+y^2+1)^2}$ calcula: a) La ecuación del plano tangente a la gráfica de $f$ en el punto $(-1,0,f(-1,0))$. b) Los puntos críticos de la función. c) La expresión de la función en coordenadas polares.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Un plano tangente, los puntos críticos y un cambio a polares.</dd>
+    <dt>Cómo lo pienso</dt><dd>Las derivadas de un cociente llevan un denominador siempre positivo; los críticos salen del numerador, por casos. Si el gradiente es nulo en $(-1,0)$, el plano tangente es horizontal.</dd>
+    <dt>Qué uso</dt><dd>Plano tangente (U (5.2), p. 189); Def. 5.13 (U p. 216).</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivar con la regla del cociente y simplificar el factor $(x^2+y^2+1)$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Derivadas</b> (cociente; se simplifica un factor $x^2+y^2+1$): $$f_x=\frac{x\,(2-2x^2-10y^2)}{(x^2+y^2+1)^3},\qquad f_y=\frac{2y\,(3+x^2-3y^2)}{(x^2+y^2+1)^3}.$$</li>
+    <li><b>a)</b> $f(-1,0)=\frac14$; $f_x(-1,0)=\frac{-1\cdot0}8=0$, $f_y(-1,0)=0$. Plano: $z=\frac14+0\cdot(x+1)+0\cdot y$, es decir <b>$z=\frac14$</b>.</li>
+    <li><b>b)</b> El denominador es $\gt0$: hay que resolver $x(2-2x^2-10y^2)=0$ y $y(3+x^2-3y^2)=0$.
+      <ul>
+        <li>$x=0$: la 2.ª da $y=0$ o $3=3y^2$: $(0,0)$, $(0,\pm1)$.</li>
+        <li>$y=0$: la 1.ª da $x=0$ o $2=2x^2$: $(\pm1,0)$.</li>
+        <li>$x\ne0$, $y\ne0$: $x^2+5y^2=1$ y $x^2-3y^2=-3$; restando, $8y^2=4$, $y^2=\frac12$, y entonces $x^2=1-\frac52\lt0$: imposible.</li>
+        <li><b>Críticos:</b> $(0,0)$, $(\pm1,0)$, $(0,\pm1)$.</li>
+      </ul></li>
+    <li><b>c)</b> Con $x=\rho\cos\theta$, $y=\rho\operatorname{sen}\theta$: $x^2+y^2=\rho^2$ y $x^2+3y^2=\rho^2+2\rho^2\operatorname{sen}^2\theta$. Luego $f=\dfrac{\rho^2\,(1+2\operatorname{sen}^2\theta)}{(\rho^2+1)^2}$.</li>
+  </ol>
+  <p><b>Para ir más allá:</b> $Hf(0,0)=\operatorname{diag}(2,6)$: mínimo ($f=0$); $Hf(\pm1,0)=\operatorname{diag}\!\left(-\frac12,1\right)$: silla; $Hf(0,\pm1)=\operatorname{diag}\!\left(-1,-\frac32\right)$: máximo ($f=\frac34$). El punto $(-1,0)$ del apartado a) es crítico; por eso el plano tangente es horizontal.</p>
+  <div class="recipe"><b>Receta:</b> plano tangente horizontal ⇔ punto crítico. En un cociente, los críticos son los ceros del numerador de las derivadas.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>No simplificar el factor común del denominador y perderse en el sistema.</p></div>
+</details>
+
+<h3>D · Lagrange</h3>
+
+<details class="sol" id="ej-5-44"><summary>Ejercicio 5.44 · críticos de $x^2+y$ sobre la recta $2x-y=0$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.44, p. 206 · teoría: U pp. 226, 228">E p.206</span></summary>
+  <p class="enun">Sea $f(x,y)=x^2+y$. Calcula mediante el método de los multiplicadores de Lagrange los puntos críticos de $f$ cuando nos restringimos a los $(x,y)$ tales que $2x-y=0$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Los puntos críticos condicionados (candidatos) de $f$ sobre la recta $y=2x$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Se construye $F=f+\lambda g$ y se buscan sus puntos críticos; el sistema es lineal.</dd>
+    <dt>Qué uso</dt><dd>Teorema y método de Lagrange (U pp. 226 y 228).</dd>
+    <dt>Por dónde empiezo</dt><dd>$g(x,y)=2x-y$, $F=x^2+y+\lambda(2x-y)$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$\nabla g=(2,-1)\ne\bar0$ en todo punto: el teorema se puede aplicar en toda la recta.</li>
+    <li>$F_x=2x+2\lambda=0$, $F_y=1-\lambda=0$, $F_\lambda=2x-y=0$.</li>
+    <li>De la 2.ª, $\lambda=1$. En la 1.ª, $x=-1$. En la 3.ª, $y=-2$.</li>
+    <li><b>Único punto crítico: $(-1,-2)$</b> ($\lambda=1$).</li>
+  </ol>
+  <p><b>Para entenderlo (comprobación despejando, U p. 228, paso 4):</b> sobre la recta $y=2x$, $f(x,2x)=x^2+2x=(x+1)^2-1$, que tiene mínimo $-1$ en $x=-1$ y no tiene máximo. Así que $(-1,-2)$ es el <b>mínimo condicionado</b> (absoluto sobre la recta).</p>
+  <div class="recipe"><b>Receta:</b> Lagrange con una restricción lineal: el sistema suele resolverse empezando por la ecuación que da $\lambda$ directamente.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar la tercera ecuación ($g=0$) y quedarse con una recta de soluciones.</p></div>
+</details>
+
+<details class="sol" id="ej-5-39"><summary>Ejercicio 5.39 · $x^2-y^2$ sobre la recta $x+y=0$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.39, p. 201 · teoría: U p. 228">E p.201</span></summary>
+  <p class="enun">Sea $f(x,y)=x^2-y^2$ y el conjunto $C=\{(x,y):x+y=0\}$. Discute la veracidad de las siguientes afirmaciones relativas a $f$ y la restricción dada por $C$: a) En $(1,-1)$ se alcanza un mínimo condicionado. b) En $(1,-1)$ se alcanza un máximo condicionado. c) En $(1,-1)$ hay un punto de silla. d) Ninguna de las anteriores.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Qué tipo de punto es $(1,-1)$ para $f$ restringida a la recta $y=-x$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Sobre esa recta $x^2=y^2$: $f$ vale siempre $0$. Una función constante tiene máximo y mínimo en todos sus puntos.</dd>
+    <dt>Qué uso</dt><dd>Método de Lagrange (U p. 228) y Def. 5.10-5.11 (U p. 214) aplicadas sobre $C$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar que $(1,-1)$ es crítico de $F$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$F=x^2-y^2+\lambda(x+y)$: $F_x=2x+\lambda$, $F_y=-2y+\lambda$, $F_\lambda=x+y$.</li>
+    <li>En $(1,-1)$: $2+\lambda=0$ y $2+\lambda=0$ con $\lambda=-2$; $x+y=0$ ✓. Es punto crítico condicionado (de hecho todos los puntos de $C$ lo son, con $\lambda=-2x$).</li>
+    <li><b>Sobre $C$:</b> $f(x,-x)=x^2-x^2=0$. $f$ es constante en $C$.</li>
+    <li>Entonces $f(x,y)\le f(1,-1)$ <b>y</b> $f(x,y)\ge f(1,-1)$ para todo $(x,y)\in C$: hay <b>a la vez</b> mínimo y máximo condicionado. <b>Verdaderas a) y b)</b>; c) y d) falsas.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si la restricción permite sustituir ($y=-x$), sustituir y estudiar la función de una variable: ahí se ve la naturaleza del punto.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Responder c) porque $x^2-y^2$ tiene una silla en el plano: la pregunta es sobre la recta, no sobre todo $\mathbb R^2$.</p></div>
+</details>
+
+<details class="sol" id="ej-5-42"><summary>Ejercicio 5.42 · extremos de $x-y$ en la circunferencia unidad <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.42, pp. 203-204 · teoría: U p. 228, Figura 5.13 p. 227">E pp.203-204</span></summary>
+  <p class="enun">Sabiendo que la función $f(x,y)=x-y$ alcanza en el conjunto $S=\{(x,y)\in\mathbb R^2:x^2+y^2=1\}$ extremos absolutos condicionados, determina en qué puntos los alcanza.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Dónde está el máximo y dónde el mínimo de $x-y$ en la circunferencia unidad.</dd>
+    <dt>Cómo lo pienso</dt><dd>Se sabe que existen (la circunferencia es cerrada y acotada). Lagrange da pocos candidatos; se comparan valores. Las curvas de nivel $x-y=c$ son rectas paralelas: las dos extremas que tocan la circunferencia son tangentes a ella.</dd>
+    <dt>Qué uso</dt><dd>Método de Lagrange (U p. 228).</dd>
+    <dt>Por dónde empiezo</dt><dd>$F=x-y+\lambda(x^2+y^2-1)$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$\nabla g=(2x,2y)\ne\bar0$ en la circunferencia (solo se anula en el origen, que no está en ella).</li>
+    <li>$F_x=1+2\lambda x=0$, $F_y=-1+2\lambda y=0$, $x^2+y^2=1$.</li>
+    <li>$\lambda\ne0$ (si no, $1=0$). Despejando: $x=-\frac1{2\lambda}$, $y=\frac1{2\lambda}$.</li>
+    <li>En la restricción: $\frac1{4\lambda^2}+\frac1{4\lambda^2}=1\iff\lambda^2=\frac12\iff\lambda=\pm\frac{\sqrt2}2$.</li>
+    <li>$\lambda=-\frac{\sqrt2}2$: $\left(\frac{\sqrt2}2,-\frac{\sqrt2}2\right)$, $f=\sqrt2$. $\quad\lambda=\frac{\sqrt2}2$: $\left(-\frac{\sqrt2}2,\frac{\sqrt2}2\right)$, $f=-\sqrt2$.</li>
+    <li><b>Máximo $\sqrt2$ en $\left(\frac{\sqrt2}2,-\frac{\sqrt2}2\right)$; mínimo $-\sqrt2$ en $\left(-\frac{\sqrt2}2,\frac{\sqrt2}2\right)$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> con $f$ lineal: despejar $x$ e $y$ en función de $\lambda$, meterlos en la restricción para hallar $\lambda$ y volver.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dividir por $\lambda$ sin comprobar antes que $\lambda\ne0$.</p></div>
+</details>
+
+<details class="sol" id="ej-5-40"><summary>Ejercicio 5.40 · la lata cilíndrica de 300 ml <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.40, pp. 202-203 · teoría: U Ejemplo 5.23, p. 226, y p. 228">E pp.202-203</span></summary>
+  <p class="enun">Utilizando el método de los multiplicadores de Lagrange, calcula las dimensiones de una lata cilíndrica cerrada (con ambas tapas) de volumen 300 ml candidatas a maximizar o minimizar su superficie.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Radio $r$ y altura $h$ candidatos a extremo de la superficie con volumen fijo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Función a optimizar = superficie; restricción = volumen. Las dos tapas son círculos, el lateral un rectángulo de base $2\pi r$.</dd>
+    <dt>Qué uso</dt><dd>Método de Lagrange (U p. 228); para clasificar, una variable (U §3.4).</dd>
+    <dt>Por dónde empiezo</dt><dd>$f(r,h)=2\pi r^2+2\pi rh$, $g(r,h)=\pi r^2h-300$, con $r,h\gt0$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$F=2\pi r^2+2\pi rh+\lambda(\pi r^2h-300)$.</li>
+    <li>$F_r=4\pi r+2\pi h+2\lambda\pi rh=0$; $F_h=2\pi r+\lambda\pi r^2=0$; $F_\lambda=\pi r^2h-300=0$.</li>
+    <li>Como $r\gt0$, se divide la 2.ª entre $\pi r$: $2+\lambda r=0$, $\lambda=-\frac2r$.</li>
+    <li>La 1.ª, dividida entre $2\pi$: $2r+h+\lambda rh=0$. Con $\lambda r=-2$: $2r+h-2h=0$, es decir <b>$h=2r$</b> (la altura es igual al diámetro).</li>
+    <li>En la restricción: $\pi r^2\cdot2r=300\iff r^3=\frac{150}\pi\iff r=\sqrt[3]{150/\pi}\approx3.628$ cm, y $h=2r\approx7.256$ cm.</li>
+    <li><b>¿Máximo o mínimo?</b> Despejando $h=\frac{300}{\pi r^2}$: $A(r)=2\pi r^2+\frac{600}r$, $r\gt0$. $A'(r)=4\pi r-\frac{600}{r^2}=0\iff r^3=\frac{150}\pi$ (el mismo punto), y $A''(r)=4\pi+\frac{1200}{r^3}\gt0$: <b>mínimo</b>. Superficie mínima $\approx248.08$ cm². No hay máximo: $A(r)\to+\infty$ si $r\to0^+$ o $r\to+\infty$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> optimización geométrica con una ligadura: $f$ = lo que se optimiza, $g$ = la condición fija; usar que las variables son positivas para dividir. Para clasificar, despejar y pasar a una variable.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar una de las dos tapas ($\pi r^2$ en lugar de $2\pi r^2$), o creer que Lagrange dice por sí solo si es máximo o mínimo (la restricción aquí no es acotada).</p></div>
+</details>
+
+<details class="sol" id="ej-5-46"><summary>Ejercicio 5.46 · $x+y+z$ sobre el elipsoide $x^2+2y^2+3z^2=1$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.46, pp. 208-209 · teoría: U pp. 222, 228">E pp.208-209</span></summary>
+  <p class="enun">Halla los puntos críticos de la función $f:\mathbb R^3\to\mathbb R$ dada por $f(x,y,z)=x+y+z$, sujetos a la condición $x^2+2y^2+3z^2=1$. ¿Puedes determinar si en alguno de ellos se alcanza un extremo absoluto condicionado?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Candidatos de Lagrange en $\mathbb R^3$ y si son máximo/mínimo absoluto.</dd>
+    <dt>Cómo lo pienso</dt><dd>Como en 5.42 pero con tres variables: cada coordenada se despeja en función de $\lambda$. La restricción es un elipsoide: cerrado y acotado.</dd>
+    <dt>Qué uso</dt><dd>Lagrange en $\mathbb R^n$ (U p. 228) y teorema de los valores extremos (U p. 222).</dd>
+    <dt>Por dónde empiezo</dt><dd>$F=x+y+z+\lambda(x^2+2y^2+3z^2-1)$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$\nabla g=(2x,4y,6z)\ne\bar0$ en el elipsoide (solo se anula en el origen).</li>
+    <li>$F_x=1+2\lambda x=0$, $F_y=1+4\lambda y=0$, $F_z=1+6\lambda z=0$, $x^2+2y^2+3z^2=1$.</li>
+    <li>$\lambda\ne0$ (si no, $1=0$): $x=-\frac1{2\lambda}$, $y=-\frac1{4\lambda}$, $z=-\frac1{6\lambda}$.</li>
+    <li>En la restricción: $\frac1{4\lambda^2}+\frac2{16\lambda^2}+\frac3{36\lambda^2}=\frac1{\lambda^2}\left(\frac14+\frac18+\frac1{12}\right)=\frac{11}{24\lambda^2}=1$, luego $\lambda=\pm\sqrt{\frac{11}{24}}=\pm\frac{\sqrt{66}}{12}$.</li>
+    <li>$\lambda=-\frac{\sqrt{66}}{12}$: $P_1=\left(\frac{\sqrt{66}}{11},\frac{\sqrt{66}}{22},\frac{\sqrt{66}}{33}\right)$, $f(P_1)=\sqrt{66}\cdot\frac{6+3+2}{66}=\frac{\sqrt{66}}6\approx1.354$. $\ \lambda=+\frac{\sqrt{66}}{12}$: $P_2=-P_1$, $f(P_2)=-\frac{\sqrt{66}}6$.</li>
+    <li>El elipsoide es cerrado y acotado y $f$ es continua: hay máximo y mínimo absolutos, y están entre los candidatos. <b>Máximo $\frac{\sqrt{66}}6$ en $P_1$; mínimo $-\frac{\sqrt{66}}6$ en $P_2$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> Lagrange en $\mathbb R^3$: igual que en $\mathbb R^2$, con una ecuación más. Si la restricción es una superficie cerrada y acotada (esfera, elipsoide), basta comparar valores.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Errores de fracciones al sustituir: conviene sacar $\frac1{\lambda^2}$ factor común antes de sumar.</p></div>
+</details>
+
+<details class="sol" id="ej-5-47"><summary>Ejercicio 5.47 · distancia mínima del origen a la superficie $z=xy+4$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.47, pp. 209-211 · teoría: U p. 228">E pp.209-211</span></summary>
+  <p class="enun">Sabiendo que hay una distancia mínima entre el punto $(0,0,0)$ y la superficie dada por $z=xy+4$, determínala.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>La menor distancia del origen a los puntos de la superficie.</dd>
+    <dt>Cómo lo pienso</dt><dd>Minimizar la distancia es lo mismo que minimizar su cuadrado ($t\mapsto t^2$ es creciente para $t\ge0$), que no tiene raíz. Restricción: estar en la superficie.</dd>
+    <dt>Qué uso</dt><dd>Lagrange en $\mathbb R^3$ (U p. 228).</dd>
+    <dt>Por dónde empiezo</dt><dd>$f=x^2+y^2+z^2$, $g=xy+4-z$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$\nabla g=(y,x,-1)$: nunca es nulo (tercera componente $-1$).</li>
+    <li>$F=x^2+y^2+z^2+\lambda(xy+4-z)$: $2x+\lambda y=0$, $2y+\lambda x=0$, $2z-\lambda=0$, $xy+4-z=0$.</li>
+    <li><b>Caso $x=0$:</b> la 1.ª da $\lambda y=0$, la 2.ª $2y=0$, luego $y=0$; la 4.ª, $z=4$; $\lambda=8$. Punto $(0,0,4)$, $f=16$.</li>
+    <li><b>Caso $x\ne0$:</b> de la 2.ª, $y=-\frac{\lambda x}2$; en la 1.ª: $2x-\frac{\lambda^2x}2=0$, y dividiendo entre $x\ne0$: $\lambda^2=4$.
+      <ul>
+        <li>$\lambda=2$: $y=-x$, $z=1$; la 4.ª: $-x^2+4-1=0$, $x=\pm\sqrt3$. Puntos $(\sqrt3,-\sqrt3,1)$ y $(-\sqrt3,\sqrt3,1)$, $f=3+3+1=7$.</li>
+        <li>$\lambda=-2$: $y=x$, $z=-1$; la 4.ª: $x^2+5=0$: sin solución real.</li>
+      </ul></li>
+    <li>Se sabe que hay mínimo y está entre los candidatos: el menor valor de $f$ es $7$. <b>Distancia mínima $\sqrt7$</b>, en $(\sqrt3,-\sqrt3,1)$ y $(-\sqrt3,\sqrt3,1)$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> distancia de un punto a una curva o superficie: minimizar el <b>cuadrado</b> de la distancia con Lagrange; al final, sacar la raíz.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Quedarse con $(0,0,4)$ porque «es el punto más cercano a la vista» (el más bajo sobre el eje $z$): hay puntos de la silla más cerca del origen. O dar $7$ como distancia en lugar de $\sqrt7$.</p></div>
+</details>
+
+<h3>E · Extremos absolutos en un compacto (interior + frontera)</h3>
+
+<details class="sol" id="ej-5-41"><summary>Ejercicio 5.41 · procedimiento para $y^2\operatorname{sen}^2(x+y)-x^2$ en el disco <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.41, p. 203 · teoría: U pp. 222, 228">E p.203</span></summary>
+  <p class="enun">Describe qué procedimiento seguirías para determinar los extremos absolutos de $f(x,y)=y^2\operatorname{sen}^2(x+y)-x^2$ en $x^2+y^2\le1$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El <b>plan</b>, no las cuentas.</dd>
+    <dt>Cómo lo pienso</dt><dd>Disco cerrado y acotado + función continua ⇒ los extremos existen y están en el interior (puntos críticos) o en la circunferencia (Lagrange).</dd>
+    <dt>Qué uso</dt><dd>Teorema de los valores extremos y procedimiento (U p. 222), Lagrange (U p. 228).</dd>
+    <dt>Por dónde empiezo</dt><dd>Justificar la existencia.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Existencia:</b> $f$ es continua (producto y composición de funciones elementales) y $S=\{x^2+y^2\le1\}$ es cerrado y acotado: por el teorema de los valores extremos, $f$ alcanza máximo y mínimo absolutos en $S$.</li>
+    <li><b>Interior</b> $x^2+y^2\lt1$: resolver $f_x=0$, $f_y=0$ y quedarse con las soluciones del interior.</li>
+    <li><b>Frontera</b> $x^2+y^2=1$: Lagrange con $F=f+\lambda(x^2+y^2-1)$ (o parametrizar $x=\cos t$, $y=\operatorname{sen}t$, $t\in[0,2\pi]$ y estudiar una función de una variable).</li>
+    <li><b>Comparar:</b> evaluar $f$ en todos los candidatos; el mayor valor es el máximo absoluto y el menor, el mínimo.</li>
+    <li><b>No hace falta la Hessiana</b>: no se trata de clasificar extremos relativos sino de comparar valores.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> ver Receta B: existencia → interior → frontera → tabla de valores.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Calcular solo los puntos críticos del interior (olvidando la frontera), o clasificar con la Hessiana y dar un mínimo relativo como absoluto.</p></div>
+</details>
+
+<details class="sol" id="ej-5-43"><summary>Ejercicio 5.43 · temperatura máxima y mínima en una placa circular <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.43, pp. 204-205 · teoría: U pp. 222, 228">E pp.204-205</span></summary>
+  <p class="enun">La temperatura de una placa circular de ecuación $x^2+y^2\le4$ está dada por la función $T(x,y)=e^{x^2}+e^{y^2}$. ¿Cuáles son la temperatura máxima y mínima que se alcanzan?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El máximo y el mínimo absolutos de $T$ en el disco de radio $2$.</dd>
+    <dt>Cómo lo pienso</dt><dd>$e^{x^2}$ crece al alejarse $x$ de $0$, y $e^{y^2}$ igual con $y$: el mínimo estará en el centro. En el borde, como $e^t$ crece cada vez más deprisa, conviene «gastar» todo el radio en una sola variable: $e^4+e^0$.</dd>
+    <dt>Qué uso</dt><dd>Teorema de los valores extremos (U p. 222), Lagrange (U p. 228).</dd>
+    <dt>Por dónde empiezo</dt><dd>Puntos críticos del interior.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Existencia:</b> $T$ continua, disco cerrado y acotado.</li>
+    <li><b>Interior:</b> $T_x=2xe^{x^2}$, $T_y=2ye^{y^2}$. Como $e^t\gt0$: $x=0$, $y=0$. Candidato $(0,0)$, $T=2$.</li>
+    <li><b>Frontera</b> con $F=e^{x^2}+e^{y^2}+\lambda(x^2+y^2-4)$: $2x(e^{x^2}+\lambda)=0$, $\ 2y(e^{y^2}+\lambda)=0$, $\ x^2+y^2=4$.
+      <ul>
+        <li>$x=0$: $y^2=4$, puntos $(0,\pm2)$.</li>
+        <li>$y=0$: puntos $(\pm2,0)$.</li>
+        <li>$x\ne0$, $y\ne0$: $\lambda=-e^{x^2}=-e^{y^2}$, luego $e^{x^2}=e^{y^2}$, $x^2=y^2$ (la exponencial es inyectiva), y con $x^2+y^2=4$: $x^2=y^2=2$. Puntos $(\pm\sqrt2,\pm\sqrt2)$.</li>
+      </ul></li>
+    <li><b>Tabla:</b> $T(0,0)=2$; $T(0,\pm2)=T(\pm2,0)=1+e^4\approx55.60$; $T(\pm\sqrt2,\pm\sqrt2)=2e^2\approx14.78$.</li>
+    <li><b>Mínimo $2$ en $(0,0)$; máximo $1+e^4$ en $(0,\pm2)$ y $(\pm2,0)$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> ver Receta B. Al resolver Lagrange, «producto $=0$» da casos; en el caso «ningún factor simple es $0$», igualar las dos expresiones de $\lambda$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar los casos $x=0$ o $y=0$ al dividir entre $x$ o $y$, y quedarse solo con $(\pm\sqrt2,\pm\sqrt2)$ (que no dan el máximo).</p></div>
+</details>
+
+<details class="sol" id="ej-5-48"><summary>Ejercicio 5.48 · extremos de $x^2-xy+y^2$ en el cuadrado $|x|\le1$, $|y|\le1$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.48, pp. 211-212 · teoría: U p. 222">E pp.211-212</span></summary>
+  <p class="enun">Sea $f:\mathbb R^2\to\mathbb R$ tal que $f(x,y)=x^2-xy+y^2$. Encontrar los valores máximos y mínimos que alcanza $f$ en el conjunto $A=\{(x,y):|x|\le1,\ |y|\le1\}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Máximo y mínimo absolutos en el cuadrado $[-1,1]\times[-1,1]$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La frontera no es una curva «lisa»: son 4 lados y 4 vértices. Cada lado es un segmento donde $f$ es una función de una variable.</dd>
+    <dt>Qué uso</dt><dd>Teorema de los valores extremos y procedimiento (U p. 222); extremos de una variable en un intervalo (U §3.4).</dd>
+    <dt>Por dónde empiezo</dt><dd>Puntos críticos del interior.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Existencia:</b> polinomio (continuo) en un cuadrado cerrado y acotado.</li>
+    <li><b>Interior:</b> $f_x=2x-y=0$, $f_y=-x+2y=0$: solo $(0,0)$, $f=0$. (Hessiana $\begin{pmatrix}2&-1\\-1&2\end{pmatrix}$, $d=3\gt0$, $r=2\gt0$: mínimo relativo; no es necesario para lo absoluto.)</li>
+    <li><b>Lado $x=1$:</b> $\varphi(y)=1-y+y^2$, $\varphi'(y)=2y-1=0\Rightarrow y=\frac12$: punto $\left(1,\frac12\right)$, $f=\frac34$.</li>
+    <li><b>Lado $x=-1$:</b> $1+y+y^2$, derivada $2y+1=0$: $\left(-1,-\frac12\right)$, $f=\frac34$.</li>
+    <li><b>Lado $y=1$:</b> $x^2-x+1$: $\left(\frac12,1\right)$, $f=\frac34$. <b>Lado $y=-1$:</b> $x^2+x+1$: $\left(-\frac12,-1\right)$, $f=\frac34$.</li>
+    <li><b>Vértices</b> (extremos de los intervalos de cada lado): $f(1,1)=f(-1,-1)=1$; $f(-1,1)=f(1,-1)=1+1+1=3$.</li>
+    <li><b>Tabla y conclusión:</b> valores $0,\ \frac34,\ 1,\ 3$. <b>Mínimo $0$ en $(0,0)$; máximo $3$ en $(-1,1)$ y $(1,-1)$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> frontera poligonal: parametrizar cada lado como función de una variable en un intervalo cerrado; candidatos = ceros de su derivada dentro del intervalo + extremos del intervalo (vértices).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar los vértices: aquí el máximo está precisamente en dos de ellos.</p></div>
+</details>
+
+<h3>F · Optimización con una sola variable</h3>
+
+<details class="sol" id="ej-5-45"><summary>Ejercicio 5.45 · tubería bajo un río <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.45, pp. 206-208 · teoría: U §3.4 (una variable)">E pp.206-208</span></summary>
+  <p class="enun">Se quiere instalar una tubería entre dos puntos, A y B, situados en los puntos de coordenadas $(0,0)$ y $(300,100)$, de las dos riberas de un río cuyo curso ocupa la región entre el eje $x$ y la recta $y=100$. El coste de la instalación de la tubería bajo el río es el triple que el coste de la instalación en tierra. ¿Cuál debe ser el trazado para que el coste de la instalación sea mínimo si la tubería debe ser recta al cruzar el río y seguir las riberas?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Dónde cruzar a la otra orilla para que el coste sea mínimo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Se cruza en línea recta desde A hasta $P=(x,100)$ y luego se va por la orilla hasta B. El coste depende de una sola variable, $x\in[0,300]$; el coste por metro $k$ es un factor que no cambia dónde está el mínimo.</dd>
+    <dt>Qué uso</dt><dd>Extremos de una variable en un intervalo cerrado (U §3.4).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir el coste.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Longitudes:</b> bajo el río, de $(0,0)$ a $(x,100)$: $\sqrt{x^2+100^2}$; por tierra, de $(x,100)$ a $(300,100)$: $300-x$.</li>
+    <li><b>Dominio:</b> basta $x\in[0,300]$: cruzar en $x\lt0$ o en $x\gt300$ alarga a la vez el tramo bajo el río y el de tierra.</li>
+    <li><b>Coste:</b> $k(300-x)+3k\sqrt{x^2+100^2}=k\,h(x)$ con $h(x)=300-x+3\sqrt{x^2+100^2}$. Como $k\gt0$, minimizar el coste es minimizar $h$.</li>
+    <li>$h'(x)=-1+\dfrac{3x}{\sqrt{x^2+100^2}}=0\iff3x=\sqrt{x^2+100^2}$ (con $x\ge0$) $\iff9x^2=x^2+10\,000\iff x^2=1250\iff x=25\sqrt2$.</li>
+    <li>$h''(x)=\dfrac{3\cdot100^2}{(x^2+100^2)^{3/2}}\gt0$: mínimo relativo.</li>
+    <li><b>Extremos del intervalo:</b> $h(0)=600$, $h(300)=300\sqrt{10}\approx948.7$, $h(25\sqrt2)=300+200\sqrt2\approx582.8$. El menor es el de $x=25\sqrt2$.</li>
+    <li><b>Trazado:</b> cruzar en línea recta de A a $P=(25\sqrt2,100)\approx(35.4,\,100)$ y seguir por la orilla hasta B.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si el problema depende de una sola variable, no hace falta Lagrange: función de una variable en un intervalo cerrado, críticos + extremos del intervalo.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Elevar al cuadrado $3x=\sqrt{\dots}$ sin recordar que exige $x\ge0$, y aceptar la raíz negativa $x=-25\sqrt2$.</p></div>
+</details>
+
+<!-- ============================ 11 ============================ -->
+<h2 id="propios"><span class="n">11</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></h2>
+
+<details class="sol" id="p1"><summary>Propio 1 · un mínimo con la Hessiana <span class="src" data-l="P" data-ref="Ejemplo propio sobre U pp. 216-221">P</span></summary>
+  <p class="enun">Halla y clasifica los puntos críticos de $f(x,y)=x^2+xy+y^2-3x$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Todos los puntos con gradiente nulo y su tipo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es un polinomio de grado 2: el sistema es lineal y la Hessiana es constante.</dd>
+    <dt>Por dónde empiezo</dt><dd>$f_x=0$ y $f_y=0$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f_x=2x+y-3=0$, $f_y=x+2y=0$. De la 2.ª, $x=-2y$; en la 1.ª, $-3y-3=0$, $y=-1$, $x=2$.</li>
+    <li>$Hf=\begin{pmatrix}2&1\\1&2\end{pmatrix}$, $d=3\gt0$, $r=2\gt0$: <b>mínimo relativo</b> en $(2,-1)$, con $f(2,-1)=4-2+1-6=-3$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> polinomio de grado 2: un único crítico (sistema lineal) y Hessiana constante.</div>
+</details>
+
+<details class="sol" id="p2"><summary>Propio 2 · $x^4+y^4-4xy$: una silla y dos mínimos <span class="src" data-l="P" data-ref="Ejemplo propio sobre U pp. 216-221">P</span></summary>
+  <p class="enun">Halla y clasifica los puntos críticos de $f(x,y)=x^4+y^4-4xy$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Críticos y su clasificación.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada ecuación permite despejar una variable en función de la otra; al sustituir queda una ecuación de una variable que se factoriza.</dd>
+    <dt>Por dónde empiezo</dt><dd>$f_x=4x^3-4y=0$, $f_y=4y^3-4x=0$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$f_x=4x^3-4y=0\Rightarrow y=x^3$; $f_y=4y^3-4x=0\Rightarrow x=y^3=x^9$.</li>
+    <li>$x^9-x=x(x^8-1)=0$: $x=0$ o $x=\pm1$ (raíces reales de $x^8=1$). Puntos $(0,0)$, $(1,1)$, $(-1,-1)$.</li>
+    <li>$Hf=\begin{pmatrix}12x^2&-4\\-4&12y^2\end{pmatrix}$.</li>
+    <li>$(0,0)$: $d=-16\lt0$, <b>silla</b>. $(\pm1,\pm1)$ (los dos con el mismo signo): $d=144-16=128\gt0$, $r=12\gt0$, <b>mínimos relativos</b> con $f=-2$.</li>
+  </ol>
+  <p><b>Para entenderlo:</b> como $x^4+y^4-4xy+2=(x^2-y^2)^2+2(xy-1)^2\ge0$, se tiene $f\ge-2$ en todo $\mathbb R^2$, con igualdad en $(1,1)$ y $(-1,-1)$: los dos mínimos son además absolutos.</p>
+</details>
+
+<details class="sol" id="p3"><summary>Propio 3 · rectángulo de área máxima inscrito en una elipse <span class="src" data-l="P" data-ref="Ejemplo propio sobre U pp. 226-229">P</span></summary>
+  <p class="enun">Halla el rectángulo de área máxima, con lados paralelos a los ejes, inscrito en la elipse $\frac{x^2}4+y^2=1$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Las dimensiones del rectángulo de mayor área con sus cuatro vértices en la elipse.</dd>
+    <dt>Cómo lo pienso</dt><dd>Por simetría basta el vértice $(x,y)$ del primer cuadrante: el área es $4xy$. Se maximiza con la condición de estar en la elipse.</dd>
+    <dt>Qué uso</dt><dd>Lagrange (U p. 228); la elipse es cerrada y acotada.</dd>
+    <dt>Por dónde empiezo</dt><dd>$f=4xy$, $g=\frac{x^2}4+y^2-1$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$F=4xy+\lambda\left(\frac{x^2}4+y^2-1\right)$: $4y+\frac{\lambda x}2=0$, $4x+2\lambda y=0$, $\frac{x^2}4+y^2=1$.</li>
+    <li>De la 1.ª, $\lambda=-\frac{8y}x$ (con $x\ne0$: si $x=0$, la 1.ª da $y=0$, que no está en la elipse); en la 2.ª: $4x-\frac{16y^2}x=0\Rightarrow x^2=4y^2$.</li>
+    <li>En la elipse: $\frac{4y^2}4+y^2=2y^2=1$, $y=\frac{\sqrt2}2$, $x=\sqrt2$ (en el primer cuadrante).</li>
+    <li>Área $4\cdot\sqrt2\cdot\frac{\sqrt2}2=4$. Es el máximo: la elipse es cerrada y acotada, $f=4xy$ alcanza máximo en ella, y entre los candidatos $(\pm\sqrt2,\pm\frac{\sqrt2}2)$ los de signos iguales dan $f=4$ y los de signos opuestos dan $f=-4$.</li>
+    <li><b>Rectángulo de lados $2\sqrt2\times\sqrt2$, área $4$.</b></li>
+  </ol>
+</details>
+
+<details class="sol" id="p4"><summary>Propio 4 · extremos absolutos de $x^2+y^2-2x$ en un disco <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 222">P</span></summary>
+  <p class="enun">Halla el máximo y el mínimo absolutos de $f(x,y)=x^2+y^2-2x$ en el disco $x^2+y^2\le4$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Máximo y mínimo absolutos de $f$ en el disco cerrado de radio $2$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Como $f=(x-1)^2+y^2-1$, es «la distancia al cuadrado al punto $(1,0)$, menos $1$»: el mínimo estará en $(1,0)$ y el máximo en el punto del borde más lejano.</dd>
+    <dt>Qué uso</dt><dd>Teorema de los valores extremos y procedimiento (U p. 222).</dd>
+    <dt>Por dónde empiezo</dt><dd>Críticos del interior.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Existencia:</b> polinomio en un disco cerrado y acotado.</li>
+    <li><b>Interior:</b> $f_x=2x-2=0$, $f_y=2y=0$: $(1,0)$, con $x^2+y^2=1\lt4$ (sí es interior). $f(1,0)=-1$.</li>
+    <li><b>Frontera</b> $x^2+y^2=4$: sustituyendo, $f=4-2x$ con $x\in[-2,2]$. Es decreciente en $x$: máximo $8$ en $x=-2$ (punto $(-2,0)$), mínimo $0$ en $x=2$ (punto $(2,0)$). (Con Lagrange: $2x-2+2\lambda x=0$, $2y+2\lambda y=0$; si $y\ne0$, $\lambda=-1$ y la 1.ª da $-2=0$, imposible; luego $y=0$, $x=\pm2$.)</li>
+    <li><b>Tabla:</b> $f(1,0)=-1$, $f(2,0)=0$, $f(-2,0)=8$. <b>Mínimo $-1$ en $(1,0)$; máximo $8$ en $(-2,0)$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> en la frontera, si la restricción permite sustituir $x^2+y^2$ por una constante, $f$ se convierte en una función de una variable en un intervalo cerrado.</div>
+</details>
+
+<details class="sol" id="p5"><summary>Propio 5 · cuando $\nabla g=\bar0$: $f=x$ sobre $y^2-x^3=0$ <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 226 (hipótesis ∇g ≠ 0)">P</span></summary>
+  <p class="enun">Halla el mínimo de $f(x,y)=x$ sobre la curva $g(x,y)=y^2-x^3=0$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El menor valor de $x$ entre los puntos de la curva (una «cúspide»: $y=\pm x^{3/2}$, con $x\ge0$).</dd>
+    <dt>Cómo lo pienso</dt><dd>A ojo, el punto más a la izquierda es la punta $(0,0)$. Veamos qué hace Lagrange: el teorema exige $\nabla g\ne\bar0$ y aquí $\nabla g=(-3x^2,2y)$ se anula justo en la punta.</dd>
+    <dt>Qué uso</dt><dd>Método de Lagrange y su hipótesis $\nabla g\ne\bar0$ (U pp. 226, 228).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $F=x+\lambda(y^2-x^3)$ y buscar también dónde se anula $\nabla g$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$F_x=1-3\lambda x^2=0$, $F_y=2\lambda y=0$, $y^2=x^3$.</li>
+    <li>De la 1.ª, $\lambda\ne0$ y $x\ne0$; entonces la 2.ª da $y=0$ y la 3.ª da $x=0$: contradicción. <b>El sistema de Lagrange no tiene solución.</b></li>
+    <li><b>Puntos con $\nabla g=\bar0$ sobre la curva:</b> $-3x^2=0$ y $2y=0$ dan $(0,0)$, que sí cumple $g=0$. Se <b>añade a mano</b> como candidato.</li>
+    <li>Como $y^2=x^3\ge0$, todo punto de la curva tiene $x\ge0$, y $f(0,0)=0$: <b>mínimo $0$ en $(0,0)$</b>, que Lagrange por sí solo no habría encontrado.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> candidatos = soluciones de Lagrange + puntos de la restricción donde $\nabla g=\bar0$.</div>
+</details>
+
+<!-- ============================ 12 ============================ -->
+<h2 id="examen"><span class="n">12</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<p>En los exámenes recopilados en X, este tema es casi siempre el <b>Ejercicio 6</b> de la prueba (3 puntos) o una pregunta corta de 1 punto. Aparecen cuatro tipos: (1) <b>clasificar puntos con la Hessiana</b> (hay que descartar los no críticos y discutir los extremos absolutos), (2) <b>extremos relativos y absolutos en un cuadrado</b> (interior + frontera), (3) <b>«¿alcanza el máximo?»</b> (teorema de los valores extremos) y (4) <b>Lagrange</b> (distancia, caja, producto). Otros exámenes de X repiten problemas ya resueltos en este tema: $x^3+y^2-xy$ en $(0,0)$, $(1,-1)$, $\left(\frac16,\frac1{12}\right)$ (como E 5.31: X pp.14-15, feb. 2011 2.ª semana; X p.42, feb. 2014 Modelo A), $x^2+y$ sujeta a $2x-y=0$ (como E 5.44: X p.51, feb. 2015 Modelo A), $e^{x^2}+e^{y^2}$ en $x^2+y^2\le4$ (como E 5.43: X pp.66-68, feb. 2016 Modelo B) y los extremos de $x\pm y$ en la circunferencia (como E 5.42: X p.8, sept. 2010; X pp.23-24, feb. 2012 2.ª semana).</p>
+
+<details class="sol" id="x1"><summary>X1 · clasificar con la Hessiana: $x^3+y^2-3xy$ en tres puntos <span class="src" data-l="X" data-ref="X pp.94-95 (Febrero 2018, Modelo B, Grado en Ing. Mecánica, Ej. 6, 3 puntos)">X pp.94-95 (feb. 2018)</span></summary>
+  <p class="enun">Sea $f:\mathbb R^2\to\mathbb R$ la función definida por $f(x,y)=x^3+y^2-3xy$. Se pide: (a) (1 punto) Estudiar si los puntos $(0,0)$, $\left(\frac16,\frac1{12}\right)$ y $\left(\frac32,\frac94\right)$ son extremos relativos de la función. (b) (1.25 puntos) En caso de que lo sean, razonar si son máximos o mínimos relativos. (c) (0.75 puntos) ¿Es alguno de estos puntos un extremo absoluto de $f$ en $\mathbb R^2$? ¿Alcanza la función un máximo o un mínimo absoluto? (Indicación: considere el valor de la función en los ejes de coordenadas.)</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Descartar los puntos que no son críticos, clasificar los que sí lo son y discutir lo absoluto.</dd>
+    <dt>Cómo lo pienso</dt><dd>Un punto que no anula el gradiente no puede ser extremo; a los críticos, Hessiana; el término $x^3$ impide que haya extremos absolutos (la indicación del enunciado apunta al eje $y=0$).</dd>
+    <dt>Qué uso</dt><dd>Condición necesaria (U p. 218), condición suficiente (U p. 220).</dd>
+    <dt>Por dónde empiezo</dt><dd>$\nabla f=(3x^2-3y,\ 2y-3x)$.</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps">
+    <li>$f$ es un polinomio (clase $C^\infty$): sus extremos relativos están entre los puntos con $\nabla f=(3x^2-3y,\,2y-3x)=(0,0)$.</li>
+    <li>Sistema: $y=x^2$ e $y=\frac32x$, luego $x^2=\frac32x$, $x\left(x-\frac32\right)=0$: puntos críticos $(0,0)$ y $\left(\frac32,\frac94\right)$.</li>
+    <li>$\nabla f\left(\frac16,\frac1{12}\right)=\left(\frac1{12}-\frac14,\ \frac16-\frac12\right)=\left(-\frac16,-\frac13\right)\ne(0,0)$: <b>no es extremo relativo</b>.</li>
+    <li>$f_{xx}=6x$, $f_{xy}=-3$, $f_{yy}=2$.</li>
+    <li>$(0,0)$: $Hf=\begin{pmatrix}0&-3\\-3&2\end{pmatrix}$, $d=-9\lt0$: <b>punto de silla</b>, no es extremo.</li>
+    <li>$\left(\frac32,\frac94\right)$: $Hf=\begin{pmatrix}9&-3\\-3&2\end{pmatrix}$, $d=18-9=9\gt0$, $r=9\gt0$: <b>mínimo relativo</b>, con $f\left(\frac32,\frac94\right)=\frac{27}8+\frac{81}{16}-\frac{81}8=-\frac{27}{16}$.</li>
+    <li>(c) En el eje $y=0$: $f(x,0)=x^3$, que tiende a $+\infty$ si $x\to+\infty$ y a $-\infty$ si $x\to-\infty$. $f$ no está acotada ni superior ni inferiormente: <b>no hay máximo ni mínimo absolutos</b>; el mínimo relativo no es absoluto (p. ej. $f(-2,0)=-8\lt-\frac{27}{16}$).</li>
+  </ol></div>
+  <p><b>Explicaciones (no hace falta escribirlas):</b> las cuentas del paso 6, con denominador $16$: $\frac{54}{16}+\frac{81}{16}-\frac{162}{16}=-\frac{27}{16}$.</p>
+  <div class="recipe"><b>Receta:</b> ver E 5.31: gradiente en los puntos dados → Hessiana en los críticos → recta donde $f$ no está acotada.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Aplicar la Hessiana a $\left(\frac16,\frac1{12}\right)$ (no es crítico) y sacar una conclusión.</p></div>
+</details>
+
+<details class="sol" id="x2"><summary>X2 · $(x^2-x)(y^2-y)$ en $[0,1]^2$: críticos y extremos absolutos <span class="src" data-l="X" data-ref="X pp.83-84 (Febrero 2017, Modelo B, Grado en Ing. Mecánica, Ej. 6, 3 puntos)">X pp.83-84 (feb. 2017)</span></summary>
+  <p class="enun">Sea $f:[0,1]\times[0,1]\to\mathbb R$ la función dada por $f(x,y)=(x^2-x)(y^2-y)$. a) Determine en qué puntos se pueden alcanzar los extremos relativos de esta función en $(0,1)\times(0,1)$. Observación: para determinar las derivadas parciales, no desarrolle los paréntesis, y observe que un producto es $0$ si y solo si lo es uno de los factores. b) Determine dónde alcanza $f$ sus extremos absolutos en el conjunto $[0,1]\times[0,1]$. Observe que $f(0,y)=f(1,y)=f(x,0)=f(x,1)=0$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Candidatos del interior del cuadrado y después máximo/mínimo absolutos en el cuadrado cerrado.</dd>
+    <dt>Cómo lo pienso</dt><dd>En $(0,1)$ los factores $x^2-x=x(x-1)$ e $y^2-y$ son negativos, así que $f\gt0$ dentro y $f=0$ en el borde. Mínimo en todo el borde; máximo dentro.</dd>
+    <dt>Qué uso</dt><dd>Condición necesaria (U p. 218), teorema de los valores extremos (U p. 222).</dd>
+    <dt>Por dónde empiezo</dt><dd>$f_x=(2x-1)(y^2-y)$, $f_y=(x^2-x)(2y-1)$.</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps">
+    <li>(a) $f$ es polinomio; en el abierto $(0,1)^2$ los extremos relativos están donde $f_x=(2x-1)(y^2-y)=0$ y $f_y=(x^2-x)(2y-1)=0$.</li>
+    <li>En $(0,1)^2$, $y^2-y=y(y-1)\ne0$, así que la 1.ª obliga a $x=\frac12$. Igual, $x^2-x\ne0$ y la 2.ª obliga a $y=\frac12$.</li>
+    <li>Único candidato: $\left(\frac12,\frac12\right)$, con $f=\left(-\frac14\right)\left(-\frac14\right)=\frac1{16}$.</li>
+    <li>(b) $f$ continua en el cuadrado cerrado y acotado $[0,1]^2$: por el teorema de los valores extremos alcanza máximo y mínimo absolutos, en la frontera o en un crítico del interior.</li>
+    <li>En la frontera $f=0$ (uno de los dos factores vale $0$). En el interior solo está $\left(\frac12,\frac12\right)$ con $f=\frac1{16}$.</li>
+    <li><b>Máximo absoluto $\frac1{16}$ en $\left(\frac12,\frac12\right)$; mínimo absoluto $0$ en todos los puntos de la frontera.</b></li>
+  </ol></div>
+  <p><b>Explicaciones (no hace falta escribirlas):</b> comprobación del máximo sin Hessiana: dentro del cuadrado $f\gt0$ (producto de dos negativos) y el único candidato interior tiene el mayor valor de la tabla. Con Hessiana: $Hf\left(\frac12,\frac12\right)=\operatorname{diag}\!\left(-\frac12,-\frac12\right)$, $d=\frac14\gt0$, $r\lt0$: máximo relativo.</p>
+  <div class="recipe"><b>Receta:</b> absolutos en un rectángulo: críticos interiores + frontera; si $f$ vale constante en la frontera, la tabla tiene solo dos filas.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Resolver $f_x=f_y=0$ en todo $\mathbb R^2$ y dar como candidatos interiores $(0,0)$, $(1,1)$… que están en la frontera.</p></div>
+</details>
+
+<details class="sol" id="x3"><summary>X3 · ¿alcanza $x^2y^3$ el máximo en una corona circular? <span class="src" data-l="X" data-ref="X p.97 (Septiembre 2018, Modelo A, Grado en Ing. Mecánica, P4, 1 punto)">X p.97 (sept. 2018)</span></summary>
+  <p class="enun">La función $f(x,y)=x^2y^3$ está definida sobre el conjunto $S=\{(x,y)\in\mathbb R^2:1\le x^2+y^2\le4\}$. ¿Alcanza el máximo absoluto en este conjunto? Justifique la respuesta.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Solo si existe el máximo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es una corona circular con los dos bordes incluidos: cerrada y acotada.</dd>
+    <dt>Qué uso</dt><dd>Teorema de los valores extremos (U p. 222).</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar las hipótesis.</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps">
+    <li>$f$ es un polinomio, luego continua.</li>
+    <li>$S$ es cerrado (las desigualdades $\le$ incluyen las dos circunferencias $x^2+y^2=1$ y $x^2+y^2=4$, que forman su frontera) y acotado (contenido en el disco de radio $2$).</li>
+    <li>Por el teorema de los valores extremos, <b>sí</b>: $f$ alcanza el máximo (y el mínimo) absoluto en $S$.</li>
+  </ol></div>
+  <div class="recipe"><b>Receta:</b> ver E 5.38. Lo único que cambia es reconocer que una corona con «$\le$» en los dos lados es cerrada.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar que «tiene un agujero» impide aplicar el teorema: el agujero no importa; lo que importa es que $S$ contenga su frontera y esté acotado. (Si fuera $1\lt x^2+y^2\le4$, no sería cerrado y el teorema no se podría aplicar.)</p></div>
+</details>
+
+<details class="sol" id="x4"><summary>X4 · Lagrange: extremos de $xy$ sobre $x^2+y^2=1$ <span class="src" data-l="X" data-ref="X p.134 (Septiembre 2017, Ej. 6, 3 puntos)">X p.134 (sept. 2017)</span></summary>
+  <p class="enun">Utilice el método de los multiplicadores de Lagrange para determinar y clasificar los extremos de la función $f(x,y)=xy$, sujeta a la condición $x^2+y^2=1$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Candidatos de Lagrange y decir cuáles son máximo y mínimo.</dd>
+    <dt>Cómo lo pienso</dt><dd>La circunferencia es cerrada y acotada: basta comparar valores. Por simetría, el producto es máximo en la diagonal $y=x$ y mínimo en $y=-x$.</dd>
+    <dt>Qué uso</dt><dd>Método de Lagrange (U p. 228) y teorema de los valores extremos (U p. 222).</dd>
+    <dt>Por dónde empiezo</dt><dd>$F=xy+\lambda(x^2+y^2-1)$.</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps">
+    <li>$f$ y $g=x^2+y^2-1$ son continuas con parciales continuas; $\nabla g=(2x,2y)\ne\bar0$ en la circunferencia.</li>
+    <li>$F_x=y+2\lambda x=0$, $F_y=x+2\lambda y=0$, $x^2+y^2=1$.</li>
+    <li>Si $\lambda=0$: $x=y=0$, que no cumple la restricción. Luego $\lambda\ne0$.</li>
+    <li>Multiplicando la 1.ª por $y$ y la 2.ª por $x$: $y^2=-2\lambda xy=x^2$. Entonces $x^2=y^2=\frac12$.</li>
+    <li>Candidatos: $\left(\pm\frac{\sqrt2}2,\pm\frac{\sqrt2}2\right)$ (los cuatro). Con $y=x$: $\lambda=-\frac12$; con $y=-x$: $\lambda=\frac12$.</li>
+    <li>La circunferencia es cerrada y acotada: $f$ alcanza máximo y mínimo absolutos entre los candidatos.</li>
+    <li>$f=\frac12$ en $\left(\frac{\sqrt2}2,\frac{\sqrt2}2\right)$ y $\left(-\frac{\sqrt2}2,-\frac{\sqrt2}2\right)$: <b>máximo</b>. $f=-\frac12$ en $\left(\frac{\sqrt2}2,-\frac{\sqrt2}2\right)$ y $\left(-\frac{\sqrt2}2,\frac{\sqrt2}2\right)$: <b>mínimo</b>.</li>
+  </ol></div>
+  <p><b>Explicaciones (no hace falta escribirlas):</b> el paso 4 es «despejar $\lambda$ en las dos ecuaciones e igualar»: $-\frac y{2x}=-\frac x{2y}$ (se puede dividir porque, con $\lambda\ne0$, si $x=0$ la 1.ª da $y=0$, imposible).</p>
+  <div class="recipe"><b>Receta:</b> sistema de Lagrange simétrico: despejar $\lambda$ en dos ecuaciones e igualar, para obtener una relación entre $x$ e $y$ sin $\lambda$; luego la restricción.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Quedarse solo con $x=y$ (de $x^2=y^2$ salen $y=x$ e $y=-x$).</p></div>
+</details>
+
+<details class="sol" id="x5"><summary>X5 · distancia mínima y máxima del origen a la elipse $5x^2+6xy+5y^2=8$ <span class="src" data-l="X" data-ref="X p.9 (examen escaneado sin fecha, junto a los de 2010), P1, 3 puntos">X p.9 (examen escaneado sin fecha, junto a los de 2010)</span></summary>
+  <p class="enun">Hállese la distancia mínima y máxima del origen de coordenadas a la elipse $5x^2+6xy+5y^2=8$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El punto de la elipse más cercano y el más lejano al origen, y esas distancias.</dd>
+    <dt>Cómo lo pienso</dt><dd>Como en E 5.47, se optimiza el cuadrado de la distancia $x^2+y^2$. La elipse está girada $45^\circ$ (por el término $6xy$): sus ejes son las diagonales $y=x$ e $y=-x$, y ahí estarán los extremos.</dd>
+    <dt>Qué uso</dt><dd>Lagrange (U p. 228), teorema de los valores extremos (U p. 222).</dd>
+    <dt>Por dónde empiezo</dt><dd>$f=x^2+y^2$, $g=5x^2+6xy+5y^2-8$.</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <ol class="steps">
+    <li>La elipse es cerrada y acotada y $f$ es continua: hay distancia máxima y mínima. $\nabla g=(10x+6y,\,6x+10y)$ solo se anula en $(0,0)$, que no está en la elipse.</li>
+    <li>$F=x^2+y^2+\lambda(5x^2+6xy+5y^2-8)$: $2x+\lambda(10x+6y)=0$, $2y+\lambda(6x+10y)=0$, $g=0$.</li>
+    <li>Restando las dos primeras: $2(x-y)+\lambda(4x-4y)=0\iff(x-y)(2+4\lambda)=0$. Dos casos: $y=x$ o $\lambda=-\frac12$.</li>
+    <li><b>$y=x$:</b> $5x^2+6x^2+5x^2=16x^2=8$, $x=\pm\frac{\sqrt2}2$. Puntos $\pm\left(\frac{\sqrt2}2,\frac{\sqrt2}2\right)$, $f=1$.</li>
+    <li><b>$\lambda=-\frac12$:</b> la 1.ª queda $2x-5x-3y=0$, es decir $y=-x$; en $g$: $5x^2-6x^2+5x^2=4x^2=8$, $x=\pm\sqrt2$. Puntos $\pm(\sqrt2,-\sqrt2)$, $f=4$.</li>
+    <li><b>Distancia mínima $\sqrt1=1$</b> en $\pm\left(\frac{\sqrt2}2,\frac{\sqrt2}2\right)$; <b>distancia máxima $\sqrt4=2$</b> en $\pm(\sqrt2,-\sqrt2)$.</li>
+  </ol></div>
+  <p><b>Explicaciones (no hace falta escribirlas):</b> el truco del paso 3 (restar las ecuaciones) funciona porque el sistema es simétrico al cambiar $x$ por $y$. Comprobación geométrica: en la diagonal $y=x$ la elipse está «estrecha» (semieje $1$) y en $y=-x$, «ancha» (semieje $2$). Se puede ver en el interactivo del apartado 7 (cuarto problema).</p>
+  <div class="recipe"><b>Receta:</b> distancia máxima/mínima a una curva cerrada: Lagrange sobre $x^2+y^2$; existencia por el teorema de los valores extremos; raíz cuadrada al final.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dar $1$ y $4$ como distancias (son los cuadrados de las distancias).</p></div>
+</details>
+
+<details class="sol" id="x6"><summary>X6 · paralelepípedo de volumen $1\ \mathrm{m}^3$ y área mínima o máxima <span class="src" data-l="X" data-ref="X pp.33-34 (Febrero 2013, 1.ª semana, Ing. Mecánica, Modelo A, Ej. 6)">X pp.33-34 (feb. 2013)</span></summary>
+  <p class="enun">Determínense las dimensiones de un paralelepípedo rectangular de volumen $1\ \mathrm{m}^3$ dado, de tal forma que su área sea mínima o máxima.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Las aristas $x,y,z\gt0$ con $xyz=1$ que hacen extremo el área $2xy+2xz+2yz$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Por simetría el candidato será el cubo. El área puede crecer sin límite (una caja muy larga y muy fina), así que solo habrá mínimo.</dd>
+    <dt>Qué uso</dt><dd>Lagrange en $\mathbb R^3$ (U p. 228; U p. 231 para despejar $z=h(x,y)$), o despejar una variable y usar puntos críticos y Hessiana (U pp. 216, 220).</dd>
+    <dt>Por dónde empiezo</dt><dd>$A=2xy+2xz+2yz$ con $g=xyz-1$.</dd>
+  </dl></div>
+  <div class="box tip"><span class="h">Lo que hay que escribir en el examen (vía Lagrange)</span>
+  <ol class="steps">
+    <li>$F=2xy+2xz+2yz+\lambda(xyz-1)$, con $x,y,z\gt0$.</li>
+    <li>$F_x=2y+2z+\lambda yz=0$, $F_y=2x+2z+\lambda xz=0$, $F_z=2x+2y+\lambda xy=0$, $xyz=1$.</li>
+    <li>Multiplicando la 1.ª por $x$, la 2.ª por $y$ y la 3.ª por $z$ y usando $xyz=1$: $2xy+2xz=-\lambda$, $2xy+2yz=-\lambda$, $2xz+2yz=-\lambda$.</li>
+    <li>Restando la 1.ª y la 2.ª: $2z(x-y)=0$, y como $z\gt0$, $x=y$. Restando la 2.ª y la 3.ª: $2x(y-z)=0$, $y=z$.</li>
+    <li>$x=y=z$ y $x^3=1$: <b>$x=y=z=1$ m</b> (un cubo), $\lambda=-4$, área $6\ \mathrm{m}^2$.</li>
+    <li><b>Naturaleza:</b> despejando $x=\frac1{yz}$, $A(y,z)=\frac2z+\frac2y+2yz$ ($y,z\gt0$). En $(1,1)$: $A_y=-\frac2{y^2}+2z=0$, $A_z=-\frac2{z^2}+2y=0$ ✓; $HA(1,1)=\begin{pmatrix}4&2\\2&4\end{pmatrix}$, $d=12\gt0$, $r=4\gt0$: <b>mínimo</b>.</li>
+    <li><b>No hay máximo:</b> con $x=y=n$, $z=\frac1{n^2}$, el volumen es $1$ y el área es $2n^2+\frac4n\to+\infty$.</li>
+  </ol></div>
+  <p><b>Explicaciones (no hace falta escribirlas):</b> el paso 3 es un truco útil cuando la restricción es un producto: al multiplicar cada ecuación por «su» variable aparece $xyz$, que vale $1$.</p>
+  <div class="recipe"><b>Receta:</b> optimización de cajas: Lagrange con $g$ = volumen, multiplicar cada ecuación por su variable y restar; clasificar despejando una variable y usando la Hessiana de dos variables.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Decir que el cubo da «área mínima o máxima» sin decidir: es mínima, y máxima no existe.</p></div>
+</details>
+
+<!-- ============================ 13 ============================ -->
+<h2 id="chuleta"><span class="n">13</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+
+<h3>Errores frecuentes</h3>
+<ul>
+  <li>Creer que gradiente nulo implica extremo (puede ser silla).</li>
+  <li>Aplicar la Hessiana a un punto que no es crítico.</li>
+  <li>Perder soluciones al dividir entre $x$, $y$ o $\lambda$; olvidar el caso $\lambda=0$ y los casos «$x=0$», «$y=0$».</li>
+  <li>Decir «caso dudoso» con $d\lt0$: si $d\lt0$ es silla. Con $d=0$ hay que mirar el signo de $f-f(a,b)$ a mano.</li>
+  <li>En un compacto: olvidar la frontera (o los vértices), o dar un extremo relativo como absoluto sin comparar.</li>
+  <li>Aplicar el teorema de los valores extremos sin comprobar que el conjunto es cerrado y acotado, o decir «no hay máximo» porque no lo es.</li>
+  <li>Lagrange: olvidar la ecuación $g=0$, olvidar comprobar $\nabla g\ne\bar0$, o pensar que el método decide por sí solo máximo o mínimo.</li>
+  <li>Problemas de distancia: dar el cuadrado de la distancia como distancia.</li>
+</ul>
+
+<div class="box ex"><span class="h">Verdadero o falso · autoevaluación de U</span>
+  <ol class="steps">
+    <li><b>7.</b> «$f:(0,1)\times(0,1)\to\mathbb R$ alcanza un único máximo relativo y ningún mínimo relativo; por tanto no tendrá mínimo absoluto, pero sí máximo absoluto.» <b>Falsa:</b> el dominio es abierto (no cerrado), así que no está garantizado que haya máximo absoluto; el supremo podría aproximarse hacia la frontera sin alcanzarse. (Lo del mínimo sí es cierto: un mínimo absoluto sería relativo.)</li>
+    <li><b>8.</b> «$f:\mathbb R^2\to\mathbb R$ con $\nabla f(0,1)=(0,0)$ y $Hf(0,1)=\begin{pmatrix}1&1\\1&2\end{pmatrix}$: podemos garantizar un mínimo relativo en $(0,1)$.» <b>Verdadera:</b> es punto crítico, $d=2-1=1\gt0$ y $r=1\gt0$: mínimo relativo.</li>
+    <li><b>9.</b> «Los posibles extremos relativos de $f$ sujeta a $g(x,y)=0$ son soluciones del sistema $\nabla f(x,y)=\nabla g(\lambda x,\lambda y)$.» <b>Falsa:</b> el sistema correcto es $\nabla f(x,y)=-\lambda\nabla g(x,y)$ junto con $g(x,y)=0$; ambos gradientes se evalúan en el mismo punto $(x,y)$ y el multiplicador acompaña al gradiente, no al punto.</li>
+    <li><b>10.</b> «$f$ con derivadas parciales continuas en $\mathbb R^2$ y $\frac{\partial f}{\partial x}$, $\frac{\partial f}{\partial y}$ siempre positivas: el máximo absoluto de $f$ en cualquier disco cerrado se alcanza en la frontera.» <b>Verdadera:</b> el disco es cerrado y acotado, luego el máximo existe; $\nabla f$ nunca se anula, así que no hay puntos críticos en el interior y el máximo está en la frontera.</li>
+  </ol>
+  <span class="src" data-l="U" data-ref="U Ejercicios de autoevaluación 7-10, p. 233">U p.233</span>
+</div>
+
+<h3>Chuleta</h3>
+<table>
+  <caption>Chuleta de fórmulas y enunciados del tema</caption>
+  <tr><th scope="col">Concepto</th><th scope="col">Enunciado</th><th scope="col">Fuente</th></tr>
+  <tr><td>Máximo / mínimo absoluto</td><td>$f(x,y)\le f(a,b)$ (o $\ge$) para <b>todo</b> $(x,y)\in D$</td><td>U p.213</td></tr>
+  <tr><td>Máximo / mínimo relativo</td><td>lo mismo, pero solo en un disco abierto alrededor de $(a,b)$</td><td>U p.214</td></tr>
+  <tr><td>Punto crítico</td><td>$\nabla f(a,b)=\bar0$</td><td>U p.216</td></tr>
+  <tr><td>Condición necesaria</td><td>$f$ diferenciable en abierto con extremo relativo en $(a,b)$ $\Rightarrow$ $\nabla f(a,b)=\bar0$ (recíproco falso)</td><td>U p.218</td></tr>
+  <tr><td>Punto de silla</td><td>punto crítico que no es extremo; ej. $3x^2-y^2$ en $(0,0)$</td><td>U p.219</td></tr>
+  <tr><td>Criterio de la Hessiana</td><td>$d=f_{xx}f_{yy}-f_{xy}^2$, $r=f_{xx}$: $d\gt0,r\gt0$ mín.; $d\gt0,r\lt0$ máx.; $d\lt0$ silla; $d=0$ dudoso</td><td>U p.220</td></tr>
+  <tr><td>Teorema de los valores extremos</td><td>$f$ continua en $S$ cerrado y acotado $\Rightarrow$ máximo y mínimo absolutos, en la frontera o en un crítico del interior</td><td>U p.222</td></tr>
+  <tr><td>Procedimiento en un compacto</td><td>críticos del interior + candidatos de la frontera; comparar valores</td><td>U p.222</td></tr>
+  <tr><td>Teorema de Lagrange</td><td>extremo de $f$ sobre $g=0$ con $\nabla g\ne\bar0$ $\Rightarrow$ $\nabla f=-\lambda\nabla g$</td><td>U pp.226, 228</td></tr>
+  <tr><td>Método de Lagrange</td><td>$F=f+\lambda g$; $\nabla F=\bar0$ (incluye $g=0$); comparar $f$ en los candidatos</td><td>U p.228</td></tr>
+  <tr><td>Lagrange en $\mathbb R^3$</td><td>$F_x=F_y=F_z=0$ y $g=0$ (4 ecuaciones)</td><td>U pp.228, 231</td></tr>
+  <tr><td>Distancia a una curva/superficie</td><td>optimizar $x^2+y^2(+z^2)$ y sacar la raíz al final</td><td>E 5.47; X p.9</td></tr>
+</table>
+
+<h3>Lista de comprobación</h3>
+<ul class="checklist">
+  <li>Sé distinguir extremo absoluto y relativo, y dar un ejemplo sin máximo absoluto (E 5.28).</li>
+  <li>Sé resolver $\nabla f=\bar0$ por casos y no perder soluciones (E 5.29, 5.30, 5.32).</li>
+  <li>Sé descartar un punto no crítico con la condición necesaria (E 5.31, 5.35; X Feb 2018).</li>
+  <li>Sé clasificar un punto crítico con $d$ y $r$, y qué hacer si $d=0$ (E 5.31-5.37).</li>
+  <li>Sé decidir si un conjunto es cerrado y acotado y citar el teorema de los valores extremos (E 5.38; X Sept 2018).</li>
+  <li>Sé hallar extremos absolutos en un compacto: interior + frontera + tabla (E 5.41, 5.43, 5.48; X Feb 2017).</li>
+  <li>Sé plantear y resolver Lagrange en $\mathbb R^2$ y $\mathbb R^3$, incluidos los casos $\lambda=0$ y variable $=0$ (E 5.42-5.47; X Sept 2017, Feb 2013).</li>
+  <li>Sé plantear problemas de optimización (distancia, caja, lata, beneficio) y decidir si el extremo es máximo o mínimo (E 5.36, 5.40, 5.47; X p.9).</li>
+</ul>
+
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
+<details class="fuentes-toggle">
+<summary>Mostrar lista de fuentes</summary>
+<div id="panel-fuentes"></div>
+</details>
+
+<footer>Resumen generado a partir de los libros indicados. Numeración de páginas: la impresa en cada libro (en X, la página del PDF).</footer>
+</main>
+</div>
+</body>
+</html>
