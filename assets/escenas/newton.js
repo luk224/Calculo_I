@@ -7,7 +7,7 @@ Interactivos.registrar('newton', function (c) {
     { n: 'x³ − 2x + 2 (cicla con x₀ = 0)', f: function (x) { return x * x * x - 2 * x + 2; }, d: function (x) { return 3 * x * x - 2; }, raiz: -1.7692923542386314, v: [-3, 3, -4, 8], x0: [-2.5, 2.5, 0] },
     { n: '∛x (diverge siempre)', f: Math.cbrt, d: function (x) { var q = Math.cbrt(x); return 1 / (3 * q * q); }, raiz: 0, v: [-4, 4, -2.5, 2.5], x0: [-1.2, 1.2, 0.5] }
   ];
-  var W = function (v) { var d = v[1] - v[0]; return [v[0] - d, v[1] + d, v[2], v[3]]; };
+  var W = function (v) { var dx = 1.5 * (v[1] - v[0]), dy = 1.5 * (v[3] - v[2]); return [v[0] - dx, v[1] + dx, v[2] - dy, v[3] + dy]; };
   var k = 0, x0 = F[0].x0[2], n = 3;
   var P = c.colores(), w, malla, ejes, curva, tang, vert, dots = [], raizPt;
   var lx = c.lectura('xₙ'), lf = c.lectura('f(xₙ)'), le = c.lectura('|xₙ − raíz|'), lm = c.lectura('');
@@ -18,7 +18,7 @@ Interactivos.registrar('newton', function (c) {
     var v = F[k].v; w = 0.0055 * (v[3] - v[2]); c.vista(v[0], v[1], v[2], v[3]);
     var vw = W(v);
     ejes = H.ejes2D(T, vw, w, P.fg, P.bd); c.scene.add(ejes);
-    curva = H.cinta(T, H.grafica(F[k].f, vw[0], vw[1], 800, 1e3), P.fg, w * 1.4); curva.position.z = 0.1; c.scene.add(curva);
+    curva = H.cinta(T, H.grafica(F[k].f, vw[0], vw[1], 1600, 1e3), P.fg, w * 1.4); curva.position.z = 0.1; c.scene.add(curva);
     vert = H.cinta(T, [], P.mut, w * 0.7, [w * 4, w * 3]); vert.position.z = 0.2; c.scene.add(vert);
     tang = H.cinta(T, [], P.S, w * 1.2); tang.position.z = 0.3; c.scene.add(tang);
     raizPt = H.punto(T, F[k].raiz, 0, w * 2.2, P.fg); raizPt.position.z = 0.4; c.scene.add(raizPt);

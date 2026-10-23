@@ -136,7 +136,7 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       stage.removeChild(msg); stage.appendChild(renderer.domElement);
       var dos = params.dim === 2, vista = [-1, 1, -1, 1], controls = null;
-      var z = { s: 1, px: 0, py: 0 }, base = null, btnReset = null;
+      var z = { s: 1, px: 0, py: 0 }, base = null, btnReset = null, crudo = [-1, 1, -1, 1];
       var scene = new THREE.Scene(), camera;
       if (dos) { camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -10, 10); }
       else {
@@ -164,17 +164,17 @@
           base = { cx: cx, cy: cy, vw: vw, vh: vh }; aplicarVista();
         } else { camera.aspect = w / h; camera.updateProjectionMatrix(); pedir(); }
       }
-      /* Cámara 2D = vista base escalada por z.s y desplazada por (z.px, z.py), sin salirse de lo dibujado
-         (el ancho dibujado es el triple del de la vista; el alto, el de la vista). */
+      /* Cámara 2D = vista base escalada por z.s y desplazada por (z.px, z.py), sin salirse de lo dibujado:
+         la región dibujada por las escenas es 4 veces más ancha y más alta que la vista inicial (ZOOM_FUERA). */
       function lim(c, mitad, a, b) { return 2 * mitad >= b - a ? (a + b) / 2 : Math.max(a + mitad, Math.min(b - mitad, c)); }
       function aplicarVista() {
         if (!base) return;
-        var vw = base.vw * z.s, vh = base.vh * z.s, dx = vista[1] - vista[0];
-        var cx = lim(base.cx + z.px, vw / 2, vista[0] - dx, vista[1] + dx), cy = lim(base.cy + z.py, vh / 2, vista[2], vista[3]);
+        var vw = base.vw * z.s, vh = base.vh * z.s, dx = (crudo[1] - crudo[0]) * 1.5, dy = (crudo[3] - crudo[2]) * 1.5;
+        var cx = lim(base.cx + z.px, vw / 2, crudo[0] - dx, crudo[1] + dx), cy = lim(base.cy + z.py, vh / 2, crudo[2] - dy, crudo[3] + dy);
         z.px = cx - base.cx; z.py = cy - base.cy;
         camera.left = cx - vw / 2; camera.right = cx + vw / 2; camera.bottom = cy - vh / 2; camera.top = cy + vh / 2;
         camera.updateProjectionMatrix();
-        if (btnReset) btnReset.style.display = z.s < 1 || z.px || z.py ? '' : 'none';
+        if (btnReset) btnReset.style.display = z.s !== 1 || z.px || z.py ? '' : 'none';
         pedir();
       }
       var ctx = {
@@ -182,7 +182,7 @@
         colores: paleta, reducirMovimiento: reducir, pedir: pedir,
         /* Solo 2D: caja del mundo que debe verse (se amplía para respetar la proporción del lienzo). */
         vista: function (x0, x1, y0, y1) {
-          var px = (x1 - x0) * 0.04, py = (y1 - y0) * 0.04; vista = [x0 - px, x1 + px, y0 - py, y1 + py]; z.s = 1; z.px = 0; z.py = 0;
+          var px = (x1 - x0) * 0.04, py = (y1 - y0) * 0.04; vista = [x0 - px, x1 + px, y0 - py, y1 + py]; crudo = [x0, x1, y0, y1]; z.s = 1; z.px = 0; z.py = 0;
           var r = (vista[1] - vista[0]) / (vista[3] - vista[2]); stage.style.aspectRatio = Math.max(1.3, Math.min(2, r)).toFixed(3);
           ajustar();
         },
@@ -226,7 +226,8 @@
         function reset() { z.s = 1; z.px = 0; z.py = 0; aplicarVista(); }
         function zoomEn(fx, fy, f) {
           if (!base) return;
-          var ns = Math.max(0.04, Math.min(1, z.s * f)), vw0 = base.vw * z.s, vh0 = base.vh * z.s;
+          var smax = Math.min(4, 4 * (crudo[1] - crudo[0]) / base.vw, 4 * (crudo[3] - crudo[2]) / base.vh);
+          var ns = Math.max(0.04, Math.min(smax, z.s * f)), vw0 = base.vw * z.s, vh0 = base.vh * z.s;
           var wx = base.cx + z.px - vw0 / 2 + fx * vw0, wy = base.cy + z.py + vh0 / 2 - fy * vh0;
           var vw1 = base.vw * ns, vh1 = base.vh * ns; z.s = ns;
           z.px = wx - fx * vw1 + vw1 / 2 - base.cx; z.py = wy + fy * vh1 - vh1 / 2 - base.cy; aplicarVista();

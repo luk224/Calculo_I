@@ -13,7 +13,7 @@ Interactivos.registrar('tvm', function (c) {
     { n: 'eˣ', f: Math.exp, d: Math.exp, v: [-2.5, 2.5, -1, 7] },
     { n: '|x| (no derivable en 0)', f: Math.abs, d: nd, v: [-2.5, 2.5, -1, 3] }
   ];
-  var W = function (v) { var d = v[1] - v[0]; return [v[0] - d, v[1] + d, v[2], v[3]]; };
+  var W = function (v) { var dx = 1.5 * (v[1] - v[0]), dy = 1.5 * (v[3] - v[2]); return [v[0] - dx, v[1] + dx, v[2] - dy, v[3] + dy]; };
   var k = 0, a = rolle ? 0 : -1.5, b = rolle ? Math.PI : 2, cc = 1, P = c.colores(), w;
   var ejes, curva, cuerda, tg, pa, pb, pc, validos = [];
   var lm = c.lectura('Pendiente de la cuerda'), ld = c.lectura('f′(c)'), lv = c.lectura('Valores de c con f′(c) = pendiente');
@@ -26,7 +26,7 @@ Interactivos.registrar('tvm', function (c) {
     ejes = H.ejes2D(T, vw, w, P.fg, P.bd); c.scene.add(ejes);
     var g = G[k], pols = g.salto
       ? [H.grafica(g.f, vw[0], g.salto - 1e-6, 100, 1e3), H.grafica(g.f, g.salto, vw[1], 100, 1e3)].reduce(function (s, e) { return s.concat(e); }, [])
-      : H.grafica(g.f, vw[0], vw[1], 800, 1e3);
+      : H.grafica(g.f, vw[0], vw[1], 1600, 1e3);
     curva = H.cinta(T, pols, P.fg, w * 1.4); curva.position.z = 0.1; c.scene.add(curva);
     cuerda = H.cinta(T, [], P.mut, w, [w * 5, w * 3]); cuerda.position.z = 0.2; c.scene.add(cuerda);
     tg = H.cinta(T, [], P.S, w * 1.3); tg.position.z = 0.3; c.scene.add(tg);

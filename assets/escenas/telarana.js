@@ -7,7 +7,7 @@ Interactivos.registrar('telarana', function (c) {
     { n: 'g(x) = ½ cos x', g: function (x) { return Math.cos(x) / 2; }, d: function (x) { return -Math.sin(x) / 2; }, p: 0.45018361129487357, v: [0, 1.6, 0, 1.6], x0: [0, 1.5, 1.2] },
     { n: 'g(x) = 0,5 + m·sen(x − 0,5) (m con el deslizador)', g: function (x) { return 0.5 + m * Math.sin(x - 0.5); }, d: function (x) { return m * Math.cos(x - 0.5); }, p: 0.5, v: [-0.5, 1.5, -0.5, 1.5], x0: [-0.4, 1.4, 1] }
   ];
-  var W = function (v) { var d = v[1] - v[0]; return [v[0] - d, v[1] + d, v[2], v[3]]; };
+  var W = function (v) { var dx = 1.5 * (v[1] - v[0]), dy = 1.5 * (v[3] - v[2]); return [v[0] - dx, v[1] + dx, v[2] - dy, v[3] + dy]; };
   var k = 0, x0 = 1, n = 6, P = c.colores(), w, ejes, curva, diag, red, dots = [];
   var lx = c.lectura('xₙ'), le = c.lectura('|xₙ − punto fijo|'), lg = c.lectura('g′(x*)');
 
@@ -24,7 +24,7 @@ Interactivos.registrar('telarana', function (c) {
     var d = H.punto(T, G[k].p, G[k].p, w * 2.4, P.fg); d.position.z = 0.4; dots.push(d); c.scene.add(d);
     pintaCurva();
   }
-  function pintaCurva() { var v = W(G[k].v); if (curva) curva.set(H.grafica(G[k].g, v[0], v[1], 600, 1e3)); }
+  function pintaCurva() { var v = W(G[k].v); if (curva) curva.set(H.grafica(G[k].g, v[0], v[1], 1200, 1e3)); }
   function calc() {
     var g = G[k], x = x0, pts = [[x, 0]], i, xs = [x0];
     for (i = 0; i < n; i++) { var y = g.g(x); pts.push([x, y], [y, y]); x = y; xs.push(x); }
