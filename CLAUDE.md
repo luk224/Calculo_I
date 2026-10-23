@@ -69,7 +69,7 @@ E:\UNED\CALCULO\claude\
   index.html                      índice de todos los temas (actualizarlo al terminar cada tema)
   assets/resumen.css, resumen.js  estilo y comportamiento COMPARTIDOS (no duplicar en cada tema)
   assets/katex/                   KaTeX local (offline)
-  assets/three/                   three.js local (por crear; ver threejs_interactivos.md)
+  assets/three/                   three.js r147 local (hecho) + assets/interactivos.js|css y assets/escenas/ (ver threejs_interactivos.md §6)
   threejs_interactivos.md         catálogo de ejemplos interactivos por tema y criterios
   plantilla_tema.html             esqueleto que se copia para cada tema
   temas/tema_1_1_espacio_R.html   …

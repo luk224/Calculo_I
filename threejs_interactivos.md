@@ -1,6 +1,6 @@
 # Ejemplos interactivos con three.js — catálogo por tema
 
-Estado: **propuesta** (nada implementado todavía). Revisados los 20 temas hechos (1.1–5.3). Regla vigente para los temas nuevos: ver `CLAUDE.md`, regla 12.
+Estado: **infraestructura montada** (octubre 2026: `assets/three/`, `assets/interactivos.js|css`, `assets/escenas/`, página `pruebas/interactivo_demo.html`); falta probarla en navegador y hacer el primer interactivo real. Ningún tema usa todavía three.js (el del 2.1 es SVG+JS propio). Revisados los 20 temas hechos (1.1–5.3). Regla vigente para los temas nuevos: ver `CLAUDE.md`, regla 12.
 
 ## 1. Criterio: cuándo merece la pena
 
@@ -109,3 +109,14 @@ Cada tema retocado se publica con su commit propio (`CLAUDE.md` §4b).
 - Si se quiere conservar el uso offline por `file://` (por eso el bundle clásico) o basta con GitHub Pages (permitiría `importmap` + módulos).
 - Tamaño admisible del bundle (three + OrbitControls minificado ≈ 0,7 MB; con carga perezosa solo se paga en los temas con interactivos).
 - Licencia: three.js es MIT (incluir `LICENSE` en `assets/three/`).
+
+
+## 6. Infraestructura montada (cómo se usa)
+
+- **three r147** (`assets/three/three.min.js` + `OrbitControls.js`, clásicos, MIT; licencia en `LICENSE-three.txt`). Se eligió r147 porque es la última con builds clásicos y sin necesidad de bundler (no hay node/npm en el equipo).
+- **Motor:** `assets/interactivos.js` (carga perezosa, render bajo demanda, tema claro/oscuro, WebGL ausente → mensaje). Helpers: `ejes`, `superficie`, `curva`; en el contexto de cada escena: `slider`, `lectura`, `alCambiarTema`.
+- **Escenas:** una por fichero en `assets/escenas/<nombre>.js`, registrada con `Interactivos.registrar(nombre, function(ctx){…})`. La escena `demo-superficie` sirve de plantilla.
+- **En el tema:** `<link rel="stylesheet" href="../assets/interactivos.css">`, `<script defer src="../assets/interactivos.js">` y `<figure class="interactivo" data-escena="…" data-params='{…}'>` con `<figcaption>` y su `src`.
+- **Impresión:** en `@media print` se oculta el lienzo y se muestra `.int-static` (añadir `<img class="int-static" src="../assets/img/int_<nombre>.png">`; la captura aún se hace a mano).
+- **Herramientas:** sympy 1.14 instalado en el usuario (`~/.local`, sin pip) para verificar valores.
+- **Pendiente:** probar en navegador, primera escena real (propuesta: 4.2 o 4.3), flujo para generar las capturas estáticas.
