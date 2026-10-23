@@ -10,6 +10,8 @@
 <script defer src="../assets/katex/katex.min.js"></script>
 <script defer src="../assets/katex/auto-render.min.js"></script>
 <script defer src="../assets/resumen.js"></script>
+<link rel="stylesheet" href="../assets/interactivos.css">
+<script defer src="../assets/interactivos.js"></script>
 <style>
 /* Extras propios de este tema (prefijo t24-). El sistema visual base está en ../assets/resumen.css */
 svg.fig .t24-dash{stroke:var(--mut);stroke-width:1.2;fill:none;stroke-dasharray:4 4}
@@ -154,6 +156,10 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p>Fíjate en el patrón de los errores: $10^{-1}\to10^{-2}\to10^{-4}$. Cada error es más o menos el <i>cuadrado</i> del anterior (ver el apartado de velocidad, más abajo).</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 2.15, tabla de iteraciones, p. 88">U p.88</span>
 </div>
+
+<figure class="interactivo" data-escena="newton" data-params='{"dim":2}' aria-label="Interactivo del método de Newton: tangentes sucesivas y sus cortes con el eje x">
+  <figcaption>Interactivo propio. Elige la función y el punto inicial $x_0$ y aumenta los pasos: cada tangente (naranja) corta al eje $x$ en la siguiente aproximación. Prueba $x^3-2x+2$ con $x_0=0$ (la sucesión salta entre $0$ y $1$ y nunca converge) y $\sqrt[3]{x}$ (cada paso duplica la distancia al origen). Los valores mostrados son los de la iteración $x_{n+1}=x_n-f(x_n)/f'(x_n)$. <span class="src" data-l="P" data-ref="Explicación propia; algoritmo: U §2.4.2 p. 88">P</span></figcaption>
+</figure>
 
 <div class="box warn"><span class="h">Error típico: aplicar Newton sin haber escrito «$f(x)=0$»</span>
   <p>Newton resuelve ecuaciones de la forma $f(x)=0$. Para $\sqrt5$ hay que decir «$\sqrt5$ es la raíz positiva de $x^2-5=0$» y tomar $f(x)=x^2-5$. Aplicar la fórmula a «$x=\sqrt5$» no significa nada. Y si la ecuación es $e^{-x}=x$, hay que pasarla a $e^{-x}-x=0$ <i>antes</i> de derivar.</p>
@@ -321,6 +327,10 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p>d) <b>Iteraciones para error $&lt;0.01$:</b> $\dfrac{(1/2)^n}{1/2}\cdot\dfrac\pi2&lt;0.01\iff\left(\tfrac12\right)^n&lt;\dfrac{0.01}{\pi}\iff n&gt;\dfrac{\ln(0.01/\pi)}{\ln(1/2)}\approx8.2953$ (se invierte la desigualdad al dividir entre $\ln\frac12&lt;0$). Hacen falta <b>9</b> iteraciones.</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 2.17, pp. 92-93">U pp.92-93</span>
 </div>
+
+<figure class="interactivo" data-escena="telarana" data-params='{"dim":2}' aria-label="Interactivo de telaraña del método de punto fijo: iteraciones entre la curva y la recta y=x">
+  <figcaption>Interactivo propio. La escalera (naranja) va en vertical hasta la curva $y=g(x)$ y en horizontal hasta la recta $y=x$: cada escalón es una iteración. Con la tercera función, mueve $m=g'(x^*)$: si $|m|&lt;1$ la escalera se cierra sobre el punto fijo (monótona si $m&gt;0$, en espiral si $m&lt;0$); si $|m|&gt;1$ se aleja. <span class="src" data-l="P" data-ref="Explicación propia; teoremas 2.2 y 2.3: U pp. 91-92">P</span></figcaption>
+</figure>
 
 <h3>De $f(x)=0$ a $x=g(x)$: la $g$ no es única</h3>
 <div class="box def"><span class="h">Cómo se elige $g$</span>

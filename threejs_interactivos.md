@@ -120,3 +120,8 @@ Cada tema retocado se publica con su commit propio (`CLAUDE.md` §4b).
 - **Impresión:** en `@media print` se oculta el lienzo y se muestra `.int-static` (añadir `<img class="int-static" src="../assets/img/int_<nombre>.png">`; la captura aún se hace a mano).
 - **Herramientas:** sympy 1.14 instalado en el usuario (`~/.local`, sin pip) para verificar valores.
 - **Pendiente:** primera escena real (propuesta: 4.2 o 4.3), flujo para generar las capturas estáticas.
+
+### Escenas hechas (octubre 2026)
+- `newton` y `telarana` en el tema 2.4; `tvm` (con `"modo":"rolle"` para Rolle) en el 2.5. Son 2D (`data-params {"dim":2}`: cámara ortográfica, sin giro), con helpers `cinta`, `punto`, `grafica`, `ejes2D` y, en el contexto, `vista` y `selector`.
+- Valores comprobados con sympy (raíces, puntos fijos, ciclo 0↔1 de x³−2x+2, Newton de ∛x → −2x). Probadas en Chromium headless (WebGL por software).
+- Falta la captura estática (`.int-static`) para el PDF.

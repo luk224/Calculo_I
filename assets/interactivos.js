@@ -58,6 +58,57 @@
     curva: function (THREE, pts, col, w) {
       var geo = new THREE.BufferGeometry().setFromPoints(pts.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
       return new THREE.Line(geo, new THREE.LineBasicMaterial({ color: col, linewidth: w || 1 }));
+    },
+    /* ---- 2D (cámara ortográfica, data-params {"dim":2}) ---- */
+    /* Cinta de grosor w (unidades de mundo) sobre una lista de polilíneas [[ [x,y],… ],…].
+       dash=[trazo,hueco] la hace discontinua. m.set(polilíneas) la reconstruye. */
+    cinta: function (THREE, pols, col, w, dash) {
+      var mat = new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide });
+      var m = new THREE.Mesh(new THREE.BufferGeometry(), mat);
+      function trozos(a, b, out) {
+        var dx = b[0] - a[0], dy = b[1] - a[1], L = Math.sqrt(dx * dx + dy * dy);
+        if (!(L > 0) || !isFinite(L)) return;
+        var ux = dx / L, uy = dy / L, ext = dash ? 0 : w * 0.5;
+        if (!dash) { out.push([a[0] - ux * ext, a[1] - uy * ext, b[0] + ux * ext, b[1] + uy * ext, ux, uy]); return; }
+        for (var t = 0; t < L; t += dash[0] + dash[1]) {
+          var t2 = Math.min(L, t + dash[0]);
+          out.push([a[0] + ux * t, a[1] + uy * t, a[0] + ux * t2, a[1] + uy * t2, ux, uy]);
+        }
+      }
+      m.set = function (ps) {
+        var seg = [], pos = [], i, j, k;
+        for (i = 0; i < ps.length; i++) for (j = 0; j + 1 < ps[i].length; j++) trozos(ps[i][j], ps[i][j + 1], seg);
+        for (k = 0; k < seg.length; k++) {
+          var q = seg[k], nx = -q[5] * w / 2, ny = q[4] * w / 2;
+          pos.push(q[0] + nx, q[1] + ny, 0, q[0] - nx, q[1] - ny, 0, q[2] + nx, q[3] + ny, 0,
+                   q[2] + nx, q[3] + ny, 0, q[0] - nx, q[1] - ny, 0, q[2] - nx, q[3] - ny, 0);
+        }
+        m.geometry.dispose(); m.geometry = new THREE.BufferGeometry();
+        m.geometry.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      };
+      m.set(pols); return m;
+    },
+    /* Punto (disco) de radio r en mundo; p.mover(x,y). */
+    punto: function (THREE, x, y, r, col) {
+      var m = new THREE.Mesh(new THREE.CircleGeometry(r, 24), new THREE.MeshBasicMaterial({ color: col }));
+      m.position.set(x, y, 0); m.mover = function (a, b) { m.position.x = a; m.position.y = b; }; return m;
+    },
+    /* Polilíneas de y=f(x) en [x0,x1], cortadas donde f no es finita o se sale de [-ylim,ylim]. */
+    grafica: function (f, x0, x1, n, ylim) {
+      var out = [], cur = [], i;
+      for (i = 0; i <= n; i++) {
+        var x = x0 + (x1 - x0) * i / n, y = f(x);
+        if (isFinite(y) && Math.abs(y) <= ylim) cur.push([x, y]); else { if (cur.length > 1) out.push(cur); cur = []; }
+      }
+      if (cur.length > 1) out.push(cur); return out;
+    },
+    /* Ejes y cuadrícula entera dentro de v=[x0,x1,y0,y1]. g.userData.eje / .rejilla son los materiales. */
+    ejes2D: function (THREE, v, w, cEje, cRej) {
+      var g = new THREE.Group(), rej = [], i;
+      for (i = Math.ceil(v[0]); i <= v[1]; i++) rej.push([[i, v[2]], [i, v[3]]]);
+      for (i = Math.ceil(v[2]); i <= v[3]; i++) rej.push([[v[0], i], [v[1], i]]);
+      var a = H.cinta(THREE, rej, cRej, w * 0.5), b = H.cinta(THREE, [[[v[0], 0], [v[1], 0]], [[0, v[2]], [0, v[3]]]], cEje, w);
+      a.position.z = -0.3; b.position.z = -0.2; g.add(a, b); g.userData.rejilla = a.material; g.userData.eje = b.material; return g;
     }
   };
 
@@ -78,10 +129,15 @@
       var renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       stage.removeChild(msg); stage.appendChild(renderer.domElement);
-      var scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(45, 1.6, 0.1, 200);
-      camera.up.set(0, 0, 1); camera.position.set(6, -7, 5);
-      var controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = false; controls.addEventListener('change', pedir);
+      var dos = params.dim === 2, vista = [-1, 1, -1, 1], controls = null;
+      var scene = new THREE.Scene(), camera;
+      if (dos) { camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -10, 10); }
+      else {
+        camera = new THREE.PerspectiveCamera(45, 1.6, 0.1, 200);
+        camera.up.set(0, 0, 1); camera.position.set(6, -7, 5);
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = false; controls.addEventListener('change', pedir);
+      }
       scene.add(new THREE.AmbientLight(0xffffff, 0.7));
       var luz = new THREE.DirectionalLight(0xffffff, 0.6); luz.position.set(4, -3, 8); scene.add(luz);
 
@@ -90,11 +146,31 @@
       function pintar() { pendiente = false; if (visible) renderer.render(scene, camera); }
       function ajustar() {
         var w = stage.clientWidth, h = stage.clientHeight; if (!w || !h) return;
-        renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); pedir();
+        renderer.setSize(w, h, false);
+        if (dos) {
+          var cx = (vista[0] + vista[1]) / 2, cy = (vista[2] + vista[3]) / 2, vw = vista[1] - vista[0], vh = vista[3] - vista[2];
+          if (vw / vh < w / h) vw = vh * w / h; else vh = vw * h / w;
+          camera.left = cx - vw / 2; camera.right = cx + vw / 2; camera.bottom = cy - vh / 2; camera.top = cy + vh / 2;
+        } else camera.aspect = w / h;
+        camera.updateProjectionMatrix(); pedir();
       }
       var ctx = {
         el: fig, THREE: THREE, scene: scene, camera: camera, renderer: renderer, controls: controls, params: params, H: H,
         colores: paleta, reducirMovimiento: reducir, pedir: pedir,
+        /* Solo 2D: caja del mundo que debe verse (se amplía para respetar la proporción del lienzo). */
+        vista: function (x0, x1, y0, y1) {
+          var px = (x1 - x0) * 0.04, py = (y1 - y0) * 0.04; vista = [x0 - px, x1 + px, y0 - py, y1 + py];
+          var r = (vista[1] - vista[0]) / (vista[3] - vista[2]); stage.style.aspectRatio = Math.max(1, Math.min(2, r)).toFixed(3);
+          ajustar();
+        },
+        /* Desplegable; cb(índice). */
+        selector: function (etiqueta, opciones, idx, cb) {
+          if (!ctl) { ctl = document.createElement('div'); ctl.className = 'int-ctl'; stage.after(ctl); }
+          var l = document.createElement('label'), sel = document.createElement('select');
+          opciones.forEach(function (t, i) { var o = document.createElement('option'); o.value = i; o.textContent = t; sel.appendChild(o); });
+          sel.value = idx; l.appendChild(document.createTextNode(etiqueta)); l.appendChild(sel); ctl.appendChild(l);
+          sel.addEventListener('change', function () { cb(parseInt(sel.value, 10)); pedir(); }); cb(idx); return sel;
+        },
         /* Slider accesible; cb(valor) se llama al mover y una vez al crearlo. fmt opcional para la lectura. */
         slider: function (etiqueta, min, max, paso, valor, cb, fmt) {
           if (!ctl) { ctl = document.createElement('div'); ctl.className = 'int-ctl'; stage.after(ctl); }
@@ -109,7 +185,7 @@
         lectura: function (etiqueta) {
           if (!ro) { ro = document.createElement('div'); ro.className = 'int-ro'; (ctl || stage).after(ro); }
           var d = document.createElement('div'), b = document.createElement('b');
-          d.appendChild(document.createTextNode(etiqueta + ': ')); d.appendChild(b); ro.appendChild(d);
+          if (etiqueta) d.appendChild(document.createTextNode(etiqueta + ': ')); d.appendChild(b); ro.appendChild(d);
           return function (t) { b.textContent = t; };
         },
         alCambiarTema: function (cb) { temaCbs.push(cb); cb(paleta()); }
