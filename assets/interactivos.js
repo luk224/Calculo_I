@@ -209,7 +209,20 @@
         if (propias) {
           propias({ L: L, R: R, T: T2, B: B, W: W, H: Hh, paso: paso, fmt: fmtN,
             x: function (wx) { return (wx - L) / (R - L) * W; }, y: function (wy) { return (T2 - wy) / (T2 - B) * Hh; },
-            poner: function (txt, px, py, cls) { poner(txt, px, py, cls); } });
+            poner: function (txt, px, py, cls) { poner(txt, px, py, cls); },
+            /* Números de un eje con correspondencia lineal mundo→valor: marcas('x'|'y', w0, w1, v0, v1, pos, opc), con w0<w1 y v0<v1;
+               pos = coordenada del mundo del eje que cruza (donde cuelgan los números); opc.lim = [vmin, vmax], opc.ent = solo enteros y opc.libre = no limitar al tramo w0–w1 (el eje sigue más allá). */
+            marcas: function (eje, w0, w1, v0, v1, pos, opc) {
+              opc = opc || {}; var lo = eje === 'x' ? L : B, hi = eje === 'x' ? R : T2, k = (v1 - v0) / (w1 - w0);
+              var a = v0 + k * ((opc.libre ? lo : Math.max(lo, w0)) - w0), b = v0 + k * ((opc.libre ? hi : Math.min(hi, w1)) - w0), i, v, st, q;
+              if (opc.lim) { a = Math.max(a, opc.lim[0]); b = Math.min(b, opc.lim[1]); }
+              if (!(b > a)) return; st = paso(b - a); if (opc.ent) st = Math.max(1, st);
+              var px = Math.min(W - 4, Math.max(4, (pos - L) / (R - L) * W - 4)), py = Math.min(Hh - 16, Math.max(2, (T2 - pos) / (T2 - B) * Hh + 3));
+              for (i = Math.ceil(a / st - 1e-9); i * st <= b + st * 1e-9; i++) {
+                v = i * st; if (Math.abs(v) < st * 1e-6) continue; q = w0 + (v - v0) / k;
+                if (eje === 'x') poner(fmtN(v, st), (q - L) / (R - L) * W, py, 'x'); else poner(fmtN(v, st), px, (T2 - q) / (T2 - B) * Hh, 'y');
+              }
+            } });
           for (; n < usadas.length; n++) usadas[n].style.display = 'none';
           return;
         }

@@ -7,7 +7,7 @@ Interactivos.registrar('biseccion', function (c) {
     { n: 'cos x − x en [0, 1]', f: function (x) { return Math.cos(x) - x; }, a: 0, b: 1, raiz: 0.7390851332151607 },
     { n: 'x² − 2 en [0, 2]  (√2)', f: function (x) { return x * x - 2; }, a: 0, b: 2, raiz: Math.SQRT2 }
   ];
-  var k = 0, n = 4, P = c.colores(), w, Lw, sy, ejes, curva, vA, vB, cur, filas, dots = [], raizPt, hist = [];
+  var k = 0, n = 4, P = c.colores(), w, Lw, sy, mxv, ejes, curva, vA, vB, cur, filas, dots = [], raizPt, hist = [];
   var l1 = c.lectura('Intervalo [aₙ, bₙ]'), l2 = c.lectura('cₙ  (punto medio)'), l3 = c.lectura('f(cₙ)'), l4 = c.lectura('Cota (b − a)/2ⁿ'), lv = c.lectura('');
   function fm(t) { return (Math.round(t * 100000) / 100000).toString().replace('-', '−'); }
   function nuevo() {
@@ -15,7 +15,7 @@ Interactivos.registrar('biseccion', function (c) {
     dots.forEach(function (d) { c.scene.remove(d); }); dots = [];
     var g = F[k], i, pts = [], mx = 0, x;
     Lw = g.b - g.a; for (i = 0; i <= 200; i++) { x = g.a + Lw * i / 200; mx = Math.max(mx, Math.abs(g.f(x))); }
-    sy = 0.5 * Lw / mx; w = 0.0055 * 2.2 * Lw;
+    sy = 0.5 * Lw / mx; mxv = mx; w = 0.0055 * 2.2 * Lw;
     c.vista(g.a - 0.15 * Lw, g.b + 0.15 * Lw, -0.07 * Lw * (MAXN + 1), 0.6 * Lw);
     ejes = H.cinta(T, [[[g.a - 0.15 * Lw, 0], [g.b + 0.15 * Lw, 0]]], P.fg, w); ejes.position.z = 0.05; c.scene.add(ejes);
     for (i = 0; i <= 300; i++) { x = g.a + Lw * i / 300; pts.push([x, g.f(x) * sy]); }
@@ -44,6 +44,12 @@ Interactivos.registrar('biseccion', function (c) {
   }
   c.slider('Iteraciones n', 0, MAXN, 1, n, function (v) { n = v; if (curva) calc(); }, function (v) { return String(v); });
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); calc(); });
+  /* La curva está reescalada en vertical (por sy) y las filas de debajo son los intervalos sucesivos: los números del eje vertical son valores de f. */
+  c.marcasPropias(function (m) {
+    var g = F[k];
+    m.marcas('x', 0, 1, 0, 1, 0, { libre: true });
+    m.marcas('y', -mxv * sy, mxv * sy, -mxv, mxv, g.a - 0.15 * Lw, { lim: [-mxv, mxv] });
+  });
   c.leyenda([['var(--fg)','f(x)','linea'],['var(--mut)','extremos aₙ, bₙ; intervalos anteriores','linea'],['var(--L)','intervalo actual [aₙ, bₙ]','linea'],['var(--S)','puntos medios cₙ','punto'],['var(--acc)','raíz','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);

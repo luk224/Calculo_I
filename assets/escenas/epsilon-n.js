@@ -35,6 +35,12 @@ Interactivos.registrar('epsilon-n', function (c) {
   c.slider('ε (de 1 a 0,01)', 0, 2, 0.01, u, function (v) { u = v; if (banda) calc(); }, function (v) { return fm(Math.pow(10, -v)); });
   c.slider('Términos mostrados', 10, MAXN, 1, M, function (v) { M = v; if (banda) { nuevo(); calc(); } }, function (v) { return String(v); });
   c.selector('Sucesión ', S.map(function (g) { return g.n; }), 1, function (i) { k = i; nuevo(); calc(); });
+  /* x = n·sx en el dibujo: los números del eje horizontal son los índices n. */
+  c.marcasPropias(function (m) {
+    var g = S[k];
+    m.marcas('x', 0, sx, 0, 1, Math.max(g.y[0], Math.min(0, g.y[1])), { lim: [0, M], ent: true, libre: true });
+    m.marcas('y', 0, 1, 0, 1, 0, { libre: true });
+  });
   c.leyenda([['var(--S)','términos aₙ fuera de la banda','punto'],['var(--L)','términos dentro de la banda; límite L','punto'],['var(--L)','banda (L − ε, L + ε)','area'],['var(--mut)','índice N','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
