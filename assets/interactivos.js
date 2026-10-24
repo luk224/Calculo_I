@@ -194,7 +194,7 @@
         if (dos && params.marcas !== false) marcas();
       }
       /* Números en los ejes (solo 2D): etiquetas HTML sobre el lienzo, con paso 1·2·5·10ᵏ según la zona visible. */
-      var capaM = null, usadas = [];
+      var capaM = null, usadas = [], propias = null;
       function paso(r) { var e = Math.pow(10, Math.floor(Math.log(r / 6) / Math.LN10)), m = r / 6 / e; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * e; }
       function marcas() {
         var W = stage.clientWidth, Hh = stage.clientHeight, L = camera.left, R = camera.right, T2 = camera.top, B = camera.bottom;
@@ -206,6 +206,13 @@
           e.className = cls; e.style.display = ''; e.style.left = x + 'px'; e.style.top = y + 'px'; if (e.textContent !== txt) e.textContent = txt;
         }
         function fmtN(v, st) { var d = Math.max(0, -Math.floor(Math.log(st) / Math.LN10 + 1e-9)); return (Math.abs(v) < st * 1e-6 ? '0' : v.toFixed(d)).replace('-', '−').replace('.', ','); }
+        if (propias) {
+          propias({ L: L, R: R, T: T2, B: B, W: W, H: Hh, paso: paso, fmt: fmtN,
+            x: function (wx) { return (wx - L) / (R - L) * W; }, y: function (wy) { return (T2 - wy) / (T2 - B) * Hh; },
+            poner: function (txt, px, py, cls) { poner(txt, px, py, cls); } });
+          for (; n < usadas.length; n++) usadas[n].style.display = 'none';
+          return;
+        }
         var sx = paso(R - L), sy = paso(T2 - B), yx = (0 - B) / (T2 - B), xy = (0 - L) / (R - L), i, v;
         var py = Math.min(Hh - 16, Math.max(2, (1 - yx) * Hh + 3)), px = Math.min(W - 4, Math.max(4, xy * W - 4));
         for (i = Math.ceil(L / sx); i * sx <= R; i++) { v = i * sx; if (Math.abs(v) < sx * 1e-6) continue; poner(fmtN(v, sx), (v - L) / (R - L) * W, py, 'x'); }
@@ -278,6 +285,8 @@
           });
           (ro || ctl || stage).after(d); return d;
         },
+        /* Números propios en los ejes cuando las coordenadas del mundo no coinciden con los valores (varios paneles, escalas distintas): fn(m) los coloca con m.poner(texto, px, py, 'x'|'y'). */
+        marcasPropias: function (fn) { propias = fn; pedir(); },
         alCambiarTema: function (cb) { temaCbs.push(cb); cb(paleta()); }
       };
       if (dos) activarZoom();

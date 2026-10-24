@@ -44,6 +44,29 @@ Interactivos.registrar('derivada-grafica', function (c) {
   }
   var sl = c.slider('x', -1, 1, 0.001, 0.5, function (u) { var g = F[k]; x0 = g.x[0] + (g.x[1] - g.x[0]) * (u + 1) / 2; if (tg) calc(); }, function (u) { var g = F[k]; return fm(g.x[0] + (g.x[1] - g.x[0]) * (u + 1) / 2); });
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); sl.value = 0.5; sl.dispatchEvent(new Event('input')); });
+  /* Los ejes del dibujo no están en unidades de x ni de y: cada panel (f arriba, f′ abajo) tiene su escala, así que los números se calculan aquí. */
+  function ticksX(m, ya, yb, v0, v1, yEje) {
+    var i, v, s, a, b, py = Math.min(m.H - 16, Math.max(2, m.y(yEje) + 3));
+    var g = F[k], W0 = 0, W1 = X;
+    a = Math.max(v0, g.x[0] + (g.x[1] - g.x[0]) * (m.L - W0) / (W1 - W0)); b = Math.min(v1, g.x[0] + (g.x[1] - g.x[0]) * (m.R - W0) / (W1 - W0));
+    if (!(b > a)) return;
+    s = m.paso(b - a);
+    for (i = Math.ceil(a / s); i * s <= b; i++) { v = i * s; if (Math.abs(v) < s * 1e-6) continue; m.poner(m.fmt(v, s), m.x(W0 + (W1 - W0) * (v - g.x[0]) / (g.x[1] - g.x[0])), py, 'x'); }
+  }
+  function ticksY(m, ya, yb, v0, v1, xEje) {
+    var i, v, s, a, b, h = yb - ya, px = Math.min(m.W - 4, Math.max(4, m.x(xEje) - 4));
+    a = Math.max(v0, v0 + (v1 - v0) * (m.B - ya) / h); b = Math.min(v1, v0 + (v1 - v0) * (m.T - ya) / h);
+    if (!(b > a)) return;
+    s = m.paso(b - a);
+    for (i = Math.ceil(a / s); i * s <= b; i++) { v = i * s; if (Math.abs(v) < s * 1e-6) continue; m.poner(m.fmt(v, s), px, m.y(ya + h * (v - v0) / (v1 - v0)), 'y'); }
+  }
+  c.marcasPropias(function (m) {
+    var g = F[k], ex = g.x[0] < 0 && g.x[1] > 0 ? mx(g, 0) : 0;
+    ticksX(m, Y0, Y0 + Hh, g.x[0], g.x[1], g.fy[0] < 0 && g.fy[1] > 0 ? mf(g, 0) : Y0);
+    ticksX(m, 0, Hh, g.x[0], g.x[1], g.dy[0] < 0 && g.dy[1] > 0 ? md(g, 0) : 0);
+    ticksY(m, Y0, Y0 + Hh, g.fy[0], g.fy[1], ex);
+    ticksY(m, 0, Hh, g.dy[0], g.dy[1], ex);
+  });
   c.leyenda([['var(--fg)', 'f(x) (arriba)', 'linea'], ['var(--acc)', 'f′(x) (abajo)', 'linea'], ['var(--S)', 'tangente en x y puntos de f y f′', 'linea'],
     ['var(--L)', 'f′ = 0: tangente horizontal', 'punto']]);
   c.alCambiarTema(function (q) {
