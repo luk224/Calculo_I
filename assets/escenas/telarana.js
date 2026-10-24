@@ -38,6 +38,7 @@ Interactivos.registrar('telarana', function (c) {
   c.selector('Función ', G.map(function (g) { return g.n; }), 0, function (i) {
     k = i; nuevo(); sx.min = G[i].x0[0]; sx.max = G[i].x0[1]; sx.value = G[i].x0[2]; sx.dispatchEvent(new Event('input'));
   });
+  c.leyenda([['var(--fg)','curva y = g(x); punto fijo','linea'],['var(--mut)','diagonal y = x','linea'],['var(--S)','telaraña: iteración xₙ → g(xₙ)','linea']]);
   c.alCambiarTema(function (p) {
     P = p; c.renderer.setClearColor(p.bg);
     if (!ejes) return;

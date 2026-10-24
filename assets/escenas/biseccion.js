@@ -44,6 +44,7 @@ Interactivos.registrar('biseccion', function (c) {
   }
   c.slider('Iteraciones n', 0, MAXN, 1, n, function (v) { n = v; if (curva) calc(); }, function (v) { return String(v); });
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); calc(); });
+  c.leyenda([['var(--fg)','f(x)','linea'],['var(--mut)','extremos aₙ, bₙ; intervalos anteriores','linea'],['var(--L)','intervalo actual [aₙ, bₙ]','linea'],['var(--S)','puntos medios cₙ','punto'],['var(--acc)','raíz','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!curva) return;

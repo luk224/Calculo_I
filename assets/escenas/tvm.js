@@ -66,6 +66,7 @@ Interactivos.registrar('tvm', function (c) {
     if (rolle) { a = G[i].a; b = G[i].b; sc.min = a; sc.max = b; sc.step = (b - a) / 200; cc = (a + b) / 2; sc.value = cc; sc.dispatchEvent(new Event('input')); }
     else { calc(); }
   });
+  c.leyenda([['var(--fg)','gráfica de f; extremos a y b','linea'],['var(--mut)','cuerda (pendiente media)','linea'],['var(--S)','tangente en c','linea'],['var(--L)','puntos c que cumplen el teorema','punto']]);
   c.alCambiarTema(function (p) {
     P = p; c.renderer.setClearColor(p.bg);
     if (!ejes) return;

@@ -37,6 +37,7 @@ Interactivos.registrar('secante-tangente', function (c) {
   c.slider('Punto a', -2, 2, 0.05, a, function (v) { a = v; if (tg) calc(); });
   c.slider('Incremento h', -1.5, 1.5, 0.05, h, function (v) { h = v; if (tg) calc(); });
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); calc(); });
+  c.leyenda([['var(--fg)','gráfica de f; punto Q','linea'],['var(--mut)','secante PQ','linea'],['var(--S)','tangente; punto P','linea'],['var(--L)','normal','linea']]);
   c.alCambiarTema(function (p) {
     P = p; c.renderer.setClearColor(p.bg);
     if (!ejes) return;

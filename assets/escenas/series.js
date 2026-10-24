@@ -32,6 +32,7 @@ Interactivos.registrar('series', function (c) {
   }
   c.slider('Términos n', 1, MAXN, 1, M, function (v) { M = v; if (bars) { nuevo(); calc(); } }, function (v) { return String(v); });
   c.selector('Serie ', S.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); calc(); });
+  c.leyenda([['var(--mut)','términos aₙ','linea'],['var(--S)','sumas parciales Sₙ','linea'],['var(--L)','suma de la serie (si converge)','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!bars) return;

@@ -46,6 +46,7 @@ Interactivos.registrar('extremos', function (c) {
     k = i; j = primera ? Math.min(j0, F[i].p.length) : 1; primera = false; nuevo(); sl.max = F[i].p.length; sl.value = j; sl.dispatchEvent(new Event('input'));
   });
   calc();
+  c.leyenda([['var(--acc)','superficie: zona baja','area'],['var(--S)','superficie: zona alta','area'],['var(--fg)','plano tangente horizontal','area'],['var(--L)','punto crítico','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg); colorear();
     if (!pt) return;

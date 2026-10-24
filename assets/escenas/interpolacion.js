@@ -63,6 +63,7 @@ Interactivos.registrar('interpolacion', function (c) {
   };
   c.slider('Número de nodos', 3, 21, 1, N, function (v) { N = v; if (pol) { nodos(); calc(); } }, function (v) { return String(v); });
   c.selector('Caso ', M.map(function (m) { return m.n; }), 0, function (i) { k = i; nuevo(); nodos(); calc(); });
+  c.leyenda([['var(--mut)','función f','linea'],['var(--S)','polinomio interpolador','linea'],['var(--acc)','nodos','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!ejes) return;

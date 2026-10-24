@@ -50,6 +50,7 @@ Interactivos.registrar('optimizacion', function (c) {
   }
   var sl = c.slider('x', 0, 1, 0.001, 0.5, function (u) { var g = C[k]; x = g.xa + (g.xb - g.xa) * u; if (pt) calc(); }, function (u) { var g = C[k]; return fm(g.xa + (g.xb - g.xa) * u); });
   c.selector('Problema ', C.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); sl.value = 0.5; sl.dispatchEvent(new Event('input')); });
+  c.leyenda([['var(--S)','figura del problema; punto actual','linea'],['var(--fg)','gráfica de la función a optimizar','linea'],['var(--acc)','puntos críticos','punto'],['var(--L)','óptimo','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!pt) return;

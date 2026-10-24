@@ -56,6 +56,7 @@ Interactivos.registrar('cadena', function (c) {
   c.selector('Curva γ ', G.map(function (g) { return g.n; }), 1, function (i) {
     j = i; st.min = G[i].t[0]; st.max = G[i].t[1]; t = (G[i].t[0] + G[i].t[1]) * 0.4 + G[i].t[0] * 0.2; st.value = t; if (suelo) { curvas(); } st.dispatchEvent(new Event('input'));
   });
+  c.leyenda([['var(--L)','trayectoria (g(t), h(t)) en el plano','linea'],['var(--S)','curva sobre la superficie; tangente; ∇f','linea'],['var(--acc)','velocidad γ′(t)','linea'],['var(--fg)','punto sobre la superficie','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg); colorear();
     if (!pt) return;

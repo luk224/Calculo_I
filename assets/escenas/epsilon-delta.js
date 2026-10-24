@@ -53,6 +53,7 @@ Interactivos.registrar('epsilon-delta', function (c) {
   c.slider('ε (de 1 a 0,01)', 0, 2, 0.01, ue, function (v) { ue = v; if (bh) calc(); }, function (v) { return fm(Math.pow(10, -v)); });
   c.slider('δ (de 2 a 0,02)', 0, 2, 0.01, ud, function (v) { ud = v; if (bh) calc(); }, function (v) { return fm(Math.pow(10, -v) * 2); });
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); calc(); });
+  c.leyenda([['var(--mut)','gráfica de f','linea'],['var(--L)','banda ε (en y); trozo de f dentro de ella','area'],['var(--acc)','banda δ (en x); punto del límite','area'],['var(--S)','trozo de f fuera de la banda ε','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!bh) return;

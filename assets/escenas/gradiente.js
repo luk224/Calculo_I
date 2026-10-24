@@ -57,6 +57,7 @@ Interactivos.registrar('gradiente', function (c) {
     k = i; var m = F[i].d - 0.1; sa.min = sb.min = -m; sa.max = sb.max = m; nuevo(); sa.value = Math.min(1, m); sb.value = Math.min(0.5, m);
     sa.dispatchEvent(new Event('input')); sb.dispatchEvent(new Event('input'));
   });
+  c.leyenda([['var(--acc)','dirección v: corte de la superficie y su tangente','linea'],['var(--S)','gradiente ∇f','linea'],['var(--L)','curva de nivel por el punto','linea'],['var(--fg)','punto (a, b)','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg); colorear();
     if (!pt) return;

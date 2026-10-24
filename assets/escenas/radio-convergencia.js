@@ -41,6 +41,7 @@ Interactivos.registrar('radio-convergencia', function (c) {
   c.selector('Serie ', F.map(function (g) { return g.n; }), 0, function (i) {
     k = i; nuevo(); sx.min = F[i].rx[0]; sx.max = F[i].rx[1]; sx.value = F[i].rx[2]; sx.dispatchEvent(new Event('input'));
   });
+  c.leyenda([['var(--mut)','f(x)','linea'],['var(--S)','suma parcial Sₙ(x)','linea'],['var(--acc)','error |f − Sₙ|','linea'],['var(--L)','x = ±R (radio de convergencia)','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!ejes) return;

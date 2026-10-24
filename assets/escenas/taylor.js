@@ -42,6 +42,7 @@ Interactivos.registrar('taylor', function (c) {
   c.slider('Grado n', 0, 12, 1, 3, function (v) { n = v; if (pol) calc(); }, function (v) { return String(v); });
   function rango(s, r) { s.min = r[0]; s.max = r[1]; s.value = r[2]; s.dispatchEvent(new Event('input')); }
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); rango(sa, F[i].rA); rango(sx, F[i].rX); });
+  c.leyenda([['var(--fg)','f(x)','linea'],['var(--S)','polinomio pₙ(x)','linea'],['var(--L)','resto Rₙ(x)','linea'],['var(--acc)','centro a','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!ejes) return;

@@ -45,6 +45,7 @@ Interactivos.registrar('coordenadas', function (c) {
   c.slider('z (cilíndricas)', -2, 2, 0.05, z, function (v) { z = v; if (pt) calc(); });
   c.slider('φ (esféricas)', -90, 90, 1, ph, function (v) { ph = v; if (pt) calc(); }, function (v) { return v + '°'; });
   c.selector('Sistema ', ['Polares (plano xy)', 'Cilíndricas (ρ, θ, z)', 'Esféricas (ρ, θ, φ)'], 2, function (i) { modo = i; if (pt) calc(); });
+  c.leyenda([['var(--fg)','punto P; ángulo θ','punto'],['var(--S)','distancia al origen (r o ρ)','linea'],['var(--L)','altura z; ángulo φ (esféricas)','linea'],['var(--mut)','proyección en el plano xy; coordenadas x, y','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!pt) return;

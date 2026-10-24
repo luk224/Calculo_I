@@ -43,6 +43,7 @@ Interactivos.registrar('newton', function (c) {
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) {
     k = i; nuevo(); sx.min = F[i].x0[0]; sx.max = F[i].x0[1]; sx.value = F[i].x0[2]; sx.dispatchEvent(new Event('input'));
   });
+  c.leyenda([['var(--fg)','f(x); raíz','linea'],['var(--S)','tangente en xₙ','linea'],['var(--mut)','vertical hasta la curva','linea'],['var(--acc)','iteraciones xₙ','punto']]);
   c.alCambiarTema(function (p) {
     P = p; c.renderer.setClearColor(p.bg);
     if (!ejes) return;

@@ -44,6 +44,7 @@ Interactivos.registrar('implicita', function (c) {
     k = i; a = F[i].a; b = F[i].b; sa.value = a; sb.value = b; sa.dispatchEvent(new Event('input')); sb.dispatchEvent(new Event('input'));
   });
   calc();
+  c.leyenda([['var(--fg)','curva de nivel F(x, y) = c','linea'],['var(--S)','tangente en (a, b)','linea'],['var(--acc)','gradiente (Fₓ, F_y)','linea'],['var(--L)','puntos con F_y = 0','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!pt) return;

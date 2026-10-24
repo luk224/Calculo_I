@@ -48,6 +48,7 @@ Interactivos.registrar('lagrange', function (c) {
   c.selector('Problema ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); if (sl) { th = F[i].t0; sl.value = th; sl.dispatchEvent(new Event('input')); } });
   var sl = c.slider('Posición sobre la restricción', 0, 360, 1, th, function (v) { th = v; if (pt) calc(); }, function (v) { return Math.round(v) + '°'; });
   calc();
+  c.leyenda([['var(--fg)','restricción g = 0; punto','linea'],['var(--S)','curva de nivel de f por el punto','linea'],['var(--acc)','∇f','linea'],['var(--L)','∇g','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!pt) return;

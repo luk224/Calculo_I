@@ -32,6 +32,7 @@ Interactivos.registrar('vectores', function (c) {
   nuevo();
   ['x', 'y', 'z'].forEach(function (nom, i) { c.slider('u' + nom, -3, 3, 0.1, u[i], function (a) { u[i] = a; if (arco) calc(); }); });
   ['x', 'y', 'z'].forEach(function (nom, i) { c.slider('v' + nom, -3, 3, 0.1, v[i], function (a) { v[i] = a; if (arco) calc(); }); });
+  c.leyenda([['var(--S)','vector u','linea'],['var(--acc)','vector v','linea'],['var(--L)','proyección de u sobre v','linea'],['var(--fg)','ángulo entre u y v','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!arco) return;

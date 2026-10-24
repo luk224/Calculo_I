@@ -44,6 +44,7 @@ Interactivos.registrar('concavidad', function (c) {
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) {
     k = i; nuevo(); sl.min = F[i].r[0]; sl.max = F[i].r[1]; sl.value = F[i].r[2]; sl.dispatchEvent(new Event('input'));
   });
+  c.leyenda([['var(--fg)','gráfica de f','linea'],['var(--S)','tangente en x','linea'],['var(--L)','puntos de inflexión','punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!ejes) return;

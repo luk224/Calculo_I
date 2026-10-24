@@ -47,6 +47,7 @@ Interactivos.registrar('superficie-nivel', function (c) {
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) {
     k = i; nuevo(); sl.min = F[i].c[0]; sl.max = F[i].c[1]; sl.value = F[i].c[2]; sl.dispatchEvent(new Event('input'));
   });
+  c.leyenda([['var(--acc)','superficie: zona baja','area'],['var(--S)','superficie: zona alta; plano z = c y traza','area'],['var(--L)','curva de nivel proyectada','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg); colorear();
     if (rejilla) { limpia(rejilla); var g = F[k]; rejilla = new T.GridHelper(2 * g.d, 8, q.mut, q.bd); rejilla.rotation.x = Math.PI / 2; rejilla.position.z = g.z[0]; c.scene.add(rejilla); }

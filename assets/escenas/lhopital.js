@@ -42,6 +42,7 @@ Interactivos.registrar('lhopital', function (c) {
   }
   c.slider('Ventana w (de 2 a 0,002)', 0, 1, 0.005, s, function (v) { s = v; if (cqR) calc(); }, function (v) { return fm(2 * Math.pow(10, -v * 3)); });
   c.selector('Límite ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); calc(); });
+  c.leyenda([['var(--acc)','f','linea'],['var(--S)','g; f′/g′','linea'],['var(--fg)','cociente f/g','linea'],['var(--L)','límite L','linea']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!cqR) return;

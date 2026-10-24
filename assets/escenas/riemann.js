@@ -61,6 +61,7 @@ Interactivos.registrar('riemann', function (c) {
   c.slider('Subintervalos n', 1, 60, 1, n, function (v) { n = v; if (bordes) calc(); }, function (v) { return String(v); });
   c.selector('Altura ', METODOS, 0, function (i) { m = i; if (bordes) calc(); });
   c.selector('Función ', G.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); calc(); });
+  c.leyenda([['var(--fg)','gráfica de f','linea'],['var(--S)','rectángulos sobre el eje (suman)','area'],['var(--E)','rectángulos bajo el eje (restan)','area']]);
   c.alCambiarTema(function (p) {
     P = p; c.renderer.setClearColor(p.bg);
     if (!ejes) return;

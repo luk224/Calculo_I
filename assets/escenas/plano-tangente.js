@@ -37,6 +37,7 @@ Interactivos.registrar('plano-tangente', function (c) {
     k = i; sa.value = F[i].a; sb.value = F[i].b; a = F[i].a; b = F[i].b; sa.dispatchEvent(new Event('input')); sb.dispatchEvent(new Event('input'));
   });
   ventana();
+  c.leyenda([['var(--acc)','superficie z = f(x, y)','area'],['var(--S)','plano tangente','area'],['var(--fg)','punto (a, b)','punto']]);
   c.alCambiarTema(function (qq) {
     P = qq; c.renderer.setClearColor(qq.bg);
     if (!pt) return;
