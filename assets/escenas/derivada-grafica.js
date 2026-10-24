@@ -44,6 +44,8 @@ Interactivos.registrar('derivada-grafica', function (c) {
   }
   var sl = c.slider('x', -1, 1, 0.001, 0.5, function (u) { var g = F[k]; x0 = g.x[0] + (g.x[1] - g.x[0]) * (u + 1) / 2; if (tg) calc(); }, function (u) { var g = F[k]; return fm(g.x[0] + (g.x[1] - g.x[0]) * (u + 1) / 2); });
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) { k = i; nuevo(); sl.value = 0.5; sl.dispatchEvent(new Event('input')); });
+  c.leyenda([['var(--fg)', 'f(x) (arriba)', 'linea'], ['var(--acc)', 'f′(x) (abajo)', 'linea'], ['var(--S)', 'tangente en x y puntos de f y f′', 'linea'],
+    ['var(--L)', 'f′ = 0: tangente horizontal', 'punto']]);
   c.alCambiarTema(function (q) {
     P = q; c.renderer.setClearColor(q.bg);
     if (!tg) return;
