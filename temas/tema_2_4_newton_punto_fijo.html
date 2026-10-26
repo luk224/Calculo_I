@@ -62,7 +62,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
 
 <h3>Qué necesitas saber ya</h3>
 <ul>
-  <li><b>Derivar</b> funciones elementales y saber que $f'(a)$ es la pendiente de la recta tangente en $(a,f(a))$. U remite al Curso 0 si falla esto. <span class="src" data-l="U" data-ref="U §2.4.1 Orientaciones, p. 86">U p.86</span></li>
+  <li><b>Derivar</b> funciones elementales y saber que $f'(a)$ es la pendiente de la recta tangente en $(a,f(a))$. Si falla esto, repasa el Curso 0. <span class="src" data-l="U" data-ref="U §2.4.1 Orientaciones, p. 86">U p.86</span></li>
   <li><b>Acotar una expresión</b> (por ejemplo «$e^{-x}\le e^{-0.1}$ si $x\ge0.1$»). Es la destreza clave del punto fijo; el propio U la pide. <span class="src" data-l="U" data-ref="U §2.4.1 Orientaciones, p. 86">U p.86</span></li>
   <li><b>Teorema de Bolzano</b>: si $f$ es continua en $[a,b]$ y $f(a)f(b)&lt;0$, hay una raíz en $(a,b)$. Sirve para saber <i>dónde</i> empezar. <span class="src" data-l="U" data-ref="U §1.4, Teorema de Bolzano, p. 52">U p.52</span></li>
   <li><b>Método de bisección</b>, como término de comparación (error $&lt;\frac{b-a}{2^n}$). <span class="src" data-l="U" data-ref="U §1.4, método de bisección, pp. 53-55">U pp.53-55</span></li>
@@ -82,10 +82,6 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
 
 <h3>Qué se pide en los ejercicios</h3>
 <p>Los cinco ejercicios de E son de este tipo: (a) hacer <b>$n$ iteraciones</b> de Newton para aproximar un número o una raíz (2.34, 2.35, 2.36); (b) <b>comprobar las hipótesis</b> del Teorema 2.2 y hacer iteraciones del punto fijo (2.38); (c) calcular con el Teorema 2.3 <b>cuántas iteraciones</b> garantizan un error dado (2.37). <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.34-2.38, pp. 72-76">E pp.72-76</span></p>
-
-<div class="box warn"><span class="h">Lo que U no dice (y aquí se completa)</span>
-  <p>Comprobado en el texto: U <b>no da ninguna condición de convergencia para Newton</b> (solo una figura al margen con los fallos, p. 89), <b>no demuestra</b> los Teoremas 2.2 y 2.3 y <b>no cuantifica la velocidad de convergencia</b> (lineal o cuadrática; solo dice cualitativamente que Newton es «rápido», pp. 86-87). Se completa con Larson §3.8 y Stewart §4.8 (marcados <span class="src" data-l="L" data-ref="Larson §3.8, pp. 225-229">L</span> <span class="src" data-l="S" data-ref="Stewart §4.8, pp. 338-343">S</span>) y con explicaciones propias (<span class="src" data-l="P" data-ref="Explicación propia, no está en U §2.4">P</span>). Lo que <i>cae en examen</i> es lo que hay en U; el resto es para entender por qué.</p>
-</div>
 
 <!-- ============================ 1 ============================ -->
 <h2 id="s1"><span class="n">1</span>Método de Newton <span class="src" data-l="U" data-ref="U §2.4.2 Método de Newton, pp. 86-90">U pp.86-90</span></h2>
@@ -171,7 +167,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p>U lo comprueba para $x^4-5$ (Ejemplo 2.16, tomando límites en la iteración). En general: si $f$ y $f'$ son continuas, $x_n\to\tilde x$ y $f'(\tilde x)\neq0$, al tomar límites en $x_{n+1}=x_n-f(x_n)/f'(x_n)$ queda $\tilde x=\tilde x-f(\tilde x)/f'(\tilde x)$, es decir, $f(\tilde x)=0$. <b>Ojo:</b> esto <i>no</i> dice que la sucesión converja; solo que, si lo hace, el límite es una raíz.</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 2.16, p. 89 (caso x^4-5)">U p.89</span>
   <span class="src" data-l="L" data-ref="Larson §3.8, p. 227: si el límite es c, c es un cero de f">L p.227</span>
-  <span class="src" data-l="P" data-ref="Enunciado general con hipótesis explícitas: explicación propia; U solo lo hace para x^4-5">P</span>
+  <span class="src" data-l="P" data-ref="Enunciado general con hipótesis explícitas: explicación propia">P</span>
 </div>
 
 <h3>Cuándo parar: los errores aproximados</h3>
@@ -179,7 +175,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p>No conocemos la solución exacta $\tilde x$ (por eso usamos un método numérico), así que medimos cuánto <b>cambia</b> la sucesión en el último paso:
   $$\varepsilon_a=|x_n-x_{n-1}|,\qquad \varepsilon_r=\frac{|x_n-x_{n-1}|}{|x_n|}.$$
   Se para cuando $\varepsilon_r$ (o $\varepsilon_a$) es menor que una tolerancia dada. Otro criterio, muy conveniente al programar, es un <b>número máximo de iteraciones</b> fijado de antemano, para no entrar en un proceso infinito.</p>
-  <p>Se toman valores absolutos porque normalmente da igual si el error es por defecto o por exceso (no siempre: U cita la velocidad mínima de despegue de un avión, donde un error por defecto significa que no despega y uno por exceso solo gasta más combustible, p.89); se divide entre $|x_n|$ porque un error de $10$ céntimos no pesa igual en una caña que en un coche. <i>Rigurosamente</i> habría que usar el error relativo exacto (con $\tilde x$), pero es imposible, y se supone que $\tilde x$ está cerca de $x_n$.</p>
+  <p>Se toman valores absolutos porque normalmente da igual si el error es por defecto o por exceso (no siempre: por ejemplo, la velocidad mínima de despegue de un avión, donde un error por defecto significa que no despega y uno por exceso solo gasta más combustible, p.89); se divide entre $|x_n|$ porque un error de $10$ céntimos no pesa igual en una caña que en un coche. <i>Rigurosamente</i> habría que usar el error relativo exacto (con $\tilde x$), pero es imposible, y se supone que $\tilde x$ está cerca de $x_n$.</p>
   <span class="src" data-l="U" data-ref="U §2.4.2, error relativo y absoluto aproximados, p. 89; error exacto y número máximo de iteraciones, p. 90">U pp.89-90</span>
   <span class="src" data-l="L" data-ref="Larson §3.8, paso 3 del cuadro (|xn - xn+1| dentro de la precisión), p. 225">L p.225</span>
   <span class="src" data-l="S" data-ref="Stewart §4.8, cuándo detenerse, p. 340">S p.340</span>
@@ -193,7 +189,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
 <div class="box warn"><span class="h">Cuándo falla Newton</span>
   <ul>
     <li><b>$f'(x_n)=0$</b> para algún $n$: no se puede dividir (tangente horizontal). Solución: elegir otro $x_0$.</li>
-    <li><b>Ciclos</b>: la sucesión salta entre dos puntos y no converge (figura al margen de U).</li>
+    <li><b>Ciclos</b>: la sucesión salta entre dos puntos y no converge (U p.89).</li>
     <li><b>Mal punto de partida</b>: la tangente puede llevarte lejos de la raíz o fuera del dominio de $f$ (S, figura 4).</li>
   </ul>
   <p><b>Ejemplo de ciclo (L ej. 22, p.229).</b> Con $f(x)=x^3-2x+2$ y $x_0=0$ salen $0,1,0,1,\dots$ y no converge. Detalle en el ejemplo propio P3.</p>
@@ -204,16 +200,16 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="S" data-ref="Stewart §4.8, Figura 4, p. 340; ejercicios 31-34, p. 343">S pp.340,343</span>
 </div>
 
-<div class="box thm"><span class="h">Una condición suficiente de convergencia (no está en U)</span>
+<div class="box thm"><span class="h">Una condición suficiente de convergencia</span>
   <p><b>Hipótesis.</b> $f$ con derivada segunda y $f'\neq0$ en un intervalo abierto $I$ que contiene al cero $c$, y punto inicial $x_0\in I$ tal que las iteraciones permanecen en $I$ (por ejemplo, si $I$ es simétrico respecto de $c$).</p>
   <p><b>Conclusión (Larson).</b> Si $\left|\dfrac{f(x)\,f''(x)}{[f'(x)]^2}\right|&lt;1$ para todo $x\in I$, el método de Newton converge al cero. Para $f(x)=x^2-2$ el cociente es $\frac{x^2-2}{2x^2}=\frac12-\frac1{x^2}$, que en $(1,3)$ toma valores en $(-\frac12,\frac7{18})$: su valor absoluto es $&lt;1$ y converge. Para $f(x)=\sqrt[3]x$ el cociente vale $-2$ en todo punto ($|{\cdot}|=2$): no se cumple, y en efecto diverge.</p>
-  <p>Es <i>solo suficiente</i>; U no la pide ni la usa, y Larson no la demuestra. Sirve como criterio de sentido común: Newton va bien si $f$ no se «curva» demasiado respecto a lo empinada que es.</p>
+  <p>Es <i>solo suficiente</i>. Sirve como criterio de sentido común: Newton va bien si $f$ no se «curva» demasiado respecto a lo empinada que es.</p>
   <span class="src" data-l="L" data-ref="Larson §3.8, condición para convergencia, p. 228">L p.228</span>
 </div>
 
 <h3>Velocidad: por qué Newton es tan rápido (a veces)</h3>
 <div class="box intu"><span class="h">Los decimales correctos se duplican</span>
-  <p>Con una <b>raíz simple</b> ($f'(\tilde x)\ne0$), el error nuevo es aproximadamente el <i>cuadrado</i> del anterior: $10^{-2}\to10^{-4}\to10^{-8}\to10^{-16}$ (<b>convergencia cuadrática</b>). Con una <b>raíz doble</b> ($f'(\tilde x)=0$, la curva «toca» el eje sin cruzarlo) el error solo se reduce a la mitad en cada paso, y Newton no es más rápido que la bisección (Ejercicio 2.35). La razón se ve con álgebra pura en el paso 6 de la solución del Ejercicio 2.34 (explicación propia, no viene en E). U no cuantifica la velocidad.</p>
+  <p>Con una <b>raíz simple</b> ($f'(\tilde x)\ne0$), el error nuevo es aproximadamente el <i>cuadrado</i> del anterior: $10^{-2}\to10^{-4}\to10^{-8}\to10^{-16}$ (<b>convergencia cuadrática</b>). Con una <b>raíz doble</b> ($f'(\tilde x)=0$, la curva «toca» el eje sin cruzarlo) el error solo se reduce a la mitad en cada paso, y Newton no es más rápido que la bisección (Ejercicio 2.35). La razón se ve con álgebra pura en el paso 6 de la solución del Ejercicio 2.34 (explicación propia, no viene en E).</p>
   <span class="src" data-l="P" data-ref="Explicación propia: U no menciona la velocidad de convergencia; ver el paso 6 de la solución del Ej. 2.34 y el paso 4 de la del 2.35 (propios)">P</span>
 </div>
 
@@ -388,11 +384,11 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
 <table>
   <tr><th></th><th>Bisección (U §1.4)</th><th>Punto fijo</th><th>Newton</th></tr>
   <tr><td><b>Qué necesita</b></td><td>$f$ continua y cambio de signo en $[a,b]$ (Bolzano)</td><td>$g$ continua, $g:[a,b]\to[a,b]$ y $|g'|\le k&lt;1$ en $(a,b)$</td><td>$f$ derivable, $f'(x_n)\ne0$ y un buen $x_0$</td></tr>
-  <tr><td><b>Garantía a priori</b></td><td>siempre converge; error $&lt;\frac{b-a}{2^n}$</td><td>sí, Teorema 2.3</td><td>ninguna en U (solo condición suficiente en L)</td></tr>
+  <tr><td><b>Garantía a priori</b></td><td>siempre converge; error $&lt;\frac{b-a}{2^n}$</td><td>sí, Teorema 2.3</td><td>ninguna (solo condición suficiente en L)</td></tr>
   <tr><td><b>Velocidad</b></td><td>lenta: el error se divide entre 2</td><td>lineal: el error se multiplica por $\approx|g'(\tilde x)|$</td><td>cuadrática (raíz simple); lineal si la raíz es doble</td></tr>
   <tr><td><b>Punto débil</b></td><td>no sirve si $f$ no cambia de signo (p. ej. $x^2=0$)</td><td>elegir bien $g$ (no todas valen)</td><td>$f'=0$, ciclos, mal $x_0$</td></tr>
 </table>
-<p>Ventajas de Newton sobre bisección según U: no hace falta conocer un intervalo con la solución y, cuando converge, lo hace mucho más rápido. (U p.87.) La comparación de velocidades es explicación propia.</p>
+<p>Ventajas de Newton sobre bisección: no hace falta conocer un intervalo con la solución y, cuando converge, lo hace mucho más rápido. (U p.87.) La comparación de velocidades es explicación propia.</p>
 
 <!-- ============================ 5 ============================ -->
 <h2 id="ejercicios"><span class="n">5</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ejercicios 2.34-2.38, pp. 72-76">E pp.72-76</span></h2>
@@ -507,7 +503,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Cómo interpretar $\varepsilon_r$.</b> No es el error verdadero: mide cuánto ha cambiado la última iteración y se usa como estimación. Con $x_0=5$, $\varepsilon_r\approx0.1$ sobreestima el error relativo real ($\approx10^{-3}$): en Newton suele ocurrir, porque el error real ya es mucho menor que el último salto.</li>
   </ol>
   <div class="recipe"><b>Receta:</b> (1) Bolzano para localizar la raíz. (2) Comprobar $f'\ne0$. (3) Simplificar $x-f/f'$. (4) Tabla con $x_n$ y $\varepsilon_r=|x_n-x_{n-1}|/|x_n|$. (5) Parar cuando $\varepsilon_r$ sea menor que la tolerancia o se agoten las iteraciones pedidas.</div>
-  <p><b>Error típico:</b> perder el signo de $f'$: el denominador es $-e^{-x_n}-1$. Si se usa $+e^{-x_n}+1$, el paso va en sentido contrario (desde $0.5$ saldría $0.434$, que se aleja). Otro: dividir $\varepsilon_r$ entre $|x_{n-1}|$ en vez de $|x_n|$ (U usa $|x_n|$).</p>
+  <p><b>Error típico:</b> perder el signo de $f'$: el denominador es $-e^{-x_n}-1$. Si se usa $+e^{-x_n}+1$, el paso va en sentido contrario (desde $0.5$ saldría $0.434$, que se aleja). Otro: dividir $\varepsilon_r$ entre $|x_{n-1}|$ en vez de $|x_n|$.</p>
   <div class="box intu"><span class="h">Dónde está la teoría</span><p>U §2.4.2 pp.88-90 (algoritmo p.88; errores aproximados y criterios de parada pp.89-90).</p><span class="src" data-l="U" data-ref="U pp. 88-90: algoritmo, error relativo aproximado, criterios de parada">U pp.88-90</span></div>
 </details>
 
@@ -563,7 +559,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Por dónde empiezo</dt><dd>Sustituyo $b-a=2$ y cada valor de $k$, y planteo $\dfrac{2k^n}{1-k}<0.1$.</dd>
   </dl></div>
   <ol class="steps">
-    <li><b>Datos del Teorema 2.3.</b> Aquí la función de iteración se llama $f$ (en U es $g$). $[a,b]=[-1,1]$, $f([-1,1])\subset[-1,1]$ y $|f'|&lt;k$ con $k=0.8$ o $k=0.2$, ambos en $[0,1)$. Se cumplen las hipótesis del Teorema 2.2, y por el Teorema 2.3
+    <li><b>Datos del Teorema 2.3.</b> Aquí la función de iteración se llama $f$. $[a,b]=[-1,1]$, $f([-1,1])\subset[-1,1]$ y $|f'|&lt;k$ con $k=0.8$ o $k=0.2$, ambos en $[0,1)$. Se cumplen las hipótesis del Teorema 2.2, y por el Teorema 2.3
       $$|x_n-\tilde x|&lt;\frac{k^n}{1-k}(b-a)=\frac{2k^n}{1-k}.$$</li>
     <li><b>Planteamiento.</b> Buscamos el <b>menor</b> $n\in\mathbb N$ con $\dfrac{2k^n}{1-k}&lt;0.1$.</li>
     <li><b>Caso $k=0.8$.</b> $\dfrac{2\cdot0.8^n}{0.2}&lt;0.1\iff10\cdot0.8^n&lt;0.1\iff0.8^n&lt;0.01$. Tomamos $\ln$ (creciente, conserva el sentido): $n\ln0.8&lt;\ln0.01$. Dividimos entre $\ln0.8&lt;0$, que <b>invierte</b> la desigualdad:
@@ -571,7 +567,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
       El primer natural es $n=21$. Comprobación: $n=20$ da cota $0.1153$ (no basta); $n=21$ da $0.0922&lt;0.1$.</li>
     <li><b>Caso $k=0.2$.</b> $\dfrac{2\cdot0.2^n}{0.8}&lt;0.1\iff0.2^n&lt;0.04$. Como $0.2^2=0.04$ <b>no</b> es $&lt;0.04$ y $0.2^3=0.008&lt;0.04$, sale $n=3$. (Cotas: $n=2\to0.1$, $n=3\to0.02$.)</li>
     <li><b>Moraleja.</b> Con el mismo intervalo, pasar de $k=0.8$ a $k=0.2$ reduce la garantía de $21$ a $3$ iteraciones: cuanto menor es $k$, más rápida es la convergencia.</li>
-    <li><b>Matiz de rigor.</b> El Teorema 2.3 de U tiene desigualdad <i>estricta</i>. Con $k=0.2$ y $n=2$ la cota vale exactamente $0.1$, y como el teorema dice «error $&lt;$ cota», en rigor ya daría error $&lt;0.1$. Pero la receta de U (p.92) pide el natural más pequeño para el que la <i>cota</i> $\frac{k^n}{1-k}(b-a)$ sea $&lt;\varepsilon$, y con $n=2$ la cota es $=0.1$, no menor. La respuesta esperada es <b>3</b>, que es la de E y la que se da en el examen. (Con la cota más fina $k^n(b-a)$ de la demostración bastarían $14$ y $2$, pero no es la fórmula del libro: no la uses salvo que la justifiques.)</li>
+    <li><b>Matiz de rigor.</b> El Teorema 2.3 de U tiene desigualdad <i>estricta</i>. Con $k=0.2$ y $n=2$ la cota vale exactamente $0.1$, y como el teorema dice «error $&lt;$ cota», en rigor ya daría error $&lt;0.1$. Pero la receta de U (p.92) pide el natural más pequeño para el que la <i>cota</i> $\frac{k^n}{1-k}(b-a)$ sea $&lt;\varepsilon$, y con $n=2$ la cota es $=0.1$, no menor. La respuesta esperada es <b>3</b>. (Con la cota más fina $k^n(b-a)$ de la demostración bastarían $14$ y $2$, pero no es la fórmula estándar: no la uses salvo que la justifiques.)</li>
   </ol>
   <div class="recipe"><b>Receta:</b> resuelve $\frac{k^n}{1-k}(b-a)&lt;\varepsilon\Rightarrow n&gt;\dfrac{\ln\big(\varepsilon(1-k)/(b-a)\big)}{\ln k}$ y toma el <b>primer natural estrictamente mayor</b>. Recuerda que $\ln k&lt;0$ invierte la desigualdad.</div>
   <p><b>Error típico:</b> no invertir la desigualdad al dividir entre $\ln k$ (sale $n&lt;20.6$, absurdo); redondear $20.64$ a $20$ en vez de a $21$; olvidar el factor $(b-a)=2$ o el $1/(1-k)$.</p>
@@ -838,7 +834,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Newton dentro de un ejercicio largo:</b> función a trozos (continuidad y derivabilidad) y después Newton para $f(x)=1$ (Febrero 2017, Modelo B, X pp.82-83); una iteración para $x^5-x^4+2x^3-1=0$ (Febrero 2016, Modelo A).</li>
     <li><b>Punto fijo dentro de un estudio de funciones:</b> $g(x)=1/(x^2+4)$, 3 iteraciones en $[0,1]$ (Febrero 2018, Modelo A, X pp.89-90).</li>
     <li><b>Bisección con la ecuación explícita:</b> $x^3+2x^2-1=0$ en $(0,1)$ con error $&lt;0.3$ o $&lt;0.2$ (X p.10, pp.17-18, pp.116-117): como X1, escribiendo además los intervalos sucesivos.</li>
-    <li>No aparece ninguna pregunta de número de iteraciones de Newton garantizado (U no da esa cota) ni de elegir, entre varias $g$, la que converge (Ejemplo 2.18 de U); esta última podría caer como teoría.</li>
+    <li>No aparece ninguna pregunta de número de iteraciones de Newton garantizado ni de elegir, entre varias $g$, la que converge (Ejemplo 2.18 de U); esta última podría caer como teoría.</li>
   </ul>
 </div>
 
