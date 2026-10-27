@@ -86,8 +86,10 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
 <!-- ============================ 1 ============================ -->
 <h2 id="s1"><span class="n">1</span>Método de Newton <span class="src" data-l="U" data-ref="U §2.4.2 Método de Newton, pp. 86-90">U pp.86-90</span></h2>
 
-<div class="box intu"><span class="h">Idea intuitiva: sustituir la curva por su tangente</span>
-  <p>Estás en un punto $x_0$ que no es solución ($f(x_0)\ne0$). No sabes dónde corta la curva al eje, pero sí sabes dónde lo corta <b>una recta</b>. Así que sustituyes la curva por su recta tangente en $(x_0,f(x_0))$, que se le parece mucho cerca de $x_0$, y tomas como nueva aproximación el punto $x_1$ donde esa tangente corta al eje $x$. Repites desde $x_1$. Es como bajar una cuesta siguiendo su pendiente hasta llegar a nivel del suelo: si la cuesta es casi recta, llegas casi exacto.</p>
+<div class="box intu"><span class="h">La idea: sustituir la curva por su tangente</span>
+  <p><b>Qué quieres.</b> Un número $x$ con $f(x)=0$, es decir, el punto donde la gráfica de $f$ <b>cruza el eje $x$</b>. Casi nunca se puede despejar con fórmulas.</p>
+  <p><b>Qué haces.</b> Partes de una estimación inicial $x_0$ (aunque sea mala) y la mejoras una y otra vez. En $x_0$ la curva no toca el eje, pero sabes dos cosas: <b>su altura</b> $f(x_0)$ y <b>su pendiente</b> $f'(x_0)$. Con eso dibujas la <b>recta tangente</b>, que cerca de $x_0$ casi coincide con la curva.</p>
+  <p><b>El truco.</b> Una curva es difícil, pero una <b>recta</b> es fácil: sabes exactamente dónde corta al eje. Ese corte es tu nueva estimación $x_1$, que normalmente está más cerca de la raíz que $x_0$. Repites desde $x_1$. Imagina bajar una cuesta siguiendo su inclinación hasta llegar a nivel del suelo: si la cuesta es casi recta, llegas casi exacto.</p>
   <span class="src" data-l="U" data-ref="U §2.4.2, p. 86 y Figura 2.2, p. 87">U pp.86-87</span>
   <span class="src" data-l="S" data-ref="Stewart §4.8, geometría del método (Figuras 2 y 3), p. 339">S p.339</span>
   <span class="src" data-l="L" data-ref="Larson §3.8, Figura 3.60, p. 225">L p.225</span>
@@ -134,13 +136,40 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="S" data-ref="Stewart §4.8, fórmula (2), p. 339">S p.339</span>
 </div>
 
-<div class="box thm"><span class="h">Deducción (por qué esa fórmula)</span>
+<div class="box thm"><span class="h">Cómo se llega a la fórmula, paso a paso</span>
   <ol class="steps">
-    <li>La recta tangente a la gráfica de $f$ en $(x_0,f(x_0))$ tiene pendiente $f'(x_0)$: $\;y-f(x_0)=f'(x_0)(x-x_0)$.</li>
-    <li>Corta al eje $x$ donde $y=0$: $\;-f(x_0)=f'(x_0)(x_1-x_0)$.</li>
-    <li>Si $f'(x_0)\neq0$ podemos despejar: $\;x_1=x_0-\dfrac{f(x_0)}{f'(x_0)}$. Si $f'(x_0)=0$ la tangente es horizontal, no corta al eje y hay que <b>cambiar $x_0$</b>.</li>
+    <li><b>Punto de partida.</b> Tienes $x_n$. Ahí la curva está a altura $f(x_n)$ y tiene pendiente $f'(x_n)$ (la derivada es la pendiente de la tangente).</li>
+    <li><b>Tangente en ese punto.</b> Es la recta que pasa por $(x_n,f(x_n))$ con pendiente $f'(x_n)$:
+      $$y=f(x_n)+f'(x_n)\,(x-x_n).$$
+      Léela así: «empiezo a altura $f(x_n)$ y, por cada unidad que me muevo a la derecha de $x_n$, subo $f'(x_n)$».</li>
+    <li><b>Dónde corta al eje $x$.</b> Cortar al eje significa $y=0$. Ese corte es el $x$ de la nueva estimación, $x=x_{n+1}$:
+      $$0=f(x_n)+f'(x_n)\,(x_{n+1}-x_n).$$</li>
+    <li><b>Despejar $x_{n+1}$.</b> Pasa $f(x_n)$ al otro lado, divide entre $f'(x_n)$ (por eso se necesita $f'(x_n)\neq0$) y suma $x_n$:
+      $$f'(x_n)\,(x_{n+1}-x_n)=-f(x_n)\;\Longrightarrow\;x_{n+1}-x_n=-\frac{f(x_n)}{f'(x_n)}\;\Longrightarrow\;x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}.$$</li>
   </ol>
+  <p>Si $f'(x_n)=0$ la tangente es horizontal y no corta al eje: hay que <b>cambiar $x_0$</b>.</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 2.15, pp. 87-88">U pp.87-88</span>
+</div>
+
+<div class="box intu"><span class="h">Cómo leer la fórmula: «estimación nueva = actual − altura / pendiente»</span>
+  <p>El cociente $\dfrac{f(x_n)}{f'(x_n)}=\dfrac{\text{altura}}{\text{pendiente}}$ es <b>la distancia horizontal</b> que hay que andar por la tangente para bajar (o subir) de la altura $f(x_n)$ hasta $0$: si subes $m$ por unidad horizontal y tienes que cubrir una altura $h$, necesitas moverte $h/m$. Por eso la fórmula es «donde estoy, menos el paso que me falta para llegar al eje».</p>
+  <ul>
+    <li>Si $f(x_n)$ y $f'(x_n)$ tienen el mismo signo (curva por encima del eje y subiendo), el cociente es positivo y vas <b>hacia la izquierda</b>.</li>
+    <li>Pendiente <b>grande</b> (curva empinada) ⇒ paso <b>corto</b>; pendiente <b>pequeña</b> (casi plana) ⇒ paso <b>largo</b>, y con pendiente $0$ no hay paso.</li>
+    <li>Cuando $f(x_n)\approx0$ el paso es casi $0$: el método se frena solo al llegar a la raíz.</li>
+  </ul>
+  <span class="src" data-l="P" data-ref="Explicación propia de la fórmula de U p.88">P</span>
+</div>
+
+<div class="box ex"><span class="h">Un paso completo con números: $\sqrt5$ como raíz de $x^2-5=0$, $x_0=3$</span>
+  <ol class="steps">
+    <li>$f(x)=x^2-5$, $f'(x)=2x$. En $x_0=3$: altura $f(3)=4$, pendiente $f'(3)=6$.</li>
+    <li>Tangente: $y=4+6(x-3)$. Se anula cuando $6(x-3)=-4$, o sea $x-3=-\frac46$.</li>
+    <li>$x_1=3-\dfrac{4}{6}=\dfrac73\approx2.3333$. (Es justo la fórmula: $x_0-f(x_0)/f'(x_0)$.)</li>
+    <li>Repetimos en $x_1$: $f(\frac73)=\frac{49}{9}-5=\frac49$, $f'(\frac73)=\frac{14}3$, así que $x_2=\frac73-\frac{4/9}{14/3}=\frac73-\frac2{21}=\frac{47}{21}\approx2.2381$.</li>
+  </ol>
+  <p>Comparado con $\sqrt5=2.2360679\ldots$: de $x_0=3$ (error $0.76$) a $x_1$ (error $0.097$) y a $x_2$ (error $0.0020$). En dos pasos ya tienes 2 decimales correctos. Es la figura de arriba.</p>
+  <span class="src" data-l="P" data-ref="Ejemplo propio, valores comprobados con Python (fracciones exactas); misma función y x0 que la figura">P</span>
 </div>
 
 <div class="box ex"><span class="h">Ejemplo 2.15 de U: $\sqrt[4]5$ como raíz de $x^4-5$</span>
