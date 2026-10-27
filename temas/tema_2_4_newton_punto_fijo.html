@@ -95,33 +95,9 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="L" data-ref="Larson §3.8, Figura 3.60, p. 225">L p.225</span>
 </div>
 
-<figure>
-<svg class="fig" viewBox="0 0 640 300" role="img" aria-label="Método de Newton para f(x)=x al cuadrado menos 5, empezando en x0=3: la tangente en x0 corta el eje en x1=7/3 y la tangente en x1 corta el eje muy cerca de la raíz de 5">
-  <!-- eje x (y=0 en py=215) -->
-  <line class="ax" x1="30" y1="215" x2="625" y2="215"/>
-  <!-- curva f(x)=x^2-5 -->
-  <path class="a" d="M50.0 297.5 L66.5 292.9 L83.0 288.2 L99.5 283.3 L116.0 278.3 L132.5 273.1 L149.0 267.8 L165.5 262.3 L182.0 256.7 L198.5 250.9 L215.0 245.0 L231.5 238.9 L248.0 232.7 L264.5 226.3 L281.0 219.8 L297.5 213.1 L314.0 206.3 L330.5 199.3 L347.0 192.2 L363.5 184.9 L380.0 177.5 L396.5 169.9 L413.0 162.2 L429.5 154.3 L446.0 146.3 L462.5 138.1 L479.0 129.8 L495.5 121.3 L512.0 112.7 L528.5 103.9 L545.0 95.0 L561.5 85.9 L578.0 76.7"/>
-  <!-- tangente 1 en x0=3 -->
-  <line class="t24-tan" x1="264.5" y1="248.0" x2="584.6" y2="73.4"/>
-  <!-- tangente 2 en x1=7/3 -->
-  <line class="t24-tan" x1="248.0" y1="234.3" x2="413.0" y2="164.3"/>
-  <!-- verticales -->
-  <line class="t24-dash" x1="545" y1="215" x2="545" y2="95"/>
-  <line class="t24-dash" x1="325" y1="215" x2="325" y2="201.7"/>
-  <!-- puntos sobre la curva -->
-  <circle class="pt" cx="545" cy="95" r="5"/><circle class="pt" cx="325" cy="201.7" r="5"/>
-  <!-- iterantes sobre el eje -->
-  <circle class="pb" cx="545" cy="215" r="5"/><circle class="pb" cx="325" cy="215" r="5"/>
-  <circle class="t24-root" cx="292.9" cy="215" r="4.5"/>
-  <text class="t24-lab" x="545" y="240" text-anchor="middle">x₀ = 3</text>
-  <text class="t24-lab" x="333" y="240" text-anchor="middle">x₁ = 7/3</text>
-  <text class="sm" x="285" y="262" text-anchor="middle">x₂ ≈ 2.2381</text>
-  <text class="sm" x="285" y="279" text-anchor="middle">raíz √5 ≈ 2.2361 (círculo vacío)</text>
-  <text class="sm" x="560" y="70" text-anchor="middle">f(x) = x² − 5</text>
-  <text class="sm" x="405" y="205">tangente en x₀</text>
-  <text class="sm" x="262" y="232" transform="rotate(-25 262 232)">tangente en x₁</text>
-</svg>
-<figcaption>Newton para $f(x)=x^2-5$ con $x_0=3$: la tangente en $(x_0,f(x_0))$ corta el eje en $x_1=x_0-\frac{f(x_0)}{f'(x_0)}=\frac73$; repetir desde $x_1$ da $x_2\approx2.2381$, a $2\times10^{-3}$ de $\sqrt5$. Ya en el segundo paso la tangente y la curva son casi indistinguibles.</figcaption>
+<figure class="interactivo" data-escena="newton" data-params='{"dim":2}' aria-label="Interactivo del método de Newton: tangentes sucesivas y sus cortes con el eje x">
+  <img class="int-static" src="../assets/img/int_newton.png" alt="Interactivo del método de Newton: tangentes sucesivas y sus cortes con el eje x">
+  <figcaption>Interactivo propio. Por defecto es el ejemplo de $\sqrt5$ con $f(x)=x^2-5$ y $x_0=3$: la tangente en $(x_0,f(x_0))$ corta el eje en $x_1=x_0-\frac{f(x_0)}{f'(x_0)}=\frac73$ y la siguiente da $x_2\approx2.2381$, a $2\times10^{-3}$ de $\sqrt5$. En la lectura «Fórmula» ves el último paso con números. Elige la función y el punto inicial $x_0$ y aumenta los pasos: cada tangente (naranja) corta al eje $x$ en la siguiente aproximación. Prueba $x^3-2x+2$ con $x_0=0$ (la sucesión salta entre $0$ y $1$ y nunca converge) y $\sqrt[3]{x}$ (cada paso duplica la distancia al origen). Los valores mostrados son los de la iteración $x_{n+1}=x_n-f(x_n)/f'(x_n)$. <span class="src" data-l="P" data-ref="Explicación propia; algoritmo: U §2.4.2 p. 88">P</span></figcaption>
 </figure>
 
 <h3>De la idea a la fórmula</h3>
@@ -168,8 +144,8 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li>$x_1=3-\dfrac{4}{6}=\dfrac73\approx2.3333$. (Es justo la fórmula: $x_0-f(x_0)/f'(x_0)$.)</li>
     <li>Repetimos en $x_1$: $f(\frac73)=\frac{49}{9}-5=\frac49$, $f'(\frac73)=\frac{14}3$, así que $x_2=\frac73-\frac{4/9}{14/3}=\frac73-\frac2{21}=\frac{47}{21}\approx2.2381$.</li>
   </ol>
-  <p>Comparado con $\sqrt5=2.2360679\ldots$: de $x_0=3$ (error $0.76$) a $x_1$ (error $0.097$) y a $x_2$ (error $0.0020$). En dos pasos ya tienes 2 decimales correctos. Es la figura de arriba.</p>
-  <span class="src" data-l="P" data-ref="Ejemplo propio, valores comprobados con Python (fracciones exactas); misma función y x0 que la figura">P</span>
+  <p>Comparado con $\sqrt5=2.2360679\ldots$: de $x_0=3$ (error $0.76$) a $x_1$ (error $0.097$) y a $x_2$ (error $0.0020$). En dos pasos ya tienes 2 decimales correctos. Es el interactivo de abajo con sus valores por defecto.</p>
+  <span class="src" data-l="P" data-ref="Ejemplo propio, valores comprobados con Python (fracciones exactas); misma función y x₀ que el interactivo">P</span>
 </div>
 
 <div class="box ex"><span class="h">Ejemplo 2.15 de U: $\sqrt[4]5$ como raíz de $x^4-5$</span>
@@ -181,11 +157,6 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p>Fíjate en el patrón de los errores: $10^{-1}\to10^{-2}\to10^{-4}$. Cada error es más o menos el <i>cuadrado</i> del anterior (ver el apartado de velocidad, más abajo).</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 2.15, tabla de iteraciones, p. 88">U p.88</span>
 </div>
-
-<figure class="interactivo" data-escena="newton" data-params='{"dim":2}' aria-label="Interactivo del método de Newton: tangentes sucesivas y sus cortes con el eje x">
-  <img class="int-static" src="../assets/img/int_newton.png" alt="Interactivo del método de Newton: tangentes sucesivas y sus cortes con el eje x">
-  <figcaption>Interactivo propio. Elige la función y el punto inicial $x_0$ y aumenta los pasos: cada tangente (naranja) corta al eje $x$ en la siguiente aproximación. Prueba $x^3-2x+2$ con $x_0=0$ (la sucesión salta entre $0$ y $1$ y nunca converge) y $\sqrt[3]{x}$ (cada paso duplica la distancia al origen). Los valores mostrados son los de la iteración $x_{n+1}=x_n-f(x_n)/f'(x_n)$. <span class="src" data-l="P" data-ref="Explicación propia; algoritmo: U §2.4.2 p. 88">P</span></figcaption>
-</figure>
 
 <div class="box warn"><span class="h">Error típico: aplicar Newton sin haber escrito «$f(x)=0$»</span>
   <p>Newton resuelve ecuaciones de la forma $f(x)=0$. Para $\sqrt5$ hay que decir «$\sqrt5$ es la raíz positiva de $x^2-5=0$» y tomar $f(x)=x^2-5$. Aplicar la fórmula a «$x=\sqrt5$» no significa nada. Y si la ecuación es $e^{-x}=x$, hay que pasarla a $e^{-x}-x=0$ <i>antes</i> de derivar.</p>

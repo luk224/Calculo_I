@@ -2,15 +2,16 @@
 Interactivos.registrar('newton', function (c) {
   var T = c.THREE, H = c.H;
   var F = [
+    { n: 'x² − 5 (raíz √5)', f: function (x) { return x * x - 5; }, d: function (x) { return 2 * x; }, raiz: Math.sqrt(5), v: [0.5, 4, -2, 6], x0: [0.5, 4, 3] },
     { n: 'x² − 2 (raíz √2)', f: function (x) { return x * x - 2; }, d: function (x) { return 2 * x; }, raiz: Math.SQRT2, v: [-1, 3.6, -3, 7], x0: [0.3, 3.2, 2.5] },
     { n: 'cos x − x', f: function (x) { return Math.cos(x) - x; }, d: function (x) { return -Math.sin(x) - 1; }, raiz: 0.7390851332151607, v: [-1, 3.6, -3.5, 2.5], x0: [-0.5, 3, 2] },
     { n: 'x³ − 2x + 2 (cicla con x₀ = 0)', f: function (x) { return x * x * x - 2 * x + 2; }, d: function (x) { return 3 * x * x - 2; }, raiz: -1.7692923542386314, v: [-3, 3, -4, 8], x0: [-2.5, 2.5, 0] },
     { n: '∛x (diverge siempre)', f: Math.cbrt, d: function (x) { var q = Math.cbrt(x); return 1 / (3 * q * q); }, raiz: 0, v: [-4, 4, -2.5, 2.5], x0: [-1.2, 1.2, 0.5] }
   ];
   var W = function (v) { var dx = 1.5 * (v[1] - v[0]), dy = 1.5 * (v[3] - v[2]); return [v[0] - dx, v[1] + dx, v[2] - dy, v[3] + dy]; };
-  var k = 0, x0 = F[0].x0[2], n = 3;
+  var k = 0, x0 = F[0].x0[2], n = 2;
   var P = c.colores(), w, malla, ejes, curva, tang, vert, dots = [], raizPt;
-  var lx = c.lectura('xₙ'), lf = c.lectura('f(xₙ)'), le = c.lectura('|xₙ − raíz|'), lm = c.lectura('');
+  var lx = c.lectura('xₙ'), lf = c.lectura('f(xₙ)'), le = c.lectura('|xₙ − raíz|'), lm = c.lectura(''), lfo = c.lectura('Fórmula');
 
   function nuevo() {
     [ejes, curva, tang, vert, raizPt].forEach(function (o) { if (o) c.scene.remove(o); });
@@ -36,10 +37,15 @@ Interactivos.registrar('newton', function (c) {
     dots.forEach(function (d, j) { d.visible = j < xs.length; if (j < xs.length) d.mover(xs[j], 0); });
     var u = xs[xs.length - 1], fm = function (t) { return (Math.round(t * 1e6) / 1e6).toString().replace('-', '−'); };
     lx(fm(u)); lf(fm(g.f(u))); le(Math.abs(u - g.raiz) > 1e4 ? '> 10⁴' : fm(Math.abs(u - g.raiz)));
+    var sb = function (j) { return String(j).replace(/\d/g, function (d) { return '₀₁₂₃₄₅₆₇₈₉'[d]; }); }, fo = function (t) { return (Math.round(t * 1e4) / 1e4).toString().replace('-', '−'); };
+    if (xs.length > 1) {
+      var j = xs.length - 2, xj = xs[j], fj = g.f(xj), dj = g.d(xj);
+      lfo('x' + sb(j + 1) + ' = x' + sb(j) + ' − f(x' + sb(j) + ')/f′(x' + sb(j) + ') = ' + fo(xj) + ' − (' + fo(fj) + ')/(' + fo(dj) + ') = ' + fo(xs[j + 1]));
+    } else lfo('—');
     lm(parado ? 'f′(xₙ) = 0: la tangente es horizontal y no corta al eje' : '');
   }
   var sx = c.slider('x₀', F[0].x0[0], F[0].x0[1], 0.05, F[0].x0[2], function (v) { x0 = v; if (tang) calc(); });
-  c.slider('Pasos n', 1, 9, 1, 3, function (v) { n = v; if (tang) calc(); }, function (v) { return String(v); });
+  c.slider('Pasos n', 1, 9, 1, 2, function (v) { n = v; if (tang) calc(); }, function (v) { return String(v); });
   c.selector('Función ', F.map(function (g) { return g.n; }), 0, function (i) {
     k = i; nuevo(); sx.min = F[i].x0[0]; sx.max = F[i].x0[1]; sx.value = F[i].x0[2]; sx.dispatchEvent(new Event('input'));
   });
