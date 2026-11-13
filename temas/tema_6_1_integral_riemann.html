@@ -42,11 +42,6 @@
 <!-- ============================ 0 ============================ -->
 <h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.1.1 Motivación, p. 236">U p.236</span></h2>
 
-<div class="box intu"><span class="h">La idea del tema en una frase</span>
-  <p>Para medir el área de una parcela de forma rara se la <b>trocea en tiras estrechas</b> que casi son rectángulos, se suman las áreas de las tiras y se hacen las tiras cada vez más estrechas: el valor al que se acerca la suma es el área. Eso es la <b>integral definida</b> $\int_a^b f(x)\,dx$. Si la gráfica pasa por debajo del eje, esa parte <b>resta</b>. Este método es el de «exhaución» de Eudoxo y es el principio de toda la integración (U p.236).</p>
-  <span class="src" data-l="U" data-ref="U §6.1.1 Motivación y §6.1.2, pp. 236-238">U pp.236-238</span>
-</div>
-
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li><b>Límite de una sucesión</b> (<a href="tema_1_2_sucesiones.html">tema 1.2</a>): $\lim_{n\to\infty}\frac{5n+3}{2n}=\frac52$. Cada suma de Riemann con $n$ rectángulos es un término de una sucesión y la integral es su límite.</li>
@@ -56,29 +51,14 @@
   <li><b>Funciones con la misma derivada</b> (<a href="tema_2_5_rolle_valor_medio.html">tema 2.5</a>): dos funciones con la misma derivada en un intervalo se diferencian en una constante (se usa en la integral indefinida, apartado 5).</li>
 </ul>
 
-<h3>Mapa del tema</h3>
-<table>
-  <caption>Mapa del tema</caption>
-  <tr><th scope="col">Apartado</th><th scope="col">Qué contiene</th><th scope="col">Dónde está</th></tr>
-  <tr><td>1 Área con rectángulos</td><td>idea; Ej. 6.1 de U ($e^x$ en $[0,1]$); área con signo</td><td>U pp.236-238</td></tr>
-  <tr><td>2 Partición, finura, suma de Riemann</td><td>vocabulario para escribir la definición</td><td>U pp.238-239</td></tr>
-  <tr><td>3 Definición de integral definida</td><td>Def. 6.1; Ej. 6.2; interactivo; receta general</td><td>U p.239</td></tr>
-  <tr><td>4 Propiedades</td><td>siete reglas; Ej. 6.3 (áreas con signo)</td><td>U p.240</td></tr>
-  <tr><td>5 Integral indefinida</td><td>primitiva, Def. 6.2; Ej. 6.4</td><td>U pp.241-242</td></tr>
-  <tr><td>6 Ejercicios de E</td><td>6.1-6.10 (10 ejercicios)</td><td>E pp.214-218</td></tr>
-  <tr><td>7 Ejemplos propios</td><td>4 ejemplos, de menos a más difícil</td><td>propio</td></tr>
-  <tr><td>8 Examen</td><td>4 problemas de X</td><td>X</td></tr>
-  <tr><td>9 Chuleta y comprobación</td><td>fórmulas, errores, lista</td><td>síntesis</td></tr>
-</table>
-
-<h3>Qué se pide en los ejercicios y en el examen</h3>
+<h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>Vocabulario</b>: calcular o construir particiones y su finura (E 6.1-6.3). (B) <b>Propiedades</b>: decidir cuáles son siempre ciertas y cuáles no (E 6.4-6.6, 6.10), usar aditividad (E 6.8) y acotar con la monotonía (E 6.7). (C) <b>Calcular una integral</b> con la definición (sumas de Riemann y límite) o con áreas con signo (U Ej. 6.2 y 6.3; los ejemplos propios). En los exámenes de X la definición en sí no aparece: lo que cae son preguntas de verdadero o falso sobre la integral $F(x)=\int_0^x f$ (monotonía, extremos) y áreas entre curvas; se resuelven con las propiedades de este tema y se completan con el teorema fundamental de §6.2 (los problemas del apartado 8 lo indican). Las técnicas de cálculo (primitivas, partes, sustitución) vienen en §6.3, la regla del trapecio y Simpson en §6.4 y las integrales impropias en §6.5.</p>
 
 <!-- ============================ 1 ============================ -->
 <h2 id="s1"><span class="n">1</span>El área bajo una gráfica con rectángulos <span class="src" data-l="U" data-ref="U §6.1.2, pp. 236-238; Figura 6.1, p. 237; Figura 6.2, p. 238; Ejemplo 6.1, pp. 236-238">U pp.236-238</span></h2>
 
 <div class="box intu"><span class="h">Idea intuitiva · embaldosar una parcela</span>
-  <p>Una parcela rectangular de $a$ por $b$ metros tiene área $a\cdot b$; esa fórmula no falla. Pero ¿y una parcela con un lado curvo? Se coloca un embaldosado de rectángulos que llegue hasta la curva. Con pocas baldosas grandes queda mucho hueco o se sale por fuera; con muchas baldosas estrechas el error se hace diminuto. El <b>área exacta</b> es el valor al que se acerca la suma de las áreas de las baldosas cuando su anchura tiende a $0$.</p>
+  <p>Una parcela rectangular de $a$ por $b$ metros tiene área $a\cdot b$; esa fórmula no falla. Pero ¿y una parcela con un lado curvo? Se coloca un embaldosado de rectángulos que llegue hasta la curva. Con pocas baldosas grandes queda mucho hueco o se sale por fuera; con muchas baldosas estrechas el error se hace diminuto. El <b>área exacta</b> es el valor al que se acerca la suma de las áreas de las baldosas cuando su anchura tiende a $0$: eso es la <b>integral definida</b> $\int_a^b f(x)\,dx$. Este método es el de «exhaución» de Eudoxo y es el principio de toda la integración (U p.236).</p>
   <p>Concretamente (U p.236): $f:[a,b]\to\mathbb R$ continua con $f(x)\ge0$; se quiere el área entre su gráfica, el eje $x$ y las rectas $x=a$, $x=b$.</p>
   <span class="src" data-l="U" data-ref="U §6.1.2, p. 236">U p.236</span>
 </div>
@@ -136,8 +116,8 @@
 <figcaption>Una partición con cinco subintervalos de longitudes distintas, un $c_i$ elegido en cada uno y los rectángulos de altura $f(c_i)$. La finura es la longitud del trozo más largo (aquí $\Delta x_3=1{,}4$). <span class="src" data-l="P" data-ref="Figura propia sobre U pp. 238-239">P</span></figcaption>
 </figure>
 
-<div class="box warn"><span class="h">Errores típicos</span>
-  <p>(i) Confundir la finura con el número de puntos, con el de subintervalos o con la longitud media: es la longitud del subintervalo <b>más largo</b> (E 6.1). (ii) Creer que «$\|P\|\to0$» es lo mismo que «$n\to\infty$» en cualquier partición. Si $\|P\|\to0$ entonces $n\to\infty$ (hacen falta cada vez más trozos), pero no al revés: se pueden añadir muchos puntos en un trozo y dejar otro grande. Con particiones <b>equiespaciadas</b> sí coinciden, porque $\|P\|=\frac{b-a}n$ (L §4.3, p.267). (iii) Olvidar la base $\Delta x_i$ y sumar solo alturas.</p>
+<div class="box warn"><span class="h">Error típico</span>
+  <p><b>No son lo mismo $\|P\|\to0$ y $n\to\infty$ en cualquier partición.</b> Si $\|P\|\to0$ entonces $n\to\infty$ (hacen falta cada vez más trozos), pero no al revés: se pueden añadir muchos puntos en un trozo y dejar otro grande. Con particiones <b>equiespaciadas</b> sí coinciden, porque $\|P\|=\frac{b-a}n$ (L §4.3, p.267).</p>
   <span class="src" data-l="L" data-ref="Larson §4.3, p. 267: ‖Δ‖→0 implica n→∞; el recíproco no es cierto">L p.267</span>
   <span class="src" data-l="P" data-ref="Errores típicos propios">P</span>
 </div>
@@ -153,15 +133,10 @@
 </div>
 
 <div class="box thm"><span class="h">Continua $\Rightarrow$ integrable (pero no al revés)</span>
-  <p>Aquí la integral se define para funciones <b>continuas</b>, y toda función continua en $[a,b]$ es integrable. La idea de «integrable» (el límite de las sumas existe y es el mismo para todas las elecciones) tiene sentido para más funciones: por ejemplo, el escalón $f(x)=0$ en $[0,1)$ y $f(x)=1$ en $[1,2]$ no es continuo en $1$, pero es integrable y $\int_0^2f=1$ (es el rectángulo de base $1$ y altura $1$; la parte de altura $0$ no aporta).</p>
+  <p>Aquí la integral se define para funciones <b>continuas</b>, y toda función continua en $[a,b]$ es integrable. La idea de «integrable» (el límite de las sumas existe y es el mismo para todas las elecciones) tiene sentido para más funciones: por ejemplo, el escalón $f(x)=0$ en $[0,1)$ y $f(x)=1$ en $[1,2]$ no es continuo en $1$, pero es integrable y $\int_0^2f=1$ (es el rectángulo de base $1$ y altura $1$; la parte de altura $0$ no aporta). Por eso «integrable $\Rightarrow$ continua» es <b>falso</b>.</p>
   <span class="src" data-l="U" data-ref="U Def. 6.1, p. 239 (funciones continuas) y p. 240">U pp.239-240</span>
   <span class="src" data-l="L" data-ref="Larson §4.3, Teorema 4.4, p. 268: continua implica integrable">L p.268</span>
   <span class="src" data-l="S" data-ref="Stewart §5.2, Definición 2, p. 372: integrable">S p.372</span>
-</div>
-
-<div class="box warn"><span class="h">Error típico</span>
-  <p>«Integrable $\Rightarrow$ continua» es <b>falso</b> (el escalón de arriba); lo cierto es «continua $\Rightarrow$ integrable».</p>
-  <span class="src" data-l="P" data-ref="Error típico propio">P</span>
 </div>
 
 <div class="box intu"><span class="h">Por qué no depende de los $c_i$ · suma inferior y superior</span>
@@ -198,19 +173,14 @@
 
 <figure class="interactivo" data-escena="riemann" data-params='{"dim":2}' aria-label="Interactivo: suma de Riemann de una función continua con n rectángulos; se puede cambiar la altura (extremo izquierdo, derecho, punto medio, mínimo o máximo), el número de subintervalos n y la función">
   <img class="int-static" src="../assets/img/int_riemann.png" alt="Interactivo: suma de Riemann de una función continua con n rectángulos; se puede cambiar la altura (extremo izquierdo, derecho, punto medio, mínimo o máximo), el número de subintervalos n y la función">
-  <figcaption>Interactivo propio. Mueve $n$ y cambia el tipo de altura: la suma de Riemann $S_n$ (las barras sobre el eje suman, las que quedan bajo él restan y tienen otro color) se acerca a la integral exacta sea cual sea la elección, y el error baja al aumentar $n$. Con $e^x$ en $[0,1]$ y extremo izquierdo, $n=5$ da $S_5=1{,}5522$ (U Ej. 6.1) y $n=100$ da $1{,}7097$; con $2x$ en $[-1,2]$ y extremo derecho sale $S_n=3+\frac9n$ (U Ej. 6.2). Prueba $x^3-x$, que cambia de signo: las barras bajo el eje restan. <span class="src" data-l="P" data-ref="Explicación propia; ejemplos de U Ej. 6.1 y 6.2, pp. 236-239">P</span></figcaption>
+  <figcaption>Interactivo propio. Mueve $n$ y cambia el tipo de altura: la suma de Riemann $S_n$ (las barras sobre el eje suman, las que quedan bajo él restan y tienen otro color) se acerca a la integral exacta sea cual sea la elección, y el error baja al aumentar $n$. Con $e^x$ en $[0,1]$ (U Ej. 6.1) o $2x$ en $[-1,2]$ (U Ej. 6.2) puedes reproducir las sumas de esos ejemplos. Prueba $x^3-x$, que cambia de signo: las barras bajo el eje restan. <span class="src" data-l="P" data-ref="Explicación propia; ejemplos de U Ej. 6.1 y 6.2, pp. 236-239">P</span></figcaption>
 </figure>
-
-<div class="box tip"><span class="h">Con ordenador</span>
-  <p>En Maxima, la integral definida de $f$ entre $a$ y $b$ se calcula con <code>integrate(f(x),x,a,b)</code> (U p.239).</p>
-  <span class="src" data-l="U" data-ref="U recuadro Maxima, p. 239">U p.239</span>
-</div>
 
 <!-- ============================ 4 ============================ -->
 <h2 id="s4"><span class="n">4</span>Propiedades de la integral definida <span class="src" data-l="U" data-ref="U §6.1.2, propiedades y Ejemplo 6.3, p. 240">U p.240</span></h2>
 
 <div class="box intu"><span class="h">Idea intuitiva · son reglas sobre áreas</span>
-  <p>Si se piensa en áreas con signo, todas las propiedades son casi obvias: duplicar una función duplica el área; el área de una suma es la suma de las áreas; si una función está siempre por encima de otra, su área es mayor; el área total es la de la parte izquierda más la de la derecha; y recorrer el intervalo al revés cambia el signo. Lo que <b>no</b> hay son reglas para productos, cocientes ni composiciones: ahí hay que tener cuidado (E 6.5, 6.6).</p>
+  <p>Si se piensa en áreas con signo, todas las propiedades son casi obvias: duplicar una función duplica el área; el área de una suma es la suma de las áreas; si una función está siempre por encima de otra, su área es mayor; el área total es la de la parte izquierda más la de la derecha; y recorrer el intervalo al revés cambia el signo.</p>
   <span class="src" data-l="P" data-ref="Explicación propia sobre U p. 240">P</span>
 </div>
 
@@ -251,21 +221,15 @@
 </figure>
 
 <div class="box warn"><span class="h">Errores típicos</span>
-  <p>(i) <b>Integral no es área geométrica</b>: con una función que cambia de signo, la integral resta; para el área geométrica hay que integrar $|f|$ o sumar los trozos en valor absoluto (en el ejemplo, $1+4=5$ frente a $3$). (ii) <b>No hay</b> $\int fg=\int f\cdot\int g$ ni $\int|f+g|=\int|f|+\int|g|$ (solo $\le$). (iii) Al cambiar el orden de los límites se cambia el signo: $\int_2^{-1}2x\,dx=-3$. (iv) La integral definida es un <b>número</b>, no una función.</p>
+  <p>(i) <b>Integral no es área geométrica</b> si $f$ cambia de signo; para el área geométrica hay que integrar $|f|$ o sumar los trozos en valor absoluto (en el ejemplo, $1+4=5$ frente a $3$). (ii) <b>No hay reglas para productos, cocientes ni composiciones</b>: $\int fg\ne\int f\cdot\int g$ y $\int|f+g|\ne\int|f|+\int|g|$ (solo $\le$) (E 6.5, 6.6). (iii) Al cambiar el orden de los límites se cambia el signo: $\int_2^{-1}2x\,dx=-3$. (iv) La integral definida es un <b>número</b>, no una función.</p>
   <span class="src" data-l="P" data-ref="Errores típicos propios sobre U p. 238 y p. 240">P</span>
-</div>
-
-<div class="box intu"><span class="h">Adelanto · el valor medio del cálculo integral</span>
-  <p>De la acotación de arriba sale un resultado que se usará en §6.2: si $f$ es continua en $[a,b]$, existe $c\in[a,b]$ con $\int_a^bf=f(c)(b-a)$ (el área bajo $f$ es igual a la de un rectángulo de la misma base y altura $f(c)$). Es la demostración de E 6.9 (U p.244); se resuelve más abajo con lo visto aquí.</p>
-  <span class="src" data-l="U" data-ref="U §6.2, nota al margen, p. 244">U p.244</span>
-  <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.9, p. 218">E p.218</span>
 </div>
 
 <!-- ============================ 5 ============================ -->
 <h2 id="s5"><span class="n">5</span>Integral indefinida: primitivas <span class="src" data-l="U" data-ref="U §6.1.3, Definición 6.2 y Ejemplo 6.4, pp. 241-242">U pp.241-242</span></h2>
 
 <div class="box intu"><span class="h">Idea intuitiva · «deshacer» la derivada</span>
-  <p>Calcular integrales definidas con sumas es laborioso y a veces imposible (U p.241). Hay un camino más directo que se basa en una pregunta que ya conoces: en el tema 2 se pasaba de una función a su derivada; ahora se pregunta <b>cuándo y cómo se puede ir hacia atrás</b>. Una función cuya derivada es $f$ se llama <b>primitiva</b> de $f$. Si $F$ es una primitiva, $F+3$ también lo es (la constante desaparece al derivar), así que hay <b>infinitas</b> primitivas, todas iguales salvo una constante. Es como saber la velocidad en cada instante pero no desde dónde salió el coche: la posición queda determinada salvo una constante.</p>
+  <p>Calcular integrales definidas con sumas es laborioso y a veces imposible (U p.241). Hay un camino más directo que se basa en una pregunta que ya conoces: en el tema 2 se pasaba de una función a su derivada; ahora se pregunta <b>cuándo y cómo se puede ir hacia atrás</b>. Una función cuya derivada es $f$ se llama <b>primitiva</b> de $f$. Si $F$ es una primitiva, $F+3$ también lo es (la constante desaparece al derivar), así que hay <b>infinitas</b> primitivas, todas iguales salvo una constante. Es como saber la velocidad en cada instante pero no desde dónde salió el coche: la posición queda determinada salvo una constante. Más adelante (§6.2) el teorema fundamental une ambas ideas: para calcular $\int_a^bf$ bastará una primitiva $F$ y restar $F(b)-F(a)$. Aquí solo hace falta saber <b>qué es</b> una primitiva y comprobarla derivando.</p>
   <span class="src" data-l="U" data-ref="U §6.1.3, p. 241">U p.241</span>
 </div>
 
@@ -286,14 +250,10 @@
 </div>
 
 <div class="box tip"><span class="h">Con ordenador</span>
-  <p>Maxima calcula una integral indefinida con <code>integrate(f(x),x);</code> y toma por defecto la constante arbitraria $k=0$ (U pp.241-242).</p>
-  <span class="src" data-l="U" data-ref="U recuadros Maxima, pp. 241-242">U pp.241-242</span>
+  <p>En Maxima, la integral definida de $f$ entre $a$ y $b$ es <code>integrate(f(x),x,a,b)</code> (U p.239); la indefinida, <code>integrate(f(x),x);</code>, con constante arbitraria $k=0$ por defecto (U pp.241-242).</p>
+  <span class="src" data-l="U" data-ref="U recuadros Maxima, pp. 239 y 241-242">U pp.239-242</span>
 </div>
 
-<div class="box intu"><span class="h">Adelanto · por qué se estudian juntas</span>
-  <p>La integral definida (un número, definido con límites de sumas) y la indefinida (una función, definida con derivadas) parecen cosas distintas. El teorema fundamental del cálculo (§6.2) las une: para calcular $\int_a^bf$ basta con una primitiva $F$ y restar $F(b)-F(a)$. Aquí solo se necesita saber <b>qué es</b> una primitiva y comprobarla derivando.</p>
-  <span class="src" data-l="P" data-ref="Adelanto propio de U §6.2, que se estudia en el tema 6.2">P</span>
-</div>
 
 <!-- ============================ 6 ============================ -->
 <h2 id="ejercicios"><span class="n">6</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.1-6.10, pp. 214-218">E pp.214-218</span></h2>
@@ -443,7 +403,6 @@
     <li><b>Respuesta: b).</b></li>
   </ol>
   <div class="recipe"><b>Receta:</b> recordar la lista de U p.240: suma, constante, monotonía, valor absoluto (desigualdad), aditividad y cambio de orden. <b>No hay</b> propiedad para el producto ni para el cociente.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Creer que $\int fg=\int f\int g$ «porque con la suma funciona».</p></div>
 </details>
 
 <h3>D · Aditividad y acotaciones</h3>
@@ -532,7 +491,7 @@
     <li><b>Límite:</b> $\frac26=\frac13$. Luego $\int_0^1x^2\,dx=\frac13$.</li>
     <li><b>Con el extremo izquierdo</b> $c_i=\frac{i-1}n$ sale $\frac{(n-1)(2n-1)}{6n^2}$, distinto para cada $n$ (con $n=10$: $0{,}285$ frente a $0{,}385$ por la derecha) pero con el mismo límite $\frac13$, como asegura U p.239.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> $\Delta x=\frac{b-a}n$, $c_i=a+i\Delta x$, sacar del sumatorio lo que no depende de $i$, aplicar $\sum1$, $\sum i$, $\sum i^2$ y tomar $\lim_{n\to\infty}$.</div>
+  <div class="recipe"><b>Receta:</b> la receta general del apartado 3 (extremo derecho $c_i=a+i\Delta x$).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el factor $\Delta x=\frac1n$ (la base de los rectángulos): la suma diverge.</p></div>
 </details>
 
@@ -553,7 +512,6 @@
     <li><b>Variante:</b> $\int_{-2}^2\left(\sqrt{4-x^2}-1\right)dx=2\pi-4$ (se resta el rectángulo de base $4$ y altura $1$).</li>
   </ol>
   <div class="recipe"><b>Receta:</b> dibujar, partir por los ceros (aditividad), separar sumandos y constantes y leer figuras conocidas con su signo.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Sumar el área del triángulo de debajo del eje con signo $+$: eso daría el área geométrica, no la integral. En $\int_{-2}^2x\,dx$ saldría $4$ en lugar de $0$.</p></div>
 </details>
 
 <details class="sol" id="p3"><summary>Propio 3 · estimar $\int_0^1e^{-x^2}dx$ con cotas por mínimo y máximo <span class="src" data-l="P" data-ref="Ejemplo propio sobre U monotonía, p. 240, y E Ej. 6.6 a), p. 216">propio</span></summary>
@@ -696,7 +654,7 @@
 
 <h3>Errores frecuentes</h3>
 <ul>
-  <li>Confundir la finura $\|P\|$ con el número de subintervalos, o creer que $\|P\|\to0$ y $n\to\infty$ son lo mismo en toda partición.</li>
+  <li>Confundir la finura con el número de subintervalos, o creer que $\|P\|\to0$ y $n\to\infty$ son lo mismo (E 6.1; apartado 2).</li>
   <li>Olvidar la base $\Delta x_i$ de cada rectángulo, o usar $\frac1n$ cuando la longitud del intervalo no es $1$ (es $\frac{b-a}n$).</li>
   <li>Tratar la integral como área geométrica cuando $f$ cambia de signo; olvidar que $\int_a^b=-\int_b^a$.</li>
   <li>Inventar propiedades: $\int fg=\int f\int g$ y $\int|f+g|=\int|f|+\int|g|$ son <b>falsas</b>.</li>
