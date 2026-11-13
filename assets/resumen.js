@@ -59,7 +59,7 @@
       var k = m.querySelector('.katex'); if (!k || !m.clientWidth) return;
       k.style.fontSize = '';
       var r = m.clientWidth / m.scrollWidth;
-      if (r < 1) k.style.fontSize = (1.21 * Math.max(0.55, r * 0.98)).toFixed(3) + 'em';
+      if (r < 1) k.style.fontSize = (1.21 * Math.max(0.35, r * 0.96)).toFixed(3) + 'em';
     }
     function fitMath() {
       [].forEach.call(d.querySelectorAll('.katex-display'), function (m) {
@@ -69,8 +69,22 @@
         if (k && m.clientWidth && (m.scrollWidth > m.clientWidth + 1 || parseFloat(k.style.fontSize || '1.21') < 1.21 * 0.8)) wrapMath(m);
       });
     }
-    fitMath(); window.addEventListener('resize', fitMath); window.addEventListener('load', fitMath);
-    d.addEventListener('toggle', fitMath, true);
+    /* tablas: nunca con scroll horizontal; si no caben en el ancho, se reducen (la escala queda en data-fit) */
+    function fitTables() {
+      [].forEach.call(d.querySelectorAll('main table'), function (t) {
+        var w = t.parentNode.classList.contains('tfit') ? t.parentNode : null;
+        if (!w) { w = d.createElement('div'); w.className = 'tfit'; t.parentNode.insertBefore(w, t); w.appendChild(t); }
+        t.style.transform = ''; w.style.height = ''; w.removeAttribute('data-fit');
+        var a = w.clientWidth, nat = t.offsetWidth; if (!a || !nat) return;
+        if (nat > a + 1) { var k = a / nat; t.style.transformOrigin = '0 0'; t.style.transform = 'scale(' + k.toFixed(4) + ')'; w.style.height = (t.offsetHeight * k) + 'px'; w.setAttribute('data-fit', k.toFixed(2)); }
+      });
+    }
+    function fitAll() { fitMath(); fitTables(); }
+    fitAll(); window.addEventListener('resize', fitAll); window.addEventListener('load', fitAll);
+    d.addEventListener('toggle', fitAll, true);
+    if (d.fonts && d.fonts.ready) d.fonts.ready.then(fitAll);
+    window.addEventListener('beforeprint', function () { [].forEach.call(d.querySelectorAll('.tfit'), function (w) { w.style.height = ''; w.firstChild.style.transform = ''; }); });
+    window.addEventListener('afterprint', fitAll);
     var toc = d.querySelector('.side-toc');
     var hs = [].slice.call(d.querySelectorAll('main h2[id]'));
     if (toc) hs.forEach(function (h) {
