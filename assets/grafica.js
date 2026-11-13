@@ -164,7 +164,7 @@
     grid = h('div', 'dd-grid' + (solo ? ' compacto' : ''), div); cells = {}; grid.style.gridTemplateColumns = 'repeat(' + (n + 1) + ',auto)';
     function put(txt, col, row, cls) { var c = h('div', 'dd-c' + (cls ? ' ' + cls : ''), grid); c.style.gridColumn = col; c.style.gridRow = row; c.innerHTML = tex(txt); return c; }
     put('x_k', 1, 1, 'dd-h'); put('f[x_k]', 2, 1, 'dd-h');
-    for (m = 1; m < n; m++) put(m === 1 ? 'f[x_k,x_{k+1}]' : m === 2 ? 'f[x_k,x_{k+1},x_{k+2}]' : 'f[x_k,\\dots,x_{k+' + m + '}]', 2 + m, 1, 'dd-h');
+    for (m = 1; m < n; m++) put(solo ? '\\text{orden }' + m : m === 1 ? 'f[x_k,x_{k+1}]' : m === 2 ? 'f[x_k,x_{k+1},x_{k+2}]' : 'f[x_k,\\dots,x_{k+' + m + '}]', 2 + m, 1, 'dd-h');
     for (i = 0; i < n; i++) { put(O.tex(x[i]), 1, 2 + 2 * i, 'dd-x'); cells['0,' + i] = put(O.tex(T[0][i]), 2, 2 + 2 * i, 'dd-v' + (i === 0 ? ' top' : '')); }
     for (m = 1; m < n; m++) for (i = 0; i < n - m; i++) {
       var v = O.tex(T[m][i]), a = T[m - 1][i + 1], b = T[m - 1][i], den = O.sub(x[i + m], x[i]);
@@ -194,7 +194,7 @@
       var compacto = !solo0 && wrap.clientWidth > 0 && wrap.clientWidth < 560;
       if (compacto !== solo) { solo = compacto; construir(solo); }
       grid.style.transform = ''; wrap.style.height = ''; lineas();
-      var w = grid.offsetWidth, a = wrap.clientWidth, s = Math.max(0.5, Math.min(1, a / w));
+      var w = grid.offsetWidth, a = wrap.clientWidth, s = Math.max(0.3, Math.min(1, a / w));
       if (s < 1) { grid.style.transform = 'scale(' + s + ')'; grid.style.transformOrigin = '0 0'; wrap.style.height = grid.offsetHeight * s + 'px'; }
       else wrap.style.height = '';
     }
