@@ -55,23 +55,7 @@
   <li><b>Polinomio interpolador</b> (<a href="tema_3_3_interpolacion.html">tema 3.3</a>): aparece en varios problemas de examen.</li>
 </ul>
 
-<h3>Mapa del tema</h3>
-<table>
-  <caption>Mapa del tema</caption>
-  <tr><th scope="col">Apartado</th><th scope="col">Qué contiene</th><th scope="col">Dónde está</th></tr>
-  <tr><td><a href="#s1">1 Para qué y cómo</a></td><td>cuándo se necesita; idea común a todas las fórmulas; E 6.36</td><td>U pp.263-264</td></tr>
-  <tr><td><a href="#s2">2 Rectángulos</a></td><td>Def. 6.3 y 6.4; Ej. 6.29, 6.30</td><td>U pp.264-266</td></tr>
-  <tr><td><a href="#s3">3 Trapecio</a></td><td>Def. 6.5 y 6.6; Ej. 6.31, 6.32</td><td>U pp.266-267</td></tr>
-  <tr><td><a href="#s4">4 Simpson</a></td><td>Def. 6.7 y 6.8; nodos y subintervalos; Ej. 6.33</td><td>U pp.267-269</td></tr>
-  <tr><td><a href="#s5">5 Los tres métodos a la vez</a></td><td>interactivo; cómo baja el error al doblar $n$</td><td>propio</td></tr>
-  <tr><td><a href="#s6">6 Cuánto se equivoca</a></td><td>Teor. 6.3 y 6.4; Ej. 6.34, 6.35; receta de $m$</td><td>U pp.269-270</td></tr>
-  <tr><td><a href="#ejercicios">7 Ejercicios de E</a></td><td>E 6.36–6.41</td><td>E pp.242-246</td></tr>
-  <tr><td><a href="#propios">8 Ejemplos propios</a></td><td>4 ejemplos, de fácil a difícil</td><td>propio</td></tr>
-  <tr><td><a href="#examen">9 Así lo preguntan en el examen</a></td><td>10 problemas de X</td><td>X</td></tr>
-  <tr><td><a href="#chuleta">10 Chuleta y comprobación</a></td><td>fórmulas, errores frecuentes, lista</td><td>—</td></tr>
-</table>
-
-<h3>Qué se pide en los ejercicios y en el examen</h3>
+<h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <ul>
   <li><b>Aplicar</b> el trapecio (simple o compuesto) y Simpson (simple o compuesta) a una función dada o a una <b>tabla de valores</b>. Es lo que más aparece en X.</li>
   <li><b>Comparar</b> con el valor exacto y explicar por qué una fórmula se acerca más que otra (rectas frente a parábolas).</li>
@@ -82,25 +66,16 @@
 <!-- ============================ 1 ============================ -->
 <h2 id="s1"><span class="n">1</span>Para qué sirve y cómo se piensa <span class="src" data-l="U" data-ref="U §6.4.1 Motivación y §6.4.2, pp. 263-264">U pp.263-264</span></h2>
 
-<div class="box intu"><span class="h">Cuándo se usa la integración numérica</span>
-  <p>La regla de Barrow necesita una primitiva de $f$. Pero en muchos casos <b>no es posible calcularla</b> (por ejemplo $\int e^{-x^2}dx$ no se expresa con funciones elementales), o bien <b>solo conocemos los valores de $f$ en ciertos puntos</b> del intervalo $[a,b]$ (mediciones). En esos casos se aproxima el valor de la integral.</p>
-  <span class="src" data-l="U" data-ref="U §6.4.1, p. 263">U p.263</span>
-</div>
-
-<div class="box intu"><span class="h">La idea común a todas las fórmulas</span>
-  <p>Se apoyan en dos propiedades que ya conoces: (1) la integral $\int_a^bf$ es el <b>área</b> entre la gráfica, el eje $x$ y las rectas $x=a$, $x=b$; (2) la integral se puede <b>trocear</b>: $\int_a^bf=\int_a^cf+\int_c^bf$. El plan es siempre el mismo:</p>
+<div class="box intu"><span class="h">Cuándo se usa y cuál es la idea común</span>
+  <p>La regla de Barrow necesita una primitiva de $f$. Pero a veces <b>no se puede calcular</b> (por ejemplo $\int e^{-x^2}dx$ no se expresa con funciones elementales), es larguísima, o <b>solo conocemos los valores de $f$ en ciertos puntos</b> de $[a,b]$ (mediciones). Entonces se aproxima la integral (E 6.36, más abajo). Todas las fórmulas siguen el mismo plan, apoyado en que la integral es un <b>área</b> y se puede <b>trocear</b>: $\int_a^bf=\int_a^cf+\int_c^bf$.</p>
   <ol class="steps">
     <li>Sustituir $f$ por una función sencilla construida con valores de $f$ en ciertos puntos (los <b>nodos</b>): un escalón (rectángulo), una recta (trapecio) o una parábola (Simpson).</li>
     <li>Calcular el área de esa función sencilla, que es fácil.</li>
-    <li>Si la aproximación es mala, <b>dividir $[a,b]$ en subintervalos</b>, aplicar la fórmula en cada uno y sumar (fórmulas <i>compuestas</i>).</li>
+    <li>Si la aproximación es mala, <b>dividir $[a,b]$ en subintervalos</b>, aplicar la fórmula en cada uno y sumar (fórmulas <i>compuestas</i>): como con baldosas, cuantas más y más pequeñas, mejor se ajusta el borde curvo.</li>
   </ol>
-  <p>Analogía: cubrir un jardín de forma curva con baldosas. Con una baldosa grande sobra y falta mucho; con muchas baldosas pequeñas el borde queda casi bien. Y si las baldosas tienen forma de trapecio o de «arco», se ajustan mejor al borde que si son rectangulares.</p>
+  <span class="src" data-l="U" data-ref="U §6.4.1, p. 263">U p.263</span>
   <span class="src" data-l="U" data-ref="U §6.4.2 Idea, p. 264">U p.264</span>
   <span class="src" data-l="S" data-ref="Stewart §7.7 Integración aproximada, p. 507">S p.507</span>
-</div>
-
-<div class="box warn"><span class="h">Error típico</span>
-  <p>Creer que la integración numérica solo sirve cuando «no conocemos la fórmula» de $f$. También se usa cuando se conoce $f$ pero su primitiva es imposible o muy larga (E 6.36, más abajo).</p>
 </div>
 
 <!-- ============================ 2 ============================ -->
@@ -153,7 +128,7 @@
 <h2 id="s3"><span class="n">3</span>Fórmula del trapecio <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.5 y 6.6 y Ejemplos 6.31-6.32, pp. 266-267">U pp.266-267</span></h2>
 
 <div class="box intu"><span class="h">Idea intuitiva</span>
-  <p>En lugar de un escalón, tendemos una <b>cuerda recta</b> entre los puntos $(a,f(a))$ y $(b,f(b))$ de la gráfica, como una valla recta cerrando una finca de lado curvo. La región bajo esa cuerda es un trapecio «acostado» de altura $b-a$ y bases $f(a)$, $f(b)$. Su área es la <b>media de las dos bases por la altura</b>.</p>
+  <p>En lugar de un escalón, tendemos una <b>cuerda recta</b> entre los puntos $(a,f(a))$ y $(b,f(b))$ de la gráfica, como una valla recta en el lado curvo de la finca. La región bajo esa cuerda es un trapecio «acostado» de altura $b-a$ y bases $f(a)$, $f(b)$. Su área es la <b>media de las dos bases por la altura</b>.</p>
   <span class="src" data-l="S" data-ref="Stewart §7.7, Regla del trapecio, p. 508">S p.508</span>
   <span class="src" data-l="L" data-ref="Larson §4.6 Integración numérica, regla del trapecio, pp. 305-311 (Teorema 4.17, p. 306)">L §4.6 p.306</span>
 </div>
@@ -174,12 +149,8 @@
 <div class="box def"><span class="h">Definición 6.6 · Trapecio compuesto</span>
   <p>Se divide $[a,b]$ en $n$ subintervalos iguales, $h=\frac{b-a}n$, $x_k=a+kh$, $f_k=f(x_k)$, $k=0,\dots,n$, y se aplica el trapecio en cada uno:
   $$\int_a^bf(x)\,dx\approx\frac h2\big(f_0+2f_1+2f_2+\dots+2f_{n-1}+f_n\big).$$
-  Regla para recordarla: $I\approx\dfrac h2\,(\text{Extremos}+2\cdot\text{Centrales})$. <b>$n$ subintervalos = $n+1$ nodos.</b></p>
+  Regla para recordarla: $I\approx\dfrac h2\,(\text{Extremos}+2\cdot\text{Centrales})$. <b>$n$ subintervalos = $n+1$ nodos.</b> Los centrales llevan un 2 porque cada nodo interior es el borde derecho de un trapecio y el izquierdo del siguiente: su altura se usa <b>dos veces</b>; los extremos solo pertenecen a un trapecio.</p>
   <span class="src" data-l="U" data-ref="U Definición 6.6, p. 267">U p.267</span>
-</div>
-
-<div class="box intu"><span class="h">Por qué los centrales llevan un 2</span>
-  <p>Cada nodo interior es el borde derecho de un trapecio y el borde izquierdo del siguiente: su altura se usa <b>dos veces</b>. Los extremos solo pertenecen a un trapecio.</p>
 </div>
 
 <div class="box ex"><span class="h">Ejemplo 6.32 de U · trapecio compuesto con 2 subintervalos</span>
@@ -196,18 +167,18 @@
   <figcaption>Trapecio compuesto con dos subintervalos, Ej. 6.32: $I\approx1{,}577$. <span class="src" data-l="U" data-ref="U Ejemplo 6.32 (figura al margen), p. 267">U p.267</span></figcaption></figure>
 
 <div class="box warn"><span class="h">Error típico</span>
-  <p>Olvidar el $2$ delante de los valores centrales (en el Ej. 6.32 saldría $1{,}39$). Otra confusión: tomar $h$ como el ancho total $b-a$ en vez de $\frac{b-a}n$.</p>
+  <p>Olvidar el $2$ delante de los valores centrales (en el Ej. 6.32 saldría $1{,}39$) o tomar $h=b-a$ en vez de $\frac{b-a}n$.</p>
 </div>
 
 <div class="box tip"><span class="h">Truco de examen</span>
-  <p>Si el enunciado da una <b>tabla</b> de $N$ valores igualmente espaciados, el trapecio compuesto usa todos: son $N-1$ subintervalos y $h$ es la separación entre datos (esto vale solo con datos igualmente espaciados; si no lo están, trapecio simple en cada tramo y sumar: X10).</p>
+  <p>Si el enunciado da una <b>tabla</b> de $N$ valores igualmente espaciados, el trapecio compuesto usa todos: son $N-1$ subintervalos y $h$ es la separación entre datos (solo con datos igualmente espaciados; si no, trapecio simple en cada tramo: X10).</p>
 </div>
 
 <!-- ============================ 4 ============================ -->
 <h2 id="s4"><span class="n">4</span>Fórmula de Simpson <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.7 y 6.8 y Ejemplo 6.33, pp. 267-269">U pp.267-269</span></h2>
 
 <div class="box intu"><span class="h">Idea intuitiva</span>
-  <p>Una recta solo puede imitar una curva sin curvatura. Una <b>parábola</b> sí puede «doblarse». Simpson toma <b>tres puntos</b> de la gráfica (los dos extremos y el punto medio), pasa por ellos la parábola (única) y calcula su área. Es como sustituir la valla recta del trapecio por un perfil de arco, que se pega mucho mejor a una orilla curva.</p>
+  <p>Una recta solo puede imitar una curva sin curvatura. Una <b>parábola</b> sí puede «doblarse». Simpson toma <b>tres puntos</b> de la gráfica (los dos extremos y el punto medio), pasa por ellos la parábola (única) y calcula su área. Un arco se pega mucho mejor a una orilla curva que una valla recta.</p>
   <span class="src" data-l="S" data-ref="Stewart §7.7, Regla de Simpson, p. 512">S p.512</span>
 </div>
 
@@ -226,7 +197,7 @@
 </div>
 
 <div class="box warn"><span class="h">Error típico</span>
-  <p>En la compuesta, la $h$ de la fórmula es la longitud de <b>cada subintervalo</b> $\frac{b-a}n$, no la distancia entre nodos consecutivos (que es $\frac h2$). Si usas $\frac{h}2$ como factor, la fórmula equivalente es $\frac{h/2}3(E+2P+4I)$; si pones $\frac{h/2}6$ el resultado sale la mitad.</p>
+  <p>En la compuesta, la $h$ de la fórmula es la longitud de <b>cada subintervalo</b> $\frac{b-a}n$, no la distancia entre nodos consecutivos (que es $\frac h2$). Con esa distancia el factor sería $\frac{h/2}3$; poner $\frac{h/2}6$ da la mitad.</p>
 </div>
 
 <div class="box ex"><span class="h">Ejemplo 6.33 de U · Simpson simple y compuesta con una tabla</span>
@@ -248,7 +219,7 @@
 </div>
 
 <div class="box thm"><span class="h">Propiedad · exactitud</span>
-  <p>El trapecio es <b>exacto</b> si $f$ es una recta; Simpson es exacto si $f$ es un polinomio de grado $\le3$ (no solo de grado $\le2$). Por ejemplo, con la cúbica $f$ del Ej. 6.29, Simpson simple da exactamente $\frac{1{,}5}6\big(0{,}7+4\cdot0{,}503125+2{,}5\big)=1{,}303125$. La razón se ve con las cotas del error (apartado 6) y se comprueba en el ejemplo propio 2.</p>
+  <p>El trapecio es <b>exacto</b> si $f$ es una recta; Simpson es exacto si $f$ es un polinomio de grado $\le3$ (no solo de grado $\le2$). Por ejemplo, con la cúbica $f$ del Ej. 6.29, Simpson simple da exactamente $\frac{1{,}5}6\big(0{,}7+4\cdot0{,}503125+2{,}5\big)=1{,}303125$. La razón y un contraejemplo están en el ejemplo propio 2.</p>
   <span class="src" data-l="P" data-ref="Consecuencia de los Teoremas 6.3 y 6.4 de U (pp. 269-270), comprobada con sympy">propio</span>
 </div>
 
@@ -271,19 +242,19 @@
   <tr><td>8</td><td>$1{,}974232$</td><td>$-2{,}58\cdot10^{-2}$</td><td>$2{,}012909$</td><td>$+1{,}29\cdot10^{-2}$</td><td>$2{,}000017$</td><td>$+1{,}66\cdot10^{-5}$</td></tr>
 </table>
 <ul>
-  <li>Al <b>doblar $n$</b>, el error del trapecio y del punto medio se divide por $\approx4$ (decrece como $1/n^2$: el error es proporcional a $1/n^2$, igual que la cota del Teor. 6.3) y el de Simpson por $\approx16$ (el error es proporcional a $1/n^4$, como en el Teor. 6.4).</li>
+  <li>Al <b>doblar $n$</b>, el error del trapecio y del punto medio se divide por $\approx4$ (el error es proporcional a $1/n^2$, igual que la cota del Teor. 6.3) y el de Simpson por $\approx16$ (proporcional a $1/n^4$, como en el Teor. 6.4).</li>
   <li>El error del punto medio es <b>aproximadamente la mitad y de signo contrario</b> al del trapecio.</li>
   <li>Con los mismos $n$ subintervalos, $S_n=\dfrac{T_n+2M_n}3$ (comprobable: $\frac{1{,}570796+2\cdot2{,}221441}3=2{,}004560$). Simpson «mezcla» las dos aproximaciones para cancelar sus errores opuestos.</li>
 </ul>
-<div class="box tip"><span class="h">Fuente de los valores</span><p>Valores calculados con sympy (15 cifras) con las fórmulas de U Def. 6.4, 6.6 y 6.8. La mitad del error del punto medio respecto al trapecio se refleja en las cotas $\frac{K(b-a)^3}{24n^2}$ frente a $\frac{K(b-a)^3}{12n^2}$ (Stewart).</p>
+<p>Valores calculados con sympy (15 cifras) con las fórmulas de U Def. 6.4, 6.6 y 6.8. La mitad del error del punto medio respecto al trapecio se refleja en las cotas $\frac{K(b-a)^3}{24n^2}$ frente a $\frac{K(b-a)^3}{12n^2}$.
   <span class="src" data-l="P" data-ref="Valores calculados con sympy (15 cifras) con las fórmulas de U Def. 6.4, 6.6 y 6.8">propio</span>
-  <span class="src" data-l="S" data-ref="Stewart §7.7, cotas del error de los puntos medios y del trapecio, p. 510">S p.510</span></div>
+  <span class="src" data-l="S" data-ref="Stewart §7.7, cotas del error de los puntos medios y del trapecio, p. 510">S p.510</span></p>
 
 <!-- ============================ 6 ============================ -->
 <h2 id="s6"><span class="n">6</span>¿Cuánto nos equivocamos? Cotas del error <span class="src" data-l="U" data-ref="U §6.4 Estimaciones del error, Teoremas 6.3 y 6.4 y Ejemplos 6.34-6.35, pp. 269-270">U pp.269-270</span></h2>
 
 <div class="box intu"><span class="h">Idea intuitiva</span>
-  <p>Una aproximación sin una idea de su error vale poco. El error de una recta contra una curva depende de <b>cuánto se curva</b> la función: la curvatura la mide $f''$. Si $f''$ es pequeña, la curva casi es recta y el trapecio acierta; para Simpson, que ya copia parábolas, lo que cuenta es la cuarta derivada. Además, cuanto más pequeño $h$, menos error. Las cotas ponen todo eso en una fórmula.</p>
+  <p>El error de una recta contra una curva depende de <b>cuánto se curva</b> la función: la mide $f''$. Si $f''$ es pequeña, el trapecio acierta; para Simpson, que ya copia parábolas, cuenta la cuarta derivada. Y cuanto más pequeño $h$, menos error. Las cotas ponen todo eso en una fórmula.</p>
 </div>
 
 <div class="box thm"><span class="h">Teorema 6.3 · Error del trapecio compuesto</span>
@@ -303,7 +274,7 @@
 <div class="box intu"><span class="h">Qué dicen las fórmulas</span>
   <ul>
     <li><b>Si $f''\equiv0$</b> (recta), $M_2=0$ y el trapecio es exacto. <b>Si $f^{(4)}\equiv0$</b> (polinomio de grado $\le3$), $M_4=0$ y Simpson es exacto.</li>
-    <li>Doblar $m$ divide la cota del trapecio entre $2^2=4$ y la de Simpson entre $2^4=16$ (justo lo que vimos en el interactivo).</li>
+    <li>Doblar $m$ divide la cota entre $2^2=4$ (trapecio) o $2^4=16$ (Simpson), como en la tabla del apartado 5.</li>
     <li>Son <b>cotas</b> (garantías), no el error real: el error real suele ser menor.</li>
   </ul>
 </div>
@@ -470,7 +441,7 @@
   <ol class="steps">
     <li><b>Simples:</b> punto medio $f(\frac12)\cdot1=\frac14$; trapecio $\frac{0+1}2=\frac12$; Simpson $\frac{0+4\cdot\frac14+1}6=\frac26=\frac13$ (exacto).</li>
     <li><b>Con $n=2$:</b> punto medio $\frac12\big(f(\frac14)+f(\frac34)\big)=\frac12\cdot\frac{10}{16}=\frac5{16}$; trapecio $\frac14\big(0+2\cdot\frac14+1\big)=\frac38$; Simpson ($h=\frac12$, nodos cada $\frac14$) $\frac{1/2}6\big(0+1+2\cdot\frac14+4(\frac1{16}+\frac9{16})\big)=\frac1{12}\cdot4=\frac13$.</li>
-    <li><b>Errores:</b> trapecio $+\frac16$ ($n=1$) y $+\frac1{24}$ ($n=2$); punto medio $-\frac1{12}$ y $-\frac1{48}$: el del punto medio es <b>la mitad y de signo contrario</b>, y al doblar $n$ ambos se dividen entre $4$.</li>
+    <li><b>Errores:</b> trapecio $+\frac16$ ($n=1$) y $+\frac1{24}$ ($n=2$); punto medio $-\frac1{12}$ y $-\frac1{48}$: el del punto medio es la mitad y de signo contrario (apartado 5), y al doblar $n$ ambos se dividen entre $4$.</li>
     <li><b>Relación:</b> $\frac{T+2M}3=\frac{\frac12+2\cdot\frac14}3=\frac13=S$. En general $S_n=\frac{T_n+2M_n}3$.</li>
   </ol>
   <div class="recipe"><b>Receta:</b> para una parábola, Simpson es exacto; trapecio y punto medio fallan en sentidos opuestos.</div>
@@ -509,7 +480,7 @@
     <li><b>Coste:</b> $42$ evaluaciones de $f$ con el trapecio frente a $9$ con Simpson.</li>
     <li>La cota es una <b>garantía</b>, no el error real: con $m=41$ el trapecio tiene error real $3{,}7\cdot10^{-5}$ y con $m=4$ Simpson $7{,}4\cdot10^{-6}$. Con $m=40$ o $m=3$ el error real ya es pequeño, pero la cota <b>no lo asegura</b> y la pregunta pide seguridad.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> $m_{\text{trap}}=\Big\lceil\sqrt{\frac{(b-a)^3M_2}{12\,\text{tol}}}\Big\rceil$, $m_{\text{Simp}}=\Big\lceil\sqrt[4]{\frac{(b-a)^5M_4}{2880\,\text{tol}}}\Big\rceil$ (con $\lceil\ \rceil$ el primer entero mayor o igual).</div>
+  <div class="recipe"><b>Receta:</b> la del Ej. 6.35 (derivar, acotar, despejar $m$ y redondear hacia arriba), una vez por método.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Tomar $M_2$ en el extremo equivocado ($f''(2)=\frac14$ daría $m=15$, que no garantiza nada) o redondear hacia abajo.</p></div>
 </details>
 
@@ -535,7 +506,7 @@
 
 <!-- ============================ 9 ============================ -->
 <h2 id="examen"><span class="n">9</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
-<p>En X, la integración numérica suele aparecer como «aproxime por la regla del trapecio / de Simpson» con una función o una tabla de datos, a veces junto con el valor exacto o con un polinomio interpolador. Los diez problemas siguientes van de lo más sencillo a lo más completo. En X <b>no hay preguntas de cota de error</b>: ese tipo de pregunta sale de U Ej. 6.34-6.35 y de los ejemplos propios 3 y 4.</p>
+<p>En X, la integración numérica suele aparecer como «aproxime por la regla del trapecio / de Simpson» con una función o una tabla de datos, a veces junto con el valor exacto o con un polinomio interpolador. Los diez problemas siguientes van de lo más sencillo a lo más completo.</p>
 
 <details class="sol" id="x1"><summary>X1 · Trapecio compuesto con cinco datos <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2.ª semana, Ing. Mecánica, Modelo B, Pregunta corta 3)">X p.13 (feb. 2011)</span></summary>
   <p class="enun">De una función $f$ se conocen $f(-1)=1$, $f(0)=2$, $f(1)=-1$, $f(2)=-3$, $f(3)=0$. Aproxime el valor de $\int_{-1}^3f(x)\,dx$ utilizando la fórmula del trapecio compuesta.</p>
@@ -551,7 +522,7 @@
     <li>$\displaystyle\int_{-1}^3f\approx\frac12\big(1+2\cdot(-2)\big)=\frac12(-3)=-\frac32.$</li>
   </ol></div>
   <div class="recipe"><b>Receta:</b> $\frac h2(E+2C)$ con $h$ la separación entre datos (solo si los datos están igualmente espaciados; si no, ver X10).</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Pensar que un resultado negativo es un error: la integral cuenta con signo. Y usar «$h$ = separación entre datos» cuando los datos no están igualmente espaciados (ver X10).</p></div>
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar que un resultado negativo es un error: la integral cuenta con signo.</p></div>
 </details>
 
 <details class="sol" id="x2"><summary>X2 · $\int_0^{\pi/2}\cos x\,dx$: trapecio, Simpson y comparación <span class="src" data-l="X" data-ref="X pp.36-37 (Febrero 2013, 2.ª semana, Ing. Mecánica, Modelo B, Problema 6)">X pp.36-37 (feb. 2013)</span></summary>
@@ -741,14 +712,12 @@
 <h2 id="chuleta"><span class="n">10</span>Errores frecuentes, chuleta y lista de comprobación</h2>
 
 <h3>Errores frecuentes</h3>
+<p>Cada uno está explicado en su apartado; aquí solo el recordatorio:</p>
 <ul>
-  <li>Confundir <b>nodos</b> con <b>subintervalos</b>: trapecio $n$ subintervalos $=n+1$ nodos; Simpson compuesta $n$ subintervalos $=2n+1$ nodos.</li>
-  <li>Olvidar el $2$ de los centrales (trapecio) o de los pares, o el $4$ de los impares (Simpson).</li>
-  <li>En Simpson compuesta, usar como $h$ la separación entre nodos en vez de la longitud del subintervalo.</li>
-  <li>Aplicar Simpson con un número par de nodos o sin el punto medio.</li>
-  <li>Tomar $M_2$ o $M_4$ sin valor absoluto o mirando un solo extremo del intervalo.</li>
-  <li>Redondear hacia abajo el número de subintervalos que garantiza la precisión.</li>
-  <li>No comparar con el valor exacto cuando lo piden, o no explicar la diferencia (recta frente a parábola).</li>
+  <li><b>Nodos o subintervalos</b>: trapecio $n$ subintervalos $=n+1$ nodos; Simpson compuesta $2n+1$ nodos (siempre impar).</li>
+  <li><b>Pesos</b>: el $2$ de los centrales (trapecio), el $2$ de los pares y el $4$ de los impares (Simpson); en Simpson compuesta, $h$ es la longitud del subintervalo.</li>
+  <li><b>Cotas</b>: $M_2$ y $M_4$ son máximos de valor absoluto en todo el intervalo (extremos y puntos críticos); el $m$ se redondea hacia arriba.</li>
+  <li>Comparar con el valor exacto cuando lo piden y explicar la diferencia (recta frente a parábola).</li>
 </ul>
 
 <h3>Chuleta</h3>
