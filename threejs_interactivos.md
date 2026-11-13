@@ -130,3 +130,7 @@ Cada tema retocado se publica con su commit propio (`CLAUDE.md` §4b).
 - Valores comprobados con sympy (raíces, puntos fijos, ciclo 0↔1 de x³−2x+2, Newton de ∛x → −2x). Probadas en Chromium headless (WebGL por software).
 - Capturas estáticas para el PDF: hechas con `herramientas/capturar_interactivos.py` (22 figuras; `assets/img/int_*.png`).
 - **Zoom y desplazamiento en 2D** (motor): rueda del ratón, pellizco táctil, arrastrar para mover, doble clic o botón «Restablecer vista». El grosor de líneas, trazos y puntos se mantiene en píxeles al hacer zoom (`reescalar(f)` en `cinta` y `punto`; todo objeto 2D nuevo debe definirlo). Se puede acercar hasta ×25 y alejar hasta ×4 (las escenas dibujan una región 4 veces más ancha y alta que la vista inicial: usar `W(v)` como en `newton.js`); el movimiento queda dentro de lo dibujado.
+
+
+## Lectura de coordenadas (genérica)
+En toda escena 2D (`dim:2`), `assets/interactivos.js` marca con un punto y escribe `(x, y)` de la curva (cintas de `H.cinta` fuera de ejes/rejilla) o del dato (`H.punto`) más cercano al cursor (ratón/lápiz al pasar; táctil al tocar). Las gráficas de ejercicios que no necesitan WebGL usan `assets/grafica.js` (ver CLAUDE.md §11b).

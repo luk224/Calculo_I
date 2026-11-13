@@ -126,6 +126,7 @@
       m.reescalar = function (f) {
         if (f === fc) return; fc = f; w = w0 * f; dash = dash0 && [dash0[0] * f, dash0[1] * f]; m.set(last);
       };
+      m.pols = function () { return last; };
       m.set(pols); return m;
     },
     /* Punto (disco) de radio r en mundo; p.mover(x,y). */
@@ -313,7 +314,7 @@
         btnReset = document.createElement('button'); btnReset.type = 'button'; btnReset.className = 'int-reset';
         btnReset.textContent = 'Restablecer vista'; btnReset.style.display = 'none'; stage.appendChild(btnReset);
         var ayuda = document.createElement('div'); ayuda.className = 'int-hint';
-        ayuda.textContent = 'Rueda o pellizco: zoom · arrastrar: mover · doble clic: restablecer'; stage.appendChild(ayuda);
+        ayuda.textContent = 'Rueda o pellizco: zoom · arrastrar: mover · doble clic: restablecer · el cursor sobre una curva muestra sus coordenadas'; stage.appendChild(ayuda);
         function reset() { z.s = 1; z.px = 0; z.py = 0; aplicarVista(); }
         function zoomEn(fx, fy, f) {
           if (!base) return;
@@ -354,6 +355,39 @@
         });
         function suelta(e) { delete ptrs[e.pointerId]; if (arr && arr.id === e.pointerId) arr = null; }
         cv.addEventListener('pointerup', suelta); cv.addEventListener('pointercancel', suelta);
+        /* Lectura de coordenadas: al pasar el ratón (o tocar sin arrastrar) se marca el punto de la curva —o el punto de datos— más cercano
+           y se escribe (x, y). Se ignoran los ejes y la rejilla (cintas dentro de un grupo con userData.rejilla). */
+        var tip = document.createElement('div'), dot = document.createElement('i'); tip.className = 'int-tip'; dot.className = 'int-dot';
+        tip.hidden = dot.hidden = true; stage.appendChild(dot); stage.appendChild(tip);
+        function fnum(v) { var a = Math.abs(v), t = a >= 1000 ? Math.round(v * 10) / 10 : a >= 100 ? Math.round(v * 100) / 100 : Math.round(v * 1000) / 1000; return String(t).replace('.', ',').replace('-', '−'); }
+        function ocultar() { tip.hidden = dot.hidden = true; }
+        function leer(cx, cy) {
+          var r = cv.getBoundingClientRect(), W = r.width, Hh = r.height, sx = W / (camera.right - camera.left), sy = Hh / (camera.top - camera.bottom);
+          var px = cx - r.left, py = cy - r.top, wx = camera.left + px / sx, best = null, bd = 18 * 18;
+          function cand(x, y, col) {
+            var qx = (x - camera.left) * sx, qy = (camera.top - y) * sy, d = (qx - px) * (qx - px) + (qy - py) * (qy - py);
+            if (d < bd) { bd = d; best = { x: x, y: y, qx: qx, qy: qy, col: col }; }
+          }
+          scene.traverse(function (o) {
+            if (!o.visible || (o.parent && o.parent.visible === false)) return;
+            if (o.pols && !(o.parent && o.parent.userData && o.parent.userData.rejilla)) {
+              var col = '#' + o.material.color.getHexString(), ps = o.pols(), i, j;
+              for (i = 0; i < ps.length; i++) for (j = 0; j + 1 < ps[i].length; j++) {
+                var a = ps[i][j], b = ps[i][j + 1];
+                if ((a[0] - wx) * (b[0] - wx) <= 0 && a[0] !== b[0]) cand(wx, a[1] + (b[1] - a[1]) * (wx - a[0]) / (b[0] - a[0]), col);
+              }
+            } else if (o.mover && o.geometry && o.geometry.parameters && o.geometry.parameters.radius) cand(o.position.x, o.position.y, '#' + o.material.color.getHexString());
+          });
+          if (!best) return ocultar();
+          dot.style.left = best.qx + 'px'; dot.style.top = best.qy + 'px'; dot.style.borderColor = best.col;
+          tip.textContent = '(' + fnum(best.x) + ', ' + fnum(best.y) + ')';
+          tip.style.left = Math.min(Math.max(best.qx, 60), W - 60) + 'px'; tip.style.top = Math.max(best.qy - 12, 24) + 'px';
+          tip.hidden = dot.hidden = false;
+        }
+        cv.addEventListener('pointermove', function (e) { if (!e.buttons && e.pointerType !== 'touch') leer(e.clientX, e.clientY); });
+        cv.addEventListener('pointerleave', ocultar);
+        cv.addEventListener('pointerdown', ocultar);
+        cv.addEventListener('click', function (e) { if (e.pointerType === 'touch' || e.detail === 0) leer(e.clientX, e.clientY); });
         cv.addEventListener('dblclick', reset); btnReset.addEventListener('click', reset);
       }
       new MutationObserver(function () { var p = paleta(); temaCbs.forEach(function (cb) { cb(p); }); pedir(); })
