@@ -55,21 +55,7 @@
   <li><b>Curvas de nivel</b> (tema 4.2): se usan para entender la Propiedad 4.1.</li>
 </ul>
 
-<h3>Mapa del tema</h3>
-<table>
-  <caption>Mapa del tema</caption>
-  <tr><th scope="col">Apartado</th><th scope="col">Qué contiene</th><th scope="col">Dónde está</th></tr>
-  <tr><td>1 Derivada parcial</td><td>Def. 4.8-4.9, cómo se calcula, interpretación geométrica, puntos especiales</td><td>U §4.3.2, pp.168-173</td></tr>
-  <tr><td>2 Gradiente</td><td>definición, Propiedad 4.1 (perpendicular a las curvas de nivel)</td><td>U §4.3.3, pp.173-174</td></tr>
-  <tr><td>3 Orden superior</td><td>parciales segundas, Hessiana, teorema de Schwarz</td><td>U §4.4, pp.175-178</td></tr>
-  <tr><td>4 Derivada direccional</td><td>Def. 4.10, $D_vf=\nabla f\cdot v$, máximo crecimiento</td><td>U §4.5, pp.179-182</td></tr>
-  <tr><td>5 Ejercicios de E</td><td>4.25-4.44 (20 ejercicios)</td><td>E pp.153-165</td></tr>
-  <tr><td>6 Ejemplos propios</td><td>4 ejemplos</td><td>propio</td></tr>
-  <tr><td>7 Examen</td><td>9 problemas de X</td><td>X</td></tr>
-  <tr><td>8 Chuleta y comprobación</td><td>fórmulas, errores, lista</td><td>síntesis</td></tr>
-</table>
-
-<h3>Qué se pide en los ejercicios y en el examen</h3>
+<h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>Gradiente en un punto</b> (la pregunta más repetida: E 4.28, 4.29, 4.31; X 2017-2019). (B) <b>Hessiana</b> en un punto, casi siempre de tres sumandos «fáciles» (E 4.36-4.37; X 2018). (C) <b>Parciales en un punto especial</b> de una función «a trozos», con la definición (E 4.33, 4.38). (D) <b>Derivada direccional</b> y <b>dirección de máximo crecimiento</b> (E 4.40-4.44; X electrónica). (E) <b>Puntos críticos</b>: resolver $\nabla f=0$ (E 4.32; X 2019). Los planos tangentes y la clasificación de extremos llegan en el Tema 5, pero necesitan el gradiente y la Hessiana de aquí.</p>
 
 <!-- ============================ 1 ============================ -->
@@ -96,11 +82,6 @@
 
 <h3>Interpretación geométrica</h3>
 <p>$(1,0,\frac{\partial g}{\partial x}(a,b))$ es un vector director de la recta tangente a la curva $z=g(x,b)$ (corte de la gráfica con el plano $y=b$); y $(0,1,\frac{\partial g}{\partial y}(a,b))$ lo es de la tangente a $z=g(a,y)$ (corte con el plano $x=a$). Es la versión en $\mathbb R^3$ de «$(1,f'(a))$ es director de la tangente a $y=f(x)$».</p>
-<figure class="bookfig">
-<img src="../assets/img/fig_u_4_15.png" alt="Superficie z=g(x,y) cortada por el plano y=b; la curva z=g(x,b) en rosa y su recta tangente en el punto (a,b,g(a,b)) con vector director (1,0,dg/dx(a,b))" loading="lazy">
-<figcaption>Figura 4.15 de U: el corte $y=b$ de la gráfica es la curva $z=g(x,b)$ y su tangente tiene dirección $(1,0,\frac{\partial g}{\partial x}(a,b))$. <span class="src" data-l="U" data-ref="U Figura 4.15, p. 169">U p.169</span></figcaption>
-</figure>
-
 <figure class="interactivo" data-escena="parciales" data-params='{}' aria-label="Interactivo 3D: cortes de la superficie por los planos y = b y x = a con sus rectas tangentes, cuyas pendientes son las derivadas parciales">
   <img class="int-static" src="../assets/img/int_parciales.png" alt="Interactivo 3D: cortes de la superficie por los planos y = b y x = a con sus rectas tangentes, cuyas pendientes son las derivadas parciales">
   <figcaption>Interactivo propio. Arrastra para girar. El plano naranja es $y=b$: corta la superficie en la curva naranja, y la recta tangente a esa curva en el punto negro tiene pendiente $\frac{\partial f}{\partial x}(a,b)$. El plano verde es $x=a$ y da la curva verde, cuya tangente tiene pendiente $\frac{\partial f}{\partial y}(a,b)$. Mueve $a$ y $b$ y compara con los valores de abajo (en la silla $x^2-y^2$, $\frac{\partial f}{\partial x}=2x$ y $\frac{\partial f}{\partial y}=-2y$ tienen signos opuestos para $x,y&gt;0$). <span class="src" data-l="P" data-ref="Explicación propia; interpretación geométrica: U §4.3.2 p. 169, Fig. 4.15">P</span></figcaption>
@@ -148,7 +129,7 @@
 <h2 id="s2"><span class="n">2</span>Gradiente <span class="src" data-l="U" data-ref="U §4.3.3 Gradiente, pp. 173-174 (Ejemplo 4.26, Propiedad 4.1)">U pp.173-174</span></h2>
 
 <div class="box intu"><span class="h">Idea intuitiva · la brújula de la ladera</span>
-  <p>Las derivadas parciales son una lista de números: «pendiente hacia el este», «pendiente hacia el norte». Empaquetadas en un único <b>vector</b>, se llaman gradiente. Más adelante (apartado 4) veremos que ese vector apunta exactamente en la dirección en que la ladera sube más rápido, y que su longitud es esa pendiente máxima. Por eso es la brújula de la montaña.</p>
+  <p>Las derivadas parciales son una lista de números: «pendiente hacia el este», «pendiente hacia el norte». Empaquetadas en un único <b>vector</b>, se llaman gradiente. Ese vector apunta en la dirección en que la ladera sube más rápido (apartado 4): es la brújula de la montaña.</p>
 </div>
 
 <div class="box def"><span class="h">Gradiente</span>
@@ -187,7 +168,7 @@
 
 <div class="box def"><span class="h">Derivadas parciales segundas y Hessiana</span>
   <p>$$\frac{\partial^2f}{\partial x^2}=\frac{\partial}{\partial x}\Big(\frac{\partial f}{\partial x}\Big),\qquad \frac{\partial^2f}{\partial y\,\partial x}=\frac{\partial}{\partial y}\Big(\frac{\partial f}{\partial x}\Big),\qquad \frac{\partial^2f}{\partial x\,\partial y}=\frac{\partial}{\partial x}\Big(\frac{\partial f}{\partial y}\Big),\qquad \frac{\partial^2f}{\partial y^2}=\frac{\partial}{\partial y}\Big(\frac{\partial f}{\partial y}\Big).$$
-  Se lee de derecha a izquierda: en $\frac{\partial^2f}{\partial y\,\partial x}$ se deriva <b>primero</b> respecto de $x$ y <b>luego</b> respecto de $y$. Notaciones: $\frac{\partial^2f}{\partial x^2}=f_{xx}=D_{11}f$ y $\frac{\partial^2f}{\partial y\,\partial x}=f_{xy}=D_{12}f$ (primero respecto de $x$, luego de $y$), etc. Se puede seguir derivando: $\frac{\partial^3f}{\partial x^3}$, … (derivadas de orden superior), siempre que existan. (no hay criterio único para el orden de los subíndices: fíjate en la definición que dé el enunciado). La <b>matriz Hessiana</b> de $f$ en $(a,b)$ es
+  Se lee de derecha a izquierda: en $\frac{\partial^2f}{\partial y\,\partial x}$ se deriva <b>primero</b> respecto de $x$ y <b>luego</b> respecto de $y$. Notaciones: $\frac{\partial^2f}{\partial x^2}=f_{xx}=D_{11}f$ y $\frac{\partial^2f}{\partial y\,\partial x}=f_{xy}=D_{12}f$ (primero respecto de $x$, luego de $y$), etc. Se puede seguir derivando: $\frac{\partial^3f}{\partial x^3}$, … (derivadas de orden superior), siempre que existan. (el orden de los subíndices no es único: fíjate en la definición que dé el enunciado). La <b>matriz Hessiana</b> de $f$ en $(a,b)$ es
   $$Hf(a,b)=\begin{pmatrix}\dfrac{\partial^2f}{\partial x^2}(a,b)&\dfrac{\partial^2f}{\partial x\partial y}(a,b)\\[8pt]\dfrac{\partial^2f}{\partial y\partial x}(a,b)&\dfrac{\partial^2f}{\partial y^2}(a,b)\end{pmatrix}$$
   y, en $n$ variables, la tabla $n\times n$ de todas las parciales segundas.</p>
   <span class="src" data-l="U" data-ref="U §4.4.2, pp. 175-176 (segundas y mixtas); Hessiana, p. 177">U pp.175-177</span>
@@ -270,7 +251,6 @@
     <li>Si $\nabla f(a,b)\ne0$: la derivada direccional <b>máxima</b> se obtiene en la dirección $\dfrac{\nabla f(a,b)}{\|\nabla f(a,b)\|}$ y vale $\|\nabla f(a,b)\|$; la <b>mínima</b>, en la dirección $-\dfrac{\nabla f(a,b)}{\|\nabla f(a,b)\|}$, y vale $-\|\nabla f(a,b)\|$.</li>
     <li>Si $\nabla f(a,b)=0$: todas las derivadas direccionales son $0$.</li>
   </ol>
-  <p>Resumen: $f$ crece lo más deprisa posible en el sentido del gradiente y decrece lo más deprisa posible en el opuesto.</p>
   <span class="src" data-l="U" data-ref="U Teorema 4.3, p. 182">U p.182</span>
 </div>
 
@@ -325,7 +305,6 @@
   </ol>
   <p><b>Respuesta: b).</b></p>
   <div class="recipe"><b>Receta:</b> el gradiente de $f:\mathbb R^n\to\mathbb R$ es un vector de $\mathbb R^n$ (una componente por variable).</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Sumar las parciales o confundir el gradiente con un número.</p></div>
 </details>
 
 <details class="sol" id="ej-4-27"><summary>Ejercicio 4.27 · gradiente de $x\int_0^y se^s\,ds$ (usa integrales: Tema 6) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.27, pp. 154-155 · teoría: U §4.3.2, p. 170; prerrequisito: teorema fundamental del Cálculo e integración por partes (U Tema 6)">E pp.154-155</span></summary>
@@ -383,7 +362,6 @@
   </ol>
   <p><b>Respuesta:</b> $(-2,1)$ (o cualquier múltiplo). Por la Propiedad 4.1 es tangente a la curva de nivel de $f$ por $(0,0)$.</p>
   <div class="recipe"><b>Receta:</b> en el plano, un perpendicular a $(p,q)$ es $(-q,p)$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Olvidar el signo de la regla de la cadena en $e^{x-y}$ al derivar en $y$.</p></div>
 </details>
 
 <details class="sol" id="ej-4-30"><summary>Ejercicio 4.30 · recta tangente al corte con el plano $x=1$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.30, p. 156 · teoría: U Def. 4.9 e interpretación geométrica, pp. 169-170">E p.156</span></summary>
@@ -457,7 +435,6 @@
   </ol>
   <p><b>Resultado:</b> $\dfrac{\partial f}{\partial x}=\begin{cases}\frac{2xy^4}{(x^2+y^2)^2}&(x,y)\ne(0,0)\\0&(0,0)\end{cases}$ y $\dfrac{\partial f}{\partial y}=\begin{cases}\frac{2x^4y}{(x^2+y^2)^2}&(x,y)\ne(0,0)\\0&(0,0)\end{cases}$.</p>
   <div class="recipe"><b>Receta:</b> función a trozos: reglas en los puntos «normales» y <b>definición</b> en el punto donde cambia la fórmula (en el origen basta mirar $f(h,0)$ y $f(0,h)$).</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Sustituir $(0,0)$ en la fórmula de la derivada o decir que la parcial «no existe» porque sale $\frac00$.</p></div>
 </details>
 
 <details class="sol" id="ej-4-34"><summary>Ejercicio 4.34 · continuidad en el origen de las parciales anteriores <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.34, pp. 158-159 · teoría: U límites y polares, pp. 161-165; continuidad, p. 166">E pp.158-159</span></summary>
@@ -513,7 +490,6 @@
   </ol>
   <p><b>Resultado:</b> $Hf(0,1,0)=\begin{pmatrix}-1&0&0\\0&1&0\\0&0&0\end{pmatrix}$.</p>
   <div class="recipe"><b>Receta:</b> si $f=g_1(x)+g_2(y)+g_3(z)$, la Hessiana es diagonal con $g_1'',g_2'',g_3''$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Hacer una matriz $2\times2$ porque $z$ «no aparece»: la función es de tres variables.</p></div>
 </details>
 
 <details class="sol" id="ej-4-37"><summary>Ejercicio 4.37 · dominio, gradiente y Hessiana de $x^2y$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.37, pp. 160-161 · teoría: U §4.3.3, p. 173; §4.4.2, p. 177">E pp.160-161</span></summary>
@@ -531,7 +507,6 @@
     <li><b>En $(1,0)$:</b> $Hf(1,0)=\begin{pmatrix}0&2\\2&0\end{pmatrix}$.</li>
   </ol>
   <div class="recipe"><b>Receta:</b> Hessiana: deriva dos veces y sustituye al final; si las cruzadas son continuas, basta calcular una.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Sustituir el punto <b>antes</b> de derivar por segunda vez.</p></div>
 </details>
 
 <details class="sol" id="ej-4-38"><summary>Ejercicio 4.38 · parciales segundas en el origen de $\frac{x^3y-xy^3}{x^2+y^2}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.38, pp. 161-162 · teoría: U §4.4.2, pp. 175-178">E pp.161-162</span></summary>
@@ -552,7 +527,6 @@
   </ol>
   <p><b>Resultado:</b> $Hf(0,0)=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$. <b>Las cruzadas no coinciden.</b></p>
   <div class="recipe"><b>Receta:</b> segunda parcial en un punto especial = definición aplicada a la parcial primera; para «$\partial_y$ de $\partial_xf$» se necesitan los valores de $\partial_xf$ sobre el eje $y$, $(0,h)$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Suponer que las cruzadas son siempre iguales o confundir el orden de derivación.</p></div>
 </details>
 
 <details class="sol" id="ej-4-39"><summary>Ejercicio 4.39 · ¿por qué no coinciden las cruzadas del ejercicio anterior? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.39, pp. 162-163 · teoría: U Teorema 4.1, p. 178">E pp.162-163</span></summary>
@@ -570,7 +544,6 @@
     <li><b>Conclusión:</b> falla la hipótesis de continuidad, el teorema no se aplica y las cruzadas pueden diferir (y difieren).</li>
   </ol>
   <div class="recipe"><b>Receta:</b> antes de usar un teorema, comprueba <b>todas</b> sus hipótesis; si la conclusión falla, alguna hipótesis falla.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Leer Schwarz como «las cruzadas siempre coinciden».</p></div>
 </details>
 
 <details class="sol" id="ej-4-40"><summary>Ejercicio 4.40 · derivada direccional conocido el gradiente <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.40, p. 163 · teoría: U Teorema 4.2, p. 180">E p.163</span></summary>
@@ -589,8 +562,7 @@
     <li><b>Comparar:</b> $4{,}5>\pi\approx3{,}14$.</li>
   </ol>
   <p><b>Respuesta: no es cierto.</b></p>
-  <div class="recipe"><b>Receta:</b> $D_vf=\nabla f\cdot\frac w{\|w\|}$: divide por la norma del vector dado.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>No normalizar: saldría $18$, valor falso (aquí la conclusión no cambiaría, pero en general sí).</p></div>
+  <div class="recipe"><b>Receta:</b> $D_vf=\nabla f\cdot\frac w{\|w\|}$: divide por la norma del vector dado (sin normalizar saldría $18$, valor falso).</div>
 </details>
 
 <details class="sol" id="ej-4-41"><summary>Ejercicio 4.41 · derivada direccional por la definición <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.41, p. 163 · teoría: U Def. 4.10, p. 179">E p.163</span></summary>
@@ -610,7 +582,6 @@
   </ol>
   <p>Interpretación: en esa dirección $f$ no cambia (se avanza por la superficie de nivel $f=-3$).</p>
   <div class="recipe"><b>Receta:</b> $D_vf(p)=\lim_{h\to0}\frac{f(p+hv)-f(p)}h$ con $v$ unitario.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Usar $\bar u$ sin normalizar.</p></div>
 </details>
 
 <details class="sol" id="ej-4-42"><summary>Ejercicio 4.42 · ángulo con la dirección de máximo crecimiento <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.42, p. 164 · teoría: U Teorema 4.3, p. 182; U §4.1 (ángulo)">E p.164</span></summary>
@@ -648,7 +619,7 @@
   </ol>
   <p><b>Respuesta: a).</b> La tasa máxima es $\|\nabla f(1,1)\|=\frac{\sqrt2}2$. Sentido común: $f$ es la proporción de $x^2$ en $x^2+y^2$, que crece si sube $x$ y baja $y$.</p>
   <div class="recipe"><b>Receta:</b> dirección de máximo crecimiento $=\nabla f/\|\nabla f\|$ (vector unitario).</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Dar $\nabla f$ sin normalizar o cambiar un signo al derivar el cociente: la de máximo <b>de</b>crecimiento, $\big(-\frac{\sqrt2}2,\frac{\sqrt2}2\big)$, no está entre las opciones.</p></div>
+  <div class="box warn"><span class="h">Error típico</span><p>Cambiar un signo al derivar el cociente: la dirección de máximo <b>de</b>crecimiento, $\big(-\frac{\sqrt2}2,\frac{\sqrt2}2\big)$, no está entre las opciones.</p></div>
 </details>
 
 <details class="sol" id="ej-4-44"><summary>Ejercicio 4.44 · tangente al corte con un plano vertical oblicuo <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 4.44, p. 165 · teoría: U Teorema 4.2 e interpretación geométrica, p. 180">E p.165</span></summary>
@@ -749,19 +720,8 @@
 
 <details class="sol" id="x1"><summary>X1 · gradiente de $\ln(xy)$ en $(2,3)$ <span class="src" data-l="X" data-ref="X p.130 (I. Electrónica Industrial y Automática, examen B sin fecha, P4, 1 punto)">X p.130</span></summary>
   <p class="enun">Calcule el gradiente en $(2,3)$ de la función dada por $f(x,y)=\ln(xy)$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>El gradiente de $\ln(xy)$ en $(2,3)$ (pregunta corta de examen).</dd>
-    <dt>Cómo lo pienso</dt><dd>Dos derivadas de un logaritmo con la otra variable congelada, y sustituir el punto.</dd>
-    <dt>Qué uso</dt><dd>Gradiente (U p.173); regla de la cadena.</dd>
-    <dt>Por dónde empiezo</dt><dd>Escribo $f_x=\frac1{xy}\cdot y$ y $f_y=\frac1{xy}\cdot x$.</dd>
-  </dl></div>
-  <ol class="steps">
-    <li>$\frac{\partial f}{\partial x}=\frac{y}{xy}=\frac1x$ y $\frac{\partial f}{\partial y}=\frac x{xy}=\frac1y$.</li>
-    <li>En $(2,3)$: $\nabla f(2,3)=\big(\frac12,\frac13\big)$.</li>
-  </ol>
-  <p>Es el mismo enunciado que E 4.31.</p>
+  <p>Mismo problema que <a href="#ej-4-31">E 4.31</a>: $\nabla f(2,3)=\big(\frac12,\frac13\big)$.</p>
   <div class="box tip"><span class="h">En el examen escribe</span><p>«$f_x=\frac1{xy}\cdot y=\frac1x$, $f_y=\frac1{xy}\cdot x=\frac1y$; $\nabla f(2,3)=(\frac12,\frac13)$.»</p></div>
-  <div class="recipe"><b>Receta:</b> parciales con la otra variable constante y sustituir el punto.</div>
 </details>
 
 <details class="sol" id="x2"><summary>X2 · gradiente y puntos críticos de $xy(5x-15+y)$ <span class="src" data-l="X" data-ref="X p.152 (Febrero 2019, 1.ª semana, I. Electrónica Industrial y Automática, Ej. 6, 3 puntos)">X p.152 (feb. 2019)</span></summary>
@@ -915,16 +875,13 @@
 <h2 id="chuleta"><span class="n">8</span>Errores frecuentes, chuleta y lista de comprobación</h2>
 
 <h3>Errores frecuentes</h3>
+<p>Cada uno está explicado en su apartado (cajas «Error típico») y en el ejercicio indicado.</p>
 <ul>
-  <li>Sumar las parciales o dar el gradiente como número; olvidar que tiene tantas componentes como variables.</li>
-  <li>Olvidar la derivada interior (regla de la cadena) al derivar, o perder el signo en $e^{x-y}$ respecto de $y$.</li>
-  <li>Sustituir el punto antes de derivar (parciales segundas incluidas).</li>
-  <li>En una función a trozos, evaluar la fórmula de la derivada en el punto especial o decir «no existe» porque sale $\frac00$: hay que usar la definición.</li>
-  <li>Creer que «tiene derivadas parciales» implica continua, o que implica que existen todas las direccionales.</li>
-  <li>Leer Schwarz como «las cruzadas siempre coinciden»; confundir el orden de $\frac{\partial^2f}{\partial y\partial x}$.</li>
-  <li>Hacer la Hessiana $2\times2$ en una función de tres variables.</li>
-  <li>No normalizar el vector en $D_vf=\nabla f\cdot v$, o dar $\nabla f$ sin normalizar como «dirección» de máximo crecimiento.</li>
-  <li>Aplicar $D_vf=\nabla f\cdot v$ sin comprobar la continuidad de las parciales.</li>
+  <li><b>Derivar:</b> olvidar la derivada interior o su signo (en $e^{x-y}$ respecto de $y$); sustituir el punto antes de derivar, también en las segundas (E 4.28, 4.29, 4.37).</li>
+  <li><b>Gradiente:</b> sumar las parciales o darlo como número; exigir que solo alguna componente sea $0$ al buscar puntos críticos (E 4.26, 4.32).</li>
+  <li><b>Punto especial de función a trozos:</b> usar la fórmula o decir «no existe» porque sale $\frac00$ (E 4.33); creer que tener parciales implica continuidad o direccionales (Propio 3 y 4).</li>
+  <li><b>Hessiana y Schwarz:</b> hacer una matriz $2\times2$ con tres variables (E 4.36); creer que las cruzadas siempre coinciden o confundir su orden (E 4.38-4.39).</li>
+  <li><b>Direccional:</b> no normalizar $v$, o dar $\nabla f$ sin normalizar como dirección de máximo crecimiento (E 4.40, 4.43); aplicar $\nabla f\cdot v$ sin parciales continuas.</li>
 </ul>
 
 <h3>Chuleta</h3>
