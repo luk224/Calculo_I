@@ -71,6 +71,8 @@
       }
       return seg;
     },
+    /* Factor de grosor de las líneas 3D (tubos y flechas): 0,5 = un 70 % del radio r que piden las escenas. */
+    finura: 0.7,
     /* Tubo de radio r por una lista de puntos [x,y,z] (curvas o segmentos gruesos en 3D). m.set(pts) lo rehace. */
     tubo: function (THREE, pts, r, col) {
       var m = new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial({ color: col }));
@@ -78,21 +80,47 @@
         m.geometry.dispose();
         if (ps.length < 2) { m.geometry = new THREE.BufferGeometry(); return; }
         var cur = new THREE.CatmullRomCurve3(ps.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }), false, 'centripetal');
-        m.geometry = new THREE.TubeGeometry(cur, Math.max(2, ps.length * 2), r, 6, false);
+        m.geometry = new THREE.TubeGeometry(cur, Math.max(2, ps.length * 2), r * H.finura, 6, false);
       };
       m.set(pts); return m;
     },
     /* Flecha 3D (tubo + cono) de color col y grosor r. f.poner([x,y,z],[x,y,z]) la coloca; f.userData.eje / .cono son las mallas. */
     flecha: function (THREE, col, r) {
-      var g = new THREE.Group(), eje = H.tubo(THREE, [], r, col), cono = new THREE.Mesh(new THREE.ConeGeometry(r * 3, r * 8, 14), new THREE.MeshBasicMaterial({ color: col }));
+      var Lc = r * 5, g = new THREE.Group(), eje = H.tubo(THREE, [], r, col), cono = new THREE.Mesh(new THREE.ConeGeometry(r * 1.5, Lc, 14), new THREE.MeshBasicMaterial({ color: col }));
       g.add(eje, cono); g.userData = { eje: eje, cono: cono };
       g.poner = function (p, q) {
-        var dir = new THREE.Vector3(q[0] - p[0], q[1] - p[1], q[2] - p[2]), L = dir.length(); g.visible = L > r * 8; if (!g.visible) return;
-        dir.normalize(); var base = new THREE.Vector3(q[0], q[1], q[2]).addScaledVector(dir, -r * 8);
+        var dir = new THREE.Vector3(q[0] - p[0], q[1] - p[1], q[2] - p[2]), L = dir.length(); g.visible = L > Lc; if (!g.visible) return;
+        dir.normalize(); var base = new THREE.Vector3(q[0], q[1], q[2]).addScaledVector(dir, -Lc);
         eje.set([p, [base.x, base.y, base.z]]);
-        cono.position.set(q[0], q[1], q[2]).addScaledVector(dir, -r * 4); cono.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+        cono.position.set(q[0], q[1], q[2]).addScaledVector(dir, -Lc / 2); cono.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
       };
       return g;
+    },
+    /* Indicador de ejes en el origen, como en Maya/Blender: x rojo, y verde, z azul, finos, con punta y su letra (siempre visibles, de cara a la cámara). g.tema(bg) repinta el halo de las letras. */
+    gimbal: function (THREE, L) {
+      var g = new THREE.Group(), defs = [['X', 0xe5484d, [1, 0, 0]], ['Y', 0x30a46c, [0, 1, 0]], ['Z', 0x3e63dd, [0, 0, 1]]], letras = [];
+      defs.forEach(function (d) {
+        var dir = new THREE.Vector3(d[2][0], d[2][1], d[2][2]), q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+        var mat = new THREE.MeshBasicMaterial({ color: d[1], depthTest: false, transparent: true });
+        var eje = new THREE.Mesh(new THREE.CylinderGeometry(L * 0.012, L * 0.012, L * 0.86, 8), mat);
+        eje.position.copy(dir).multiplyScalar(L * 0.43); eje.quaternion.copy(q);
+        var cono = new THREE.Mesh(new THREE.ConeGeometry(L * 0.04, L * 0.14, 12), mat);
+        cono.position.copy(dir).multiplyScalar(L * 0.93); cono.quaternion.copy(q);
+        var cv = document.createElement('canvas'); cv.width = cv.height = 128;
+        var tex = new THREE.CanvasTexture(cv); tex.encoding = THREE.sRGBEncoding;
+        var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true }));
+        sp.position.copy(dir).multiplyScalar(L * 1.2); sp.scale.set(L * 0.3, L * 0.3, 1);
+        eje.renderOrder = cono.renderOrder = 10; sp.renderOrder = 11;
+        letras.push({ cv: cv, tex: tex, t: d[0], c: '#' + ('000000' + d[1].toString(16)).slice(-6) });
+        g.add(eje, cono, sp);
+      });
+      g.tema = function (bg) {
+        letras.forEach(function (l) {
+          var x = l.cv.getContext('2d'); x.clearRect(0, 0, 128, 128); x.font = '700 92px system-ui,sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle';
+          x.lineJoin = 'round'; x.lineWidth = 14; x.strokeStyle = bg; x.strokeText(l.t, 64, 68); x.fillStyle = l.c; x.fillText(l.t, 64, 68); l.tex.needsUpdate = true;
+        });
+      };
+      g.tema('#ffffff'); return g;
     },
     /* ---- 2D (cámara ortográfica, data-params {"dim":2}) ---- */
     /* Cinta de grosor w (unidades de mundo) sobre una lista de polilíneas [[ [x,y],… ],…].
@@ -232,6 +260,10 @@
         for (i = Math.ceil(L / sx); i * sx <= R; i++) { v = i * sx; if (Math.abs(v) < sx * 1e-6) continue; poner(fmtN(v, sx), (v - L) / (R - L) * W, py, 'x'); }
         for (i = Math.ceil(B / sy); i * sy <= T2; i++) { v = i * sy; if (Math.abs(v) < sy * 1e-6) continue; poner(fmtN(v, sy), px, (T2 - v) / (T2 - B) * Hh, 'y'); }
         if (L < 0 && R > 0 && B < 0 && T2 > 0) poner('0', px, py, 'o');
+        if (ctx.nombresEjes !== false) {
+          var nn = ctx.nombresEjes || ['x', 'y'];
+          poner(nn[0], W - 12, Math.min(Hh - 10, Math.max(10, (1 - yx) * Hh - 13)), 'ax'); poner(nn[1], Math.min(W - 10, Math.max(10, xy * W + 13)), 11, 'ax');
+        }
         for (; n < usadas.length; n++) usadas[n].style.display = 'none';
       }
       function ajustar() {
@@ -305,6 +337,10 @@
       };
       if (dos) activarZoom();
       fn(ctx);
+      if (!dos && params.gimbal !== false) {
+        var gm = H.gimbal(THREE, ctx.gimbalLen || 1.5); scene.add(gm); gm.tema(paleta().bg);
+        temaCbs.push(function (q) { gm.tema(q.bg); pedir(); });
+      }
       requestAnimationFrame(function () { requestAnimationFrame(function () { if (msg.parentNode) stage.removeChild(msg); }); });
       /* Zoom con rueda o pellizco, desplazamiento arrastrando, doble clic o botón para restablecer. */
       function activarZoom() {

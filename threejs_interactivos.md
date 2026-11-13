@@ -134,3 +134,9 @@ Cada tema retocado se publica con su commit propio (`CLAUDE.md` §4b).
 
 ## Lectura de coordenadas (genérica)
 En toda escena 2D (`dim:2`), `assets/interactivos.js` marca con un punto y escribe `(x, y)` de la curva (cintas de `H.cinta` fuera de ejes/rejilla) o del dato (`H.punto`) más cercano al cursor (ratón/lápiz al pasar; táctil al tocar). Las gráficas de ejercicios que no necesitan WebGL usan `assets/grafica.js` (ver CLAUDE.md §11b).
+
+## Ejes y grosor de línea (común a todas las escenas)
+- **3D:** el motor añade solo, en el origen, un indicador de ejes fino tipo Maya (X rojo, Y verde, Z azul, con punta y letra; siempre visible). Longitud por defecto 1,5; una escena puede fijar `ctx.gimbalLen` o desactivarlo con `data-params {"gimbal":false}`.
+- **Grosor:** `H.tubo` y `H.flecha` multiplican el radio que piden las escenas por `H.finura` (0,7); la punta de `H.flecha` es proporcional al radio. Radios habituales: 0,03-0,05.
+- **2D:** el motor escribe `x` (extremo derecho del eje horizontal) e `y` (arriba del eje vertical); una escena puede cambiarlos con `ctx.nombresEjes = ['t','F']` o quitarlos con `false`. Las escenas con `marcasPropias` (varios paneles: biseccion, epsilon-n, lhopital, series, derivada-grafica, optimizacion) no los llevan.
+- Tras tocar esto hay que rehacer las capturas estáticas: `python herramientas/capturar_interactivos.py --sin-html --forzar`.

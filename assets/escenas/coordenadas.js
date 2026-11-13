@@ -1,7 +1,7 @@
 /* Coordenadas polares, cilíndricas y esféricas (tema 4.1; convención de U: φ se mide desde el plano xy). */
 Interactivos.registrar('coordenadas', function (c) {
   var T = c.THREE, H = c.H, D = Math.PI / 180;
-  var modo = 2, rho = 2, th = 40, z = 1, ph = 30, P = c.colores(), r = 0.045;
+  var modo = 2, rho = 2, th = 40, z = 1, ph = 30, P = c.colores(), r = 0.035;
   var rejilla, ejes, lRho, lRad, lVert, aTh, aPh, pt, pxy, lx, ly;
   var l1 = c.lectura('(x, y, z)'), l2 = c.lectura(''), l3 = c.lectura('Fórmulas');
   function fm(t) { return (Math.round(t * 1000) / 1000).toString().replace('-', '−'); }

@@ -1,7 +1,7 @@
 /* Producto escalar, norma y ángulo en R³ (tema 4.1): dos vectores con sliders, proyección de u sobre v. */
 Interactivos.registrar('vectores', function (c) {
   var T = c.THREE, H = c.H;
-  var u = [2, 1, 1], v = [1, 2, 0], P = c.colores(), r = 0.08;
+  var u = [2, 1, 1], v = [1, 2, 0], P = c.colores(), r = 0.05;
   var rejilla, ejes, fu, fv, proy, arco, pt;
   var l1 = c.lectura('u · v'), l2 = c.lectura('‖u‖  ,  ‖v‖'), l3 = c.lectura('Ángulo α entre u y v'), l4 = c.lectura('Proyección de u sobre v (con signo)'), l5 = c.lectura('');
   function fm(t) { return (Math.round(t * 1000) / 1000).toString().replace('-', '−'); }
