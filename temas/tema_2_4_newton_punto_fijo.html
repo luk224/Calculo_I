@@ -12,6 +12,8 @@
 <script defer src="../assets/resumen.js"></script>
 <link rel="stylesheet" href="../assets/interactivos.css">
 <script defer src="../assets/interactivos.js"></script>
+<link rel="stylesheet" href="../assets/grafica.css">
+<script defer src="../assets/grafica.js"></script>
 <style>
 /* Extras propios de este tema (prefijo t24-). El sistema visual base está en ../assets/resumen.css */
 svg.fig .t24-dash{stroke:var(--mut);stroke-width:1.2;fill:none;stroke-dasharray:4 4}
@@ -347,6 +349,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Teorema de Bolzano (U §1.4, p.52) para elegir $x_0$. <span class="src" data-l="U" data-ref="U §2.4.2, algoritmo p. 88; Ejemplo 2.15, pp. 87-88">U p.88</span></dd>
     <dt>Por dónde empiezo</dt><dd>Escribo $f(x)=x^2-5$, $f'(x)=2x$, y busco con Bolzano dos enteros entre los que cambie de signo para tomar $x_0$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[2,-1,"x₀=2"]],"q":[[2.236068,0,"√5"]],"c":[{"e":"x*x-5","n":"f(x)=x²−5"}],"x":[0,3.5],"y":[-6,8]}' data-alt="Parábola x²-5 y su cero"><figcaption>La parábola $f(x)=x^2-5$ corta al eje $x$ en $\sqrt5\approx2{,}236$, que es lo que buscamos; $x_0=2$ queda a su izquierda. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Convertir «calcular $\sqrt5$» en «resolver $f(x)=0$».</b> $\sqrt5$ es el número positivo cuyo cuadrado vale $5$: solución de $x^2-5=0$. Tomamos $f(x)=x^2-5$, derivable en todo $\mathbb R$, con $f'(x)=2x$.</li>
     <li><b>Elegir $x_0$ con criterio.</b> $f(2)=-1&lt;0&lt;f(3)=4$ y $f$ es continua: por Bolzano hay un cero en $(2,3)$. Tomamos $x_0=2$; además $f'(2)=4\ne0$, luego se puede aplicar la fórmula.</li>
@@ -381,6 +384,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Teorema de Bolzano y bisección (U §1.4, pp.52-55). <span class="src" data-l="U" data-ref="U p. 88 (algoritmo) y §1.4 pp. 52-55 (Bolzano y bisección)">U pp.52-55,88</span></dd>
     <dt>Por dónde empiezo</dt><dd>Pongo $f(x)=x^2$, $f'(x)=2x$ y simplifico $x-f/f'$ antes de iterar.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0.4,0.16,"x₀"],[0.2,0.04,"x₁"],[0.1,0.01,"x₂"],[0.05,0.0025,"x₃"]],"c":[{"e":"x*x","n":"f(x)=x²"}],"x":[-0.3,0.6],"y":[-0.05,0.4]}' data-alt="Parábola x² y los iterados de Newton"><figcaption>La parábola $f(x)=x^2$ toca el eje $x$ en $0$ sin cruzarlo (no hay cambio de signo). Los puntos $(x_n,f(x_n))$ de Newton se acercan a $0$ dividiéndose por dos cada vez. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Función y derivada.</b> $f(x)=x^2$, $f'(x)=2x$, derivable en $\mathbb R$. La solución exacta es $\tilde x=0$; el ejercicio sirve para <i>ver cómo se comporta</i> el método.</li>
     <li><b>Iteración simplificada.</b> Si $x_n\ne0$ (para poder dividir entre $2x_n$): $x_{n+1}=x_n-\dfrac{x_n^2}{2x_n}=\dfrac{x_n}2$. Con $x_0=0.4$ todas las $x_n=0.4/2^n$ son no nulas: el método nunca se bloquea.</li>
@@ -409,6 +413,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; error relativo aproximado y criterios de parada (U pp.89-90). <span class="src" data-l="U" data-ref="U pp. 88-90: algoritmo, error relativo aproximado, criterios de parada">U pp.88-90</span></dd>
     <dt>Por dónde empiezo</dt><dd>Defino $f(x)=e^{-x}-x$, compruebo con Bolzano dónde está la raíz, calculo $f'(x)$ y simplifico la iteración.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0.5,0.106531,"x₀=0,5"],[5,-4.993262,"x₀=5"]],"q":[[0.567143,0,"raíz"]],"c":[{"e":"exp(-x)-x","n":"f(x)=e^(−x)−x"}],"x":[-0.5,5.5],"y":[-6,2]}' data-alt="Gráfica de e^-x - x"><figcaption>La función $f(x)=e^{-x}-x$ es decreciente y corta al eje $x$ en $x\approx0{,}5671$. El punto $x_0=0{,}5$ está junto a la raíz y $x_0=5$ muy lejos, donde la tangente es casi horizontal. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Hay una única solución y sabemos dónde.</b> $f(x)=e^{-x}-x$, continua y derivable en $\mathbb R$. $f(0)=1&gt;0$ y $f(1)=e^{-1}-1\approx-0.632&lt;0$: por Bolzano hay una raíz en $(0,1)$. Es única porque $e^{-x}$ y $-x$ son estrictamente decrecientes, luego $f$ también y no puede anularse dos veces. (Es la ecuación del Ejemplo 1.49 de U, p.55, resuelta allí por bisección.)</li>
     <li><b>Derivada que nunca se anula.</b> $f'(x)=-e^{-x}-1&lt;0$ para todo $x$, porque $e^{-x}&gt;0$: la división de Newton siempre es posible.</li>
@@ -454,6 +459,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Definición de punto fijo (U Def. 2.4, p.90); Teorema 2.2 (U p.91): (H0) $g$ continua, (H1) $g([a,b])\subset[a,b]$, (H2) $|g'|\le k<1$. <span class="src" data-l="U" data-ref="U pp. 90-93: Definición 2.4, Teoremas 2.2 y 2.3, Ejemplo 2.17">U pp.90-93</span></dd>
     <dt>Por dónde empiezo</dt><dd>Llamo $g(x)=e^{-x}$ y $[a,b]=[0.1,2]$; compruebo (H1) usando que $g$ es decreciente.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"q":[[0.567143,0.567143,"punto fijo"]],"c":[{"e":"exp(-x)","n":"g(x)=e^(−x)"},{"e":"x","n":"y=x","d":1}],"x":[0,2.2],"y":[0,2.2]}' data-alt="g(x)=e^-x y la recta y=x"><figcaption>El punto fijo es donde la curva $g(x)=e^{-x}$ corta a la recta $y=x$: $x\approx0{,}5671$. En $[0{,}1,2]$ la curva queda dentro del intervalo. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <p><b>Apartado 1.</b></p>
   <ol class="steps">
     <li><b>Forma $x=g(x)$.</b> Ya lo está: $g(x)=e^{-x}$. Sus puntos fijos son exactamente las soluciones de la ecuación (Definición 2.4).</li>
@@ -519,6 +525,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Bolzano (U p.52).</dd>
     <dt>Por dónde empiezo</dt><dd>Tomo $f(x)=x^3-10$ y localizo la raíz entre dos enteros para elegir $x_0$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"q":[[2.154435,0,"∛10"]],"c":[{"e":"x**3-10","n":"f(x)=x³−10"}],"x":[0,3],"y":[-12,18]}' data-alt="Cúbica x^3-10 y su cero"><figcaption>La cúbica $f(x)=x^3-10$ corta al eje $x$ en $\sqrt[3]{10}\approx2{,}1544$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li>$f(x)=x^3-10$, $f'(x)=3x^2$. Como $f(2)=-2&lt;0&lt;f(3)=17$, por Bolzano la raíz está en $(2,3)$. Tomamos $x_0=2$.</li>
     <li>$x_{n+1}=x_n-\dfrac{x_n^3-10}{3x_n^2}=\dfrac{2x_n^3+10}{3x_n^2}$.</li>
@@ -541,6 +548,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; criterio de parada con error relativo aproximado (U pp.89-90).</dd>
     <dt>Por dónde empiezo</dt><dd>Localizo la raíz con Bolzano, compruebo que $f'$ no se anula y arranco con $x_0=1.5$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"q":[[1.324718,0,"raíz"]],"c":[{"e":"x**3-x-1","n":"f(x)=x³−x−1"}],"x":[-0.5,2],"y":[-3,6]}' data-alt="Cúbica x^3-x-1"><figcaption>La cúbica $f(x)=x^3-x-1$ tiene una única raíz real, $x\approx1{,}3247$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li>$f(1)=-1&lt;0$, $f(2)=5&gt;0$: hay raíz en $(1,2)$. $f'(x)=3x^2-1\ge2$ en $[1,2]$, luego no se anula.</li>
     <li>$x_{n+1}=x_n-\dfrac{x_n^3-x_n-1}{3x_n^2-1}$, con $x_0=1.5$.</li>
@@ -564,6 +572,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Bolzano (U p.52).</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $x_1$ y $x_2$ desde $x_0=0$ con $f'(x)=3x^2-2$ para ver el ciclo.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0,2,"x₀=0"],[1,1,"x₁=1"],[-2,-2,"x₀=−2"]],"q":[[-1.769292,0,"raíz"]],"c":[{"e":"x**3-2*x+2","n":"f(x)=x³−2x+2"}],"x":[-2.5,2],"y":[-6,8]}' data-alt="Cúbica x^3-2x+2 y los puntos del ciclo"><figcaption>En $x=0$ y $x=1$ las tangentes cortan al eje en $1$ y en $0$ respectivamente: la iteración da vueltas. La única raíz real está en $x\approx-1{,}7693$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li>$f'(x)=3x^2-2$. Desde $x_0=0$: $x_1=0-\frac{2}{-2}=1$; desde $x_1=1$: $x_2=1-\frac11=0$. La sucesión es $0,1,0,1,\dots$: un <b>ciclo</b>, sin límite.</li>
     <li>¿Dónde está la raíz? $f(-2)=-2&lt;0$, $f(-1)=3&gt;0$: en $(-2,-1)$.</li>
@@ -590,6 +599,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 (U p.91) y número de iteraciones (U p.92).</dd>
     <dt>Por dónde empiezo</dt><dd>Con $g(x)=\cos x$ miro dónde es monótona para hallar $g([0,1])$ y acotar $|g'|=\operatorname{sen}x$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"q":[[0.739085,0.739085,"punto fijo"]],"c":[{"e":"cos(x)","n":"g(x)=cos x"},{"e":"x","n":"y=x","d":1}],"x":[0,1.2],"y":[0,1.2]}' data-alt="cos x y la recta y=x"><figcaption>El punto fijo es el corte de $y=\cos x$ con $y=x$: $x\approx0{,}7391$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>(H1).</b> $g(x)=\cos x$ es decreciente en $[0,1]\subset[0,\frac\pi2]$, luego $g([0,1])=[\cos1,\cos0]=[0.5403,1]\subset[0,1]$.</li>
     <li><b>(H2).</b> $|g'(x)|=\operatorname{sen}x\le\operatorname{sen}1\approx0.8415&lt;1$ en $(0,1)$ (el seno crece en $[0,\frac\pi2]$). Tomamos $k=\operatorname{sen}1$. Por el Teorema 2.2: un único punto fijo y convergencia desde cualquier $x_0\in[0,1]$.</li>
@@ -605,6 +615,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 (U p.91), número de iteraciones (U p.92) y elección de $g$ (U pp.93-94).</dd>
     <dt>Por dónde empiezo</dt><dd>Pruebo dos despejes ($x^3-1$ y $\sqrt[3]{x+1}$) y miro en cada uno el valor de $|g'|$ en $[1,2]$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"q":[[1.324718,1.324718,"raíz"]],"c":[{"e":"cbrt(x+1)","n":"g₂(x)=∛(x+1)"},{"e":"x","n":"y=x","d":1}],"x":[1,2],"y":[1,2]}' data-alt="Gráfica de la raíz cúbica de x+1 y la recta y=x"><figcaption>La buena elección $g_2(x)=\sqrt[3]{x+1}$ es casi plana y corta a $y=x$ en $x\approx1{,}3247$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Opción mala:</b> $x=x^3-1$, $g_1(x)=x^3-1$. Entonces $g_1'(x)=3x^2\ge3$ en $[1,2]$: (H2) falla, y $g_1([1,2])=[0,7]\not\subset[1,2]$: (H1) también. Desde $x_0=1.5$: $2.375,\ 12.40,\ 1904,\ 6.9\times10^{9}$. <b>Diverge.</b></li>
     <li><b>Opción buena:</b> $x^3=x+1\iff x=\sqrt[3]{x+1}$, $g_2(x)=\sqrt[3]{x+1}$. Es creciente: $g_2([1,2])=[\sqrt[3]2,\sqrt[3]3]=[1.2599,1.4422]\subset[1,2]$ (H1). $g_2'(x)=\frac{1}{3(x+1)^{2/3}}$ es positiva y decreciente, luego $|g_2'|\le g_2'(1)=\frac1{3\sqrt[3]4}\approx0.2100=k$ (H2).</li>
@@ -647,6 +658,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$.</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo todo en un lado: $f(x)=e^x+2x-4$, y calculo $f'(x)$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0,1,"x₀=0"]],"q":[[0.840841,2.318317,"solución"]],"c":[{"e":"exp(x)","n":"eˣ"},{"e":"4-2*x","n":"4−2x"}],"x":[-1,2],"y":[-1,6]}' data-alt="Curvas e^x y 4-2x"><figcaption>La solución de $4-2x=e^x$ es el corte de la recta $4-2x$ con la exponencial: $x\approx0{,}8408$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Pasar a $f(x)=0$.</b> Todo a un lado: $f(x)=e^x+2x-4$.</li>
     <li><b>Derivar.</b> $f'(x)=e^x+2$. Es siempre positiva, así que nunca se divide entre $0$ (U p.88).</li>
@@ -669,6 +681,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Iteración de punto fijo $x_{n+1}=g(x_n)$ (U Def. 2.4, p.90); Teorema 2.2 (U p.91) solo si piden justificar la convergencia.</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $x_1=f(0)$ y sigo usando cada resultado como entrada del siguiente.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"q":[[0.56984,0.56984,"punto fijo"]],"c":[{"e":"1-1/(x*x+2)","n":"f(x)"},{"e":"x","n":"y=x","d":1}],"x":[0,1.2],"y":[0,1.2]}' data-alt="f y la recta y=x"><figcaption>El punto fijo de $f(x)=1-\frac{1}{x^2+2}$ es el corte con $y=x$: $x\approx0{,}5698$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Regla.</b> $x_{n+1}=f(x_n)=1-\dfrac1{x_n^2+2}$, empezando en $x_0=0$ (U p.90).</li>
     <li>$x_1=1-\dfrac1{0+2}=\dfrac12=0.5$.</li>
@@ -694,6 +707,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; criterios de parada (U pp.89-90).</dd>
     <dt>Por dónde empiezo</dt><dd>Defino $f(x)=x-2^{-x}$, derivo ($f'(x)=1+\ln2\cdot2^{-x}$) y calculo $x_1$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0,-1,"x₀=0"]],"q":[[0.641186,0,"raíz"]],"c":[{"e":"x-pow(2,-x)","n":"f(x)=x−2^(−x)"}],"x":[-0.5,1.5],"y":[-2,2]}' data-alt="Gráfica de x - 2^-x"><figcaption>La función $f(x)=x-2^{-x}$ es creciente y corta al eje $x$ en $x\approx0{,}6412$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Función.</b> $f(x)=x-2^{-x}$. Como $f(0)=-1&lt;0$ y $f(1)=\frac12&gt;0$, hay raíz entre $0$ y $1$ (Bolzano).</li>
     <li><b>Derivada.</b> $f'(x)=1+\ln2\cdot2^{-x}$ (la derivada de $2^{-x}$ es $-\ln2\cdot2^{-x}$). Siempre es positiva: nunca se divide entre $0$.</li>
@@ -722,6 +736,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Teorema 2.2 (U p.91): (H0) $g$ continua, (H1) $g([a,b])\subset[a,b]$, (H2) $|g'|\le k<1$; Teorema 2.3 (U p.91): $|x_n-\tilde x|<\dfrac{k^n}{1-k}(b-a)$.</dd>
     <dt>Por dónde empiezo</dt><dd>Despejo $x=g(x)$, es decir $g(x)=\frac12\operatorname{sen}x+1$, y tomo $[a,b]=[0,\pi]$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[2,1.454649,"x₀=2"]],"q":[[1.498701,1.498701,"punto fijo"]],"c":[{"e":"sin(x)/2+1","n":"g(x)=½ sen x+1"},{"e":"x","n":"y=x","d":1}],"x":[0,3.1416],"y":[0,3.2]}' data-alt="g(x)=sen(x)/2+1 y la recta y=x"><figcaption>La ecuación equivale a $x=g(x)=\frac12\operatorname{sen}x+1$: el punto fijo es el corte con $y=x$, en $x\approx1{,}4987$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Despejar $x=g(x)$.</b> $g(x)=\frac12\operatorname{sen}x+1$, intervalo $[a,b]=[0,\pi]$.</li>
     <li><b>(H0) $g$ es continua</b> en todo $\mathbb R$.</li>
@@ -746,6 +761,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 (U p.91) y número de iteraciones (U p.92).</dd>
     <dt>Por dónde empiezo</dt><dd>Identifico $g$, elijo el intervalo $[0,\frac12]$ y compruebo (H1) viendo entre qué valores se mueve $g$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0,0.420735,"x₀=0"]],"q":[[0.484479,0.484479,"punto fijo"]],"c":[{"e":"cos(x*x)*sin(x+1)/2","n":"g(x)"},{"e":"x","n":"y=x","d":1}],"x":[0,1],"y":[0,1]}' data-alt="g y la recta y=x en [0,1]"><figcaption>La función $g(x)=\frac12\cos(x^2)\operatorname{sen}(x+1)$ es muy plana y corta a $y=x$ en $x\approx0{,}4845$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Despejar $x=g(x)$.</b> $g(x)=\frac12\cos(x^2)\operatorname{sen}(x+1)$.</li>
     <li><b>Elegir el intervalo.</b> Para $x\in[0,1]$ se cumple $0&lt;g(x)\le\frac12$. Entonces $g$ lleva $[0,\frac12]$ dentro de sí mismo, y contiene a $x_0=0$. Tomamos $[a,b]=[0,\frac12]$.</li>

@@ -12,6 +12,8 @@
 <script defer src="../assets/resumen.js"></script>
 <link rel="stylesheet" href="../assets/interactivos.css">
 <script defer src="../assets/interactivos.js"></script>
+<link rel="stylesheet" href="../assets/grafica.css">
+<script defer src="../assets/grafica.js"></script>
 <style>
 /* Añadidos propios de este tema (prefijo t22-) */
 svg.fig .t22-fa{fill:var(--acc);fill-opacity:.22;stroke:var(--acc);stroke-width:1.5}
@@ -457,6 +459,7 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   </ol>
   <span class="src" data-l="S" data-ref="Stewart §3.5, ejercicio 78 (f(x) = x + e^x es uno a uno; remite al 77a), p. 217">S p.217</span>
 </div>
+<figure class="graf" data-g='{"q":[[0,0,"(0, 0)"],[1,0,"(1, 0)"]],"c":[{"e":"sqrt(x**2-x**3)","n":"f(x)=√(x²−x³): pico en 0"},{"e":"sqrt(x**4+x**6)","n":"g(x)=√(x⁴+x⁶): suave en 0"}],"x":[-1.5,1.2],"y":[-0.2,1.5]}' data-alt="Las dos funciones del ejemplo cerca de 0"><figcaption>En $x=0$ la fórmula de $f'$ y la de $g'$ dejan de existir, pero $f$ tiene un pico (pendientes $\mp1$) y $g$ es suave con tangente horizontal. En $x=1$ la gráfica de $f$ termina con tangente vertical. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="P">P</span></figcaption></figure>
 
 <!-- ============================ 11 ============================ -->
 <h2 id="s11"><span class="n">11</span>Guía «¿qué regla uso?»</h2>
@@ -516,7 +519,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
     <li>$g'$ existe en todo el dominio de $g$.</li>
   </ol>
   <p><b>Resultado:</b> $f'(x)=\cos^2x-\operatorname{sen}^2x=\cos2x$; $\ g'(x)=\sec x\operatorname{tg}x$ para $x\neq\frac\pi2+k\pi$.</p>
-  <div class="recipe"><b>Receta:</b> antes de derivar, pregúntate cuál es la <i>última</i> operación (producto, cociente, composición); esa decide la regla. Las funciones que no están en la tabla ($\sec$, $\operatorname{cotg}$, $\operatorname{tg}$) se reescriben con $\operatorname{sen}$ y $\cos$.</div>
+  <figure class="graf" data-g='{"q":[[0.7853981633974483,0.5,"(π/4, 1/2)"]],"c":[{"e":"sin(x)*cos(x)","n":"f(x)=sen x cos x"},{"e":"cos(2*x)","n":"f′(x)=cos 2x"}],"x":[-3.2,3.2],"y":[-1.3,1.3]}' data-alt="f=sen x cos x y su derivada cos 2x"><figcaption>Donde $f'(x)=\cos2x$ se anula ($x=\pm\frac\pi4,\dots$) la gráfica de $f$ tiene tangente horizontal; donde $f'>0$ la función crece. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta:</b> antes de derivar, pregúntate cuál es la <i>última</i> operación (producto, cociente, composición); esa decide la regla. Las funciones que no están en la tabla ($\sec$, $\operatorname{cotg}$, $\operatorname{tg}$) se reescriben con $\operatorname{sen}$ y $\cos$.</div>
   <p><b>Error típico:</b> creer que $(uv)'=u'v'$ (daría $-\cos x\operatorname{sen}x$, falso), o tomar por distintas dos respuestas equivalentes.</p>
 </details>
 
@@ -587,7 +591,10 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
     <li>Las reglas valen en todo $x\neq-1$: $\operatorname{dom}g'=\operatorname{dom}g=\mathbb R\setminus\{-1\}$.</li>
     <li><b>Maxima.</b> Con <code>plot2d(sqrt(2+x^(1/3)),[x,-8,20])</code> Maxima toma $x^{1/3}$ como complejo para $x&lt;0$ y no dibuja esa parte; usa la raíz real <code>signum(x)*abs(x)^(1/3)</code>. Para $g$: <code>plot2d(exp(x/(x+1)),[x,-5,5],[y,0,10])</code>.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> (1) dominio de $f$ mirando cada pieza delicada; (2) deriva con las reglas; (3) en los puntos del dominio donde la fórmula de $f'$ falla, decide con el cociente incremental. Siempre $\operatorname{dom}f'\subseteq\operatorname{dom}f$.</div>
+<figure class="graf" data-g='{"q":[[0,1,"(0, 1)"]],"c":[{"e":"exp(x/(x+1))","n":"g(x)=e^(x/(x+1))"}],"x":[-5,5],"y":[0,10]}' data-alt="Gráfica de g con la asíntota vertical en x=−1"><figcaption>Gráfica de $g(x)=e^{x/(x+1)}$: no está definida en $x=-1$, donde se dispara hacia $+\infty$ por la izquierda y tiende a $0$ por la derecha; el punto $(0,1)$ está marcado. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+
+  <figure class="graf" data-g='{"q":[[-8,0,"(−8, 0)"],[0,1.4142135623730951,"(0, √2)"]],"c":[{"e":"sqrt(2+cbrt(x))","n":"f(x)=√(2+∛x)"}],"x":[-9,20],"y":[-0.5,3.5]}' data-alt="Gráfica de f: empieza en x=−8 con tangente vertical y tiene otra tangente vertical en x=0"><figcaption>Gráfica de $f(x)=\sqrt{2+\sqrt[3]x}$: empieza en $(-8,0)$ y allí la tangente es vertical; en $(0,\sqrt2)$ vuelve a ser vertical. En ambos puntos la fórmula de $f'$ no existe: son los que se quedan fuera de $\operatorname{dom}f'$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta:</b> (1) dominio de $f$ mirando cada pieza delicada; (2) deriva con las reglas; (3) en los puntos del dominio donde la fórmula de $f'$ falla, decide con el cociente incremental. Siempre $\operatorname{dom}f'\subseteq\operatorname{dom}f$.</div>
   <p><b>Error típico:</b> dar como dominio de $f'$ «donde tiene sentido la fórmula», o incluir $x=-8$ porque «está en el dominio de $f$».</p>
 </details>
 
@@ -645,7 +652,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
     <li><b>Extremos.</b> En $x=0$ y $x=1$ la fórmula no existe. Con la definición, las derivadas laterales valen $-\infty$ (tangentes verticales): por ejemplo, cerca de $1$, $f(1-h)\approx\sqrt h$ y el cociente incremental es $\approx-\frac1{\sqrt h}\to-\infty$. No derivable. Por tanto $\operatorname{dom}f'=(0,1)$.</li>
   </ol>
   <p><b>Resultado:</b> $\operatorname{dom}f=[0,1]$; $f'(x)=\dfrac{-1}{2\sqrt{x-x^2}}$ en $(0,1)$.</p>
-  <div class="recipe"><b>Receta (inversa sin fórmula):</b> escribe $f^{-1}(f(t))=t$, deriva con la cadena, despeja $(f^{-1})'(f(t))$, exprésalo en función de $y=f(t)$ con una identidad ($\operatorname{sen}^2+\cos^2=1$) y elige el signo de la raíz según el intervalo donde se invierte.</div>
+  <figure class="graf" data-g='{"q":[[0,1.5707963267948966,"(0, π/2)"],[1,0,"(1, 0)"]],"c":[{"e":"acos(sqrt(x))","n":"f(x)=arccos √x"},{"e":"-1/(2*sqrt(x)*sqrt(1-x))","n":"f′(x)"}],"x":[-0.3,1.3],"y":[-6,2]}' data-alt="arccos √x en [0,1] y su derivada"><figcaption>$f$ existe solo en $[0,1]$. Su derivada $f'(x)=-\frac1{2\sqrt x\sqrt{1-x}}$ existe solo en $(0,1)$: se hace $-\infty$ en los dos extremos, donde las tangentes de $f$ son verticales. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta (inversa sin fórmula):</b> escribe $f^{-1}(f(t))=t$, deriva con la cadena, despeja $(f^{-1})'(f(t))$, exprésalo en función de $y=f(t)$ con una identidad ($\operatorname{sen}^2+\cos^2=1$) y elige el signo de la raíz según el intervalo donde se invierte.</div>
   <p><b>Error típico:</b> escribir $\operatorname{sen}t=\pm\sqrt{1-\cos^2t}$ sin decidir el signo; olvidar el signo menos del $\arccos'$; dar $[0,1]$ como dominio de $f'$.</p>
   
 </details>
@@ -665,7 +673,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
     <li><b>El $x$ que corresponde a $y=3$.</b> Se resuelve $x^5+x^3+x=3$; se prueba $x=1$: $1+1+1=3$. Es la única solución por inyectividad: $f^{-1}(3)=1$.</li>
     <li><b>Sustituir:</b> $(f^{-1})'(3)=\dfrac1{f'(1)}=\dfrac1{5+3+1}=\dfrac19$. <b>Opción d).</b></li>
   </ol>
-  <div class="recipe"><b>Receta:</b> $(f^{-1})'(y_0)=\dfrac1{f'(x_0)}$ con $f(x_0)=y_0$. (i) Comprueba que $f$ es inyectiva y $f'(x_0)\neq0$; (ii) halla $x_0$ resolviendo $f(x)=y_0$ (prueba valores sencillos $0,\pm1,\pm2$); (iii) invierte la derivada.</div>
+  <figure class="graf" data-g='{"q":[[1,3,"(1, 3)"]],"c":[{"e":"x**5+x**3+x","n":"f(x)=x⁵+x³+x"},{"e":"3+9*(x-1)","n":"tangente en x=1: pendiente 9"},{"e":"x","n":"y=x","d":1}],"x":[-1.5,3.5],"y":[-6,10]}' data-alt="f, su tangente en (1,3) y la recta y=x"><figcaption>Como $f(1)=3$, la inversa pasa por $(3,1)$ (el reflejo de $(1,3)$ respecto de $y=x$). La tangente a $f$ en $(1,3)$ tiene pendiente $f'(1)=9$; reflejada, la tangente a $f^{-1}$ en $y=3$ tiene pendiente $\frac19$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta:</b> $(f^{-1})'(y_0)=\dfrac1{f'(x_0)}$ con $f(x_0)=y_0$. (i) Comprueba que $f$ es inyectiva y $f'(x_0)\neq0$; (ii) halla $x_0$ resolviendo $f(x)=y_0$ (prueba valores sencillos $0,\pm1,\pm2$); (iii) invierte la derivada.</div>
   <p><b>Error típico:</b> evaluar en el punto equivocado, $\frac1{f'(3)}=\frac1{433}$; o no invertir y contestar $f'(1)=9$ (opción b), que es la trampa del test.</p>
 </details>
 
@@ -724,7 +733,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
     <li><b>Sacar factor común</b> $e^{\cos x}$ (opcional, queda más limpio).</li>
   </ol>
   <p><b>Lo que escribes en el examen:</b> $$f'(x)=e^{\cos x}\bigl(2x-x^2\operatorname{sen}x\bigr),\qquad x\in\mathbb R$$ (es derivable en todo $\mathbb R$: producto y composición de funciones derivables).</p>
-  <div class="recipe"><b>Receta:</b> mira la última operación (aquí, producto); deriva cada factor y, si uno tiene algo dentro, multiplica por la derivada de lo de dentro.</div>
+  <figure class="graf" data-g='{"c":[{"e":"x**2*exp(cos(x))","n":"f(x)=x² e^(cos x)"},{"e":"exp(cos(x))*(2*x-x**2*sin(x))","n":"f′(x)"}],"x":[-4,4],"y":[-12,12]}' data-alt="f=x² e^cos x y su derivada"><figcaption>La gráfica de $f$ y la de $f'(x)=e^{\cos x}(2x-x^2\operatorname{sen}x)$: $f'$ corta el eje $X$ donde $f$ tiene tangente horizontal. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta:</b> mira la última operación (aquí, producto); deriva cada factor y, si uno tiene algo dentro, multiplica por la derivada de lo de dentro.</div>
   <p><b>Error típico:</b> olvidar el signo de $(\cos x)'=-\operatorname{sen}x$.</p>
 </details>
 
@@ -773,7 +783,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
     <li><b>Restar.</b></li>
   </ol>
   <p><b>Lo que escribes en el examen:</b> $$f'(x)=\frac{1}{x\sqrt{x^2-1}}-6\operatorname{sen}3x\cos3x,\qquad |x|>1.$$</p>
-  <div class="recipe"><b>Receta:</b> separa los sumandos y, en cada uno, capas de fuera a dentro; usa $(\operatorname{arctg}u)'=\frac{u'}{1+u^2}$ y $(\sqrt u)'=\frac{u'}{2\sqrt u}$, y simplifica $1+(\sqrt{\cdot})^2$ antes de multiplicar.</div>
+  <figure class="graf" data-g='{"q":[[1,-0.019915,"(1, −0,02)"]],"c":[{"e":"atan(sqrt(x**2-1))-sin(3*x)**2","n":"f(x)"}],"x":[-3,3],"y":[-1.2,1.4]}' data-alt="f solo está definida para |x|≥1"><figcaption>$f$ solo existe para $|x|\ge1$ (hace falta $x^2-1\ge0$): entre $-1$ y $1$ no hay gráfica. La fórmula de $f'$ tampoco existe en $x=\pm1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta:</b> separa los sumandos y, en cada uno, capas de fuera a dentro; usa $(\operatorname{arctg}u)'=\frac{u'}{1+u^2}$ y $(\sqrt u)'=\frac{u'}{2\sqrt u}$, y simplifica $1+(\sqrt{\cdot})^2$ antes de multiplicar.</div>
   <p><b>Error típico:</b> escribir $\frac{1}{\sqrt{x^4-x^2}}$: siempre es positivo, pero para $x&lt;-1$ el término correcto $\frac1{x\sqrt{x^2-1}}$ es negativo. Deja $x$ sin meterla en la raíz.</p>
   </details>
 

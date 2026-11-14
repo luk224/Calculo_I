@@ -12,6 +12,8 @@
 <script defer src="../assets/katex/auto-render.min.js"></script>
 <script defer src="../assets/resumen.js"></script>
 <script defer src="../assets/interactivos.js"></script>
+<link rel="stylesheet" href="../assets/grafica.css">
+<script defer src="../assets/grafica.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -395,6 +397,7 @@
     <dt>Qué uso</dt><dd>Def. 6.6 (U p.267); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>Tabla de valores.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0.0,1.0],[0.7853981633974483,0.7071067811865476],[1.5707963267948966,6.123233995736766e-17],[2.356194490192345,-0.7071067811865475],[3.141592653589793,-1.0]],"c":[{"e":"cos(x)","n":"cos x"},{"e":"x<=0.785398?(1.0+(-0.292893)/(0.785398)*(x-(0.0))):x<=1.570796?(0.707107+(-0.707107)/(0.785398)*(x-(0.785398))):x<=2.356194?(0.0+(-0.707107)/(0.785398)*(x-(1.570796))):(-0.707107+(-0.292893)/(0.785398)*(x-(2.356194)))","n":"trapecio, n=4","d":1}],"x":[0,3.141593],"y":[-1.1,1.1]}' data-alt="cos x en [0, pi] con los cinco nodos y la poligonal del trapecio"><figcaption>La curva $\cos x$, los cinco nodos $0,\frac\pi4,\dots,\pi$ y la poligonal del trapecio con $n=4$: lo que sobra por encima en una mitad se compensa con lo que falta en la otra. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Tabla:</b> $f(0)=1$, $f(\frac\pi4)=\frac{\sqrt2}2$, $f(\frac\pi2)=0$, $f(\frac{3\pi}4)=-\frac{\sqrt2}2$, $f(\pi)=-1$.</li>
     <li><b>Extremos:</b> $1+(-1)=0$. <b>Centrales:</b> $\frac{\sqrt2}2+0-\frac{\sqrt2}2=0$.</li>
@@ -410,10 +413,11 @@
   <p class="enun">De una función $f$ se conocen $f(-1)=40$, $f(0)=42$, $f(1)=41$, $f(2)=42$, $f(3)=41$. Aproxima $\int_{-1}^3f(x)\,dx$ con: (1) el rectángulo derecho y el rectángulo derecho compuesto; (2) el trapecio y el trapecio compuesto; (3) Simpson y Simpson compuesta.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Seis aproximaciones de la misma integral.</dd>
-    <dt>Cómo lo pienso</dt><dd>Hay $5$ nodos con paso $1$ en $[-1,3]$. Las compuestas deben usar los 5: rectángulos y trapecio en $4$ subintervalos ($h=1$); Simpson compuesta en $2$ subintervalos ($h=2$), porque $5=2\cdot2+1$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Hay $5$ nodos con paso $1$ en $[-1,3]$. Las compuestas deben usar los 5: rectángulos y trapecio en $4$ subintervalos (h=1); Simpson compuesta en $2$ subintervalos ($h=2$), porque $5=2\cdot2+1$.</dd>
     <dt>Qué uso</dt><dd>Def. 6.3 a 6.8 (U pp.264-268).</dd>
     <dt>Por dónde empiezo</dt><dd>$b-a=3-(-1)=4$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[-1,40],[0,42],[1,41],[2,42],[3,41]],"c":[{"e":"x<=0.0?(40.0+(2.0)/(1.0)*(x-(-1.0))):x<=1.0?(42.0+(-1.0)/(1.0)*(x-(0.0))):x<=2.0?(41.0+(1.0)/(1.0)*(x-(1.0))):(42.0+(-1.0)/(1.0)*(x-(2.0)))","n":"trapecio compuesto (h=1)","d":1}],"x":[-1,3],"y":[38,44]}' data-alt="Cinco datos y poligonal del trapecio compuesto"><figcaption>Los cinco datos y la poligonal que los une: el trapecio compuesto suma las áreas bajo ella, $\frac{331}2=165{,}5$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Rectángulo derecho simple:</b> $f(3)(b-a)=41\cdot4=164$.</li>
     <li><b>Rectángulo derecho compuesto</b> ($n=4$, $h=1$): $h\sum_{k=1}^4f(x_k)=42+41+42+41=166$.</li>
@@ -438,6 +442,7 @@
     <dt>Qué uso</dt><dd>Def. 6.3 a 6.8 (U pp.264-268).</dd>
     <dt>Por dónde empiezo</dt><dd>$f(0)=0$, $f(\frac14)=\frac1{16}$, $f(\frac12)=\frac14$, $f(\frac34)=\frac9{16}$, $f(1)=1$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.5,0.25],[1.0,1.0]],"c":[{"e":"x^2","n":"x²"},{"e":"x<=0.5?(0.0+(0.25)/(0.5)*(x-(0.0))):(0.25+(0.75)/(0.5)*(x-(0.5)))","n":"trapecio, n=2","d":1}],"x":[0,1],"y":[0,1.05]}' data-alt="x^2 con la poligonal del trapecio n=2"><figcaption>La parábola $y=x^2$ y la poligonal del trapecio con $n=2$: como $x^2$ es convexa, la cuerda queda por encima y el trapecio se pasa ($\frac38>\frac13$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Simples:</b> punto medio $f(\frac12)\cdot1=\frac14$; trapecio $\frac{0+1}2=\frac12$; Simpson $\frac{0+4\cdot\frac14+1}6=\frac26=\frac13$ (exacto).</li>
     <li><b>Con $n=2$:</b> punto medio $\frac12\big(f(\frac14)+f(\frac34)\big)=\frac12\cdot\frac{10}{16}=\frac5{16}$; trapecio $\frac14\big(0+2\cdot\frac14+1\big)=\frac38$; Simpson ($h=\frac12$, nodos cada $\frac14$) $\frac{1/2}6\big(0+1+2\cdot\frac14+4(\frac1{16}+\frac9{16})\big)=\frac1{12}\cdot4=\frac13$.</li>
@@ -492,6 +497,7 @@
     <dt>Qué uso</dt><dd>Teor. 6.3 y 6.4 (U pp.269-270); extremos absolutos (U §3.4).</dd>
     <dt>Por dónde empiezo</dt><dd>$f^{(4)}(x)=4(4x^4-12x^2+3)e^{-x^2}$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"4*(4*x^4-12*x^2+3)*exp(-x^2)","n":"f⁽⁴⁾(x)"}],"q":[[0,12.0,"M₄=12"],[0.9586,-7.4195],[1,-7.3576]],"x":[0,1],"y":[-4,13]}' data-alt="Cuarta derivada de e^{-x^2} en [0,1]"><figcaption>La cuarta derivada $f^{(4)}(x)=4(4x^4-12x^2+3)e^{-x^2}$ en $[0,1]$ y los tres candidatos a máximo de $\lvert f^{(4)}\rvert$: el mayor es $12$, en $x=0$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Derivadas:</b> $f^{(4)}(x)=4(4x^4-12x^2+3)e^{-x^2}$ y $f^{(5)}(x)=-8x(4x^4-20x^2+15)e^{-x^2}$.</li>
     <li><b>Candidatos en $[0,1]$:</b> $x=0$, $x=1$ y los ceros de $4x^4-20x^2+15$: $x^2=\frac{5\pm\sqrt{10}}2$, es decir $x\approx0{,}9586$ (el otro, $\approx1{,}65$, queda fuera).</li>
@@ -516,6 +522,7 @@
     <dt>Qué uso</dt><dd>Def. 6.6 (U p.267).</dd>
     <dt>Por dónde empiezo</dt><dd>Separar extremos y centrales.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[-1,1],[0,2],[1,-1],[2,-3],[3,0]],"c":[{"e":"x<=0.0?(1.0+(1.0)/(1.0)*(x-(-1.0))):x<=1.0?(2.0+(-3.0)/(1.0)*(x-(0.0))):x<=2.0?(-1.0+(-2.0)/(1.0)*(x-(1.0))):(-3.0+(3.0)/(1.0)*(x-(2.0)))","n":"poligonal","d":1}],"x":[-1,3],"y":[-4,3]}' data-alt="Cinco datos y poligonal con área con signo"><figcaption>Los cinco datos y la poligonal del trapecio: la parte bajo el eje $x$ resta, y por eso la integral sale negativa ($-\frac32$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li>Extremos: $f(-1)+f(3)=1+0=1$. Centrales: $f(0)+f(1)+f(2)=2-1-3=-2$.</li>
@@ -533,6 +540,7 @@
     <dt>Qué uso</dt><dd>Def. 6.6 y 6.7 (U pp.267-268); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>$f(0)=1$, $f(\frac\pi4)=\frac{\sqrt2}2$, $f(\frac\pi2)=0$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0.0,1.0],[0.7853981633974483,0.7071067811865476],[1.5707963267948966,6.123233995736766e-17]],"c":[{"e":"cos(x)","n":"cos x"},{"e":"x<=0.785398?(1.0+(-0.292893)/(0.785398)*(x-(0.0))):(0.707107+(-0.707107)/(0.785398)*(x-(0.785398)))","n":"trapecio, n=2","d":1},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,1.570796],"y":[0,1.1]}' data-alt="cos x en [0, pi/2] con trapecio y parábola de Simpson"><figcaption>Mismos tres nodos para los dos métodos: la poligonal del trapecio queda por debajo de $\cos x$ (cóncava) y la parábola de Simpson casi se confunde con ella. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li><b>(a)</b> $h=\frac\pi4$: $I\approx\dfrac{\pi/4}2\Big(1+2\cdot\dfrac{\sqrt2}2+0\Big)=\dfrac\pi8\big(1+\sqrt2\big)\approx0{,}9481$.</li>
@@ -552,6 +560,7 @@
     <dt>Qué uso</dt><dd>Inmediata $\int f^af'$ (U p.248); Barrow (U p.244); Def. 6.6-6.7 (U pp.267-268).</dd>
     <dt>Por dónde empiezo</dt><dd>$\int\frac{x}{(x^2+1)^2}dx=\frac12\int(x^2+1)^{-2}\,2x\,dx$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.5,0.32],[1.0,0.25]],"c":[{"e":"x/(x^2+1)^2","n":"f(x)"},{"e":"x<=0.5?(0.0+(0.32)/(0.5)*(x-(0.0))):(0.32+(-0.07)/(0.5)*(x-(0.5)))","n":"trapecio, n=2","d":1},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,1],"y":[0,0.4]}' data-alt="x/(x^2+1)^2 con trapecio y parábola"><figcaption>La función, los nodos $0,\frac12,1$, la poligonal del trapecio (por debajo) y la parábola de Simpson (más cercana a $f$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li><b>a)</b> Primitiva $-\frac1{2(x^2+1)}$. Barrow: $I=-\frac14-\big(-\frac12\big)=\frac14=0{,}25$.</li>
@@ -568,10 +577,11 @@
   <p class="enun">Se consideran los valores $f(1)=31$, $f(2)=26$, $f(3)=43$. (a) Calcule $\int_1^3f$ por la regla del trapecio. (b) Calcúlela por Simpson con 3 nodos igualmente espaciados. (c) La función $g(x)=11x^2-38x+58$ verifica $f(1)=g(1)$, $f(2)=g(2)$, $f(3)=g(3)$. Calcule $\int_1^3g$ y compárelo con lo obtenido en los apartados anteriores. Justifique a qué se debe la diferencia.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Trapecio y Simpson con los 3 datos, y la integral exacta de la parábola $g$ que pasa por ellos.</dd>
-    <dt>Cómo lo pienso</dt><dd>Con tres datos el trapecio es compuesto en 2 subintervalos ($h=1$). Simpson integra <i>precisamente</i> la parábola por los tres puntos, que es $g$: debe coincidir con $\int g$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Con tres datos el trapecio es compuesto en 2 subintervalos (h=1). Simpson integra <i>precisamente</i> la parábola por los tres puntos, que es $g$: debe coincidir con $\int g$.</dd>
     <dt>Qué uso</dt><dd>Def. 6.6-6.7 (U pp.267-268); Barrow; unicidad del polinomio interpolador (U §3.3).</dd>
     <dt>Por dónde empiezo</dt><dd>Extremos $31+43=74$, central $26$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[1,31],[2,26],[3,43]],"c":[{"e":"11*x^2-38*x+58","n":"g(x)"},{"e":"x<=2.0?(31.0+(-5.0)/(1.0)*(x-(1.0))):(26.0+(17.0)/(1.0)*(x-(2.0)))","n":"trapecio","d":1}],"x":[1,3],"y":[20,48]}' data-alt="Parábola g por los tres datos y poligonal"><figcaption>Los tres datos, la parábola $g$ que pasa por ellos (la que integra Simpson) y la poligonal del trapecio, que queda por encima de $g$ por ser $g$ convexa. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li><b>(a)</b> $\displaystyle\int_1^3f\approx\frac12\big(31+43+2\cdot26\big)=\frac{126}2=63$.</li>
@@ -592,6 +602,7 @@
     <dt>Qué uso</dt><dd>Diferencias divididas de Newton (U §3.3, pp.119-124); Def. 6.7 (U p.268).</dd>
     <dt>Por dónde empiezo</dt><dd>Diferencias divididas.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0,1],[2,3],[4,2]],"q":[[1,2.375,"p(1)"]],"c":[{"interp":true,"n":"p(x)"}],"x":[0,4],"y":[0,3.6]}' data-alt="Parábola interpoladora por tres datos"><figcaption>Los tres datos, la parábola interpoladora $p(x)=-\frac38x^2+\frac74x+1$ y el valor pedido $p(1)=\frac{19}8$; Simpson integra exactamente esta parábola. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li>Orden 1: $f[0,2]=\frac{3-1}2=1$; $f[2,4]=\frac{2-3}2=-\frac12$. Orden 2: $f[0,2,4]=\frac{-\frac12-1}{4-0}=-\frac38$.</li>
@@ -611,6 +622,7 @@
     <dt>Qué uso</dt><dd>Partes reiterada (U pp.251-253); Def. 6.7 (U p.268).</dd>
     <dt>Por dónde empiezo</dt><dd>$u=x^2$, $v'=\operatorname{sen}x$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0,0],[1.5707963267948966,2.4674011002723395],[3.141592653589793,0]],"c":[{"e":"x^2*sin(x)","n":"x² sen x"},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,3.141593],"y":[-0.3,5.5]}' data-alt="x^2 sen x en [0, pi] y parábola de Simpson"><figcaption>La función y la parábola por $(0,0),(\frac\pi2,\frac{\pi^2}4),(\pi,0)$: una sola parábola en un intervalo largo no sigue bien el "hombro" derecho, de ahí el error de $0{,}70$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li>Partes 1: $\int x^2\operatorname{sen}x\,dx=-x^2\cos x+\int2x\cos x\,dx$. Partes 2: $\int2x\cos x\,dx=2x\operatorname{sen}x+2\cos x$.</li>
@@ -630,6 +642,7 @@
     <dt>Qué uso</dt><dd>Def. 6.8 (U p.268).</dd>
     <dt>Por dónde empiezo</dt><dd>Subintervalos $[0,\frac\pi6]$, $[\frac\pi6,\frac\pi3]$, $[\frac\pi3,\frac\pi2]$ y puntos medios $\frac\pi{12},\frac\pi4,\frac{5\pi}{12}$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.2617993877991494,0.004044047579726886],[0.5235987755982988,0.04059494080239555],[0.7853981633974483,0.08838834764831843],[1.0471975511965976,0.07031250000000003],[1.3089969389957472,0.015092591035766689],[1.5707963267948966,2.2958450216584675e-49]],"c":[{"e":"sin(x)^4*cos(x)^3","n":"sen⁴x·cos³x"}],"x":[0,1.570796],"y":[-0.01,0.1]}' data-alt="sen^4 x cos^3 x con los siete nodos"><figcaption>El integrando y los siete nodos de la Simpson compuesta con $n=3$ (paso $\frac\pi{12}$, factor $\frac h6$ con $h=\frac\pi6$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li>Tabla ($f=\operatorname{sen}^4x\cos^3x$): $x_k=0,\frac\pi{12},\frac\pi6,\frac\pi4,\frac\pi3,\frac{5\pi}{12},\frac\pi2$ con $f(x_k)=0;\ 0{,}00404;\ \frac{3\sqrt3}{128}\approx0{,}04059;\ \frac{\sqrt2}{16}\approx0{,}08839;\ \frac9{128}\approx0{,}07031;\ 0{,}01509;\ 0$.</li>
@@ -649,6 +662,7 @@
     <dt>Qué uso</dt><dd>Def. 6.6 (U p.267).</dd>
     <dt>Por dónde empiezo</dt><dd>Completar el cuadrado para ver el dominio y la simetría.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[3.0,0.35355339059327373],[3.4,0.34020690871988585],[3.8,0.3340765523905305],[4.2,0.3340765523905305],[4.6,0.34020690871988585],[5.0,0.35355339059327373]],"c":[{"e":"1/sqrt(9-(x-4)^2)","n":"f(x)"},{"e":"x<=3.4?(0.353553+(-0.013346)/(0.4)*(x-(3.0))):x<=3.8?(0.340207+(-0.00613)/(0.4)*(x-(3.4))):x<=4.2?(0.334077+(0.0)/(0.4)*(x-(3.8))):x<=4.6?(0.334077+(0.00613)/(0.4)*(x-(4.2))):(0.340207+(0.013346)/(0.4)*(x-(4.6)))","n":"trapecio, n=5","d":1}],"x":[3,5],"y":[0.32,0.37]}' data-alt="Integrando simétrico respecto de x=4 con la poligonal del trapecio"><figcaption>El integrando (simétrico respecto de $x=4$, con mínimo ahí) y la poligonal del trapecio con $n=5$; el eje $y$ está recortado a $[0{,}32;0{,}37]$ para que se aprecie la diferencia. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li>$-x^2+8x-7=9-(x-4)^2\gt0\iff1\lt x\lt7$: en $[3,5]$ el integrando es continuo.</li>
@@ -673,6 +687,7 @@
     <dt>Qué uso</dt><dd>Diferencias divididas (U §3.3, pp.119-124); Def. 6.8 (U p.268); Simpson exacto en cúbicas (Teor. 6.4 con $M_4=0$, U p.270).</dd>
     <dt>Por dónde empiezo</dt><dd>Tabla de diferencias divididas con nodos $1,3,4,8$.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[1,2],[3,3],[4,2],[8,10]],"q":[[2,3.3142857142857145,"p(2)"]],"c":[{"interp":true,"n":"p(x)"}],"x":[0,8.5],"y":[0,11]}' data-alt="Polinomio interpolador cúbico por cuatro datos"><figcaption>Los cuatro datos y el polinomio interpolador $p$ (grado $\le3$); el punto marcado es $p(2)=\frac{116}{35}\approx3{,}314$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li>Orden 1: $f[1,3]=\frac12$, $f[3,4]=-1$, $f[4,8]=2$. Orden 2: $f[1,3,4]=-\frac12$, $f[3,4,8]=\frac35$. Orden 3: $f[1,3,4,8]=\frac{11}{70}$.</li>
@@ -694,6 +709,7 @@
     <dt>Qué uso</dt><dd>Trapecio simple, Def. 6.5 (U p.267), en cada tramo; aditividad (U p.264).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir los tres tramos $[0,1]$, $[1,3]$, $[3,7]$ con su anchura.</dd>
   </dl></div>
+  <figure class="graf" data-g='{"p":[[0,2],[1,0],[3,-1],[7,4]],"c":[{"e":"x<=1.0?(2.0+(-2.0)/(1.0)*(x-(0.0))):x<=3.0?(0.0+(-1.0)/(2.0)*(x-(1.0))):(-1.0+(5.0)/(4.0)*(x-(3.0)))","n":"poligonal","d":1}],"x":[0,7],"y":[-2,5]}' data-alt="Datos no equiespaciados y poligonal"><figcaption>Los cuatro datos y la poligonal: tres trapecios de anchuras distintas $1,2,4$ (áreas $1,-1,6$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
   <ol class="steps">
     <li>Como no se fija la longitud de los subintervalos, se aplica el trapecio simple a cada tramo y se suma:
