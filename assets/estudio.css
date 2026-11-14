@@ -1,0 +1,75 @@
+/* Ayudas de estudio compartidas: camino de estudio, niveles, «hecho», práctica y autoevaluación (prototipo en el tema 2.3). */
+.nv{display:inline-block;font:700 11px/1 var(--sans);padding:3px 8px;border-radius:99px;border:1px solid currentColor;vertical-align:middle;margin-right:6px;white-space:nowrap}
+.nv.n1{color:#1d6b3f}.nv.n2{color:#8a6100}.nv.n3{color:#a3281c}
+.nv.min{color:var(--bg);background:var(--acc);border-color:var(--acc)}
+:root[data-theme="dark"] .nv.n1{color:var(--ex-b)}:root[data-theme="dark"] .nv.n2{color:var(--thm-b)}:root[data-theme="dark"] .nv.n3{color:var(--warn-b)}
+
+.camino{border:1px solid var(--bd);border-radius:12px;background:var(--card);padding:14px 18px;margin:1.2em 0;font-family:var(--sans);font-size:.95rem}
+.camino>.h{display:block;font-weight:800;color:var(--acc);margin-bottom:6px;font-size:1rem}
+.camino .niv{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.camino .niv>div{border:1px solid var(--bd);border-radius:10px;padding:8px 12px;line-height:1.45}
+.camino .niv b{display:block;margin-bottom:2px}
+.camino .tools{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--bd)}
+.camino label{cursor:pointer;display:inline-flex;gap:7px;align-items:center}
+.camino .prog{margin-left:auto;color:var(--mut)}
+.camino .bar{height:6px;border-radius:99px;background:var(--bd);flex-basis:100%;overflow:hidden}
+.camino .bar i{display:block;height:100%;width:0;background:var(--ex-b);transition:width .3s}
+@media (max-width:700px){.camino .niv{grid-template-columns:1fr}.camino .prog{margin-left:0}}
+
+/* línea «Lo que vas a aprender» al inicio de cada apartado */
+.aprender{border-left:4px solid var(--acc);padding:.15em .9em;margin:.3em 0 1em;color:var(--mut);font-family:var(--sans);font-size:.95rem}
+
+/* «solo lo esencial»: oculta lo marcado como ampliación */
+body.solo-esencial [data-extra]{display:none!important}
+
+/* casilla «hecho» dentro del resumen de cada ejercicio */
+.hecho{margin:0 8px 0 0;vertical-align:middle;width:17px;height:17px;accent-color:var(--ex-b);cursor:pointer}
+details.hecho-ok>summary{color:var(--ex-b)}
+details.hecho-ok>summary::after{content:" ✓";font-weight:800}
+
+/* Ahora hazlo tú */
+.pract{border:2px solid var(--tip-b);border-radius:12px;background:var(--tip);padding:10px 16px 6px;margin:1.2em 0;font-family:var(--sans);font-size:.97rem}
+.pract>.h{display:block;font-weight:800;color:var(--tip-b);margin-bottom:2px}
+.pract>.sub{margin:0 0 6px;color:var(--mut);font-size:.9rem}
+details.pr{border:1px solid var(--bd);border-radius:10px;background:var(--card);margin:.6em 0;padding:0 14px}
+details.pr>summary{cursor:pointer;font:600 15px var(--sans);padding:9px 0;color:var(--fg)}
+details.pr[open]>summary{border-bottom:1px solid var(--bd);margin-bottom:8px}
+details.pr .enun{margin:.3em 0 .6em}
+details.pista,details.respuesta{margin:.5em 0 .7em}
+details.pista>summary,details.respuesta>summary{cursor:pointer;font:600 14px var(--sans);color:var(--tip-b);display:inline-block;padding:3px 10px;border:1px solid var(--tip-b);border-radius:99px;list-style:none}
+details.respuesta>summary{color:var(--ex-b);border-color:var(--ex-b)}
+details.pista>summary::-webkit-details-marker,details.respuesta>summary::-webkit-details-marker{display:none}
+details.pista[open]>summary,details.respuesta[open]>summary{margin-bottom:8px}
+details.respuesta .res{font-weight:700}
+
+/* Autoevaluación */
+.quiz{margin:1em 0;font-family:var(--sans)}
+.quiz .q{border:1px solid var(--bd);border-left:5px solid var(--tip-b);border-radius:10px;background:var(--card);padding:10px 16px;margin:.7em 0}
+.quiz .q p{margin:.2em 0 .6em}
+.quiz .opts{display:flex;flex-wrap:wrap;gap:8px}
+.quiz .opts button{font:600 14px var(--sans);background:none;border:1px solid var(--bd);color:var(--fg);border-radius:8px;padding:6px 14px;cursor:pointer;text-align:left}
+.quiz .opts button:hover{border-color:var(--acc)}
+.quiz .q.ok{border-left-color:var(--ex-b)}.quiz .q.mal{border-left-color:var(--warn-b)}
+.quiz .q.ok .opts button.sel{background:var(--ex);border-color:var(--ex-b)}
+.quiz .q.mal .opts button.sel{background:var(--warn);border-color:var(--warn-b)}
+.quiz .exp{display:none;margin-top:.6em;padding:8px 12px;border-radius:8px;background:var(--intu);font-size:.93rem}
+.quiz .q.ok .exp,.quiz .q.mal .exp{display:block}
+.quiz .nota{margin-top:.8em;font-weight:700}
+
+/* mapa de decisión (SVG) */
+svg.flujo{width:100%;height:auto;max-width:900px;display:block;margin:1em auto;font-family:var(--sans)}
+svg.flujo .nodo{fill:var(--card);stroke:var(--bd);stroke-width:1.5}
+svg.flujo .preg{fill:var(--def);stroke:var(--def-b);stroke-width:1.5}
+svg.flujo .fin{fill:var(--ex);stroke:var(--ex-b);stroke-width:1.5}
+svg.flujo .nada{fill:var(--warn);stroke:var(--warn-b);stroke-width:1.5}
+svg.flujo text{fill:var(--fg);font-size:14px}
+svg.flujo .si,svg.flujo .no{font-weight:700;font-size:13px}
+svg.flujo .lin{stroke:var(--mut);stroke-width:1.6;fill:none}
+svg.flujo marker path{fill:var(--mut)}
+
+@media print{
+  .hecho,.camino .tools,.quiz .opts{display:none!important}
+  .quiz .exp{display:block!important}
+  .pract,.quiz .q,details.pr,svg.flujo{break-inside:avoid}
+  .nv{border-color:#000;color:#000!important;background:none!important}
+}
