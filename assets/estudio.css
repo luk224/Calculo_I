@@ -67,9 +67,38 @@ svg.flujo .si,svg.flujo .no{font-weight:700;font-size:13px}
 svg.flujo .lin{stroke:var(--mut);stroke-width:1.6;fill:none}
 svg.flujo marker path{fill:var(--mut)}
 
+/* «Ver resolución completa paso a paso» y tablas de detalle: botón-pastilla azul dentro de un desplegable */
+details.ver{margin:.7em 0 .9em}
+details.ver>summary{cursor:pointer;font:600 14px var(--sans);color:var(--acc);display:inline-block;padding:4px 12px;border:1px solid var(--acc);border-radius:99px;list-style:none}
+details.ver>summary::-webkit-details-marker{display:none}
+details.ver>summary::before{content:"▸ ";display:inline-block}
+details.ver[open]>summary::before{content:"▾ "}
+details.ver[open]>summary{margin-bottom:10px}
+
+/* Ampliación: teoría de fondo, borde punteado */
+details.amp{border:1px dotted var(--mut);border-radius:10px;background:var(--card);margin:.9em 0;padding:0 16px}
+details.amp>summary{cursor:pointer;font:600 15px var(--sans);padding:10px 0;color:var(--mut);list-style:none}
+details.amp>summary::-webkit-details-marker{display:none}
+details.amp>summary::before{content:"▸ ";display:inline-block}
+details.amp[open]>summary::before{content:"▾ "}
+details.amp[open]>summary{border-bottom:1px dotted var(--mut);margin-bottom:8px}
+
+/* «Mismo método que…» al inicio de un ejercicio */
+.mismo{margin:.2em 0 .7em;color:var(--mut);font-family:var(--sans);font-size:.93rem}
+
+/* tres líneas: cómo lo reconoces → qué haces → ejemplo mínimo */
+ul.trio{list-style:none;margin:.6em 0 1em;padding:0;display:grid;gap:6px;font-family:var(--sans);font-size:.96rem}
+ul.trio>li{border-left:4px solid var(--acc);background:var(--card);padding:6px 12px;border-radius:0 8px 8px 0}
+
+/* aviso bajo el interruptor «Solo lo esencial» (solo visible con el modo activo) */
+.camino .esencial-nota{display:none;flex-basis:100%;margin:0;color:var(--mut);font-size:.88rem}
+body.solo-esencial .camino .esencial-nota{display:block}
+
 @media print{
+  body.solo-esencial [data-extra]{display:revert!important}
+  details.ver>summary,details.amp>summary{display:none}
   .hecho,.camino .tools,.quiz .opts{display:none!important}
   .quiz .exp{display:block!important}
-  .pract,.quiz .q,details.pr,svg.flujo{break-inside:avoid}
+  .pract,.quiz .q,details.pr,svg.flujo,ul.trio>li{break-inside:avoid}
   .nv{border-color:#000;color:#000!important;background:none!important}
 }

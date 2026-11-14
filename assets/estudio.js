@@ -25,9 +25,12 @@
     });
     cuenta();
     var sw = d.querySelector('.camino input.esencial');
+    function ponEsencial(v, guarda) { if (!sw) return; sw.checked = v; d.body.classList.toggle('solo-esencial', v); if (guarda) guardar(S, v); cuenta(); }
     if (sw) {
-      sw.checked = !!leer(S); d.body.classList.toggle('solo-esencial', sw.checked); cuenta();
-      sw.addEventListener('change', function () { d.body.classList.toggle('solo-esencial', sw.checked); guardar(S, sw.checked); cuenta(); });
+      // primera vez (sin valor guardado): «solo lo esencial» activado; si el usuario lo cambia, se guarda y se respeta
+      var raw = null; try { raw = localStorage.getItem(S); } catch (e) {}
+      ponEsencial(raw === null ? true : raw === 'true', false);
+      sw.addEventListener('change', function () { ponEsencial(sw.checked, true); });
     }
     d.querySelectorAll('.quiz').forEach(function (qz) {
       var qs = qz.querySelectorAll('.q'), nota = qz.querySelector('.nota'), hechas = 0, buenas = 0;
@@ -47,9 +50,13 @@
     function abre() {
       var h = location.hash; if (h.length < 2) return;
       var t = d.getElementById(decodeURIComponent(h.slice(1)));
-      if (t && t.tagName === 'DETAILS') { t.open = true; t.scrollIntoView(); }
+      if (!t) return;
+      // si el destino está dentro de una ampliación oculta por «solo lo esencial», se desactiva el modo
+      if (d.body.classList.contains('solo-esencial') && t.closest('[data-extra]')) ponEsencial(false, true);
+      var a = t.closest('details.amp'); if (a) a.open = true;
+      if (t.tagName === 'DETAILS') { t.open = true; t.scrollIntoView(); }
     }
     abre(); window.addEventListener('hashchange', abre);
-    window.addEventListener('beforeprint', function () { d.querySelectorAll('details.pr, details.pista, details.respuesta').forEach(function (x) { x.open = true; }); });
+    window.addEventListener('beforeprint', function () { d.querySelectorAll('details.pr, details.pista, details.respuesta, details.ver').forEach(function (x) { x.open = true; }); });
   });
 })();
