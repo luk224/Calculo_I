@@ -17,6 +17,12 @@ REGLAS DE MAPEO (columna «tema» del índice -> unidad de resumen 1.1 ... 6.5; 
          resto (extremos, Lagrange, hessiana, clasificación) -> 5.4-5.5.
     6.x: «teorema fundamental» -> 6.2; técnicas/racional/cambio de variable -> 6.3; impropia -> 6.5;
          trapecio/Simpson/numérica/error -> 6.4; suma de Riemann -> 6.1; resto (primitivas, áreas) -> 6.3.
+ 3b. MAPEO MANUAL (prioridad sobre las reglas anteriores): datos/mapeo_examenes.json, hecho leyendo cada enunciado.
+    Formato: {"filas": {"pág|examen|nº": {"principal": "4.3", "secundarios": ["4.2"], "dudosa": true}},
+              "excluir": {"pág|examen|nº": "motivo"}}
+    La clave es «pág. PDF enunciado|examen|nº» tal como figura en el índice (columnas 1, 3 y 4, sin espacios
+    sobrantes). «principal» = unidad que cuenta en el total (5.4 y 5.5 = «5.4-5.5»); «secundarios» = «como herramienta»;
+    «excluir» = filas duplicadas en el índice (no cuentan). Las filas sin entrada usan las reglas 1-3 (palabras clave).
  4. Las filas de frontera se cuentan solo una vez para el total; la columna «herramienta» cuenta las apariciones secundarias.
 Niveles: ver calcular_nivel()."""
 import re, json, html, pathlib, collections
@@ -62,11 +68,21 @@ for i in range(1, 5):
         a = l.strip().strip('|').split('|')
         if len(a) < 6: raise SystemExit('fila mal formada: ' + l[:90])
         p = [x.strip() for x in a[:4]] + ['|'.join(a[4:-1]).strip(), a[-1].strip()]
-        filas_ex.append(dict(exam=p[2], n=p[3], enun=p[4], tema=p[5]))
+        filas_ex.append(dict(exam=p[2], n=p[3], enun=p[4], tema=p[5], clave=f'{p[0]}|{p[2]}|{p[3]}'))
 
+MAP = json.loads((RAIZ / 'datos' / 'mapeo_examenes.json').read_text(encoding='utf8'))
+MAN, EXC = MAP['filas'], MAP['excluir']
+assert not (set(MAN) | set(EXC)) - {f['clave'] for f in filas_ex}, 'claves del mapeo que no existen en el índice'
 cuenta = collections.Counter(); herr = collections.Counter(); excl = []
 for f in filas_ex:
     t = f['tema'].lower()
+    if f['clave'] in EXC:
+        excl.append(f); continue
+    if f['clave'] in MAN:
+        m = MAN[f['clave']]
+        cuenta[m['principal']] += 1
+        for x in set(m['secundarios']) - {m['principal']}: herr[x] += 1
+        continue
     if 'fuera' in t or t.startswith('1.5') or t.startswith('otro'):
         excl.append(f); continue
     cods = re.findall(r'\d\.[\dx]', f['tema'])
@@ -205,9 +221,9 @@ doc = f'''<!DOCTYPE html>
 <h2>Cómo se ha calculado</h2>
 <div class="box tip"><span class="h">Método y límites</span>
 <ul>
-<li><b>Cuánto cae.</b> Se han leído las 4 partes del índice de exámenes (<code>fuentes_txt/indice_examenes_1..4.md</code>), que cubre las págs. PDF 1-152 de <i>Examenes-resueltos-Calculo.pdf</i>: {total_filas} filas (una por pregunta o apartado) de unos {n_examenes} nombres de examen distintos (el mismo examen puede aparecer con nombres variantes, así que la cifra es aproximada). Se excluyen {len(excl)} filas marcadas «fuera de examen» (series y sucesiones de funciones, §1.5) o ajenas a la asignatura; quedan <b>{TOT}</b>.</li>
+<li><b>Cuánto cae.</b> Se han leído las 4 partes del índice de exámenes (<code>fuentes_txt/indice_examenes_1..4.md</code>), que cubre las págs. PDF 1-152 de <i>Examenes-resueltos-Calculo.pdf</i>: {total_filas} filas (una por pregunta o apartado) de unos {n_examenes} nombres de examen distintos (el mismo examen puede aparecer con nombres variantes, así que la cifra es aproximada). Se excluyen {len(excl)} filas marcadas «fuera de examen» (series y sucesiones de funciones, §1.5), ajenas a la asignatura o duplicadas en el índice; quedan <b>{TOT}</b>.</li>
 <li><b>Una pregunta, un tema.</b> Cada fila se asigna una sola vez al tema principal, el primero que cita el índice (en «1.4 / 2.1 / 2.3» cuenta como 1.4). Los demás temas citados suman en «Como herramienta» ({sum(herr.values())} apariciones), pero no al total ni al porcentaje.</li>
-<li><b>Códigos genéricos.</b> El índice a veces escribe solo «4.x», «5.x» o «6.x». Se han repartido por palabras clave del enunciado: producto escalar, normas, distancia y ángulo → 4.1; dominio, curvas de nivel, límites y continuidad → 4.2; gradiente, derivadas parciales, direccional y hessiana → 4.3; diferenciabilidad y plano tangente → 5.1; regla de la cadena y valor medio → 5.2; función implícita → 5.3; extremos y Lagrange → 5.4-5.5 (se cuentan juntos); técnicas y primitivas → 6.3; trapecio, Simpson y error → 6.4; integrales impropias → 6.5. Es un reparto aproximado.</li>
+<li><b>Códigos genéricos.</b> El índice a veces escribe solo «4.x», «5.x» o «6.x». Se han repartido <b>a mano</b>, leyendo cada enunciado (<code>datos/mapeo_examenes.json</code>; en un ejercicio de varios apartados cuenta el tema de la herramienta central y los demás van a «Como herramienta»). Criterio: producto escalar, normas, distancia y ángulo → 4.1; dominio, curvas de nivel, límites y continuidad → 4.2; gradiente, derivadas parciales, direccional y hessiana → 4.3; diferenciabilidad (y diferencial) → 5.1 (el plano tangente va con 4.3); regla de la cadena y valor medio → 5.2; función implícita → 5.3; extremos y Lagrange → 5.4-5.5 (se cuentan juntos); técnicas y primitivas → 6.3; trapecio, Simpson y error → 6.4; integrales impropias → 6.5. Los apartados «continuidad + parciales + diferenciabilidad» cuentan en 5.1 (el más exigente) y suman a 4.2 y 4.3 como herramienta.</li>
 <li><b>Cuánto cuesta.</b> Las horas del chip «⏱ ~N h» de la cabecera de cada tema (si es un intervalo, su media). <b>Preg./hora</b> = preguntas de examen entre horas.</li>
 <li><b>Dependencias.</b> Orientativas (criterio del autor, no del libro), en <code>datos/dependencias.json</code>.</li>
 <li><b>Regenerar.</b> <code>python3 herramientas/prioridades.py</code> relee el índice y las cabeceras y reescribe esta página.</li>
