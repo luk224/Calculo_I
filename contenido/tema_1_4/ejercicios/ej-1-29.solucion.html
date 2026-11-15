@@ -1,0 +1,21 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar todas las asíntotas de $f(x)=\frac{x^3+2x^2-1}{x^2-4}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El numerador tiene un grado más que el denominador: no habrá horizontal pero sí probablemente una recta oblicua. Las verticales están en los ceros del denominador, con el signo de cada lateral.</dd>
+    <dt>Qué uso</dt><dd>Prop. 1.12: $m=\lim_{x\to\pm\infty}\frac{f(x)}x$ y $b=\lim_{x\to\pm\infty}\big(f(x)-mx\big)$ — <a href="#s7">ver teoría</a> (U pp.48-50).</dd>
+    <dt>Por dónde empiezo</dt><dd>Miro los ceros del denominador $x=\pm2$ y el signo de $f$ a cada lado.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> asíntota oblicua: $m=\lim_{x\to\pm\infty}\frac fx$, $b=\lim_{x\to\pm\infty}(f-mx)$, cada lado por separado. En una racional, la división de polinomios da $mx+b$ directamente.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Dominio:</b> $x\neq\pm2$.</li>
+      <li><b>Verticales.</b> Si $a\neq\pm2$, $\lim_{x\to a}f=f(a)$ es finito. En $a=2$ el numerador vale $8+8-1=15&gt;0$ y el denominador es $(x-2)(x+2)$: en $2^+$ tiende a $(0^+)(4)=0^+$, luego $f\to+\infty$; en $2^-$, $f\to-\infty$. En $a=-2$ el numerador vale $-8+8-1=-1&lt;0$: en $-2^+$, $(x-2)\to-4$ y $(x+2)\to0^+$, el denominador $\to0^-$ y $f\to\frac{-1}{0^-}=+\infty$; en $-2^-$, $f\to-\infty$. Luego <b>$x=2$ y $x=-2$</b> son asíntotas verticales. (sympy: $-\infty,\infty,-\infty,\infty$ para $2^-,2^+,-2^-,-2^+$.)</li>
+      <li><b>Horizontales.</b> Dividiendo entre $x^2$: $f(x)=\frac{x+2-1/x^2}{1-4/x^2}$, que tiende a $+\infty$ en $+\infty$ y a $-\infty$ en $-\infty$. No hay horizontales y se cumple la condición necesaria de la oblicua (U p.49).</li>
+      <li><b>Oblicua (método de U: Prop. 1.12 y Ej. 1.48).</b> $m=\lim_{x\to\pm\infty}\frac{f(x)}x=\lim_{x\to\pm\infty}\frac{x^3+2x^2-1}{x^3-4x}=1$. $b=\lim_{x\to\pm\infty}\big(f(x)-x\big)=\lim_{x\to\pm\infty}\frac{x^3+2x^2-1-x^3+4x}{x^2-4}=\lim_{x\to\pm\infty}\frac{2x^2+4x-1}{x^2-4}=2$. La asíntota oblicua es <b>$y=x+2$</b>, la misma en $\pm\infty$. (sympy: $m=1$, $b=2$.)</li>
+      <li><b>Comprobación por división.</b> $x^3+2x^2-1=(x+2)(x^2-4)+(4x+7)$, así que $f(x)=x+2+\frac{4x+7}{x^2-4}$ y el resto $\to0$. El resto es positivo para $x$ grande y negativo hacia $-\infty$: la gráfica queda por encima de la asíntota a la derecha y por debajo a la izquierda.</li>
+    </ol>
+    <figure class="graf" data-g='{"c":[{"e":"abs(abs(x)-2)&lt;0.05?NaN:(x**3+2*x**2-1)/(x**2-4)","n":"f(x)"},{"e":"x+2","n":"asíntota oblicua y = x+2","d":1}],"x":[-7,7],"y":[-14,14]}' data-alt="Verticales en x=±2 y oblicua y=x+2"><figcaption>Verticales en $x=\pm2$ y oblicua $y=x+2$ (recta de puntos): lejos del origen la curva se pega a ella por los dos lados. Como $x^3+2x^2-1=(x+2)(x^2-4)+4x+7$, la resta $f(x)-(x+2)=\frac{4x+7}{x^2-4}\to0$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Los del apartado 7: olvidar $b$; suponer la misma recta en $-\infty$ (ver el propio B3).</p>
+  </div>
+  <p class="l4-teo">Teoría: U pp. 48-50 (Prop. 1.12, Ej. 1.48); L p.201 y S pp.315-316 (división de polinomios).</p>
+  </details>

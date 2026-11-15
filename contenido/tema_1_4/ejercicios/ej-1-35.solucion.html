@@ -1,0 +1,20 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Probar con Bolzano que un polinomio de grado impar tiene una raíz real.</dd>
+    <dt>Cómo lo pienso</dt><dd>Para $|x|$ muy grande manda el término de mayor grado, y al ser impar cambia de signo entre $-\infty$ y $+\infty$. Si en un punto es negativo y en otro positivo, en medio se anula.</dd>
+    <dt>Qué uso</dt><dd>Bolzano: continua en $[a,b]$ con $f(a)f(b)<0\Rightarrow$ raíz en $(a,b)$ — <a href="#s9">ver teoría</a> (U p.52).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo $p(x)=x^n(a_n+\dots)$ y calculo los límites en $\pm\infty$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> si hay que probar que existe una raíz sin que den un intervalo, usa los límites en $\pm\infty$ (o en los extremos del dominio) para encontrar dos puntos con signos opuestos.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Planteamiento.</b> $p(x)=a_nx^n+\dots+a_1x+a_0$ con $n$ impar y $a_n\neq0$. Se puede suponer $a_n&gt;0$: si no, se trabaja con $-p$, que tiene las mismas raíces.</li>
+      <li><b>Límites en $\pm\infty$.</b> Para $x\neq0$, $p(x)=x^n\Big(a_n+\frac{a_{n-1}}x+\dots+\frac{a_0}{x^n}\Big)$. El paréntesis $\to a_n&gt;0$ (cada $\frac{a_k}{x^{n-k}}\to0$). Como $n$ es impar, $x^n$ tiene el signo de $x$: $x^n\to+\infty$ si $x\to+\infty$ y $x^n\to-\infty$ si $x\to-\infty$. Con las reglas $x\cdot(\pm\infty)$ de U Def. 1.12 (p.27): $\lim_{x\to+\infty}p=+\infty$ y $\lim_{x\to-\infty}p=-\infty$.</li>
+      <li><b>De los límites a dos puntos concretos.</b> Aplicando la definición de límite infinito en el infinito con $k=1$ (apartado 6): existe $b$ con $p(b)\ge1&gt;0$ y existe $a&lt;b$ con $p(a)\le-1&lt;0$. <i>(Versión constructiva, propia:</i> con $M=1+\frac{|a_0|+\dots+|a_{n-1}|}{a_n}$, si $|x|\ge M$ se tiene $|a_{n-1}x^{n-1}+\dots+a_0|\le(\sum|a_k|)|x|^{n-1}=a_n(M-1)|x|^{n-1}&lt;a_n|x|^n$; así $p(x)$ tiene el signo de $a_nx^n$ y se puede tomar $a=-M$, $b=M$.)</li>
+      <li><b>Bolzano.</b> $p$ es continua en $[a,b]$ (polinomio) y $p(a)p(b)&lt;0$: existe $c\in(a,b)$ con $p(c)=0$.</li>
+    </ol>
+    <p><b>Por qué hace falta grado impar:</b> $x^2+1$ no tiene raíces reales; con grado par, los dos límites tienen el mismo signo.</p>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Creer que se ha demostrado que hay <b>una sola</b> raíz (Bolzano da «al menos una»); aplicar el argumento a grado par. Recuerda que «existe $a$ con $p(a)&lt;0$» sale de la definición de límite, no de la continuidad.</p>
+  </div>
+  <p class="l4-teo">Teoría: U Bolzano p. 52; Def. 1.12 p. 27.</p>
+  </details>

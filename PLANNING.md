@@ -92,7 +92,7 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 | [ ] | 1.1 El espacio ℝ | E 1.1-1.5 + X | Mapa: «qué desigualdad/valor absoluto tengo y qué método». Práctica: desigualdades, intervalos, supremo/ínfimo. Ojo: máx/mín/arquimediana son `P` (no U). |
 | [ ] | 1.2 Sucesiones | E 1.6-1.16 + X | Mapa de decisión de límites de sucesiones (cociente de polinomios, e, Stolz, acotación, monotonía). **Tema largo: dividir F4 con cuidado.** |
 | [ ] | 1.3 Series | E 1.17-1.22 + X | Mapa de criterios de convergencia (necesaria, comparación, cociente, raíz, alternada, geométrica, telescópica). |
-| [ ] | 1.4 Límites y continuidad | E 1.23-1.41 + X | **Mayor volumen (40 `details.sol`)**: agrupar por tipo (límites, asíntotas, continuidad, Bolzano/bisección) y hacer F4 estricto. Dos o tres sesiones si hace falta: (a) límites, (b) continuidad+Bolzano. |
+| [x] | 1.4 Límites y continuidad | E 1.23-1.41 + X | **Hecho (2026-11-15)**: F1-F6 + F4b, 40 tarjetas, 12 prácticas, quiz 10, mapa de decisión, t1_4.py; sin ver en navegador. Nota previa: **Mayor volumen (40 `details.sol`)**: agrupar por tipo (límites, asíntotas, continuidad, Bolzano/bisección) y hacer F4 estricto. Dos o tres sesiones si hace falta: (a) límites, (b) continuidad+Bolzano. |
 | [ ] | 2.1 Derivada | E 2.1,2.2,2.6-2.9,2.14,2.17-2.23 + X | Mapa: ¿derivable en el punto? (definición, laterales, continuidad). |
 | [ ] | 2.2 Reglas de derivación | E 2.3-2.5,2.10-2.13,2.15,2.16 + X | Mapa: qué regla uso (producto, cociente, cadena, inversa, logarítmica). Práctica de derivación rápida. |
 | [ ] | 2.4 Newton y punto fijo | E 2.34-2.38 + X | Mapa: ¿Newton o punto fijo?, condiciones de convergencia, cota de error. |

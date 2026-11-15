@@ -1,0 +1,23 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to+\infty}\big(\frac{x+1}{x-1}\big)^x$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La base tiende a $1$ y el exponente a $\infty$: forma $1^\infty$, que <b>no</b> vale $1$ automáticamente. Todo depende de cuánto se aleja la base de $1$ frente a lo rápido que crece el exponente, y eso lo mide el número $e$.</dd>
+    <dt>Qué uso</dt><dd>$1^\infty$: $\lim_{x	o a}A^B=e^{\lim_{x\to a}B(A-1)}$ si $A\to1$ y $B\to\pm\infty$ — <a href="#s3">ver teoría</a> (U p.31).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo la base como $1+\frac2{x-1}=1+\frac1F$ con $F=\frac{x-1}2$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta ($1^\infty$):</b> el resultado es $e^{\lim_{x\to a} B(A-1)}$ (truco del apartado 3). Aquí: $\lim_{x\to\infty} x\cdot\frac2{x-1}=2$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Tipo.</b> Al dividir entre $x$, la base $\frac{1+1/x}{1-1/x}\to1$ y el exponente $\to+\infty$: es $1^\infty$, indeterminación (U p.30). <b>No vale $1$.</b></li>
+      <li><b>Herramienta.</b> Para sucesiones, U Prop. 1.5 (p. 31): $\big(1+\frac1{a_n}\big)^{a_n}\to e$. Se usa la versión para funciones, $\big(1+\frac1{F(x)}\big)^{F(x)}\to e$ si $F(x)\to\pm\infty$, (ver el recuadro del apartado 3; S p.222).</li>
+      <li><b>Base como $1+\frac1F$.</b> $\frac{x+1}{x-1}=\frac{(x-1)+2}{x-1}=1+\frac2{x-1}=1+\frac1{F(x)}$, con $F(x)=\frac{x-1}2\to+\infty$.</li>
+      <li><b>Hacer aparecer $F$ en el exponente.</b> $x=F(x)\cdot\frac x{F(x)}=F(x)\cdot\frac{2x}{x-1}$, luego
+        $$\Big(\frac{x+1}{x-1}\Big)^x=\Big[\big(1+\tfrac1{F(x)}\big)^{F(x)}\Big]^{\frac{2x}{x-1}}\qquad(x&gt;1,\ \text{base}&gt;0).$$</li>
+      <li><b>Límite de $A^B$.</b> $A(x)=\big(1+\frac1F\big)^F\to e$ y $B(x)=\frac{2x}{x-1}\to2$. Con la fórmula (1.1) (U p.29), $A^B=e^{B\ln A}$; como $\ln$ y $\exp$ son continuas, $\ln A\to\ln e=1$, $B\ln A\to2$ y $A^B\to e^2$.</li>
+      <li><b>Resultado:</b> $e^2\approx7{,}389$. (sympy: $e^2$; con $x=1000$ vale $7{,}38906$.)</li>
+    </ol>
+    <figure class="graf" data-g='{"c":[{"e":"((x+1)/(x-1))**x","n":"f(x)"},{"e":"exp(2)","n":"límite = e² ≈ 7,389","d":1}],"x":[2,40],"y":[7,9.5]}' data-alt="Forma 1^∞ con límite e²"><figcaption>Forma $1^\infty$: la curva baja hacia la recta $y=e^2\approx7{,}389$ cuando $x\to+\infty$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Decir «$1^\infty=1$»; o pasar al límite base y exponente por separado cuando la base tiende a $1$ (solo vale si el resultado no es indeterminado).</p>
+  </div>
+  <p class="l4-teo">Teoría: U indeterminaciones p. 30; fórmula (1.1) p. 29; Prop. 1.5 p. 31 (sucesiones).</p>
+  </details>
