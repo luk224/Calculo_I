@@ -24,7 +24,10 @@ Referencia viva: `temas/tema_2_3_lhopital.html` + `assets/estudio.css` + `assets
 | **F3 Mapa de decisión** | Diagrama SVG (`svg.flujo`) «¿Qué tipo de problema tengo y qué hago?» al inicio de la sección-síntesis; la tabla detallada va en `details.ver`. Si el tema no tiene decisión (p. ej. definiciones puras), sustituir por un esquema de dependencia de conceptos. | redactor-tema | SVG |
 | **F4 Formato corto** | En ejercicios de E y Propios: visible enunciado + «Antes de calcular» + receta; pasos, gráfica y «Teoría:» en `details.ver`. Exámenes sin ocultar. Líneas «Mismo método que…» en repetidos. Teoría de fondo en `details.amp` con `data-extra`. | redactor-tema | tema reestructurado |
 | **F5 Montaje** | Sección «Practica» única (h2) antes de «Ejercicios del libro», agrupada por tipo; autoevaluación tras ella; apartados con «Cómo lo reconoces → Qué haces → Ejemplo mínimo»; chuleta de media página; «Solo lo esencial» activado por defecto la 1.ª vez (ya lo hace `estudio.js`); renumerar h2 y comprobar enlaces. | redactor-tema | tema final |
+| **F4b Estilo «academia» (importado de Álgebra, ver 2.3)** | (1) Cada ejercicio es una tarjeta `article.ejer`: cabecera con ★ + título con el origen + fuente, enunciado siempre visible, y un único `details.sol` «Ver solución paso a paso». (2) En los **exámenes**, lo primero de la solución es la caja `✍️ Así se redacta en el examen` (solución limpia, tal cual se escribiría a mano, verificada con sympy) y el resto va en `details.ampl` «Comentarios y comprobaciones». (3) La fila «Qué uso» de «Antes de calcular» es una línea: resultado + fórmula + `ver teoría` (enlace `#`) + (U p.NN). | redactor-tema | tema con tarjetas |
 | **F6 Verificación y cierre** | Conteos antes/después de `details.sol` (no baja), `details.pr`, `.q`; exámenes presentes; ids únicos; enlaces `#` válidos; JSON `data-g` válidos; `\lim` con subíndice; sin menciones a erratas; palabras visibles en modo esencial (objetivo ≈ 2.500 de contenido). Commit y push. | coordinador | commit |
+
+**Ideas aprobadas, pendientes de aplicar** (importadas de Álgebra/Física, ver registro): pestañas Teoría / Por tipo / Ejercicios / Examen y botón «Mostrar fuentes» (de `ALGEBRA/claude/assets/pedagogia.js`); pregunta motivadora antes de cada apartado; series de práctica generadas al azar con diagnóstico del error (de `practica.js`), empezando por límites, derivadas e integrales; test de integridad del sitio (recuentos de ejercicios/exámenes, enlaces, JSON de las gráficas); y, de Física, problemas gemelos y mini-examen de cierre.
 
 Si se hace en una sola orden al asistente, el flujo recomendado es: **F2 (resolutor) → F1+F3+F4+F5 (un redactor con las instrucciones del 2.3 como modelo) → F6**.
 
@@ -39,7 +42,7 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 
 | ✓ | Tema | Ejercicios (v. CLAUDE.md §2) | Notas para este tema |
 |---|---|---|---|
-| [x] | **2.3 L'Hôpital** | E 2.24-2.33 + 6 X | **Prototipo hecho** (commits 08cff4c, 616e4bd, a870fc6). Modelo de referencia. |
+| [x] | **2.3 L'Hôpital** | E 2.24-2.33 + 6 X | **Prototipo hecho** (commits 08cff4c, 616e4bd, a870fc6; F4b: tarjetas, redacción de examen y «Qué uso» corto). Modelo de referencia. |
 | [ ] | 1.1 El espacio ℝ | E 1.1-1.5 + X | Mapa: «qué desigualdad/valor absoluto tengo y qué método». Práctica: desigualdades, intervalos, supremo/ínfimo. Ojo: máx/mín/arquimediana son `P` (no U). |
 | [ ] | 1.2 Sucesiones | E 1.6-1.16 + X | Mapa de decisión de límites de sucesiones (cociente de polinomios, e, Stolz, acotación, monotonía). **Tema largo: dividir F4 con cuidado.** |
 | [ ] | 1.3 Series | E 1.17-1.22 + X | Mapa de criterios de convergencia (necesaria, comparación, cociente, raíz, alternada, geométrica, telescópica). |
@@ -84,3 +87,4 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 |---|---|---|---|
 | 2026-11-14 | Gráficas con coordenadas en 1.1-6.5 | 298 gráficas | 7502f1a |
 | 2026-11-14 | 2.3 prototipo «academia» | F1-F6 hechas | 08cff4c, 616e4bd |
+| 2026-11-15 | 2.3 estilo Álgebra (F4b) | tarjetas, ✍️ redacción en los 6 exámenes, «Qué uso» corto | ver `git log` |

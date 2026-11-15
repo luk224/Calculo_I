@@ -6,7 +6,7 @@
   function ready(f) { d.readyState !== 'loading' ? f() : d.addEventListener('DOMContentLoaded', f); }
   ready(function () {
     d.documentElement.classList.add('estudio-js');
-    var marca = leer(K) || {}, items = Array.prototype.slice.call(d.querySelectorAll('details.sol, details.pr')), prog = d.querySelector('.camino .prog'), bar = d.querySelector('.camino .bar i');
+    var marca = leer(K) || {}, items = Array.prototype.slice.call(d.querySelectorAll('article.ejer, details.pr')), prog = d.querySelector('.camino .prog'), bar = d.querySelector('.camino .bar i');
     function cuenta() {
       var solo = d.body.classList.contains('solo-esencial');
       var vis = items.filter(function (x) { return !(solo && x.closest('[data-extra]')); });
@@ -15,7 +15,7 @@
       if (bar) bar.style.width = (vis.length ? 100 * n / vis.length : 0) + '%';
     }
     items.forEach(function (x, i) {
-      var s = x.querySelector(':scope > summary'); if (!s) return;
+      var s = x.tagName === 'ARTICLE' ? x.querySelector(':scope > .ejer-cab') : x.querySelector(':scope > summary'); if (!s) return;
       var id = x.id || ('i' + i), c = d.createElement('input');
       c.type = 'checkbox'; c.className = 'hecho'; c.setAttribute('aria-label', 'Marcar como hecho');
       c.checked = !!marca[id]; x.classList.toggle('hecho-ok', c.checked);
@@ -54,9 +54,12 @@
       // si el destino está dentro de una ampliación oculta por «solo lo esencial», se desactiva el modo
       if (d.body.classList.contains('solo-esencial') && t.closest('[data-extra]')) ponEsencial(false, true);
       var a = t.closest('details.amp'); if (a) a.open = true;
+      // abre los desplegables que contienen al destino (p.ej. una nota dentro de una solución)
+      for (var p = t.parentElement; p; p = p.parentElement) if (p.tagName === 'DETAILS') p.open = true;
       if (t.tagName === 'DETAILS') { t.open = true; t.scrollIntoView(); }
+      else if (t.tagName === 'ARTICLE' && t.classList.contains('ejer')) { var sl = t.querySelector(':scope > details.sol'); if (sl) sl.open = true; t.scrollIntoView(); }
     }
     abre(); window.addEventListener('hashchange', abre);
-    window.addEventListener('beforeprint', function () { d.querySelectorAll('details.pr, details.pista, details.respuesta, details.ver').forEach(function (x) { x.open = true; }); });
+    window.addEventListener('beforeprint', function () { d.querySelectorAll('details.pr, details.pista, details.respuesta, details.ver, details.sol, details.ampl').forEach(function (x) { x.open = true; }); });
   });
 })();
