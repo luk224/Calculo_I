@@ -1,0 +1,28 @@
+<p class="enun">Calcular, usando el método de Hermite, $\displaystyle\int\frac{2x^2-x+1}{(x^2+x+1)^2(x+1)}\,dx$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Una primitiva por Hermite.</dd>
+    <dt>Cómo lo pienso</dt><dd>$x+1$ da la raíz real simple $-1$; $x^2+x+1$ no tiene raíces reales (discriminante $1-4\lt0$) y está al cuadrado. Igual que 6.24, pero el último trozo necesita <b>completar cuadrados</b> para el arcotangente.</dd>
+    <dt>Qué uso</dt><dd>Hermite (U pp.259-261); $\ln$ + $\operatorname{arctg}$ para el factor irreducible (U p.258).</dd>
+    <dt>Por dónde empiezo</dt><dd>Forma de Hermite con $g=x^2+x+1$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Forma de Hermite:</b> $\dfrac{2x^2-x+1}{(x^2+x+1)^2(x+1)}=\dfrac{d}{dx}\Big(\dfrac{Ax+B}{x^2+x+1}\Big)+\dfrac C{x+1}+\dfrac{Dx+E}{x^2+x+1}$.</li>
+    <li><b>Derivada:</b> $\frac{d}{dx}\frac{Ax+B}{x^2+x+1}=\frac{-Ax^2-2Bx+A-B}{(x^2+x+1)^2}$.</li>
+    <li><b>Quitar denominadores:</b> $2x^2-x+1=(-Ax^2-2Bx+A-B)(x+1)+C(x^2+x+1)^2+(Dx+E)(x^2+x+1)(x+1)$.</li>
+    <li><b>Un coeficiente rápido:</b> con $x=-1$ se anulan el primer y el tercer sumando: $2+1+1=C\cdot1\Rightarrow C=4$.</li>
+    <li><b>Igualar coeficientes</b> (5 ecuaciones):
+    $$\begin{cases}x^4:\ C+D=0\\ x^3:\ -A+2C+2D+E=0\\ x^2:\ -A-2B+3C+2D+2E=2\\ x^1:\ A-3B+2C+D+2E=-1\\ x^0:\ A-B+C+E=1\end{cases}$$
+    Con $C=4$: $D=-4$; de $x^3$: $E=A$; de $x^0$: $B=2A+3$; de $x^2$: $-3A-2=2\Rightarrow A=-\frac43$. Así $E=-\frac43$, $B=\frac13$ (la ecuación de $x$ se cumple).</li>
+    <li><b>Primer trozo:</b> $\int\frac{d}{dx}\Big(\frac{-\frac43x+\frac13}{x^2+x+1}\Big)dx=\dfrac{-4x+1}{3(x^2+x+1)}$.</li>
+    <li><b>Segundo trozo:</b> $\int\frac4{x+1}dx=4\ln\lvert x+1\rvert$.</li>
+    <li><b>Tercer trozo,</b> $\int\frac{-4x-\frac43}{x^2+x+1}dx$. La derivada del denominador es $2x+1$ y $-4x-\frac43=-2(2x+1)+\frac23$:
+    $$=-2\int\frac{2x+1}{x^2+x+1}dx+\frac23\int\frac{dx}{x^2+x+1}.$$
+    La primera es $\frac{f'}f$: $-2\ln(x^2+x+1)$ (siempre positivo). Para la segunda se <b>completan cuadrados</b>:
+    $$x^2+x+1=\Big(x+\frac12\Big)^2+\frac34=\frac34\Big[\Big(\frac{2x+1}{\sqrt3}\Big)^2+1\Big].$$
+    Con $f=\frac{2x+1}{\sqrt3}$, $f'=\frac2{\sqrt3}$:
+    $$\int\frac{dx}{x^2+x+1}=\frac{2}{\sqrt3}\operatorname{arctg}\frac{2x+1}{\sqrt3},\qquad\frac23\int\frac{dx}{x^2+x+1}=\frac{4\sqrt3}9\operatorname{arctg}\frac{2x+1}{\sqrt3}.$$</li>
+    <li><b>Resultado:</b>
+    $$\int\frac{2x^2-x+1}{(x^2+x+1)^2(x+1)}dx=\frac{-4x+1}{3(x^2+x+1)}+4\ln\lvert x+1\rvert-2\ln(x^2+x+1)+\frac{4\sqrt3}9\operatorname{arctg}\frac{2x+1}{\sqrt3}+C.$$</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\int\frac{Mx+N}{x^2+bx+c}$ (sin raíces reales): (1) escribir $Mx+N=\frac M2(2x+b)+\text{resto}$; (2) la parte $\frac{2x+b}{x^2+bx+c}$ da $\ln$; (3) completar cuadrados $x^2+bx+c=(x+\frac b2)^2+r^2$ y el resto da $\frac1r\operatorname{arctg}\frac{x+b/2}r$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Perderse con los signos del sistema: sacar primero los coeficientes «fáciles» dando a $x$ el valor de la raíz real ($x=-1\Rightarrow C=4$) reduce el trabajo.</p></div>

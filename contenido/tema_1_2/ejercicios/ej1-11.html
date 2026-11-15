@@ -1,0 +1,16 @@
+<p class="enun">Sea $b_n=\dfrac1{\sqrt{n^2+1}}+\dfrac1{\sqrt{n^2+2}}+\cdots+\dfrac1{\sqrt{n^2+n}}$. ¿Cuál es su límite cuando $n\to\infty$?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar $\lim_{n\to\infty}b_n$, con $b_n$ la suma de los $n$ términos $\frac1{\sqrt{n^2+k}}$, $k=1,\dots,n$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada sumando es casi $\frac1n$ y hay $n$ sumandos: la suma queda cerca de $n\cdot\frac1n=1$. Para demostrarlo, atrapo la suma entre otras dos que tienden a 1.</dd>
+    <dt>Qué uso</dt><dd>Regla del emparedado (U Teorema 1.2); monotonía de la raíz y de $\frac1x$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Acoto cada sumando entre el menor ($k=n$) y el mayor ($k=1$).</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Por qué no sirve «suma de límites».</b> La Prop. 1.3 vale para un número <b>fijo</b> de sumandos. Aquí hay $n$ sumandos: cada uno tiende a 0 pero cada vez hay más.</li>
+    <li><b>Comparar cada sumando.</b> Para $1\le k\le n$: $n^2+1\le n^2+k\le n^2+n$. La raíz es creciente y $x\mapsto\frac1x$ decreciente en $(0,\infty)$, luego $$\frac1{\sqrt{n^2+n}}\le\frac1{\sqrt{n^2+k}}\le\frac1{\sqrt{n^2+1}}.$$</li>
+    <li><b>Sumar las $n$ desigualdades</b> ($k=1,\dots,n$): quedan $n$ copias de cada cota, $$a_n:=\frac n{\sqrt{n^2+n}}\le b_n\le\frac n{\sqrt{n^2+1}}=:c_n.$$</li>
+    <li><b>Límite de los «panes».</b> $a_n=\dfrac1{\sqrt{1+1/n}}\to1$ y $c_n=\dfrac1{\sqrt{1+1/n^2}}\to1$.</li>
+    <li><b>Regla del emparedado:</b> $\lim_{n\to\infty} b_n=\boxed1$. Comprobación numérica: $b_{10}\approx0{,}9739$, $b_{100}\approx0{,}99749$, $b_{10^4}\approx0{,}999975$.</li>
+  </ol>
+  <figure class="graf" data-g='{"p":[[1,0.707107],[2,0.855462],[3,0.906414],[4,0.93126],[5,0.945818],[6,0.95534],[7,0.962038],[8,0.967001]],"c":[{"e":"1","n":"límite = 1","d":1}],"x":[0,9],"ex":"n"}' data-alt="Sumas bₙ acercándose a 1"><figcaption>Los valores de $b_n$ crecen hacia la recta $y=1$, el límite que fuerza el emparedado $\frac{n}{\sqrt{n^2+n}}\le b_n\le\frac n{\sqrt{n^2+1}}$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> suma de $n$ términos parecidos $\Rightarrow$ acota <b>cada</b> término por el menor y por el mayor, multiplica por el número de términos y aplica el emparedado.</div>

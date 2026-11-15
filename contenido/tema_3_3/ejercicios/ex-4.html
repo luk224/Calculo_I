@@ -1,0 +1,17 @@
+<p class="enun">Se consideran los siguientes valores de una función: $x=1,2,3$; $f(x)=31,26,43$. (a) Calcule $\int_1^3f$ por la regla del trapecio. (b) Calcule $\int_1^3f$ por la regla de Simpson con 3 nodos igualmente espaciados. (c) La función $g(x)=11x^2-38x+58$ verifica $f(1)=g(1)$, $f(2)=g(2)$, $f(3)=g(3)$. Calcule $\int_1^3g$ y compárelo con los valores obtenidos en los apartados anteriores. Justifique a qué se debe la diferencia.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Con $f(1)=31,f(2)=26,f(3)=43$: integral por trapecio, por Simpson y la de $g$, y explicar la diferencia.</dd>
+    <dt>Cómo lo pienso</dt><dd>El trapecio sustituye $f$ por segmentos; Simpson, por una parábola. La función $g$ pasa por los tres puntos y tiene grado 2, así que es <b>esa</b> parábola: su integral coincide con Simpson.</dd>
+    <dt>Qué uso</dt><dd>Trapecio y Simpson (U pp. 267-268, Tema 6); unicidad del interpolador (U p. 121).</dd>
+    <dt>Por dónde empiezo</dt><dd>Aplico trapecio y Simpson con los tres valores; luego compruebo que $g$ toma esos tres valores.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>(a) Trapecio compuesto</b> con 3 nodos, $h=1$: $\frac h2(f_0+2f_1+f_2)=\frac12(31+52+43)=63$.</li>
+    <li><b>(b) Simpson:</b> $\frac{3-1}6(31+4\cdot26+43)=\frac{178}3\approx59{,}333$.</li>
+    <li><b>(c) ¿Es $g$ el interpolador?</b> $g(1)=11-38+58=31$, $g(2)=44-76+58=26$, $g(3)=99-114+58=43$: sí, y como tiene grado 2, por unicidad es <b>el</b> interpolador. Con Newton sale lo mismo; tabla (diagonal $31,\ -5,\ 11$):<div class="dd" data-x="1,2,3" data-y="31,26,43"></div></li>
+    <li><b>Newton</b> (grado 2): $p_2(x)=31-5(x-1)+11(x-1)(x-2)$. Desarrollo: $-5(x-1)=-5x+5$; $11(x-1)(x-2)=11x^2-33x+22$. Sumando: $p_2(x)=11x^2-38x+58=g(x)$.</li>
+    <li><b>Integral:</b> $\int_1^3g=\left[\frac{11}3x^3-19x^2+58x\right]_1^3=\frac{178}3$.</li>
+    <li><b>Justificación:</b> Simpson es la integral exacta de la parábola que interpola en $a,\frac{a+b}2,b$; $g$ es esa parábola; luego $\int g=$ Simpson. El trapecio usa rectas y da otra cosa (63).</li>
+  </ol>
+    <figure class="graf" data-g='{"p":[[1,31],[2,26],[3,43]],"c":[{"interp":true,"n":"g(x)=11x²−38x+58"}],"x":[0.5,3.5]}' data-alt="La parábola $g$ es el interpolador de los tres datos"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> «¿por qué coincide con Simpson?» → Simpson integra el interpolador de grado 2 y, por unicidad, la parábola dada es ese interpolador.</div>

@@ -1,0 +1,20 @@
+<p class="enun">Sea $H=F\circ G$ con $F(x)=\displaystyle\int_0^x\operatorname{sen}(\ln t)\,dt$ y $G(x)=e^x$. Señala la opción correcta: a) $H$ es creciente en $\mathbb R$. b) $H$ tiene un punto de inflexión en $x=\frac{3\pi}4$. c) $H$ es cóncava en $\mathbb R$. d) $H$ alcanza un mínimo en $\pi$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar crecimiento, concavidad, inflexión y extremos de $H(x)=F(e^x)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>$H$ es una composición: su derivada sale con la regla de la cadena y la derivada de $F$ la da el primer teorema. Con $H'$, $H''$ y $H'''$ se revisan las cuatro opciones.</dd>
+    <dt>Qué uso</dt><dd>Regla de la cadena (U p.79); primer teorema (U Teor. 6.1, p.243); U Prop. 2.4 (p.98), Prop. 3.7 (p.131), Prop. 3.10-3.12 (pp.136-137).</dd>
+    <dt>Por dónde empiezo</dt><dd>$H'(x)=F'(e^x)\cdot e^x$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"exp(x)*(sin(x)-cos(x))/2","n":"H(x)=eˣ(sen x−cos x)/2"},{"e":"exp(x)*sin(x)","n":"H′(x)=eˣ sen x"}],"x":[-1,4],"y":[-6,14],"q":[[3.1416,11.5703,"máx. en π"],[2.3562,7.4605,"inflexión en 3π/4"]]}' data-alt="H(x)=F(e^x) con máximo en pi e inflexión en 3pi/4"><figcaption>$H(x)=F(e^x)=\frac{e^x}2(\operatorname{sen}x-\cos x)$ y su derivada $H'(x)=e^x\operatorname{sen}x$. Rombos: el máximo relativo en $x=\pi$ (donde $H'$ corta el eje bajando) y el punto de inflexión en $x=\frac{3\pi}4$ (donde $H'$ alcanza su máximo, es decir $H''=0$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Derivada de $F$.</b> El integrando $\operatorname{sen}(\ln t)$ es continuo para $t\gt0$ (en $t=0$ no está definido, pero está acotado entre $-1$ y $1$). Para $u\gt0$, $F(u)=\int_0^1\operatorname{sen}(\ln t)\,dt+\int_1^u\operatorname{sen}(\ln t)\,dt$. El primer sumando es un número fijo (vale $-\frac12$; es una integral impropia convergente, <a href="tema_6_5_integrales_impropias.html">§6.5</a>; su valor no importa porque al derivar da $0$). Al segundo se le aplica el primer teorema: $F'(u)=\operatorname{sen}(\ln u)$ para todo $u\gt0$.</li>
+    <li><b>Regla de la cadena.</b> Como $G(x)=e^x\gt0$ siempre, vale el paso 1 con $u=e^x$: $H'(x)=F'(e^x)\cdot(e^x)'=\operatorname{sen}(\ln e^x)\,e^x=e^x\operatorname{sen}x$, porque $\ln e^x=x$.</li>
+    <li><b>a) Falsa.</b> $e^x\gt0$, así que el signo de $H'$ es el de $\operatorname{sen}x$, que cambia (p. ej. $H'\lt0$ en $(\pi,2\pi)$).</li>
+    <li><b>Segunda derivada</b> (producto): $H''(x)=e^x\operatorname{sen}x+e^x\cos x=e^x(\operatorname{sen}x+\cos x)$.</li>
+    <li><b>d) Falsa.</b> $H'(\pi)=0$ (punto crítico), pero $H''(\pi)=e^\pi(0-1)=-e^\pi\lt0$: en $\pi$ hay un <b>máximo</b> relativo (U Prop. 3.7), no un mínimo.</li>
+    <li><b>c) Falsa.</b> $H''(0)=1\gt0$ y $H''(\pi)\lt0$: $H''$ cambia de signo, así que $H$ no es cóncava en todo $\mathbb R$.</li>
+    <li><b>b) Verdadera.</b> En $x=\frac{3\pi}4$: $\operatorname{sen}\frac{3\pi}4=\frac{\sqrt2}2$ y $\cos\frac{3\pi}4=-\frac{\sqrt2}2$, luego $H''\!\left(\frac{3\pi}4\right)=0$. Tercera derivada: $H'''(x)=e^x(\operatorname{sen}x+\cos x)+e^x(\cos x-\operatorname{sen}x)=2e^x\cos x$, y $H'''\!\left(\frac{3\pi}4\right)=-\sqrt2\,e^{3\pi/4}\lt0$. Por U Prop. 3.12 (p.137) la primera derivada no nula tras la segunda es de orden 3 (impar): <b>hay inflexión</b> (de convexa a cóncava). Comprobación con el signo: $H''\!\left(\frac{3\pi}4-0{,}1\right)\approx1{,}35\gt0$ y $H''\!\left(\frac{3\pi}4+0{,}1\right)\approx-1{,}65\lt0$.</li>
+    <li><b>Respuesta: b).</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si $H(x)=F(g(x))$ con $F(u)=\int_a^uf(t)\,dt$: $H'(x)=f(g(x))\,g'(x)$ (primer teorema + regla de la cadena). Después se trabaja con $H'$ como con cualquier función.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dar por buena la inflexión solo con $H''=0$ sin comprobar el cambio de signo (o $H'''\ne0$).</p></div>

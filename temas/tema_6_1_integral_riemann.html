@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- GENERADO desde contenido/tema_6_1/ con herramientas/tema_datos.py; no editar a mano -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -43,7 +44,6 @@
 
 <!-- ============================ 0 ============================ -->
 <h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.1.1 Motivación, p. 236">U p.236</span></h2>
-
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li><b>Límite de una sucesión</b> (<a href="tema_1_2_sucesiones.html">tema 1.2</a>): $\lim_{n\to\infty}\frac{5n+3}{2n}=\frac52$. Cada suma de Riemann con $n$ rectángulos es un término de una sucesión y la integral es su límite.</li>
@@ -52,24 +52,19 @@
   <li><b>Derivada y regla de L'Hôpital</b> (<a href="tema_2_3_lhopital.html">tema 2.3</a>): solo para un límite del primer ejemplo.</li>
   <li><b>Funciones con la misma derivada</b> (<a href="tema_2_5_rolle_valor_medio.html">tema 2.5</a>): dos funciones con la misma derivada en un intervalo se diferencian en una constante (se usa en la integral indefinida, apartado 5).</li>
 </ul>
-
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>Vocabulario</b>: calcular o construir particiones y su finura (E 6.1-6.3). (B) <b>Propiedades</b>: decidir cuáles son siempre ciertas y cuáles no (E 6.4-6.6, 6.10), usar aditividad (E 6.8) y acotar con la monotonía (E 6.7). (C) <b>Calcular una integral</b> con la definición (sumas de Riemann y límite) o con áreas con signo (U Ej. 6.2 y 6.3; los ejemplos propios). En los exámenes de X la definición en sí no aparece: lo que cae son preguntas de verdadero o falso sobre la integral $F(x)=\int_0^x f$ (monotonía, extremos) y áreas entre curvas; se resuelven con las propiedades de este tema y se completan con el teorema fundamental de §6.2 (los problemas del apartado 8 lo indican). Las técnicas de cálculo (primitivas, partes, sustitución) vienen en §6.3, la regla del trapecio y Simpson en §6.4 y las integrales impropias en §6.5.</p>
-
 <!-- ============================ 1 ============================ -->
 <h2 id="s1"><span class="n">1</span>El área bajo una gráfica con rectángulos <span class="src" data-l="U" data-ref="U §6.1.2, pp. 236-238; Figura 6.1, p. 237; Figura 6.2, p. 238; Ejemplo 6.1, pp. 236-238">U pp.236-238</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva · embaldosar una parcela</span>
   <p>Una parcela rectangular de $a$ por $b$ metros tiene área $a\cdot b$; esa fórmula no falla. Pero ¿y una parcela con un lado curvo? Se coloca un embaldosado de rectángulos que llegue hasta la curva. Con pocas baldosas grandes queda mucho hueco o se sale por fuera; con muchas baldosas estrechas el error se hace diminuto. El <b>área exacta</b> es el valor al que se acerca la suma de las áreas de las baldosas cuando su anchura tiende a $0$: eso es la <b>integral definida</b> $\int_a^b f(x)\,dx$. Este método es el de «exhaución» de Eudoxo y es el principio de toda la integración (U p.236).</p>
   <p>Concretamente (U p.236): $f:[a,b]\to\mathbb R$ continua con $f(x)\ge0$; se quiere el área entre su gráfica, el eje $x$ y las rectas $x=a$, $x=b$.</p>
   <span class="src" data-l="U" data-ref="U §6.1.2, p. 236">U p.236</span>
 </div>
-
 <figure class="bookfig">
 <img src="../assets/img/fig_u_6_1.png" alt="Izquierda: región bajo una curva entre a y b. Derecha: la misma región aproximada por diez rectángulos de base igual" loading="lazy">
 <figcaption>Aproximación del área bajo una gráfica por rectángulos. <span class="src" data-l="U" data-ref="U Figura 6.1, p. 237">U p.237</span></figcaption>
 </figure>
-
 <div class="box ex"><span class="h">Ejemplo 6.1 de U · área bajo $f(x)=e^x$ en $[0,1]$</span>
   <ol class="steps">
     <li><b>Dividir en $n$ trozos iguales:</b> $\left[0,\tfrac1n\right],\left[\tfrac1n,\tfrac2n\right],\dots,\left[\tfrac{n-1}n,1\right]$. La base de cada rectángulo es $\frac1n$.</li>
@@ -87,25 +82,20 @@
   <div class="recipe"><b>Receta:</b> trocear en $n$ partes iguales, elegir la altura en un extremo, sumar (aquí, suma geométrica) y pasar al límite en $n$.</div>
   <span class="src" data-l="U" data-ref="U Ejemplo 6.1, pp. 236-238">U pp.236-238</span>
 </div>
-
 <div class="box intu"><span class="h">Idea intuitiva · si hay valores negativos, el área «resta»</span>
   <p>Si la gráfica baja del eje $x$, la altura $f(c_i)$ es negativa y el «rectángulo» tiene área negativa. Se acepta así: <b>$f\ge0$ suma, $f\lt0$ resta</b> (U p.238). El resultado ya no es «el área» en sentido geométrico, sino un <b>área con signo</b> (la de arriba menos la de abajo). Es como una cuenta bancaria: lo que está sobre el eje son ingresos y lo que está bajo el eje, gastos; la integral es el saldo.</p>
   <span class="src" data-l="U" data-ref="U §6.1.2, p. 238" >U p.238</span>
 </div>
-
 <figure class="bookfig">
 <img src="../assets/img/fig_u_6_2.png" alt="Izquierda: región entre una curva y el eje x, con signo menos bajo el eje y signo más sobre él. Derecha: la misma región aproximada por rectángulos, los de debajo del eje tienen altura negativa" loading="lazy">
 <figcaption>Aproximación del área para una función sin signo constante: los rectángulos bajo el eje restan. <span class="src" data-l="U" data-ref="U Figura 6.2, p. 238">U p.238</span></figcaption>
 </figure>
-
 <!-- ============================ 2 ============================ -->
 <h2 id="s2"><span class="n">2</span>Partición, finura y suma de Riemann <span class="src" data-l="U" data-ref="U §6.1.2, pp. 238-239">U pp.238-239</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva · el vocabulario del troceado</span>
   <p>Para poder escribir la definición con precisión hacen falta tres palabras. En el ejemplo anterior todos los trozos medían lo mismo y se usó siempre el extremo izquierdo, pero se puede ser más libre: <b>trozos de anchuras distintas</b> y, en cada trozo, <b>cualquier punto</b> para medir la altura. Si $f$ es continua, la elección concreta deja de importar cuando los trozos son muy estrechos: dos alturas elegidas en un trozo diminuto son casi iguales (U nota 1, p.238: aquí la continuidad es fundamental).</p>
   <span class="src" data-l="P" data-ref="Explicación propia sobre U p. 238">P</span>
 </div>
-
 <div class="box def"><span class="h">Partición, finura y suma de Riemann</span>
   <p>Una <b>partición</b> $P$ de $[a,b]$ en $n$ subintervalos es una lista de $n+1$ puntos $a=x_0\lt x_1\lt x_2\lt\dots\lt x_n=b$. La <b>longitud</b> del subintervalo $i$-ésimo es $\Delta x_i=x_i-x_{i-1}$ y la <b>finura</b> de $P$, $\|P\|$, es la mayor de esas longitudes: $\|P\|=\max_i\Delta x_i$.</p>
   <p>Se elige un punto $c_i$ cualquiera en cada $[x_{i-1},x_i]$; la altura del rectángulo $i$ es $f(c_i)$. La <b>suma de Riemann</b> es la suma de las áreas de los rectángulos:
@@ -113,43 +103,35 @@
   Está asociada a la partición $P$ y a los representantes $c_i$.</p>
   <span class="src" data-l="U" data-ref="U §6.1.2, pp. 238-239">U pp.238-239</span>
 </div>
-
 <figure><svg class="fig" role="img" aria-label="Partición no equiespaciada de [a,b] en cinco subintervalos, con un punto c_i en cada uno y rectángulos de altura f(c_i)" viewBox="0 0 460 250" width="460"><line class="ax" x1="40.0" y1="215.0" x2="442.6" y2="215.0"/><line class="ax" x1="40.0" y1="215.0" x2="40.0" y2="29.0"/><rect class="rp" x="73.0" y="64.2" width="66.0" height="150.8"/><rect class="rp" x="139.0" y="65.6" width="46.2" height="149.4"/><rect class="rp" x="185.2" y="95.5" width="92.4" height="119.5"/><rect class="rp" x="277.6" y="168.9" width="66.0" height="46.1"/><rect class="rp" x="343.6" y="176.8" width="59.4" height="38.2"/><polyline class="a" points="53.2,109.7 56.5,106.7 59.8,103.7 63.1,100.7 66.4,97.9 69.7,95.0 73.0,92.3 76.3,89.6 79.6,87.0 82.9,84.5 86.2,82.1 89.5,79.7 92.8,77.5 96.1,75.4 99.4,73.4 102.7,71.6 106.0,69.8 109.3,68.2 112.6,66.7 115.9,65.4 119.2,64.2 122.5,63.2 125.8,62.3 129.1,61.5 132.4,60.9 135.7,60.5 139.0,60.2 142.3,60.0 145.6,60.0 148.9,60.2 152.2,60.5 155.5,61.0 158.8,61.6 162.1,62.4 165.4,63.3 168.7,64.4 172.0,65.6 175.3,67.0 178.6,68.5 181.9,70.1 185.2,71.9 188.5,73.8 191.8,75.8 195.1,77.9 198.4,80.1 201.7,82.5 205.0,84.9 208.3,87.4 211.6,90.0 214.9,92.7 218.2,95.5 221.5,98.3 224.8,101.2 228.1,104.2 231.4,107.2 234.7,110.2 238.0,113.3 241.3,116.3 244.6,119.4 247.9,122.5 251.2,125.6 254.5,128.7 257.8,131.8 261.1,134.8 264.4,137.8 267.7,140.8 271.0,143.7 274.3,146.6 277.6,149.4 280.9,152.2 284.2,154.8 287.5,157.4 290.8,159.9 294.1,162.3 297.4,164.6 300.7,166.8 304.0,168.9 307.3,170.9 310.6,172.7 313.9,174.5 317.2,176.0 320.5,177.5 323.8,178.8 327.1,180.0 330.4,181.0 333.7,181.9 337.0,182.6 340.3,183.2 343.6,183.6 346.9,183.9 350.2,184.0 353.5,184.0 356.8,183.8 360.1,183.4 363.4,182.9 366.7,182.3 370.0,181.5 373.3,180.5 376.6,179.4 379.9,178.2 383.2,176.8 386.5,175.3 389.8,173.6 393.1,171.8 396.4,169.9 399.7,167.9 403.0,165.7 406.3,163.5 409.6,161.1 412.9,158.7 416.2,156.1"/><line class="dsh" x1="119.2" y1="64.2" x2="119.2" y2="215.0"/><circle class="pt" cx="119.2" cy="64.2" r="3.5"/><text x="119.2" y="242.0" text-anchor="middle" class="sm">c₁</text><line class="dsh" x1="172.0" y1="65.6" x2="172.0" y2="215.0"/><circle class="pt" cx="172.0" cy="65.6" r="3.5"/><text x="172.0" y="242.0" text-anchor="middle" class="sm">c₂</text><line class="dsh" x1="218.2" y1="95.5" x2="218.2" y2="215.0"/><circle class="pt" cx="218.2" cy="95.5" r="3.5"/><text x="218.2" y="242.0" text-anchor="middle" class="sm">c₃</text><line class="dsh" x1="304.0" y1="168.9" x2="304.0" y2="215.0"/><circle class="pt" cx="304.0" cy="168.9" r="3.5"/><text x="304.0" y="242.0" text-anchor="middle" class="sm">c₄</text><line class="dsh" x1="383.2" y1="176.8" x2="383.2" y2="215.0"/><circle class="pt" cx="383.2" cy="176.8" r="3.5"/><text x="383.2" y="242.0" text-anchor="middle" class="sm">c₅</text><line class="th" x1="73.0" y1="212.0" x2="73.0" y2="220.0"/><text x="73.0" y="230.0" text-anchor="middle" class="sm">x₀=a</text><line class="th" x1="139.0" y1="212.0" x2="139.0" y2="220.0"/><text x="139.0" y="230.0" text-anchor="middle" class="sm">x₁</text><line class="th" x1="185.2" y1="212.0" x2="185.2" y2="220.0"/><text x="185.2" y="230.0" text-anchor="middle" class="sm">x₂</text><line class="th" x1="277.6" y1="212.0" x2="277.6" y2="220.0"/><text x="277.6" y="230.0" text-anchor="middle" class="sm">x₃</text><line class="th" x1="343.6" y1="212.0" x2="343.6" y2="220.0"/><text x="343.6" y="230.0" text-anchor="middle" class="sm">x₄</text><line class="th" x1="403.0" y1="212.0" x2="403.0" y2="220.0"/><text x="403.0" y="230.0" text-anchor="middle" class="sm">x₅=b</text><line class="th" x1="185.2" y1="211.0" x2="277.6" y2="211.0"/><text x="212.2" y="89.5" text-anchor="end" class="sm">f(c₃)</text><text x="231.4" y="206.0" text-anchor="middle" class="sm">Δx₃</text><text x="442.6" y="207.0" text-anchor="end" class="sm">x</text></svg>
 <figcaption>Una partición con cinco subintervalos de longitudes distintas, un $c_i$ elegido en cada uno y los rectángulos de altura $f(c_i)$. La finura es la longitud del trozo más largo (aquí $\Delta x_3=1{,}4$). <span class="src" data-l="P" data-ref="Figura propia sobre U pp. 238-239">P</span></figcaption>
 </figure>
-
 <div class="box warn"><span class="h">Error típico</span>
   <p><b>No son lo mismo $\|P\|\to0$ y $n\to\infty$ en cualquier partición.</b> Si $\|P\|\to0$ entonces $n\to\infty$ (hacen falta cada vez más trozos), pero no al revés: se pueden añadir muchos puntos en un trozo y dejar otro grande. Con particiones <b>equiespaciadas</b> sí coinciden, porque $\|P\|=\frac{b-a}n$ (L §4.3, p.267).</p>
   <span class="src" data-l="L" data-ref="Larson §4.3, p. 267: ‖Δ‖→0 implica n→∞; el recíproco no es cierto">L p.267</span>
   <span class="src" data-l="P" data-ref="Errores típicos propios">P</span>
 </div>
-
 <!-- ============================ 3 ============================ -->
 <h2 id="s3"><span class="n">3</span>La integral definida (Definición 6.1) <span class="src" data-l="U" data-ref="U Definición 6.1 y Ejemplo 6.2, p. 239">U p.239</span></h2>
-
 <div class="box def"><span class="h">Definición 6.1 · integral definida</span>
   <p>Para una función <b>continua</b> $f:[a,b]\to\mathbb R$, la integral definida es
   $$\int_a^bf(x)\,dx=\lim_{\|P\|\to0}\sum_{i=1}^nf(c_i)\,\Delta x_i.$$
   Para funciones continuas este límite <b>existe</b> y <b>no depende</b> ni de las particiones ni de los $c_i$ elegidos (U p.239). Aquí $\lim_{\|P\|\to0}$ <b>no es un límite de sucesión</b>: significa que la suma se acerca al número $I$ tanto como se quiera con tal de que la finura sea suficientemente pequeña, sea cual sea la partición y los $c_i$; con particiones equiespaciadas basta hacer $n\to\infty$. Los números $a$ y $b$ son los <b>límites de integración</b>; $f$ es el integrando y $x$ la variable de integración. También se escribe $\int_a^bf$ (U p.240).</p>
   <span class="src" data-l="U" data-ref="U Definición 6.1, p. 239; notación ∫ f, p. 240; integrando y variable de integración, p. 241">U pp.239-241</span>
 </div>
-
 <div class="box thm"><span class="h">Continua $\Rightarrow$ integrable (pero no al revés)</span>
   <p>Aquí la integral se define para funciones <b>continuas</b>, y toda función continua en $[a,b]$ es integrable. La idea de «integrable» (el límite de las sumas existe y es el mismo para todas las elecciones) tiene sentido para más funciones: por ejemplo, el escalón $f(x)=0$ en $[0,1)$ y $f(x)=1$ en $[1,2]$ no es continuo en $1$, pero es integrable y $\int_0^2f=1$ (es el rectángulo de base $1$ y altura $1$; la parte de altura $0$ no aporta). Por eso «integrable $\Rightarrow$ continua» es <b>falso</b>.</p>
   <span class="src" data-l="U" data-ref="U Def. 6.1, p. 239 (funciones continuas) y p. 240">U pp.239-240</span>
   <span class="src" data-l="L" data-ref="Larson §4.3, Teorema 4.4, p. 268: continua implica integrable">L p.268</span>
   <span class="src" data-l="S" data-ref="Stewart §5.2, Definición 2, p. 372: integrable">S p.372</span>
 </div>
-
 <div class="box intu"><span class="h">Por qué no depende de los $c_i$ · suma inferior y superior</span>
   <p>En cada trozo, la función continua alcanza un <b>mínimo</b> $m_i$ y un <b>máximo</b> $M_i$ (Weierstrass). La <b>suma inferior</b> $s(P)=\sum m_i\Delta x_i$ usa rectángulos que quedan dentro de la región; la <b>suma superior</b> $S(P)=\sum M_i\Delta x_i$ usa rectángulos que la cubren. Cualquier suma de Riemann con esa partición queda <b>entre las dos</b>, y el área exacta también. Cuando los trozos se estrechan, las dos sumas se acercan al mismo número (L Teor. 4.3, p.260), y todo lo que queda entre ellas, también: ese es el valor de la integral, sea cual sea la elección.</p>
   <span class="src" data-l="L" data-ref="Larson §4.2, p. 258 (sumas inferior y superior) y Teorema 4.3, p. 260; explicación usada para entender U Def. 6.1">L pp.258, 260</span>
 </div>
-
 <figure><svg class="fig" role="img" aria-label="Gráfica de x al cuadrado en [0,1] con cuatro rectángulos inscritos rellenos (suma inferior) y cuatro circunscritos punteados (suma superior)" viewBox="0 0 440 245" width="440"><line class="ax" x1="50.0" y1="215.0" x2="413.0" y2="215.0"/><line class="ax" x1="50.0" y1="215.0" x2="50.0" y2="24.6"/><rect class="rs" x="50.0" y="204.4" width="82.5" height="10.6"/><rect class="rs" x="132.5" y="172.5" width="82.5" height="42.5"/><rect class="rs" x="215.0" y="119.4" width="82.5" height="95.6"/><rect class="rs" x="297.5" y="45.0" width="82.5" height="170.0"/><rect class="rp" x="132.5" y="204.4" width="82.5" height="10.6"/><rect class="rp" x="215.0" y="172.5" width="82.5" height="42.5"/><rect class="rp" x="297.5" y="119.4" width="82.5" height="95.6"/><polyline class="a" points="50.0,215.0 56.6,214.9 63.2,214.7 69.8,214.4 76.4,213.9 83.0,213.3 89.6,212.6 96.2,211.7 102.8,210.6 109.4,209.5 116.0,208.2 122.6,206.8 129.2,205.2 135.8,203.5 142.4,201.7 149.0,199.7 155.6,197.6 162.2,195.3 168.8,193.0 175.4,190.5 182.0,187.8 188.6,185.0 195.2,182.1 201.8,179.0 208.4,175.8 215.0,172.5 221.6,169.0 228.2,165.4 234.8,161.7 241.4,157.8 248.0,153.8 254.6,149.7 261.2,145.4 267.8,140.9 274.4,136.4 281.0,131.7 287.6,126.9 294.2,121.9 300.8,116.8 307.4,111.6 314.0,106.2 320.6,100.7 327.2,95.0 333.8,89.3 340.4,83.4 347.0,77.3 353.6,71.1 360.2,64.8 366.8,58.3 373.4,51.7 380.0,45.0 386.6,38.1 393.2,31.1"/><line class="th" x1="50.0" y1="212.0" x2="50.0" y2="220.0"/><line class="th" x1="132.5" y1="212.0" x2="132.5" y2="220.0"/><line class="th" x1="215.0" y1="212.0" x2="215.0" y2="220.0"/><line class="th" x1="297.5" y1="212.0" x2="297.5" y2="220.0"/><line class="th" x1="380.0" y1="212.0" x2="380.0" y2="220.0"/><text x="50.0" y="233.0" text-anchor="middle" class="sm">0</text><text x="132.5" y="233.0" text-anchor="middle" class="sm">¼</text><text x="215.0" y="233.0" text-anchor="middle" class="sm">½</text><text x="297.5" y="233.0" text-anchor="middle" class="sm">¾</text><text x="380.0" y="233.0" text-anchor="middle" class="sm">1</text><text x="83.0" y="70.5" class="sm">f(x)=x²</text><text x="413.0" y="207.0" text-anchor="end" class="sm">x</text></svg>
 <figcaption>$f(x)=x^2$ en $[0,1]$ con $n=4$: los rectángulos rellenos dan la suma inferior $\frac{14}{64}=\frac7{32}\approx0{,}219$ y, con los punteados, la superior $\frac{30}{64}=\frac{15}{32}\approx0{,}469$; la integral, $\frac13$, está entre las dos. <span class="src" data-l="P" data-ref="Figura propia; idea de L §4.2, p. 258">P</span></figcaption>
 </figure>
-
 <div class="box ex"><span class="h">Ejemplo 6.2 de U · $\displaystyle\int_{-1}^{2}2x\,dx$ con la definición</span>
   <ol class="steps">
     <li><b>Partición equiespaciada</b> en $n$ trozos: $\Delta x_i=\frac{2-(-1)}n=\frac3n$ y $x_i=-1+\frac{3i}n$ (así $x_0=-1$, $x_n=2$).</li>
@@ -161,7 +143,6 @@
   </ol>
   <span class="src" data-l="U" data-ref="U Ejemplo 6.2, p. 239">U p.239</span>
 </div>
-
 <div class="box tip"><span class="h">Receta general · calcular una integral con la definición</span>
   <ol class="steps">
     <li><b>Partición equiespaciada:</b> $\Delta x=\frac{b-a}n$ y $x_i=a+i\,\frac{b-a}n$. Su finura $\frac{b-a}n\to0$ equivale a $n\to\infty$.</li>
@@ -172,20 +153,16 @@
   <p>Funciona bien con rectas y con $x^2$; con funciones más complicadas (como $\operatorname{sen}x$ o $\ln x$) es muy laborioso, y por eso en §6.2 se estudia un procedimiento más directo (U p.241).</p>
   <span class="src" data-l="P" data-ref="Síntesis propia sobre U Def. 6.1 y Ej. 6.2, p. 239">P</span>
 </div>
-
 <figure class="interactivo" data-escena="riemann" data-params='{"dim":2}' aria-label="Interactivo: suma de Riemann de una función continua con n rectángulos; se puede cambiar la altura (extremo izquierdo, derecho, punto medio, mínimo o máximo), el número de subintervalos n y la función">
   <img class="int-static" src="../assets/img/int_riemann.png" alt="Interactivo: suma de Riemann de una función continua con n rectángulos; se puede cambiar la altura (extremo izquierdo, derecho, punto medio, mínimo o máximo), el número de subintervalos n y la función">
   <figcaption>Interactivo propio. Mueve $n$ y cambia el tipo de altura: la suma de Riemann $S_n$ (las barras sobre el eje suman, las que quedan bajo él restan y tienen otro color) se acerca a la integral exacta sea cual sea la elección, y el error baja al aumentar $n$. Con $e^x$ en $[0,1]$ (U Ej. 6.1) o $2x$ en $[-1,2]$ (U Ej. 6.2) puedes reproducir las sumas de esos ejemplos. Prueba $x^3-x$, que cambia de signo: las barras bajo el eje restan. <span class="src" data-l="P" data-ref="Explicación propia; ejemplos de U Ej. 6.1 y 6.2, pp. 236-239">P</span></figcaption>
 </figure>
-
 <!-- ============================ 4 ============================ -->
 <h2 id="s4"><span class="n">4</span>Propiedades de la integral definida <span class="src" data-l="U" data-ref="U §6.1.2, propiedades y Ejemplo 6.3, p. 240">U p.240</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva · son reglas sobre áreas</span>
   <p>Si se piensa en áreas con signo, todas las propiedades son casi obvias: duplicar una función duplica el área; el área de una suma es la suma de las áreas; si una función está siempre por encima de otra, su área es mayor; el área total es la de la parte izquierda más la de la derecha; y recorrer el intervalo al revés cambia el signo.</p>
   <span class="src" data-l="P" data-ref="Explicación propia sobre U p. 240">P</span>
 </div>
-
 <div class="box thm"><span class="h">Propiedades (U p.240)</span>
   <p>Sean $f,g$ continuas en $[a,b]$ y $k$ una constante. Entonces:</p>
   <table>
@@ -201,13 +178,11 @@
   <p>«Las propiedades son fáciles de deducir a partir de la definición» (U p.240): todas salen de las propiedades de las sumas y de los límites.</p>
   <span class="src" data-l="U" data-ref="U propiedades de la integral definida, p. 240">U p.240</span>
 </div>
-
 <div class="box thm"><span class="h">Integral de una constante</span>
   <p>Si $k$ es constante, $\displaystyle\int_a^bk\,dx=k(b-a)$. <b>Por qué:</b> toda suma de Riemann de la función constante es $\sum k\,\Delta x_i=k\sum\Delta x_i=k(b-a)$ (los trozos suman la longitud total), así que el límite es ese mismo número. Es el área de un rectángulo de base $b-a$ y altura $k$ (con signo menos si $k\lt0$). Con (P3) da la <b>acotación</b> más usada:
   $$m\le f(x)\le M\ \text{en }[a,b]\ \Longrightarrow\ m(b-a)\le\int_a^bf\le M(b-a).$$</p>
   <span class="src" data-l="P" data-ref="Deducción propia a partir de U Def. 6.1 y propiedad de monotonía, pp. 239-240">P</span>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo 6.3 de U · $\displaystyle\int_{-1}^{2}2x\,dx$ con propiedades y áreas</span>
   <ol class="steps">
     <li><b>Sacar la constante (P1):</b> $\int_{-1}^22x\,dx=2\int_{-1}^2x\,dx$.</li>
@@ -217,31 +192,25 @@
   </ol>
   <span class="src" data-l="U" data-ref="U Ejemplo 6.3, p. 240">U p.240</span>
 </div>
-
 <figure><svg class="fig" role="img" aria-label="Recta y=2x entre x=-1 y x=2: triángulo bajo el eje de área 1 (cuenta menos) y triángulo sobre el eje de área 4 (cuenta más)" viewBox="0 0 440 250" width="440"><line class="ax" x1="45.0" y1="150.0" x2="332.0" y2="150.0"/><line class="ax" x1="150.0" y1="218.0" x2="150.0" y2="42.0"/><polygon class="rn" points="80.0,150.0 150.0,150.0 80.0,190.0"/><polygon class="rp" points="150.0,150.0 290.0,150.0 290.0,70.0"/><line class="a" x1="52.0" y1="206.0" x2="311.0" y2="58.0"/><line class="th" x1="80.0" y1="150.0" x2="80.0" y2="190.0"/><line class="th" x1="290.0" y1="150.0" x2="290.0" y2="70.0"/><text x="80.0" y="165.0" text-anchor="middle" class="sm">-1</text><text x="220.0" y="144.0" text-anchor="middle" class="sm">1</text><text x="290.0" y="144.0" text-anchor="middle" class="sm">2</text><text x="251.5" y="126.0" class="bd">+4</text><text x="107.5" y="174.0" class="bd">−1</text><text x="59.0" y="200.0" class="sm">y=2x</text></svg>
 <figcaption>La recta $y=2x$ en $[-1,2]$: el triángulo de abajo (área $1$) cuenta con signo menos y el de arriba (área $4$) con signo más; la integral es $-1+4=3$ (con $y=x$ valdrían la mitad: $-\frac12$ y $2$). <span class="src" data-l="P" data-ref="Figura propia sobre U Ej. 6.3, p. 240">P</span></figcaption>
 </figure>
-
 <div class="box warn"><span class="h">Errores típicos</span>
   <p>(i) <b>Integral no es área geométrica</b> si $f$ cambia de signo; para el área geométrica hay que integrar $|f|$ o sumar los trozos en valor absoluto (en el ejemplo, $1+4=5$ frente a $3$). (ii) <b>No hay reglas para productos, cocientes ni composiciones</b>: $\int fg\ne\int f\cdot\int g$ y $\int|f+g|\ne\int|f|+\int|g|$ (solo $\le$) (E 6.5, 6.6). (iii) Al cambiar el orden de los límites se cambia el signo: $\int_2^{-1}2x\,dx=-3$. (iv) La integral definida es un <b>número</b>, no una función.</p>
   <span class="src" data-l="P" data-ref="Errores típicos propios sobre U p. 238 y p. 240">P</span>
 </div>
-
 <!-- ============================ 5 ============================ -->
 <h2 id="s5"><span class="n">5</span>Integral indefinida: primitivas <span class="src" data-l="U" data-ref="U §6.1.3, Definición 6.2 y Ejemplo 6.4, pp. 241-242">U pp.241-242</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva · «deshacer» la derivada</span>
   <p>Calcular integrales definidas con sumas es laborioso y a veces imposible (U p.241). Hay un camino más directo que se basa en una pregunta que ya conoces: en el tema 2 se pasaba de una función a su derivada; ahora se pregunta <b>cuándo y cómo se puede ir hacia atrás</b>. Una función cuya derivada es $f$ se llama <b>primitiva</b> de $f$. Si $F$ es una primitiva, $F+3$ también lo es (la constante desaparece al derivar), así que hay <b>infinitas</b> primitivas, todas iguales salvo una constante. Es como saber la velocidad en cada instante pero no desde dónde salió el coche: la posición queda determinada salvo una constante. Más adelante (§6.2) el teorema fundamental une ambas ideas: para calcular $\int_a^bf$ bastará una primitiva $F$ y restar $F(b)-F(a)$. Aquí solo hace falta saber <b>qué es</b> una primitiva y comprobarla derivando.</p>
   <span class="src" data-l="U" data-ref="U §6.1.3, p. 241">U p.241</span>
 </div>
-
 <div class="box def"><span class="h">Definición 6.2 · primitiva e integral indefinida</span>
   <p>Si $f:(a,b)\to\mathbb R$ es continua, cualquier $F$ que verifique $F'(x)=f(x)$ para todo $x\in(a,b)$ es una <b>primitiva</b> de $f$. Se denota $F(x)=\int f(x)\,dx$. La <b>integral indefinida</b> de $f$ es el <b>conjunto de todas las primitivas</b> de $f$. En la expresión, $f(x)$ es el integrando, $x$ la variable de integración y $dx$ indica respecto a qué variable se integra. Con $F$ se denota también una primitiva de $f$ (U p.241).</p>
   <p>La diferencia formal con la integral definida: ésta lleva <b>límites de integración</b>, números que indican el intervalo (U p.241). Una integral definida es un <b>número</b>; una indefinida es una <b>familia de funciones</b> (L p.268).</p>
   <span class="src" data-l="U" data-ref="U Definición 6.2, p. 241 y notación" >U p.241</span>
   <span class="src" data-l="L" data-ref="Larson §4.3, p. 268: una integral definida es un número, una indefinida una familia de funciones">L p.268</span>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo 6.4 de U · primitivas de $2x-1$</span>
   <ol class="steps">
     <li><b>Una primitiva:</b> si $F(x)=x^2-x$, entonces $F'(x)=2x-1$. Luego $x^2-x$ es una primitiva de $2x-1$.</li>
@@ -251,22 +220,17 @@
   <figure class="graf" data-g='{"c":[{"e":"x^2-x","n":"x²−x (k=0)"},{"e":"x^2-x+1","n":"x²−x+1 (k=1)"},{"e":"x^2-x+3","n":"x²−x+3 (k=3)"}],"x":[-1.5,2.5],"y":[-1,6]}' data-alt="Tres primitivas de 2x−1: parábolas desplazadas verticalmente"><figcaption>Tres primitivas de $2x-1$ ($k=0,1,3$): son la misma parábola desplazada hacia arriba; en cada $x$ tienen la misma pendiente $2x-1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
   <span class="src" data-l="U" data-ref="U Ejemplo 6.4, pp. 241-242">U pp.241-242</span>
 </div>
-
 <div class="box tip"><span class="h">Con ordenador</span>
   <p>En Maxima, la integral definida de $f$ entre $a$ y $b$ es <code>integrate(f(x),x,a,b)</code> (U p.239); la indefinida, <code>integrate(f(x),x);</code>, con constante arbitraria $k=0$ por defecto (U pp.241-242).</p>
   <span class="src" data-l="U" data-ref="U recuadros Maxima, pp. 239 y 241-242">U pp.239-242</span>
 </div>
-
-
 <!-- ============================ 6 ============================ -->
 <h2 id="ejercicios"><span class="n">6</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.1-6.10, pp. 214-218">E pp.214-218</span></h2>
 <p>Orden recomendado para aprender: <b>vocabulario</b> (6.1, 6.3, 6.2) → <b>función nula y primitiva</b> (6.4, 6.10) → <b>verdadero o falso de propiedades</b> (6.5, 6.6) → <b>aditividad y acotaciones</b> (6.8, 6.7) → <b>demostración del valor medio integral</b> (6.9). El ejercicio 6.11 usa el teorema fundamental y se verá en el tema 6.2.</p>
 <p><b>Índice rápido:</b> <a href="#ej-6-1">6.1</a> · <a href="#ej-6-2">6.2</a> · <a href="#ej-6-3">6.3</a> · <a href="#ej-6-4">6.4</a> · <a href="#ej-6-5">6.5</a> · <a href="#ej-6-6">6.6</a> · <a href="#ej-6-7">6.7</a> · <a href="#ej-6-8">6.8</a> · <a href="#ej-6-9">6.9</a> · <a href="#ej-6-10">6.10</a>.</p>
-
 <h3>A · Particiones y finura</h3>
-
 <details class="sol" id="ej-6-1"><summary>Ejercicio 6.1 · finura de $P=\{1,2,3,5,6\}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.1, p. 214 · teoría: U p. 238">E p.214</span></summary>
-  <p class="enun">Calcula la finura $\|P\|$ de la partición $P=\{1,2,3,5,6\}$ del intervalo $[1,6]$.</p>
+<p class="enun">Calcula la finura $\|P\|$ de la partición $P=\{1,2,3,5,6\}$ del intervalo $[1,6]$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Un número: la longitud del subintervalo más largo.</dd>
     <dt>Cómo lo pienso</dt><dd>La finura mide «lo grueso que es el troceado»: el trozo peor es el más largo.</dd>
@@ -282,9 +246,8 @@
   <div class="recipe"><b>Receta:</b> restar puntos consecutivos y quedarse con la mayor diferencia.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Confundir la finura con el número de puntos ($5$), con el de subintervalos ($4$) o con la longitud media ($\frac54$).</p></div>
 </details>
-
 <details class="sol" id="ej-6-3"><summary>Ejercicio 6.3 · ¿puede valer $7$ la finura de una partición de $[-\pi,\pi]$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.3, p. 214 · teoría: U p. 238">E p.214</span></summary>
-  <p class="enun">¿Puede ser la finura $\|P\|$ de una partición del intervalo $[-\pi,\pi]$ igual a $7$?</p>
+<p class="enun">¿Puede ser la finura $\|P\|$ de una partición del intervalo $[-\pi,\pi]$ igual a $7$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Sí o no, con justificación.</dd>
     <dt>Cómo lo pienso</dt><dd>Un trozo de un intervalo no puede ser más largo que el intervalo entero. Basta comparar $7$ con la longitud de $[-\pi,\pi]$.</dd>
@@ -301,9 +264,8 @@
   <div class="recipe"><b>Receta:</b> para toda partición de $[a,b]$: $0\lt\|P\|\le b-a$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Pensar que añadiendo puntos la finura puede crecer: añadir puntos solo puede dejarla igual o hacerla menor.</p></div>
 </details>
-
 <details class="sol" id="ej-6-2"><summary>Ejercicio 6.2 · partición de $[0,4]$ con cien elementos y finura $3$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.2, p. 214 · teoría: U p. 238">E p.214</span></summary>
-  <p class="enun">Define una partición de $[0,4]$ con cien elementos distintos y finura igual a $3$.</p>
+<p class="enun">Define una partición de $[0,4]$ con cien elementos distintos y finura igual a $3$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Construir una partición concreta que cumpla dos condiciones: $100$ puntos y que el trozo mayor mida exactamente $3$.</dd>
     <dt>Cómo lo pienso</dt><dd>Un salto de longitud $3$ fija la finura; los puntos restantes se meten en el trozo que queda, con saltos más pequeños que $3$.</dd>
@@ -321,11 +283,9 @@
   <div class="recipe"><b>Receta:</b> para finura $\delta$, un subintervalo de longitud exactamente $\delta$ y el resto de puntos con saltos menores. Comprobar al final: número de puntos, primer y último punto y máximo de las longitudes.</div>
   <div class="box warn"><span class="h">Error típico</span><p>«Cien elementos» son $100$ <b>puntos</b>, es decir, $99$ subintervalos; contar mal desplaza todo en uno.</p></div>
 </details>
-
 <h3>B · Función nula y primitiva</h3>
-
 <details class="sol" id="ej-6-4"><summary>Ejercicio 6.4 · la integral de la función nula es $0$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.4, pp. 214-215 · teoría: U Def. 6.1, p. 239 y propiedades, p. 240">E pp.214-215</span></summary>
-  <p class="enun">Muestra que la integral definida de la función nula es cero en cualquier intervalo: (i) utilizando la definición de integral; (ii) utilizando las propiedades de la integral (pista: solamente $0$ verifica $0+0=0$).</p>
+<p class="enun">Muestra que la integral definida de la función nula es cero en cualquier intervalo: (i) utilizando la definición de integral; (ii) utilizando las propiedades de la integral (pista: solamente $0$ verifica $0+0=0$).</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Justificar que $\int_a^b0\,dx=0$ de dos maneras distintas.</dd>
     <dt>Cómo lo pienso</dt><dd>(i) Todos los rectángulos tienen altura $0$, luego toda suma vale $0$. (ii) Llamando $I$ a la integral, las propiedades dan $I=I+I$, y solo el $0$ cumple eso.</dd>
@@ -349,9 +309,8 @@
   <div class="recipe"><b>Receta:</b> para probar que un número $I$ es $0$, basta ver que cumple una propiedad que solo tiene el $0$ ($I=I+I$, $I=-I$, $I=0\cdot J$…).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Decir «es cero porque el área es cero» sin usar la definición ni las propiedades: el ejercicio pide justificar con ellas.</p></div>
 </details>
-
 <details class="sol" id="ej-6-10"><summary>Ejercicio 6.10 · qué significa «$F$ es una primitiva de $f$» <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.10, p. 218 · teoría: U Def. 6.2, p. 241">E p.218</span></summary>
-  <p class="enun">Sea $F:\mathbb R\to\mathbb R$ una primitiva de una función continua $f:\mathbb R\to\mathbb R$ y $C\in\mathbb R$ una constante. Señale la opción correcta: a) $F'(x)=f(x)$ para $x\in\mathbb R$. b) $f'(x)=F(x)+C$ para $x\in\mathbb R$. c) $f'(x)=F(x)$ para $x\in\mathbb R$. d) $F'(x)=f(x)+C$ para $x\in\mathbb R$.</p>
+<p class="enun">Sea $F:\mathbb R\to\mathbb R$ una primitiva de una función continua $f:\mathbb R\to\mathbb R$ y $C\in\mathbb R$ una constante. Señale la opción correcta: a) $F'(x)=f(x)$ para $x\in\mathbb R$. b) $f'(x)=F(x)+C$ para $x\in\mathbb R$. c) $f'(x)=F(x)$ para $x\in\mathbb R$. d) $F'(x)=f(x)+C$ para $x\in\mathbb R$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La única afirmación siempre cierta sobre una primitiva.</dd>
     <dt>Cómo lo pienso</dt><dd>«Primitiva» significa «al derivarla sale $f$»; la constante va en $F$ (se pierde al derivar), no en $F'$. Con un ejemplo muy sencillo se tumban las falsas.</dd>
@@ -369,11 +328,9 @@
   <div class="recipe"><b>Receta:</b> ante una afirmación sobre primitivas, traducirla a «derivada de la primitiva = integrando» y probar con $f=1$, $F=x$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Poner la constante en el lado de la derivada ($F'=f+C$): la constante aparece en la primitiva, $\int f=F+C$, y desaparece al derivar.</p></div>
 </details>
-
 <h3>C · Verdadero o falso de propiedades</h3>
-
 <details class="sol" id="ej-6-5"><summary>Ejercicio 6.5 · propiedades que no siempre se cumplen <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.5, pp. 215-216 · teoría: U p. 240">E pp.215-216</span></summary>
-  <p class="enun">Dadas $f,g$ continuas en $[a,b]$ señala la o las propiedades que <b>no</b> son siempre correctas: a) $\int_a^b(f+g)=\int_a^bf+\int_a^bg$. b) $\int_a^b|f+g|=\int_a^b|f|+\int_a^b|g|$. c) $\int_a^b(f-g)=\int_a^bf+\int_b^ag$. d) $\int_a^b|f-g|=\int_a^b|f|-\int_b^a|g|$.</p>
+<p class="enun">Dadas $f,g$ continuas en $[a,b]$ señala la o las propiedades que <b>no</b> son siempre correctas: a) $\int_a^b(f+g)=\int_a^bf+\int_a^bg$. b) $\int_a^b|f+g|=\int_a^b|f|+\int_a^b|g|$. c) $\int_a^b(f-g)=\int_a^bf+\int_b^ag$. d) $\int_a^b|f-g|=\int_a^b|f|-\int_b^a|g|$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Separar las igualdades siempre ciertas de las que fallan en algún caso (puede haber más de una falsa).</dd>
     <dt>Cómo lo pienso</dt><dd>La integral respeta sumas y constantes pero <b>no</b> el valor absoluto: $|f+g|$ no es $|f|+|g|$ cuando $f$ y $g$ tienen signos opuestos. Se prueba con funciones constantes.</dd>
@@ -390,9 +347,8 @@
   <div class="recipe"><b>Receta:</b> en un verdadero o falso de propiedades, si coincide con una propiedad de U (o se obtiene encadenando varias) es verdadera; si no, buscar un contraejemplo con constantes ($1$, $-1$) y <b>comprobar</b> que los dos lados dan distinto.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Pasar el valor absoluto «a través» de la suma, o no simplificar primero los $\int_b^a$ antes de buscar el contraejemplo.</p></div>
 </details>
-
 <details class="sol" id="ej-6-6"><summary>Ejercicio 6.6 · cota por mínimo y máximo, producto y aditividad <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.6, pp. 216-217 · teoría: U p. 240; Weierstrass U Prop. 1.15, pp. 52-53">E pp.216-217</span></summary>
-  <p class="enun">Dadas $f,g:[a,b]\to\mathbb R$ continuas, señala la propiedad que <b>no</b> es siempre correcta: a) $(b-a)\min_{[a,b]}f\le\int_a^bf\le(b-a)\max_{[a,b]}f$. b) $\int_a^bf(x)g(x)\,dx=\int_a^bf(x)\,dx\cdot\int_a^bg(x)\,dx$. c) $\int_a^bf=\int_a^{\frac{b+a}2}f+\int_{\frac{b+a}2}^bf$.</p>
+<p class="enun">Dadas $f,g:[a,b]\to\mathbb R$ continuas, señala la propiedad que <b>no</b> es siempre correcta: a) $(b-a)\min_{[a,b]}f\le\int_a^bf\le(b-a)\max_{[a,b]}f$. b) $\int_a^bf(x)g(x)\,dx=\int_a^bf(x)\,dx\cdot\int_a^bg(x)\,dx$. c) $\int_a^bf=\int_a^{\frac{b+a}2}f+\int_{\frac{b+a}2}^bf$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Encontrar la única propiedad falsa.</dd>
     <dt>Cómo lo pienso</dt><dd>a) dice que el área está entre el rectángulo «bajo» (altura mínima) y el «alto» (altura máxima); c) es partir el intervalo por la mitad. b) pretende que la integral convierta productos en productos, y no hay ninguna propiedad así.</dd>
@@ -407,11 +363,9 @@
   </ol>
   <div class="recipe"><b>Receta:</b> recordar la lista de U p.240: suma, constante, monotonía, valor absoluto (desigualdad), aditividad y cambio de orden. <b>No hay</b> propiedad para el producto ni para el cociente.</div>
 </details>
-
 <h3>D · Aditividad y acotaciones</h3>
-
 <details class="sol" id="ej-6-8"><summary>Ejercicio 6.8 · aditividad con una igualdad dada <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.8, p. 217 · teoría: U propiedad de aditividad, p. 240">E p.217</span></summary>
-  <p class="enun">Calcula $\displaystyle\int_{-\pi}^{\frac\pi2}f$, con $f$ continua en $\mathbb R$ y tal que $\displaystyle\int_{-\pi}^{e}f=\int_{\frac\pi2}^{e}f$.</p>
+<p class="enun">Calcula $\displaystyle\int_{-\pi}^{\frac\pi2}f$, con $f$ continua en $\mathbb R$ y tal que $\displaystyle\int_{-\pi}^{e}f=\int_{\frac\pi2}^{e}f$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El valor de una integral sin conocer $f$.</dd>
     <dt>Cómo lo pienso</dt><dd>El tramo de $-\pi$ a $e$ es el de $-\pi$ a $\frac\pi2$ más el de $\frac\pi2$ a $e$. Si el total es igual al segundo tramo, el primero tiene que valer $0$.</dd>
@@ -427,9 +381,8 @@
   <div class="recipe"><b>Receta:</b> si aparecen integrales sobre intervalos que encajan, escribirlas con la aditividad en función de los trozos básicos y resolver como un sistema de ecuaciones.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Concluir que $f=0$ en $[-\pi,\frac\pi2]$. Solo vale cero la <b>integral</b>: las áreas con signo se compensan. Ejemplo: $f(x)=\operatorname{sen}\left(\frac43(x+\pi)\right)$ es continua y no nula, pero en $[-\pi,\frac\pi2]$ su argumento recorre $[0,2\pi]$ (una vuelta entera) y la parte positiva compensa la negativa: $\int_{-\pi}^{\pi/2}f=0$.</p></div>
 </details>
-
 <details class="sol" id="ej-6-7"><summary>Ejercicio 6.7 · acotar $\int_{-1}^1f$ sabiendo que $-2\le f\le4$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.7, p. 217 · teoría: U monotonía, p. 240">E p.217</span></summary>
-  <p class="enun">Demuestra que si $f:[-1,1]\to\mathbb R$ es continua y tal que $-2\le f(x)\le4$ para todo $x\in[-1,1]$, entonces $-4\le\int_{-1}^1f(x)\,dx\le8$.</p>
+<p class="enun">Demuestra que si $f:[-1,1]\to\mathbb R$ es continua y tal que $-2\le f(x)\le4$ para todo $x\in[-1,1]$, entonces $-4\le\int_{-1}^1f(x)\,dx\le8$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Probar dos desigualdades para la integral sin conocer $f$.</dd>
     <dt>Cómo lo pienso</dt><dd>El área con signo está entre la de un rectángulo de altura $-2$ y la de otro de altura $4$, ambos de base $2$.</dd>
@@ -445,11 +398,9 @@
   <div class="recipe"><b>Receta:</b> $m\le f\le M$ en $[a,b]$ $\Rightarrow$ $m(b-a)\le\int_a^bf\le M(b-a)$. La base es $b-a$, no $b$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Multiplicar por $1$ (el extremo superior) en lugar de por la longitud $2$ y obtener $-2\le\int\le4$.</p></div>
 </details>
-
 <h3>E · Demostración: valor medio del cálculo integral</h3>
-
 <details class="sol" id="ej-6-9"><summary>Ejercicio 6.9 · demostrar el teorema del valor medio integral <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.9, p. 218 · enunciado del teorema: U p. 244 (margen, §6.2) · teoría: ejercicio 6.6 a); valores intermedios U p. 52; Weierstrass U Prop. 1.15, pp. 52-53">E p.218</span></summary>
-  <p class="enun">Demuestra el teorema del valor medio del cálculo integral que garantiza, para cualquier función continua en $[a,b]$, la existencia de un punto $c\in[a,b]$ tal que $\displaystyle\int_a^bf(x)\,dx=f(c)(b-a)$.</p>
+<p class="enun">Demuestra el teorema del valor medio del cálculo integral que garantiza, para cualquier función continua en $[a,b]$, la existencia de un punto $c\in[a,b]$ tal que $\displaystyle\int_a^bf(x)\,dx=f(c)(b-a)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una demostración: que existe un punto cuyo valor $f(c)$ es la «altura media».</dd>
     <dt>Cómo lo pienso</dt><dd>La altura media $\mu=\frac1{b-a}\int_a^bf$ está entre el mínimo y el máximo de $f$ (ejercicio 6.6 a). Y una función continua toma todos los valores intermedios entre su mínimo y su máximo, luego toma el valor $\mu$.</dd>
@@ -467,12 +418,10 @@
   <div class="recipe"><b>Receta:</b> para probar que una función continua toma un valor $\mu$: encajar $\mu$ entre dos valores de la función (aquí, mínimo y máximo) y aplicar valores intermedios en el intervalo que une los puntos donde se alcanzan.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Aplicar valores intermedios en $[a,b]$ con $f(a)$ y $f(b)$: $\mu$ no tiene por qué estar entre ellos (ejemplo: $f=\operatorname{sen}x$ en $[0,\pi]$, $f(0)=f(\pi)=0$ y $\mu=\frac2\pi\approx0{,}64$). Hay que usar los puntos del mínimo y del máximo. Otro error: olvidar los casos $\mu=m$ y $\mu=M$, donde el teorema de valores intermedios (con desigualdades estrictas) no se aplica pero el punto ya se tiene.</p></div>
 </details>
-
 <!-- ============================ 7 ============================ -->
 <h2 id="propios"><span class="n">7</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></h2>
-
 <details class="sol" id="p1"><summary>Propio 1 · integrales por la definición: $\int_0^1(3x+1)\,dx$ y $\int_0^1x^2\,dx$ <span class="src" data-l="P" data-ref="Ejemplo propio sobre U Def. 6.1 y Ej. 6.2, p. 239">propio</span></summary>
-  <p class="enun">(a) Calcula $\int_0^1(3x+1)\,dx$ con sumas de Riemann. (b) Calcula $\int_0^1x^2\,dx$ con sumas de Riemann.</p>
+<p class="enun">(a) Calcula $\int_0^1(3x+1)\,dx$ con sumas de Riemann. (b) Calcula $\int_0^1x^2\,dx$ con sumas de Riemann.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dos números, obtenidos como límite de una suma.</dd>
     <dt>Cómo lo pienso</dt><dd>Es exactamente la receta general: partición equiespaciada, extremo derecho, sumar y límite. En (a) el resultado se puede comprobar con un trapecio.</dd>
@@ -498,9 +447,8 @@
   <div class="recipe"><b>Receta:</b> la receta general del apartado 3 (extremo derecho $c_i=a+i\Delta x$).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el factor $\Delta x=\frac1n$ (la base de los rectángulos): la suma diverge.</p></div>
 </details>
-
 <details class="sol" id="p2"><summary>Propio 2 · área con signo con una gráfica: $\int_{-2}^2\left(x+\sqrt{4-x^2}\right)dx$ <span class="src" data-l="P" data-ref="Ejemplo propio sobre U propiedades y Ej. 6.3, p. 240">propio</span></summary>
-  <p class="enun">Calcula $\int_{-2}^2\left(x+\sqrt{4-x^2}\right)dx$ y $\int_2^{-2}\left(x+\sqrt{4-x^2}\right)dx$ sin primitivas.</p>
+<p class="enun">Calcula $\int_{-2}^2\left(x+\sqrt{4-x^2}\right)dx$ y $\int_2^{-2}\left(x+\sqrt{4-x^2}\right)dx$ sin primitivas.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dos integrales opuestas, sin buscar primitivas.</dd>
     <dt>Cómo lo pienso</dt><dd>Se separa en dos sumandos y cada uno es una figura conocida: dos triángulos que se compensan y medio círculo.</dd>
@@ -518,9 +466,8 @@
   </ol>
   <div class="recipe"><b>Receta:</b> dibujar, partir por los ceros (aditividad), separar sumandos y constantes y leer figuras conocidas con su signo.</div>
 </details>
-
 <details class="sol" id="p3"><summary>Propio 3 · estimar $\int_0^1e^{-x^2}dx$ con cotas por mínimo y máximo <span class="src" data-l="P" data-ref="Ejemplo propio sobre U monotonía, p. 240, y E Ej. 6.6 a), p. 216">propio</span></summary>
-  <p class="enun">Sin calcular primitivas, acota $I=\int_0^1e^{-x^2}\,dx$. Mejora la cota partiendo el intervalo en dos y en cuatro trozos.</p>
+<p class="enun">Sin calcular primitivas, acota $I=\int_0^1e^{-x^2}\,dx$. Mejora la cota partiendo el intervalo en dos y en cuatro trozos.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una horquilla $\text{inferior}\le I\le\text{superior}$ y estrecharla.</dd>
     <dt>Cómo lo pienso</dt><dd>$e^{-x^2}$ decrece en $[0,1]$: en cada trozo su máximo está a la izquierda y su mínimo a la derecha. Es la suma superior y la inferior del apartado 3.</dd>
@@ -539,9 +486,8 @@
   <div class="recipe"><b>Receta:</b> si $f$ es monótona en cada trozo, $m_i$ y $M_i$ están en los extremos del trozo: suma inferior $\le I\le$ suma superior. Para afinar, más trozos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Tomar el mínimo en el extremo izquierdo sin mirar si la función crece o decrece.</p></div>
 </details>
-
 <details class="sol" id="p4"><summary>Propio 4 · suma inferior y superior con una partición no equiespaciada <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 238-240; sumas inferior y superior: L §4.2, p. 258">propio</span></summary>
-  <p class="enun">Sea $f(x)=x^2$ en $[-1,2]$ y $P=\{-1,0,\frac12,2\}$. (a) Calcula la finura, la suma inferior $s(P)$ y la superior $S(P)$. (b) Justifica que $s(P)\le\int_{-1}^2x^2\,dx\le S(P)$ usando solo propiedades de U. (c) Añade el punto $1$ y repite. Compara con el valor exacto $3$.</p>
+<p class="enun">Sea $f(x)=x^2$ en $[-1,2]$ y $P=\{-1,0,\frac12,2\}$. (a) Calcula la finura, la suma inferior $s(P)$ y la superior $S(P)$. (b) Justifica que $s(P)\le\int_{-1}^2x^2\,dx\le S(P)$ usando solo propiedades de U. (c) Añade el punto $1$ y repite. Compara con el valor exacto $3$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dos sumas con una partición de trozos desiguales y ver cómo se estrecha la horquilla al añadir un punto.</dd>
     <dt>Cómo lo pienso</dt><dd>En cada trozo hay que localizar dónde $x^2$ es mínima y máxima: no siempre es en un extremo, porque en $[-1,0]$ la función decrece y en $[0,2]$ crece.</dd>
@@ -570,13 +516,11 @@
   <div class="recipe"><b>Receta:</b> para cada subintervalo, localizar dónde $f$ es mínima y máxima (extremos del trozo o un punto interior donde la función cambia de crecer a decrecer, como $x=0$ para $x^2$), multiplicar por la longitud de <b>ese</b> trozo y sumar.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Tomar siempre $m_i$ en el extremo izquierdo: en $[-1,0]$, $f(-1)=1$ es el <b>máximo</b>. Otro: usar una longitud común para todos los trozos en una partición no equiespaciada.</p></div>
 </details>
-
 <!-- ============================ 8 ============================ -->
 <h2 id="examen"><span class="n">8</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
 <p>En los exámenes recopilados en X no se pide calcular una integral con sumas de Riemann ni enunciar la definición. Este tema aparece de otra forma: (1) <b>verdadero o falso sobre $F(x)=\int_0^xf$</b> (si $f$ tiene tal propiedad, ¿la tiene $F$?), que se resuelve comparando el signo del integrando y la monotonía de $F$; (2) <b>extremos de $F(x)=\int_0^xf$</b> y (3) <b>áreas entre curvas</b>. Para (1) y (2) basta lo de este tema (propiedades) más el teorema fundamental del cálculo de §6.2, que se cita como adelanto: <b>$F'(x)=f(x)$</b>. Las preguntas que requieren primitivas (§6.3), trapecio y Simpson (§6.4) o integrales impropias (§6.5) se resuelven en sus temas.</p>
-
 <details class="sol" id="x1"><summary>X1 · V/F: «$f$ derivable y decreciente $\Rightarrow$ $F(x)=\int_0^xf$ decreciente» <span class="src" data-l="X" data-ref="X p.107 (Electrónica 4, Electrónica Industrial y Automática, P4, 1 punto)">X p.107 (Electrónica 4)</span></summary>
-  <p class="enun">Razone la veracidad o falsedad de la siguiente afirmación: «Si $f$ es derivable y decreciente en $(0,\infty)$, entonces $F$ es decreciente en $(0,\infty)$, donde $F(x)=\int_0^xf(s)\,ds$.»</p>
+<p class="enun">Razone la veracidad o falsedad de la siguiente afirmación: «Si $f$ es derivable y decreciente en $(0,\infty)$, entonces $F$ es decreciente en $(0,\infty)$, donde $F(x)=\int_0^xf(s)\,ds$.»</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decir si es verdadera o falsa y justificarlo. En un V/F, si es falsa basta un contraejemplo.</dd>
     <dt>Cómo lo pienso</dt><dd>Que $f$ <b>decrezca</b> no dice nada del <b>signo</b> de $f$, y el signo de $f$ es el que manda sobre $F$: mientras $f\gt0$ el área acumulada $F$ <b>sube</b> (aunque cada vez más despacio). Hay que buscar una $f$ positiva y decreciente.</dd>
@@ -594,9 +538,8 @@
   <div class="recipe"><b>Receta:</b> en un V/F sobre $F(x)=\int_0^xf$, traducir a «signo de $F'=f$»: monotonía de $F$ = signo de $f$ (no monotonía de $f$); si es falso, buscar $f$ concreta (constante o recta suelen valer) y calcular $F$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Confundir «$f$ decreciente» con «$f$ negativa». Una función puede ser decreciente y positiva, y entonces su integral acumulada crece.</p></div>
 </details>
-
 <details class="sol" id="x2"><summary>X2 · ¿es $F(x)=\int_0^xt\operatorname{sen}t\,dt$ creciente, decreciente o con máximo en $7\pi$? <span class="src" data-l="X" data-ref="X pp.109-110 (Examen 1, Ej. 4)">X pp.109-110 (Examen 1)</span></summary>
-  <p class="enun">Dada la función $F(x)=\int_0^xt\operatorname{sen}t\,dt$ definida en $[0,\infty)$ señale la opción correcta: A) $F$ es creciente; B) $F$ tiene un máximo en $x=7\pi$; C) $F$ es decreciente; D) ninguna de las anteriores.</p>
+<p class="enun">Dada la función $F(x)=\int_0^xt\operatorname{sen}t\,dt$ definida en $[0,\infty)$ señale la opción correcta: A) $F$ es creciente; B) $F$ tiene un máximo en $x=7\pi$; C) $F$ es decreciente; D) ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Elegir entre crecimiento, decrecimiento o un máximo concreto, sin calcular la integral.</dd>
     <dt>Cómo lo pienso</dt><dd>El signo de $F'$ decide: $F$ sube donde el integrando $t\operatorname{sen}t$ es positivo y baja donde es negativo. Como el seno cambia de signo, $F$ sube y baja alternadamente: ni A ni C. Un máximo se produce donde $F'$ pasa de $+$ a $-$.</dd>
@@ -616,9 +559,8 @@
   <div class="recipe"><b>Receta:</b> extremos de $F(x)=\int_a^xf$: derivar con el teorema fundamental ($F'=f$), resolver $f=0$ y clasificar con el cambio de signo de $f$ (o con $f'$).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Intentar calcular $\int t\operatorname{sen}t\,dt$ para responder: no hace falta. Se pide el comportamiento de $F$, y eso lo da $F'$.</p></div>
 </details>
-
 <details class="sol" id="x3"><summary>X3 · V/F: «$f$ continua y creciente $\Rightarrow$ $F(x)=\int_0^xf$ creciente» <span class="src" data-l="X" data-ref="X p.144 (Febrero 2018, 1.ª semana, I. Electrónica Industrial y Automática, P3, 1 punto)">X p.144 (feb. 2018, 1.ª sem.)</span></summary>
-  <p class="enun">Razone la veracidad o falsedad de la siguiente afirmación: «Si $f$ es continua y creciente en $(0,\infty)$, entonces la función $F(x)=\int_0^xf(t)\,dt$ es creciente en $(0,\infty)$».</p>
+<p class="enun">Razone la veracidad o falsedad de la siguiente afirmación: «Si $f$ es continua y creciente en $(0,\infty)$, entonces la función $F(x)=\int_0^xf(t)\,dt$ es creciente en $(0,\infty)$».</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Veracidad o falsedad con justificación.</dd>
     <dt>Cómo lo pienso</dt><dd>Otra vez: crecimiento de $F$ = signo de $f$. Una $f$ creciente puede empezar siendo negativa; mientras sea negativa, $F$ acumula «área negativa» y baja. Hace falta una $f$ creciente que empiece negativa.</dd>
@@ -637,9 +579,8 @@
   <div class="recipe"><b>Receta:</b> contraejemplo para «$f$ monótona $\Rightarrow$ $F$ monótona»: tomar $f$ con ceros (recta $t-c$), pues $F$ cambia de comportamiento donde $f$ cambia de signo.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Tomar una $f$ cuya integral desde $0$ no existe (por ejemplo, con una asíntota en $0$): en el contraejemplo debe poder calcularse $F(x)$. Con $f(t)=t-1$ no hay problema.</p></div>
 </details>
-
 <details class="sol" id="x4"><summary>X4 · áreas encerradas entre $x^2$, $x^3$ y $\sqrt x$ en $[0,1]$ <span class="src" data-l="X" data-ref="X p.122 (Examen 5, Ej. 1); solución en pp.122-123">X pp.122-123 (Examen 5)</span></summary>
-  <p class="enun">Sean $f(x)=x^2$, $g(x)=x^3$ y $h(x)=\sqrt x$. Señale la respuesta correcta: A) El área encerrada por las gráficas de $f$ y $g$ es mayor que la encerrada por las gráficas de $f$ y $h$; B) El área encerrada por las gráficas de $h$ y $g$ es mayor que la encerrada por las gráficas de $f$ y $g$; C) El área encerrada por las gráficas de $f$ y $g$ es igual que la encerrada por las gráficas de $f$ y $h$; D) Ninguna de las anteriores.</p>
+<p class="enun">Sean $f(x)=x^2$, $g(x)=x^3$ y $h(x)=\sqrt x$. Señale la respuesta correcta: A) El área encerrada por las gráficas de $f$ y $g$ es mayor que la encerrada por las gráficas de $f$ y $h$; B) El área encerrada por las gráficas de $h$ y $g$ es mayor que la encerrada por las gráficas de $f$ y $g$; C) El área encerrada por las gráficas de $f$ y $g$ es igual que la encerrada por las gráficas de $f$ y $h$; D) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Comparar tres áreas entre curvas (las que encierran entre sí las tres gráficas en $[0,1]$).</dd>
     <dt>Cómo lo pienso</dt><dd>En $[0,1]$ las tres curvas están ordenadas: $x^3\le x^2\le\sqrt x$. El área entre dos curvas es la integral de la «de arriba menos la de abajo», que es positiva. Además $h-g=(h-f)+(f-g)$, así que el área entre $h$ y $g$ es la suma de las otras dos.</dd>
@@ -659,10 +600,8 @@
   <div class="recipe"><b>Receta:</b> área entre curvas = $\int(\text{arriba}-\text{abajo})$; ordenar primero las curvas en el intervalo (el integrando debe ser $\ge0$) y dividir en tramos si se cruzan.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Integrar «$f-g$» sin comprobar quién está arriba: si las curvas se cruzan, las áreas se compensan y la integral no es el área (apartado 4, error (i)).</p></div>
 </details>
-
 <!-- ============================ 9 ============================ -->
 <h2 id="chuleta"><span class="n">9</span>Errores frecuentes, chuleta y lista de comprobación</h2>
-
 <h3>Errores frecuentes</h3>
 <ul>
   <li>Confundir la finura con el número de subintervalos, o creer que $\|P\|\to0$ y $n\to\infty$ son lo mismo (E 6.1; apartado 2).</li>
@@ -674,7 +613,6 @@
   <li>Poner la constante en la derivada de la primitiva ($F'=f+C$) o dar una sola primitiva como «la» integral indefinida (falta $+k$).</li>
   <li>Confundir «$f$ decreciente» con «$f$ negativa» al estudiar $F(x)=\int_0^xf$ (X Electrónica 4, feb. 2018).</li>
 </ul>
-
 <h3>Chuleta</h3>
 <table>
   <caption>Chuleta de fórmulas y enunciados del tema</caption>
@@ -694,7 +632,6 @@
   <tr><td>Integral definida frente a indefinida</td><td>número frente a familia de funciones</td><td>L p.268</td></tr>
   <tr><td>$F(x)=\int_a^xf$ (adelanto de §6.2)</td><td>$F'(x)=f(x)$: $F$ crece donde $f\gt0$ y decrece donde $f\lt0$</td><td>U Teor. 6.1, p.243 (tema 6.2)</td></tr>
 </table>
-
 <h3>Lista de comprobación</h3>
 <ul class="checklist">
   <li>Sé explicar con mis palabras por qué la integral es el límite de áreas de rectángulos y qué hace que valga lo mismo sea cual sea el $c_i$ (U Ej. 6.1; apartado 3).</li>
@@ -707,7 +644,6 @@
   <li>Sé qué es una primitiva, por qué hay una constante $k$ y comprobarla derivando (U Ej. 6.4; E 6.10).</li>
   <li>Sé responder un V/F sobre la monotonía y los extremos de $F(x)=\int_0^xf$ mirando el signo de $f$ (X Electrónica 4, Examen 1, feb. 2018).</li>
 </ul>
-
 <h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
 <details class="fuentes-toggle">
 <summary>Mostrar lista de fuentes</summary>

@@ -1,0 +1,19 @@
+<p class="enun">Los datos a 1 de enero de los años 2004 a 2008 del INE referentes a población de España son: 2004: 43197684; 2005: 44108530; 2006: 44708964; 2007: 45200737; 2008: 46157822. (1) Con estos datos, y utilizando interpolación ¿estima la población de España el 1 de julio de 2007? (2) Si conocemos el dato adicional de que la población el 1 de enero de 2009 es 46745809, ¿cuál sería la población estimada de España el 1 de julio de 2007?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estimar la población de España a 1 de julio de 2007 interpolando los datos de 2004-2008 y, después, añadiendo el dato de 2009.</dd>
+    <dt>Cómo lo pienso</dt><dd>Los años son los nodos y la población los valores. Como el 1 de julio está a mitad de año, se evalúa en $x=2007{,}5$. Al llegar un dato nuevo no se rehace todo: solo se añade un término.</dd>
+    <dt>Qué uso</dt><dd>Diferencias divididas (U p. 123), forma de Newton y «añadir un nuevo nodo» (U p. 124).</dd>
+    <dt>Por dónde empiezo</dt><dd>Tabla de diferencias con nodos a distancia 1 (denominadores $1,2,3,4$) y evaluar en 2007,5 sin desarrollar el polinomio.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Datos.</b> $x_k=2004,\dots,2008$ (5 nodos, $n=4$). El 1 de julio de 2007 es la mitad del año: $x=2007{,}5$.</li>
+    <li><b>Tabla.</b> Nodos a distancia 1: se divide entre 1, 2, 3 y 4 en los órdenes 1, 2, 3 y 4 (diagonal superior: $43197684,\ 910846,\ -155206,\ \frac{201751}6,\ \frac{62037}4$):<div class="dd" data-x="2004,2005,2006,2007,2008" data-y="43197684,44108530,44708964,45200737,46157822" data-solo></div></li>
+    <li><b>Newton:</b> $p_4(x)=43197684+910846(x-2004)-155206(x-2004)(x-2005)+\frac{201751}6(x-2004)(x-2005)(x-2006)+\frac{62037}4(x-2004)\cdots(x-2007)$.</li>
+    <li><b>Evaluar en 2007,5.</b> Factores: $3{,}5;\ 2{,}5;\ 1{,}5;\ 0{,}5$. Término a término: $43197684+3187961-1358052{,}5+441330{,}31+101779{,}45=45\,570\,702{,}27$. Se redondea a <b>45 570 702 personas</b>.</li>
+    <li><b>Apartado 2: nodo nuevo $x_5=2009$</b> al final. Diferencias nuevas (las que contienen 2009): $587987$; $-184549$; $-\frac{417205}3$; $-\frac{469461}8$; y $f[x_0,\dots,x_5]=-\frac{118707}8=-14838{,}375$. Son 5 cuentas.</li>
+    <li><b>Término nuevo:</b> $p_5(x)=p_4(x)-14838{,}375\,(x-2004)(x-2005)(x-2006)(x-2007)(x-2008)$.</li>
+    <li><b>Evaluar.</b> El producto en 2007,5 es $3{,}5\cdot2{,}5\cdot1{,}5\cdot0{,}5\cdot(-0{,}5)=-3{,}28125$ (el último factor es negativo porque $2007{,}5&lt;2008$). Término: $+48688{,}42$. Total: $45\,619\,390{,}68\approx$ <b>45 619 391 personas</b>.</li>
+  </ol>
+  <figure class="graf" data-g='{"p":[[2004,43.197684],[2005,44.10853],[2006,44.708964],[2007,45.200737],[2008,46.157822]],"q":[[2007.5,45.570702265625,"2007,5 → 45,5707"]],"c":[{"interp":true,"n":"p₄(x)"}],"ex":"año","ey":"población (millones)","x":[2003.5,2009.5]}' data-alt="Interpolador $p_4$ de 2004 a 2008 (población en millones)"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> con nodos equiespaciados a distancia $h$, el denominador de orden $m$ es $m\cdot h$. Para estimar en un punto, evaluar la forma de Newton término a término. Al añadir un nodo, calcular solo la diagonal nueva y sumar un término.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Desarrollar el polinomio con números de 8 cifras (largo y con redondeos), u olvidar el signo del factor $(x-2008)$ cuando $x&lt;2008$.</p></div>

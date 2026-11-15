@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- GENERADO desde contenido/tema_2_2/ con herramientas/tema_datos.py; no editar a mano -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -54,14 +55,12 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
 
 <!-- ============================ 0 ============================ -->
 <h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.2.1 Motivación, p. 78">U p.78</span></h2>
-
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>Calcular una derivada con la definición (un límite) es lento. Este tema te da un «manual de montaje»: la derivada de las piezas básicas (una tabla corta) y una regla para cada forma de <b>combinar</b> piezas (sumar, multiplicar, dividir, meter una función dentro de otra). Con eso derivas casi todo lo que vas a encontrar.</p>
   <p>Es un mecano: las <b>piezas</b> (potencias, $e^x$, $\ln x$, $\operatorname{sen}x$…) tienen derivada conocida y cada <b>pegamento</b> tiene su regla. Derivar una función complicada es <b>desmontarla</b> en piezas, derivar cada una y volver a montar.</p>
   <span class="src" data-l="U" data-ref="U §2.2.1 Introducción y Objetivos, pp. 78-79">U pp.78-79</span>
   <span class="src" data-l="U" data-ref="U §2.2.2, p. 79-80 («no me regales pescado y enséñame a pescar»)">U pp.79-80</span>
 </div>
-
 <h3>Qué necesitas saber ya <span class="src" data-l="U" data-ref="U §2.1.2 Definición 2.1, p. 75">U p.75</span> <span class="src" data-l="U" data-ref="U §2.1.3 Definición 2.2, p. 78">U p.78</span> <span class="src" data-l="U" data-ref="U §1.4 Convenio, p. 42">U p.42</span></h3>
 <ul>
   <li><b>Qué es la derivada</b> $f'(a)$: el límite del cociente incremental $\lim_{h\to0}\frac{f(a+h)-f(a)}{h}$, que mide la pendiente de la recta tangente en $a$ (tema 2.1). Si ese límite existe y es un número real, se dice que $f$ es <b>derivable</b> en $a$.</li>
@@ -70,46 +69,36 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <li>Funciones elementales y sus dominios: potencias, exponencial, logaritmo, seno, coseno, tangente, y las inversas de las trigonométricas (U las supone conocidas).</li>
   <li>Las identidades $\operatorname{sen}^2x+\cos^2x=1$ y $\operatorname{tg}x=\frac{\operatorname{sen}x}{\cos x}$.</li>
 </ul>
-
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>Los nueve ejercicios de E de este tema piden: (1) derivar funciones con varias capas (producto, cociente y cadena mezclados: 2.3, 2.4, 2.5, 2.11); (2) calcular el <b>dominio</b> de una función y el de su derivada (2.10, 2.13); (3) derivar cuando la función «desconocida» $g$ va dentro (2.12); (4) derivar $x^{1/x}$, con la variable a la vez en la base y el exponente (2.16); y (5) calcular la derivada de una función inversa sin conocer su fórmula (2.13 con arcocoseno, 2.15). <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.3-2.5, 2.10-2.13, 2.15, 2.16, pp. 52-61">E pp.52-61</span></p>
-
 <!-- ============================ 1 ============================ -->
 <h2 id="s1"><span class="n">1</span>La idea general: piezas y pegamento <span class="src" data-l="U" data-ref="U §2.2.2, p. 79">U p.79</span></h2>
-
 <p>Como en el mecano, cada pegamento tiene su regla. La derivada <b>en un punto</b> $a$ es un número; la <b>función derivada</b> $f'$ es la que sale de derivar «en general». Todas las reglas de abajo se enuncian en un punto $a$ y con <b>hipótesis</b>: sólo son válidas si las funciones que intervienen son derivables donde hace falta. Esas hipótesis son las que luego deciden el <b>dominio de $f'$</b> (apartado 10).</p>
-
 <figure class="interactivo" data-escena="derivada-grafica" data-params='{"dim":2}' aria-label="Interactivo: gráfica de f con su tangente y gráfica de su derivada f′ debajo">
   <img class="int-static" src="../assets/img/int_derivada-grafica.png" alt="Interactivo: gráfica de f con su tangente y gráfica de su derivada f′ debajo">
   <figcaption>Interactivo propio. Arriba, la gráfica de $f$ con su tangente (naranja) en el punto que eliges con $x$; abajo, la gráfica de la función derivada $f'$ con un punto a la misma $x$. La altura de ese punto en la gráfica de abajo <b>es</b> la pendiente de la tangente de arriba: $f'$ se anula donde la tangente es horizontal (puntos verdes), es positiva donde $f$ sube y negativa donde baja. Las tres últimas funciones se derivan con la regla del producto, de la cadena y del cociente. <span class="src" data-l="P" data-ref="Explicación propia; derivada como pendiente de la tangente: U §2.1.2 p. 75; reglas de derivación: U §2.2.2 p. 79">P</span></figcaption>
 </figure>
-
 <div class="box tip"><span class="h">Truco de examen</span>
   <p>Antes de derivar, pregúntate <b>«¿cuál es la última operación que se hace al calcular $f(x)$?»</b>. Esa operación (suma, producto, cociente o composición) manda: es la primera regla que aplicas. Las demás vienen dentro.</p>
 </div>
-
 <!-- ============================ 2 ============================ -->
 <h2 id="s2"><span class="n">2</span>Suma, resta y constante por función <span class="src" data-l="U" data-ref="U §2.2.2 Proposición 2.1, p. 79">U p.79</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Dos grifos llenan el mismo depósito. Si uno aporta 3 litros por minuto y el otro 5, el nivel sube a 8 litros por minuto: <b>las velocidades de cambio se suman</b>. Y si duplicas la cantidad que aporta un grifo, duplicas su velocidad.</p>
   <span class="src" data-l="P" data-ref="Analogía propia">P</span>
 </div>
-
 <div class="box thm"><span class="h">Regla de la suma (Proposición 2.1)</span>
   <p>Si $f$ y $g$ son derivables en $a$, entonces $f+g$ es derivable en $a$ y
   $$(f+g)'(a)=f'(a)+g'(a).$$</p>
   <span class="src" data-l="U" data-ref="U §2.2.2 Proposición 2.1, p. 79">U p.79</span>
   <span class="src" data-l="L" data-ref="Larson §2.2 Teorema 2.5, reglas de la suma y la resta, p. 110; Teorema 2.4, múltiplo constante, p. 109">L pp.109-110</span>
 </div>
-
 <p><b>Consecuencias</b> (se deducen de la regla del producto con una función constante, cuya derivada es $0$: <span class="src" data-l="U" data-ref="U Ejemplo 2.1 (derivada de una constante), p. 76">U p.76</span>):</p>
 <ul>
   <li><b>Constante por función:</b> $(c\,f)'(a)=c\,f'(a)$ si $f$ es derivable en $a$ y $c\in\mathbb R$ es constante.</li>
   <li><b>Resta:</b> $(f-g)'(a)=f'(a)-g'(a)$ (es $f+(-1)\,g$).</li>
   <li>La derivada de una <b>constante</b> es $0$, por eso «desaparecen» los sumandos constantes: $(x^2+7)'=2x$.</li>
 </ul>
-
 <div class="box ex"><span class="h">Ejemplo resuelto</span>
   <p>$h(x)=3x^4-5e^x+\ln x+7$ para $x>0$.</p>
   <ol class="steps">
@@ -119,10 +108,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   </ol>
   <span class="src" data-l="P" data-ref="Ejemplo propio">P</span>
 </div>
-
 <!-- ============================ 3 ============================ -->
 <h2 id="s3"><span class="n">3</span>Regla del producto <span class="src" data-l="U" data-ref="U §2.2.2 Proposición 2.1, p. 79">U p.79</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva: el área de un rectángulo</span>
   <p>Un rectángulo tiene base $u(x)$ y altura $v(x)$; su área es $u\cdot v$. Si $x$ crece un poco, la base crece $\Delta u$ y la altura $\Delta v$. El área gana <b>dos franjas largas</b> ($v\cdot\Delta u$ y $u\cdot\Delta v$) y un <b>cuadradito de esquina</b> $\Delta u\,\Delta v$, que es «pequeño por pequeño» y se vuelve despreciable frente a las franjas. Por eso la variación del área es $v\,\Delta u+u\,\Delta v$: <b>cada factor varía y el otro se queda quieto</b>.</p>
   <figure>
@@ -145,7 +132,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   </figure>
   <span class="src" data-l="S" data-ref="Stewart §3.2, Figura 1 «Geometría de la regla del producto», p. 185">S p.185</span>
 </div>
-
 <div class="box thm"><span class="h">Regla del producto (Proposición 2.1)</span>
   <p>Si $f$ y $g$ son derivables en $a$, entonces $f\cdot g$ es derivable en $a$ y
   $$(f\cdot g)'(a)=f'(a)\,g(a)+f(a)\,g'(a).$$
@@ -154,7 +140,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="S" data-ref="Stewart §3.2 La regla del producto, p. 185">S p.185</span>
   <span class="src" data-l="L" data-ref="Larson §2.3 Teorema 2.7 (regla del producto), p. 118">L p.118</span>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo resuelto</span>
   <p>$f(x)=x^2\operatorname{sen}x$, derivable en todo $\mathbb R$.</p>
   <ol class="steps">
@@ -164,20 +149,16 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   </ol>
   <span class="src" data-l="S" data-ref="Stewart §3.3 Ejemplo 1 (y = x² sen x), p. 194">S p.194</span>
 </div>
-
 <div class="box warn"><span class="h">Error típico</span>
   <p>Escribir $(uv)'=u'v'$. Con $u=v=x$: $(x\cdot x)'=(x^2)'=2x$, pero $u'v'=1\cdot1=1$. La derivada del producto <b>no es</b> el producto de las derivadas.</p>
 </div>
-
 <!-- ============================ 4 ============================ -->
 <h2 id="s4"><span class="n">4</span>Regla del cociente <span class="src" data-l="U" data-ref="U §2.2.2 Proposición 2.1, p. 79">U p.79</span></h2>
-
 <div class="box intu"><span class="h">De dónde sale (sin memorizar a ciegas)</span>
   <p>Si $q=\dfrac uv$, entonces $u=q\,v$. Derivando con la regla del producto, $u'=q'v+qv'$, y despejando $q'=\dfrac{u'-qv'}{v}=\dfrac{u'v-uv'}{v^2}$. Esta deducción supone que $q$ ya es derivable, así que no es una demostración: sirve para <b>recordar el orden y el signo</b> del numerador. La demostración completa (sumar y restar una misma cantidad en el cociente incremental) está en L Teor. 2.8, p.120.</p>
   <span class="src" data-l="P" data-ref="Deducción heurística propia">P</span>
   <span class="src" data-l="L" data-ref="Larson §2.3, demostración del Teorema 2.8 (regla del cociente), p. 120">L p.120</span>
 </div>
-
 <div class="box thm"><span class="h">Regla del cociente (Proposición 2.1)</span>
   <p>Si $f$ y $g$ son derivables en $a$ y además $g(a)\neq0$, entonces $\dfrac fg$ es derivable en $a$ y
   $$\left(\frac fg\right)'(a)=\frac{f'(a)\,g(a)-f(a)\,g'(a)}{[g(a)]^2}.$$
@@ -186,7 +167,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="S" data-ref="Stewart §3.2 La regla del cociente, p. 187">S p.187</span>
   <span class="src" data-l="L" data-ref="Larson §2.3 Teorema 2.8 (regla del cociente), p. 120">L p.120</span>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo resuelto: cociente y simplificación</span>
   <p>$f(x)=\dfrac{\operatorname{sen}x}{1+\cos x}$.</p>
   <ol class="steps">
@@ -197,14 +177,11 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <p><b>Moraleja:</b> tras derivar, busca identidades que simplifiquen el resultado.</p>
   <span class="src" data-l="P" data-ref="Ejemplo propio (verificado con sympy)">P</span>
 </div>
-
 <div class="box warn"><span class="h">Error típico</span>
   <p>Cambiar el orden del numerador: $u'v-uv'$ y $uv'-u'v$ dan resultados opuestos. Prueba con $\frac1x$ ($u=1$, $v=x$): debe salir $-\frac1{x^2}$, y sólo sale con $u'v-uv'=0\cdot x-1\cdot1=-1$.</p>
 </div>
-
 <!-- ============================ 5 ============================ -->
 <h2 id="s5"><span class="n">5</span>Regla de la cadena: funciones dentro de funciones <span class="src" data-l="U" data-ref="U §2.2.2 Regla de la cadena, p. 79">U p.79</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva: velocidades en cadena</span>
   <p>Si $u$ cambia al doble de rápido que $x$ y $y$ cambia tres veces más rápido que $u$, entonces $y$ cambia $2\cdot3=6$ veces más rápido que $x$. <b>Las velocidades de cambio se multiplican</b> a lo largo de la cadena. Esa es exactamente la regla.</p>
   <figure>
@@ -222,7 +199,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   </figure>
   <span class="src" data-l="S" data-ref="Stewart §3.4 La regla de la cadena, p. 199 (razón de cambio: si u cambia el doble que x y y el triple que u...)">S p.199</span>
 </div>
-
 <div class="box thm"><span class="h">Regla de la cadena</span>
   <p>Si $f$ es derivable en $a$ y $g$ es derivable en $f(a)$, entonces la composición $g\circ f$ es derivable en $a$ y
   $$(g\circ f)'(a)=g'\big(f(a)\big)\cdot f'(a).$$
@@ -231,9 +207,7 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="S" data-ref="Stewart §3.4, enunciado p. 199">S p.199</span>
   <span class="src" data-l="L" data-ref="Larson §2.4 Teorema 2.10 (regla de la cadena), p. 130">L p.130</span>
 </div>
-
 <p>Fíjate en la hipótesis: la exterior tiene que ser derivable <b>en el punto $f(a)$</b>, no en $a$. En notación de Leibniz, con $y=F(u)$ y $u=u(x)$: $\dfrac{dy}{dx}=\dfrac{dy}{du}\cdot\dfrac{du}{dx}$.</p>
-
 <div class="box ex"><span class="h">Ejemplos resueltos</span>
   <p><b>(a)</b> $g(x)=e^{x^4}$. Capas: interior $u=x^4$, exterior $e^u$. $g'(x)=e^{x^4}\cdot4x^3=4x^3e^{x^4}$.</p>
   <p><b>(b)</b> $f(x)=\operatorname{sen}(\ln x^2)$, con $x\neq0$. Capas: $u=x^2\;\to\;\ln u\;\to\;\operatorname{sen}$. Se deriva de fuera hacia dentro: $\cos(\ln x^2)\cdot\dfrac1{x^2}\cdot2x=\dfrac2x\cos(\ln x^2)$.</p>
@@ -241,16 +215,12 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="U" data-ref="U Ejemplo 2.7, p. 81">U p.81</span>
   <span class="src" data-l="P" data-ref="Ejemplo propio">P</span>
 </div>
-
 <div class="box warn"><span class="h">Errores típicos</span>
   <p>(1) <b>Olvidar la cadena</b>: $(\operatorname{sen}x^2)'$ no es $\cos x^2$, es $2x\cos x^2$. (2) Con varias capas, perder un factor: 3 capas dan 3 factores. (3) Confundir $\operatorname{sen}x^2$ (que es $\operatorname{sen}(x^2)$) con $\operatorname{sen}^2x=(\operatorname{sen}x)^2$: son funciones distintas y con derivadas distintas.</p>
 </div>
-
 <!-- ============================ 6 ============================ -->
 <h2 id="s6"><span class="n">6</span>Tabla de derivadas</h2>
-
 <p>Con las reglas de los apartados anteriores se genera toda la tabla. No memorices 30 fórmulas: aprende las básicas (potencia, $e^x$, $a^x$, $\ln x$, $\log_a x$, $\operatorname{sen}$, $\cos$, $\operatorname{tg}$, $\arcsin$) y deduce las marcadas con «*» en 3 líneas (apartados 7 y 8). Cuando en lugar de $x$ hay una función $u(x)$, la fórmula es la misma multiplicada por $u'$ (regla de la cadena).</p>
-
 <table class="t22-tab">
   <tr><th>Función</th><th>Derivada</th><th>Dónde vale</th></tr>
   <tr><td>$c$ (constante)</td><td>$0$</td><td>todo $\mathbb R$</td></tr>
@@ -270,20 +240,16 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <tr><td>$\operatorname{arctg}x$*</td><td>$\dfrac1{1+x^2}$</td><td>$\mathbb R$</td></tr>
 </table>
 <p>Para las trigonométricas hay que medir los ángulos en <b>radianes</b>.</p>
-
 <div class="box warn"><span class="h">Error típico: la potencia y la exponencial no son lo mismo</span>
   <p>$x^c$ (base variable, exponente <b>constante</b>) se deriva como $c\,x^{c-1}$. $a^x$ (base <b>constante</b>, exponente variable) se deriva como $a^x\ln a$. En $x^x$ o $x^{1/x}$ no vale ninguna de las dos: se resuelve en el apartado 9.</p>
   <span class="src" data-l="S" data-ref="Stewart §3.6, comparación de los cuatro casos de base y exponente, p. 221">S p.221</span>
 </div>
-
 <!-- ============================ 7 ============================ -->
 <h2 id="s7"><span class="n">7</span>Tangente, cotangente, secante y cosecante: «pescar» las que faltan <span class="src" data-l="U" data-ref="U §2.2.2, derivada de tg, p. 80">U p.80</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Las funciones que no están en la tabla se <b>reescriben</b> con $\operatorname{sen}$ y $\cos$, que sí están, y se aplica el cociente. U lo ilustra con $\operatorname{tg}$ y lo resume así: «no me regales pescado y enséñame a pescar».</p>
   <span class="src" data-l="U" data-ref="U §2.2.2, p. 80">U p.80</span>
 </div>
-
 <div class="box thm"><span class="h">Derivadas de las trigonométricas restantes</span>
   <p>Con $\operatorname{tg}x=\dfrac{\operatorname{sen}x}{\cos x}$ y la regla del cociente (donde $\cos x\neq0$):
   $$(\operatorname{tg}x)'=\frac{\cos x\cos x-\operatorname{sen}x(-\operatorname{sen}x)}{\cos^2x}=\frac{\cos^2x+\operatorname{sen}^2x}{\cos^2x}=\frac1{\cos^2x}=1+\operatorname{tg}^2x.$$
@@ -294,15 +260,12 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="S" data-ref="Stewart §3.3, tabla de derivadas trigonométricas, p. 194">S p.194</span>
   <span class="src" data-l="L" data-ref="Larson §2.3 Teorema 2.9, p. 122">L p.122</span>
 </div>
-
 <div class="box tip"><span class="h">Truco de examen</span>
   <p>Regla mnemotécnica de Stewart: las derivadas de las «cofunciones» ($\cos$, $\csc$, $\operatorname{cotg}$) llevan <b>signo menos</b>.</p>
   <span class="src" data-l="S" data-ref="Stewart §3.3, nota junto a la tabla, p. 194">S p.194</span>
 </div>
-
 <!-- ============================ 8 ============================ -->
 <h2 id="s8"><span class="n">8</span>Derivada de una función inversa: arcoseno, arcocoseno, arcotangente <span class="src" data-l="U" data-ref="U §2.2.2 Ejemplo 2.6, p. 80">U p.80</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva: el espejo</span>
   <p>La gráfica de $f^{-1}$ es la de $f$ reflejada en la diagonal $y=x$. Al reflejar, la recta tangente también se refleja, y el «subir tanto por cada tanto que avanzo» se convierte en «avanzar tanto por cada tanto que subo»: <b>la pendiente se invierte</b>. Si en $x_0$ la pendiente de $f$ es $3$, en el punto simétrico la pendiente de $f^{-1}$ es $\tfrac13$.</p>
   <figure>
@@ -326,7 +289,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   </figure>
   <span class="src" data-l="P" data-ref="Interpretación geométrica propia; el enunciado formal está en L Teor. 5.9, p. 341">P</span>
 </div>
-
 <div class="box thm"><span class="h">Derivada de la función inversa</span>
   <p>Sea $f$ derivable e <b>inyectiva</b> en un intervalo $I$ (es decir, valores distintos de $x$ dan valores distintos de $f(x)$), y sea $g=f^{-1}:f(I)\to I$ su inversa, donde $f(I)$ es la <b>imagen</b> de $I$ (el conjunto de todos los valores $f(x)$, $x\in I$). Entonces $g$ es derivable en todo punto $y=f(x)$ con $f'(x)\neq0$, y
   $$(f^{-1})'(y)=\frac1{f'\big(f^{-1}(y)\big)}.$$
@@ -335,10 +297,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="S" data-ref="Stewart §3.5, comentario sobre la derivabilidad de la inversa y ejercicio 77, pp. 213 y 217">S pp.213, 217</span>
   <span class="src" data-l="P" data-ref="Teorema general; el método de derivar f^{-1}(f(x)) = x aparece en el Ejemplo 2.6, p. 80">P</span>
 </div>
-
 <h3>El método: derivar la igualdad $f^{-1}(f(x))=x$</h3>
 <p>No hace falta recordar la fórmula: se deduce en dos líneas. Derivando $f^{-1}(f(x))=x$ con la cadena (suponiendo $f^{-1}$ derivable, lo que garantiza el teorema anterior): $(f^{-1})'(f(x))\cdot f'(x)=1$, y de ahí $(f^{-1})'(f(x))=\dfrac1{f'(x)}$.</p>
-
 <div class="box ex"><span class="h">Arcoseno (Ejemplo 2.6 de U)</span>
   <p>Se elige el intervalo $[-\frac\pi2,\frac\pi2]$ donde $\operatorname{sen}$ es inyectiva y toma todos los valores de $[-1,1]$; $\arcsin:[-1,1]\to[-\frac\pi2,\frac\pi2]$ (convenio de U).</p>
   <ol class="steps">
@@ -351,12 +311,10 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="U" data-ref="U §1.5, convenio arc sen: [-1,1] → [-π/2, π/2], p. 62">U p.62</span>
   <span class="src" data-l="S" data-ref="Stewart §3.5, derivada de sen^{-1}, pp. 213-214">S pp.213-214</span>
 </div>
-
 <div class="box warn"><span class="h">Cuidado con el intervalo</span>
   <p>$\operatorname{sen}x$ también tiene inversa en $[\frac\pi2,\frac{3\pi}2]$, donde es inyectiva, pero <b>el cálculo del ejemplo usa $\cos x=+\sqrt{1-\operatorname{sen}^2x}$, que sólo es cierto si $\cos x\ge0$</b>, es decir en $[-\frac\pi2,\frac\pi2]$, el intervalo estándar del arcoseno. En $[\frac\pi2,\frac{3\pi}2]$ saldría $-1/\sqrt{1-y^2}$. Regla: al despejar una raíz, decide el signo según el intervalo elegido.</p>
   <span class="src" data-l="U" data-ref="U §2.2.2, nota al margen del Ejemplo 2.6, p. 80">U p.80</span>
 </div>
-
 <div class="box ex"><span class="h">Arcocoseno (mismo método)</span>
   <p>Convenio de U: $\arccos:[-1,1]\to[0,\pi]$ (en $[0,\pi]$ el coseno es estrictamente decreciente).</p>
   <ol class="steps">
@@ -369,7 +327,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="L" data-ref="Larson §5.6 Teorema 5.16, p. 369">L p.369</span>
   <span class="src" data-l="U" data-ref="U §1.5, convenio arc cos: [-1,1] → [0,π], p. 62">U p.62</span>
 </div>
-
 <div class="box ex"><span class="h">Arcotangente (mismo método) y una consecuencia</span>
   <p>$\operatorname{tg}:(-\frac\pi2,\frac\pi2)\to\mathbb R$ es biyectiva y $\operatorname{tg}'t=1+\operatorname{tg}^2t\neq0$. Convenio de U: $\operatorname{arctg}:\mathbb R\to(-\frac\pi2,\frac\pi2)$.</p>
   <ol class="steps">
@@ -381,17 +338,13 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="P" data-ref="Consecuencia y verificación propias (sympy)">P</span>
   <span class="src" data-l="U" data-ref="U §1.5, convenio arc tg, p. 62">U p.62</span>
 </div>
-
 <p>Con números, la derivada de una inversa en un punto sin conocer $f^{-1}$ se trabaja en el <a href="#ejercicios">Ejercicio 2.15</a> (apartado 12).</p>
-
 <!-- ============================ 9 ============================ -->
 <h2 id="s9"><span class="n">9</span>Derivación logarítmica: cuando la variable está en la base y en el exponente <span class="src" data-l="S" data-ref="Stewart §3.6 Derivación logarítmica, pp. 220-222">S pp.220-222</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Ninguna fila de la tabla sirve para $x^x$: $x^c$ exige exponente constante y $a^x$ exige base constante. El truco es pasar la función al mundo de las exponenciales con la identidad $A=e^{\ln A}$, válida si $A>0$. Entonces $A(x)^{B(x)}=e^{B(x)\ln A(x)}$, que es una $e^{u(x)}$ que ya sabes derivar con la cadena. Los logaritmos convierten potencias en productos y productos en sumas, que son más fáciles de derivar.</p>
   <span class="src" data-l="S" data-ref="Stewart §3.6, p. 220-221 (pasos de la derivación logarítmica)">S pp.220-221</span>
 </div>
-
 <div class="box thm"><span class="h">Derivación logarítmica de $A(x)^{B(x)}$</span>
   <p>Sean $A$ y $B$ derivables en $x$ con $A(x)>0$. Entonces $f(x)=A(x)^{B(x)}=e^{B(x)\ln A(x)}$ es derivable en $x$ y
   $$f'(x)=f(x)\cdot\big(B(x)\ln A(x)\big)'=A^B\left(B'\ln A+B\,\frac{A'}{A}\right).$$
@@ -399,14 +352,12 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="S" data-ref="Stewart §3.6, caso de base y exponente variables, pp. 221-222 (Ejemplo 8, y = x^{√x})">S pp.221-222</span>
   <span class="src" data-l="L" data-ref="Larson §5.1 Ejemplo 6, Derivación logarítmica, p. 323">L p.323</span>
 </div>
-
 <h3>El método de tres pasos (equivalente a lo anterior)</h3>
 <ol class="steps">
   <li>Toma logaritmos: $\ln y=B\ln A$ (posible porque $y>0$).</li>
   <li>Deriva los dos lados respecto de $x$: $\dfrac{y'}{y}=(B\ln A)'$ (cadena del $\ln$ a la izquierda).</li>
   <li>Despeja: $y'=y\cdot(B\ln A)'$. <b>No olvides multiplicar por $y$.</b></li>
 </ol>
-
 <div class="box ex"><span class="h">Ejemplos</span>
   <p><b>(a)</b> $f(x)=x^x$, $x>0$. $f=e^{x\ln x}$, $(x\ln x)'=\ln x+1$, luego $f'(x)=x^x(\ln x+1)$.</p>
   <p><b>(b)</b> $f(x)=x^{\sqrt x}$, $x>0$. $f=e^{\sqrt x\ln x}$ y $(\sqrt x\ln x)'=\dfrac{\ln x}{2\sqrt x}+\dfrac1{\sqrt x}=\dfrac{2+\ln x}{2\sqrt x}$. Así $f'(x)=x^{\sqrt x}\,\dfrac{2+\ln x}{2\sqrt x}$.</p>
@@ -414,7 +365,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="P" data-ref="Ejemplos propios (verificados con sympy)">P</span>
   <span class="src" data-l="S" data-ref="Stewart §3.6 Ejemplo 8, y = x^{√x}, pp. 221-222">S pp.221-222</span>
 </div>
-
 <div class="box ex"><span class="h">Otro uso: productos y cocientes largos</span>
   <p>$f(x)=\dfrac{x^2\sqrt{x+1}}{x^2+1}$, $x>0$. Derivarla con cociente y producto es pesado; con logaritmos:</p>
   <ol class="steps">
@@ -426,19 +376,15 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="S" data-ref="Stewart §3.6 Ejemplo 7 (derivación logarítmica de un cociente) y ecuación 4 (ln|x|), pp. 220-221">S pp.220-221</span>
   <span class="src" data-l="L" data-ref="Larson §5.1 Ejemplo 6, p. 323">L p.323</span>
 </div>
-
 <div class="box warn"><span class="h">Errores típicos</span>
   <p>(1) Tomar $\ln$ de algo que puede ser $\le0$. (2) Despejar $y'$ y olvidar multiplicar por $y$. (Y aplicar solo la regla de la potencia o solo la de la exponencial: se ve en el Ejercicio 2.16.)</p>
 </div>
-
 <!-- ============================ 10 ============================ -->
 <h2 id="s10"><span class="n">10</span>Dominio de $f'$: cuando la fórmula falla <span class="src" data-l="U" data-ref="U §2.1.3 Definición 2.2 (p. 78) y §2.2.2 Definición 2.3, derivadas laterales (p. 81)">U pp.78, 81</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Las reglas dicen: «<b>si</b> las piezas son derivables aquí, <b>entonces</b> la combinación lo es». No dicen nada de qué pasa donde las hipótesis fallan (una raíz en $0$, un denominador que se anula…). Ahí la fórmula que sale de las reglas no existe, pero la función <b>puede ser derivable o no</b>: hay que mirar con la definición.</p>
   <span class="src" data-l="S" data-ref="Stewart §2.8, ¿Cómo deja de ser derivable una función?, p. 159">S p.159</span>
 </div>
-
 <div class="box thm"><span class="h">Lo que hay que recordar</span>
   <ol>
     <li>$f'$ tiene como dominio el conjunto de puntos donde $f$ es derivable; por tanto $\operatorname{dom}f'\subseteq\operatorname{dom}f$.</li>
@@ -449,7 +395,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="U" data-ref="U §2.1.3, Definición 2.2 y f': A → R, p. 78">U p.78</span>
   <span class="src" data-l="U" data-ref="U Definición 2.3, derivadas laterales, p. 81">U p.81</span>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo: «la fórmula no existe» no es lo mismo que «no es derivable»</span>
   <p>Estudia la derivabilidad en $x=0$ de (a) $f(x)=\sqrt{x^2-x^3}$ y (b) $g(x)=\sqrt{x^4+x^6}$.</p>
   <ol class="steps">
@@ -460,10 +405,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="S" data-ref="Stewart §3.5, ejercicio 78 (f(x) = x + e^x es uno a uno; remite al 77a), p. 217">S p.217</span>
 </div>
 <figure class="graf" data-g='{"q":[[0,0,"(0, 0)"],[1,0,"(1, 0)"]],"c":[{"e":"sqrt(x**2-x**3)","n":"f(x)=√(x²−x³): pico en 0"},{"e":"sqrt(x**4+x**6)","n":"g(x)=√(x⁴+x⁶): suave en 0"}],"x":[-1.5,1.2],"y":[-0.2,1.5]}' data-alt="Las dos funciones del ejemplo cerca de 0"><figcaption>En $x=0$ la fórmula de $f'$ y la de $g'$ dejan de existir, pero $f$ tiene un pico (pendientes $\mp1$) y $g$ es suave con tangente horizontal. En $x=1$ la gráfica de $f$ termina con tangente vertical. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="P">P</span></figcaption></figure>
-
 <!-- ============================ 11 ============================ -->
 <h2 id="s11"><span class="n">11</span>Guía «¿qué regla uso?»</h2>
-
 <div class="box intu"><span class="h">Método en cinco pasos</span>
   <ol class="steps">
     <li><b>Dominio.</b> ¿Dónde tiene sentido $f$? (raíces pares, denominadores, logaritmos, tangentes…).</li>
@@ -474,7 +417,6 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   </ol>
   <span class="src" data-l="P" data-ref="Método propio, sintetizado a partir de U §2.2">P</span>
 </div>
-
 <table>
   <tr><th>La función tiene la forma…</th><th>Regla</th><th>Ojo con…</th></tr>
   <tr><td>$u\pm v$ , $c\cdot u$</td><td>suma; constante por función</td><td>la constante sale fuera, la suma se reparte</td></tr>
@@ -490,14 +432,11 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <tr><td>producto/cociente largo con potencias</td><td>logaritmos ($\ln|f|$)</td><td>puede haber signos negativos</td></tr>
   <tr><td>una función «desconocida» $g$ dentro</td><td>cadena en general y sustituir el dato</td><td>$g'$ se evalúa en $u(a)$, no en $a$</td></tr>
 </table>
-
 <!-- ============================ 12 ============================ -->
 <h2 id="ejercicios"><span class="n">12</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.3-2.5, 2.10-2.13, 2.15, 2.16, pp. 52-61">E pp.52-61</span></h2>
-
 <p>Orden de estudio recomendado, de fácil a difícil: 2.3 → 2.11 → 2.4 → 2.12 → 2.5 → 2.10 → 2.16 → 2.13 → 2.15. Aquí van por numeración para que los encuentres rápido. Todos los resultados están comprobados con sympy.</p>
-
 <details class="sol"><summary>Ejercicio 2.3 — producto y cociente: $\operatorname{sen}x\cos x$ y $\sec x$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.3, p. 52">E p.52</span></summary>
-  <p class="enun">Calcula las derivadas de las funciones dadas por $f(x)=\operatorname{sen}x\cos x$ y $g(x)=\sec x$.</p>
+<p class="enun">Calcula las derivadas de las funciones dadas por $f(x)=\operatorname{sen}x\cos x$ y $g(x)=\sec x$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Las derivadas de $f(x)=\operatorname{sen}x\cos x$ y de $g(x)=\sec x$.</dd>
     <dt>Cómo lo pienso</dt><dd>Una derivada se calcula según la <i>última operación</i> que se hace: $f$ acaba multiplicando dos funciones y $\sec x$ es $1/\cos x$, un cociente. No hace falta la definición con límites: se «ensamblan» las derivadas de las piezas, que ya conocemos.</dd>
@@ -523,9 +462,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
 <div class="recipe"><b>Receta:</b> antes de derivar, pregúntate cuál es la <i>última</i> operación (producto, cociente, composición); esa decide la regla. Las funciones que no están en la tabla ($\sec$, $\operatorname{cotg}$, $\operatorname{tg}$) se reescriben con $\operatorname{sen}$ y $\cos$.</div>
   <p><b>Error típico:</b> creer que $(uv)'=u'v'$ (daría $-\cos x\operatorname{sen}x$, falso), o tomar por distintas dos respuestas equivalentes.</p>
 </details>
-
 <details class="sol"><summary>Ejercicio 2.4 — cadena con tres capas <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.4, p. 53">E p.53</span></summary>
-  <p class="enun">Calcula la derivada de la función dada por $h(x)=\operatorname{sen}\big((1+\cos x)^2\big)$.</p>
+<p class="enun">Calcula la derivada de la función dada por $h(x)=\operatorname{sen}\big((1+\cos x)^2\big)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La derivada de $h(x)=\operatorname{sen}\big((1+\cos x)^2\big)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es una muñeca rusa: un seno que contiene un cuadrado que contiene $1+\cos x$. Se abre de fuera hacia dentro y cada capa aporta un factor: su derivada, evaluada en lo que tiene dentro.</dd>
@@ -542,9 +480,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <div class="recipe"><b>Receta:</b> con varias composiciones, escribe explícitamente las capas y multiplica una derivada por capa, cada una evaluada en lo que tiene dentro: 3 capas, 3 factores.</div>
   <p><b>Error típico:</b> derivar dos capas de golpe y perder un factor (p. ej. el $-\operatorname{sen}x$), o cambiar el argumento del coseno.</p>
 </details>
-
 <details class="sol"><summary>Ejercicio 2.5 — dominio, cadena, producto y logaritmo <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.5, p. 54">E p.54</span></summary>
-  <p class="enun">Calcula la derivada de la función dada por $f(x)=\operatorname{sen}\!\big(e^{x^2}+(x+1)\ln x^2\big)$.</p>
+<p class="enun">Calcula la derivada de la función dada por $f(x)=\operatorname{sen}\!\big(e^{x^2}+(x+1)\ln x^2\big)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La derivada de $f(x)=\operatorname{sen}\!\big(e^{x^2}+(x+1)\ln x^2\big)$, cuidando dónde existe.</dd>
     <dt>Cómo lo pienso</dt><dd>Por fuera hay un seno (cadena); lo de dentro es una suma, y uno de sus sumandos es un producto con un logaritmo. Cada regla se aplica solo donde sus hipótesis se cumplen, y $\ln x^2$ obliga a $x\neq0$.</dd>
@@ -567,9 +504,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <div class="recipe"><b>Receta:</b> empieza por el dominio; luego «cadena por fuera, suma y producto por dentro», anotando cada subderivada aparte antes de juntarlas.</div>
   <p><b>Error típico:</b> simplificar $\ln x^2=2\ln x$: sólo vale para $x>0$; lo correcto es $2\ln|x|$. Derivar como $\ln u(x)$, como aquí, evita el problema.</p>
 </details>
-
 <details class="sol"><summary>Ejercicio 2.10 — dominio de $f$ y de $f'$ (raíces y exponencial) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.10, p. 57">E p.57</span></summary>
-  <p class="enun">Compare el dominio de las funciones dadas por $f(x)=\sqrt{2+\sqrt[3]{x}}$ y $g(x)=e^{\frac{x}{x+1}}$ con el de las funciones que se obtienen al aplicar las reglas de derivación a $f(x)$ y $g(x)$. Represente gráficamente $f$ y $g$ utilizando Maxima.</p>
+<p class="enun">Compare el dominio de las funciones dadas por $f(x)=\sqrt{2+\sqrt[3]{x}}$ y $g(x)=e^{\frac{x}{x+1}}$ con el de las funciones que se obtienen al aplicar las reglas de derivación a $f(x)$ y $g(x)$. Represente gráficamente $f$ y $g$ utilizando Maxima.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Comparar el dominio de $f=\sqrt{2+\sqrt[3]x}$ y $g=e^{x/(x+1)}$ con el de sus derivadas.</dd>
     <dt>Cómo lo pienso</dt><dd>La fórmula de la derivada puede dejar de existir en puntos donde la función sí está definida (tangente vertical). Hay que saber qué puntos son sospechosos y comprobarlos con la definición, no solo con la fórmula.</dd>
@@ -597,9 +533,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
 <div class="recipe"><b>Receta:</b> (1) dominio de $f$ mirando cada pieza delicada; (2) deriva con las reglas; (3) en los puntos del dominio donde la fórmula de $f'$ falla, decide con el cociente incremental. Siempre $\operatorname{dom}f'\subseteq\operatorname{dom}f$.</div>
   <p><b>Error típico:</b> dar como dominio de $f'$ «donde tiene sentido la fórmula», o incluir $x=-8$ porque «está en el dominio de $f$».</p>
 </details>
-
 <details class="sol"><summary>Ejercicio 2.11 — cadena con cotangente (test) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.11, p. 58">E p.58</span></summary>
-  <p class="enun">Señale la derivada de la función dada por $h(x)=\operatorname{cotg}x^3$: a) $h'(x)=\dfrac{-3x^2}{\operatorname{sen}^2x^3}$; b) $h'(x)=\dfrac{-1}{\operatorname{sen}^2x^3}$; c) $h'(x)=\dfrac{3x^2}{\operatorname{sen}x}$.</p>
+<p class="enun">Señale la derivada de la función dada por $h(x)=\operatorname{cotg}x^3$: a) $h'(x)=\dfrac{-3x^2}{\operatorname{sen}^2x^3}$; b) $h'(x)=\dfrac{-1}{\operatorname{sen}^2x^3}$; c) $h'(x)=\dfrac{3x^2}{\operatorname{sen}x}$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Elegir, entre tres opciones, la derivada de $h(x)=\operatorname{cotg}(x^3)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es una cotangente con algo dentro: la derivada de la cotangente evaluada en $x^3$, multiplicada por la derivada de $x^3$. Las opciones fallan típicamente por perder ese segundo factor.</dd>
@@ -616,9 +551,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <div class="recipe"><b>Receta:</b> en una composición, deriva «de fuera hacia dentro»: derivada de la exterior evaluada en la interior, por la derivada de la interior.</div>
   <p><b>Error típico:</b> la opción b), olvidar el factor $u'(x)$.</p>
 </details>
-
 <details class="sol"><summary>Ejercicio 2.12 — cadena con una función desconocida <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.12, p. 59">E p.59</span></summary>
-  <p class="enun">De la función $g$ se sabe que es derivable en todo $\mathbb R$ y además verifica $g'(2)=3$. Calcula el valor de $f'(1)$ para la función $f$ dada por $f(x)=g(2x^a)$, en función del parámetro $a\in[1,\infty)$.</p>
+<p class="enun">De la función $g$ se sabe que es derivable en todo $\mathbb R$ y además verifica $g'(2)=3$. Calcula el valor de $f'(1)$ para la función $f$ dada por $f(x)=g(2x^a)$, en función del parámetro $a\in[1,\infty)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar $f'(1)$ para $f(x)=g(2x^a)$, con $g$ desconocida y $g'(2)=3$.</dd>
     <dt>Cómo lo pienso</dt><dd>No hace falta saber quién es $g$: la cadena solo pide $g'$ <i>en el punto al que llega la función interior</i>. Si en $x=1$ el interior vale $2$, el dato $g'(2)=3$ encaja justo.</dd>
@@ -635,9 +569,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <p><b>Error típico:</b> escribir $f'(1)=g'(1)\cdots$ (evaluar $g'$ en $x=1$ en vez de en $u(1)=2$), o pensar que «faltan datos».</p>
   <p>La restricción $a\ge1$ no es necesaria: $f'(1)=6a$ vale para todo $a\in\mathbb R$, porque solo hace falta derivabilidad cerca de $x=1$.</p>
 </details>
-
 <details class="sol"><summary>Ejercicio 2.13 — dominio y derivada de $\arccos\sqrt x$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.13, p. 59 (continúa en p. 60)">E p.59</span></summary>
-  <p class="enun">Determina el dominio y calcula la derivada de la función dada por $f(x)=\arccos\sqrt x$.</p>
+<p class="enun">Determina el dominio y calcula la derivada de la función dada por $f(x)=\arccos\sqrt x$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El dominio y la derivada de $f(x)=\arccos\sqrt x$.</dd>
     <dt>Cómo lo pienso</dt><dd>El arcocoseno solo admite números entre $-1$ y $1$ y la raíz solo $x\ge0$: eso fija el dominio. La derivada del arcocoseno se deduce derivando $\cos(\arccos y)=y$; luego se encadena con la raíz. En los extremos del dominio la fórmula explota, y hay que estudiarlos aparte.</dd>
@@ -655,11 +588,9 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <figure class="graf" data-g='{"q":[[0,1.5707963267948966,"(0, π/2)"],[1,0,"(1, 0)"]],"c":[{"e":"acos(sqrt(x))","n":"f(x)=arccos √x"},{"e":"-1/(2*sqrt(x)*sqrt(1-x))","n":"f′(x)"}],"x":[-0.3,1.3],"y":[-6,2]}' data-alt="arccos √x en [0,1] y su derivada"><figcaption>$f$ existe solo en $[0,1]$. Su derivada $f'(x)=-\frac1{2\sqrt x\sqrt{1-x}}$ existe solo en $(0,1)$: se hace $-\infty$ en los dos extremos, donde las tangentes de $f$ son verticales. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
 <div class="recipe"><b>Receta (inversa sin fórmula):</b> escribe $f^{-1}(f(t))=t$, deriva con la cadena, despeja $(f^{-1})'(f(t))$, exprésalo en función de $y=f(t)$ con una identidad ($\operatorname{sen}^2+\cos^2=1$) y elige el signo de la raíz según el intervalo donde se invierte.</div>
   <p><b>Error típico:</b> escribir $\operatorname{sen}t=\pm\sqrt{1-\cos^2t}$ sin decidir el signo; olvidar el signo menos del $\arccos'$; dar $[0,1]$ como dominio de $f'$.</p>
-  
 </details>
-
 <details class="sol"><summary>Ejercicio 2.15 — derivada de una inversa en un punto (test) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.15, p. 60">E p.60</span> <span class="src" data-l="L" data-ref="Larson §5.3 Ejemplo 5 (derivada de una función inversa), p. 341">L p.341</span></summary>
-  <p class="enun">Señala el valor de la derivada de la función inversa de $f(x)=x^5+x^3+x$ en el punto $y=3$: a) $6$; b) $9$; c) $\frac16$; d) $\frac19$.</p>
+<p class="enun">Señala el valor de la derivada de la función inversa de $f(x)=x^5+x^3+x$ en el punto $y=3$: a) $6$; b) $9$; c) $\frac16$; d) $\frac19$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar $(f^{-1})'(3)$ para $f(x)=x^5+x^3+x$ y marcar la opción.</dd>
     <dt>Cómo lo pienso</dt><dd>Si $f$ lleva $x_0$ a $y_0$, su inversa deshace el camino, y la pendiente de la inversa es la inversa de la pendiente: $1/f'(x_0)$. Lo difícil es hallar $x_0$ (el $x$ con $f(x)=3$), pues no se puede despejar: se adivina.</dd>
@@ -677,9 +608,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
 <div class="recipe"><b>Receta:</b> $(f^{-1})'(y_0)=\dfrac1{f'(x_0)}$ con $f(x_0)=y_0$. (i) Comprueba que $f$ es inyectiva y $f'(x_0)\neq0$; (ii) halla $x_0$ resolviendo $f(x)=y_0$ (prueba valores sencillos $0,\pm1,\pm2$); (iii) invierte la derivada.</div>
   <p><b>Error típico:</b> evaluar en el punto equivocado, $\frac1{f'(3)}=\frac1{433}$; o no invertir y contestar $f'(1)=9$ (opción b), que es la trampa del test.</p>
 </details>
-
 <details class="sol"><summary>Ejercicio 2.16 — derivación logarítmica de $x^{1/x}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.16, p. 61">E p.61</span></summary>
-  <p class="enun">Calcula el valor de la derivada de $f:(0,+\infty)\to\mathbb R$ dada por $f(x)=\sqrt[x]{x}$ (raíz $x$-ésima de $x$).</p>
+<p class="enun">Calcula el valor de la derivada de $f:(0,+\infty)\to\mathbb R$ dada por $f(x)=\sqrt[x]{x}$ (raíz $x$-ésima de $x$).</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Derivar $f(x)=x^{1/x}$ para $x>0$.</dd>
     <dt>Cómo lo pienso</dt><dd>La variable está a la vez en la base y en el exponente, así que ni «potencia» ni «exponencial» valen. Se pasa todo a una exponencial de base $e$ con $x=e^{\ln x}$ y entonces solo queda derivar un exponente.</dd>
@@ -711,14 +641,11 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <div class="recipe"><b>Receta (derivación logarítmica):</b> si la variable está en la base y en el exponente, $f=A^B$ con $A>0$: escribe $f=e^{B\ln A}$ (o toma $\ln f=B\ln A$ y deriva). Entonces $f'=f\cdot(B\ln A)'$.</div>
   <p><b>Error típico:</b> aplicar la regla de la potencia $\frac1x x^{\frac1x-1}$ o la de la exponencial $x^{1/x}\ln x\cdot(\frac1x)'$: cada una trata como constante algo que no lo es (el resultado correcto es la <b>suma</b> de ambas). Otro: despejar $f'$ y olvidar multiplicar por $f(x)$.</p>
 </details>
-
 <!-- ============================ 13 ============================ -->
 <h2 id="examenes"><span class="n">13</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Examenes-resueltos-Calculo.pdf (exámenes resueltos de la UNED)">X</span></h2>
-
 <p>Estos son los tipos reales que caen de este tema en los exámenes resueltos. Son preguntas cortas (1 punto): la dificultad no está en la teoría, sino en <b>no perder ningún factor de la cadena</b>, en leer bien el enunciado ($\operatorname{sen}^2 3x$ no es $\operatorname{sen}(\operatorname{sen}3x)$) y en <b>evaluar cada derivada en el punto correcto</b> cuando hay una función desconocida. Intenta cada problema antes de abrir la solución.</p>
-
 <details class="sol"><summary>Problema 1 — producto y cadena: $f(x)=x^2e^{\cos x}$ <span class="src" data-l="X" data-ref="X p.96 (Septiembre 2018, Grado en Ing. Mecánica, Modelo A, pregunta corta 2, 1 punto)">X p.96</span></summary>
-  <p class="enun">Determine la derivada de la función $f(x)=x^2e^{\cos x}$.</p>
+<p class="enun">Determine la derivada de la función $f(x)=x^2e^{\cos x}$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Derivar $f(x)=x^2e^{\cos x}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es un <b>producto</b> de dos cosas, $x^2$ y $e^{\cos x}$: se usa la regla del producto, y el segundo factor, que lleva algo dentro, se deriva con la regla de la cadena.</dd>
@@ -737,9 +664,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
 <div class="recipe"><b>Receta:</b> mira la última operación (aquí, producto); deriva cada factor y, si uno tiene algo dentro, multiplica por la derivada de lo de dentro.</div>
   <p><b>Error típico:</b> olvidar el signo de $(\cos x)'=-\operatorname{sen}x$.</p>
 </details>
-
 <details class="sol"><summary>Problema 2 — cadena con varias capas: $\operatorname{sen}\bigl[\cos^2(2/x)\bigr]$ <span class="src" data-l="X" data-ref="X p.52 (Septiembre 2015, Grado en Ing. Mecánica, Modelo A, pregunta corta 2, 1 punto)">X p.52</span></summary>
-  <p class="enun">Calcular la derivada de la función $\operatorname{sen}\left[\cos^2\left(\dfrac{2}{x}\right)\right]$.</p>
+<p class="enun">Calcular la derivada de la función $\operatorname{sen}\left[\cos^2\left(\dfrac{2}{x}\right)\right]$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Derivar $\operatorname{sen}\bigl[\cos^2(2/x)\bigr]$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es como una muñeca rusa: una función dentro de otra dentro de otra. Se abre <b>de fuera hacia dentro</b>, se deriva cada capa y se <b>multiplican</b> todas las derivadas.</dd>
@@ -760,10 +686,9 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <p><b>Lo que escribes en el examen:</b> $$f'(x)=\frac{4}{x^2}\cos\frac2x\,\operatorname{sen}\frac2x\,\cos\!\Bigl[\cos^2\frac2x\Bigr],\qquad x\neq0.$$ (Opcional: $2\operatorname{sen}a\cos a=\operatorname{sen}2a$ da $f'(x)=\frac{2}{x^2}\operatorname{sen}\frac4x\cos[\cos^2\frac2x]$.)</p>
   <div class="recipe"><b>Receta:</b> escribe las capas y pon un factor por capa: $n$ capas, $n$ factores.</div>
   <p><b>Error típico:</b> leer $\cos^2(2/x)$ como $\cos(\cos(2/x))$, o perder la capa $2/x$ o su signo.</p>
-  </details>
-
+</details>
 <details class="sol"><summary>Problema 3 — arcotangente y cadena: $\operatorname{arctg}\sqrt{x^2-1}-\operatorname{sen}^2 3x$ <span class="src" data-l="X" data-ref="X p.46 (Septiembre 2014, Grado en Ing. Mecánica, Modelo A, pregunta corta 2, 1 punto)">X p.46</span></summary>
-  <p class="enun">Calcular la derivada de $f(x)=\operatorname{arctg}\sqrt{x^2-1}-\operatorname{sen}^2 3x$.</p>
+<p class="enun">Calcular la derivada de $f(x)=\operatorname{arctg}\sqrt{x^2-1}-\operatorname{sen}^2 3x$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Derivar $f(x)=\operatorname{arctg}\sqrt{x^2-1}-\operatorname{sen}^2 3x$.</dd>
     <dt>Cómo lo pienso</dt><dd>Son dos sumandos que se derivan por separado; cada uno es una cadena de varias capas, de fuera hacia dentro. La raíz impide derivar donde su interior vale $0$.</dd>
@@ -786,10 +711,9 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <figure class="graf" data-g='{"q":[[1,-0.019915,"(1, −0,02)"]],"c":[{"e":"atan(sqrt(x**2-1))-sin(3*x)**2","n":"f(x)"}],"x":[-3,3],"y":[-1.2,1.4]}' data-alt="f solo está definida para |x|≥1"><figcaption>$f$ solo existe para $|x|\ge1$ (hace falta $x^2-1\ge0$): entre $-1$ y $1$ no hay gráfica. La fórmula de $f'$ tampoco existe en $x=\pm1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
 <div class="recipe"><b>Receta:</b> separa los sumandos y, en cada uno, capas de fuera a dentro; usa $(\operatorname{arctg}u)'=\frac{u'}{1+u^2}$ y $(\sqrt u)'=\frac{u'}{2\sqrt u}$, y simplifica $1+(\sqrt{\cdot})^2$ antes de multiplicar.</div>
   <p><b>Error típico:</b> escribir $\frac{1}{\sqrt{x^4-x^2}}$: siempre es positivo, pero para $x&lt;-1$ el término correcto $\frac1{x\sqrt{x^2-1}}$ es negativo. Deja $x$ sin meterla en la raíz.</p>
-  </details>
-
+</details>
 <details class="sol"><summary>Problema 4 — cadena con función desconocida: $g(x)=\operatorname{sen}\bigl(f(5x^2-8)\bigr)$ <span class="src" data-l="X" data-ref="X p.144 (Febrero 2018, Primera Semana, I. Electrónica Industrial y Automática, pregunta corta 2, 1 punto)">X p.144</span></summary>
-  <p class="enun">Sabiendo que $f$ es derivable y verifica $f(2)=\pi$ y $f'(2)=3$, calcular $g'(\sqrt2)$ siendo $g(x)=\operatorname{sen}\bigl(f(5x^2-8)\bigr)$.</p>
+<p class="enun">Sabiendo que $f$ es derivable y verifica $f(2)=\pi$ y $f'(2)=3$, calcular $g'(\sqrt2)$ siendo $g(x)=\operatorname{sen}\bigl(f(5x^2-8)\bigr)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular $g'(\sqrt2)$ para $g(x)=\operatorname{sen}\bigl(f(5x^2-8)\bigr)$, con $f(2)=\pi$ y $f'(2)=3$.</dd>
     <dt>Cómo lo pienso</dt><dd>No conocemos $f$, solo sus valores en $2$. Se deriva con la cadena <b>sin sustituir nada</b> y, al final, se ve que en $x=\sqrt2$ lo de dentro de $f$ vale justo $2$, el punto donde nos dan los datos.</dd>
@@ -810,9 +734,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
     <li>$f(0)=\pi$, $f'(0)=2$, $g(x)=\cos\bigl(f(\cos x)\bigr)$: $g'(x)=\operatorname{sen}\bigl(f(\cos x)\bigr)f'(\cos x)\operatorname{sen}x$ y $g'(\pi/2)=\operatorname{sen}\pi\cdot2\cdot1=0$ (opción A del test). <span class="src" data-l="X" data-ref="X pp.122-123 (Examen 5, recopilación de asignaturas similares, ejercicio 4, test; enunciado p.122, solución p.123)">X pp.122-123</span></li>
   </ul>
 </details>
-
 <details class="sol"><summary>Problema 5 — el problema «al revés»: hallar $g'(2)$ a partir de $f(x)=x\,g(2x)$ <span class="src" data-l="X" data-ref="X p.64 (Febrero 2016, Grado en Ing. Mecánica, Modelo B, pregunta corta 2, 1 punto)">X p.64</span></summary>
-  <p class="enun">Se sabe que $f$ y $g$ son derivables, $g(2)=-1$, $f'(1)=2$ y que $f(x)=x\,g(2x)$. Calcule $g'(2)$. <i>Indicación:</i> aplique la regla de la cadena.</p>
+<p class="enun">Se sabe que $f$ y $g$ son derivables, $g(2)=-1$, $f'(1)=2$ y que $f(x)=x\,g(2x)$. Calcule $g'(2)$. <i>Indicación:</i> aplique la regla de la cadena.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar $g'(2)$ sabiendo $f(x)=x\,g(2x)$, $g(2)=-1$ y $f'(1)=2$.</dd>
     <dt>Cómo lo pienso</dt><dd>Aquí el dato está en $f'$ y se pide $g'$: se deriva la igualdad $f(x)=x\,g(2x)$ (producto y cadena) y se sustituye en el $x$ que pone $g'$ justo en el punto pedido; queda una ecuación con $g'(2)$ y se despeja.</dd>
@@ -830,9 +753,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <div class="recipe"><b>Receta:</b> deriva la relación en general, elige el $x$ que pone el punto pedido dentro de la función desconocida, sustituye los datos y despeja.</div>
   <p><b>Error típico:</b> olvidar el factor $2$ de la derivada de $2x$ y obtener $g'(2)=3$.</p>
 </details>
-
 <details class="sol"><summary>Problema 6 — derivada segunda: $f(x)=\dfrac1{x^2+2x+1}+\cos(e^x)$ <span class="src" data-l="X" data-ref="X p.139 (Septiembre 2018, Grado en Ing. Mecánica, Modelo B, pregunta corta 2, 1 punto; el PDF no trae la solución)">X p.139</span></summary>
-  <p class="enun">Sea $f(x)=\dfrac{1}{x^2+2x+1}+\cos(e^x)$. ¿Cuál es su derivada segunda?</p>
+<p class="enun">Sea $f(x)=\dfrac{1}{x^2+2x+1}+\cos(e^x)$. ¿Cuál es su derivada segunda?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La derivada segunda de $f(x)=\dfrac1{x^2+2x+1}+\cos(e^x)$.</dd>
     <dt>Cómo lo pienso</dt><dd>La derivada segunda es <b>derivar dos veces</b>. Antes de empezar conviene simplificar: el denominador es un cuadrado perfecto, $(x+1)^2$, y así se trata como una potencia en vez de usar el cociente.</dd>
@@ -849,8 +771,7 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <p><b>Lo que escribes en el examen:</b> $f'(x)=-2(x+1)^{-3}-e^x\operatorname{sen}(e^x)$ y $$f''(x)=\frac{6}{(x+1)^4}-e^x\operatorname{sen}(e^x)-e^{2x}\cos(e^x),\qquad x\neq-1.$$</p>
   <div class="recipe"><b>Receta:</b> simplifica primero; deriva una vez; para la segunda, vuelve a mirar la última operación de cada término de $f'$ (aquí aparece un producto nuevo).</div>
   <p><b>Error típico:</b> derivar $e^x\operatorname{sen}(e^x)$ sin la regla del producto (quedándose solo con $e^{2x}\cos(e^x)$).</p>
-  </details>
-
+</details>
 <div class="box tip"><span class="h">Tipos que también caen y no están en el PDF</span>
   <ul>
     <li>Derivada de una inversa en un punto, derivación logarítmica, derivadas de $\operatorname{tg}$, $\sec$, $\operatorname{cotg}$ y dominio de $f'$: apartados 7 a 10 y ejercicios E 2.10, 2.13, 2.15, 2.16.</li>
@@ -858,10 +779,8 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
     <li>Recta tangente: sale en X (clasificada en 2.1), con derivadas inmediatas.</li>
   </ul>
 </div>
-
 <!-- ============================ 14 ============================ -->
 <h2 id="chuleta"><span class="n">14</span>Chuleta y lista de comprobación</h2>
-
 <div class="box thm"><span class="h">Reglas (en un punto $a$, con las hipótesis)</span>
   <p>Suma: $(f+g)'=f'+g'$. Constante: $(cf)'=cf'$. Producto: $(fg)'=f'g+fg'$. Cociente ($g(a)\neq0$): $\Big(\dfrac fg\Big)'=\dfrac{f'g-fg'}{g^2}$. Cadena ($f$ derivable en $a$, $g$ derivable en $f(a)$): $(g\circ f)'(a)=g'(f(a))\,f'(a)$.</p>
   <p>Inversa ($f$ derivable e inyectiva en un intervalo): $(f^{-1})'(y_0)=\dfrac1{f'(x_0)}$ con $f(x_0)=y_0$ y $f'(x_0)\neq0$. Base y exponente variables ($A>0$): $(A^B)'=A^B\big(B'\ln A+BA'/A\big)$.</p>
@@ -869,13 +788,11 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <span class="src" data-l="L" data-ref="Larson §5.3 Teoremas 5.8-5.9 (derivada de la inversa), p. 341">L p.341</span>
   <span class="src" data-l="S" data-ref="Stewart §3.6, base y exponente variables, p. 221">S p.221</span>
 </div>
-
 <div class="box def"><span class="h">Derivadas que hay que saber</span>
   <p>$(x^c)'=cx^{c-1}$ · $(e^x)'=e^x$ · $(a^x)'=a^x\ln a$ · $(\ln x)'=\frac1x$ · $(\log_ax)'=\frac1{x\ln a}$ · $(\operatorname{sen}x)'=\cos x$ · $(\cos x)'=-\operatorname{sen}x$ · $(\operatorname{tg}x)'=\frac1{\cos^2x}$ · $(\operatorname{cotg}x)'=-\frac1{\operatorname{sen}^2x}$ · $(\sec x)'=\sec x\operatorname{tg}x$ · $(\csc x)'=-\csc x\operatorname{cotg}x$ · $(\arcsin x)'=\frac1{\sqrt{1-x^2}}$ · $(\arccos x)'=-\frac1{\sqrt{1-x^2}}$ · $(\operatorname{arctg}x)'=\frac1{1+x^2}$. Con cadena: multiplica por $u'$.</p>
   <span class="src" data-l="U" data-ref="U pp. 79-80 (tabla y tabla con cadena)">U pp.79-80</span>
   <span class="src" data-l="S" data-ref="Stewart §3.3 tabla trigonométrica (cotg, sec, csc), p. 194; §3.5 arccos y arctg, p. 214">S pp.194, 214</span>
 </div>
-
 <h3>Lista de comprobación: sé…</h3>
 <ul class="checklist">
   <li>Enunciar las reglas de la suma, el producto, el cociente y la cadena con sus hipótesis.</li>
@@ -889,11 +806,9 @@ table.t22-tab td:first-child,table.t22-tab th:first-child{white-space:nowrap}
   <li>Distinguir $x^c$ de $a^x$ y $\operatorname{sen}x^2$ de $\operatorname{sen}^2x$.</li>
   <li>Simplificar un resultado con $\operatorname{sen}^2+\cos^2=1$.</li>
 </ul>
-
 <div class="box warn"><span class="h">Errores frecuentes, resumen</span>
   <p>$(uv)'=u'v'$ · signo/orden del cociente · olvidar $u'$ de la cadena · $\ln x^2=2\ln x$ para $x&lt;0$ · «no existe la fórmula ⇒ no derivable» · signo de la raíz en $\arcsin'$ / $\arccos'$ · evaluar $f'$ en $y_0$ en lugar de $x_0$ · olvidar multiplicar por $y$ en la derivación logarítmica.</p>
 </div>
-
 <h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
 <details class="fuentes-toggle">
 <summary>Mostrar lista de fuentes</summary>

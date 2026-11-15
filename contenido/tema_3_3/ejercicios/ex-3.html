@@ -1,0 +1,20 @@
+<p class="enun">(p.101) De una función $f$ se sabe que $f(0)=1$, $f(2)=3$ y $f(4)=2$. Aproxime el valor de $f(8)$ utilizando el polinomio interpolador. (p.107) Mismos datos: (a) aproxime $f(1)$ con el polinomio interpolador; (b) aproxime $\int_0^4f(x)\,dx$ mediante la fórmula de Simpson; (c) compruebe que obtiene el mismo resultado si integra el polinomio interpolador entre 0 y 4.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Con $f(0)=1,f(2)=3,f(4)=2$: aproximar $f(8)$ y $f(1)$ con el interpolador, $\int_0^4f$ con Simpson, y comprobar que integrar el interpolador da lo mismo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Tres datos, una parábola. Evalúo esa parábola donde me pidan; y Simpson no es más que la integral exacta de esa misma parábola, por eso los dos resultados coinciden.</dd>
+    <dt>Qué uso</dt><dd>Diferencias divididas y Newton (U pp. 123-124); fórmula de Simpson con 3 nodos (U pp. 267-268, Tema 6).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo las dos diferencias de orden 1 y la de orden 2, y escribo $p_2$ en forma de Newton.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Tabla de diferencias divididas</b> (cada casilla es «la de abajo menos la de arriba» de la columna anterior, entre la diferencia de los nodos extremos; las flechas muestran de dónde sale; en azul, la diagonal superior):<div class="dd" data-x="0,2,4" data-y="1,3,2"></div></li>
+    <li><b>Newton</b> (grado 2): $p_2(x)=f[x_0]+f[x_0,x_1](x-x_0)+f[x_0,x_1,x_2](x-x_0)(x-x_1)$; con la diagonal $1,\ 1,\ -\frac38$: $p(x)=1+x-\frac38x(x-2)$.</li>
+    <li><b>Desarrollo:</b> $-\frac38x(x-2)=-\frac38x^2+\frac34x$. Sumando: $p(x)=-\frac38x^2+\frac74x+1$.</li>
+    <li><b>(p.101)</b> $f(8)\approx p(8)=1+8-\frac38\cdot8\cdot6=9-18=-9$.</li>
+    <li><b>(p.107 a)</b> $f(1)\approx p(1)=1+1-\frac38\cdot1\cdot(-1)=\frac{19}8=2{,}375$.</li>
+    <li><b>(p.107 b) Simpson:</b> $\frac{4-0}6\left(f(0)+4f(2)+f(4)\right)=\frac46(1+12+2)=10$.</li>
+    <li><b>(p.107 c)</b> $\int_0^4\left(-\frac38x^2+\frac74x+1\right)dx=-\frac38\cdot\frac{64}3+\frac74\cdot8+4=-8+14+4=10$. Iguales: Simpson integra esa misma parábola.</li>
+  </ol>
+    <div class="box warn"><span class="h">Cuidado · extrapolar</span>
+    <p>$p(8)=-9$ es una <b>extrapolación</b> (8 está lejos de $[0,4]$). La forma de Lagrange (apartado 4, P) lo explica: el producto $|8-0||8-2||8-4|=192$ es enorme, frente a $|1-0||1-2||1-4|=3$ en $x=1$. Que salga negativo con datos entre 1 y 3 es una señal de alarma.</p></div>
+  <figure class="graf" data-g='{"p":[[0,1],[2,3],[4,2]],"q":[[1,2.375,"f(1)≈2,375"],[8,-9,"f(8)≈−9"]],"c":[{"interp":true,"n":"p(x)"}],"x":[-1,9]}' data-alt="Interpolar dentro de $[0,4]$ (en $x=1$) es razonable; extrapolar hasta $x=8$ da un valor absurdo"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> interpolar y evaluar. Para Simpson con 3 nodos equiespaciados: o la fórmula, o integrar la parábola (salen iguales).</div>

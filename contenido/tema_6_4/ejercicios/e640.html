@@ -1,0 +1,17 @@
+<p class="enun">Aproxima el valor de $I=\int_0^\pi\cos x\,dx$ aplicando la fórmula compuesta del trapecio en 4 intervalos. Compara el valor obtenido con el real.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El trapecio compuesto con $n=4$ y compararlo con el valor exacto.</dd>
+    <dt>Cómo lo pienso</dt><dd>$h=\frac\pi4$, nodos $0,\frac\pi4,\frac\pi2,\frac{3\pi}4,\pi$. El coseno es «antisimétrico» respecto de $\frac\pi2$: lo que sube a un lado baja al otro.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.6 (U p.267); Barrow (U Teor. 6.2, p.244).</dd>
+    <dt>Por dónde empiezo</dt><dd>Tabla de valores.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"p":[[0.0,1.0],[0.7853981633974483,0.7071067811865476],[1.5707963267948966,6.123233995736766e-17],[2.356194490192345,-0.7071067811865475],[3.141592653589793,-1.0]],"c":[{"e":"cos(x)","n":"cos x"},{"e":"x<=0.785398?(1.0+(-0.292893)/(0.785398)*(x-(0.0))):x<=1.570796?(0.707107+(-0.707107)/(0.785398)*(x-(0.785398))):x<=2.356194?(0.0+(-0.707107)/(0.785398)*(x-(1.570796))):(-0.707107+(-0.292893)/(0.785398)*(x-(2.356194)))","n":"trapecio, n=4","d":1}],"x":[0,3.141593],"y":[-1.1,1.1]}' data-alt="cos x en [0, pi] con los cinco nodos y la poligonal del trapecio"><figcaption>La curva $\cos x$, los cinco nodos $0,\frac\pi4,\dots,\pi$ y la poligonal del trapecio con $n=4$: lo que sobra por encima en una mitad se compensa con lo que falta en la otra. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Tabla:</b> $f(0)=1$, $f(\frac\pi4)=\frac{\sqrt2}2$, $f(\frac\pi2)=0$, $f(\frac{3\pi}4)=-\frac{\sqrt2}2$, $f(\pi)=-1$.</li>
+    <li><b>Extremos:</b> $1+(-1)=0$. <b>Centrales:</b> $\frac{\sqrt2}2+0-\frac{\sqrt2}2=0$.</li>
+    <li><b>Trapecio:</b> $I\approx\dfrac{\pi/4}2\,(0+2\cdot0)=0$.</li>
+    <li><b>Valor real:</b> $\int_0^\pi\cos x\,dx=[\operatorname{sen}x]_0^\pi=0$. <b>Coinciden.</b></li>
+    <li><b>Por qué:</b> el área positiva en $[0,\frac\pi2]$ y la negativa en $[\frac\pi2,\pi]$ son iguales, y como los nodos son simétricos respecto de $\frac\pi2$, también lo son los errores del trapecio en cada mitad, que se cancelan. Es una casualidad de la simetría, no una propiedad general (con $\int_0^{\pi/2}\cos x\,dx$ ya no es exacto: problema X2 más abajo).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> trapecio de una función: tabla de $f$ en los nodos y después $\frac h2(E+2C)$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Tomar $h=\pi$ (un solo intervalo) o $h=\frac\pi5$ (confundir 4 intervalos con 4 nodos).</p></div>

@@ -67,10 +67,16 @@ class Contenido(unittest.TestCase):
                     hoy[k] = hoy.get(k, 0) + 1
                 for k, n in t['num_ejercicios'].items():
                     self.assertGreaterEqual(hoy.get(k, 0), n, f'bajan los ejercicios de tipo «{k}»: {hoy.get(k, 0)} < {n} (si es deliberado, actualiza num_ejercicios)')
-                # en la página: cada ejercicio aparece una vez
-                pagina = leer(TEMAS / t['archivo'])
-                self.assertEqual(len(re.findall(r'<(?:article class="ejer"|details class="(?:sol|pr)")', pagina)) - len(re.findall(r'<article class="ejer"[^>]*>.*?<details class="sol"', pagina, re.S)),
-                                 sum(hoy.values()))
+                # cada ejercicio aparece una vez entre los bloques del tema (la página es idéntica: ver test siguiente)
+                def refs(bs):
+                    for b in bs:
+                        if b.get('t') == 'ej':
+                            yield b['ref']
+                        for h in b.get('hijos', []) or []:
+                            yield from refs([h])
+                lista = list(refs(t['bloques']))
+                self.assertEqual(len(lista), len(set(lista)), 'ejercicio repetido en bloques')
+                self.assertEqual(sorted(lista), sorted(j.stem for j in (d / 'ejercicios').glob('*.json')), 'ejercicio sin bloque o bloque sin ejercicio')
 
     def test_pagina_generada_sin_retoques_a_mano(self):
         for clave, d, t in temas_datos():

@@ -1,0 +1,23 @@
+<p class="enun">Para $f(x)=e^{x^k}$ con $k\in\{0,1,2,3,\dots\}$: calcule su dominio y su imagen según $k$; sus intervalos de crecimiento, decrecimiento, <b>concavidad y convexidad</b> para $k=2$ y $k=3$; sus asíntotas y extremos relativos para $k=2$ y $k=3$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar la curvatura de $f(x)=e^{x^k}$ para $k=2$ y $k=3$ (más dominio, imagen, asíntotas y extremos).</dd>
+    <dt>Cómo lo pienso</dt><dd>Con la regla de la cadena, $(e^u)''=(u''+u'^2)e^u$ y $e^u>0$ siempre: el signo de $f''$ lo da el polinomio $u''+u'^2$.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) y Def. 3.10 (p. 137); asíntotas (U p. 49).</dd>
+    <dt>Por dónde empiezo</dt><dd>Tomar $u=x^k$ y calcular $f'$ y $f''$ para $k=2$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"exp(x^2)","n":"k=2: e^(x²)"},{"e":"exp(x^3)","n":"k=3: e^(x³)"}],"x":[-2,1.6],"y":[-0.3,9],"q":[[-0.87358,0.513417,"(−0,874; 0,521)"],[0,1.0,"(0, 1)"]]}' data-alt="Graficas de e^(x^2) y e^(x^3)"><figcaption>Con $k=2$ la curva es un valle convexo en todo $\mathbb R$; con $k=3$ es creciente y tiene dos inflexiones, en $x=-\sqrt[3]{2/3}\approx-0{,}874$ y en $x=0$, y se pega al eje $x$ cuando $x\to-\infty$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+
+  <ol class="steps">
+    <li><b>Dominio:</b> $\mathbb R$ para todo $k$. <b>Imagen:</b> $k=0$: $x^0=1$ y $f\equiv e$, imagen $\{e\}$. $k\ge2$ par: $x^k\in[0,\infty)$, imagen $[1,\infty)$. $k$ impar: imagen $(0,\infty)$.</li>
+    <li><b>$k=2$.</b> $f'=2xe^{x^2}$: decreciente en $(-\infty,0]$, creciente en $[0,\infty)$; mínimo relativo y absoluto en $0$ ($f(0)=1$). $f''=(4x^2+2)e^{x^2}>0$: <b>convexa en $\mathbb R$</b>, sin inflexiones. Sin asíntotas ($f\to\infty$ y $f/x\to\pm\infty$ en $\pm\infty$).</li>
+    <li><b>$k=3$.</b> $f'=3x^2e^{x^3}\ge0$, que solo vale $0$ en $x=0$: <b>creciente en $\mathbb R$</b>; $x=0$ es crítico sin extremo. $f''=(6x+9x^4)e^{x^3}=3x(3x^3+2)e^{x^3}$, con ceros en $x=0$ y $x=-\sqrt[3]{2/3}\approx-0{,}874$.
+      <table>
+        <tr><th>intervalo</th><th>$3x$</th><th>$3x^3+2$</th><th>$f''$</th><th>$f$</th></tr>
+        <tr><td>$(-\infty,-\sqrt[3]{2/3})$</td><td>$-$</td><td>$-$</td><td>$+$</td><td>convexa</td></tr>
+        <tr><td>$(-\sqrt[3]{2/3},0)$</td><td>$-$</td><td>$+$</td><td>$-$</td><td>cóncava</td></tr>
+        <tr><td>$(0,\infty)$</td><td>$+$</td><td>$+$</td><td>$+$</td><td>convexa</td></tr>
+      </table></li>
+    <li><b>Dos inflexiones en $k=3$:</b> $x=-\sqrt[3]{2/3}$ y $x=0$. Asíntota horizontal $y=0$ cuando $x\to-\infty$ ($e^{x^3}\to0$); ninguna en $+\infty$.</li>
+  </ol>
+    <div class="recipe"><b>Receta:</b> $e^{u(x)}$: $f'=u'e^u$, $f''=(u''+u'^2)e^u$; tabla de signos del polinomio $u''+u'^2$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Quedarse con la inflexión que coincide con el punto crítico y olvidar la otra raíz de $f''$.</p></div>

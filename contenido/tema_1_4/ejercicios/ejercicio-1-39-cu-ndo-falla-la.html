@@ -1,0 +1,18 @@
+<p class="enun">¿Por qué no puede aplicarse la bisección a cualquier ecuación $f(x)=0$ en un intervalo cerrado $I$? Construir una $f$ para la que $f(x)=0$ tenga solución en $[0,1]$, $f(0)f(1)&lt;0$ y tal que el método no se pueda aplicar. ¿Se puede aplicar a cualquier $f(x)=0$ en un intervalo cerrado $I$ cuando $f$ sea continua? ¿Existen funciones continuas en $[0,1]$, con $f(c)=0$ para algún $c\in[0,1]$, a las que no se puede aplicar la bisección?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Explicar cuándo no puede aplicarse la bisección y dar ejemplos (discontinua; continua sin cambio de signo).</dd>
+    <dt>Cómo lo pienso</dt><dd>El método se apoya en Bolzano en cada paso: necesita continuidad y un cambio de signo en los extremos. Si falta una de las dos, puede engañarse o ni empezar.</dd>
+    <dt>Qué uso</dt><dd>Bolzano (U p.52); bisección (U pp.53-54).</dd>
+    <dt>Por dónde empiezo</dt><dd>Construyo una $f$ con un salto que pase de $-1$ a $1$ sin raíz.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>En qué se apoya el método.</b> En cada paso usa <b>Bolzano</b> (U pp.53-54): un cambio de signo en los extremos de un subintervalo garantiza una raíz en él, pero solo si $f$ es <b>continua</b>. Sin continuidad, un cambio de signo puede deberse a un salto, y el método puede quedarse con una mitad donde no hay raíz.</li>
+    <li><b>Ejemplo analítico</b> (propio, reproduce la figura de E p.40):
+      $$f(x)=\begin{cases}-1,&amp;0\le x\le0{,}3,\\1,&amp;0{,}3&lt;x\le0{,}6,\\x-0{,}8,&amp;0{,}6&lt;x\le1.\end{cases}$$
+      $f(0)=-1$ y $f(1)=0{,}2$, así que $f(0)f(1)&lt;0$; la única raíz es $x=0{,}8$. Primer paso: $c_1=0{,}5$ y $f(0{,}5)=1&gt;0$: hay cambio de signo en $[0,0{,}5]$ y el método se queda con esa mitad, <b>donde no hay raíz</b>. Los intervalos siguientes se cierran sobre el salto $x=0{,}3$, donde $f(0{,}3)=-1\neq0$. (Simulado: tras 12 iteraciones, $c\approx0{,}30005$.)</li>
+    <li><b>¿Basta con que $f$ sea continua?</b> No. Hace falta además $f(a)f(b)&lt;0$; si no, el método ni puede empezar. Ejemplo: $f(x)=(x-\frac13)(x-\frac23)$ en $[0,1]$ tiene dos raíces, pero $f(0)=f(1)=\frac29&gt;0$.</li>
+    <li><b>Continua, con raíz y sin bisección posible.</b> $f(x)=(x-0{,}6)^2$ en $[0,1]$ tiene la raíz $0{,}6$, pero $f\ge0$ en todo el intervalo: no hay cambio de signo en ningún subintervalo. La raíz se ha puesto en $0{,}6$ y no en $\frac12$ porque, si estuviera en $\frac12$, el primer punto medio la encontraría por casualidad.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> antes de biseccionar comprueba: (1) continuidad en $[a,b]$ y (2) $f(a)f(b)&lt;0$. La bisección no detecta raíces en las que la función no cambia de signo (raíces dobles).</div>
+  <p><b>Error típico:</b> creer que basta $f(a)f(b)&lt;0$, o que basta la continuidad.</p>
+  <p class="l4-teo">Teoría: U Bolzano, p. 52; método de bisección, pp. 53-54.</p>

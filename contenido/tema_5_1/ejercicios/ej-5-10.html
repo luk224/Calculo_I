@@ -1,0 +1,20 @@
+<p class="enun">Sea $f(x,y)=\dfrac{x^2+y^2}{\ln(1-x^2-y^2)}$ si $(x,y)\in S\setminus\{(0,0)\}$, $f(0,0)=-1$, con $S=\{x^2+y^2<1\}$. Estudia si es continua y si es diferenciable en $(0,0)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar la continuidad y la diferenciabilidad en $(0,0)$ de $\frac{x^2+y^2}{\ln(1-x^2-y^2)}$ con $f(0,0)=-1$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La función solo depende de $u=x^2+y^2$, la distancia al origen al cuadrado: el problema de dos variables se convierte en límites de una variable.</dd>
+    <dt>Qué uso</dt><dd>Def. 5.1 (U p.189); regla de L'Hôpital (U §2.3.2, p.82).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo $f=\varphi(u)$ con $u=x^2+y^2$ y calculo $\lim_{u\to0^+}\varphi(u)$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Reducir:</b> con $u=x^2+y^2=\rho^2$, $f=\varphi(u)=\frac u{\ln(1-u)}$ para $0&lt;u&lt;1$.</li>
+    <li><b>Continuidad:</b> $\lim_{u\to0^+}\frac u{\ln(1-u)}$ es $\frac00$; L'Hôpital: $\frac1{-1/(1-u)}=-(1-u)\to-1$. Como $u=\rho^2\to0$ y no interviene $\theta$, $\lim_{(x,y)\to(0,0)}f=-1=f(0,0)$: <b>continua</b>.</li>
+    <li><b>Preparar el límite clave.</b> $G(u)=\varphi(u)+1=\frac{u+\ln(1-u)}{\ln(1-u)}$ (es $f-f(0,0)$). Queremos $\lim_{u\to0^+}\frac{G(u)}u$; escribimos $\frac{G(u)}u=\dfrac{\frac{u+\ln(1-u)}{u^2}}{\frac{\ln(1-u)}u}$.</li>
+    <li><b>Numerador</b> ($\frac00$, L'Hôpital): $\frac{1-\frac1{1-u}}{2u}=\frac{-1}{2(1-u)}\to-\frac12$.</li>
+    <li><b>Denominador</b> ($\frac00$, L'Hôpital): $\frac{-1/(1-u)}1\to-1$.</li>
+    <li><b>Cociente:</b> $\frac{G(u)}u\to\frac{-1/2}{-1}=\frac12$.</li>
+    <li><b>Parcial en $x$:</b> $\frac{f(h,0)-f(0,0)}h=\frac{G(h^2)}h=h\cdot\frac{G(h^2)}{h^2}\to0\cdot\frac12=0$. Igual en $y$ por simetría: $\nabla f(0,0)=(0,0)$.</li>
+    <li><b>Cociente de diferenciabilidad:</b> $Q=\frac{f(h,k)+1}{\rho}=\frac{G(\rho^2)}\rho=\rho\cdot\frac{G(\rho^2)}{\rho^2}\to0\cdot\frac12=0$, sin dependencia de $\theta$: el límite doble es $0$.</li>
+  </ol>
+  <p><b>Conclusión:</b> $f$ es <b>continua</b> y <b>diferenciable</b> en $(0,0)$, con $Df(0,0)=0$ y plano tangente $z=-1$.</p>
+  <div class="recipe"><b>Receta:</b> si $f$ depende solo de $x^2+y^2$, continuidad, parciales y cociente se reducen a límites de <b>una</b> variable: hazlos una vez y reutilízalos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Restar $f(0,0)$ con el signo cambiado: aquí $f(0,0)=-1$, así que en el numerador aparece $+1$.</p></div>

@@ -1,0 +1,17 @@
+<div class="box ex"><span class="h">Ejemplo 6.1 de U · área bajo $f(x)=e^x$ en $[0,1]$</span>
+  <ol class="steps">
+    <li><b>Dividir en $n$ trozos iguales:</b> $\left[0,\tfrac1n\right],\left[\tfrac1n,\tfrac2n\right],\dots,\left[\tfrac{n-1}n,1\right]$. La base de cada rectángulo es $\frac1n$.</li>
+    <li><b>Altura del rectángulo $i$:</b> la de la función en su extremo izquierdo, $f\!\left(\frac{i-1}n\right)=e^{(i-1)/n}$.</li>
+    <li><b>Área del rectángulo $i$:</b> base por altura, $\frac1n\,e^{(i-1)/n}$.</li>
+    <li><b>Sumar:</b> $S_n=\frac1n\left(e^0+e^{1/n}+e^{2/n}+\dots+e^{(n-1)/n}\right)=\frac1n\sum_{i=1}^ne^{(i-1)/n}$.</li>
+    <li><b>Reconocer una suma geométrica:</b> $n$ sumandos, primer término $1$ y razón $r=e^{1/n}$ (cada término es el anterior por $e^{1/n}$). Se usa $\sum_{k=0}^{n-1}r^k=\frac{1-r^n}{1-r}$, y como $r^n=e$, vale $\frac{1-r^n}{1-r}=\frac{1-e}{1-e^{1/n}}=\frac{e-1}{e^{1/n}-1}$, así que $$S_n=\frac1n\cdot\frac{e-1}{e^{1/n}-1}.$$</li>
+    <li><b>Límite:</b> $A=\lim_{n\to\infty}S_n=(e-1)\lim_{n\to\infty}\dfrac{1/n}{e^{1/n}-1}$. Para aplicar L'Hôpital hay que pasar de la variable $n$ a una real $t=\frac1n$ (si $n\to\infty$, $t\to0^+$), con lo que el cociente es $\frac t{e^t-1}$, una indeterminación $\frac00$. Por la regla de L'Hôpital (U §2.3, p.82), $\lim_{t\to0^+}\frac t{e^t-1}=\lim_{t\to0^+}\frac1{e^t}=1$. Por tanto $$A=e-1\approx1{,}7183.$$</li>
+  </ol>
+  <table>
+    <caption>Cómo se acerca $S_n$ a $e-1$ (extremo izquierdo)</caption>
+    <tr><th scope="row">$n$</th><td>$1$</td><td>$2$</td><td>$5$</td><td>$10$</td><td>$100$</td></tr>
+    <tr><th scope="row">$S_n$</th><td>$1$</td><td>$1{,}3244$</td><td>$1{,}5522$</td><td>$1{,}6338$</td><td>$1{,}7097$</td></tr>
+  </table>
+  <div class="recipe"><b>Receta:</b> trocear en $n$ partes iguales, elegir la altura en un extremo, sumar (aquí, suma geométrica) y pasar al límite en $n$.</div>
+  <span class="src" data-l="U" data-ref="U Ejemplo 6.1, pp. 236-238">U pp.236-238</span>
+</div>

@@ -1,0 +1,18 @@
+<p class="enun">Sea $f(x,y)=(x^2+y^2)\operatorname{sen}\dfrac1{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Estudia su continuidad.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar la continuidad de $f=(x^2+y^2)\operatorname{sen}\frac1{x^2+y^2}$, con $f(0,0)=0$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Fuera del origen no hay problema. En el origen, «algo que tiende a $0$» ($x^2+y^2$) por «algo acotado» (el seno) tiende a $0$, justo $f(0,0)$.</dd>
+    <dt>Qué uso</dt><dd>Polares y cotas (U p.165); continuidad (Def. 4.5, p.166).</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar la continuidad fuera del origen y pasar a polares para el límite en $(0,0)$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"x^2*sin(1/x^2)","n":"ρ² sen(1/ρ²)"},{"e":"x^2","n":"ρ²","d":1}],"x":[0,0.6],"y":[-0.4,0.4],"ex":"ρ","ey":"f"}' data-alt="rho^2 sen(1/rho^2) encerrada entre rho^2 y -rho^2"><figcaption>En polares $f=\rho^2\operatorname{sen}\frac1{\rho^2}$: oscila sin parar al acercarse a $\rho=0$, pero queda encerrada por $\pm\rho^2$ y por eso tiende a $0$. (Se dibuja solo la cota superior $\rho^2$.) Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Fuera del origen:</b> composición, cociente (denominador $\ne0$) y producto de continuas. <b>Continua en $\mathbb R^2\setminus\{(0,0)\}$.</b></li>
+    <li><b>En el origen</b> hay que ver si $\lim_{(x,y)\to(0,0)}f=0=f(0,0)$. Sustituir da «$0\cdot\operatorname{sen}(\infty)$», sin sentido: hay que acotar.</li>
+    <li><b>Polares</b> (U p.165): $x^2+y^2=\rho^2$, así que $F(\rho,\theta)=\rho^2\operatorname{sen}\dfrac1{\rho^2}$ (ni siquiera depende de $\theta$).</li>
+    <li><b>Acotar:</b> $|F-0|=\rho^2\left|\operatorname{sen}\dfrac1{\rho^2}\right|\le\rho^2=:h(\rho)\to0$. Por el caso 2 de U p.165, $\lim_{(x,y)\to(0,0)}f=0$.</li>
+    <li><i>Sin polares:</i> $\lim_{(x,y)\to(0,0)}(x^2+y^2)=0$ y el seno está acotado por $1$; «infinitésimo por acotada» (U p.165).</li>
+    <li><b>Conclusión:</b> el límite vale $0=f(0,0)$: <b>$f$ es continua en todo $\mathbb R^2$.</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si aparece $\operatorname{sen}(\text{algo que explota})$ o $\cos(\dots)$ multiplicado por algo que tiende a $0$: «infinitésimo por acotada».</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Intentar calcular el límite de $\operatorname{sen}\frac1{x^2+y^2}$ (no existe) y concluir que el producto tampoco lo tiene.</p></div>

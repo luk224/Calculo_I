@@ -1,0 +1,18 @@
+<p class="enun">Dada $f(x)=\begin{cases}3+x,&x\le1,\\4x,&x\gt1,\end{cases}$ el valor de $\int_{-1}^3f(x)\,dx$ ¿se obtiene de forma exacta por la fórmula compuesta del trapecio con un número par de subintervalos, todos de la misma longitud?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si el trapecio compuesto da el valor exacto cuando $n$ es par.</dd>
+    <dt>Cómo lo pienso</dt><dd>La gráfica es una recta en $[-1,1]$ y otra en $[1,3]$, con un «codo» en $x=1$. El trapecio es exacto en un subintervalo donde $f$ es una recta; el único problema es un subintervalo que contenga el codo en su interior.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.6 (U p.267); Teor. 6.3 con $M_2=0$ en cada tramo recto (U p.269); aditividad (U p.264).</dd>
+    <dt>Por dónde empiezo</dt><dd>¿Cuándo es $x=1$ un nodo?</dd>
+  </dl></div>
+  <figure class="bookfig"><img src="../assets/img/fig_e_6_38.png" alt="Dos gráficas de f en [−1,3]: a la izquierda un trapecio compuesto con un subintervalo que contiene el codo en x=1 (el trapecio recorta la región); a la derecha con x=1 como nodo, donde el trapecio coincide con la región" loading="lazy">
+    <figcaption>Ej. 6.38: con $x=1$ dentro de un subintervalo (izquierda) el trapecio no coincide con la región; con $x=1$ como nodo (derecha) sí. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.38, figuras, p. 243">E p.243</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Nodos:</b> con $n$ subintervalos, $h=\frac4n$ y $x_k=-1+\frac{4k}n$. Es $x_k=1\iff\frac{4k}n=2\iff k=\frac n2$, entero <b>si y solo si $n$ es par</b>.</li>
+    <li><b>Si $n$ es par</b>, cada subintervalo está entero en $[-1,1]$ o entero en $[1,3]$, donde $f$ es una recta (en $[1,3]$ es la recta $y=4x$ <b>incluido el extremo</b> $x=1$, donde $f(1)=4=4\cdot1$ coincide con $3+1$). En cada uno, la recta que usa el trapecio es la propia $f$: da su integral exacta. Sumando (aditividad), el trapecio compuesto da $\int_{-1}^3f$ exacta. <b>Respuesta: sí.</b></li>
+    <li><b>Valor exacto:</b> $\int_{-1}^1(3+x)dx=\big[3x+\frac{x^2}2\big]_{-1}^1=6$; $\int_1^34x\,dx=[2x^2]_1^3=16$; total $22$.</li>
+    <li><b>Comprobación con $n=4$</b> ($h=1$, nodos $-1,0,1,2,3$, valores $2,3,4,8,12$): $\frac12\big(2+12+2(3+4+8)\big)=\frac{44}2=22$ ✓.</li>
+    <li><b>Con $n$ impar no:</b> con $n=3$ el codo cae dentro de un subintervalo y el trapecio da $\frac{68}3\ne22$; con $n=1$ da $\frac{2+12}2\cdot4=28$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> el trapecio compuesto es exacto cuando $f$ es una recta en cada subintervalo: los puntos donde cambia la fórmula deben ser nodos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar que «$f$ lineal a trozos» basta sin comprobar dónde caen los nodos.</p></div>

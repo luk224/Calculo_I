@@ -1,0 +1,35 @@
+<p class="enun">Dada $f(x)=\cos x$: (a) Calcule de manera razonada la serie de Taylor de $f$ centrada en $x=\frac12$. (b) Usando el resto de Lagrange de orden $n$, calcule $\cos\left(\frac14\right)$ con un error en valor absoluto menor que $0{,}002$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>(a) La serie de Taylor de $\cos x$ en $x_0=\frac12$. (b) Calcular $\cos\frac14$ con error menor que $0{,}002$ usando el resto de Lagrange.</dd>
+    <dt>Cómo lo pienso</dt><dd>(a) Las derivadas de $\cos$ se repiten cada 4: basta evaluar $\cos$ y $\operatorname{sen}$ en $\frac12$. (b) Se busca el primer $n$ cuya <b>cota</b> del resto sea menor que $0{,}002$: con $n=2$ la cota es $0{,}0026$ y no basta; con $n=3$ sí.</dd>
+    <dt>Qué uso</dt><dd>Serie de Taylor (U §3.2.3); resto de Lagrange (U Prop. 3.2 y Def. 3.3, p.111).</dd>
+    <dt>Por dónde empiezo</dt><dd>(a) Escribir el ciclo de derivadas de $\cos$. (b) Elegir el centro $0$, donde las derivadas son exactas.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"cos(x)","n":"cos x"},{"e":"1-x^2/2","n":"1−x²/2"}],"x":[-2,2],"y":[-1.5,1.2],"q":[[0.25,0.968912,"(1/4, cos 1/4)"]]}' data-alt="coseno y 1-x^2/2 con el punto x=1/4"><figcaption>El coseno y su polinomio de Taylor en $0$ (el de grado $3$ es $1-\frac{x^2}{2}$, pues no hay término cúbico). En $x=\frac14$ las dos curvas apenas se distinguen: es el valor $\cos\frac14\approx0{,}9689$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+
+  <p><b>(a) Serie en $x_0=\frac12$</b></p>
+  <ol class="steps">
+    <li><b>Derivadas:</b> $f'=-\operatorname{sen}x$, $f''=-\cos x$, $f'''=\operatorname{sen}x$, $f^{(4}=\cos x$, y el ciclo de 4 se repite.</li>
+    <li><b>En $\frac12$:</b> $f^{(4m}(\tfrac12)=\cos\tfrac12$, $f^{(4m+1}(\tfrac12)=-\operatorname{sen}\tfrac12$, $f^{(4m+2}(\tfrac12)=-\cos\tfrac12$, $f^{(4m+3}(\tfrac12)=\operatorname{sen}\tfrac12$.</li>
+    <li><b>Serie:</b>
+    $$\begin{aligned}\cos x&=\cos\tfrac12-\operatorname{sen}\tfrac12\left(x-\tfrac12\right)-\frac{\cos\frac12}{2!}\left(x-\tfrac12\right)^2\\&\quad+\frac{\operatorname{sen}\frac12}{3!}\left(x-\tfrac12\right)^3+\frac{\cos\frac12}{4!}\left(x-\tfrac12\right)^4-\cdots\end{aligned}$$
+    Radio $\infty$: en valor absoluto, el sumando $n$ es como mucho $\frac{|x-\frac12|^n}{n!}$, que es el sumando de la serie de $e^{|x-1/2|}$ (convergente), así que por comparación converge para todo $x$. Que la suma sea precisamente $\cos x$ (y no otra función) lo asegura que $\cos$ es analítica (U p.118).</li>
+  </ol>
+  <p><b>(b) $\cos\frac14$ con error $&lt;0{,}002$</b> (el enunciado no fija el centro; se elige $x_0=0$)</p>
+  <ol class="steps">
+    <li><b>¿Por qué centrar en $x_0=0$ y no en $\frac12$?</b> En $0$ se conocen exactamente las derivadas ($\cos0=1$, $\operatorname{sen}0=0$); en $\frac12$ aparecerían $\cos\frac12$ y $\operatorname{sen}\frac12$, tan difíciles de calcular como el propio $\cos\frac14$. Se centra donde las derivadas salen exactas y el punto $\frac14$ queda cerca.</li>
+    <li><b>Resto de Lagrange</b> (U Prop. 3.2 y Def. 3.3, p. 111): $R_n(\tfrac14)=\frac{f^{(n+1}(c)}{(n+1)!}\left(\tfrac14\right)^{n+1}$, con $c\in(0,\tfrac14)$.</li>
+    <li><b>Cota.</b> $|f^{(n+1}(c)|\le1$ (es siempre $\pm\operatorname{sen}$ o $\pm\cos$), luego $|R_n(\tfrac14)|\le\frac{(1/4)^{n+1}}{(n+1)!}$.</li>
+    <li><b>Tabla de cotas:</b>
+      <table>
+        <tr><th>$n$</th><th>cota $\frac{(1/4)^{n+1}}{(n+1)!}$</th><th>¿$&lt;0{,}002$?</th></tr>
+        <tr><td>0</td><td>$0{,}25$</td><td>no</td></tr>
+        <tr><td>1</td><td>$0{,}03125$</td><td>no</td></tr>
+        <tr><td>2</td><td>$\frac1{384}\approx0{,}002604$</td><td><b>no</b></td></tr>
+        <tr><td>3</td><td>$\frac1{6144}\approx0{,}000163$</td><td><b>sí</b></td></tr>
+      </table></li>
+    <li><b>Hace falta $n=3$.</b> El polinomio de Maclaurin de orden 3 de $\cos x$ es $p_3(x)=1-\frac{x^2}2$, porque $f'''(0)=\operatorname{sen}0=0$: <b>$p_3=p_2$</b> (truco de la unidad 3.1).</li>
+    <li><b>Resultado.</b> $\cos\frac14\approx p_3(\tfrac14)=1-\frac1{32}=\frac{31}{32}=0{,}96875$, con error garantizado $\le0{,}000163&lt;0{,}002$. (Valor real $0{,}9689124$; error real $0{,}000162$.)</li>
+  </ol>
+    <div class="recipe"><b>Receta:</b> (a) derivadas cíclicas: escribir el ciclo y evaluar en $x_0$. (b) Tabular la cota $\frac{M}{(n+1)!}|x-x_0|^{n+1}$ para $n=0,1,2,\dots$ hasta que sea <b>menor</b> que la tolerancia. Si $f^{(n+1}(x_0)=0$, entonces $p_n=p_{n+1}$ y se puede usar la cota de $R_{n+1}$, que es mejor.</div>
+  <p><b>Error típico:</b> dar por buena una cota «casi» menor que la tolerancia: $0{,}0026$ no es menor que $0{,}002$.</p>

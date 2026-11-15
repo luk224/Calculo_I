@@ -1,0 +1,23 @@
+<p class="enun">Para la serie con sucesión de sumas parciales $\{s_k\}$ dada por $s_k=\sum_{n=1}^ka_n$, donde $a_n=\dfrac{n^n}{1\cdot3\cdot5\cdots(2n-3)\cdot(2n-1)}$, se pide estudiar su carácter.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar el carácter de la serie de término $a_n=\frac{n^n}{1\cdot3\cdots(2n-1)}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El denominador es un producto que gana <b>un</b> factor por paso y el numerador es una potencia $n$-ésima: comparar cada término con el anterior simplifica casi todo. Si el cociente se queda por encima de $1$, los términos no se hacen pequeños.</dd>
+    <dt>Qué uso</dt><dd>Criterio del cociente (U p.38); $(1+\frac1n)^n\to e$ (Prop. 1.5, U p.31); condición necesaria (Prop. 1.6, U p.36).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo $a_{n+1}/a_n$ con $P_{n+1}=P_n(2n+1)$ y simplifico.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Tipo de serie.</b> Numerador y denominador positivos: $a_n&gt;0$. Se pueden usar cociente o raíz (U p.38).</li>
+    <li><b>Por qué el cociente.</b> Al pasar de $a_n$ a $a_{n+1}$ el denominador solo gana <b>un</b> factor, $2n+1$. En los productos «que se alargan» el cociente $a_{n+1}/a_n$ simplifica casi todo; la raíz $n$-ésima de ese producto es difícil.</li>
+    <li><b>Calcular el cociente.</b> Sea $P_n=1\cdot3\cdots(2n-1)$, de modo que $P_{n+1}=P_n(2n+1)$:
+      $$\frac{a_{n+1}}{a_n}=\frac{(n+1)^{n+1}}{P_n(2n+1)}\cdot\frac{P_n}{n^n}=\frac{(n+1)^{n+1}}{(2n+1)\,n^n}=\Big(\frac{n+1}n\Big)^n\cdot\frac{n+1}{2n+1}.$$
+      (Se separa $(n+1)^{n+1}=(n+1)^n(n+1)$ para agrupar $\frac{(n+1)^n}{n^n}$.)</li>
+    <li><b>Límite de cada factor.</b> $\big(\frac{n+1}n\big)^n=\big(1+\frac1n\big)^n\to e$ (Prop. 1.5, U p.31). $\frac{n+1}{2n+1}=\frac{1+1/n}{2+1/n}\to\frac12$ (Prop. 1.3, U p.26). Ambos límites existen y son finitos, luego
+      $$\lim_{n\to\infty}\frac{a_{n+1}}{a_n}=\frac e2\approx1{,}359&gt;1.$$</li>
+    <li><b>Criterio del cociente (U p.38):</b> $\ell=e/2\in(1,\infty]$ $\Rightarrow$ la serie <b>no converge (diverge)</b>.</li>
+    <li><b>Comprobación elemental (propia).</b> Para todo $n\ge1$, $(1+\frac1n)^n\ge1+n\cdot\frac1n=2$ (primeros términos del binomio, todos positivos) y $\frac{n+1}{2n+1}&gt;\frac12$, así que $\frac{a_{n+1}}{a_n}&gt;1$: $\{a_n\}$ es creciente y $a_n\ge a_1=1$, luego $a_n\not\to0$ y la serie diverge también por la Prop. 1.6. (Numéricamente $a_{10}\approx15{,}3$.)</li>
+  </ol>
+  <p><b>Respuesta:</b> diverge.</p>
+  <figure class="graf" data-g='{"p":[[1,1.0],[2,1.3333],[3,1.8],[4,2.4381],[5,3.3069],[6,4.4883],[7,6.0942],[8,8.2768],[9,11.2428],[10,15.2735]],"x":[0,11],"ex":"n","ey":"aₙ","c":[]}' data-alt="Términos n^n/(1·3·…·(2n−1)) que crecen"><figcaption>Los términos $a_n=\frac{n^n}{1\cdot3\cdots(2n-1)}$ <b>crecen</b>: no tienden a $0$, así que la serie no puede converger. Es coherente con el cociente $\frac{a_{n+1}}{a_n}\to\frac e2&gt;1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> productos que se alargan un factor por paso ($n!$, $1\cdot3\cdots(2n-1)$, $a^n$, $n^n$) $\Rightarrow$ <b>criterio del cociente</b>; simplifica $a_{n+1}/a_n$ antes de tomar límites y busca la forma $(1+1/n)^n\to e$.</div>
+  <p><b>Error típico:</b> escribir $a_{n+1}$ cambiando solo el numerador y olvidar que el denominador gana el factor $2n+1$ (los demás errores del cociente, en el apartado 5).</p>
+  <p><i>Teoría:</i> U criterio del cociente p.38; Prop. 1.5 p.31; Prop. 1.3 p.26; Prop. 1.6 p.36. Nota: $1\cdot3\cdots(2n-1)=\frac{(2n)!}{2^nn!}$.</p>

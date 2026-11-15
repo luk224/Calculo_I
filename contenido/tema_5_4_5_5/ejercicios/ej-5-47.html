@@ -1,0 +1,20 @@
+<p class="enun">Sabiendo que hay una distancia mínima entre el punto $(0,0,0)$ y la superficie dada por $z=xy+4$, determínala.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>La menor distancia del origen a los puntos de la superficie.</dd>
+    <dt>Cómo lo pienso</dt><dd>Minimizar la distancia es lo mismo que minimizar su cuadrado ($t\mapsto t^2$ es creciente para $t\ge0$), que no tiene raíz. Restricción: estar en la superficie.</dd>
+    <dt>Qué uso</dt><dd>Lagrange en $\mathbb R^3$ (U p. 228).</dd>
+    <dt>Por dónde empiezo</dt><dd>$f=x^2+y^2+z^2$, $g=xy+4-z$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li>$\nabla g=(y,x,-1)$: nunca es nulo (tercera componente $-1$).</li>
+    <li>$F=x^2+y^2+z^2+\lambda(xy+4-z)$: $2x+\lambda y=0$, $2y+\lambda x=0$, $2z-\lambda=0$, $xy+4-z=0$.</li>
+    <li><b>Caso $x=0$:</b> la 1.ª da $\lambda y=0$, la 2.ª $2y=0$, luego $y=0$; la 4.ª, $z=4$; $\lambda=8$. Punto $(0,0,4)$, $f=16$.</li>
+    <li><b>Caso $x\ne0$:</b> de la 2.ª, $y=-\frac{\lambda x}2$; en la 1.ª: $2x-\frac{\lambda^2x}2=0$, y dividiendo entre $x\ne0$: $\lambda^2=4$.
+      <ul>
+        <li>$\lambda=2$: $y=-x$, $z=1$; la 4.ª: $-x^2+4-1=0$, $x=\pm\sqrt3$. Puntos $(\sqrt3,-\sqrt3,1)$ y $(-\sqrt3,\sqrt3,1)$, $f=3+3+1=7$.</li>
+        <li>$\lambda=-2$: $y=x$, $z=-1$; la 4.ª: $x^2+5=0$: sin solución real.</li>
+      </ul></li>
+    <li>Se sabe que hay mínimo y está entre los candidatos: el menor valor de $f$ es $7$. <b>Distancia mínima $\sqrt7$</b>, en $(\sqrt3,-\sqrt3,1)$ y $(-\sqrt3,\sqrt3,1)$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> distancia de un punto a una curva o superficie: minimizar el <b>cuadrado</b> de la distancia con Lagrange; al final, sacar la raíz.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Quedarse con $(0,0,4)$ porque «es el punto más cercano a la vista» (el más bajo sobre el eje $z$): hay puntos de la silla más cerca del origen. O dar $7$ como distancia en lugar de $\sqrt7$.</p></div>

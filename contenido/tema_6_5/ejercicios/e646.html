@@ -1,0 +1,17 @@
+<p class="enun">Utilizando la definición calcula la integral impropia $\int_0^1\ln x\,dx$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El valor por la definición de segunda especie.</dd>
+    <dt>Cómo lo pienso</dt><dd>$\ln x\to-\infty$ cuando $x\to0^+$: el «área» está bajo el eje y es una pared infinitamente profunda pero estrecha.</dd>
+    <dt>Qué uso</dt><dd>Def. 6.10 (U p.275); primitiva de $\ln x$ por partes (U Ej. 6.18, p.252); L'Hôpital para $0\cdot\infty$ (U pp.82-84).</dd>
+    <dt>Por dónde empiezo</dt><dd>$\ln x$ es continua en $(0,1]$ y $\lim_{x\to0^+}\ln x=-\infty$: segunda especie con el problema en $a=0$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"log(x)","n":"ln x"}],"q":[[1,0,"(1, 0)"]],"x":[0,1],"y":[-5,1]}' data-alt="ln x en (0,1]"><figcaption>La gráfica de $\ln x$ en $(0,1]$: baja sin cota al acercarse a $0$ (segunda especie), pero el área que encierra con el eje es finita, $1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Definición:</b> $\int_0^1\ln x\,dx=\lim_{c\to0^+}\int_c^1\ln x\,dx$.</li>
+    <li><b>Primitiva (partes, $u=\ln x$, $v'=1$):</b> $\int\ln x\,dx=x\ln x-\int x\cdot\frac1x\,dx=x\ln x-x$.</li>
+    <li><b>Barrow en $[c,1]$:</b> $(1\cdot\ln1-1)-(c\ln c-c)=-1-c\ln c+c$.</li>
+    <li><b>Límite delicado:</b> $c\ln c$ es $0\cdot(-\infty)$. Se escribe $c\ln c=\frac{\ln c}{1/c}$ y L'Hôpital: $\lim_{c\to0^+}\frac{1/c}{-1/c^2}=\lim_{c\to0^+}(-c)=0$.</li>
+    <li><b>Resultado:</b> $\lim_{c\to0^+}(-1-c\ln c+c)=-1$. <b>Converge y vale $-1$.</b></li>
+    <li><b>Comprobación de sentido:</b> $\ln x&lt;0$ en $(0,1)$, el resultado debe ser negativo. ✓</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> segunda especie: Barrow en $[c,b]$ y $c\to a^+$; los límites $0\cdot\infty$ se pasan a cociente para L'Hôpital.</div>

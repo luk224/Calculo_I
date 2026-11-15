@@ -1,0 +1,23 @@
+<p class="enun">El polinomio $x^3-3$ tiene una única raíz en el intervalo $[0,4]$. Aproximarla realizando 3 iteraciones con el método de bisección y acotar el error cometido.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Aproximar con 3 iteraciones de bisección la raíz de $x^3-3$ en $[0,4]$ y acotar el error.</dd>
+    <dt>Cómo lo pienso</dt><dd>Voy partiendo el intervalo por la mitad y me quedo con la mitad en la que $f$ cambia de signo; ahí está la raíz. Cada paso divide por $2$ la longitud.</dd>
+    <dt>Qué uso</dt><dd>Bolzano (U p.52); bisección y cota de error $\frac{b-a}{2^n}$ (U pp.53-54).</dd>
+    <dt>Por dónde empiezo</dt><dd>Compruebo $f(0)f(4)<0$ y calculo el primer punto medio $c_1=2$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Hipótesis.</b> $f(x)=x^3-3$ es continua, $f(0)=-3&lt;0$ y $f(4)=61&gt;0$: Bolzano garantiza una raíz. Es única porque $x^3$ es estrictamente creciente. La raíz es $\sqrt[3]3$.</li>
+    <li><b>Iteraciones</b> (la mitad que se conserva es siempre la que tiene signos opuestos en sus extremos):
+      <table>
+        <tr><th>$n$</th><th>$[a,b]$</th><th>$c_n$</th><th>$f(c_n)$</th><th>intervalo siguiente</th></tr>
+        <tr><td>1</td><td>$[0,4]$</td><td>$2$</td><td>$5&gt;0$</td><td>$[0,2]$</td></tr>
+        <tr><td>2</td><td>$[0,2]$</td><td>$1$</td><td>$-2&lt;0$</td><td>$[1,2]$</td></tr>
+        <tr><td>3</td><td>$[1,2]$</td><td>$1{,}5$</td><td>$0{,}375&gt;0$</td><td>$[1;1{,}5]$</td></tr>
+      </table>
+      <b>Aproximación:</b> $c_3=1{,}5$.</li>
+    <li><b>Cota del error (U p.54):</b> $|c_3-\sqrt[3]3|&lt;\frac{4-0}{2^3}=\frac12$. Comprobación: $\sqrt[3]3\approx1{,}44225$, así que el error real es $\approx0{,}0578$, muy por debajo de la cota (que es para el peor caso).</li>
+  </ol>
+  <figure class="graf" data-g='{"c":[{"e":"x**3-3","n":"f(x) = x³−3"}],"p":[[2,5,"c₁ = 2"],[1,-2,"c₂ = 1"],[1.5,0.375,"c₃ = 1,5"]],"q":[[1.44225,0,"raíz ≈ 1,442"]],"x":[0,2.5],"y":[-4,10]}' data-alt="Puntos medios de la bisección sobre x³−3"><figcaption>Los puntos medios $c_1=2$, $c_2=1$, $c_3=1{,}5$ (puntos) van encerrando la raíz $\sqrt[3]3\approx1{,}442$ (rombo): cada uno elige el lado en el que $f$ cambia de signo. (El intervalo inicial llega a $x=4$; el dibujo se corta en $2{,}5$.) Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> haz una tabla con $a$, $b$, $c$ y el signo de $f(c)$. Tras $n$ puntos medios, el error es menor que $\frac{b-a}{2^n}$.</div>
+  <p><b>Error típico:</b> los del apartado 10 (mitad equivocada, contar mal las iteraciones).</p>
+  <p class="l4-teo">Teoría: U método de bisección, pp. 53-54.</p>

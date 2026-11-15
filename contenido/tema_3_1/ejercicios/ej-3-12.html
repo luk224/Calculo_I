@@ -1,0 +1,18 @@
+<p class="enun">Sea $f(x)=\ln(\cos x)$. Determina el polinomio de Maclaurin de orden 3 y una cota del error en valor absoluto al aproximar $f$ por $p_3$ en $(-1,1)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $p_3$ de $\ln(\cos x)$ en $0$ y una cota del error en $(-1,1)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El polinomio sale con el método de siempre. La cota exige acotar $f^{(4}(c)$ para todo $c$ del intervalo: hay que mirar dónde es mayor, y eso pasa cerca de los extremos.</dd>
+    <dt>Qué uso</dt><dd>$p_3$ (U p.108); resto de Lagrange (U Prop. 3.2, p.111).</dd>
+    <dt>Por dónde empiezo</dt><dd>Compruebo que $\cos x>0$ en $(-1,1)$ y derivo cuatro veces.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"log(cos(x))","n":"f(x)=ln(cos x)"},{"e":"-x*x/2","n":"p₃(x)=−x²/2"}],"x":[-1.3,1.3],"y":[-2.5,0.2]}' data-alt="ln(cos x) y su polinomio de Maclaurin de orden 3"><figcaption>En $(-1,1)$ la diferencia entre $f$ y $p_3$ se ve sólo hacia los extremos. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Dominio.</b> En $(-1,1)$, $\cos x\ge\cos1&gt;0$ (pues $1&lt;\frac\pi2$): $f$ y sus derivadas están definidas y son continuas. Se cumplen las hipótesis de la Prop. 3.2.</li>
+    <li><b>Derivadas:</b> $f'=-\operatorname{tg}x$; $f''=-\frac1{\cos^2x}$; $f'''=-\frac{2\operatorname{sen}x}{\cos^3x}$; $f^{(4}=-2\,\dfrac{3-2\cos^2x}{\cos^4x}$ (usando $\operatorname{sen}^2=1-\cos^2$).</li>
+    <li><b>En $0$:</b> $f(0)=0$, $f'(0)=0$, $f''(0)=-1$, $f'''(0)=0$. Luego $\boxed{p_3(x)=-\tfrac12x^2}$.</li>
+    <li><b>Resto:</b> $|R_3(x)|=\dfrac{x^4}{12}\cdot\dfrac{3-2\cos^2c}{\cos^4c}$ con $c$ entre $0$ y $x$ (el numerador es $\ge1&gt;0$).</li>
+    <li><b>Caso peor en $c$.</b> Con $u=\cos^2c\in(\cos^21,1]$, la función $g(u)=\frac{3-2u}{u^2}$ es <b>decreciente</b> (al crecer $u$ el numerador positivo baja y el denominador sube). El caso peor es $\cos c$ lo más pequeño posible: $c$ cerca de $\pm1$.</li>
+    <li><b>Cota:</b> con $x^4&lt;1$, $|R_3(x)|&lt;\dfrac{3-2\cos^21}{12\cos^41}\approx2{,}363$ para todo $x\in(-1,1)$. Es válida pero muy pesimista: el supremo del error real en $(-1,1)$ es $|\ln\cos1+\frac12|\approx0{,}116$ (no se alcanza, pues el intervalo es abierto).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> al acotar un cociente $\frac{A(c)}{B(c)}$ con $A,B&gt;0$ hay que usar <b>a la vez</b> el máximo de $A$ y el mínimo de $B$ en el mismo intervalo de $c$; si dependen de la misma cantidad, estudia la función $g(u)$ completa.</div>
+<p><b>Teoría:</b> U pp.111-112.</p>

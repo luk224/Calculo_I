@@ -1,0 +1,23 @@
+<p class="enun">Sea $f:\mathbb R\to\mathbb R$ una función integrable en $\mathbb R$. Sean $a,b:\mathbb R\to\mathbb R$ funciones derivables en $\mathbb R$. Demuestra que $\displaystyle\frac{d}{dx}\left(\int_{a(x)}^{b(x)}f(t)\,dt\right)=f(b(x))\,b'(x)-f(a(x))\,a'(x)$. Aplica el resultado para calcular el valor de $\displaystyle\frac{d}{dx}\left(\int_{x^2}^{e^x}\cos t\,dt\right)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Probar la fórmula general para derivar una integral con los dos límites variables y aplicarla a un caso.</dd>
+    <dt>Cómo lo pienso</dt><dd>Partir la integral en un punto fijo $c$: quedan dos integrales con un solo límite variable cada una, que ya sé derivar (primer teorema, cambio de orden y regla de la cadena).</dd>
+    <dt>Qué uso</dt><dd>Aditividad (P5) y cambio de orden (P6) (U p.240); primer teorema (U Teor. 6.1, p.243); regla de la cadena (U p.79).</dd>
+    <dt>Por dónde empiezo</dt><dd>Definir $\Phi(u)=\int_c^uf(t)\,dt$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"sin(exp(x))-sin(x^2)","n":"∫ cos t dt de x² a eˣ"},{"e":"exp(x)*cos(exp(x))-2*x*cos(x^2)","n":"derivada"}],"x":[-1.5,1.5],"y":[-8,6]}' data-alt="La integral de cos t entre x² y e^x, y su derivada"><figcaption>La integral $\int_{x^2}^{e^x}\cos t\,dt=\operatorname{sen}(e^x)-\operatorname{sen}(x^2)$ y su derivada $e^x\cos(e^x)-2x\cos(x^2)$: donde la primera sube la segunda es positiva, y donde baja es negativa. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
+  <p><b>Nota sobre la hipótesis.</b> El primer teorema pide $f$ continua, así que la demostración se hace con $f$ continua. Si $f$ solo es integrable, la fórmula sigue valiendo en los $x$ donde $f$ es continua en $a(x)$ y en $b(x)$.</p>
+  <p><b>Demostración.</b></p>
+  <ol class="steps">
+    <li><b>Una función auxiliar.</b> Se fija $c\in\mathbb R$ (por ejemplo $c=0$) y se define $\Phi(u)=\int_c^uf(t)\,dt$. Por el primer teorema, $\Phi'(u)=f(u)$ para todo $u$.</li>
+    <li><b>Escribir la integral con $\Phi$.</b> Por (P5) y (P6): $\int_{a(x)}^{b(x)}f=\int_{a(x)}^cf+\int_c^{b(x)}f=-\int_c^{a(x)}f+\int_c^{b(x)}f=\Phi(b(x))-\Phi(a(x))$. (Las propiedades valen con cualquier orden de los extremos, así que no importa dónde caiga $c$.)</li>
+    <li><b>Derivar con la regla de la cadena.</b> $\Phi(b(x))$ es la composición de $\Phi$ con $b$: su derivada es $\Phi'(b(x))\,b'(x)=f(b(x))\,b'(x)$. Igual para $a$: $\frac{d}{dx}\int_{a(x)}^{b(x)}f=f(b(x))\,b'(x)-f(a(x))\,a'(x)$. $\blacksquare$</li>
+    <li><b>Casos particulares</b> (no hay nada nuevo): con $a(x)=c$ y $b(x)=x$ sale $f(x)$ (primer teorema); con $a(x)=x$ y $b(x)=c$ sale $-f(x)$ (E 6.14).</li>
+  </ol>
+  <p><b>Aplicación.</b></p>
+  <ol class="steps" start="5">
+    <li><b>Identificar las piezas.</b> $f(t)=\cos t$ (continua), $b(x)=e^x$, $b'(x)=e^x$, $a(x)=x^2$, $a'(x)=2x$.</li>
+    <li><b>Sustituir:</b> $\frac{d}{dx}\int_{x^2}^{e^x}\cos t\,dt=\cos(e^x)\,e^x-\cos(x^2)\cdot2x=e^x\cos(e^x)-2x\cos(x^2)$.</li>
+    <li><b>Comprobación con Barrow.</b> $\int_{x^2}^{e^x}\cos t\,dt=\operatorname{sen}(e^x)-\operatorname{sen}(x^2)$; derivando con la regla de la cadena se obtiene lo mismo.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\frac{d}{dx}\int_{a(x)}^{b(x)}f=f(\text{arriba})\cdot(\text{arriba})'-f(\text{abajo})\cdot(\text{abajo})'$. Se demuestra partiendo la integral en un punto fijo.</div>

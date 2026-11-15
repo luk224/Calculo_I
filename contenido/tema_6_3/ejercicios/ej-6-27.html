@@ -1,0 +1,19 @@
+<p class="enun">Calcula $\displaystyle I=\int\frac{\operatorname{tg}(2x+1)}{1+2\operatorname{tg}^2(2x+1)}\,dx$ utilizando un cambio de variable.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Una primitiva con un cambio de variable.</dd>
+    <dt>Cómo lo pienso</dt><dd>Solo aparece $\operatorname{tg}(2x+1)$, siempre con el mismo argumento: llamo $t$ a la tangente. Su derivada es $2(1+t^2)$, así que $dx$ se expresa en $t$ y queda una racional.</dd>
+    <dt>Qué uso</dt><dd>Cambio de variable (U pp.249-250); derivada de la tangente $(\operatorname{tg}u)'=(1+\operatorname{tg}^2u)u'$ (U §2.2, pp.79-80; tabla, fila 8, U p.248); fracciones simples (U p.255).</dd>
+    <dt>Por dónde empiezo</dt><dd>$t=\operatorname{tg}(2x+1)$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Cambio:</b> $t=\operatorname{tg}(2x+1)\Rightarrow dt=2(1+t^2)\,dx\Rightarrow dx=\dfrac{dt}{2(1+t^2)}$.</li>
+    <li><b>Sustituir:</b> $I=\displaystyle\int\frac{t}{1+2t^2}\cdot\frac{dt}{2(1+t^2)}=\frac12\int\frac{t}{(1+2t^2)(1+t^2)}dt$.</li>
+    <li><b>Fracciones simples</b> (dos irreducibles distintos): $\frac{t}{(1+2t^2)(1+t^2)}=\frac{at+b}{1+2t^2}+\frac{ct+d}{1+t^2}$. Quitando denominadores: $t=(at+b)(1+t^2)+(ct+d)(1+2t^2)$. Coeficientes: $t^3$: $a+2c=0$; $t^2$: $b+2d=0$; $t$: $a+c=1$; $t^0$: $b+d=0$. Sale $a=2$, $c=-1$, $b=d=0$:
+    $$\frac{t}{(1+2t^2)(1+t^2)}=\frac{2t}{1+2t^2}-\frac{t}{1+t^2}.$$</li>
+    <li><b>Integrar</b> (tipo $\frac{f'}f$, ajustando constantes: $(1+2t^2)'=4t$, $(1+t^2)'=2t$): $I=\frac12\Big[\frac12\ln(1+2t^2)-\frac12\ln(1+t^2)\Big]+C=\frac14\ln\frac{1+2t^2}{1+t^2}+C$.</li>
+    <li><b>Deshacer el cambio y simplificar.</b> Con $\operatorname{tg}=\frac{\operatorname{sen}}{\cos}$ y $1+\operatorname{tg}^2=\frac1{\cos^2}$ (argumento $2x+1$):
+    $$\frac{1+2\operatorname{tg}^2}{1+\operatorname{tg}^2}=\cos^2+2\operatorname{sen}^2=1+\operatorname{sen}^2.$$</li>
+    <li><b>Resultado:</b> $I=\frac14\ln\big(1+\operatorname{sen}^2(2x+1)\big)+C$ (sin valor absoluto: el argumento es $\ge1$).</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> integrando que solo depende de $\operatorname{tg}(u)$: cambio $t=\operatorname{tg}(u)$, $dx=\frac{dt}{u'(1+t^2)}$; queda racional en $t$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Usar $dt=dx$ (olvidar la derivada de la tangente) o la derivada $\frac1{\cos^2}$ sin la regla de la cadena (falta el $2$).</p></div>

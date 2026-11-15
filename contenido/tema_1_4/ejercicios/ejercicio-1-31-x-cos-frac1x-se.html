@@ -1,0 +1,20 @@
+<p class="enun">Sea $f(x)=x\cos\dfrac1x$. ¿Se puede definir en $x=0$ de tal forma que sea continua en $\mathbb R$?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Ver si $x\cos\frac1x$ se puede definir en $x=0$ para ser continua.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cerca de $0$, $\cos\frac1x$ oscila sin límite pero siempre entre $-1$ y $1$; multiplicado por $x\to0$ esas oscilaciones se aplastan hasta $0$. Si el límite existe, ese será el valor.</dd>
+    <dt>Qué uso</dt><dd>Continuidad (U Def. 1.20, p.51); emparedado y Prop. 1.10 (U p.45).</dd>
+    <dt>Por dónde empiezo</dt><dd>Acoto $-|x|\le x\cos\frac1x\le|x|$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Respuesta:</b> sí, con $f(0)=0$.</li>
+    <li><b>Fuera de $0$.</b> En $\mathbb R\setminus\{0\}$, $f$ es continua: $x\mapsto\frac1x$ es continua si $x\neq0$, $\cos$ es continua, la composición también (Prop. 1.14) y el producto por $x$ también (Prop. 1.13).</li>
+    <li><b>Qué hace falta en $0$.</b> Dar un valor $f(0)=L$ con $L=\lim_{x\to0}f(x)$ (Def. 1.20). Por la unicidad del límite, si existe es la única elección posible; si no existe, no hay forma de hacerla continua.</li>
+    <li><b>Acotar.</b> Como $|\cos t|\le1$ para todo $t$: $-|x|\le x\cos\frac1x\le|x|$ para $x\neq0$.</li>
+    <li><b>Emparedado (U p.45).</b> $\lim_{x\to0}|x|=\lim_{x\to0}(-|x|)=0$, luego $\lim_{x\to0}x\cos\frac1x=0$. Otra vía: U Prop. 1.10 (versión local): $x\to0$ y $\cos\frac1x$ está acotada cerca de $0$, así que el producto $\to0$. (sympy: $0$.)</li>
+    <li><b>Redefinición:</b> $f(0)=0$.</li>
+  </ol>
+  <p><b>Comparación:</b> $\operatorname{sen}\frac1x$ no tiene límite en $0$ (U Ej. 1.44), porque oscila entre $-1$ y $1$; el factor $x$ reduce esas oscilaciones hasta $0$.</p>
+  <figure class="graf" data-g='{"c":[{"e":"x*cos(1/x)","n":"f(x) = x·cos(1/x)"},{"e":"abs(x)","n":"|x|","d":1},{"e":"-abs(x)","n":"−|x|","d":1}],"q":[[0,0,"límite = 0"]],"x":[-1,1],"y":[-1,1]}' data-alt="x·cos(1/x) oscila entre −|x| y |x| y tiende a 0"><figcaption>Aunque $\cos\frac1x$ oscila sin parar, la curva queda encerrada entre $y=|x|$ e $y=-|x|$ (rectas de puntos), que se juntan en $0$: el emparedado da límite $0$, así que $f(0)=0$ la hace continua. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> (función acotada) × (función que tiende a $0$) → $0$.</div>
+  <p><b>Error típico:</b> escribir $\lim_{x\to0}x\cdot\lim_{x\to0}\cos\frac1x=0\cdot(\text{algo})$: la regla del producto exige que <b>los dos</b> límites existan, y $\lim_{x\to0}\cos\frac1x$ no existe (hay que acotar, como arriba). Útil: $\lim_{x\to a}g=0\iff\lim_{x\to a}|g|=0$, sale de la Def. 1.18, porque $\big||g|-0\big|=|g-0|$.</p>
+  <p class="l4-teo">Teoría: U regla del emparedado y Prop. 1.10, p. 45; Def. 1.20, p. 51.</p>

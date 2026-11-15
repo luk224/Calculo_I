@@ -1,0 +1,19 @@
+<p class="enun">Halla $a$ y $b$ para que sea derivable en todo $\mathbb R$: $f(x)=\begin{cases}2x+\operatorname{sen}x,&amp;x\le0,\\ \operatorname{sen}(ax+b),&amp;x&gt;0.\end{cases}$ Opciones: a) $a=-3$, $b=0$; b) $a=3$, $b=1$; c) $a=0$, $b=-3$; d) $a=-3$, $b=-7\pi$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar $a$ y $b$ para que una función definida a trozos sea derivable en todo $\mathbb R$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Los dos trozos deben empalmar sin salto (misma altura en $0$) y sin esquina (misma pendiente en $0$). Esas dos condiciones son las ecuaciones que fijan los parámetros.</dd>
+    <dt>Qué uso</dt><dd>Derivable $\Rightarrow$ continua (U Teorema 2.1, p.76); continuidad (U Def. 1.20, p.51); criterio de laterales iguales (U p.81); regla de la cadena (U p.79).</dd>
+    <dt>Por dónde empiezo</dt><dd>Imponer continuidad en $0$, $\operatorname{sen}b=0$, lo que descarta ya dos opciones.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Fuera de $0$ no hay problema:</b> en $(-\infty,0)$ y en $(0,\infty)$, $f$ coincide con sumas y composiciones de funciones derivables (U p. 79). Solo hay que estudiar $x=0$.</li>
+    <li><b>Primero, continuidad en $0$</b> (necesaria por el Teorema 2.1). $f(0)=0$; $\lim_{x\to0^-}f=0$; $\lim_{x\to0^+}\operatorname{sen}(ax+b)=\operatorname{sen}b$ (U Prop. 1.14, p. 51). Hace falta $\operatorname{sen}b=0\iff b=k\pi$, $k\in\mathbb Z$. Esto descarta b) ($\operatorname{sen}1\neq0$) y c) ($3$ no es múltiplo de $\pi$). Quedan a) con $k=0$ y d) con $k=-7$.</li>
+    <li><b>Derivada por la izquierda:</b> $f'(0^-)=\lim_{h\to0^-}\frac{2h+\operatorname{sen}h-0}{h}=2+\operatorname{sen}'(0)=2+1=3$.</li>
+    <li><b>Derivada por la derecha.</b> Con $b=k\pi$, $f(0)=0=\operatorname{sen}(k\pi)$. Para $h&gt;0$: $\frac{f(h)-f(0)}{h}=\frac{G(h)-G(0)}{h}$ con $G(x)=\operatorname{sen}(ax+k\pi)$, derivable en $\mathbb R$. Por la regla de la cadena, $f'(0^+)=G'(0)=a\cos(k\pi)=(-1)^ka$.</li>
+    <li><b>Igualamos</b> (criterio de U p. 81): $(-1)^ka=3$. a) $k=0$: $a=-3$ da $-3\neq3$. Falla. d) $k=-7$: $(-1)^{-7}(-3)=3$. <b>Cumple.</b></li>
+    <li><b>Comprobación:</b> $\operatorname{sen}(-3x-7\pi)=\operatorname{sen}(3x)$ ($-7\pi$ es un múltiplo impar de $\pi$, lo que cambia el signo, y además $\operatorname{sen}(-3x)=-\operatorname{sen}3x$), y $(\operatorname{sen}3x)'(0)=3$ coincide con $f'(0^-)=3$.</li>
+  </ol>
+  <p><b>Respuesta: d).</b></p>
+  <figure class="graf" data-g='{"q":[[0,0,"(0, 0)"]],"c":[{"e":"x<=0 ? 2*x+sin(x) : sin(-3*x-7*PI)","n":"f(x) con a=−3, b=−7π"}],"x":[-2,1.5],"y":[-5,2]}' data-alt="Función a trozos derivable en 0 con a=−3 y b=−7π"><figcaption>Con $a=-3$, $b=-7\pi$ el trozo derecho es $\operatorname{sen}(-3x-7\pi)=\operatorname{sen}3x$: empalma en $(0,0)$ con la misma pendiente, $3$, que el trozo izquierdo, sin esquina. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta (función a trozos con parámetros):</b> (1) estudia solo los puntos de empalme; (2) impón continuidad: límites laterales iguales a $f(a)$; (3) impón $f'(a^-)=f'(a^+)$. Atajo: cada derivada lateral es la derivada de la fórmula de ese lado evaluada en $a$, <b>pero solo después</b> de comprobar que esa fórmula toma en $a$ el valor $f(a)$.</div>
+  <p><b>Error típico:</b> saltarse la continuidad e igualar directamente las derivadas de las fórmulas. Con b) se «resolvería» $a\cos1=3$ aunque $f$ ni siquiera es continua.</p>

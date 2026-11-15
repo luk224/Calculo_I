@@ -23,36 +23,36 @@ Coste orientativo del prototipo 2.3: ≈ 300-350 k tokens de subagentes (ejercic
 4. Añadir `pruebas/numerico/tX_Y.py` (modelo `t2_3.py`: un `c(ejercicio, descripción, valor_sympy, esperado, trozo_latex)` por resultado de cada ejercicio E, propio, examen y práctica).
 5. `python3 pruebas/ejecutar.py --rapido` y commit («Tema X.Y: migrado a contenido/»).
 
-Comprobado (2026-11-15): **los 26 temas migran con `equivale` OK** con el migrador actual (incluidos los de formato antiguo `details.sol`); solo se han dejado en `contenido/` los dos del piloto.
+**Hecho (2026-11-15): los 26 temas están en `contenido/` con `equivale` OK y las páginas de `temas/` se regeneran con `construir.py` (llevan el aviso «GENERADO»).** Pendiente de calidad: pruebas numéricas `pruebas/numerico/tX_Y.py` de cada tema (solo el 2.3 las tiene), unificar variantes de `<head>` y `leyenda.html`, y separar enunciado y solución en los temas de formato antiguo (`details.sol`) cuando se les aplique F4/F4b.
 
 | ✓ | Tema | Estado migración |
 |---|---|---|
 | [x] | 2.3 L'Hôpital | migrado + pruebas numéricas (piloto) |
 | [x] | 5.3 Función implícita | migrado (piloto; pendiente `t5_3.py`) |
-| [ ] | 1.1 El espacio ℝ (`1.1`) | pendiente |
-| [ ] | 1.2 Sucesiones (`1.2`) | pendiente |
-| [ ] | 1.3 Series (`1.3`) | pendiente |
-| [ ] | 1.4 Límites y continuidad (`1.4`) | pendiente |
-| [ ] | 2.1 Derivada (`2.1`) | pendiente |
-| [ ] | 2.2 Reglas de derivación (`2.2`) | pendiente |
-| [ ] | 2.4 Newton y punto fijo (`2.4`) | pendiente |
-| [ ] | 2.5 Rolle, valor medio (`2.5`) | pendiente |
-| [ ] | 3.1 Taylor (`3.1`) | pendiente |
-| [ ] | 3.2 Series de Taylor (`3.2`) | pendiente |
-| [ ] | 3.3 Interpolación (`3.3`) | pendiente |
-| [ ] | 3.4 Optimización y extremos (`3.4`) | pendiente |
-| [ ] | 3.5 Concavidad y convexidad (`3.5`) | pendiente |
-| [ ] | 4.1 Espacio ℝⁿ (`4.1`) | pendiente |
-| [ ] | 4.2 Funciones de varias variables (`4.2`) | pendiente |
-| [ ] | 4.3 Derivadas parciales (`4.3`) | pendiente |
-| [ ] | 5.1 Diferencial (`5.1`) | pendiente |
-| [ ] | 5.2 Cadena y valor medio (`5.2`) | pendiente |
-| [ ] | 5.4-5.5 Extremos y Lagrange (`5.4-5.5`) | pendiente |
-| [ ] | 6.1 Integral de Riemann (`6.1`) | pendiente |
-| [ ] | 6.2 Teoremas fundamentales (`6.2`) | pendiente |
-| [ ] | 6.3 Cálculo de integrales (`6.3`) | pendiente |
-| [ ] | 6.4 Integración numérica (`6.4`) | pendiente |
-| [ ] | 6.5 Integrales impropias (`6.5`) | pendiente |
+| [x] | 1.1 El espacio ℝ (`1.1`) | migrado (equivale OK) |
+| [x] | 1.2 Sucesiones (`1.2`) | migrado (equivale OK) |
+| [x] | 1.3 Series (`1.3`) | migrado (equivale OK) |
+| [x] | 1.4 Límites y continuidad (`1.4`) | migrado (equivale OK) |
+| [x] | 2.1 Derivada (`2.1`) | migrado (equivale OK) |
+| [x] | 2.2 Reglas de derivación (`2.2`) | migrado (equivale OK) |
+| [x] | 2.4 Newton y punto fijo (`2.4`) | migrado (equivale OK) |
+| [x] | 2.5 Rolle, valor medio (`2.5`) | migrado (equivale OK) |
+| [x] | 3.1 Taylor (`3.1`) | migrado (equivale OK) |
+| [x] | 3.2 Series de Taylor (`3.2`) | migrado (equivale OK) |
+| [x] | 3.3 Interpolación (`3.3`) | migrado (equivale OK) |
+| [x] | 3.4 Optimización y extremos (`3.4`) | migrado (equivale OK) |
+| [x] | 3.5 Concavidad y convexidad (`3.5`) | migrado (equivale OK) |
+| [x] | 4.1 Espacio ℝⁿ (`4.1`) | migrado (equivale OK) |
+| [x] | 4.2 Funciones de varias variables (`4.2`) | migrado (equivale OK) |
+| [x] | 4.3 Derivadas parciales (`4.3`) | migrado (equivale OK) |
+| [x] | 5.1 Diferencial (`5.1`) | migrado (equivale OK) |
+| [x] | 5.2 Cadena y valor medio (`5.2`) | migrado (equivale OK) |
+| [x] | 5.4-5.5 Extremos y Lagrange (`5.4-5.5`) | migrado (equivale OK) |
+| [x] | 6.1 Integral de Riemann (`6.1`) | migrado (equivale OK) |
+| [x] | 6.2 Teoremas fundamentales (`6.2`) | migrado (equivale OK) |
+| [x] | 6.3 Cálculo de integrales (`6.3`) | migrado (equivale OK) |
+| [x] | 6.4 Integración numérica (`6.4`) | migrado (equivale OK) |
+| [x] | 6.5 Integrales impropias (`6.5`) | migrado (equivale OK) |
 
 Pendiente tras migrar todos: unificar las 7 variantes del `<head>` (hoy cada `tema.json` lleva su lista de líneas), pasar `leyenda.html` a un fichero común, y separar enunciado/solución en los temas con formato `details` (hoy el cuerpo va entero en `<id>.html`).
 

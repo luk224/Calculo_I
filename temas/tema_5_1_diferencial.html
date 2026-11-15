@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- GENERADO desde contenido/tema_5_1/ con herramientas/tema_datos.py; no editar a mano -->
 <html lang="es">
 <head>
 <meta charset="utf-8">
@@ -39,12 +40,10 @@
 
 <!-- ============================ 0 ============================ -->
 <h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U introducción del Tema 5, p. 185; §5.1.1 Motivación, p. 186; §5.1.2, pp. 186-188">U pp.185-188</span></h2>
-
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>Mira una superficie de montaña con una lupa muy potente: cuanto más te acercas, más plana parece, hasta confundirse con un plano inclinado. Si eso ocurre, la función es <b>diferenciable</b> en el punto, ese plano es el <b>plano tangente</b> y su parte «lineal» es la <b>diferencial</b>. En una variable «derivable = tiene recta tangente»; en dos variables tener derivadas parciales no basta (apartado 1).</p>
   <span class="src" data-l="U" data-ref="U §5.1.1-5.1.2, pp. 186-188">U pp.186-188</span>
 </div>
-
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li><b>Derivadas parciales y gradiente</b> (<a href="tema_4_3_derivadas_parciales.html">tema 4.3</a>): $f_x$, $f_y$, $\nabla f(a,b)=(f_x(a,b),f_y(a,b))$, y calcularlas por <b>definición</b> en un punto especial (función a trozos).</li>
@@ -52,43 +51,34 @@
   <li><b>Plano en $\mathbb R^3$</b> y <b>norma</b> (<a href="tema_4_1_espacio_Rn.html">tema 4.1</a>): $\|(h,k)\|=\sqrt{h^2+k^2}$.</li>
   <li><b>L'Hôpital</b> (Tema 2): solo para el Ej. 5.10.</li>
 </ul>
-
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>Plano tangente</b> y <b>diferencial</b> de una función «normal» en un punto (E 5.2-5.4; X, una pregunta corta casi cada convocatoria). (B) <b>Estudiar la diferenciabilidad en el origen</b> de una función definida a trozos: es el «Ejercicio 6» de muchos exámenes (E 5.5-5.7, 5.9-5.12; X 2010-2018). (C) <b>Preguntas teóricas</b>: qué implica qué, condición suficiente (E 5.1, 5.8; X p.60). Lo que sigue (regla de la cadena, reglas de la diferencial, función implícita…) es el resto del Tema 5.</p>
-
 <!-- ============================ 1 ============================ -->
 <h2 id="s1"><span class="n">1</span>Idea: aproximar una superficie por un plano <span class="src" data-l="U" data-ref="U §5.1.1 Motivación, p. 186, y §5.1.2, pp. 186-188; Figura 5.1, p. 187; ecuación (5.1), p. 188">U pp.186-188</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva · de la recta tangente al plano tangente</span>
   <p>Con una variable, «$f$ es derivable en $a$» significa que cerca de $a$ la gráfica es casi la recta $y=f(a)+f'(a)(x-a)$, y además la derivabilidad ya garantiza la continuidad. Con dos variables, la gráfica es una superficie y su «recta tangente» debe ser un <b>plano</b>. Un plano queda fijado por un punto y dos direcciones. Las dos direcciones que ya conocemos son las de las derivadas parciales: moviéndonos solo en $x$ (con $y=b$) o solo en $y$ (con $x=a$) la gráfica tiene dos rectas tangentes, con vectores directores $\big(1,0,\frac{\partial f}{\partial x}(a,b)\big)$ y $\big(0,1,\frac{\partial f}{\partial y}(a,b)\big)$. El plano que contiene a esas dos rectas por $(a,b,f(a,b))$ es el <b>candidato</b> a plano tangente.</p>
   <span class="src" data-l="U" data-ref="U p. 186-187 (vectores tangentes en las direcciones de los ejes)">U pp.186-187</span>
 </div>
-
 <figure class="bookfig">
 <img src="../assets/img/fig_u_5_1.png" alt="Superficie gráfica de f y plano que contiene a las dos rectas tangentes de vectores (1,0,df/dx) y (0,1,df/dy) en el punto (a,b,f(a,b))" loading="lazy">
 <figcaption>Figura 5.1 de U: plano que contiene a dos rectas tangentes. <span class="src" data-l="U" data-ref="U Figura 5.1, p. 187">U p.187</span></figcaption>
 </figure>
-
 <div class="box thm"><span class="h">Plano candidato (5.1)</span>
   <p>Si $f$ tiene parciales en $(a,b)$, el plano que pasa por $(a,b,f(a,b))$ y contiene a las dos rectas tangentes anteriores es
   $$z=f(a,b)+\nabla f(a,b)\cdot(x-a,\,y-b)=f(a,b)+\frac{\partial f}{\partial x}(a,b)(x-a)+\frac{\partial f}{\partial y}(a,b)(y-b).\tag{5.1}$$
   Es la versión en dos variables de $y=f(a)+f'(a)(x-a)$.</p>
   <span class="src" data-l="U" data-ref="U ecuación (5.1), p. 188">U p.188</span>
 </div>
-
 <div class="box warn"><span class="h">Por qué no bastan las parciales</span>
   <p>Tener las parciales solo garantiza <b>dos</b> rectas tangentes: el plano (5.1) puede existir y no «pegarse» a la superficie en las demás direcciones. Hace falta una definición que mire <b>todas</b> las direcciones a la vez: la diferenciabilidad (contraejemplo con números en el Ejercicio 5.1).</p>
   <span class="src" data-l="U" data-ref="U p. 188, advertencia (Ejemplo 4.24, p. 172)">U p.188</span>
 </div>
-
 <!-- ============================ 2 ============================ -->
 <h2 id="s2"><span class="n">2</span>Función diferenciable y plano tangente <span class="src" data-l="U" data-ref="U Definición 5.1 y ecuación (5.2), p. 189; Ejemplo 5.1, pp. 189-190">U pp.189-190</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva · el error tiene que ser «más pequeño que la distancia»</span>
   <p>Aproximamos $f$ cerca de $(a,b)$ por la altura del plano: $f(a+h,b+k)\approx f(a,b)+\nabla f(a,b)\cdot(h,k)$. El <b>error</b> es $E(h,k)=f(a+h,b+k)-f(a,b)-\nabla f(a,b)\cdot(h,k)$. Cualquier función continua tiene un error que tiende a $0$ al acercarse; eso no distingue nada. Lo que se pide a un plano <i>tangente</i> es más: que el error tienda a $0$ <b>más deprisa que la distancia</b> $\|(h,k)\|=\sqrt{h^2+k^2}$ al punto. Ejemplo numérico: si nos movemos $0{,}01$, el error debe ser mucho menor que $0{,}01$ (digamos $0{,}0001$); si nos movemos $0{,}001$, mucho menor que $0{,}001$. Eso es decir que el cociente $E/\|(h,k)\|$ tiende a $0$, y <b>por cualquier camino</b> de llegada.</p>
   <span class="src" data-l="P" data-ref="Explicación propia de la Definición 5.1, U p. 189">P</span>
 </div>
-
 <div class="box def"><span class="h">Definición 5.1 · función diferenciable (dos variables)</span>
   <p>Sea $f$ definida en un entorno de $(a,b)$ y con derivadas parciales en $(a,b)$. Se dice que $f$ es <b>diferenciable</b> en $(a,b)$ si
   $$\lim_{(h,k)\to(0,0)}\frac{f(a+h,b+k)-f(a,b)-\nabla f(a,b)\cdot(h,k)}{\|(h,k)\|}=0.$$
@@ -96,11 +86,9 @@
   $$z=f(a,b)+\nabla f(a,b)\cdot(x-a,\,y-b).\tag{5.2}$$</p>
   <span class="src" data-l="U" data-ref="U Definición 5.1 y ecuación (5.2), p. 189">U p.189</span>
 </div>
-
 <div class="box warn"><span class="h">Cómo leerla</span>
   <p>(i) Las parciales <b>deben existir</b> antes de empezar: el gradiente aparece dentro del límite. (ii) El gradiente que se resta es el <b>único candidato posible</b>: restando cualquier otro vector $(p,q)$, el límite no sería $0$ (si lo fuera, tomando $k=0$ saldría $\frac{f(a+h,b)-f(a,b)}{h}\to p$, es decir, $p=f_x(a,b)$; e igual $q=f_y(a,b)$). (iii) Es un límite doble en $(h,k)\to(0,0)$: se hace con polares o con caminos, como en el tema 4.2. (iv) «No diferenciable» significa que el límite no existe o no vale $0$; y entonces <b>no hay plano tangente</b>.</p>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo 5.1 de U · $f=e^{-1/(x^2+y^2)}$, $f(0,0)=0$, es diferenciable en $(0,0)$</span>
   <ol class="steps">
     <li><b>Parciales en $(0,0)$ por definición:</b> $\frac{f(h,0)-0}h=\frac{e^{-1/h^2}}h\to0$, y lo mismo en $y$: $\nabla f(0,0)=(0,0)$.</li>
@@ -110,25 +98,20 @@
   <span class="src" data-l="U" data-ref="U Ejemplo 5.1, pp. 189-190">U pp.189-190</span>
 </div>
 <div class="box ex"><span class="h">Ejemplo · $f=x^2+y$ en $(1,2)$ por la definición</span><p>$\nabla f(1,2)=(2,1)$. Numerador: $(1+h)^2+(2+k)-3-2h-k=h^2$. Cociente: $Q=\frac{h^2}{\sqrt{h^2+k^2}}$, y como $h^2\le h^2+k^2$, $|Q|\le\sqrt{h^2+k^2}\to0$. Diferenciable (su plano tangente se calcula en el Ejemplo 5.4).</p><span class="src" data-l="P" data-ref="Ejemplo propio sobre U Def. 5.1, p. 189, y Ej. 5.4, p. 193">P</span></div>
-
 <figure class="interactivo" data-escena="plano-tangente" data-params='{}' aria-label="Interactivo 3D: superficie y plano tangente en una ventana cada vez más pequeña alrededor de un punto">
   <img class="int-static" src="../assets/img/int_plano-tangente.png" alt="Interactivo 3D: superficie y plano tangente en una ventana cada vez más pequeña alrededor de un punto">
   <figcaption>Interactivo propio. Arrastra para girar. La superficie (azul) y el plano tangente (naranja) se dibujan en una ventana cuadrada de lado $2w$ alrededor del punto. Baja $w$ con el deslizador «Ventana»: si $f$ es diferenciable, superficie y plano se <b>confunden</b> y el cociente (error máximo)/$w$ tiende a $0$, que es justo la Definición 5.1. Prueba la última función en $(0,0)$: tiene parciales ($\nabla f=(0,0)$) pero por mucho que acerques el zoom el plano $z=0$ sigue separado de la superficie, porque a lo largo de la diagonal $f(h,h)=\frac12$: no es diferenciable. Mueve $a$ o $b$ fuera del origen y vuelve a ser diferenciable. <span class="src" data-l="P" data-ref="Explicación propia; Definición 5.1 y plano tangente: U p. 189">P</span></figcaption>
 </figure>
-
 <!-- ============================ 3 ============================ -->
 <h2 id="s3"><span class="n">3</span>Qué implica y qué basta para ser diferenciable <span class="src" data-l="U" data-ref="U Teorema 5.1, p. 191; Ejemplo 5.2, p. 191; condición suficiente, p. 192; Ejemplo 5.3, p. 192">U pp.190-192</span></h2>
-
 <div class="box intu"><span class="h">Idea intuitiva · dos filtros y un atajo</span>
   <p>Si la superficie es casi un plano cerca del punto, entonces no puede tener saltos (es continua) ni «picos» a lo largo de los ejes (tiene parciales). Eso da dos <b>filtros</b> para descartar: continuidad y parciales. Pasarlos no basta. Y hay un <b>atajo</b> para afirmar: si las derivadas parciales son continuas, la función es «lisa» y seguro es diferenciable.</p>
 </div>
-
 <div class="box thm"><span class="h">Teorema 5.1 · diferenciable ⟹ parciales y continua</span>
   <p>Si $f$ es diferenciable en un punto, entonces admite derivadas parciales en él y es continua en él.</p>
   <p><b>Contrarrecíproco (lo que se usa en la práctica):</b> si $f$ <b>no es continua</b> en el punto, o <b>le falta alguna parcial</b>, entonces <b>no es diferenciable</b>.</p>
   <span class="src" data-l="U" data-ref="U Teorema 5.1, p. 191">U p.191</span>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo 5.2 de U · dos funciones que no son diferenciables en el origen</span>
   <ol class="steps">
     <li>$f(x,y)=xy+1$ si $x>0$, $f(x,y)=x-y$ si $x\le0$. Por el eje $x$ positivo tiende a $1$ y $f(0,0)=0$: es <b>discontinua</b> en $(0,0)$, luego no diferenciable.</li>
@@ -136,75 +119,60 @@
   </ol>
   <span class="src" data-l="U" data-ref="U Ejemplo 5.2, p. 191">U p.191</span>
 </div>
-
 <div class="box thm"><span class="h">Condición suficiente de diferenciabilidad</span>
   <p>Si $f$ admite derivadas parciales en un entorno de $(a,b)$ y estas son <b>continuas en $(a,b)$</b>, entonces $f$ es diferenciable en $(a,b)$. (Una función continua y con derivadas parciales continuas se llama <b>regular</b>.) En la práctica: una función dada por una única fórmula elemental (polinomios, cocientes, exponenciales, senos, logaritmos…) es diferenciable en todo punto donde sus parciales, calculadas con las reglas habituales, existen y son continuas en un entorno. Cuidado con raíces, valores absolutos y puntos que anulan un denominador o donde la función se define aparte (E 5.6, E 5.12): ahí hay que ir a la definición.</p>
   <span class="src" data-l="U" data-ref="U p. 192, condición suficiente de diferenciabilidad">U p.192</span>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo 5.3 de U · $f=\operatorname{sen}\frac1{x^2+y^2}$ es diferenciable en todo su dominio</span>
   <p>El dominio es $\mathbb R^2\setminus\{(0,0)\}$. Allí las parciales son $f_x=-\frac{2x}{(x^2+y^2)^2}\cos\frac1{x^2+y^2}$ y $f_y=-\frac{2y}{(x^2+y^2)^2}\cos\frac1{x^2+y^2}$, continuas en todo el dominio. Por la condición suficiente, $f$ es diferenciable en todo su dominio.</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 5.3, p. 192">U p.192</span>
 </div>
-
 <div class="box thm"><span class="h">Esquema de implicaciones (guárdalo en la cabeza)</span>
   <p>$$\boxed{\text{parciales continuas en el punto}}\;\overset{(1)}{\Longrightarrow}\;\boxed{\text{diferenciable}}\;\overset{(2)}{\Longrightarrow}\;\boxed{\text{continua y con parciales}}$$
   <b>Ninguna flecha se invierte</b> (contraejemplos de cada una en la chuleta, apartado 9). Por eso «tiene parciales» no basta, y «las parciales no son continuas» no refuta la diferenciabilidad: hay que ir a la definición.</p>
   <span class="src" data-l="P" data-ref="Síntesis propia de U Teorema 5.1, p. 191, y condición suficiente, p. 192">P</span>
 </div>
-
-
 <!-- ============================ 4 ============================ -->
 <h2 id="s4"><span class="n">4</span>La diferencial, $n$ variables y espacio tangente <span class="src" data-l="U" data-ref="U Definición 5.2, p. 190; espacio tangente (5.3), pp. 192-193; Definición 5.3, Ejemplo 5.4, Definición 5.4, p. 193">U pp.190-193</span></h2>
-
 <div class="box def"><span class="h">Definición 5.2 · diferenciable en $\mathbb R^n$</span>
   <p>Para $f:D\subset\mathbb R^n\to\mathbb R$ con parciales en $\bar a$: $f$ es diferenciable en $\bar a$ si
   $$\lim_{\bar h\to\bar 0}\frac{f(\bar a+\bar h)-f(\bar a)-\nabla f(\bar a)\cdot\bar h}{\|\bar h\|}=0,\qquad \bar h=(h_1,\dots,h_n).$$
   Todo lo anterior (Teorema 5.1, condición suficiente) vale igual.</p>
   <span class="src" data-l="U" data-ref="U Definición 5.2, p. 190">U p.190</span>
 </div>
-
 <div class="box def"><span class="h">Espacio tangente (5.3)</span>
   <p>Con $n>2$ no se habla de «plano»: el <b>espacio tangente</b> a la gráfica de $f$ en $\big(\bar a,f(\bar a)\big)$ es el conjunto $x_{n+1}=f(\bar a)+\nabla f(\bar a)\cdot(\bar x-\bar a)$.</p>
   <span class="src" data-l="U" data-ref="U Observación pp. 192-193, ecuación (5.3), p. 193">U pp.192-193</span>
 </div>
-
 <div class="box intu"><span class="h">Idea intuitiva · la diferencial es «la parte lineal»</span>
   <p>El plano tangente tiene dos partes: la altura de partida $f(a,b)$ y un <b>incremento lineal</b> $\nabla f(a,b)\cdot(x-a,y-b)$ que dice cuánto sube o baja el plano al moverse desde el punto. Esa parte lineal, vista como máquina que recibe un vector $(x,y)$ y devuelve un número, es la diferencial. Es el análogo de «$dy=f'(a)\,dx$».</p>
 </div>
-
 <div class="box def"><span class="h">Definición 5.3 · diferencial</span>
   <p>Si $f$ es diferenciable en $\bar a$, su <b>diferencial</b> en $\bar a$ es la aplicación lineal $Df(\bar a):\mathbb R^n\to\mathbb R$,
   $$Df(\bar a)(\bar x)=\nabla f(\bar a)\cdot\bar x$$
   (su matriz es el gradiente). En dos variables: $Df(a,b)(x,y)=\frac{\partial f}{\partial x}(a,b)\,x+\frac{\partial f}{\partial y}(a,b)\,y$. <b>Definición 5.4:</b> $f$ es diferenciable en un conjunto $A$ si lo es en cada punto de $A$.</p>
   <span class="src" data-l="U" data-ref="U Definición 5.3 y Definición 5.4, p. 193">U p.193</span>
 </div>
-
 <div class="box ex"><span class="h">Ejemplo 5.4 de U · diferencial de $f=x^2+y$ en $(1,2)$</span>
   <p>$\nabla f=(2x,1)$, $\nabla f(1,2)=(2,1)$, así que $Df(1,2)(x,y)=2x+y$. Plano tangente: $z=f(1,2)+Df(1,2)(x-1,y-2)=3+2(x-1)+(y-2)=2x+y-1$.</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 5.4, p. 193">U p.193</span>
 </div>
-
 <div class="box warn"><span class="h">Error típico</span>
   <p>Confundir los dos papeles de las letras: $(a,b)$ es el <b>punto</b> donde se calcula el gradiente y $(x,y)$ es el <b>vector</b> sobre el que actúa la diferencial (o el punto genérico del plano tangente, donde se escribe $x-a$, $y-b$). Y no mezclar «diferencial $Df(a,b)$» (función lineal, pasa por el origen) con «plano tangente» (le suma $f(a,b)$ y desplaza $(x-a,y-b)$).</p>
 </div>
-
 <div class="box tip"><span class="h">Para qué sirve · aproximar valores</span>
   <p>Por la Def. 5.1, $f(a+h,b+k)\approx f(a,b)+Df(a,b)(h,k)$ si $(h,k)$ es pequeño: es calcular la altura del plano tangente en vez de la de la superficie (Propio 1).</p>
   <span class="src" data-l="P" data-ref="Consecuencia propia de la Definición 5.1, U p. 189">P</span>
 </div>
-
 <div class="box thm"><span class="h">Diferencial y derivada direccional</span>
 <p>Si $f$ es diferenciable en $(a,b)$, para todo vector unitario $\bar v$ se cumple $D_{\bar v}f(a,b)=Df(a,b)(\bar v)=\nabla f(a,b)\cdot\bar v$ (con parciales continuas lo da también U Teorema 4.2, p.180). <b>Uso como filtro:</b> si alguna derivada direccional no vale $\nabla f(a,b)\cdot\bar v$, la función no es diferenciable. Ejemplo: $f=\frac{x^3}{x^2+y^2}$, $f(0,0)=0$ (U Ej. 4.18): $\nabla f(0,0)=(1,0)$, pero con $\bar v=(\cos\alpha,\operatorname{sen}\alpha)$, $D_{\bar v}f(0,0)=\lim_{h\to0}\frac{h^3\cos^3\alpha}{h^2\cdot h}=\cos^3\alpha\ne\cos\alpha$ si $\operatorname{sen}\alpha\cos\alpha\ne0$: no diferenciable.</p>
 <span class="src" data-l="U" data-ref="U §5.1.1 objetivos, p. 186; Def. 4.10, p. 179; Teorema 4.2, p. 180">U pp.179-186</span>
 </div>
 <!-- ============================ 5 ============================ -->
 <h2 id="s5"><span class="n">5</span>Protocolo para estudiar la diferenciabilidad <span class="src" data-l="P" data-ref="Síntesis propia a partir de U Def. 5.1, p. 189, Teorema 5.1, p. 191, y condición suficiente, p. 192">P</span></h2>
-
 <div class="box tip"><span class="h">Receta · función «normal» (fórmula elemental, sin casos)</span>
   <p>Las parciales existen y son continuas: es diferenciable (condición suficiente). Entonces $Df(a,b)(x,y)=f_x(a,b)\,x+f_y(a,b)\,y$ y el plano es $z=f(a,b)+f_x(a,b)(x-a)+f_y(a,b)(y-b)$. <b>Antes</b> comprueba que el punto $(a,b,c)$ está en la gráfica: $c=f(a,b)$.</p>
 </div>
-
 <div class="box tip"><span class="h">Receta · punto especial (la función se define aparte en él): 4 pasos</span>
   <ol class="steps">
     <li><b>¿Es continua en el punto?</b> Si no lo es, <b>no es diferenciable</b> (Teorema 5.1) y se acaba. (Un camino con límite distinto de $f(a,b)$ basta.)</li>
@@ -214,14 +182,11 @@
   </ol>
   <p><b>Alternativa a 3-4:</b> si las parciales existen cerca y son continuas en el punto, diferenciable. Si no lo son, <b>no se concluye nada</b>: ve a la definición.</p>
 </div>
-
-
 <!-- ============================ 6 ============================ -->
 <h2 id="ejercicios"><span class="n">6</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.1-5.12, pp. 168-179">E pp.168-179</span></h2>
 <p>Están en el orden del libro. Orden recomendado para aprender: <b>5.1 → 5.8</b> (qué implica qué) <b>→ 5.2 → 5.3 → 5.4</b> (plano tangente y diferencial) <b>→ 5.12</b> (falta una parcial) <b>→ 5.9 → 5.7</b> (hay parciales, pero $Q\not\to0$) <b>→ 5.11 → 5.6</b> (diferenciable por la definición) <b>→ 5.5</b> (diferenciable con parciales discontinuas) <b>→ 5.10</b> (con L'Hôpital).</p>
-
 <details class="sol" id="ej-5-1"><summary>Ejercicio 5.1 · ¿parciales implican diferenciable y plano tangente? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.1, p. 168 · teoría: U pp. 186-192; contraejemplo U Ej. 4.24, p. 172">E p.168</span></summary>
-  <p class="enun">Si una función $f:\mathbb R^2\to\mathbb R$ tiene derivadas parciales en un punto $(a,b)\in\mathbb R^2$, entonces ¿es diferenciable en ese punto y tiene plano tangente en $(a,b,f(a,b))$?</p>
+<p class="enun">Si una función $f:\mathbb R^2\to\mathbb R$ tiene derivadas parciales en un punto $(a,b)\in\mathbb R^2$, entonces ¿es diferenciable en ese punto y tiene plano tangente en $(a,b,f(a,b))$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si «tener derivadas parciales en un punto» garantiza que $f$ sea diferenciable allí y tenga plano tangente. Respuesta: sí o no, con justificación.</dd>
     <dt>Cómo lo pienso</dt><dd>Las parciales solo miran a lo largo de los dos ejes; el plano tangente tiene que pegarse a la gráfica en <i>todas</i> las direcciones. Si algo falla fuera de los ejes, el plano no existe. Para refutar una afirmación basta un contraejemplo.</dd>
@@ -236,9 +201,8 @@
   <div class="recipe"><b>Receta:</b> «parciales $\Rightarrow$ diferenciable» es falso; «parciales continuas $\Rightarrow$ diferenciable» es verdadero; «diferenciable $\Leftrightarrow$ plano tangente».</div>
   <div class="box warn"><span class="h">Error típico</span><p>Trasladar «derivable = tiene recta tangente» de una variable a dos cambiando «derivable» por «tiene parciales».</p></div>
 </details>
-
 <details class="sol" id="ej-5-2"><summary>Ejercicio 5.2 · plano tangente de $\cos y-yx^2$ en $(0,0,1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.2, p. 168 · teoría: U (5.2), p. 189">E p.168</span></summary>
-  <p class="enun">Sea $f(x,y)=\cos y-yx^2$. Decide cuáles de las siguientes condiciones cumple el plano tangente a su gráfica en $(0,0,1)$: a) Verifica la ecuación $1-z=0$. b) Es paralelo al plano $xy$. c) Es paralelo al plano $xz$. d) Ninguna de las anteriores.</p>
+<p class="enun">Sea $f(x,y)=\cos y-yx^2$. Decide cuáles de las siguientes condiciones cumple el plano tangente a su gráfica en $(0,0,1)$: a) Verifica la ecuación $1-z=0$. b) Es paralelo al plano $xy$. c) Es paralelo al plano $xz$. d) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular el plano tangente a $z=\cos y-yx^2$ en $(0,0,1)$ y decidir cuál de las descripciones a)-d) cumple.</dd>
     <dt>Cómo lo pienso</dt><dd>Plano tangente = la altura de partida más lo que sube o baja según el gradiente. Si el gradiente es cero, el plano no se inclina: es horizontal.</dd>
@@ -256,9 +220,8 @@
   <div class="recipe"><b>Receta:</b> $\nabla f(a,b)=(0,0)\iff$ plano tangente horizontal $z=f(a,b)$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Confundir «paralelo al plano $xy$» (horizontal, $z=$ cte) con «paralelo al plano $xz$» (vertical, $y=$ cte).</p></div>
 </details>
-
 <details class="sol" id="ej-5-3"><summary>Ejercicio 5.3 · plano tangente de $x^2+y^3+e^{x+y}$ en $(1,-1,1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.3, p. 169 · teoría: U (5.2), p. 189">E p.169</span></summary>
-  <p class="enun">Sea $f(x,y)=x^2+y^3+e^{x+y}$. Obtén la ecuación del plano tangente a su gráfica en el punto $(1,-1,1)$.</p>
+<p class="enun">Sea $f(x,y)=x^2+y^3+e^{x+y}$. Obtén la ecuación del plano tangente a su gráfica en el punto $(1,-1,1)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Obtener la ecuación del plano tangente a $z=x^2+y^3+e^{x+y}$ en $(1,-1,1)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Sustituyo la superficie curva por el plano que mejor la imita en ese punto: misma altura y misma inclinación (el gradiente) en las dos direcciones.</dd>
@@ -276,9 +239,8 @@
   <div class="recipe"><b>Receta:</b> $z=f(a,b)+f_x(a,b)(x-a)+f_y(a,b)(y-b)$, simplificar y comprobar sustituyendo $(a,b)$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Escribir $(y-1)$ en lugar de $(y-(-1))=(y+1)$.</p></div>
 </details>
-
 <details class="sol" id="ej-5-4"><summary>Ejercicio 5.4 · diferencial de $xe^y+y\cos^2(xy)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.4, p. 170 · teoría: U Def. 5.3, p. 193">E p.170</span></summary>
-  <p class="enun">Sea $f(x,y)=xe^y+y\cos^2(xy)$. ¿Cuál es su diferencial en un punto genérico $(a,b)$?</p>
+<p class="enun">Sea $f(x,y)=xe^y+y\cos^2(xy)$. ¿Cuál es su diferencial en un punto genérico $(a,b)$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Escribir la diferencial de $f(x,y)=xe^y+y\cos^2(xy)$ en un punto genérico $(a,b)$, como función lineal de $(x,y)$.</dd>
     <dt>Cómo lo pienso</dt><dd>La diferencial es la «parte lineal» de $f$ en $(a,b)$: una máquina que recibe un vector $(x,y)$ y devuelve gradiente por vector.</dd>
@@ -294,9 +256,8 @@
   <div class="recipe"><b>Receta:</b> diferencial en $(a,b)$ = parciales evaluadas en $(a,b)$ multiplicadas por $x$ e $y$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar la regla del producto en $\frac{\partial}{\partial y}\big(y\cos^2(xy)\big)$ (falta el término $\cos^2(xy)$).</p></div>
 </details>
-
 <details class="sol" id="ej-5-5"><summary>Ejercicio 5.5 · diferenciable con parciales discontinuas: $(x^2+y^2)\operatorname{sen}\frac1{x^2+y^2}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.5, pp. 170-172 · teoría: U Def. 5.1, p. 189, y condición suficiente, p. 192">E pp.170-172</span></summary>
-  <p class="enun">Sea $f(x,y)=(x^2+y^2)\operatorname{sen}\dfrac1{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. ¿Tiene derivadas parciales en $(0,0)$? ¿Es diferenciable en $(0,0)$? ¿Son las derivadas parciales continuas en $(0,0)$?</p>
+<p class="enun">Sea $f(x,y)=(x^2+y^2)\operatorname{sen}\dfrac1{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. ¿Tiene derivadas parciales en $(0,0)$? ¿Es diferenciable en $(0,0)$? ¿Son las derivadas parciales continuas en $(0,0)$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar en el origen las parciales, la diferenciabilidad y la continuidad de las parciales de $(x^2+y^2)\operatorname{sen}\frac1{x^2+y^2}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Cerca del origen $f$ es diminuta (el factor $x^2+y^2$ la aplasta) y por eso es diferenciable, pero su pendiente oscila sin control: las parciales no se estabilizan.</dd>
@@ -315,9 +276,8 @@
   <div class="recipe"><b>Receta:</b> para probar que una parcial no es continua, una sucesión de puntos que tienda al origen y en la que no tienda al valor del origen (elige puntos donde sen y cos valgan $0$ o $1$).</div>
   <div class="box warn"><span class="h">Error típico</span><p>«Las parciales no son continuas, luego no es diferenciable»: la condición suficiente es solo suficiente; si falla, a la definición.</p></div>
 </details>
-
 <details class="sol" id="ej-5-6"><summary>Ejercicio 5.6 · diferenciabilidad de $x|y|$ en $(0,0)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.6, pp. 172-173 · teoría: U Def. 5.1, p. 189; criterio de polares U p. 165">E pp.172-173</span></summary>
-  <p class="enun">Estudia la diferenciabilidad en $(0,0)$ de $f(x,y)=x|y|$.</p>
+<p class="enun">Estudia la diferenciabilidad en $(0,0)$ de $f(x,y)=x|y|$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si $f(x,y)=x|y|$ es diferenciable en $(0,0)$.</dd>
     <dt>Cómo lo pienso</dt><dd>El valor absoluto hace un «pico» en $y=0$, pero el factor $x$ lo aplasta cerca del origen; hay que comprobar si basta.</dd>
@@ -334,9 +294,8 @@
   <div class="recipe"><b>Receta:</b> con valores absolutos las parciales pueden no existir cerca del punto: ve directamente a la definición.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Aplicar la condición suficiente con «$f_y=x$ si $y\ge0$, $-x$ si $y<0$»: esa fórmula falla sobre la recta $y=0$.</p></div>
 </details>
-
 <details class="sol" id="ej-5-7"><summary>Ejercicio 5.7 · $\frac{4x^3}{x^2+y^2}$: continua, con parciales, no diferenciable <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.7, pp. 173-174 · teoría: U Def. 5.1, p. 189; criterio de polares U p. 165">E pp.173-174</span></summary>
-  <p class="enun">Sea $f(x,y)=\dfrac{4x^3}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Estudia su continuidad, si tiene derivadas parciales y si es diferenciable.</p>
+<p class="enun">Sea $f(x,y)=\dfrac{4x^3}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Estudia su continuidad, si tiene derivadas parciales y si es diferenciable.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar continuidad, parciales y diferenciabilidad en el origen de $\frac{4x^3}{x^2+y^2}$ ($f(0,0)=0$).</dd>
     <dt>Cómo lo pienso</dt><dd>Lo paso por tres filtros en orden: ¿continua?, ¿parciales?, ¿el error es «más pequeño que la distancia»? Aquí pasa los dos primeros y falla el tercero.</dd>
@@ -356,9 +315,8 @@
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar restar el término del gradiente ($-4h$) o usar $\nabla f(0,0)=(0,0)$ «porque $f(0,0)=0$».</p></div>
   <p>Muy parecidos: $\frac{x^3}{x^2+2y^2}$ (X pp.2-3 y 90-92), con $\nabla f(0,0)=(1,0)$ y $Q=\frac{-2\cos\theta\operatorname{sen}^2\theta}{1+\operatorname{sen}^2\theta}$: no diferenciable.</p>
 </details>
-
 <details class="sol" id="ej-5-8"><summary>Ejercicio 5.8 · continuidad y diferenciabilidad en dos puntos de $\mathbb R^3$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.8, pp. 174-175 · teoría: U Teorema 5.1, p. 191, y Def. 5.2, p. 190">E pp.174-175</span></summary>
-  <p class="enun">De $f:\mathbb R^3\to\mathbb R$ se sabe que es discontinua en $(1,2,3)$ y diferenciable en $(3,2,1)$. ¿Puedes decir algo sobre su diferenciabilidad en $(1,2,3)$? ¿Y sobre su continuidad en $(3,2,1)$?</p>
+<p class="enun">De $f:\mathbb R^3\to\mathbb R$ se sabe que es discontinua en $(1,2,3)$ y diferenciable en $(3,2,1)$. ¿Puedes decir algo sobre su diferenciabilidad en $(1,2,3)$? ¿Y sobre su continuidad en $(3,2,1)$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Con $f:\mathbb R^3\to\mathbb R$ discontinua en $(1,2,3)$ y diferenciable en $(3,2,1)$, decir qué se sabe de su diferenciabilidad en el primero y de su continuidad en el segundo.</dd>
     <dt>Cómo lo pienso</dt><dd>No hay cuentas: solo la relación lógica entre «diferenciable» y «continua». Si fuera diferenciable tendría que ser continua.</dd>
@@ -374,9 +332,8 @@
   <div class="recipe"><b>Receta:</b> «A $\Rightarrow$ B» equivale a «no B $\Rightarrow$ no A». Aquí A = diferenciable, B = continua.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Razonar al revés: «es continua, luego diferenciable» (falso: $x+|y|$, U Ej. 5.2).</p></div>
 </details>
-
 <details class="sol" id="ej-5-9"><summary>Ejercicio 5.9 · $y\operatorname{sen}\frac1x+x$: continua, con parciales, sin plano tangente <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.9, pp. 175-176 · teoría: U Def. 5.1 y (5.2), p. 189">E pp.175-176</span></summary>
-  <p class="enun">Sea $f(x,y)=y\operatorname{sen}\frac1x+x$ si $x\ne0$, $f(x,y)=0$ si $x=0$. Estudia la continuidad, la existencia de derivadas parciales en $(0,0)$ y, si es posible, calcula el plano tangente a la gráfica en $(0,0,0)$.</p>
+<p class="enun">Sea $f(x,y)=y\operatorname{sen}\frac1x+x$ si $x\ne0$, $f(x,y)=0$ si $x=0$. Estudia la continuidad, la existencia de derivadas parciales en $(0,0)$ y, si es posible, calcula el plano tangente a la gráfica en $(0,0,0)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la continuidad y las parciales en $(0,0)$ de $y\operatorname{sen}\frac1x+x$ y, si se puede, su plano tangente en $(0,0,0)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Si hubiera plano tangente sería el candidato que dan las parciales; hay que ver si el error se hace pequeño. El seno oscila sin parar y lo impide.</dd>
@@ -395,9 +352,8 @@
   <div class="recipe"><b>Receta:</b> si $Q$ contiene $\operatorname{sen}(1/\text{algo})$ sin factor que tienda a $0$ delante, busca un camino donde quede solo la oscilación.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Concluir «existe el plano tangente $z=x$» solo porque existen las parciales.</p></div>
 </details>
-
 <details class="sol" id="ej-5-10"><summary>Ejercicio 5.10 · $\frac{x^2+y^2}{\ln(1-x^2-y^2)}$ con $f(0,0)=-1$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.10, pp. 176-177 · teoría: U Def. 5.1, p. 189; L'Hôpital U §2.3.2, p. 82">E pp.176-177</span></summary>
-  <p class="enun">Sea $f(x,y)=\dfrac{x^2+y^2}{\ln(1-x^2-y^2)}$ si $(x,y)\in S\setminus\{(0,0)\}$, $f(0,0)=-1$, con $S=\{x^2+y^2<1\}$. Estudia si es continua y si es diferenciable en $(0,0)$.</p>
+<p class="enun">Sea $f(x,y)=\dfrac{x^2+y^2}{\ln(1-x^2-y^2)}$ si $(x,y)\in S\setminus\{(0,0)\}$, $f(0,0)=-1$, con $S=\{x^2+y^2<1\}$. Estudia si es continua y si es diferenciable en $(0,0)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la continuidad y la diferenciabilidad en $(0,0)$ de $\frac{x^2+y^2}{\ln(1-x^2-y^2)}$ con $f(0,0)=-1$.</dd>
     <dt>Cómo lo pienso</dt><dd>La función solo depende de $u=x^2+y^2$, la distancia al origen al cuadrado: el problema de dos variables se convierte en límites de una variable.</dd>
@@ -418,9 +374,8 @@
   <div class="recipe"><b>Receta:</b> si $f$ depende solo de $x^2+y^2$, continuidad, parciales y cociente se reducen a límites de <b>una</b> variable: hazlos una vez y reutilízalos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Restar $f(0,0)$ con el signo cambiado: aquí $f(0,0)=-1$, así que en el numerador aparece $+1$.</p></div>
 </details>
-
 <details class="sol" id="ej-5-11"><summary>Ejercicio 5.11 · $\frac{xy}{\sqrt[4]{x^2+y^2}}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.11, p. 178 · teoría: U Def. 5.1, p. 189; criterio de polares U p. 165">E p.178</span></summary>
-  <p class="enun">Sea $f(x,y)=\dfrac{xy}{\sqrt[4]{x^2+y^2}}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Calcula las derivadas parciales en $(0,0)$ y estudia la diferenciabilidad de $f$ en ese punto.</p>
+<p class="enun">Sea $f(x,y)=\dfrac{xy}{\sqrt[4]{x^2+y^2}}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Calcula las derivadas parciales en $(0,0)$ y estudia la diferenciabilidad de $f$ en ese punto.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular las parciales en el origen de $\frac{xy}{\sqrt[4]{x^2+y^2}}$ y decidir si es diferenciable allí.</dd>
     <dt>Cómo lo pienso</dt><dd>Comparo «grados»: el numerador se hace pequeño como $\rho^2$ y el denominador como $\rho^{1/2}$; al dividir además por $\rho$ sobra una potencia positiva de $\rho$.</dd>
@@ -437,9 +392,8 @@
   <div class="recipe"><b>Receta:</b> en polares, si $Q=(\text{potencia positiva de }\rho)\times(\text{algo acotado en }\theta)$, el límite es $0$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Concluir solo con $\rho\to0$ sin decir que el factor en $\theta$ está <b>acotado</b> (es lo que permite aplicar el caso 2).</p></div>
 </details>
-
 <details class="sol" id="ej-5-12"><summary>Ejercicio 5.12 · $g=\frac{f+xy}{\sqrt{x^2+y^2}}$ con $f=x^2-xy+y^2$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.12, p. 179 · teoría: U Teorema 5.1, p. 191; Def. 4.8, p. 169">E p.179</span></summary>
-  <p class="enun">Sea $f(x,y)=x^2-xy+y^2$ y $g(x,y)=\dfrac{f(x,y)+xy}{\sqrt{x^2+y^2}}$ si $(x,y)\ne(0,0)$, $g(0,0)=0$. ¿Es $g$ diferenciable en todo $\mathbb R^2$?</p>
+<p class="enun">Sea $f(x,y)=x^2-xy+y^2$ y $g(x,y)=\dfrac{f(x,y)+xy}{\sqrt{x^2+y^2}}$ si $(x,y)\ne(0,0)$, $g(0,0)=0$. ¿Es $g$ diferenciable en todo $\mathbb R^2$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si $g=\frac{f+xy}{\sqrt{x^2+y^2}}$, con $f=x^2-xy+y^2$ y $g(0,0)=0$, es diferenciable en todo $\mathbb R^2$.</dd>
     <dt>Cómo lo pienso</dt><dd>Antes de derivar simplifico: queda la distancia al origen, un cono con pico en el origen, donde no hay plano tangente.</dd>
@@ -457,12 +411,10 @@
   <div class="recipe"><b>Receta:</b> primero <b>simplifica</b>. Si una parcial en el punto no existe (típico: $|h|/h$), se acabó: no diferenciable.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Escribir $\sqrt{h^2}=h$ y obtener $\frac{\partial g}{\partial x}(0,0)=1$.</p></div>
 </details>
-
 <!-- ============================ 7 ============================ -->
 <h2 id="propios"><span class="n">7</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></h2>
-
 <details class="sol" id="p1"><summary>Propio 1 · aproximar con la diferencial <span class="src" data-l="P" data-ref="Ejemplo propio sobre U Def. 5.1, p. 189">P</span></summary>
-  <p class="enun">Usa la diferencial para estimar $\sqrt{3{,}02^2+3{,}97^2}$ sin calculadora.</p>
+<p class="enun">Usa la diferencial para estimar $\sqrt{3{,}02^2+3{,}97^2}$ sin calculadora.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estimar $\sqrt{3{,}02^2+3{,}97^2}$ sin calculadora.</dd>
     <dt>Cómo lo pienso</dt><dd>Cerca de $(3,4)$ la función $\sqrt{x^2+y^2}$ se confunde con su plano tangente; en $(3,4)$ todo sale exacto ($=5$).</dd>
@@ -478,9 +430,8 @@
   </ol>
   <div class="recipe"><b>Receta:</b> $f(a+h,b+k)\approx f(a,b)+f_x(a,b)h+f_y(a,b)k$, con $(a,b)$ donde todo se calcula a mano.</div>
 </details>
-
 <details class="sol" id="p2"><summary>Propio 2 · continua, con parciales, no diferenciable <span class="src" data-l="P" data-ref="Ejemplo propio sobre U Teorema 5.1, p. 191">P</span></summary>
-  <p class="enun">Sea $f(x,y)=\dfrac{xy}{\sqrt{x^2+y^2}}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Estudia continuidad, parciales y diferenciabilidad en $(0,0)$.</p>
+<p class="enun">Sea $f(x,y)=\dfrac{xy}{\sqrt{x^2+y^2}}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. Estudia continuidad, parciales y diferenciabilidad en $(0,0)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar continuidad, parciales y diferenciabilidad en $(0,0)$ de $\frac{xy}{\sqrt{x^2+y^2}}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Ejemplo para recordar que continua y con parciales no basta: el cociente $Q$ ni siquiera tiende a $0$.</dd>
@@ -495,9 +446,8 @@
     <li><b>Moraleja:</b> pasa los dos filtros del Teorema 5.1 y aun así no es diferenciable. Comparado con E 5.11 ($\sqrt[4]{\ }$ en vez de $\sqrt{\ }$): allí sobraba $\sqrt\rho$; aquí no sobra nada.</li>
   </ol>
 </details>
-
 <details class="sol" id="p3"><summary>Propio 3 · diferenciable con una parcial discontinua <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 192 (condición suficiente) y E Ej. 5.5">P</span></summary>
-  <p class="enun">Sea $f(x,y)=x^2\operatorname{sen}\frac1x+y^2$ si $x\ne0$, $f(0,y)=y^2$. Prueba que $f$ es diferenciable en $(0,0)$ pero $\frac{\partial f}{\partial x}$ no es continua en $(0,0)$.</p>
+<p class="enun">Sea $f(x,y)=x^2\operatorname{sen}\frac1x+y^2$ si $x\ne0$, $f(0,y)=y^2$. Prueba que $f$ es diferenciable en $(0,0)$ pero $\frac{\partial f}{\partial x}$ no es continua en $(0,0)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Probar que $f$ es diferenciable en $(0,0)$ pero que $\frac{\partial f}{\partial x}$ no es continua allí.</dd>
     <dt>Cómo lo pienso</dt><dd>Es la versión sencilla de E 5.5: $f$ es diferenciable porque $x^2\operatorname{sen}\frac1x$ es muy pequeña, pero su derivada oscila.</dd>
@@ -511,9 +461,8 @@
     <li><b>No continua en $(0,0)$:</b> en $\big(\frac1{2n\pi},0\big)\to(0,0)$, $f_x=-1\not\to0=f_x(0,0)$.</li>
   </ol>
 </details>
-
 <details class="sol" id="p4"><summary>Propio 4 · ¿para qué exponentes es diferenciable $|xy|^\alpha$? <span class="src" data-l="P" data-ref="Ejemplo propio sobre U Def. 5.1, p. 189">P</span></summary>
-  <p class="enun">Sea $\alpha>0$ y $f(x,y)=|xy|^\alpha$. ¿Para qué valores de $\alpha$ es $f$ diferenciable en $(0,0)$?</p>
+<p class="enun">Sea $\alpha>0$ y $f(x,y)=|xy|^\alpha$. ¿Para qué valores de $\alpha$ es $f$ diferenciable en $(0,0)$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar los $\alpha>0$ para los que $|xy|^\alpha$ es diferenciable en $(0,0)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Cuanto mayor es $\alpha$, más plana es la función cerca del origen. Hay un umbral y se busca con el exponente de $\rho$ en $Q$.</dd>
@@ -530,13 +479,11 @@
   <p><b>Respuesta:</b> diferenciable en $(0,0)$ si y solo si $\alpha>\frac12$.</p>
   <div class="recipe"><b>Receta:</b> con parámetros, escribe $Q$ en polares como $\rho^{\text{exponente}}\times(\text{función de }\theta)$ y discute el signo del exponente: $>0$ diferenciable; $=0$ depende de $\theta$; $<0$ explota.</div>
 </details>
-
 <!-- ============================ 8 ============================ -->
 <h2 id="examen"><span class="n">8</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
 <p>Dos tipos: <b>preguntas cortas de 1 punto</b> (diferencial, plano tangente o condición suficiente: X1-X5) y el <b>Ejercicio 6 de 3 puntos</b> sobre una función a trozos en el origen (X6-X10), a veces con plano tangente en otro punto (X11). Repiten problemas de E: E 5.7 (X pp.20-21, 115-118), E 5.10 (X pp.26-27), E 5.12 (X p.18) y variantes de $\frac{x^3}{x^2+2y^2}$ (X pp.2-3, 90-92). No hay preguntas de regla de la cadena ni de función implícita: son de §5.2 en adelante.</p>
-
 <details class="sol" id="x1"><summary>X1 · diferencial de $(x+\operatorname{sen}y)^2$ <span class="src" data-l="X" data-ref="X p.35 (Febrero 2013, 2.ª semana, Mecánica, Modelo B, P4, 1 punto); repetida en X p.44 (Feb 2014, Modelo B, P4) y X p.57 (Feb 2015, Modelo B, P4)">X p.35 (feb. 2013; también pp.44, 57)</span></summary>
-  <p class="enun">Calcule la diferencial de la función $f(x,y)=(x+\operatorname{sen}y)^2$.</p>
+<p class="enun">Calcule la diferencial de la función $f(x,y)=(x+\operatorname{sen}y)^2$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular la diferencial de $(x+\operatorname{sen}y)^2$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es una función «normal»: no hay trampa. La diferencial se escribe con las parciales y las dos letras $x$, $y$ como variables lineales.</dd>
@@ -552,9 +499,8 @@
   <div class="recipe"><b>Receta:</b> escribir la diferencial en un punto genérico $(a,b)$ como función lineal de $(x,y)$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Dar solo el gradiente sin escribirlo como aplicación lineal, u olvidar el factor $\cos y$ (derivada interior).</p></div>
 </details>
-
 <details class="sol" id="x2"><summary>X2 · enunciar una condición suficiente de diferenciabilidad <span class="src" data-l="X" data-ref="X p.60 (Febrero 2016, Modelo A, P4, 1 punto)">X p.60 (feb. 2016)</span></summary>
-  <p class="enun">Enuncie una condición suficiente para que la función $f:\mathbb R^2\to\mathbb R$ sea diferenciable en el punto $(a,b)$.</p>
+<p class="enun">Enuncie una condición suficiente para que la función $f:\mathbb R^2\to\mathbb R$ sea diferenciable en el punto $(a,b)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Enunciar una condición suficiente de diferenciabilidad en $(a,b)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Pregunta de teoría: se recita el enunciado con exactitud, sin olvidar que las parciales deben existir <i>cerca</i> del punto.</dd>
@@ -564,9 +510,8 @@
   <p><b>Respuesta (U p.192):</b> si $f$ admite derivadas parciales en un entorno de $(a,b)$ y estas son continuas en $(a,b)$, entonces $f$ es diferenciable en $(a,b)$ y $Df(a,b)(x,y)=\nabla f(a,b)\cdot(x,y)$.</p>
   <div class="box warn"><span class="h">Error típico</span><p>Dar solo «tiene parciales» (insuficiente) o «es continua» (insuficiente): hacen falta parciales <b>cerca</b> del punto y <b>continuas</b>.</p></div>
 </details>
-
 <details class="sol" id="x3"><summary>X3 · plano tangente de $x^2+xy$ en $(1,2,3)$ <span class="src" data-l="X" data-ref="X p.127 (I. Electrónica, examen A sin fecha, P4, 1 punto)">X p.127</span></summary>
-  <p class="enun">Calcule la ecuación del plano tangente a la gráfica de $f(x,y)=x^2+xy$ en el punto $(1,2,3)$.</p>
+<p class="enun">Calcule la ecuación del plano tangente a la gráfica de $f(x,y)=x^2+xy$ en el punto $(1,2,3)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular el plano tangente a $z=x^2+xy$ en $(1,2,3)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Plano que toca la gráfica en ese punto con su misma inclinación.</dd>
@@ -581,9 +526,8 @@
   </ol>
   <div class="recipe"><b>Receta:</b> (1) comprobar $c=f(a,b)$; (2) gradiente en $(a,b)$; (3) $z=c+f_x(a,b)(x-a)+f_y(a,b)(y-b)$.</div>
 </details>
-
 <details class="sol" id="x4"><summary>X4 · plano tangente de $e^x(3\operatorname{sen}y+2)$ en $(0,\frac\pi2,5)$ <span class="src" data-l="X" data-ref="X p.133 (Septiembre 2017, I. Electrónica, P4, 1 punto)">X p.133 (sept. 2017)</span></summary>
-  <p class="enun">Calcule la ecuación del plano tangente a la gráfica de $f(x,y)=e^x(3\operatorname{sen}y+2)$ en el punto $\big(0,\frac\pi2,5\big)$.</p>
+<p class="enun">Calcule la ecuación del plano tangente a la gráfica de $f(x,y)=e^x(3\operatorname{sen}y+2)$ en el punto $\big(0,\frac\pi2,5\big)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular el plano tangente a $z=e^x(3\operatorname{sen}y+2)$ en $(0,\frac\pi2,5)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Mismo problema que X3 con funciones exponencial y seno.</dd>
@@ -596,10 +540,9 @@
     <li><b>Parciales:</b> $f_x=e^x(3\operatorname{sen}y+2)$, $f_y=3e^x\cos y$. En el punto: $(5,0)$.</li>
     <li><b>Plano:</b> $z=5+5(x-0)+0\cdot\big(y-\frac\pi2\big)$, es decir, $\boxed{z=5+5x}$.</li>
   </ol>
-  </details>
-
+</details>
 <details class="sol" id="x5"><summary>X5 · diferencial de $y\operatorname{tg}(\operatorname{sen}x)$ donde exista <span class="src" data-l="X" data-ref="X p.9 (examen sin cabecera, P3b)">X p.9</span></summary>
-  <p class="enun">Calcular la diferencial de $f(x,y)=y\operatorname{tg}(\operatorname{sen}x)$ en donde esta exista.</p>
+<p class="enun">Calcular la diferencial de $f(x,y)=y\operatorname{tg}(\operatorname{sen}x)$ en donde esta exista.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular la diferencial de $y\operatorname{tg}(\operatorname{sen}x)$ en los puntos donde exista.</dd>
     <dt>Cómo lo pienso</dt><dd>«Donde exista» avisa de que primero hay que ver el dominio: la tangente podría no estar definida.</dd>
@@ -613,9 +556,8 @@
   </ol>
   <div class="recipe"><b>Receta:</b> «donde exista» $=$ primero el dominio, luego comprobar que las parciales son continuas en él.</div>
 </details>
-
 <details class="sol" id="x6"><summary>X6 · $\operatorname{arctg}\frac{xy}{x^2+y^2}$: continuidad, parciales y diferenciabilidad <span class="src" data-l="X" data-ref="X p.98 (Septiembre 2018, Modelo A, Ej. 6, 3 puntos)">X p.98 (sept. 2018)</span></summary>
-  <p class="enun">Sea $f(x,y)=\operatorname{arctg}\dfrac{xy}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. a) (1 pt) Estudiar si es continua en $\mathbb R^2$. b) (1 pt) Estudiar si tiene derivadas parciales en $\mathbb R^2$. c) (1 pt) Estudiar si es diferenciable en $(0,0)$.</p>
+<p class="enun">Sea $f(x,y)=\operatorname{arctg}\dfrac{xy}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. a) (1 pt) Estudiar si es continua en $\mathbb R^2$. b) (1 pt) Estudiar si tiene derivadas parciales en $\mathbb R^2$. c) (1 pt) Estudiar si es diferenciable en $(0,0)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la continuidad en $\mathbb R^2$, la existencia de parciales y la diferenciabilidad en $(0,0)$ de $\operatorname{arctg}\frac{xy}{x^2+y^2}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Si en el origen salta (según el camino vale cosas distintas), no puede haber plano tangente aunque las parciales existan.</dd>
@@ -633,9 +575,8 @@
   <div class="recipe"><b>Receta:</b> primer paso del protocolo: si es discontinua en el punto, no es diferenciable, aunque tenga parciales. Es el Ejemplo 4.24 de U (p.172).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Calcular el cociente de diferenciabilidad cuando ya se sabe que $f$ es discontinua (trabajo inútil), o creer que «tiene parciales» basta.</p></div>
 </details>
-
 <details class="sol" id="x7"><summary>X7 · $\frac{x^2-y^2}{\sqrt[3]{x^3+y^3}}$ <span class="src" data-l="X" data-ref="X pp.54-55 (Septiembre 2015, Modelo A, Ej. 6, 3 puntos)">X pp.54-55 (sept. 2015)</span></summary>
-  <p class="enun">Sea $f(x,y)=\dfrac{x^2-y^2}{\sqrt[3]{x^3+y^3}}$ si $x\ne-y$, $f(x,y)=0$ si $x=-y$. (a) Estudiar la continuidad de $f$. (b) Calcular $\frac{\partial f}{\partial x}(0,0)$ y $\frac{\partial f}{\partial y}(0,0)$. (c) Estudiar la diferenciabilidad de $f$ en $(0,0)$. (1 punto cada apartado.)</p>
+<p class="enun">Sea $f(x,y)=\dfrac{x^2-y^2}{\sqrt[3]{x^3+y^3}}$ si $x\ne-y$, $f(x,y)=0$ si $x=-y$. (a) Estudiar la continuidad de $f$. (b) Calcular $\frac{\partial f}{\partial x}(0,0)$ y $\frac{\partial f}{\partial y}(0,0)$. (c) Estudiar la diferenciabilidad de $f$ en $(0,0)$. (1 punto cada apartado.)</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la continuidad, las parciales y la diferenciabilidad en $(0,0)$ de $\frac{x^2-y^2}{\sqrt[3]{x^3+y^3}}$.</dd>
     <dt>Cómo lo pienso</dt><dd>La recta $x=-y$ parece conflictiva (denominador $0$), pero factorizando se cancela. Luego, continua y con parciales, el cociente $Q$ depende de la dirección.</dd>
@@ -655,9 +596,8 @@
   <div class="recipe"><b>Receta:</b> para probar que <b>no</b> es diferenciable basta un camino donde $Q$ no tienda a $0$ (aquí $Q$ es constante y no nula en $k=2h$).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Decir «no es diferenciable» sin calcular explícitamente el límite de $Q$ por algún camino: hay que mostrarlo.</p></div>
 </details>
-
 <details class="sol" id="x8"><summary>X8 · $\frac{x^2y^2}{x^2+2y^2}$: parciales continuas en el origen <span class="src" data-l="X" data-ref="X pp.61-63 (Febrero 2016, Modelo A, Ej. 6, 3 puntos)">X pp.61-63 (feb. 2016)</span></summary>
-  <p class="enun">Sea $f(x,y)=\dfrac{x^2y^2}{x^2+2y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. (a) Estudie la continuidad de $f$ en $\mathbb R^2$. (b) Calcule las derivadas parciales. (c) Estudie la continuidad de las derivadas parciales en el origen. ¿Es diferenciable $f$?</p>
+<p class="enun">Sea $f(x,y)=\dfrac{x^2y^2}{x^2+2y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. (a) Estudie la continuidad de $f$ en $\mathbb R^2$. (b) Calcule las derivadas parciales. (c) Estudie la continuidad de las derivadas parciales en el origen. ¿Es diferenciable $f$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la continuidad, las parciales y la continuidad de las parciales en el origen de $\frac{x^2y^2}{x^2+2y^2}$ y decidir si es diferenciable.</dd>
     <dt>Cómo lo pienso</dt><dd>Se espera que sea suave en el origen; la vía rápida es probar que las parciales son continuas.</dd>
@@ -676,9 +616,8 @@
   <div class="recipe"><b>Receta:</b> para ver si una parcial es continua en el origen, acota su valor absoluto usando que el denominador es mayor que cada uno de sus sumandos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Copiar mal el denominador al derivar (es $(x^2+2y^2)^2$ en las dos), o probar la continuidad de las parciales solo con rectas $y=mx$ (no basta).</p></div>
 </details>
-
 <details class="sol" id="x9"><summary>X9 · $y^3\operatorname{sen}\frac1{x^2+2y^2}$: sí diferenciable <span class="src" data-l="X" data-ref="X pp.71-72 (Septiembre 2016, Modelo A, Ej. 6, 3 puntos)">X pp.71-72 (sept. 2016)</span></summary>
-  <p class="enun">Sea $f(x,y)=y^3\operatorname{sen}\dfrac1{x^2+2y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. (a) Estudie la continuidad de $f$. (b) Estudie la existencia de derivadas parciales. (c) Estudie la diferenciabilidad de $f$.</p>
+<p class="enun">Sea $f(x,y)=y^3\operatorname{sen}\dfrac1{x^2+2y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$. (a) Estudie la continuidad de $f$. (b) Estudie la existencia de derivadas parciales. (c) Estudie la diferenciabilidad de $f$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la continuidad, las parciales y la diferenciabilidad en $(0,0)$ de $y^3\operatorname{sen}\frac1{x^2+2y^2}$.</dd>
     <dt>Cómo lo pienso</dt><dd>El seno oscila pero está acotado por $1$, y $y^3$ lo aplasta aún más que la distancia: sobra potencia de $\rho$.</dd>
@@ -695,9 +634,8 @@
   <div class="recipe"><b>Receta:</b> $\operatorname{sen}(\text{lo que sea})$ se acota por $1$; si lo que lo multiplica, dividido por $\rho$, tiende a $0$, $Q\to0$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Calcular bien $\lim_{(h,k)\to(0,0)}Q=0$ y concluir «no diferenciable»: límite $0$ $\Rightarrow$ <b>sí</b> diferenciable.</p></div>
 </details>
-
 <details class="sol" id="x10"><summary>X10 · $\frac{x^3+xy^2+3y^4}{x^2+y^2}$ (para practicar) <span class="src" data-l="X" data-ref="X pp.122, 124-125 (Examen 5 «elaborado con exámenes de asignaturas similares», Ej. 6)">X pp.122, 124-125</span></summary>
-  <p class="enun">Estudiar la continuidad, derivabilidad y diferenciabilidad de $f(x,y)=\dfrac{x^3+xy^2+3y^4}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$.</p>
+<p class="enun">Estudiar la continuidad, derivabilidad y diferenciabilidad de $f(x,y)=\dfrac{x^3+xy^2+3y^4}{x^2+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=0$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la continuidad, la derivabilidad y la diferenciabilidad en $(0,0)$ de $\frac{x^3+xy^2+3y^4}{x^2+y^2}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Parte lineal ($x$) más una parte que se anula rápido; la lineal no estropea la diferenciabilidad.</dd>
@@ -712,9 +650,8 @@
   </ol>
   <div class="recipe"><b>Receta:</b> separa la parte «lineal» ($x$) de la que se anula rápido: la parte lineal no afecta a la diferenciabilidad.</div>
 </details>
-
 <details class="sol" id="x11"><summary>X11 · discontinuidad en el origen y plano tangente en $(1,1,\frac12)$ <span class="src" data-l="X" data-ref="X p.138 (Febrero 2017, 1.ª semana, I. Electrónica Industrial y Automática, Ej. 6, 3 puntos)">X p.138 (feb. 2017)</span></summary>
-  <p class="enun">Sea $f(x,y)=\dfrac{x^2y^3}{x^4+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=1$. Estudiar la continuidad de $f$ en $(0,0)$ (1,5 pt). Obtener la ecuación del plano tangente a la gráfica de $f$ en $\big(1,1,\frac12\big)$ (1,5 pt).</p>
+<p class="enun">Sea $f(x,y)=\dfrac{x^2y^3}{x^4+y^2}$ si $(x,y)\ne(0,0)$, $f(0,0)=1$. Estudiar la continuidad de $f$ en $(0,0)$ (1,5 pt). Obtener la ecuación del plano tangente a la gráfica de $f$ en $\big(1,1,\frac12\big)$ (1,5 pt).</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la continuidad de $\frac{x^2y^3}{x^4+y^2}$ ($f(0,0)=1$) en el origen y obtener el plano tangente en $(1,1,\frac12)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Dos preguntas independientes: en el origen el valor $1$ choca con lo que hace la función cerca; en $(1,1)$ la función es normal.</dd>
@@ -731,10 +668,8 @@
   <div class="recipe"><b>Receta:</b> para probar discontinuidad basta un camino cuyo límite sea distinto de $f(a,b)$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Usar el valor $f(0,0)=1$ para calcular cosas en $(1,1)$, o no comprobar que $f(1,1)=\frac12$.</p></div>
 </details>
-
 <!-- ============================ 9 ============================ -->
 <h2 id="chuleta"><span class="n">9</span>Errores frecuentes, chuleta y lista de comprobación</h2>
-
 <h3>Errores frecuentes</h3>
 <ul>
   <li>«Tiene parciales, luego es diferenciable» (falso). «Es continua y tiene parciales, luego es diferenciable» (falso: $\frac{xy}{\sqrt{x^2+y^2}}$).</li>
@@ -746,7 +681,6 @@
   <li>Dar un plano tangente sin comprobar que el punto $(a,b,c)$ cumple $c=f(a,b)$; escribir $(x+a)$ por $(x-a)$.</li>
   <li>Confundir el punto $(a,b)$ con el vector $(x,y)$ en la diferencial.</li>
 </ul>
-
 <h3>Chuleta</h3>
 <table>
   <caption>Chuleta de fórmulas y enunciados del tema</caption>
@@ -761,7 +695,6 @@
   <tr><td>Direccional</td><td>diferenciable $\Rightarrow D_{\bar v}f(a,b)=\nabla f(a,b)\cdot\bar v$</td><td>U pp.180, 186</td></tr>
   <tr><td>Aproximación</td><td>$f(a+h,b+k)\approx f(a,b)+Df(a,b)(h,k)$</td><td>propia</td></tr>
 </table>
-
 <div class="box thm"><span class="h">Contraejemplos de las implicaciones (1) y (2) del apartado 3</span>
   <ul>
     <li>(1) no se invierte: $(x^2+y^2)\operatorname{sen}\frac1{x^2+y^2}$ (E 5.5) y Propio 3: diferenciables con parciales discontinuas.</li>
@@ -771,7 +704,6 @@
   </ul>
   <span class="src" data-l="P" data-ref="Síntesis propia de U pp. 189-192, E Ej. 5.5-5.12 y U Ej. 4.24, p. 172">P</span>
 </div>
-
 <div class="box tip"><span class="h">Flujo: qué hago según lo que piden</span>
   <ol class="steps">
     <li><b>Plano tangente / diferencial de una función normal:</b> comprobar el punto en la gráfica $\to$ parciales $\to$ gradiente en el punto $\to$ (5.2) o Def. 5.3.</li>
@@ -780,7 +712,6 @@
     <li><b>Aproximar un valor:</b> punto cercano con valores exactos y $f\approx f(a,b)+Df(a,b)(h,k)$.</li>
   </ol>
 </div>
-
 <h3>Lista de comprobación</h3>
 <ul class="checklist">
   <li>Sé explicar con mis palabras por qué las parciales no bastan para tener plano tangente.</li>
@@ -793,7 +724,6 @@
   <li>Sé aproximar un valor con la diferencial.</li>
   <li>Conozco los contraejemplos clásicos de cada implicación que no se invierte.</li>
 </ul>
-
 <h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
 <details class="fuentes-toggle">
 <summary>Mostrar lista de fuentes</summary>

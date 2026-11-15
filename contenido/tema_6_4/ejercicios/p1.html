@@ -1,0 +1,16 @@
+<p class="enun">Aproxima $\int_0^1x^2\,dx=\frac13$ con el rectángulo central, el trapecio y Simpson, simples y con $n=2$ subintervalos. ¿Qué relación hay entre ellas?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Seis números y una observación.</dd>
+    <dt>Cómo lo pienso</dt><dd>$x^2$ es convexa: la cuerda queda por encima (el trapecio se pasa) y la tangente en el punto medio por debajo (el punto medio se queda corto).</dd>
+    <dt>Qué uso</dt><dd>Def. 6.3 a 6.8 (U pp.264-268).</dd>
+    <dt>Por dónde empiezo</dt><dd>$f(0)=0$, $f(\frac14)=\frac1{16}$, $f(\frac12)=\frac14$, $f(\frac34)=\frac9{16}$, $f(1)=1$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.5,0.25],[1.0,1.0]],"c":[{"e":"x^2","n":"x²"},{"e":"x<=0.5?(0.0+(0.25)/(0.5)*(x-(0.0))):(0.25+(0.75)/(0.5)*(x-(0.5)))","n":"trapecio, n=2","d":1}],"x":[0,1],"y":[0,1.05]}' data-alt="x^2 con la poligonal del trapecio n=2"><figcaption>La parábola $y=x^2$ y la poligonal del trapecio con $n=2$: como $x^2$ es convexa, la cuerda queda por encima y el trapecio se pasa ($\frac38>\frac13$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Simples:</b> punto medio $f(\frac12)\cdot1=\frac14$; trapecio $\frac{0+1}2=\frac12$; Simpson $\frac{0+4\cdot\frac14+1}6=\frac26=\frac13$ (exacto).</li>
+    <li><b>Con $n=2$:</b> punto medio $\frac12\big(f(\frac14)+f(\frac34)\big)=\frac12\cdot\frac{10}{16}=\frac5{16}$; trapecio $\frac14\big(0+2\cdot\frac14+1\big)=\frac38$; Simpson ($h=\frac12$, nodos cada $\frac14$) $\frac{1/2}6\big(0+1+2\cdot\frac14+4(\frac1{16}+\frac9{16})\big)=\frac1{12}\cdot4=\frac13$.</li>
+    <li><b>Errores:</b> trapecio $+\frac16$ ($n=1$) y $+\frac1{24}$ ($n=2$); punto medio $-\frac1{12}$ y $-\frac1{48}$: el del punto medio es la mitad y de signo contrario (apartado 5), y al doblar $n$ ambos se dividen entre $4$.</li>
+    <li><b>Relación:</b> $\frac{T+2M}3=\frac{\frac12+2\cdot\frac14}3=\frac13=S$. En general $S_n=\frac{T_n+2M_n}3$.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para una parábola, Simpson es exacto; trapecio y punto medio fallan en sentidos opuestos.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar que el trapecio siempre mejora al punto medio: aquí es al revés (el error del punto medio es la mitad).</p></div>

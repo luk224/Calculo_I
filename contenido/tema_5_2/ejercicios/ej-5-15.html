@@ -1,0 +1,21 @@
+<p class="enun">Sean las funciones dadas por $f(x,y)=x(1-y^2)-y$, $x(t)=e^{2t}$, $y(t)=\frac1t$. A partir de ellas se define $F$ mediante $F(t)=f(x(t),y(t))$. Se pide calcular la derivada de $F(t)$ respecto a $t$ mediante dos procedimientos: 1) sustitución de las expresiones de $x(t)$ e $y(t)$ y derivación posterior y 2) aplicando la regla de la cadena.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>La derivada de $F(t)=f(x(t),y(t))$ de dos formas: sustituyendo antes de derivar y con la regla de la cadena.</dd>
+    <dt>Cómo lo pienso</dt><dd>Son dos caminos al mismo resultado. O se sustituye y queda una función de $t$ que se deriva como siempre, o se suma un término por cada camino $t\to x\to f$ y $t\to y\to f$: «derivada de $f$ por derivada de la intermedia».</dd>
+    <dt>Qué uso</dt><dd>Regla de la cadena con una variable final (U p. 196): $F'(t)=f_x\,x'+f_y\,y'$, con las parciales evaluadas en $(x(t),y(t))$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Procedimiento 1: escribir $F(t)=e^{2t}(1-1/t^2)-1/t$ y derivarla. Procedimiento 2: calcular $f_x$, $f_y$, $x'$, $y'$.</dd>
+  </dl></div>
+  <p><b>Procedimiento 1 (sustituir).</b></p>
+  <ol class="steps">
+    <li>$F(t)=e^{2t}\left(1-\frac1{t^2}\right)-\frac1t$ (para $t\ne0$).</li>
+    <li>Producto y cadena de una variable: $F'(t)=2e^{2t}\left(1-\frac1{t^2}\right)+e^{2t}\frac2{t^3}+\frac1{t^2}=2e^{2t}\left(1-\frac1{t^2}+\frac1{t^3}\right)+\frac1{t^2}$.</li>
+  </ol>
+  <p><b>Procedimiento 2 (regla de la cadena).</b></p>
+  <ol class="steps">
+    <li><b>Árbol:</b> dos caminos de $t$ a $f$ (por $x$ y por $y$): $F'(t)=\frac{\partial f}{\partial x}x'(t)+\frac{\partial f}{\partial y}y'(t)$.</li>
+    <li><b>Parciales:</b> $\frac{\partial f}{\partial x}=1-y^2$, $\frac{\partial f}{\partial y}=-2xy-1$. <b>Intermedias:</b> $x'=2e^{2t}$, $y'=-\frac1{t^2}$.</li>
+    <li><b>Sustituir $x=e^{2t}$, $y=\frac1t$ en las parciales</b> (el paso que más se olvida): $$F'(t)=\left(1-\tfrac1{t^2}\right)2e^{2t}+\left(-\tfrac{2e^{2t}}t-1\right)\left(-\tfrac1{t^2}\right)=2e^{2t}\left(1-\tfrac1{t^2}\right)+\tfrac{2e^{2t}}{t^3}+\tfrac1{t^2}.$$</li>
+    <li><b>Coincide</b> con el procedimiento 1.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> $\frac d{dt}f(x(t),y(t))=f_x\,x'+f_y\,y'$ con $f_x,f_y$ evaluadas en $(x(t),y(t))$; al final todo debe quedar en función de $t$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dejar el resultado mezclando $x$, $y$ y $t$, o equivocarse de signo en $y'(t)=-1/t^2$.</p></div>

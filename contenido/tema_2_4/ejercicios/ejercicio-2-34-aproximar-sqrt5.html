@@ -1,0 +1,32 @@
+<p class="enun">Usando el método de Newton, calcula un valor aproximado de $\sqrt5$, realizando cuatro iteraciones.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Aproximar $\sqrt5$ con cuatro iteraciones de Newton; hay que dar el valor $x_4$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Newton resuelve ecuaciones $f(x)=0$, y $\sqrt5$ no es una ecuación todavía: hay que escribirlo como el cero de una función sencilla ($x^2-5$). Después, cada paso traza la tangente en el punto actual y se queda con donde corta al eje; así el punto se acerca a la raíz.</dd>
+    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Teorema de Bolzano (U §1.4, p.52) para elegir $x_0$. <span class="src" data-l="U" data-ref="U §2.4.2, algoritmo p. 88; Ejemplo 2.15, pp. 87-88">U p.88</span></dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo $f(x)=x^2-5$, $f'(x)=2x$, y busco con Bolzano dos enteros entre los que cambie de signo para tomar $x_0$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"p":[[2,-1,"x₀=2"]],"q":[[2.236068,0,"√5"]],"c":[{"e":"x*x-5","n":"f(x)=x²−5"}],"x":[0,3.5],"y":[-6,8]}' data-alt="Parábola x²-5 y su cero"><figcaption>La parábola $f(x)=x^2-5$ corta al eje $x$ en $\sqrt5\approx2{,}236$, que es lo que buscamos; $x_0=2$ queda a su izquierda. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Convertir «calcular $\sqrt5$» en «resolver $f(x)=0$».</b> $\sqrt5$ es el número positivo cuyo cuadrado vale $5$: solución de $x^2-5=0$. Tomamos $f(x)=x^2-5$, derivable en todo $\mathbb R$, con $f'(x)=2x$.</li>
+    <li><b>Elegir $x_0$ con criterio.</b> $f(2)=-1&lt;0&lt;f(3)=4$ y $f$ es continua: por Bolzano hay un cero en $(2,3)$. Tomamos $x_0=2$; además $f'(2)=4\ne0$, luego se puede aplicar la fórmula.</li>
+    <li><b>Simplificar la iteración.</b>
+      $$x_{n+1}=x_n-\frac{x_n^2-5}{2x_n}=\frac{2x_n^2-x_n^2+5}{2x_n}=\frac12\Big(x_n+\frac5{x_n}\Big).$$
+      Es la media entre $x_n$ y $5/x_n$: si uno se queda corto, el otro se pasa.</li>
+    <li><b>Iterar</b> con fracciones exactas: $x_1=\frac94$, $x_2=\frac{161}{72}$, $x_3=\frac{51841}{23184}$, $x_4=\frac{5374978561}{2403763488}$.</li>
+  </ol>
+  <table class="t24-num">
+    <tr><th>$n$</th><th>$x_n$</th><th>$f(x_n)$</th><th>error real $|x_n-\sqrt5|$</th><th>$\varepsilon_r$</th></tr>
+    <tr><td>0</td><td>2</td><td>$-1$</td><td>$2.36\times10^{-1}$</td><td>—</td></tr>
+    <tr><td>1</td><td>2.25</td><td>$0.0625$</td><td>$1.39\times10^{-2}$</td><td>$1.11\times10^{-1}$</td></tr>
+    <tr><td>2</td><td>2.236111111111</td><td>$1.93\times10^{-4}$</td><td>$4.31\times10^{-5}$</td><td>$6.21\times10^{-3}$</td></tr>
+    <tr><td>3</td><td>2.236067977916</td><td>$1.86\times10^{-9}$</td><td>$4.16\times10^{-10}$</td><td>$1.93\times10^{-5}$</td></tr>
+    <tr><td>4</td><td>2.236067977500</td><td>$1.7\times10^{-19}$</td><td>$3.9\times10^{-20}$</td><td>$1.86\times10^{-10}$</td></tr>
+  </table>
+  <ol class="steps" start="5" style="counter-reset:s 4">
+    <li><b>Conclusión.</b> $\sqrt5\approx x_4=2.2360679775$ ($\sqrt5=2.2360679774997\ldots$). Con 4 decimales, como en E, $x_2=x_3=x_4=2.2361$; ojo, esa «estabilización» es solo a 4 decimales: el error real de $x_2$ es $4.3\times10^{-5}$.</li>
+    <li><b>Por qué converge tan rápido</b> (propio, álgebra pura). Restando $\sqrt5$ en la fórmula del paso 3:
+      $$x_{n+1}-\sqrt5=\frac{x_n^2-2\sqrt5\,x_n+5}{2x_n}=\frac{(x_n-\sqrt5)^2}{2x_n}.$$
+      Si $x_n&gt;0$: (i) $x_{n+1}\ge\sqrt5$ (desde $x_1$ todas son por exceso, como se ve); (ii) el error nuevo es aproximadamente el <b>cuadrado</b> del anterior dividido entre $2\sqrt5\approx4.47$. Los errores $10^{-2}\to10^{-5}\to10^{-10}\to10^{-20}$ duplican los decimales correctos: <b>convergencia cuadrática</b>.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para aproximar $\sqrt[m]a$, toma $f(x)=x^m-a$, localiza la raíz con Bolzano, parte de un entero cercano, simplifica $x_{n+1}=x_n-\frac{x_n^m-a}{m\,x_n^{m-1}}$ y rellena una tabla $n\,|\,x_n\,|\,f(x_n)\,|\,f'(x_n)$.</div>
+  <p><b>Error típico:</b> redondear demasiado pronto (con 2 decimales la tabla «se estabiliza» en $2.24$, falso en el tercer decimal).</p>

@@ -1,0 +1,17 @@
+<p class="enun">Define una partición de $[0,4]$ con cien elementos distintos y finura igual a $3$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Construir una partición concreta que cumpla dos condiciones: $100$ puntos y que el trozo mayor mida exactamente $3$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Un salto de longitud $3$ fija la finura; los puntos restantes se meten en el trozo que queda, con saltos más pequeños que $3$.</dd>
+    <dt>Qué uso</dt><dd>Definición de partición y de finura (U p.238).</dd>
+    <dt>Por dónde empiezo</dt><dd>Poner $x_0=0$, $x_1=3$ y repartir los demás puntos entre $3$ y $4$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Un trozo de longitud $3$:</b> $x_0=0$ y $x_1=3$.</li>
+    <li><b>Cuántos puntos faltan:</b> ya hay $2$; faltan $98$ puntos distintos en $(3,4]$, y el último debe ser $4$.</li>
+    <li><b>Repartirlos con saltos pequeños:</b> $x_{k+1}=3+\frac k{98}$ para $k=1,\dots,98$. Así $x_2=3+\frac1{98}$, …, $x_{99}=4$.
+      $$P=\Big\{0,\ 3,\ 3+\tfrac1{98},\ 3+\tfrac2{98},\ \dots,\ 4\Big\}.$$</li>
+    <li><b>Contar y comprobar:</b> $2+98=100$ puntos distintos, ordenados, del $0$ al $4$. El primer trozo mide $3$ y los demás $\frac1{98}\lt3$, luego $\|P\|=3$.</li>
+    <li><b>Otra respuesta válida</b> (el trozo grande al final): $y_i=\frac i{98}$ para $i=0,\dots,98$ y el punto $4$. Son $99+1=100$ puntos; el último subintervalo $[1,4]$ mide $3$ y es el mayor. Hay infinitas soluciones.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para finura $\delta$, un subintervalo de longitud exactamente $\delta$ y el resto de puntos con saltos menores. Comprobar al final: número de puntos, primer y último punto y máximo de las longitudes.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>«Cien elementos» son $100$ <b>puntos</b>, es decir, $99$ subintervalos; contar mal desplaza todo en uno.</p></div>

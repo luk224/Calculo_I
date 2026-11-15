@@ -1,0 +1,19 @@
+<p class="enun">¿Es derivable en $x=0$ la función $f(x)=|x^2\operatorname{sen}x|$? Justifique la respuesta.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si $f(x)=|x^2\operatorname{sen}x|$ es derivable en $x=0$.</dd>
+    <dt>Cómo lo pienso</dt><dd>En $x=0$ la función vale $0$ y el valor absoluto podría crear una esquina, así que no se usan reglas: se calcula la derivada con la definición y se mira si el cociente tiende a un número.</dd>
+    <dt>Qué uso</dt><dd>Def. 2.1 (U p.75); regla del emparedado (U p.45).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir el cociente $\frac{f(h)-f(0)}{h}=\frac{|h^2\operatorname{sen}h|}{h}$ y sacar $h^2$ del valor absoluto.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Valor en el punto:</b> $f(0)=0$.</li>
+    <li><b>Cociente incremental</b> (U Def. 2.1, p. 75): $\dfrac{f(h)-f(0)}{h}=\dfrac{|h^2\operatorname{sen}h|}{h}$.</li>
+    <li><b>Simplificar.</b> $h^2$ es siempre positivo, así que sale del valor absoluto: queda $\dfrac{h^2\,|\operatorname{sen}h|}{h}=h\,|\operatorname{sen}h|$.</li>
+    <li><b>Límite.</b> $|\operatorname{sen}h|$ nunca pasa de $1$, así que $\big|h\,|\operatorname{sen}h|\big|\le|h|$, que tiende a $0$. Por el emparedado (U p. 45), el límite es $0$.</li>
+  </ol>
+  <p><b>Respuesta: sí es derivable en $0$, con $f'(0)=0$.</b></p>
+  <div class="box ex"><span class="h">Lo que escribes en el examen</span>
+    <p>$\dfrac{f(h)-f(0)}{h}=h\,|\operatorname{sen}h|$ y $0\le h\,|\operatorname{sen}h|\le|h|\to0$ (emparedado). Luego $f'(0)=0$ y $f$ es derivable en $0$.</p></div>
+  <p>¿Por qué no hay esquina como en $|x|$? Porque el factor $x^2$ aplasta la gráfica contra el eje $X$ cerca de $0$.</p>
+  <figure class="graf" data-g='{"q":[[0,0,"(0, 0)"]],"c":[{"e":"abs(x**2*sin(x))","n":"f(x)=|x² sen x|"},{"e":"x**2","n":"cota: y = x²","d":1}],"x":[-2.5,2.5],"y":[-0.3,6.5]}' data-alt="Gráfica de |x² sen x| acotada por x²"><figcaption>La gráfica queda entre $0$ y $x^2$ (curva punteada): cerca de $0$ se aplasta contra el eje $X$ y no hay esquina. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta:</b> para $|g|$ donde $g(a)=0$, escribe el cociente $\frac{|g(a+h)|}{h}$, saca del valor absoluto lo que es siempre positivo y mira si queda algo que tiende a $0$ (acotado por algo que tiende a $0$). Si el resultado depende del signo de $h$, calcula las dos derivadas laterales.</div>

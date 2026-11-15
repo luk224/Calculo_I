@@ -1,0 +1,17 @@
+<p class="enun">Determina, mediante diferencias divididas, el polinomio de grado 3 que interpola los siguientes datos: $k=0,1,2,3$; $x_k=1,5,8,10$; $f(x_k)=3,11,38,56$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El polinomio de grado 3 que pasa por $(1,3),(5,11),(8,38),(10,56)$, calculado con diferencias divididas.</dd>
+    <dt>Cómo lo pienso</dt><dd>Se construye el polinomio por capas: primero una constante, luego se añade lo que corrige la pendiente, luego la curvatura, etc. Cada capa sale de una columna de la tabla de diferencias.</dd>
+    <dt>Qué uso</dt><dd>Diferencias divididas (U p. 123) y forma de Newton (U p. 124).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo los nodos y los valores en dos columnas y calculo la columna de orden 1 (diferencias entre nodos vecinos).</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Tabla de diferencias divididas</b> (cada casilla es «la de abajo menos la de arriba» de la columna anterior, entre la diferencia de los nodos extremos; las flechas muestran de dónde sale; en azul, la diagonal superior):<div class="dd" data-x="1,5,8,10" data-y="3,11,38,56"></div></li>
+    <li><b>Fórmula de Newton</b> (grado 3): $p_3(x)=f[x_0]+f[x_0,x_1](x-x_0)+f[x_0,x_1,x_2](x-x_0)(x-x_1)+f[x_0,x_1,x_2,x_3](x-x_0)(x-x_1)(x-x_2)$</li>
+    <li><b>Sustituyo</b> la diagonal $3,\ 2,\ 1,\ -\frac19$ y los nodos $1,5,8$: $p_3(x)=3+2(x-1)+(x-1)(x-5)-\tfrac19(x-1)(x-5)(x-8)$. Ya es una respuesta completa.</li>
+    <li><b>Desarrollo</b> (solo si piden potencias de $x$): $2(x-1)=2x-2$; $(x-1)(x-5)=x^2-6x+5$; $-\tfrac19(x-1)(x-5)(x-8)=-\tfrac19x^3+\tfrac{14}9x^2-\tfrac{53}9x+\tfrac{40}9$. Sumando: $p_3(x)=-\tfrac19x^3+\tfrac{23}9x^2-\tfrac{89}9x+\tfrac{94}9$.</li>
+    <li><b>Comprobación:</b> $p_3(1)=3$, $p_3(5)=11$, $p_3(8)=38$, $p_3(10)=56$.</li>
+  </ol>
+  <figure class="graf" data-g='{"p":[[1,3],[5,11],[8,38],[10,56]],"c":[{"interp":true,"n":"p₃(x)"}],"x":[0,11]}' data-alt="Polinomio del Ejercicio 3.24"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> (1) columna de orden 0 = valores. (2) Resto de la tabla como en el apartado 2. (3) Polinomio = diagonal superior × productos $(x-x_0)(x-x_1)\cdots$, con tantos factores como el orden. (4) Desarrollar solo si lo piden; comprobar en dos o tres nodos.</div>
+  <p><i>Es literalmente X p.57 (Feb. 2015, Modelo B, Ej. 5), con la misma solución.</i></p>

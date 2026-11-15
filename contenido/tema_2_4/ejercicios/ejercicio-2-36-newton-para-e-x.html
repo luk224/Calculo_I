@@ -1,0 +1,41 @@
+<p class="enun">Utilizando el método de Newton, encuentra una solución aproximada de la ecuación $e^{-x}-x=0$ realizando tres iteraciones y partiendo de las condiciones iniciales $x_0=0.5$ y $x_0=5$. Estima el error relativo aproximado en cada caso.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Resolver $e^{-x}-x=0$ con tres iteraciones de Newton desde $x_0=0.5$ y desde $x_0=5$, estimando el error relativo en cada caso.</dd>
+    <dt>Cómo lo pienso</dt><dd>Newton es el mismo, pero conviene comparar un punto de partida cercano a la raíz y otro lejano: el lejano empieza dando pasos poco útiles. El error relativo aproximado mide cuánto se movió el último paso respecto al valor actual.</dd>
+    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; error relativo aproximado y criterios de parada (U pp.89-90). <span class="src" data-l="U" data-ref="U pp. 88-90: algoritmo, error relativo aproximado, criterios de parada">U pp.88-90</span></dd>
+    <dt>Por dónde empiezo</dt><dd>Defino $f(x)=e^{-x}-x$, compruebo con Bolzano dónde está la raíz, calculo $f'(x)$ y simplifico la iteración.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"p":[[0.5,0.106531,"x₀=0,5"],[5,-4.993262,"x₀=5"]],"q":[[0.567143,0,"raíz"]],"c":[{"e":"exp(-x)-x","n":"f(x)=e^(−x)−x"}],"x":[-0.5,5.5],"y":[-6,2]}' data-alt="Gráfica de e^-x - x"><figcaption>La función $f(x)=e^{-x}-x$ es decreciente y corta al eje $x$ en $x\approx0{,}5671$. El punto $x_0=0{,}5$ está junto a la raíz y $x_0=5$ muy lejos, donde la tangente es casi horizontal. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Hay una única solución y sabemos dónde.</b> $f(x)=e^{-x}-x$, continua y derivable en $\mathbb R$. $f(0)=1&gt;0$ y $f(1)=e^{-1}-1\approx-0.632&lt;0$: por Bolzano hay una raíz en $(0,1)$. Es única porque $e^{-x}$ y $-x$ son estrictamente decrecientes, luego $f$ también y no puede anularse dos veces. (Es la ecuación del Ejemplo 1.49 de U, p.55, resuelta allí por bisección.)</li>
+    <li><b>Derivada que nunca se anula.</b> $f'(x)=-e^{-x}-1&lt;0$ para todo $x$, porque $e^{-x}&gt;0$: la división de Newton siempre es posible.</li>
+    <li><b>Iteración simplificada.</b>
+      $$x_{n+1}=x_n-\frac{e^{-x_n}-x_n}{-e^{-x_n}-1}=x_n+\frac{e^{-x_n}-x_n}{e^{-x_n}+1}=\frac{x_n+1}{1+e^{x_n}}$$
+      (en el último paso se multiplica numerador y denominador por $e^{x_n}$).</li>
+    <li><b>Caso $x_0=0.5$.</b></li>
+  </ol>
+  <table class="t24-num">
+    <tr><th>$n$</th><th>$x_n$</th><th>$f(x_n)$</th><th>$\varepsilon_r$</th><th>error real</th></tr>
+    <tr><td>0</td><td>0.5</td><td>$1.065\times10^{-1}$</td><td>—</td><td>$6.7\times10^{-2}$</td></tr>
+    <tr><td>1</td><td>0.566311003197</td><td>$1.305\times10^{-3}$</td><td>$1.17\times10^{-1}$</td><td>$8.3\times10^{-4}$</td></tr>
+    <tr><td>2</td><td>0.567143165035</td><td>$1.96\times10^{-7}$</td><td>$1.47\times10^{-3}$</td><td>$1.3\times10^{-7}$</td></tr>
+    <tr><td>3</td><td>0.567143290410</td><td>$4.5\times10^{-15}$</td><td>$2.21\times10^{-7}$</td><td>$2.8\times10^{-15}$</td></tr>
+  </table>
+  <p>Solución exacta: $\tilde x=0.567143290409784\ldots$ Error relativo aproximado tras 3 iteraciones: $\varepsilon_r=\frac{|x_3-x_2|}{|x_3|}\approx2.2\times10^{-7}$. <b>Con 4 decimales</b> (como hace E): $x_1\approx0.5663$, $x_2\approx x_3\approx0.5671$ y sale $\varepsilon_r=0$. Ese «0» no significa error nulo: el error es menor de lo que 4 decimales pueden mostrar.</p>
+  <ol class="steps" style="counter-reset:s 4">
+    <li><b>Caso $x_0=5$.</b></li>
+  </ol>
+  <table class="t24-num">
+    <tr><th>$n$</th><th>$x_n$</th><th>$f(x_n)$</th><th>$\varepsilon_r$</th><th>error real</th></tr>
+    <tr><td>0</td><td>5</td><td>$-4.99326$</td><td>—</td><td>4.43</td></tr>
+    <tr><td>1</td><td>0.040157105546</td><td>0.92048</td><td>123.5</td><td>$5.3\times10^{-1}$</td></tr>
+    <tr><td>2</td><td>0.509637531161</td><td>0.09108</td><td>$9.21\times10^{-1}$</td><td>$5.8\times10^{-2}$</td></tr>
+    <tr><td>3</td><td>0.566534509041</td><td>$9.54\times10^{-4}$</td><td>$1.004\times10^{-1}$</td><td>$6.1\times10^{-4}$</td></tr>
+  </table>
+  <p>$\varepsilon_r=\frac{|x_3-x_2|}{|x_3|}=\frac{|0.566535-0.509638|}{0.566535}\approx0.1004$, igual que en E.</p>
+  <ol class="steps" style="counter-reset:s 5">
+    <li><b>Por qué el primer salto es tan grande.</b> En $x_0=5$ la función es casi la recta $y=-x$ ($e^{-5}\approx0.0067$), de pendiente casi $-1$; su tangente corta el eje cerca de $0$, al otro lado de la raíz. Desde ahí ya está cerca y converge deprisa. <b>El resultado tras un número fijo de pasos depende mucho de $x_0$</b>: conviene localizar antes la raíz.</li>
+    <li><b>Cómo interpretar $\varepsilon_r$.</b> No es el error verdadero: mide cuánto ha cambiado la última iteración y se usa como estimación. Con $x_0=5$, $\varepsilon_r\approx0.1$ sobreestima el error relativo real ($\approx10^{-3}$): en Newton suele ocurrir, porque el error real ya es mucho menor que el último salto.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> (1) Bolzano para localizar la raíz. (2) Comprobar $f'\ne0$. (3) Simplificar $x-f/f'$. (4) Tabla con $x_n$ y $\varepsilon_r=|x_n-x_{n-1}|/|x_n|$. (5) Parar cuando $\varepsilon_r$ sea menor que la tolerancia o se agoten las iteraciones pedidas.</div>
+  <p><b>Error típico:</b> perder el signo de $f'$: el denominador es $-e^{-x_n}-1$. Si se usa $+e^{-x_n}+1$, el paso va en sentido contrario (desde $0.5$ saldría $0.434$, que se aleja). Otro: dividir $\varepsilon_r$ entre $|x_{n-1}|$ en vez de $|x_n|$.</p>

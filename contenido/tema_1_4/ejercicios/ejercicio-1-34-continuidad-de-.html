@@ -1,0 +1,19 @@
+<p class="enun">Sean $f(x)=|x|$ y $g(x)=\begin{cases}e^{-\frac1{(1+x)^2}},&amp;x\neq-1,\\[1mm]e^{-\frac14},&amp;x=-1.\end{cases}$ Estudiar la continuidad de $g\circ f$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar la continuidad de $g\circ f$ con $f=|x|$ y $g$ la función del 1.33.</dd>
+    <dt>Cómo lo pienso</dt><dd>$g$ solo falla en $-1$. Pero $f=|x|$ nunca toma el valor $-1$, así que ese defecto de $g$ no se «ve» al componer.</dd>
+    <dt>Qué uso</dt><dd>Composición: continua en $a$ si $f$ lo es en $a$ y $g$ en $f(a)$ (U Prop. 1.14, p.51); Teorema 1.4 (U p.47).</dd>
+    <dt>Por dónde empiezo</dt><dd>Compruebo que $|x|$ es continua y que $f(a)\ge0$ para todo $a$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Respuesta:</b> $g\circ f$ es continua en todo $\mathbb R$.</li>
+    <li><b>$f=|x|$ es continua en $\mathbb R$.</b> Si $x\neq0$, cerca de $x$ coincide con $x$ o con $-x$ (polinomios). En $0$: $\lim_{x\to0^-}(-x)=0=\lim_{x\to0^+}x$, y por el Teorema 1.4 (U p.47) el límite es $0=f(0)$.</li>
+    <li><b>$g$</b> es continua en $\mathbb R\setminus\{-1\}$ y discontinua en $-1$ (Ejercicio 1.33).</li>
+    <li><b>Regla de la composición (U Prop. 1.14, p. 51).</b> $g\circ f$ es continua en $a$ si $f$ es continua en $a$ y $g$ es continua en $f(a)$. Para todo $a$, $f(a)=|a|\ge0$, así que $f(a)\neq-1$ y $g$ es continua en $f(a)$. Luego $g\circ f$ es continua en todo $a\in\mathbb R$.</li>
+    <li><b>Fórmula explícita:</b> $(g\circ f)(x)=e^{-\frac1{(1+|x|)^2}}$, con $1+|x|\ge1&gt;0$. El único punto problemático de $g$, el $-1$, no está en la imagen $f(\mathbb R)=[0,\infty)$.</li>
+  </ol>
+  <figure class="graf" data-g='{"c":[{"e":"exp(-1/(1+abs(x))**2)","n":"(g∘f)(x) = g(|x|)"}],"x":[-4,4],"y":[0,1]}' data-alt="Gráfica continua de g(|x|)"><figcaption>La composición $g(|x|)=e^{-1/(1+|x|)^2}$ (nunca se evalúa $g$ en $-1$ porque $|x|\ge0$) no tiene saltos ni huecos: es continua en todo $\mathbb R$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> en $g\circ f$, las discontinuidades de $g$ solo importan si son valores que $f$ alcanza, es decir, si están en $f(D)$.</div>
+  <p><b>Error típico:</b> razonar «$g$ es discontinua, luego $g\circ f$ también lo es».</p>
+  <p><b>Observación:</b> $g\circ f$ <b>sí</b> es composición de funciones continuas ($|x|$, luego $t\mapsto-\frac1{(1+t)^2}$ continua en $t\ge0$, luego $\exp$); lo que importa es que la Prop. 1.14 es <b>local</b>. Aunque no se pide: $f\circ g=|g|=g$ (porque $g&gt;0$) sí es discontinua en $-1$.</p>
+  <p class="l4-teo">Teoría: U Prop. 1.14 y Def. 1.20, p. 51; Teorema 1.4, p. 47.</p>

@@ -1,0 +1,21 @@
+<p class="enun">Sea la serie $\sum_{n=1}^{+\infty}a_n$ de término general $a_n=\dfrac1{3+\cos n+n^{5/2}}$. Elige la opción u opciones correctas: a) es una serie convergente pero no es absolutamente convergente; b) es una serie absolutamente convergente; c) es una serie divergente; d) es una serie alternada.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decir cuáles de las cuatro afirmaciones (convergente no absoluta, absoluta, divergente, alternada) son ciertas para $a_n=\frac1{3+\cos n+n^{5/2}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El $\cos n$ es «ruido» acotado: para $n$ grande manda $n^{5/2}$ y el término se parece a $\frac1{n^{5/2}}$, que se hace pequeño rápido. Además todo es positivo, así que no hay signos alternos.</dd>
+    <dt>Qué uso</dt><dd>Criterio de comparación y series $\sum1/n^\gamma$ (U p.38); convergencia absoluta (Def. 1.16, U p.40); serie alternada (Def. 1.17, U p.41).</dd>
+    <dt>Por dónde empiezo</dt><dd>Veo el signo del término (positivo) y acoto el denominador por debajo para comparar con $\sum1/n^{5/2}$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Signo de los términos.</b> Como $-1\le\cos n\le1$, se tiene $3+\cos n\ge2&gt;0$; además $n^{5/2}&gt;0$. El denominador es positivo y $a_n&gt;0$ para todo $n$. Luego <b>d) es falsa</b>: una serie alternada (Def. 1.17, U p.41) cambia de signo y esta no.</li>
+    <li><b>Con qué comparar.</b> Para $n$ grande manda $n^{5/2}$ (el $3+\cos n$ está acotado entre $2$ y $4$). Así $a_n\approx\dfrac1{n^{5/2}}$: serie $\sum1/n^\gamma$ con $\gamma=\tfrac52&gt;1$, <b>convergente</b> (U p.38).</li>
+    <li><b>Desigualdad término a término.</b> Para todo $n\ge1$: $3+\cos n+n^{5/2}\ge2+n^{5/2}&gt;n^{5/2}$, y al invertir números positivos la desigualdad cambia de sentido:
+      $$0&lt;a_n=\frac1{3+\cos n+n^{5/2}}&lt;\frac1{n^{5/2}}.$$</li>
+    <li><b>Criterio de comparación (U p.38).</b> Ambas series son de términos no negativos, $a_n\le b_n=1/n^{5/2}$ y $\sum b_n$ converge $\Rightarrow$ $\sum a_n$ <b>converge</b>.</li>
+    <li><b>Convergencia absoluta.</b> Como $a_n&gt;0$, $|a_n|=a_n$: $\sum|a_n|=\sum a_n$ converge. La serie es <b>absolutamente convergente</b> (Def. 1.16, U p.40) y <b>b) es correcta</b>.</li>
+    <li><b>Descartar a) y c).</b> a) afirma que <i>no</i> es absolutamente convergente: falso por el paso 5. c) afirma que diverge: falso por el paso 4.</li>
+  </ol>
+  <p><b>Respuesta: solo b).</b> (Comprobación numérica: $\sum a_n\approx0{,}4949&lt;\sum1/n^{5/2}\approx1{,}3415$.)</p>
+  <figure class="graf" data-g='{"p":[[1,0.22025],[2,0.121349],[3,0.056823],[4,0.029115],[5,0.016896],[6,0.010853],[7,0.007496],[8,0.005439]],"c":[{"e":"x**(-2.5)","n":"cota 1/n^(5/2)","d":1}],"x":[0,9],"ex":"n","ey":"aₙ"}' data-alt="Términos 1/(3+cos n+n^(5/2)) por debajo de 1/n^(5/2)"><figcaption>Los términos $a_n$ (puntos, todos positivos: no hay signos alternos) quedan por debajo de $\frac1{n^{5/2}}$ (curva de puntos), serie convergente: $0&lt;a_n&lt;\frac1{n^{5/2}}$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> término general = cociente con una potencia dominante $n^\gamma$ más «ruido acotado» (senos, cosenos, constantes): acota el ruido para obtener $0\le a_n\le C/n^\gamma$ (o $\ge$) y compara con $\sum1/n^\gamma$. En series de términos positivos, <i>convergente = absolutamente convergente</i>.</div>
+  <p><b>Error típico:</b> (i) ver un $\cos n$ y pensar «alternada»: lo que decide es el signo de <b>todo</b> el término. (ii) Comparar en la dirección inútil: mayorar por una serie divergente o minorar por una convergente no concluye nada.</p>
+  <p><i>Teoría:</i> U Def. 1.16 y Prop. 1.8 p.40; Def. 1.17 p.41; comparación y $\sum1/n^\gamma$ p.38; ejemplo gemelo U Ej. 1.39 pp.40-41.</p>

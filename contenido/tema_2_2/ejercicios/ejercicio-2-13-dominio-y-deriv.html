@@ -1,0 +1,18 @@
+<p class="enun">Determina el dominio y calcula la derivada de la función dada por $f(x)=\arccos\sqrt x$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El dominio y la derivada de $f(x)=\arccos\sqrt x$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El arcocoseno solo admite números entre $-1$ y $1$ y la raíz solo $x\ge0$: eso fija el dominio. La derivada del arcocoseno se deduce derivando $\cos(\arccos y)=y$; luego se encadena con la raíz. En los extremos del dominio la fórmula explota, y hay que estudiarlos aparte.</dd>
+    <dt>Qué uso</dt><dd>Convenio $\arccos:[-1,1]\to[0,\pi]$ (U §1.5, p.62); método de derivar $f^{-1}(f(x))=x$ (U Ej. 2.6, p.80); cadena (U p.79).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo el dominio: $x\ge0$ y $-1\le\sqrt x\le1$. Después recuerdo $\arccos'(y)=-1/\sqrt{1-y^2}$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Qué es $\arccos$.</b> $\arccos:[-1,1]\to[0,\pi]$ (apartado 8): $\arccos y$ es el único $\alpha\in[0,\pi]$ con $\cos\alpha=y$.</li>
+    <li><b>Dominio.</b> Se necesita $x\ge0$ y $\sqrt x\in[-1,1]$, es decir $0\le\sqrt x\le1\iff0\le x\le1$. $\operatorname{dom}f=[0,1]$.</li>
+    <li><b>Derivada de $\arccos$</b> (apartado 8): $\arccos'(y)=\dfrac{-1}{\sqrt{1-y^2}}$ para $y\in(-1,1)$. Aquí es donde importa el signo: $\operatorname{sen}t>0$ en $(0,\pi)$.</li>
+    <li><b>Cadena</b> con $u(x)=\sqrt x$, $u'(x)=\dfrac1{2\sqrt x}$ (para $x>0$), y $u(x)\in(-1,1)\iff x&lt;1$: $$f'(x)=\frac{-1}{\sqrt{1-x}}\cdot\frac1{2\sqrt x}=\frac{-1}{2\sqrt{x-x^2}},\qquad0&lt;x&lt;1.$$ (Se usa $\sqrt a\sqrt b=\sqrt{ab}$ para $a,b\ge0$.)</li>
+    <li><b>Extremos.</b> En $x=0$ y $x=1$ la fórmula no existe. Con la definición, las derivadas laterales valen $-\infty$ (tangentes verticales): por ejemplo, cerca de $1$, $f(1-h)\approx\sqrt h$ y el cociente incremental es $\approx-\frac1{\sqrt h}\to-\infty$. No derivable. Por tanto $\operatorname{dom}f'=(0,1)$.</li>
+  </ol>
+  <p><b>Resultado:</b> $\operatorname{dom}f=[0,1]$; $f'(x)=\dfrac{-1}{2\sqrt{x-x^2}}$ en $(0,1)$.</p>
+  <figure class="graf" data-g='{"q":[[0,1.5707963267948966,"(0, π/2)"],[1,0,"(1, 0)"]],"c":[{"e":"acos(sqrt(x))","n":"f(x)=arccos √x"},{"e":"-1/(2*sqrt(x)*sqrt(1-x))","n":"f′(x)"}],"x":[-0.3,1.3],"y":[-6,2]}' data-alt="arccos √x en [0,1] y su derivada"><figcaption>$f$ existe solo en $[0,1]$. Su derivada $f'(x)=-\frac1{2\sqrt x\sqrt{1-x}}$ existe solo en $(0,1)$: se hace $-\infty$ en los dos extremos, donde las tangentes de $f$ son verticales. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta (inversa sin fórmula):</b> escribe $f^{-1}(f(t))=t$, deriva con la cadena, despeja $(f^{-1})'(f(t))$, exprésalo en función de $y=f(t)$ con una identidad ($\operatorname{sen}^2+\cos^2=1$) y elige el signo de la raíz según el intervalo donde se invierte.</div>
+  <p><b>Error típico:</b> escribir $\operatorname{sen}t=\pm\sqrt{1-\cos^2t}$ sin decidir el signo; olvidar el signo menos del $\arccos'$; dar $[0,1]$ como dominio de $f'$.</p>

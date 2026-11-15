@@ -1,0 +1,17 @@
+<p class="enun">Razona si es cierto o falso que el polinomio interpolador que pasa por 9 puntos debe ser un polinomio exactamente de grado 8.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si el interpolador de 9 puntos tiene siempre grado exactamente 8; hay que dar «verdadero/falso» con un argumento.</dd>
+    <dt>Cómo lo pienso</dt><dd>«Grado 8» es el máximo permitido, no un grado obligatorio: si los 9 puntos están en una recta, la recta ya los cumple y es el interpolador. Basta un contraejemplo.</dd>
+    <dt>Qué uso</dt><dd>Existencia y unicidad del interpolador de grado $\le n$ (U §3.3.2, p. 121).</dd>
+    <dt>Por dónde empiezo</dt><dd>Elijo 9 puntos alineados, por ejemplo $(a,2a)$, y busco un polinomio de grado bajo que pase por todos.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Grado máximo.</b> Con 9 datos, $n+1=9$, luego $n=8$: el interpolador es $a_0+a_1x+\dots+a_8x^8$ (9 incógnitas, 9 ecuaciones). U: «el grado … es $n$ como máximo».</li>
+    <li><b>Puede salir $a_8=0$.</b> Nada obliga a que el coeficiente de $x^8$ sea distinto de 0.</li>
+    <li><b>Contraejemplo</b> (el de E): los puntos $(a,2a)$, $a=1,\dots,9$.</li>
+    <li><b>Un candidato.</b> $q(x)=2x$ pasa por todos ($q(a)=2a$) y tiene grado $1\le8$.</li>
+    <li><b>Es el interpolador</b>, por unicidad (apartado 1). Así $p_8(x)=2x$, de grado 1.</li>
+    <li><b>Respuesta: falso.</b> (Comprobado: Newton con esos 9 datos da $2x$.)</li>
+  </ol>
+  <figure class="graf" data-g='{"p":[[1,2],[2,4],[3,6],[4,8],[5,10],[6,12],[7,14],[8,16],[9,18]],"c":[{"interp":true,"n":"p₈(x)=2x"}],"x":[0,10]}' data-alt="Nueve puntos alineados: el interpolador de «grado 8» es una recta"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> para refutar «el interpolador tiene grado exactamente $n$»: dar puntos sobre una recta (o sobre un polinomio de grado menor) y usar la unicidad.</div>

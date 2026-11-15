@@ -1,0 +1,19 @@
+<p class="enun">Sea $f(x,y)=\dfrac{x^2-y^2}{\sqrt[3]{x^3+y^3}}$ si $x\ne-y$, $f(x,y)=0$ si $x=-y$. (a) Estudiar la continuidad de $f$. (b) Calcular $\frac{\partial f}{\partial x}(0,0)$ y $\frac{\partial f}{\partial y}(0,0)$. (c) Estudiar la diferenciabilidad de $f$ en $(0,0)$. (1 punto cada apartado.)</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar la continuidad, las parciales y la diferenciabilidad en $(0,0)$ de $\frac{x^2-y^2}{\sqrt[3]{x^3+y^3}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La recta $x=-y$ parece conflictiva (denominador $0$), pero factorizando se cancela. Luego, continua y con parciales, el cociente $Q$ depende de la dirección.</dd>
+    <dt>Qué uso</dt><dd>Def. 5.1 (U p.189); criterio de polares (U p.165); factorización $x^3+y^3=(x+y)(x^2-xy+y^2)$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Factorizo numerador y denominador.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>(a) Factorizar:</b> $x^2-y^2=(x+y)(x-y)$ y $x^3+y^3=(x+y)(x^2-xy+y^2)$. Con la raíz cúbica (admite negativos), para $x\ne-y$: $f=\sqrt[3]{(x+y)^2}\;\dfrac{x-y}{\sqrt[3]{x^2-xy+y^2}}$.</li>
+    <li><b>(a) Con $x\ne-y$:</b> operaciones de continuas con denominador no nulo: continua.</li>
+    <li><b>(a) En $(x_0,-x_0)$, $x_0\ne0$:</b> $\sqrt[3]{(x+y)^2}\to0$ y la fracción tiende al número finito $\frac{2x_0}{\sqrt[3]{3x_0^2}}$: producto $\to0=f(x_0,-x_0)$. Continua.</li>
+    <li><b>(a) Origen, polares:</b> $f=\rho\,(\cos\theta-\operatorname{sen}\theta)\,\dfrac{\sqrt[3]{(\cos\theta+\operatorname{sen}\theta)^2}}{\sqrt[3]{1-\cos\theta\operatorname{sen}\theta}}$. Acotamos cada factor: $|\cos\theta-\operatorname{sen}\theta|\le\sqrt2$; $(\cos\theta+\operatorname{sen}\theta)^2\le2$; y como $\cos\theta\operatorname{sen}\theta=\frac12\operatorname{sen}2\theta\le\frac12$, el denominador es $\ge\sqrt[3]{1/2}$. Por tanto $|f|\le\sqrt2\cdot\sqrt[3]2\cdot\sqrt[3]2\,\rho\le3\rho\to0$. <b>$f$ es continua en $\mathbb R^2$.</b></li>
+    <li><b>(b)</b> $f(t,0)=\frac{t^2}{\sqrt[3]{t^3}}=t$, cociente $1$: $f_x(0,0)=1$. $f(0,t)=\frac{-t^2}t=-t$: $f_y(0,0)=-1$.</li>
+    <li><b>(c) Cociente:</b> $Q(h,k)=\dfrac{f(h,k)-h+k}{\sqrt{h^2+k^2}}$.</li>
+    <li><b>(c) Dos caminos.</b> Eje $x$ ($k=0$, $h=t$): $Q=\frac{t-t}{|t|}=0$. Recta $k=2h$, $h=t>0$: $f(t,2t)=\frac{-3t^2}{\sqrt[3]9\,t}=-\sqrt[3]3\,t$ (pues $\frac3{\sqrt[3]9}=\frac{\sqrt[3]{27}}{\sqrt[3]9}=\sqrt[3]3$) y $$Q(t,2t)=\frac{-\sqrt[3]3\,t-t+2t}{\sqrt5\,t}=\frac{1-\sqrt[3]3}{\sqrt5}\approx-0{,}198\ne0.$$</li>
+    <li><b>(c) Conclusión:</b> dos caminos con límites $0$ y $-0{,}198$: el límite de $Q$ no existe, <b>no es diferenciable</b>.</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para probar que <b>no</b> es diferenciable basta un camino donde $Q$ no tienda a $0$ (aquí $Q$ es constante y no nula en $k=2h$).</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Decir «no es diferenciable» sin calcular explícitamente el límite de $Q$ por algún camino: hay que mostrarlo.</p></div>

@@ -1,0 +1,23 @@
+<p class="enun">Sea $f(x)=(3x-1)e^x$ definida en $\mathbb{R}$. (a) Obtenga el polinomio de Taylor de $f$ de orden 3 centrado en $x=-1$. (Los apartados (b) crecimiento e inflexión y (c) extremos relativos son de U §2.5 y §3.4-3.5; no se tratan aquí.)</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El polinomio de Taylor de orden 3 de $(3x-1)e^x$ centrado en $-1$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es el mismo método de siempre (derivar, evaluar en $-1$, dividir entre $k!$); la única dificultad es derivar con orden un producto y mantener el factor común $e^x$.</dd>
+    <dt>Qué uso</dt><dd>$p_3$ (U p.108); regla del producto.</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo $f'$ con la regla del producto y saco $e^x$ de factor común.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"q":[[-1,-1.471518,"(−1, −4/e)"]],"c":[{"e":"(3*x-1)*exp(x)","n":"f(x)=(3x−1)eˣ"},{"e":"(5*(x+1)**3/6+(x+1)**2-(x+1)-4)/E","n":"p₃(x)"}],"x":[-3,1],"y":[-3,6]}' data-alt="(3x-1)e^x y su polinomio de Taylor de orden 3 en -1"><figcaption>$p_3$ se pega a $f$ cerca de $x_0=-1$, donde ambas valen $-4/e\approx-1{,}47$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Derivadas</b> (regla del producto): $f'=3e^x+(3x-1)e^x=e^x(3x+2)$; $f''=e^x(3x+5)$; $f'''=e^x(3x+8)$. (Cada derivada suma $3$ dentro del paréntesis.)</li>
+    <li><b>Tabla en $x_0=-1$</b> (se sustituye $x=-1$ en el paréntesis y queda el factor común $e^{-1}$):
+      <table>
+        <tr><th>$k$</th><th>$f^{(k}(-1)$</th><th>$f^{(k}(-1)/k!$</th></tr>
+        <tr><td>0</td><td>$-4e^{-1}$</td><td>$-4e^{-1}$</td></tr>
+        <tr><td>1</td><td>$-e^{-1}$</td><td>$-e^{-1}$</td></tr>
+        <tr><td>2</td><td>$2e^{-1}$</td><td>$e^{-1}$</td></tr>
+        <tr><td>3</td><td>$5e^{-1}$</td><td>$\frac56e^{-1}$</td></tr>
+      </table></li>
+    <li><b>Polinomio</b> (se suman las filas con su potencia de $(x+1)$; «centrado en $-1$» significa dejarlo así, sin desarrollar):</li>
+  </ol>
+  <p><b>Lo que escribes en el examen:</b> $$p_3(x)=e^{-1}\left[-4-(x+1)+(x+1)^2+\frac56(x+1)^3\right].$$</p>
+  <div class="recipe"><b>Receta:</b> «polinomio × exponencial»: derivar tres veces, ver que cada derivada es $e^x(\dots)$, y hacer la tabla en $x_0$ con factor común.</div>
+    <p><b>Teoría:</b> §1 (derivadas sucesivas) y §2 (tabla de coeficientes). Verificado con sympy.</p>

@@ -1,0 +1,28 @@
+<p class="enun">Estudia si la siguiente serie es convergente: $\displaystyle\sum_{n=1}^{+\infty}\frac{n^{\ln n}}{(\ln n)^n}$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar si converge $\sum\frac{n^{\ln n}}{(\ln n)^n}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El denominador es una potencia $n$-ésima, así que al sacar la raíz $n$-ésima queda $\ln n$, que crece sin límite; el numerador crece mucho más despacio. La raíz tiende a $0$ y la serie converge.</dd>
+    <dt>Qué uso</dt><dd>Criterio de la raíz (U p.38); $a^b=e^{b\ln a}$ y continuidad (U p.29); criterio de Stolz (U p.32); recta ampliada (Def. 1.12, U p.27).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo $\sqrt[n]{a_n}$ y tomo logaritmos para estudiar su límite.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Tipo de serie.</b> Para $n\ge2$, $\ln n&gt;0$ y $a_n=\frac{n^{\ln n}}{(\ln n)^n}&gt;0$.</li>
+    <li><b>Elegir criterio.</b> El denominador es una potencia $n$-ésima, $(\ln n)^n$: su raíz $n$-ésima es simplemente $\ln n$. El cociente no simplifica nada. $\Rightarrow$ <b>criterio de la raíz</b> (U p.38).</li>
+    <li><b>Raíz $n$-ésima.</b> $\displaystyle\sqrt[n]{a_n}=\frac{\big(n^{\ln n}\big)^{1/n}}{\ln n}=\frac{n^{(\ln n)/n}}{\ln n}.$</li>
+    <li><b>Tomar logaritmos</b> ($\ln(x^y)=y\ln x$). Sea $\lambda_n=\ln\sqrt[n]{a_n}$:
+      $$\lambda_n=\frac{\ln n}n\cdot\ln n-\ln(\ln n)=\frac{(\ln n)^2}n-\ln(\ln n).$$
+      (Calculamos primero $\lim_{n\to\infty}\lambda_n$ y luego volvemos a $\sqrt[n]{a_n}$.)</li>
+    <li><b>Límite auxiliar $\dfrac{(\ln n)^2}n\to0$.</b> Con el criterio de Stolz (U p.32; $b_n=n$ es monótona y $\to\infty$):
+      <ul>
+        <li>(a) $\dfrac{\ln n}n\to0$: Stolz lleva a $\dfrac{\ln(n+1)-\ln n}{(n+1)-n}=\ln\!\big(1+\tfrac1n\big)\to\ln1=0$.</li>
+        <li>(b) $\dfrac{(\ln n)^2}n$: Stolz lleva a $(\ln(n+1))^2-(\ln n)^2=\ln\!\big(1+\tfrac1n\big)\big(\ln(n+1)+\ln n\big)=\underbrace{n\ln\!\big(1+\tfrac1n\big)}_{\to\ln e=1}\cdot\underbrace{\dfrac{\ln(n+1)+\ln n}n}_{\to0}\to1\cdot0=0.$ El primer factor usa la Prop. 1.5 (U p.31) y la continuidad de $\ln$; en el segundo, $\frac{\ln n}n\to0$ por (a) y $\frac{\ln(n+1)}n=\frac{\ln(n+1)}{n+1}\cdot\frac{n+1}n\to0\cdot1=0$.</li>
+      </ul></li>
+    <li><b>Límite de $\lambda_n$.</b> $\ln(\ln n)\to+\infty$ (porque $\ln n\to\infty$ y $\ln$ es creciente y no acotada). Entonces $\lambda_n\to0-\infty=-\infty$ (operación válida en la recta ampliada, U Def. 1.12 p.27; no es indeterminación).</li>
+    <li><b>Deshacer el logaritmo.</b> $\sqrt[n]{a_n}=e^{\lambda_n}\to e^{-\infty}=0$ (continuidad de la exponencial, U p.29). <i>Atajo equivalente:</i> $n^{(\ln n)/n}=e^{(\ln n)^2/n}\to e^0=1$, luego $\sqrt[n]{a_n}=\frac{n^{(\ln n)/n}}{\ln n}\to\frac1\infty=0$.</li>
+    <li><b>Criterio de la raíz (U p.38):</b> $\ell=0\in[0,1)$ $\Rightarrow$ la serie $\sum_{n\ge2}a_n$ <b>converge</b>. (Numéricamente $\sum_{n=2}^\infty a_n\approx10{,}54$; los primeros términos son grandes, $a_2\approx3{,}37$, pero caen muy rápido: $a_{20}\approx2{,}3\cdot10^{-6}$.)</li>
+  </ol>
+  <p><b>Respuesta:</b> converge.</p>
+  <figure class="graf" data-g='{"p":[[2,3.365171],[3,2.521378," "],[4,1.850165," "],[5,1.234746," "],[6,0.749172," "],[7,0.41747," "],[8,0.215948," "],[9,0.104668," "],[10,0.04791," "],[11,0.020846," "],[12,0.008668," "],[13,0.003461]],"c":[{"e":"x**log(x)/log(x)**x","n":"aₙ"}],"x":[1.5,14],"y":[0,4],"ex":"n","ey":"aₙ"}' data-alt="Términos n^(ln n)/(ln n)^n que caen a 0"><figcaption>Los términos $a_n=\frac{n^{\ln n}}{(\ln n)^n}$ caen muy deprisa hacia $0$ (el denominador es una potencia $n$-ésima de algo que crece): coherente con $\sqrt[n]{a_n}\to0$ y serie convergente. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> potencia $n$-ésima en el término general $\Rightarrow$ <b>criterio de la raíz</b>. Si queda algo del tipo $x_n^{y_n}$, toma logaritmos ($y_n\ln x_n$), calcula ese límite y vuelve con la exponencial. Jerarquía útil: $(\ln n)^k\ll n^\alpha\ll a^n\ll n!\ll n^n$ ($\alpha&gt;0$, $a&gt;1$), donde $x_n\ll y_n$ significa $x_n/y_n\to0$.</div>
+  <p><b>Error típico:</b> (i) no mirar el dominio (el término $n=1$ no existe); (ii) escribir $\ln(\lim_{n\to\infty} x_n)=\lim_{n\to\infty}\ln x_n$ sin saber aún que el límite existe y es positivo; (iii) tratar $0-\infty$ como indeterminación (no lo es: vale $-\infty$); (iv) confundir $n^{\ln n}$ con $(\ln n)^n$: $n^{\ln n}=e^{(\ln n)^2}$ crece mucho más despacio que $(\ln n)^n=e^{n\ln\ln n}$.</p>
+  <p><i>Teoría:</i> U raíz p.38; fórmula $a_n^{b_n}=e^{b_n\ln a_n}$ y continuidad p.29; Def. 1.12 p.27; Stolz p.32; Prop. 1.5 p.31; series desde $n=p$ p.35.</p>

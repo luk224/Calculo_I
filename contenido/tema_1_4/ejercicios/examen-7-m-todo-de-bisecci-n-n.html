@@ -1,0 +1,23 @@
+<p class="enun">Sabiendo que $x^3+2x^2-1=0$ tiene una raíz en $(0,1)$, calcúlese por bisección con un error menor de $0{,}2$. ¿Cuántos pasos hay que dar?</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Aproximar por bisección la raíz de $x^3+2x^2-1$ en $(0,1)$ con error menor que $0{,}2$ y decir cuántos pasos hacen falta.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada paso parte el intervalo por la mitad y me quedo con la mitad donde la función cambia de signo. Tras $n$ pasos el intervalo mide $\frac1{2^n}$: basta ver cuándo baja del error pedido.</dd>
+    <dt>Qué uso</dt><dd>Bolzano (U p.52); bisección y cota de error (U pp.53-55).</dd>
+    <dt>Por dónde empiezo</dt><dd>Compruebo $f(0)f(1)<0$ y resuelvo $\frac1{2^n}<0{,}2$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Comprobar que se puede.</b> $f(x)=x^3+2x^2-1$ es continua; $f(0)=-1&lt;0$ y $f(1)=2&gt;0$ (Bolzano, U p.52; bisección, U pp.53-54).</li>
+    <li><b>Cuántos pasos.</b> Error tras $n$ puntos medios $&lt;\frac1{2^n}$ (U pp.54-55). $\frac1{2^n}&lt;0{,}2\iff2^n&gt;5\iff n\ge3$: <b>3 pasos</b>.</li>
+    <li><b>Tabla</b> (se conserva la mitad con cambio de signo):
+      <table>
+        <tr><th>Paso</th><th>$a$</th><th>$b$</th><th>$f(a)$</th><th>$f(b)$</th><th>$c$</th><th>$f(c)$</th><th>nuevo intervalo</th></tr>
+        <tr><td>1</td><td>$0$</td><td>$1$</td><td>$-1$</td><td>$2$</td><td>$0{,}5$</td><td>$-0{,}375$</td><td>$[0{,}5;\,1]$</td></tr>
+        <tr><td>2</td><td>$0{,}5$</td><td>$1$</td><td>$-0{,}375$</td><td>$2$</td><td>$0{,}75$</td><td>$0{,}546875$</td><td>$[0{,}5;\,0{,}75]$</td></tr>
+        <tr><td>3</td><td>$0{,}5$</td><td>$0{,}75$</td><td>$-0{,}375$</td><td>$0{,}546875$</td><td>$0{,}625$</td><td>$0{,}025390625$</td><td>$[0{,}5;\,0{,}625]$</td></tr>
+      </table></li>
+    <li><b>Resultado.</b> $\bar x\approx0{,}625$, error $&lt;0{,}125&lt;0{,}2$, tras 3 pasos. (Raíz exacta: $\frac{\sqrt5-1}2\approx0{,}618$.)</li>
+    <li><b>Variante (X p.73).</b> $f$ continua en $[-1,1]$, $f(-1)=1$, $f(1)=-2$; ¿cuántas iteraciones para error menor que $0{,}15$? $\frac2{2^n}&lt;0{,}15\iff2^n&gt;13{,}3\iff n\ge4$ ($\frac28=0{,}25$, $\frac2{16}=0{,}125$): <b>4 iteraciones</b>.</li>
+  </ol>
+  <figure class="graf" data-g='{"c":[{"e":"x**3+2*x**2-1","n":"f(x) = x³+2x²−1"}],"q":[[0.618034,0,"raíz ≈ 0,618"]],"x":[-0.2,1.2],"y":[-1.5,3]}' data-alt="La curva corta el eje en (0,1)"><figcaption>La curva pasa de $f(0)=-1$ a $f(1)=2$ y corta el eje en $x=\frac{\sqrt5-1}2\approx0{,}618$ (rombo): ahí está la raíz que la bisección va acorralando. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> comprueba continuidad y cambio de signo; $n$ = menor entero con $2^n&gt;\frac{b-a}\varepsilon$; tabla $a,b,c,f(c)$ y quédate con la mitad con cambio de signo (mirando signos, no cercanía a $0$).</div>
+  <p class="l4-teo">Teoría: §10 bisección (U pp.53-56), §9 Bolzano. Ojo al contar: cada «paso» es un punto medio calculado (tras $n$ puntos medios, error $&lt;\frac{b-a}{2^n}$).</p>

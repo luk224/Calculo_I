@@ -1,0 +1,21 @@
+<p class="enun">Sea $a_n=\left(\dfrac{n^2+n+1}{n^2-n-1}\right)^{\frac{n^2}{n+2}}$. ¿Cuánto vale $\lim_{n\to\infty} a_n$? Justifique la respuesta.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\bigl(\frac{n^2+n+1}{n^2-n-1}\bigr)^{n^2/(n+2)}$ y justificarlo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Base $\to1$ elevada a exponente $\to\infty$: el resultado es $e$ elevado a «(exponente)·(base $-1$)». Solo hay que calcular ese producto.</dd>
+    <dt>Qué uso</dt><dd>Prop. 1.5 (U p. 31): si $x_n\to1$ e $y_n\to\infty$, $\lim_{n\to\infty}x_n^{y_n}=e^{\lim_{n\to\infty}y_n(x_n-1)}$.</dd>
+    <dt>Por dónde empiezo</dt><dd>Compruebo que la base tiende a 1 y el exponente a $\infty$; después calculo $y_n(x_n-1)$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Reconocer el tipo.</b> La base $x_n=\frac{n^2+n+1}{n^2-n-1}\to1$ y el exponente $y_n=\frac{n^2}{n+2}\to+\infty$: es $1^\infty$ (U Prop. 1.5, p. 31).</li>
+    <li><b>Calcular el producto $y_n(x_n-1)$.</b> Como $x_n-1=\frac{2n+1}{n^2-n-1}$: $$y_n(x_n-1)=\frac{n^2(2n+1)}{(n+2)(n^2-n-1)}=\frac{2n^3+n^2}{n^3+n^2-3n-2}\to2,$$ porque numerador y denominador tienen el mismo grado y se divide entre $n^3$.</li>
+    <li><b>Aplicar la fórmula</b> $\lim_{n\to\infty} x_n^{y_n}=e^{\lim_{n\to\infty} y_n(x_n-1)}$ (U p. 29 y p. 31): $\boxed{e^{2}}$.</li>
+  </ol>
+  <p><b>Lo que escribes en el examen:</b> «Forma $1^\infty$; $\lim_{n\to\infty} y_n(x_n-1)=2$; luego el límite es $e^2$.»</p>
+  <p><b>Contraste: cuando NO es $1^\infty$</b> (Febrero 2011, <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2ª semana, Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.13</span>). Calcular $\lim_{n\to\infty}\left(\frac{n^2+2n}{16n^2+4n-7}\right)^{n}$. La base tiende a $\frac1{16}\ne1$: no hay indeterminación. Para $n$ grande la base es positiva y menor que $\frac12$, luego $0&lt;a_n\le(\tfrac12)^n\to0$. El límite es <b>0</b> (es $r^n$ con $|r|&lt;1$).</p>
+  <figure class="graf" data-g='{"p":[[2,7.0],[3,5.584085," "],[4,5.608813," "],[5,5.745325," "],[6,5.885957," "],[7,6.012443," "],[8,6.12273," "],[9,6.21835," "],[10,6.301464," "],[11,6.374097," "],[12,6.437968," "],[13,6.494491," "],[14,6.544817," "],[15,6.589882," "],[16,6.630451]],"c":[{"e":"((x**2+x+1)/(x**2-x-1))**(x**2/(x+2))","n":"aₙ"},{"e":"exp(2)","n":"límite = e² ≈ 7,389","d":1}],"x":[0,17],"y":[0,12],"ex":"n"}' data-alt="Forma 1^∞ con límite e²"><figcaption>Forma $1^\infty$ (desde $n=2$, donde la base es positiva): los términos se acercan a la recta $y=e^2\approx7{,}389$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> ante $x_n^{y_n}$, calcula primero $\lim_{n\to\infty} x_n$ y $\lim_{n\to\infty} y_n$. Solo si sale $1^{\pm\infty}$, usa $\lim_{n\to\infty} x_n^{y_n}=e^{\lim_{n\to\infty} y_n(x_n-1)}$. Si la base tiende a un número distinto de 1, basta (1.1) o $r^n$. Como los Ejercicios 1.13-1.14 de E.</div>
+  <div class="box warn"><span class="h">Al escribirlo en el examen</span>
+    <ul>
+      <li>Justifica el paso al límite (Prop. 1.5 y fórmula (1.1)) y di «para $n\ge2$», porque la potencia no está definida para todo $n$.</li>
+      <li>En la vía con logaritmos, la $n$ va dentro del límite: $\ln l=\lim_{n\to\infty}\big(n\ln x_n\big)=-\infty$, luego $l=0$.</li>
+    </ul></div>

@@ -1,0 +1,27 @@
+<p class="enun">Compare el dominio de las funciones dadas por $f(x)=\sqrt{2+\sqrt[3]{x}}$ y $g(x)=e^{\frac{x}{x+1}}$ con el de las funciones que se obtienen al aplicar las reglas de derivación a $f(x)$ y $g(x)$. Represente gráficamente $f$ y $g$ utilizando Maxima.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Comparar el dominio de $f=\sqrt{2+\sqrt[3]x}$ y $g=e^{x/(x+1)}$ con el de sus derivadas.</dd>
+    <dt>Cómo lo pienso</dt><dd>La fórmula de la derivada puede dejar de existir en puntos donde la función sí está definida (tangente vertical). Hay que saber qué puntos son sospechosos y comprobarlos con la definición, no solo con la fórmula.</dd>
+    <dt>Qué uso</dt><dd>Reglas de la cadena y del cociente (U p.79); derivada como límite del cociente incremental (U Def. 2.1, p.75; dominio de $f'$, U p.78).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo $\operatorname{dom}f$ pieza a pieza (raíz cuadrada: $2+\sqrt[3]x\ge0$) y derivo con la cadena; después miro qué puntos anulan un denominador o una raíz.</dd>
+  </dl></div>
+  <p><b>Función $f$.</b></p>
+  <ol class="steps">
+    <li><b>Dominio de $f$.</b> $\sqrt[3]x$ existe para todo $x\in\mathbb R$ (raíz de índice impar). La raíz cuadrada exige $2+\sqrt[3]x\ge0\iff\sqrt[3]x\ge-2\iff x\ge-8$ (el último paso es válido porque $t\mapsto t^3$ es estrictamente creciente). $\operatorname{dom}f=[-8,+\infty)$.</li>
+    <li><b>Derivada de $\sqrt[3]x$.</b> Para $x>0$ es $x^{1/3}$ y da $\frac13x^{-2/3}=\dfrac1{3\sqrt[3]{x^2}}$. Para $x&lt;0$, $\sqrt[3]x=-(-x)^{1/3}$ y por la cadena sale la misma expresión. En $x=0$ no existe la fórmula: con la definición, $\dfrac{\sqrt[3]h-0}{h}=h^{-2/3}\to+\infty$, no es finito, $\sqrt[3]{\cdot}$ no es derivable en $0$.</li>
+    <li><b>Cadena</b> (con $(\sqrt t)'=\frac1{2\sqrt t}$, válida para $t>0$): $$f'(x)=\frac1{2\sqrt{2+\sqrt[3]x}}\cdot\frac1{3\sqrt[3]{x^2}}=\frac1{6\sqrt{2+\sqrt[3]x}\,\sqrt[3]{x^2}},$$ válida si $x>-8$ y $x\neq0$.</li>
+    <li><b>Los puntos dudosos, con la definición.</b> Que la fórmula no exista no prueba por sí solo que $f$ no sea derivable (apartado 10). En $x=0$: $\dfrac{f(h)-f(0)}h=\dfrac{\sqrt{2+\sqrt[3]h}-\sqrt2}h\to+\infty$ (tangente vertical). En $x=-8$ (sólo por la derecha): $\dfrac{\sqrt{2+\sqrt[3]{-8+h}}}h\to+\infty$ si $h\to0^+$. En ambos, no derivable.</li>
+    <li><b>Conclusión:</b> $\operatorname{dom}f'=(-8,0)\cup(0,+\infty)\subsetneq\operatorname{dom}f=[-8,+\infty)$.</li>
+  </ol>
+  <p><b>Función $g$.</b></p>
+  <ol class="steps">
+    <li>$\operatorname{dom}g=\mathbb R\setminus\{-1\}$ (el exponente exige $x\neq-1$).</li>
+    <li>Cadena con $e^{u}$ y cociente: $g'(x)=e^{\frac x{x+1}}\cdot\dfrac{1\cdot(x+1)-x\cdot1}{(x+1)^2}=\dfrac{e^{\frac x{x+1}}}{(x+1)^2}$.</li>
+    <li>Las reglas valen en todo $x\neq-1$: $\operatorname{dom}g'=\operatorname{dom}g=\mathbb R\setminus\{-1\}$.</li>
+    <li><b>Maxima.</b> Con <code>plot2d(sqrt(2+x^(1/3)),[x,-8,20])</code> Maxima toma $x^{1/3}$ como complejo para $x&lt;0$ y no dibuja esa parte; usa la raíz real <code>signum(x)*abs(x)^(1/3)</code>. Para $g$: <code>plot2d(exp(x/(x+1)),[x,-5,5],[y,0,10])</code>.</li>
+  </ol>
+<figure class="graf" data-g='{"q":[[0,1,"(0, 1)"]],"c":[{"e":"exp(x/(x+1))","n":"g(x)=e^(x/(x+1))"}],"x":[-5,5],"y":[0,10]}' data-alt="Gráfica de g con la asíntota vertical en x=−1"><figcaption>Gráfica de $g(x)=e^{x/(x+1)}$: no está definida en $x=-1$, donde se dispara hacia $+\infty$ por la izquierda y tiende a $0$ por la derecha; el punto $(0,1)$ está marcado. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+
+  <figure class="graf" data-g='{"q":[[-8,0,"(−8, 0)"],[0,1.4142135623730951,"(0, √2)"]],"c":[{"e":"sqrt(2+cbrt(x))","n":"f(x)=√(2+∛x)"}],"x":[-9,20],"y":[-0.5,3.5]}' data-alt="Gráfica de f: empieza en x=−8 con tangente vertical y tiene otra tangente vertical en x=0"><figcaption>Gráfica de $f(x)=\sqrt{2+\sqrt[3]x}$: empieza en $(-8,0)$ y allí la tangente es vertical; en $(0,\sqrt2)$ vuelve a ser vertical. En ambos puntos la fórmula de $f'$ no existe: son los que se quedan fuera de $\operatorname{dom}f'$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+<div class="recipe"><b>Receta:</b> (1) dominio de $f$ mirando cada pieza delicada; (2) deriva con las reglas; (3) en los puntos del dominio donde la fórmula de $f'$ falla, decide con el cociente incremental. Siempre $\operatorname{dom}f'\subseteq\operatorname{dom}f$.</div>
+  <p><b>Error típico:</b> dar como dominio de $f'$ «donde tiene sentido la fórmula», o incluir $x=-8$ porque «está en el dominio de $f$».</p>
