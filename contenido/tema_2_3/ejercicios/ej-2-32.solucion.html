@@ -1,0 +1,21 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Probar que $\lim_{x\to+\infty}\frac{x^n}{a^x}$ vale lo mismo para todo $n\in\mathbb N$ y $a>1$, y hallarlo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una exponencial con base mayor que $1$ crece más rápido que cualquier potencia. Cada derivada baja un grado de la potencia sin tocar la exponencial, así que tras $n$ pasos el numerador es una constante y gana $a^x$.</dd>
+    <dt>Qué uso</dt><dd>Regla reiterada: $(x^n)'=nx^{n-1}$, $(a^x)'=a^x\ln a$ — <a href="#s2-enunciado">ver teoría</a> (U pp.82-83).</dd>
+    <dt>Por dónde empiezo</dt><dd>Verificar $\tfrac\infty\infty$ y aplicar la regla una vez para ver cómo baja $n$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> potencia frente a exponencial de base $&gt;1$: deriva hasta que la potencia sea constante (el grado baja $1$ cada vez; la exponencial se reproduce). <b>La exponencial gana siempre.</b></div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Qué es la variable.</b> $n$ está fijo; la variable es $x$.</li>
+    <li><b>Tipo.</b> $a^x=e^{x\ln a}$ con $\ln a&gt;0$ (porque $a&gt;1$), luego $a^x\to+\infty$; y $x^n\to+\infty$: $\tfrac\infty\infty$.</li>
+    <li><b>Una aplicación de L'Hôpital.</b> $(x^n)'=nx^{n-1}$ y $(a^x)'=a^x\ln a\neq0$: $\ \displaystyle\lim_{x\to\infty}\frac{x^n}{a^x}=\frac n{\ln a}\lim_{x\to\infty}\frac{x^{n-1}}{a^x}$, siempre que este último límite exista.</li>
+    <li><b>Inducción</b>. Sea $L_k=\lim_{x\to\infty}\frac{x^k}{a^x}$. Para $k=0$: $L_0=\lim_{x\to\infty}\frac1{a^x}=0$. Si $L_{k-1}=0$ con $k\ge1$, entonces $\frac{x^k}{a^x}$ es $\tfrac\infty\infty$, se cumplen las condiciones y, por el paso anterior, $L_k=\frac k{\ln a}L_{k-1}=0$. Luego $L_n=0$. Equivalentemente, tras $n$ derivaciones queda $\dfrac{n!}{a^x(\ln a)^n}\to0$.</li>
+    <li><b>Pregunta final de E ($0&lt;a&lt;1$).</b> Entonces $a^x\to0^+$ y ya <b>no hay indeterminación</b>: $\frac{x^n}{a^x}=x^n\left(\frac1a\right)^x$ es un producto de dos funciones que tienden a $+\infty$, luego el límite es $+\infty$.</li>
+  </ol>
+  <figure class="graf" data-g='{"c":[{"e":"x**3/2**x","n":"x³/2ˣ (n=3, a=2)"}],"x":[0,30],"y":[0,3.5]}' data-alt="x³/2ˣ: la exponencial acaba ganando"><figcaption>Caso $n=3$, $a=2$: la potencia lleva ventaja al principio (máximo en $x\approx4{,}3$), pero la exponencial acaba imponiéndose y el cociente cae hacia $0$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Derivar respecto de $n$, o tratar $a^x$ como si fuese $x^a$: su derivada es $a^x\ln a$, no $x\,a^{x-1}$.</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Ejemplo 2.9 (aplicación reiterada), p. 83; derivada de a^x, tabla U pp. 79-80">U p.83</span> El Ejemplo 3 de Larson equivale a $n=2$, $a=e$ con $t=-x$: <span class="src" data-l="L" data-ref="Larson §8.7, Ejemplo 3 (x²/e^(−x), x→−∞), p. 560">L p.560</span></p>
+  </details>

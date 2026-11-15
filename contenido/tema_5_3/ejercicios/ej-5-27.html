@@ -1,0 +1,18 @@
+<p class="enun">Se considera la función $f:\mathbb R^3\to\mathbb R$ definida por $f(x,y,z)=1-e^{(x^7+y^2-xz-1)}$. 1) Encuentra el valor de $a$ tal que cerca del punto $(1,0,a)$ la ecuación $f(x,y,z)=0$ defina implícitamente una función $z=g(x,y)$. 2) Calcula $\frac{\partial g}{\partial x}(1,0)$ y $\frac{\partial g}{\partial y}(1,0)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar el valor de $a$ para que $f(x,y,z)=0$ defina $z=g(x,y)$ cerca de $(1,0,a)$ y calcular $g_x(1,0)$ y $g_y(1,0)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El punto debe estar en la superficie (eso fija $a$) y la superficie no debe ser «vertical» respecto de $z$ ($\frac{\partial f}{\partial z}\ne0$). Entonces las pendientes de $z=g(x,y)$ se obtienen de las parciales de $f$ sin despejar $z$.</dd>
+    <dt>Qué uso</dt><dd>Teorema de la función implícita en tres variables: $g_x=-\frac{f_x}{f_z}$, $g_y=-\frac{f_y}{f_z}$ (U p. 211, Ejemplo 5.14).</dd>
+    <dt>Por dónde empiezo</dt><dd>Imponer $f(1,0,a)=0$ para hallar $a$.</dd>
+  </dl></div>
+  <ol class="steps">
+    <li><b>Regularidad:</b> $f$ es una exponencial de un polinomio: continua con parciales continuas en $\mathbb R^3$, para cualquier $a$.</li>
+    <li><b>Condición $f(1,0,a)=0$:</b> el exponente vale $1+0-a-1=-a$, así que $1-e^{-a}=0\iff e^{-a}=1\iff a=0$. Único candidato: $(1,0,0)$.</li>
+    <li><b>Condición $\frac{\partial f}{\partial z}\ne0$:</b> por la regla de la cadena, $\frac{\partial f}{\partial z}=-e^{(\dots)}\cdot(-x)=x\,e^{(x^7+y^2-xz-1)}$. En $(1,0,0)$: $1\cdot e^0=1\ne0$ ✓. <b>Respuesta 1: $a=0$.</b></li>
+    <li><b>Otras parciales:</b> $\frac{\partial f}{\partial x}=-(7x^6-z)e^{(\dots)}$, $\frac{\partial f}{\partial y}=-2y\,e^{(\dots)}$. En $(1,0,0)$: $f_x=-7$, $f_y=0$.</li>
+    <li><b>Fórmula del teorema:</b> $$\frac{\partial g}{\partial x}(1,0)=-\frac{f_x}{f_z}=-\frac{-7}{1}=7,\qquad\frac{\partial g}{\partial y}(1,0)=-\frac{f_y}{f_z}=-\frac01=0.$$</li>
+    <li><b>Otra forma (derivar la ecuación):</b> $f=0\iff e^{s}=1\iff s=0$ (la exponencial solo vale $1$ en $0$), es decir, $x^7+y^2-xz-1=0$. Con $z=g(x,y)$ y derivando respecto de $x$: $7x^6-g-x\,g_x=0$; en $(1,0)$ con $g=0$: $g_x=7$. Respecto de $y$: $2y-x\,g_y=0$, luego $g_y(1,0)=0$.</li>
+    <li><b>Comprobación despejando</b> (aquí se puede, para $x\ne0$): $z=\frac{x^7+y^2-1}{x}$, con $z_x=\frac{6x^7-y^2+1}{x^2}=7$ en $(1,0)$ y $z_y=\frac{2y}x=0$. ✓</li>
+  </ol>
+  <p><b>Respuestas: $a=0$, $\frac{\partial g}{\partial x}(1,0)=7$, $\frac{\partial g}{\partial y}(1,0)=0$.</b></p>
+  <div class="recipe"><b>Receta:</b> superficie $f(x,y,z)=0$: (1) imponer $f(\text{punto})=0$ para hallar el dato que falta; (2) comprobar $f_z\ne0$; (3) $z_x=-f_x/f_z$, $z_y=-f_y/f_z$ en el punto.</div>

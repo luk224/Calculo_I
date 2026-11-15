@@ -12,6 +12,52 @@ Coste orientativo del prototipo 2.3: ≈ 300-350 k tokens de subagentes (ejercic
 
 ---
 
+## Fase M — Migración a `contenido/` (contenido como datos)
+
+**Qué:** cada tema pasa de «HTML a mano» a datos (`contenido/tema_X_Y/`) + página generada (modelo: Física, ver CLAUDE.md §4c). **Las fases F1-F6 y G1-G5 de este plan se aplican ya sobre `contenido/`** (en los temas migrados; en los demás, sobre el HTML hasta migrarlos). Regla dura: la página regenerada es idéntica (tras normalizar espacios) a la anterior.
+
+**Receta por tema** (≈5 min, sin cambiar nada del contenido):
+1. `git pull --rebase --autostash origin main`
+2. `python3 herramientas/tema_datos.py migrar temas/<archivo>.html X.Y` → debe terminar con `equivale: OK` (si falla, ampliar el migrador).
+3. `python3 herramientas/construir.py` (regenera la página con el aviso «GENERADO») y `python3 herramientas/tema_datos.py equivale X.Y <copia-del-HTML-anterior>` si se quiere comprobar contra el original (`git show HEAD:temas/<archivo>.html`).
+4. Añadir `pruebas/numerico/tX_Y.py` (modelo `t2_3.py`: un `c(ejercicio, descripción, valor_sympy, esperado, trozo_latex)` por resultado de cada ejercicio E, propio, examen y práctica).
+5. `python3 pruebas/ejecutar.py --rapido` y commit («Tema X.Y: migrado a contenido/»).
+
+Comprobado (2026-11-15): **los 26 temas migran con `equivale` OK** con el migrador actual (incluidos los de formato antiguo `details.sol`); solo se han dejado en `contenido/` los dos del piloto.
+
+| ✓ | Tema | Estado migración |
+|---|---|---|
+| [x] | 2.3 L'Hôpital | migrado + pruebas numéricas (piloto) |
+| [x] | 5.3 Función implícita | migrado (piloto; pendiente `t5_3.py`) |
+| [ ] | 1.1 El espacio ℝ (`1.1`) | pendiente |
+| [ ] | 1.2 Sucesiones (`1.2`) | pendiente |
+| [ ] | 1.3 Series (`1.3`) | pendiente |
+| [ ] | 1.4 Límites y continuidad (`1.4`) | pendiente |
+| [ ] | 2.1 Derivada (`2.1`) | pendiente |
+| [ ] | 2.2 Reglas de derivación (`2.2`) | pendiente |
+| [ ] | 2.4 Newton y punto fijo (`2.4`) | pendiente |
+| [ ] | 2.5 Rolle, valor medio (`2.5`) | pendiente |
+| [ ] | 3.1 Taylor (`3.1`) | pendiente |
+| [ ] | 3.2 Series de Taylor (`3.2`) | pendiente |
+| [ ] | 3.3 Interpolación (`3.3`) | pendiente |
+| [ ] | 3.4 Optimización y extremos (`3.4`) | pendiente |
+| [ ] | 3.5 Concavidad y convexidad (`3.5`) | pendiente |
+| [ ] | 4.1 Espacio ℝⁿ (`4.1`) | pendiente |
+| [ ] | 4.2 Funciones de varias variables (`4.2`) | pendiente |
+| [ ] | 4.3 Derivadas parciales (`4.3`) | pendiente |
+| [ ] | 5.1 Diferencial (`5.1`) | pendiente |
+| [ ] | 5.2 Cadena y valor medio (`5.2`) | pendiente |
+| [ ] | 5.4-5.5 Extremos y Lagrange (`5.4-5.5`) | pendiente |
+| [ ] | 6.1 Integral de Riemann (`6.1`) | pendiente |
+| [ ] | 6.2 Teoremas fundamentales (`6.2`) | pendiente |
+| [ ] | 6.3 Cálculo de integrales (`6.3`) | pendiente |
+| [ ] | 6.4 Integración numérica (`6.4`) | pendiente |
+| [ ] | 6.5 Integrales impropias (`6.5`) | pendiente |
+
+Pendiente tras migrar todos: unificar las 7 variantes del `<head>` (hoy cada `tema.json` lleva su lista de líneas), pasar `leyenda.html` a un fichero común, y separar enunciado/solución en los temas con formato `details` (hoy el cuerpo va entero en `<id>.html`).
+
+---
+
 ## 1. Qué se hace en cada tema (checklist de 6 fases)
 
 Referencia viva: `temas/tema_2_3_lhopital.html` + `assets/estudio.css` + `assets/estudio.js` (compartidos; no duplicar).
@@ -83,7 +129,7 @@ Se hacen **una sola vez** y conviene tenerlas pronto, porque deciden en qué ord
 | [ ] | **G2. Página `ruta.html`** | Calendario hacia atrás desde las PA y la PEC (CLAUDE.md §2) según las horas semanales que tengas. | Modelo: `ALGEBRA/claude/herramientas/ruta.py`. |
 | [x] | **G3. «Exámenes arriba» y vistas por pestañas** | Dentro de cada tema: pestañas **Todo / Teoría / Por tipo / Ejercicios / Examen**, cada `h2` con `data-vista`; al elegir «Examen» se ven primero los problemas reales (redacción ✍️). Caja «Qué cae en el examen» al principio (tabla tipo de pregunta → receta → ejercicios enlazados). Botón «Mostrar fuentes» (ocultas por defecto). | Reutilizar `ALGEBRA/claude/assets/pedagogia.js|css` dentro de `assets/estudio.*`. Probar primero en el 2.3 y luego incluirlo en F5 de cada tema. | **Hecho en el 2.3** (sin probar en navegador). Para copiarlo a otro tema: (1) `<html lang="es" class="pilot">`; (2) tras el script del tema claro/oscuro, el script mínimo que añade `con-fuentes` si `localStorage.fuentes==="true"`; (3) cada `h2` lleva `data-vista="teoria|tipos|ejercicios|examen"` (el h2 «Fuentes» sin atributo, siempre visible); (4) antes del primer h2 van, en este orden: «La idea del tema», `<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">…</a></p>`, `div.box.esencial` y `.camino` (quedan siempre visibles); (5) justo bajo `h2#examenes`, `div.box.tip#que-cae` con `table.queCae` (tipo, receta, enlaces E y X, frecuencia «n de N» y lo que no cubre la sección). JS/CSS en `assets/estudio.js|css` (bloque «pilot»); los temas sin la clase `pilot` no cambian. Las pestañas las inserta el JS; recuerdan la elección en `localStorage` (`vista:<ruta>`), los `#id` cambian de pestaña y en impresión se ve todo.
 | [x] | **G4. «Lo esencial en 5 minutos» como bloque fijo** | Caja al inicio de cada tema (método en 4 pasos, fórmulas con su «cuándo se usa», qué cae). Sustituye al «En 1 minuto» actual del 2.3. | Parte de F1; usar el formato de `ALGEBRA/claude/temas/tema_2_3_*.html` (`div.box.esencial`). | **Hecho en el 2.3**: `div.box.esencial` («Lo esencial en 5 minutos»: método en 4 pasos, «según el tipo», tabla `table.cuando` fórmula → cuándo se usa, «qué cae»), antes de la sección 0; sustituye al «En 1 minuto». Estilo en `estudio.css`.
-| [ ] | **G5. Test de integridad del sitio** | Que nunca baje el nº de ejercicios/exámenes, que los enlaces `#` y los JSON de gráficas sean válidos y que no haya `\lim` sin subíndice. | `herramientas/tests_sitio.py` (modelo: Álgebra/Física). |
+| [x] | **G5. Test de integridad del sitio** | Que nunca baje el nº de ejercicios/exámenes, que los enlaces `#` y los JSON de gráficas sean válidos y que no haya `\lim` sin subíndice. | `herramientas/tests_sitio.py` (modelo: Álgebra/Física). | **Hecho en la Fase M0** como `pruebas/ejecutar.py --rapido` (ver CLAUDE.md §4c): integridad de `contenido/`, estructura de todas las páginas y numérico del 2.3. |
 
 **Orden recomendado:** G3 (probar en el 2.3) → G1 (prioridades, para decidir el orden de los demás temas) → G4 → resto de temas (F1-F6) → G2 → G5.
 

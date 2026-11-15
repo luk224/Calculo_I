@@ -1,0 +1,37 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Probar que $f(x)=\frac x{e^x-1}$, $f(0)=1$, es continua en $\mathbb R$ y que $f'$ es continua en $\mathbb R$ (incluido $x=0$).</dd>
+    <dt>Cómo lo pienso</dt><dd>La función cambia de fórmula en $x=0$, y justo ahí la fórmula da $\tfrac00$. En $0$ hay que comprobar tres cosas con límites: que $f$ encaja (a), cuánto vale $f'(0)$ por definición (c) y que la fórmula de $f'$ tiende a ese mismo valor; L'Hôpital resuelve cada límite.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital reiterada y límites en un punto de unión — <a href="#s2-enunciado">ver teoría</a> (U pp.82-83).</dd>
+    <dt>Por dónde empiezo</dt><dd>Parte (a): fuera de $0$ es cociente de continuas; en $0$ calcular $\lim_{x\to0}\frac x{e^x-1}$.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>(a)</b> Si $x\neq0$, $e^x-1\neq0$ y $f$ es cociente de funciones continuas con denominador no nulo: continua. En $x=0$ hay que probar $\lim_{x\to0}f(x)=f(0)=1$; es $\tfrac00$, con $(e^x-1)'=e^x\neq0$:
+  $$\lim_{x\to0}\frac{x}{e^x-1}\overset{L'H}{=}\lim_{x\to0}\frac1{e^x}=1=f(0).$$
+  Luego $f$ es continua en $\mathbb R$.</p>
+  <p><b>(b)</b> Para $x\neq0$, por la regla del cociente,
+  $$f'(x)=\frac{(e^x-1)-xe^x}{(e^x-1)^2},$$
+  cociente de funciones continuas con denominador no nulo: $f'$ es continua en $\mathbb R-\{0\}$.</p>
+  <p><b>(c)</b> En $x=0$ uso la definición de derivada (es $\tfrac00$; $h(e^h-1)$ tiene derivada $(e^h-1)+he^h$, que no se anula cerca de $0$ salvo en $0$):
+  $$f'(0)=\lim_{h\to0}\frac{f(h)-f(0)}{h}=\lim_{h\to0}\frac{h-e^h+1}{h(e^h-1)}\overset{L'H}{=}\lim_{h\to0}\frac{1-e^h}{(e^h-1)+he^h}\overset{L'H}{=}\lim_{h\to0}\frac{-e^h}{(2+h)e^h}=-\frac12 .$$
+  Ahora el límite de la derivada ($\tfrac00$; el denominador $(e^x-1)^2$ tiene derivada $2(e^x-1)e^x\neq0$ para $x\neq0$ cerca de $0$):
+  $$\lim_{x\to0}f'(x)\overset{L'H}{=}\lim_{x\to0}\frac{-xe^x}{2(e^x-1)e^x}=-\frac12\lim_{x\to0}\frac{x}{e^x-1}=-\frac12=f'(0).$$
+  Por tanto $f'$ es continua en $0$ y, con (b), en todo $\mathbb R$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> función a trozos con $\tfrac00$ en el punto de unión: continuidad = un límite con la regla; $f'(a)$ = <b>definición</b> (cociente incremental, otra vez con la regla); continuidad de $f'$ = calcular $\lim_{x\to a} f'(x)$ y compararlo con $f'(a)$.</div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, regla varias veces, pp. 82-83">U pp.82-83</span> (más derivada por definición, U §2.1, y regla del cociente, U §2.2)</p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+    <ol class="steps">
+      <li><b>(a) Fuera de $0$.</b> Si $x\neq0$, entonces $e^x\neq1$: $f$ es un cociente de funciones continuas con denominador no nulo, luego es continua.</li>
+      <li><b>(a) En $0$: qué hay que probar.</b> Que $\lim_{x\to0}f(x)=f(0)=1$.</li>
+      <li><b>(a) Calcular el límite.</b> Al sustituir sale $\tfrac00$. Derivando arriba y abajo: $\dfrac{1}{e^x}\to1$. Coincide con $f(0)$: $f$ es continua en $\mathbb R$.</li>
+      <li><b>(b) Derivar fuera de $0$</b> con la regla del cociente: $$f'(x)=\frac{(e^x-1)-xe^x}{(e^x-1)^2}.$$ Es cociente de continuas con denominador $\neq0$ si $x\neq0$: $f'$ es continua en $\mathbb R-\{0\}$.</li>
+      <li><b>(c) Valor de $f'(0)$.</b> La fórmula del paso anterior no vale en $0$: se usa la definición, $f'(0)=\lim_{h\to0}\frac{f(h)-f(0)}{h}$. Escribiendo $f(h)-1$ con denominador común queda $$f'(0)=\lim_{h\to0}\frac{h-e^h+1}{h(e^h-1)}\quad\left(\tfrac00\right).$$</li>
+      <li><b>(c) L'Hôpital, 1ª vez.</b> Arriba: $1-e^h$. Abajo (producto): $(e^h-1)+he^h$. Sigue saliendo $\tfrac00$.</li>
+      <li><b>(c) L'Hôpital, 2ª vez.</b> Arriba: $-e^h$. Abajo: $(2+h)e^h$. El cociente $\dfrac{-1}{2+h}$ tiende a $-\tfrac12$. Luego $f'(0)=-\tfrac12$.</li>
+      <li><b>(c) ¿Es continua $f'$ en $0$?</b> Falta ver que $\lim_{x\to0}f'(x)=-\tfrac12$. Sustituyendo en la fórmula de (b) sale $\tfrac00$.</li>
+      <li><b>Derivar arriba y abajo.</b> Arriba: $-xe^x$. Abajo: $2(e^x-1)e^x$. Se simplifica $e^x$: $$\frac{-xe^x}{2(e^x-1)e^x}=-\frac12\cdot\frac{x}{e^x-1}.$$</li>
+      <li><b>Límite.</b> $\dfrac{x}{e^x-1}\to1$ (paso 3), así que todo tiende a $-\tfrac12=f'(0)$. Luego $f'$ es continua en $0$.</li>
+    </ol>
+    <p><i>Alternativa con Taylor (tema 3.1):</i> $\frac{x}{e^x-1}=1-\frac x2+O(x^2)$ da directamente $f'(0)=-\tfrac12$.</p>
+    <figure class="graf" data-g='{"q":[[0,1,"f(0) = 1"]],"c":[{"e":"x/(exp(x)-1)","n":"f(x)=x/(eˣ−1)"}],"x":[-4,4],"y":[0,5]}' data-alt="f(x)=x/(eˣ−1) con f(0)=1 es continua"><figcaption>La gráfica de $\frac x{e^x-1}$ se acerca a $1$ por los dos lados de $0$; con $f(0)=1$ (rombo) queda sin huecos. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+  </details>

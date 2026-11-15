@@ -96,8 +96,11 @@ def main():
         captura_cruda(chrome, vacia, tmp / "vacia.png")
         # la página vacía de referencia lleva el mismo fondo; las capturas reales llevan además el lienzo
         blanco = (tmp / "vacia.png").read_bytes()
-        for ruta in sorted(TEMAS.glob("tema_*.html")):
+        # páginas sueltas (temas sin migrar) y fragmentos de `contenido/` (temas migrados; las páginas generadas no se tocan: luego `construir.py`)
+        for ruta in sorted(TEMAS.glob("tema_*.html")) + sorted((RAIZ / "contenido").glob("tema_*/*/*.html")):
             txt = ruta.read_text(encoding="utf8")
+            if "GENERADO desde contenido/" in txt:
+                continue
             nuevo = txt
             for m in FIG.finditer(txt):
                 escena, params, resto = m.groups()
@@ -121,7 +124,7 @@ def main():
                         nuevo = nuevo.replace(m.group(0), m.group(0) + "\n  " + etiqueta, 1)
             if nuevo != txt:
                 ruta.write_text(nuevo, encoding="utf8")
-                print("  html:", ruta.name)
+                print("  html:", ruta.relative_to(RAIZ))
     if fallos:
         sys.exit("Sin captura: " + ", ".join(fallos))
 

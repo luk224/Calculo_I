@@ -1,0 +1,19 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to\frac\pi2^-}\frac{2-\ln(\cos x)}{2+\operatorname{tg}x}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cuando $x$ se acerca a $\frac\pi2$ por la izquierda, $\cos x\to0^+$: el logaritmo cae a $-\infty$ y la tangente sube a $+\infty$. Es $\tfrac\infty\infty$ y hay que ver cuál crece más rápido; derivar ayuda a compararlos. Solo vale el límite lateral porque a la derecha $\cos x<0$.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital, válida con límites laterales: $\lim_{x\to a}\frac fg=\lim_{x\to a}\frac{f'}{g'}$ — <a href="#s2-enunciado">ver teoría</a> (U p.82).</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar el dominio $(0,\pi/2)$ y el tipo $\tfrac{+\infty}{+\infty}$; derivar numerador y denominador.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> en un límite lateral hacia un punto donde algo se anula, determina primero el <b>signo</b> de lo que tiende a $0$ ($0^+$ o $0^-$) para saber si cada trozo va a $+\infty$ o a $-\infty$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Dominio.</b> Para $x\in(0,\pi/2)$, $\cos x&gt;0$ y $\ln(\cos x)$ está definido: tiene sentido el límite <b>por la izquierda</b>.</li>
+    <li><b>Tipo.</b> Cuando $x\to\frac\pi2^-$, $\cos x\to0^+$, luego $\ln(\cos x)\to-\infty$ y el numerador $2-\ln(\cos x)\to+\infty$. Además $\operatorname{tg}x=\frac{\operatorname{sen}x}{\cos x}\to\frac1{0^+}=+\infty$. Es $\tfrac{+\infty}{+\infty}$.</li>
+    <li><b>Condiciones.</b> Ambas son derivables en $(0,\pi/2)$. $f'(x)=-\dfrac1{\cos x}\cdot(-\operatorname{sen}x)=\dfrac{\operatorname{sen}x}{\cos x}$ y $g'(x)=\dfrac1{\cos^2x}$, que nunca se anula.</li>
+    <li><b>Cociente de derivadas.</b> Dividir entre $\frac1{\cos^2x}$ es multiplicar por $\cos^2x$: $\ \dfrac{f'}{g'}=\dfrac{\operatorname{sen}x}{\cos x}\cdot\cos^2x=\operatorname{sen}x\cos x\to1\cdot0=0$.</li>
+    <li><b>Conclusión.</b> El límite vale $0$.</li>
+  </ol>
+  <p><i>Interpretación:</i> el numerador crece como $-\ln(\cos x)$ (muy despacio) y el denominador como $\frac1{\cos x}$ (como una potencia): gana el denominador.</p>
+  <figure class="graf" data-g='{"q":[[1.5707963267948966,0,"límite: (π/2, 0)"]],"c":[{"e":"(2-log(cos(x)))/(2+tan(x))","n":"f(x)"}],"x":[0,1.65],"y":[-0.2,1.2]}' data-alt="Gráfica del cociente cuando x se acerca a π/2 por la izquierda"><figcaption>Para $x<\frac\pi2$ el cociente decrece hacia $0$: $\operatorname{tg}x$ crece mucho más deprisa que $-\ln(\cos x)$. Pasado $\frac\pi2$ el coseno es negativo y no hay gráfica. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, p. 82 y nota al margen (límites laterales); derivada de tg, p. 80">U p.82</span></p>
+  </details>

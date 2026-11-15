@@ -1,0 +1,21 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to0}\frac{\ln(1+x)-x}{1-\sqrt{1-x^2}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Arriba y abajo valen $0$ en $x=0$: no sé quién gana. La regla compara «a qué velocidad» se acercan a $0$ comparando sus derivadas. Conviene simplificar tras derivar, porque el cociente de derivadas se arregla mucho.</dd>
+    <dt>Qué uso</dt><dd>Regla de L'Hôpital: en $\tfrac00$, $\lim_{x\to a}\frac fg=\lim_{x\to a}\frac{f'}{g'}$ si este existe — <a href="#s2-enunciado">ver teoría</a> (U p.82).</dd>
+    <dt>Por dónde empiezo</dt><dd>Comprobar que sale $\tfrac00$ y que $g'$ no se anula cerca de $0$; luego derivar numerador y denominador por separado.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> tras derivar, <b>simplifica</b> el cociente de derivadas antes de sustituir: el factor que producía el $0/0$ suele cancelarse y no hace falta derivar otra vez.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Tipo.</b> Numerador: $\ln1-0=0$. Denominador: $1-\sqrt1=0$. Ambas son continuas en $0$: $\tfrac00$.</li>
+    <li><b>Hipótesis.</b> En $(-1,1)$ ambas son derivables. $f'(x)=\dfrac1{1+x}-1=\dfrac{-x}{1+x}$ y $g'(x)=-\dfrac1{2\sqrt{1-x^2}}\cdot(-2x)=\dfrac{x}{\sqrt{1-x^2}}$. $g'(x)=0$ solo en $x=0$; luego $g'(x)\neq0$ en $(-1,1)\setminus\{0\}$, que es lo que exige U («esta última condición no excluye que $g'(a)$ pueda ser $0$»).</li>
+    <li><b>Simplificar antes de pasar al límite.</b> Para $x\neq0$: $\dfrac{f'}{g'}=\dfrac{-x}{1+x}\cdot\dfrac{\sqrt{1-x^2}}{x}=-\dfrac{\sqrt{1-x^2}}{1+x}$. Podemos cancelar $x$ porque en un límite nunca se toma $x=0$.</li>
+    <li><b>Límite.</b> La última función es continua en $0$ y vale $-1$.</li>
+    <li><b>Conclusión.</b> El límite pedido es $-1$.</li>
+  </ol>
+  <figure class="graf" data-g='{"q":[[0,-1,"límite: (0, −1)"]],"c":[{"e":"(log(1+x)-x)/(1-sqrt(1-x**2))","n":"f(x)"}],"x":[-0.9,0.9],"y":[-3,0.5]}' data-alt="Gráfica del cociente con el hueco en x=0"><figcaption>En $x=0$ la fracción es $\frac00$ y no hay punto de la gráfica; el rombo marca el valor $-1$ al que se acerca por los dos lados. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+  <div class="box warn"><span class="h">Error típico</span>
+    <p>Decir «$g'(0)=0$, luego no se puede aplicar»: lo que importa es $g'\neq0$ <b>cerca</b> de $0$, no en $0$.</p>
+  </div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, Regla de L'Hôpital, p. 82">U p.82</span></p>
+  </details>

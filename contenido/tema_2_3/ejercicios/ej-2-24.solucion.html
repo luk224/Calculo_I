@@ -1,0 +1,28 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar el límite de una potencia $\left(\frac{\ln x^2+1}{2\ln x}\right)^{\ln x}$ cuando $x\to+\infty$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La base se acerca a $1$ y el exponente crece sin parar: forma $1^\infty$. Hay una carrera entre «base casi 1» y «exponente enorme»; el truco es escribir la base como $1+\frac1{\text{algo grande}}$, que es justo el límite que define $e$.</dd>
+    <dt>Qué uso</dt><dd>Proposición 2.2: $\left(1+\frac1f\right)^f\to e$ si $f\to\pm\infty$ — <a href="#s4">ver teoría</a> (U p.85).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $\ln x^2=2\ln x$ y la base como $1+\frac1{2\ln x}$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> $1^\infty$: escribe la base como $1+\frac1f$ y fuerza el exponente a ser $f\cdot(\text{algo})$; el límite es $e^{\lim_{x\to a}(\text{algo})}$. Atajo: $\lim_{x\to a} f^g=e^{\lim_{x\to a} g(f-1)}$; aquí ($a=+\infty$) $g(f-1)=\ln x\cdot\frac1{2\ln x}=\frac12$.</div>
+  <p class="mismo"><i>Mismo método que Examen 5 ($1^\infty$).</i></p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <p><b>Camino 1: el número $e$ (Prop. 2.2 de U).</b></p>
+  <ol class="steps">
+    <li><b>Tipo.</b> Como $\ln(x^2)=2\ln x$, la base es $\dfrac{2\ln x+1}{2\ln x}=1+\dfrac1{2\ln x}\to1$ y el exponente $\ln x\to+\infty$: $1^{+\infty}$.</li>
+    <li><b>Forzar la forma de la Prop. 2.2.</b> Tomamos $f(x)=\ln x^2=2\ln x\to+\infty$. El exponente es $\ln x=\frac12\ln x^2$, luego
+    $$\left(1+\frac1{\ln x^2}\right)^{\ln x}=\left[\left(1+\frac1{\ln x^2}\right)^{\ln x^2}\right]^{1/2}$$
+    (propiedad $(b^c)^d=b^{cd}$, válida para $b&gt;0$).</li>
+    <li><b>Límite.</b> Lo de dentro tiende a $e$ (Prop. 2.2) y $t\mapsto t^{1/2}$ es continua en $e$: el límite es $e^{1/2}=\sqrt e$.</li>
+  </ol>
+  <p><b>Camino 2: logaritmos y L'Hôpital (la «Nota» de E).</b></p>
+  <ol class="steps">
+    <li>La expresión es $e^{h(x)}$ con $h(x)=\ln x\cdot\ln\!\left(1+\frac1{\ln x^2}\right)$, de tipo $+\infty\cdot0$.</li>
+    <li>Cociente: $h(x)=\dfrac{\ln\left(1+\frac1{\ln x^2}\right)}{1/\ln x}$, de tipo $\tfrac00$.</li>
+    <li>Derivadas (cadena): numerador $\dfrac1{1+\frac1{\ln x^2}}\cdot\left(-\dfrac1{(\ln x^2)^2}\cdot\dfrac2x\right)$; denominador $-\dfrac1{(\ln x)^2}\cdot\dfrac1x\neq0$.</li>
+    <li>Cociente de derivadas, usando $(\ln x^2)^2=4(\ln x)^2$: $\ \dfrac{2(\ln x)^2}{(\ln x^2)^2}\cdot\dfrac1{1+\frac1{\ln x^2}}=\dfrac1{2\left(1+\frac1{\ln x^2}\right)}\to\dfrac12$.</li>
+    <li>Por continuidad de $\exp$: límite $=e^{1/2}=\sqrt e$.</li>
+  </ol>
+  <figure class="graf" data-g='{"c":[{"e":"((2*log(x)+1)/(2*log(x)))**log(x)","n":"f(x)"},{"e":"sqrt(E)","n":"límite √e ≈ 1,65","d":1}],"x":[2,1000],"y":[1.2,1.8]}' data-alt="La función se acerca a raíz de e cuando x crece"><figcaption>La función se acerca muy despacio (el logaritmo crece lento) a la recta punteada $y=\sqrt e\approx1{,}65$, el valor del límite. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Proposición 2.2 y Ejemplo 2.13, p. 85">U p.85</span></p>
+  </details>

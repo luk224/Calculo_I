@@ -1,0 +1,24 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to\infty}\left(\frac{x-1}{x+2}\right)^x$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es el truco de la potencia otra vez: se escribe $f^g=e^{g\ln f}$ y se calcula solo el exponente. Aquí la base se acerca a $1$ y el exponente crece sin parar ($1^\infty$).</dd>
+    <dt>Qué uso</dt><dd>Potencias: $f^g=e^{g\ln f}$ — <a href="#s4">ver teoría</a> (U pp.84-85).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir la potencia como $e^{x\ln\frac{x-1}{x+2}}$ y calcular $L=\lim_{x\to\infty}x\ln\frac{x-1}{x+2}$.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Es $1^\infty$. Escribo $\left(\frac{x-1}{x+2}\right)^x=e^{\,x\ln\frac{x-1}{x+2}}$ y calculo $L=\lim_{x\to\infty}x\ln\frac{x-1}{x+2}$, de tipo $\infty\cdot0$. Lo paso a cociente $\tfrac00$ (derivables, $(1/x)'=-1/x^2\neq0$) y aplico L'Hôpital:
+  $$L=\lim_{x\to\infty}\frac{\ln(x-1)-\ln(x+2)}{1/x}\overset{L'H}{=}\lim_{x\to\infty}\frac{\frac1{x-1}-\frac1{x+2}}{-1/x^2}=\lim_{x\to\infty}\frac{-3x^2}{x^2+x-2}=-3 .$$
+  Por la continuidad de $e^t$, el límite pedido es $e^{L}=e^{-3}$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> $1^\infty$: $e^{L}$ con $L=\lim_{x\to\infty} g\ln f$, pasando $g$ a fracción. Atajo (apartado 4): aquí $g(f-1)=x\cdot\frac{-3}{x+2}\to-3$.</div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.3.2, 1^∞ con logaritmos y Proposición 2.2, p. 85">U p.85</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+    <ol class="steps">
+      <li><b>Pasar a exponencial.</b> $\left(\frac{x-1}{x+2}\right)^x=e^{\,x\ln\frac{x-1}{x+2}}$. Hay que hallar $L=\lim_{x\to\infty}x\ln\frac{x-1}{x+2}$.</li>
+      <li><b>Pasar a fracción.</b> $x$ pasa abajo como $\frac1x$, y el logaritmo se separa en dos: $$L=\lim_{x\to\infty}\frac{\ln(x-1)-\ln(x+2)}{1/x},\qquad\text{tipo }\tfrac00.$$</li>
+      <li><b>Derivar arriba y abajo.</b> Arriba: $\frac1{x-1}-\frac1{x+2}=\frac{3}{(x-1)(x+2)}$. Abajo: $-\frac1{x^2}$.</li>
+      <li><b>Dividir y simplificar:</b> $\dfrac{3/((x-1)(x+2))}{-1/x^2}=\dfrac{-3x^2}{x^2+x-2}$.</li>
+      <li><b>Límite.</b> Con $x$ enorme, $x^2+x-2\approx x^2$, así que el cociente tiende a $-3$. Luego $L=-3$.</li>
+      <li><b>Volver:</b> el resultado es $e^{L}=e^{-3}$.</li>
+    </ol>
+    <figure class="graf" data-g='{"c":[{"e":"((x-1)/(x+2))**x","n":"f(x)"},{"e":"exp(-3)","n":"límite e⁻³ ≈ 0,0498","d":1}],"x":[1,100],"y":[0,0.06]}' data-alt="La función sube y se acerca a e⁻³"><figcaption>Para $x\ge1$ la gráfica crece despacio hacia la recta punteada $y=e^{-3}\approx0{,}0498$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+  </details>

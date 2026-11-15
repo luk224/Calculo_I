@@ -1,0 +1,35 @@
+<p class="enun">Dada la ecuación $x^4+x^2y^3-y^2=1$. 1) Muestra que define a $x$ como función implícita de $y$ cerca de $(1,1)$. 2) Calcula $g'(1)$ y $g''(1)$, en donde $x=g(y)$ cerca de $(1,1)$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Probar que la ecuación define $x=g(y)$ cerca de $(1,1)$ y calcular $g'(1)$ y $g''(1)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Aquí se despeja $x$, así que la variable independiente es $y$ y la parcial que importa es $\frac{\partial f}{\partial x}$. Una vez garantizada $g$, no hace falta conocerla: se deriva la identidad $f(g(y),y)=0$ una vez para $g'$ y otra para $g''$.</dd>
+    <dt>Qué uso</dt><dd>Teorema de la función implícita con papeles cambiados (U p. 206) y derivación implícita sucesiva (U p. 207).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir $f=0$, comprobar $f(1,1)=0$ y $\frac{\partial f}{\partial x}(1,1)\ne0$.</dd>
+  </dl></div>
+  <p><b>Apartado 1.</b></p>
+  <ol class="steps">
+    <li>$f(x,y)=x^4+x^2y^3-y^2-1$ (polinomio: continua con parciales continuas en $\mathbb R^2$).</li>
+    <li>$f(1,1)=1+1-1-1=0$ ✓.</li>
+    <li>$\nabla f=(4x^3+2xy^3,\ 3x^2y^2-2y)$; $\nabla f(1,1)=(6,1)$.</li>
+    <li>$\frac{\partial f}{\partial x}(1,1)=6\ne0$ ✓. Por el teorema con los papeles cambiados hay intervalos $U\ni1$ (de $y$), $V\ni1$ (de $x$) y una única $g:U\to V$ con $f(g(y),y)=0$ y $g(1)=1$.</li>
+  </ol>
+  <p><b>Apartado 2: $g'(1)$.</b></p>
+  <ol class="steps">
+    <li><b>Fórmula directa:</b> $g'(1)=\frac{dx}{dy}(1)=-\frac{f_y(1,1)}{f_x(1,1)}=-\frac16$.</li>
+    <li><b>Derivando la ecuación</b> $g(y)^4+g(y)^2y^3-y^2-1=0$ respecto de $y$ (cadena en $g^4$, producto en $g^2y^3$): $$4g^3g'+2g\,g'\,y^3+3g^2y^2-2y=0.\qquad(\ast)$$</li>
+    <li>En $y=1$, $g=1$: $4g'+2g'+3-2=0$, o sea $6g'(1)+1=0$ y $g'(1)=-\frac16$ (coincide).</li>
+  </ol>
+  <p><b>Apartado 2: $g''(1)$.</b></p>
+  <ol class="steps">
+    <li><b>Derivar $(\ast)$ otra vez respecto de $y$,</b> término a término (producto de factores que dependen de $y$):
+      <ul>
+        <li>$\left(4g^3g'\right)'=12g^2(g')^2+4g^3g''$.</li>
+        <li>$\left(2g\,g'\,y^3\right)'=2(g')^2y^3+2g\,g''\,y^3+6g\,g'\,y^2$.</li>
+        <li>$\left(3g^2y^2\right)'=6g\,g'\,y^2+6g^2y$.</li>
+        <li>$(-2y)'=-2$.</li>
+      </ul>
+      Suma: $12g^2(g')^2+4g^3g''+2(g')^2y^3+2g\,g''\,y^3+12g\,g'\,y^2+6g^2y-2=0$.</li>
+    <li><b>Sustituir $y=1$, $g=1$, $g'=-\frac16$</b> (así la única incógnita es $g''$): $12\cdot\frac1{36}=\frac13$; $2\cdot\frac1{36}=\frac1{18}$; $12\cdot\left(-\frac16\right)=-2$; $6-2=4$. Queda $\frac13+\frac1{18}-2+4+6g''(1)=0$, es decir, $6g''(1)+\frac{43}{18}=0$.</li>
+    <li><b>Despejar:</b> $g''(1)=-\dfrac{43}{108}$.</li>
+  </ol>
+  <p><b>Respuestas: $g'(1)=-\frac16$, $g''(1)=-\frac{43}{108}$.</b></p>
+  <div class="recipe"><b>Receta:</b> derivada segunda implícita: (1) derivar la ecuación con $x=g(y)$ dentro, obteniendo $(\ast)$; (2) evaluar y despejar $g'$; (3) derivar $(\ast)$ <b>antes</b> de evaluar; (4) evaluar con el $g'$ ya conocido y despejar $g''$.</div>

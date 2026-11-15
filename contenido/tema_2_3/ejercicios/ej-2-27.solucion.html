@@ -1,0 +1,18 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{x\to+\infty}\frac{\operatorname{sen}x+e^x}{\cos x+e^x}$ (y decidir si L'Hôpital sirve).</dd>
+    <dt>Cómo lo pienso</dt><dd>$e^x$ crece tanto que $\operatorname{sen}x$ y $\cos x$, siempre entre $-1$ y $1$, son migajas. Derivar solo cambia seno por coseno y vuelve al principio: la regla «da vueltas» y no resuelve. Hay que sacar factor común $e^x$.</dd>
+    <dt>Qué uso</dt><dd>Si la regla «da vueltas», no sirve: se divide por $e^x$ y se usa «cero por acotada» — <a href="#s2-falla">ver teoría</a> (U p.82 y pp.45-46).</dd>
+    <dt>Por dónde empiezo</dt><dd>Aplicar la regla una vez, ver que reaparecen seno y coseno, y abandonarla: dividir arriba y abajo por $e^x$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> si al derivar reaparece la misma estructura (senos y cosenos que rotan, exponenciales que se reproducen), abandona L'Hôpital y <b>divide por el término dominante</b>.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Tipo.</b> $e^x\to+\infty$ y $\operatorname{sen}x,\cos x\in[-1,1]$; así $\operatorname{sen}x+e^x\ge e^x-1\to+\infty$ y lo mismo el denominador: $\tfrac\infty\infty$.</li>
+    <li><b>Intento con L'Hôpital.</b> Las condiciones se cumplen ($g'(x)=-\operatorname{sen}x+e^x\ge e^x-1&gt;0$ para $x&gt;0$), pero $\ \dfrac{f'}{g'}=\dfrac{\cos x+e^x}{-\operatorname{sen}x+e^x}$, $\ \dfrac{f''}{g''}=\dfrac{-\operatorname{sen}x+e^x}{-\cos x+e^x},\dots$ Tras cuatro derivaciones se vuelve al cociente de partida: no simplifica nada.</li>
+    <li><b>Otro camino: dividir por el término dominante</b> $e^x$ arriba y abajo: $\ \dfrac{\operatorname{sen}x+e^x}{\cos x+e^x}=\dfrac{\operatorname{sen}x\cdot e^{-x}+1}{\cos x\cdot e^{-x}+1}$.</li>
+    <li><b>Cada trozo.</b> $e^{-x}\to0$ y $\operatorname{sen}x,\cos x$ están acotadas: $\operatorname{sen}x\,e^{-x}\to0$ y $\cos x\,e^{-x}\to0$ («cero por acotada»).</li>
+    <li><b>Álgebra de límites</b> (el denominador tiende a $1\neq0$): el límite es $\dfrac{0+1}{0+1}=1$.</li>
+  </ol>
+  <figure class="graf" data-g='{"c":[{"e":"(sin(x)+exp(x))/(cos(x)+exp(x))","n":"f(x)"},{"e":"1","n":"límite 1","d":1}],"x":[0,12],"y":[0,3]}' data-alt="El cociente oscila pero se aplana hacia 1"><figcaption>Las oscilaciones del seno y del coseno se van haciendo insignificantes frente a $e^x$ y la gráfica se pega a $y=1$, aunque L'Hôpital no sirva aquí. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y puntos calculados y verificados con sympy">P</span></figcaption></figure>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Prop. 1.10 (cero por acotada), p. 45 y Prop. 1.11, p. 46">U pp.45-46</span> <span class="src" data-l="S" data-ref="Stewart §4.4, «debe tener en cuenta otros métodos antes de utilizar la regla», p. 305">S p.305</span></p>
+  </details>
