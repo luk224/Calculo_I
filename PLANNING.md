@@ -89,7 +89,7 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 | ✓ | Tema | Ejercicios (v. CLAUDE.md §2) | Notas para este tema |
 |---|---|---|---|
 | [x] | **2.3 L'Hôpital** | E 2.24-2.33 + 6 X | **Prototipo hecho** (commits 08cff4c, 616e4bd, a870fc6; F4b: tarjetas, redacción de examen y «Qué uso» corto). Modelo de referencia. |
-| [ ] | 1.1 El espacio ℝ | E 1.1-1.5 + X | Mapa: «qué desigualdad/valor absoluto tengo y qué método». Práctica: desigualdades, intervalos, supremo/ínfimo. Ojo: máx/mín/arquimediana son `P` (no U). |
+| [x] | 1.1 El espacio ℝ | E 1.1-1.5 + X | Mapa: «qué desigualdad/valor absoluto tengo y qué método». Práctica: desigualdades, intervalos, supremo/ínfimo. Ojo: máx/mín/arquimediana son `P` (no U). |
 | [ ] | 1.2 Sucesiones | E 1.6-1.16 + X | Mapa de decisión de límites de sucesiones (cociente de polinomios, e, Stolz, acotación, monotonía). **Tema largo: dividir F4 con cuidado.** |
 | [ ] | 1.3 Series | E 1.17-1.22 + X | Mapa de criterios de convergencia (necesaria, comparación, cociente, raíz, alternada, geométrica, telescópica). |
 | [x] | 1.4 Límites y continuidad | E 1.23-1.41 + X | **Hecho (2026-11-15)**: F1-F6 + F4b, 40 tarjetas, 12 prácticas, quiz 10, mapa de decisión, t1_4.py; sin ver en navegador. Nota previa: **Mayor volumen (40 `details.sol`)**: agrupar por tipo (límites, asíntotas, continuidad, Bolzano/bisección) y hacer F4 estricto. Dos o tres sesiones si hace falta: (a) límites, (b) continuidad+Bolzano. |
