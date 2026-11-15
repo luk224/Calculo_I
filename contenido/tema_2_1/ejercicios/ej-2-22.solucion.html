@@ -1,0 +1,26 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Señalar la afirmación correcta sobre cuándo $|f|$ es derivable en $a$.</dd>
+    <dt>Cómo lo pienso</dt><dd>El valor absoluto solo puede romper la derivabilidad donde $f$ se anula. Si en ese punto $f$ corta al eje con pendiente no nula aparece una esquina; si la pendiente es $0$, la gráfica llega «tangente» al eje y se suaviza.</dd>
+    <dt>Qué uso</dt><dd>$\big||u|-|v|\big|\le|u-v|$ y emparedado — <a href="#s5">ver teoría</a> (U pp.16, 45).</dd>
+    <dt>Por dónde empiezo</dt><dd>Probar $f(x)=x$ en $a=0$ para descartar a), b) y d).</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> $|f|$ es derivable en $a$ si y solo si $f(a)\neq0$ o $f'(a)=0$. Para demostraciones con $|\cdot|$, combina $\big||u|-|v|\big|\le|u-v|$ con el emparedado.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>a), b) y d) son falsas.</b> Contraejemplo común: $f(x)=x$, $a=0$. Es derivable con $f'(0)=1&gt;0$ y $f'(0)\neq0$, pero $|f|=|x|$ no es derivable en $0$ (ej. 2.19).</li>
+    <li><b>c) es cierta.</b> Queremos $\lim_{x\to a}\frac{|f(x)|-|f(a)|}{x-a}=0$. Como $g\to0\iff|g|\to0$, basta ver que $\left|\frac{|f(x)|-|f(a)|}{x-a}\right|\to0$.</li>
+    <li><i>Cota.</i> Por $\big||u|-|v|\big|\le|u-v|$ (U Teorema 1.1, p. 16): $0\le\left|\frac{|f(x)|-|f(a)|}{x-a}\right|\le\left|\frac{f(x)-f(a)}{x-a}\right|$.</li>
+    <li><i>Límite de la cota.</i> $\frac{f(x)-f(a)}{x-a}\to f'(a)=0$, luego su valor absoluto también tiende a $0$.</li>
+    <li><i>Emparedado</i> (U p. 45): el término central tiende a $0$, así que $|f|'(a)=0$. Vale sea cual sea $f(a)$; si $f(a)\neq0$, ya lo daba el ej. 2.21 ($|f|'(a)=\pm f'(a)=0$).</li>
+  </ol>
+  <p><b>Respuesta: c).</b></p>
+  <p><b>Cuadro completo</b> para $f$ derivable en $a$ (con $\operatorname{sgn}(t)=1$ si $t&gt;0$, $-1$ si $t&lt;0$):</p>
+  <table>
+    <tr><th>Caso</th><th>¿$|f|$ derivable en $a$?</th><th>$|f|'(a)$</th></tr>
+    <tr><td>$f(a)\neq0$</td><td>Sí (2.21)</td><td>$\operatorname{sgn}(f(a))\,f'(a)$</td></tr>
+    <tr><td>$f(a)=0$ y $f'(a)=0$</td><td>Sí (2.22 c)</td><td>$0$</td></tr>
+    <tr><td>$f(a)=0$ y $f'(a)\neq0$</td><td><b>No</b></td><td>laterales $\pm|f'(a)|$</td></tr>
+  </table>
+  <p>El último caso se ve así: $\frac{|f(a+h)|}{h}=\operatorname{sgn}(h)\left|\frac{f(a+h)}{h}\right|$, y $\left|\frac{f(a+h)}{h}\right|\to|f'(a)|$.</p>
+  <p><b>Error típico:</b> pensar que $f'(a)&gt;0$ «arregla» la esquina. Es al revés: si $f(a)=0$, una pendiente no nula <b>crea</b> la esquina.</p>
+  </details>
