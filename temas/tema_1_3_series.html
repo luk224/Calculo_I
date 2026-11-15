@@ -1,20 +1,14 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_1_3/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 1.3 Series numéricas</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
 <link rel="stylesheet" href="../assets/resumen.css">
-<style>
-/* Extras propios del tema 1.3 (prefijo s13-): rectángulos de las figuras de comparación de áreas */
-svg.fig .s13-r{stroke:var(--fg);stroke-width:1}
-svg.fig .s13-rb{fill:color-mix(in srgb,var(--S) 35%,transparent)}
-svg.fig .s13-ra{fill:color-mix(in srgb,var(--acc) 30%,transparent)}
-.s13-dec td:first-child{font-weight:600}
-</style>
 <script defer src="../assets/katex/katex.min.js"></script>
 <script defer src="../assets/katex/auto-render.min.js"></script>
 <script defer src="../assets/resumen.js"></script>
@@ -22,6 +16,15 @@ svg.fig .s13-ra{fill:color-mix(in srgb,var(--acc) 30%,transparent)}
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
+<style>
+/* Extras propios del tema 1.3 (prefijo s13-): rectángulos de las figuras de comparación de áreas */
+svg.fig .s13-r{stroke:var(--fg);stroke-width:1}
+svg.fig .s13-rb{fill:color-mix(in srgb,var(--S) 35%,transparent)}
+svg.fig .s13-ra{fill:color-mix(in srgb,var(--acc) 30%,transparent)}
+.s13-dec td:first-child{font-weight:600}
+</style>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -49,12 +52,78 @@ svg.fig .s13-ra{fill:color-mix(in srgb,var(--acc) 30%,transparent)}
   </div>
 </header>
 
-<!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §1.3.1 Motivación, Introducción, Orientaciones y Objetivos, pp. 33-34">U pp.33-34</span></h2>
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>No se pueden sumar infinitos números uno a uno, pero sí los <b>$n$ primeros</b>. Una <b>serie</b> es lo que ocurre con esas sumas finitas cuando $n$ crece: si se acercan a un número, la serie «suma» ese número; si no, la serie <b>diverge</b>. Todo el tema es una colección de herramientas para decidir cuál de las dos cosas pasa.</p>
   <span class="src" data-l="U" data-ref="U §1.3.1 Introducción, pp. 33-34">U pp.33-34</span>
 </div>
+<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Calcula $\lim_{n\to\infty}a_n$.</b> Si no es $0$ (o no existe), la serie <b>diverge</b> y has terminado. Si es $0$, todavía no sabes nada.</li>
+    <li><b>Nombra la forma del término:</b> geométrica $ar^n$, telescópica $b_n-b_{n+1}$, tipo $\frac1{n^\gamma}$, factoriales o potencias $n$-ésimas, o con signos.</li>
+    <li><b>Elige el criterio según esa forma</b> (lista de abajo) y <b>escribe sus hipótesis</b>: comparación, cociente y raíz piden $a_n\ge0$; Leibniz pide $|a_n|$ decreciente y $a_n\to0$.</li>
+    <li><b>Termina con una frase</b> que responda a lo pedido: converge o diverge (y su suma, si es geométrica o telescópica; absoluta o condicional, si hay signos).</li>
+  </ol>
+  <p class="sub">Qué hago según el tipo</p>
+  <ul>
+    <li>¿Es $a\,r^n$? $\to$ geométrica: converge si $|r|&lt;1$ y suma $\frac{\text{1.er término}}{1-r}$.</li>
+    <li>¿Se cancela en cadena ($b_n-b_{n+1}$, fracciones simples)? $\to$ telescópica: $s_n=b_1-b_{n+1}$ y se pasa al límite.</li>
+    <li>¿Se parece a $\frac C{n^\gamma}$ (potencias de $n$, con «ruido» acotado)? $\to$ comparación con $\sum\frac1{n^\gamma}$: mayorar si converge ($\gamma&gt;1$), minorar si diverge ($\gamma\le1$).</li>
+    <li>¿Hay $n!$, $a^n$, $n^n$ o un producto que se alarga? $\to$ cociente $\frac{a_{n+1}}{a_n}$.</li>
+    <li>¿Es una potencia $n$-ésima, $(\cdots)^n$ o con exponente $n^2$? $\to$ raíz $\sqrt[n]{a_n}$ (con logaritmos si queda $x_n^{y_n}$).</li>
+    <li>¿Lleva $(-1)^n$ u otros signos? $\to$ primero $\sum|a_n|$; si no converge y es alternada, Leibniz.</li>
+    <li>¿Cociente o raíz dan $\ell=1$? $\to$ no decide: vuelve a la comparación o mira si $a_n\to0$.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$\sum a_n$ converge $\iff\{s_n\}$ converge; suma $=\lim_{n\to\infty}s_n$ (Def. 1.15)</td><td>Definir la suma; telescópicas (se calcula $s_n$).</td></tr>
+    <tr><td>$\displaystyle\sum_{n\ge k}ar^n=\frac{ar^k}{1-r}$ si $|r|&lt;1$ (U p.36)</td><td>Geométricas; mira dónde empieza el índice.</td></tr>
+    <tr><td>$\sum a_n$ converge $\Rightarrow a_n\to0$ (Prop. 1.6)</td><td>Primer filtro: si $a_n\not\to0$, diverge. El recíproco es falso (armónica).</td></tr>
+    <tr><td>$0\le a_n\le b_n$: $\sum b_n$ converge $\Rightarrow\sum a_n$ converge; $\sum a_n$ diverge $\Rightarrow\sum b_n$ diverge (U p.38)</td><td>Términos positivos parecidos a $1/n^\gamma$ o a una geométrica.</td></tr>
+    <tr><td>$\sum\frac1{n^\gamma}$ converge $\iff\gamma&gt;1$ (U p.38)</td><td>Serie de referencia para comparar.</td></tr>
+    <tr><td>$\ell=\lim_{n\to\infty}\frac{a_{n+1}}{a_n}$ o $\lim_{n\to\infty}\sqrt[n]{a_n}$: $\ell&lt;1$ converge, $\ell&gt;1$ diverge, $\ell=1$ no decide (U p.38)</td><td>Cociente: factoriales, $a^n$, productos. Raíz: potencias $n$-ésimas.</td></tr>
+    <tr><td>$\sum|a_n|$ converge $\Rightarrow\sum a_n$ converge (Prop. 1.8, U p.40)</td><td>Series con signos: probar primero la absoluta.</td></tr>
+    <tr><td>Alternada con $\{|a_n|\}$ decreciente: converge $\iff a_n\to0$ (Leibniz, U p.41)</td><td>Cuando $\sum|a_n|$ diverge; converge condicionalmente.</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos hay <b>6 preguntas de este tema</b> (alrededor del 2 % de todas), casi siempre <b>cortas, de 1 punto</b>: el criterio del cociente (también cuando no decide), convergencia absoluta y Leibniz, y preguntas de teoría (definir serie alternada, un test sobre $\sum a_n$ convergente). En el libro de ejercicios son E 1.17-1.22. Tabla por tipo: <a href="#examenes" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §1.3.2, pp. 34-41 (Def. 1.15, Prop. 1.6 p.36, geométrica p.36, comparación y cociente/raíz p.38, Def. 1.16 y Prop. 1.8 p.40, Leibniz p.41); resumen propio">U pp.34-41</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.34-41">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 2 h 30</b>
+      <ul>
+        <li>La geométrica y la telescópica (<a href="#s2">2</a>), la condición necesaria (<a href="#s3">3</a>), la comparación (<a href="#s4">4</a>), cociente y raíz (<a href="#s5">5</a>) y absoluta y Leibniz (<a href="#s6">6</a>), con el <a href="#s7">mapa de decisión</a>.</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-1-18">E 1.18</a> y <a href="#ej-1-19">1.19</a> (comparación), <a href="#ej-1-20">E 1.20</a> (cociente), <a href="#ej-1-22">E 1.22</a> (alternada), <a href="#ex-2">Examen 2</a> (cociente), <a href="#ex-3">Examen 3</a> (absoluta), <a href="#ex-4">Examen 4</a> (Leibniz) y <a href="#ex-5">Examen 5</a> (cociente que no decide).</li>
+        <li>Las <a href="#practica">prácticas</a> ★ de cada tipo.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 6 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»), con ampliaciones e interactivos.</li>
+        <li>E 1.17-1.22, los 8 propios, los 6 exámenes y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#ej-1-17">E 1.17</a> (contraejemplo), <a href="#ej-1-21">E 1.21</a> (raíz con logaritmos y Stolz) y <a href="#ex-6">Examen 6</a> (test teórico).</li>
+        <li><a href="#ej-c2">La trampa del decrecimiento en Leibniz</a> y las prácticas ★★, sobre todo <a href="#pr-g2">la condicional con conjugado</a>.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §1.3.1 Motivación, Introducción, Orientaciones y Objetivos, pp. 33-34">U pp.33-34</span></h2>
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li><b>Límites de sucesiones</b> (tema 1.2): álgebra de límites (U Prop. 1.3, p.26), recta ampliada e indeterminaciones (U pp.27-30), <i>toda sucesión monótona y acotada converge</i> (U Teorema 1.3, p.31), el límite $(1+\tfrac1{a_n})^{a_n}\to e$ (U Prop. 1.5, p.31) y el criterio de Stolz (U p.32). Haber asimilado las secciones anteriores «es indispensable para poder seguir esta sección». <span class="src" data-l="U" data-ref="U §1.3.1 Orientaciones, p. 34; §1.2 pp. 26-32">U p.34</span></li>
@@ -64,7 +133,8 @@ svg.fig .s13-ra{fill:color-mix(in srgb,var(--acc) 30%,transparent)}
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>Los seis ejercicios de E de este tema piden: (1) razonar sobre series en general y dar un <b>contraejemplo</b> (1.17); (2) <b>estudiar el carácter</b> (converge o diverge) de una serie concreta eligiendo el criterio adecuado: comparación (1.18, 1.19), cociente (1.20), raíz (1.21) y Leibniz / convergencia absoluta (1.22); y (3) elegir entre «convergente», «absolutamente convergente», «divergente», «alternada» (1.18). <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.17-1.22, pp. 20-25">E pp.20-25</span></p>
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>Serie, suma parcial y convergencia <span class="src" data-l="U" data-ref="U §1.3.2 Series, Def. 1.14 y 1.15, pp. 34-35">U pp.34-35</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Serie, suma parcial y convergencia <span class="src" data-l="U" data-ref="U §1.3.2 Series, Def. 1.14 y 1.15, pp. 34-35">U pp.34-35</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué es una serie, su suma parcial $s_n$ y cuándo decimos que converge (tiene suma) o diverge.</p>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>U empieza con una pregunta: hoy te doy 1 euro, mañana medio, pasado un cuarto, y así cada día la mitad del anterior; ¿cuánto dinero necesito en total? Y si doy 1, $\tfrac12$, $\tfrac13$, $\tfrac14$, …, ¿cuánto? No puedes «terminar» la suma, pero sí calcular lo que has pagado <b>hasta el día $n$</b>. Si esas cantidades se acercan a una cifra fija, ese es el coste total; si crecen sin parar, no hay presupuesto que alcance. Otra imagen: recorrer un pasillo dando pasos cada vez más cortos; si los pasos se acortan lo bastante, te acercas a una pared; si no, el pasillo es infinito para ti.</p>
   <span class="src" data-l="U" data-ref="U §1.3.1 Motivación, p. 33">U p.33</span>
@@ -103,7 +173,8 @@ svg.fig .s13-ra{fill:color-mix(in srgb,var(--acc) 30%,transparent)}
   <p>Confundir la <b>sucesión</b> $\{a_n\}$ (lista los términos) con la <b>serie</b> $\sum a_n$ (estudia las sumas acumuladas $\{s_n\}$): $a_n\to0$ no implica que $\sum a_n$ converja (apartado 3).</p>
 </div>
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>Dos series que se saben sumar exactamente: geométrica y telescópica <span class="src" data-l="U" data-ref="U Ejemplo 1.33 y generalización, p. 36">U p.36</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>Dos series que se saben sumar exactamente: geométrica y telescópica <span class="src" data-l="U" data-ref="U Ejemplo 1.33 y generalización, p. 36">U p.36</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> sumar exactamente dos tipos de series: la geométrica $\sum ar^n$ y la telescópica (términos que se cancelan en cadena).</p>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Hay pocas series para las que se puede escribir una fórmula de $s_n$. La <b>geométrica</b> es la reina: cada término es el anterior multiplicado por la misma razón $r$. Si $|r|&lt;1$ los términos se encogen tan deprisa que la suma total es finita (como el dinero del principio: $1+\tfrac12+\tfrac14+\dots=2$). Si $|r|\ge1$ los términos no se encogen y la suma se dispara u oscila.</p>
 </div>
@@ -146,7 +217,8 @@ svg.fig .s13-ra{fill:color-mix(in srgb,var(--acc) 30%,transparent)}
 <figure class="graf" data-g='{"p":[[1,0.5],[2,0.666667],[3,0.75],[4,0.8],[5,0.833333],[6,0.857143],[7,0.875],[8,0.888889]],"c":[{"e":"1","n":"suma = 1","d":1}],"x":[0,9],"ex":"n","ey":"sₙ"}' data-alt="Sumas parciales de 1/(n(n+1)) acercándose a 1"><figcaption><b>Converge.</b> Sumas parciales $s_n=1-\frac1{n+1}=\frac n{n+1}$ de $\sum\frac1{n(n+1)}$: suben hacia la recta $y=1$, la suma de la serie. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
 <figure class="graf" data-g='{"p":[[1,0.693147],[2,1.098612],[3,1.386294],[4,1.609438],[5,1.791759],[6,1.94591],[7,2.079442],[8,2.197225]],"c":[{"e":"log(x+1)","n":"ln(n+1)"}],"x":[0,9],"ex":"n","ey":"sₙ"}' data-alt="Sumas parciales ln(n+1) que crecen sin límite"><figcaption><b>Diverge.</b> Sumas parciales $s_n=\ln(n+1)$ de $\sum\ln\left(1+\frac1n\right)$: crecen sin parar (despacio, pero sin techo); la curva une los puntos. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Condición necesaria, serie armónica y linealidad <span class="src" data-l="U" data-ref="U Prop. 1.6, p. 36; Ej. 1.34-1.35 y Prop. 1.7, p. 37">U pp.36-37</span></h2>
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Condición necesaria, serie armónica y linealidad <span class="src" data-l="U" data-ref="U Prop. 1.6, p. 36; Ej. 1.34-1.35 y Prop. 1.7, p. 37">U pp.36-37</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> el primer filtro de cualquier serie (si el término no tiende a $0$, diverge), por qué el recíproco falla (la armónica) y cuándo se puede partir una serie en dos.</p>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Si sumas infinitos números y quieres que el total no se escape, los sumandos tienen que ir haciéndose diminutos: si siguieras sumando cosas de tamaño fijo (por ejemplo $\tfrac12$ una y otra vez), el total crecería sin límite. Pero ojo: <b>hacerse pequeños no basta</b>. Añadir $\tfrac1n$ cada vez es muy poco, y aun así se acaba superando cualquier cifra, aunque muy despacio.</p>
 </div>
@@ -182,7 +254,8 @@ $$s_{2n}-s_n=\frac1{n+1}+\dots+\frac1{2n}\ge n\cdot\frac1{2n}=\frac12\quad\Longr
   </ul>
 </div>
 <!-- ============================ 4 ============================ -->
-<h2 id="s4"><span class="n">4</span>Series de términos no negativos: comparación y series $p$ <span class="src" data-l="U" data-ref="U Series de términos no negativos, Criterio de comparación, p. 38">U p.38</span></h2>
+<h2 id="s4" data-vista="teoria"><span class="n">4</span>Series de términos no negativos: comparación y series $p$ <span class="src" data-l="U" data-ref="U Series de términos no negativos, Criterio de comparación, p. 38">U p.38</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> comparar una serie de términos positivos con otra conocida, en el sentido correcto, y usar la serie $\sum\frac1{n^\gamma}$ como referencia.</p>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Cuando todos los términos son $\ge0$, las sumas parciales <b>nunca bajan</b>: $\{s_n\}$ es creciente. Y una sucesión creciente converge <b>si y solo si está acotada</b> (Teorema 1.3, U p.31). Entonces la pregunta se reduce a: <i>¿las sumas se quedan por debajo de algún techo?</i> La comparación consiste en usar como techo las sumas de otra serie que ya conocemos. Analogía: si cada mes cobras menos que tu vecino y el total que cobra el vecino es finito, el tuyo también lo es; y si tú cobras <i>más</i> que un vecino cuyo total es infinito, el tuyo lo es también.</p>
   <span class="src" data-l="U" data-ref="U Teorema 1.3, p. 31 (monótona: convergente si y solo si acotada)">U p.31</span>
@@ -281,7 +354,8 @@ $$s_{2n}-s_n=\frac1{n+1}+\dots+\frac1{2n}\ge n\cdot\frac1{2n}=\frac12\quad\Longr
   <span class="src" data-l="P" data-ref="Truco propio, basado en los ejemplos de S §11.4 pp. 722-724">P</span>
 </div>
 <!-- ============================ 5 ============================ -->
-<h2 id="s5"><span class="n">5</span>Criterios del cociente y de la raíz <span class="src" data-l="U" data-ref="U Criterios del cociente y de la raíz, p. 38; Ej. 1.37-1.38, p. 39-40">U pp.38-40</span></h2>
+<h2 id="s5" data-vista="teoria"><span class="n">5</span>Criterios del cociente y de la raíz <span class="src" data-l="U" data-ref="U Criterios del cociente y de la raíz, p. 38; Ej. 1.37-1.38, p. 39-40">U pp.38-40</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> cuándo elegir el criterio del cociente y cuándo el de la raíz, y qué hacer cuando sale $\ell=1$.</p>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Una serie geométrica $\sum r^n$ es aquella en la que cada término es $r$ veces el anterior: el cociente $a_{n+1}/a_n$ vale siempre $r$, y converge cuando ese factor es menor que $1$ (cada término es una fracción del anterior). Los criterios del cociente y de la raíz preguntan: <b>«¿a la larga esta serie se comporta como una geométrica de razón menor que 1?»</b>. El cociente mide el factor de un término al siguiente; la raíz $n$-ésima mide el factor «medio» por paso ($a_n\approx\ell^n$).</p>
   <span class="src" data-l="S" data-ref="Stewart §11.6, idea de la prueba de la razón (comparación con una geométrica), p. 734">S p.734</span>
@@ -319,7 +393,8 @@ $$s_{2n}-s_n=\frac1{n+1}+\dots+\frac1{2n}\ge n\cdot\frac1{2n}=\frac12\quad\Longr
   <span class="src" data-l="U" data-ref="U p. 39: si el cociente decide, la raíz también; la elección viene dada por la forma de la serie">U p.39</span>
 </div>
 <!-- ============================ 6 ============================ -->
-<h2 id="s6"><span class="n">6</span>Series con términos de signo variable: absoluta, alternada y Leibniz <span class="src" data-l="U" data-ref="U Series de términos sin signo constante, pp. 40-41">U pp.40-41</span></h2>
+<h2 id="s6" data-vista="teoria"><span class="n">6</span>Series con términos de signo variable: absoluta, alternada y Leibniz <span class="src" data-l="U" data-ref="U Series de términos sin signo constante, pp. 40-41">U pp.40-41</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué cambia cuando los términos tienen signo: convergencia absoluta, series alternadas, criterio de Leibniz y convergencia condicional.</p>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Si los términos cambian de signo, las sumas parciales unas veces suben y otras bajan, y las cancelaciones <b>ayudan</b> a que la serie converja: una serie con signos es «más fácil de sumar» que la de los mismos términos en positivo. Ese es el sentido de la convergencia <b>absoluta</b>: si la serie converge incluso cuando se ponen todos los términos en positivo ($\sum|a_n|$), converge sin necesitar ninguna cancelación (y desde luego converge). Las <b>alternadas</b> convergen a veces gracias precisamente a la cancelación entre un paso adelante y otro atrás.</p>
   <span class="src" data-l="U" data-ref="U p. 40, introducción a las series sin signo constante">U p.40</span>
@@ -409,13 +484,91 @@ $$s_{2n}-s_n=\frac1{n+1}+\dots+\frac1{2n}\ge n\cdot\frac1{2n}=\frac12\quad\Longr
     <li><b>Usar comparación, cociente o raíz directamente en una serie con signos.</b> Son solo para términos no negativos: hay que pasar a $|a_n|$. Y un $\cos n$ no hace «alternada» a una serie: la alternada tiene signos $+,-,+,-$ (E Ej. 1.18).</li>
   </ul>
 </div>
-<!-- ============================ 7 ============================ -->
-<h2 id="s7"><span class="n">7</span>Tabla-decisión: «¿qué criterio uso?» <span class="src" data-l="S" data-ref="Stewart §11.7, Estrategia para probar series, pp. 739-740">S pp.739-740</span></h2>
+<!-- ============================ 7 mapa de decisión ============================ -->
+<h2 id="s7" data-vista="tipos"><span class="n">7</span>Mapa de decisión: «¿qué criterio uso?» <span class="src" data-l="S" data-ref="Stewart §11.7, Estrategia para probar series, pp. 739-740">S pp.739-740</span> <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.36-41">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a reconocer, en cuanto lees la serie, qué criterio usar (mapa de decisión y, desplegable, cuadro con el detalle de cada caso).</p>
 <div class="box intu"><span class="h">Idea</span>
-  <p>No hay un criterio universal: elegir bien es la mitad del problema. Sigue el orden de ataque y, después, mira en la tabla a qué se parece el término general $a_n$.</p>
+  <p>No hay un criterio universal: elegir bien es la mitad del problema. Sigue el mapa de decisión y, si quieres el detalle de cada caso, abre el cuadro «Si ves… haz…».</p>
   <span class="src" data-l="S" data-ref="Stewart §11.7, pp. 739-740">S pp.739-740</span>
   <span class="src" data-l="L" data-ref="Larson §9.6, Estrategias para probar series, directrices, p. 631">L p.631</span>
 </div>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja a la siguiente y «sí» te lleva a la acción de la derecha. Antes de nada, <b>calcula $\lim_{n\to\infty}a_n$</b> (Prop. 1.6): si no es $0$, ya has acabado.</p>
+<svg class="flujo" viewBox="0 0 640 634" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión: qué criterio de convergencia uso para una serie</title>
+<desc id="flujo-d">Diagrama de flujo vertical con siete preguntas. Si el término no tiende a cero, la serie diverge. Si es geométrica, converge cuando el valor absoluto de la razón es menor que uno y la suma es el primer término entre uno menos la razón. Si se cancela en cadena es telescópica y se calcula la suma parcial. Si tiene signos variables se estudia la serie de valores absolutos y, si no converge y es alternada, se usa Leibniz. Con factoriales, potencias o productos que se alargan se usa el cociente. Con potencias n-ésimas se usa la raíz. Si se parece a un cociente de potencias se compara con una serie p. Si no encaja, se relee el enunciado.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="220" height="50" rx="10"/>
+<text x="120" y="32" text-anchor="middle">¿El término NO tiende a 0?</text><text x="120" y="50" text-anchor="middle">(lím aₙ ≠ 0, o no existe)</text>
+<path class="lin" d="M230 35 H256" marker-end="url(#fl)"/><text class="si" x="235" y="30">sí</text>
+<rect class="fin" x="260" y="4" width="370" height="62" rx="10"/>
+<text x="445" y="23" text-anchor="middle">Diverge (condición necesaria, Prop. 1.6).</text>
+<text x="445" y="41" text-anchor="middle">Si tiende a 0, todavía no sabes nada.</text>
+<text x="445" y="59" text-anchor="middle">Es la primera comprobación, siempre.</text>
+<path class="lin" d="M120 60 V89" marker-end="url(#fl)"/><text class="no" x="128" y="80">no</text>
+<rect class="preg" x="10" y="92" width="220" height="50" rx="10"/>
+<text x="120" y="114" text-anchor="middle">¿Es GEOMÉTRICA a·rⁿ</text><text x="120" y="132" text-anchor="middle">(razón constante)?</text>
+<path class="lin" d="M230 117 H256" marker-end="url(#fl)"/><text class="si" x="235" y="112">sí</text>
+<rect class="fin" x="260" y="86" width="370" height="62" rx="10"/>
+<text x="445" y="105" text-anchor="middle">Converge ⇔ |r| &lt; 1; suma = 1.er término</text>
+<text x="445" y="123" text-anchor="middle">dividido entre 1 − r.</text>
+<text x="445" y="141" text-anchor="middle">Mira dónde empieza el índice.</text>
+<path class="lin" d="M120 142 V171" marker-end="url(#fl)"/><text class="no" x="128" y="162">no</text>
+<rect class="preg" x="10" y="174" width="220" height="50" rx="10"/>
+<text x="120" y="196" text-anchor="middle">¿Se CANCELA en cadena</text><text x="120" y="214" text-anchor="middle">(bₙ − bₙ₊₁, fracciones)?</text>
+<path class="lin" d="M230 199 H256" marker-end="url(#fl)"/><text class="si" x="235" y="194">sí</text>
+<rect class="fin" x="260" y="168" width="370" height="62" rx="10"/>
+<text x="445" y="187" text-anchor="middle">Telescópica: sₙ = b₁ − bₙ₊₁ (lo de en</text>
+<text x="445" y="205" text-anchor="middle">medio se cancela). Paso al límite de sₙ.</text>
+<text x="445" y="223" text-anchor="middle">Fracciones simples si hace falta.</text>
+<path class="lin" d="M120 224 V253" marker-end="url(#fl)"/><text class="no" x="128" y="244">no</text>
+<rect class="preg" x="10" y="256" width="220" height="50" rx="10"/>
+<text x="120" y="278" text-anchor="middle">¿Tiene SIGNOS variables</text><text x="120" y="296" text-anchor="middle">((−1)ⁿ, cos n…)?</text>
+<path class="lin" d="M230 281 H256" marker-end="url(#fl)"/><text class="si" x="235" y="276">sí</text>
+<rect class="fin" x="260" y="250" width="370" height="62" rx="10"/>
+<text x="445" y="269" text-anchor="middle">Estudia primero Σ|aₙ| (comparación…).</text>
+<text x="445" y="287" text-anchor="middle">Si converge: absolutamente convergente.</text>
+<text x="445" y="305" text-anchor="middle">Si no y es alternada: Leibniz (2 hip.).</text>
+<path class="lin" d="M120 306 V335" marker-end="url(#fl)"/><text class="no" x="128" y="326">no</text>
+<rect class="preg" x="10" y="338" width="220" height="50" rx="10"/>
+<text x="120" y="360" text-anchor="middle">¿Hay n!, aⁿ, nⁿ o un producto</text><text x="120" y="378" text-anchor="middle">que se alarga un factor?</text>
+<path class="lin" d="M230 363 H256" marker-end="url(#fl)"/><text class="si" x="235" y="358">sí</text>
+<rect class="fin" x="260" y="332" width="370" height="62" rx="10"/>
+<text x="445" y="351" text-anchor="middle">Cociente aₙ₊₁/aₙ (aₙ&gt;0): ℓ&lt;1 converge,</text>
+<text x="445" y="369" text-anchor="middle">ℓ&gt;1 no converge. Con ℓ=1 no decide:</text>
+<text x="445" y="387" text-anchor="middle">vuelve a la comparación (último paso).</text>
+<path class="lin" d="M120 388 V417" marker-end="url(#fl)"/><text class="no" x="128" y="408">no</text>
+<rect class="preg" x="10" y="420" width="220" height="50" rx="10"/>
+<text x="120" y="442" text-anchor="middle">¿Es una POTENCIA n-ésima</text><text x="120" y="460" text-anchor="middle">(…)ⁿ, o con exponente n²?</text>
+<path class="lin" d="M230 445 H256" marker-end="url(#fl)"/><text class="si" x="235" y="440">sí</text>
+<rect class="fin" x="260" y="414" width="370" height="62" rx="10"/>
+<text x="445" y="433" text-anchor="middle">Raíz ⁿ√aₙ (aₙ&gt;0): ℓ&lt;1 converge, ℓ&gt;1 no.</text>
+<text x="445" y="451" text-anchor="middle">Si queda xₙ^yₙ: logaritmos (y Stolz).</text>
+<text x="445" y="469" text-anchor="middle">Con ℓ=1 no decide.</text>
+<path class="lin" d="M120 470 V499" marker-end="url(#fl)"/><text class="no" x="128" y="490">no</text>
+<rect class="preg" x="10" y="502" width="220" height="50" rx="10"/>
+<text x="120" y="524" text-anchor="middle">¿Cociente de potencias de n,</text><text x="120" y="542" text-anchor="middle">con «ruido» acotado (cos n)?</text>
+<path class="lin" d="M230 527 H256" marker-end="url(#fl)"/><text class="si" x="235" y="522">sí</text>
+<rect class="fin" x="260" y="496" width="370" height="62" rx="10"/>
+<text x="445" y="515" text-anchor="middle">Compara con Σ1/n^γ: mayora si converge</text>
+<text x="445" y="533" text-anchor="middle">(γ&gt;1) y minora si diverge (γ≤1).</text>
+<text x="445" y="551" text-anchor="middle">Quita el ruido acotado (cos n, 3+sen n).</text>
+<path class="lin" d="M120 552 V581" marker-end="url(#fl)"/><text class="no" x="128" y="572">no</text>
+<rect class="nada" x="10" y="584" width="620" height="40" rx="10"/><text x="320" y="609" text-anchor="middle">Relee el enunciado: casi todo lo que cae es uno de estos siete casos</text>
+</svg>
+<details class="ver"><summary>Ver el cuadro «Si ves… haz…» con los ejercicios de cada caso</summary>
+<table class="s13-dec">
+  <tr><th>Lo que ves</th><th>Qué hacer</th><th>Cuidado</th><th>Dónde</th></tr>
+  <tr><td>$a_n\not\to0$ (o el límite no existe)</td><td>Diverge por la condición necesaria</td><td>Que $a_n\to0$ <b>no</b> prueba que converja</td><td><a href="#ej-a1">A1</a>, <a href="#ex-5">Examen 5</a>, <a href="#ex-6">Examen 6</a>, <a href="#pr-c1">pr. c1</a>, <a href="#pr-c2">c2</a></td></tr>
+  <tr><td>$a\,r^n$</td><td>Geométrica: converge $\iff|r|&lt;1$; suma $=\dfrac{\text{1.er término}}{1-r}$</td><td>Mira dónde empieza el índice</td><td><a href="#ej-a2">A2</a>, <a href="#pr-a1">pr. a1</a>, <a href="#pr-a2">a2</a></td></tr>
+  <tr><td>$b_n-b_{n+1}$; fracciones que se descomponen y se cancelan</td><td>Telescópica: $s_n=b_1-b_{n+1}$; el límite de $s_n$ decide</td><td>Calcula bien $s_n$ antes de pasar al límite</td><td><a href="#pr-b1">pr. b1</a>, <a href="#pr-b2">b2</a></td></tr>
+  <tr><td>$\dfrac1{n^\gamma}$, o un cociente de potencias de $n$ con «ruido» acotado ($\cos n$, $3+\sin n$)</td><td>Comparación directa o por el límite con una serie $p$: mayorar por convergente $\Rightarrow$ converge; minorar por divergente $\Rightarrow$ diverge</td><td>La dirección de la desigualdad; términos $\ge0$</td><td>E <a href="#ej-1-18">1.18</a>, <a href="#ej-1-19">1.19</a>, <a href="#ej-b1">B1</a>, <a href="#ej-b2">B2</a>, <a href="#pr-d1">pr. d1</a>, <a href="#pr-d2">d2</a></td></tr>
+  <tr><td>$n!$, $a^n$, $n^n$, $1\cdot3\cdots(2n-1)$ (algo que crece un factor por paso)</td><td>Cociente $\dfrac{a_{n+1}}{a_n}$: $\ell&lt;1$ converge; $\ell&gt;1$ diverge</td><td>$\ell=1$ no decide; $a_n&gt;0$</td><td>E <a href="#ej-1-20">1.20</a>, <a href="#ex-2">Examen 2</a>, <a href="#ex-5">5</a>, <a href="#ej-b3">B3</a>, <a href="#pr-e1">pr. e1</a>, <a href="#pr-e2">e2</a></td></tr>
+  <tr><td>Potencia $n$-ésima: $(\cdots)^n$, $x_n^{\,n}$, $n^{\ln n}/(\ln n)^n$</td><td>Raíz $\sqrt[n]{a_n}$: $\ell&lt;1$ converge; $\ell&gt;1$ diverge</td><td>Usa logaritmos si queda $x_n^{y_n}$; $a_n&gt;0$</td><td>E <a href="#ej-1-21">1.21</a>, <a href="#ej-b4">B4</a>, <a href="#pr-f1">pr. f1</a>, <a href="#pr-f2">f2</a></td></tr>
+  <tr><td>Términos con signo ($\cos n$, $(-1)^n$…)</td><td>Valor absoluto + comparación: $\sum|a_n|$ converge $\Rightarrow$ absolutamente convergente (Prop. 1.8)</td><td>Si $\sum|a_n|$ diverge no se concluye nada de $\sum a_n$</td><td>E <a href="#ej-1-18">1.18</a>, <a href="#ex-3">Examen 3</a>, <a href="#pr-g1">pr. g1</a></td></tr>
+  <tr><td>$(-1)^nc_n$ con $c_n&gt;0$ (alternada)</td><td>1.º $\sum c_n$; 2.º Leibniz: $c_n$ decrece y $c_n\to0$ $\Rightarrow$ converge</td><td>Comprobar <b>ambas</b> hipótesis; si además $\sum c_n$ diverge, es condicionalmente convergente</td><td>E <a href="#ej-1-22">1.22</a>, <a href="#ex-1">Examen 1</a>, <a href="#ex-4">4</a>, <a href="#ej-c1">C1</a>, <a href="#ej-c2">C2</a>, <a href="#pr-g2">pr. g2</a></td></tr>
+  <tr><td>«¿Siempre…?», «¿puede ocurrir…?» sobre series</td><td>Un contraejemplo sencillo o un teorema (Prop. 1.6, 1.7, comparación)</td><td>Divergente $+$ divergente no tiene por qué divergir</td><td>E <a href="#ej-1-17">1.17</a>, <a href="#ex-6">Examen 6</a></td></tr>
+</table>
+</details>
 <div class="box thm"><span class="h">Orden de ataque</span>
   <ol class="steps">
     <li><b>¿$a_n\to0$?</b> Si no (o el límite no existe): <b>diverge</b> y has terminado (Prop. 1.6). Si sí, no sabes nada todavía.</li>
@@ -428,333 +581,737 @@ $$s_{2n}-s_n=\frac1{n+1}+\dots+\frac1{2n}\ge n\cdot\frac1{2n}=\frac12\quad\Longr
   <span class="src" data-l="S" data-ref="Stewart §11.7, lista de estrategias, pp. 739-740">S pp.739-740</span>
   <span class="src" data-l="L" data-ref="Larson §9.6, Directrices para los criterios de convergencia o divergencia de una serie, p. 631">L p.631</span>
 </div>
-<table class="s13-dec">
-  <tr><th>Si el término general se parece a…</th><th>Usa</th><th>Cómo se concluye</th><th>Cuidado</th></tr>
-  <tr><td>$a\,r^n$</td><td>Geométrica</td><td>Converge $\iff|r|&lt;1$; suma $=\dfrac{\text{1.er término}}{1-r}$</td><td>Mira dónde empieza el índice</td></tr>
-  <tr><td>$b_n-b_{n+1}$; fracciones que se descomponen y se cancelan</td><td>Telescópica</td><td>$s_n=b_1-b_{n+1}$; el límite de $s_n$ decide</td><td>Calcula bien $s_n$ antes de pasar al límite</td></tr>
-  <tr><td>$\dfrac1{n^\gamma}$</td><td>Serie $p$</td><td>Converge $\iff\gamma&gt;1$</td><td>$\gamma=1$ (armónica) y $\gamma&lt;1$ divergen</td></tr>
-  <tr><td>Cociente de expresiones con potencias de $n$ o raíces; positivo, con «ruido» acotado ($\cos n$, $3+\sin n$)</td><td>Comparación directa o por el límite con $\dfrac1{n^\gamma}$</td><td>Mayorar por convergente $\Rightarrow$ converge; minorar por divergente $\Rightarrow$ diverge</td><td>La dirección de la desigualdad; términos $\ge0$</td></tr>
-  <tr><td>$n!$, $a^n$, $n^n$, $1\cdot3\cdots(2n-1)$ (algo que crece un factor por paso)</td><td>Cociente $\dfrac{a_{n+1}}{a_n}$</td><td>$\ell&lt;1$ converge; $\ell&gt;1$ diverge</td><td>$\ell=1$ no decide; $a_n&gt;0$</td></tr>
-  <tr><td>Potencia $n$-ésima: $(\cdots)^n$, $x_n^{\,n}$, $n^{\ln n}/(\ln n)^n$</td><td>Raíz $\sqrt[n]{a_n}$</td><td>$\ell&lt;1$ converge; $\ell&gt;1$ diverge</td><td>Usa logaritmos si queda $x_n^{y_n}$; $a_n&gt;0$</td></tr>
-  <tr><td>Términos con $\cos n$, $\sin n$, $(-1)^n$ que <i>no</i> son alternados puros</td><td>Valor absoluto + comparación</td><td>$\sum|a_n|$ converge $\Rightarrow$ absolutamente convergente (Prop. 1.8)</td><td>Si $\sum|a_n|$ diverge no se concluye nada de $\sum a_n$</td></tr>
-  <tr><td>$(-1)^nc_n$ con $c_n&gt;0$ (alternada)</td><td>1.º $\sum c_n$; 2.º Leibniz</td><td>Leibniz: $c_n$ decrece y $c_n\to0$ $\Rightarrow$ converge</td><td>Comprobar <b>ambas</b> hipótesis; si además $\sum c_n$ diverge, es condicionalmente convergente</td></tr>
-</table>
 <p><span class="src" data-l="P" data-ref="Tabla propia elaborada a partir de los criterios de U pp. 36-41 y las estrategias de S pp. 739-740 y L p. 631">P</span> Tabla elaborada a partir de los criterios de U (pp. 36-41) y de las estrategias de S (pp. 739-740) y L (p. 631).</p>
-<!-- ============================ 8 ============================ -->
-<h2 id="ejercicios"><span class="n">8</span>Ejercicios resueltos del libro (E 1.17-1.22) y ejemplos propios <span class="src" data-l="E" data-ref="Libro de ejercicios, Tema 1, Ej. 1.17-1.22, pp. 20-25">E pp.20-25</span></h2>
-<div class="box tip"><span class="h">Orden de estudio propuesto</span>
-  <p>De fácil a difícil: <b>1.17 → 1.18 → 1.19 → 1.20 → 1.22 → 1.21</b>. Están abajo en el orden del libro. Cada solución termina con su <i>receta</i> y su <i>error típico</i>. Antes de abrir cada solución, intenta elegir el criterio con la tabla del apartado 7.</p>
+<!-- ============================ práctica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">8</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub">Antes de elegir criterio, haz siempre dos preguntas: ¿el término tiende a $0$? (si no, diverge) y ¿tiene signo constante? (si no, mira primero $\sum|a_n|$). Después, la forma del término elige el criterio.</p>
+<h3>Serie geométrica: primer término y razón</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · geométrica que no empieza en 1 <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de $\displaystyle\sum_{n=2}^{\infty}\frac{2^{n+1}}{5^{n}}$ y, si converge, calcula su suma.</p>
+  <details class="pista"><summary>Pista</summary><p>Escribe el término como $a\,r^n$ (con $2^{n+1}=2\cdot2^n$). La suma es $\frac{\text{primer término}}{1-\text{razón}}$, y el primer término es el de $n=2$, no el de $n=1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Reconocer la geométrica:</b> $\frac{2^{n+1}}{5^n}=2\cdot\frac{2^n}{5^n}=2\left(\frac25\right)^n$. Cada término es el anterior multiplicado por la misma cantidad, la razón $r=\frac25$.</li><li><b>Carácter:</b> $|r|=\frac25&lt;1$, así que la serie converge (serie geométrica, U Ej. 1.33 y nota al margen, p.36).</li><li><b>Primer término</b> (el de $n=2$): $\frac{2^{3}}{5^2}=\frac8{25}$.</li><li><b>Suma:</b> $\dfrac{\text{primer término}}{1-r}=\dfrac{8/25}{1-2/5}=\dfrac{8/25}{3/5}=\dfrac{8}{25}\cdot\dfrac53=\dfrac8{15}$ (U p.36).</li><li><b>Error que se evita:</b> usar como primer término el de $n=1$ ($\frac45$) daría $\frac43$, que es la suma desde $n=1$; el sumando $\frac45$ sobra.</li></ol>
+    <p class="res">Resultado: converge y su suma es $\frac8{15}$</p>
+  </details>
+</details>
+<details class="pr" id="pr-a2"><summary><span class="nv n2">★★ Medio</span> Práctica a2 · suma de dos geométricas <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula la suma de $\displaystyle\sum_{n=1}^{\infty}\frac{2^n+(-1)^n}{3^n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Parte la fracción en dos series geométricas. Antes de sumarlas por separado, comprueba que las dos convergen: es lo que permite partir (U Prop. 1.7, p.37).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Separar:</b> $\frac{2^n+(-1)^n}{3^n}=\left(\frac23\right)^n+\left(-\frac13\right)^n$.</li><li><b>Primera serie:</b> geométrica de razón $\frac23$ ($|r|&lt;1$), primer término $\frac23$: $\displaystyle\sum_{n\ge1}\Big(\frac23\Big)^n=\frac{2/3}{1-2/3}=2$ (U p.36).</li><li><b>Segunda serie:</b> geométrica de razón $-\frac13$ ($|r|=\frac13&lt;1$), primer término $-\frac13$: $\displaystyle\sum_{n\ge1}\Big(-\frac13\Big)^n=\frac{-1/3}{1+1/3}=-\frac14$. La razón negativa no estorba: lo que cuenta es $|r|&lt;1$.</li><li><b>Sumar:</b> como las dos series son sumables, la Prop. 1.7 (U p.37) dice que su suma también lo es y que su suma es la suma de las sumas: $2+\left(-\frac14\right)=\frac74$.</li><li><b>Por qué hace falta el paso 4:</b> partir una serie en dos solo es legítimo si las dos convergen; con dos divergentes podría salir cualquier cosa (E Ej. 1.17).</li></ol>
+    <p class="res">Resultado: $\frac74$</p>
+  </details>
+</details>
+<h3>Serie telescópica: lo que se cancela</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · fracciones simples con impares <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula la suma de $\displaystyle\sum_{n=1}^{\infty}\frac{1}{(2n-1)(2n+1)}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Busca $A$ y $B$ con $\frac1{(2n-1)(2n+1)}=\frac A{2n-1}+\frac B{2n+1}$ y escribe $s_1,s_2,s_3$ para ver qué se cancela.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Fracciones simples:</b> $1=A(2n+1)+B(2n-1)$. Con $n=\frac12$: $1=2A$, $A=\frac12$; con $n=-\frac12$: $1=-2B$, $B=-\frac12$. Así $$\frac1{(2n-1)(2n+1)}=\frac12\left(\frac1{2n-1}-\frac1{2n+1}\right).$$</li><li><b>Forma telescópica:</b> con $b_n=\frac1{2(2n-1)}$ se tiene $b_{n+1}=\frac1{2(2n+1)}$ y el término es $a_n=b_n-b_{n+1}$.</li><li><b>Sumas parciales</b> (se cancelan los de en medio): $s_n=(b_1-b_2)+(b_2-b_3)+\dots+(b_n-b_{n+1})=b_1-b_{n+1}=\frac12-\frac1{2(2n+1)}$.</li><li><b>Límite:</b> $\frac1{2(2n+1)}\to0$, luego $s_n\to\frac12$. Por la definición de serie convergente (U Def. 1.15, p.35), la serie converge y su suma es $\frac12$.</li><li><b>Comprobación:</b> $s_1=\frac13$, $s_2=\frac13+\frac1{15}=\frac25$, y la fórmula da $\frac12-\frac1{10}=\frac25$.</li></ol>
+    <p class="res">Resultado: $\frac12$</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2"><summary><span class="nv n2">★★ Medio</span> Práctica b2 · telescópica con logaritmos <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula la suma de $\displaystyle\sum_{n=1}^{\infty}\ln\frac{n(n+2)}{(n+1)^2}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Reparte el cociente: $\frac{n(n+2)}{(n+1)^2}=\frac{n}{n+1}\cdot\frac{n+2}{n+1}$. Con $\ln(xy)=\ln x+\ln y$ aparece una diferencia $b_n-b_{n+1}$ con $b_n=\ln\frac n{n+1}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Partir el logaritmo:</b> $\ln\frac{n(n+2)}{(n+1)^2}=\ln\frac{n}{n+1}+\ln\frac{n+2}{n+1}=\ln\frac{n}{n+1}-\ln\frac{n+1}{n+2}$ (porque $\ln\frac1x=-\ln x$).</li><li><b>Forma telescópica:</b> con $b_n=\ln\frac n{n+1}$, el segundo sumando es $b_{n+1}=\ln\frac{n+1}{n+2}$, así que $a_n=b_n-b_{n+1}$.</li><li><b>Sumas parciales:</b> $s_n=b_1-b_{n+1}=\ln\frac12-\ln\frac{n+1}{n+2}$.</li><li><b>Límite:</b> $\frac{n+1}{n+2}\to1$ y $\ln$ es continua, así que $\ln\frac{n+1}{n+2}\to\ln1=0$ (cambiar límite por función continua, U p.29). Luego $s_n\to\ln\frac12=-\ln2$ y la serie converge (U Def. 1.15, p.35).</li><li><b>Contraste:</b> todos los términos son negativos ($n(n+2)=n^2+2n&lt;(n+1)^2$), y la suma también lo es: $-\ln2\approx-0{,}693$.</li></ol>
+    <p class="res">Resultado: $-\ln2$</p>
+  </details>
+</details>
+<h3>Condición necesaria: ¿el término tiende a 0?</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · el término no se anula <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac{\sqrt{n^2+1}}{2n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Antes de buscar un criterio, calcula $\lim_{n\to\infty}a_n$. Si no es $0$, ya has terminado.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Límite del término:</b> dividiendo arriba y abajo entre $n$ (con $n=\sqrt{n^2}$): $\frac{\sqrt{n^2+1}}{2n}=\frac{\sqrt{1+1/n^2}}{2}\to\frac12$.</li><li><b>Condición necesaria</b> (U Prop. 1.6, p.36): si la serie convergiera, su término tendría que tender a $0$. Como tiende a $\frac12\neq0$, la serie no converge.</li><li><b>Idea:</b> a partir de cierto $n$ se suman cantidades cercanas a $\frac12$ una y otra vez; las sumas parciales crecen como $\frac n2$.</li></ol>
+    <p class="res">Resultado: diverge (el término tiende a $\frac12\neq0$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2"><summary><span class="nv n2">★★ Medio</span> Práctica c2 · base que tiende a 1 <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de $\displaystyle\sum_{n=3}^{\infty}\left(\frac{n-2}{n+1}\right)^{n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>La base es menor que $1$, pero tiende a $1$ y el exponente a $\infty$: es $1^\infty$, no tiende a $0$ porque sí. Calcula el límite del término con el número $e$ (U Prop. 1.5, p.31).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Trampa:</b> «la base es menor que $1$, luego la potencia tiende a $0$» solo vale si la base tiende a un número menor que $1$. Aquí $\frac{n-2}{n+1}\to1$ y el exponente $n\to\infty$: indeterminación $1^\infty$ (U p.30).</li><li><b>Preparar la forma de $e$:</b> $\frac{n-2}{n+1}=1-\frac3{n+1}=1+\frac1{x_n}$ con $x_n=-\frac{n+1}3\to-\infty$.</li><li><b>Usar la Prop. 1.5</b> (U p.31): $\left(1+\frac1{x_n}\right)^{x_n}\to e$. El término es $\left[\left(1+\frac1{x_n}\right)^{x_n}\right]^{n/x_n}$ con $\frac n{x_n}=-\frac{3n}{n+1}\to-3$. Por tanto $a_n\to e^{-3}$.</li><li><b>Condición necesaria</b> (U Prop. 1.6, p.36): $e^{-3}\approx0{,}0498\neq0$, así que la serie diverge.</li><li><b>Comprobación:</b> para $n=1000$, $\left(\frac{998}{1001}\right)^{1000}\approx0{,}0497$: los términos se estabilizan cerca de $0{,}05$ y no siguen bajando.</li></ol>
+    <p class="res">Resultado: diverge (el término tiende a $e^{-3}\neq0$)</p>
+  </details>
+</details>
+<h3>Criterio de comparación</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · mayorar por una geométrica <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac{1}{3^n+n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Quitar el $+n$ del denominador lo hace más pequeño, y por tanto la fracción más grande. Compara con una geométrica.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Tipo de serie:</b> $a_n&gt;0$; se puede usar comparación (U p.38).</li><li><b>Acotar:</b> $3^n+n&gt;3^n&gt;0$; al invertir números positivos la desigualdad cambia de sentido: $0&lt;\frac1{3^n+n}&lt;\frac1{3^n}=\left(\frac13\right)^n$.</li><li><b>Serie mayor:</b> $\sum\left(\frac13\right)^n$ es geométrica de razón $\frac13&lt;1$: converge (con suma $\frac12$, U p.36).</li><li><b>Criterio de comparación</b> (U p.38): si la mayor converge, la menor también. La serie converge.</li></ol>
+    <p class="res">Resultado: converge</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2"><summary><span class="nv n2">★★ Medio</span> Práctica d2 · $\ln n$ frente a $1$ y frente a $n$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de (a) $\displaystyle\sum_{n=2}^{\infty}\frac{\ln n}{n}$ y (b) $\displaystyle\sum_{n=2}^{\infty}\frac{\ln n}{n^3}$.</p>
+  <details class="pista"><summary>Pista</summary><p>$\ln n$ crece, pero muy despacio: $\ln n\ge1$ desde $n=3$ y $\ln n&lt;n$ siempre. Usa la primera cota para minorar en (a) y la segunda para mayorar en (b).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Tipo:</b> para $n\ge2$, $\ln n&gt;0$; las dos series tienen términos positivos y se puede usar comparación (U p.38), que solo exige la desigualdad a partir de un $n_0$.</li><li><b>(a) Cota inferior:</b> para $n\ge3$ es $n&gt;e$, y como $\ln$ es creciente, $\ln n&gt;\ln e=1$. Entonces $\frac{\ln n}n\ge\frac1n$ para $n\ge3$.</li><li><b>(a) Conclusión:</b> la armónica $\sum\frac1n$ diverge (U Ej. 1.35, p.37) y es la menor; por comparación (U p.38, primera parte con $n_0=3$), $\sum\frac{\ln n}n$ diverge. Aunque $\frac{\ln n}n\to0$, eso no basta.</li><li><b>(b) Cota superior:</b> $e^n\ge2^n\ge n+1&gt;n$ (la segunda desigualdad, por inducción: $2^{n+1}=2\cdot2^n\ge2n+2\ge n+2$); tomando $\ln$ (creciente), $n&gt;\ln n$. Así $0&lt;\frac{\ln n}{n^3}&lt;\frac{n}{n^3}=\frac1{n^2}$.</li><li><b>(b) Conclusión:</b> $\sum\frac1{n^2}$ converge (U p.38) y es la mayor; por comparación, $\sum\frac{\ln n}{n^3}$ converge (numéricamente $\approx0{,}198$).</li></ol>
+    <p class="res">Resultado: (a) diverge; (b) converge</p>
+  </details>
+</details>
+<h3>Criterio del cociente</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · factorial en el denominador <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac{3^n}{n!}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Hay un factorial: usa el cociente. Recuerda que $(n+1)!=(n+1)\cdot n!$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Tipo:</b> $a_n=\frac{3^n}{n!}&gt;0$; se puede usar el criterio del cociente (U p.38).</li><li><b>Cociente:</b> $\dfrac{a_{n+1}}{a_n}=\dfrac{3^{n+1}}{(n+1)!}\cdot\dfrac{n!}{3^n}=\dfrac{3\cdot3^n}{(n+1)\,n!}\cdot\dfrac{n!}{3^n}=\dfrac{3}{n+1}$.</li><li><b>Límite:</b> $\frac3{n+1}\to0$, es decir, $\ell=0\in[0,1)$.</li><li><b>Conclusión</b> (U p.38): la serie converge. El factorial acaba ganando a cualquier potencia $3^n$: a partir de $n=3$ cada término es menor que el anterior y cada vez en mayor proporción.</li></ol>
+    <p class="res">Resultado: converge (el cociente tiende a $0$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2"><summary><span class="nv n2">★★ Medio</span> Práctica e2 · factorial y $n^n$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac{2^n\,n!}{n^n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Con el cociente quedan $\frac{n^n}{(n+1)^n}=\frac1{(1+1/n)^n}$, que tiende a $\frac1e$ (U Prop. 1.5, p.31). Compara el resultado con $1$ usando $e\approx2{,}718$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Tipo:</b> $a_n&gt;0$; factorial y $n^n$ $\Rightarrow$ criterio del cociente (U p.38).</li><li><b>Cociente:</b> $$\frac{a_{n+1}}{a_n}=\frac{2^{n+1}(n+1)!}{(n+1)^{n+1}}\cdot\frac{n^n}{2^n\,n!}=\frac{2\,(n+1)\,n^n}{(n+1)^{n+1}}=2\,\frac{n^n}{(n+1)^n}.$$ (Se usa $(n+1)!=(n+1)n!$ y $(n+1)^{n+1}=(n+1)(n+1)^n$.)</li><li><b>Forma de $e$:</b> $\frac{n^n}{(n+1)^n}=\left(\frac{n}{n+1}\right)^n=\frac1{(1+\frac1n)^n}\to\frac1e$ (U Prop. 1.5, p.31).</li><li><b>Límite:</b> $\ell=\frac2e\approx0{,}736&lt;1$ (porque $e&gt;2$).</li><li><b>Conclusión</b> (U p.38): la serie converge. Con $3^n$ en lugar de $2^n$ saldría $\frac3e&gt;1$ y la serie divergiría: el número $e$ es la frontera.</li></ol>
+    <p class="res">Resultado: converge (el cociente tiende a $\frac2e&lt;1$)</p>
+  </details>
+</details>
+<h3>Criterio de la raíz</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · potencia $n$-ésima <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\left(\frac{n}{2n+1}\right)^{n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>El término entero está elevado a $n$: la raíz $n$-ésima lo deshace.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Tipo:</b> $a_n&gt;0$; exponente $n$ $\Rightarrow$ criterio de la raíz (U p.38).</li><li><b>Raíz:</b> $\sqrt[n]{a_n}=\frac{n}{2n+1}$ (la raíz $n$-ésima de un número positivo elevado a $n$ es el propio número).</li><li><b>Límite:</b> $\frac{n}{2n+1}=\frac1{2+1/n}\to\frac12$, así que $\ell=\frac12\in[0,1)$.</li><li><b>Conclusión</b> (U p.38): la serie converge. Aquí la base tiende a $\frac12$, no a $1$: los términos se parecen a $\left(\frac12\right)^n$, una geométrica convergente.</li></ol>
+    <p class="res">Resultado: converge (la raíz tiende a $\frac12$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2"><summary><span class="nv n2">★★ Medio</span> Práctica f2 · exponente $n^2$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac1{3^n}\left(\frac{n+1}{n}\right)^{n^2}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Con la raíz $n$-ésima, $n^2$ pasa a ser $n$ y $3^n$ pasa a ser $3$. Lo que queda es $\frac13\left(1+\frac1n\right)^n$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Tipo:</b> $a_n&gt;0$; hay exponentes $n$ y $n^2$ $\Rightarrow$ criterio de la raíz (U p.38). El cociente obligaría a comparar $\left(\frac{n+2}{n+1}\right)^{(n+1)^2}$ con $\left(\frac{n+1}{n}\right)^{n^2}$: mucho más difícil.</li><li><b>Raíz:</b> $\sqrt[n]{a_n}=\frac{1}{3}\left[\left(\frac{n+1}n\right)^{n^2}\right]^{1/n}=\frac13\left(1+\frac1n\right)^{n}$ (propiedad $(x^{a})^{b}=x^{ab}$ con $a=n^2$, $b=\frac1n$).</li><li><b>Límite:</b> $\left(1+\frac1n\right)^n\to e$ (U Prop. 1.5, p.31), así que $\ell=\frac e3\approx0{,}906$.</li><li><b>Conclusión:</b> $\ell&lt;1$ porque $e&lt;3$; por el criterio de la raíz (U p.38) la serie converge (numéricamente su suma es $\approx6{,}23$; converge despacio porque $\ell$ está cerca de $1$).</li></ol>
+    <p class="res">Resultado: converge (la raíz tiende a $\frac e3&lt;1$)</p>
+  </details>
+</details>
+<h3>Signo variable: absoluta, Leibniz, condicional</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · absoluta con el cociente <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia la convergencia y la convergencia absoluta de $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^n\,n}{2^n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Con signos alternos no se puede usar el cociente directamente (exige $a_n&gt;0$). Úsalo con $|a_n|=\frac n{2^n}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Quitar los signos:</b> $|a_n|=\frac{n}{2^n}&gt;0$. Estudiamos $\sum|a_n|$ (U Def. 1.16, p.40).</li><li><b>Cociente</b> (U p.38): $\dfrac{|a_{n+1}|}{|a_n|}=\dfrac{n+1}{2^{n+1}}\cdot\dfrac{2^n}{n}=\dfrac{n+1}{2n}\to\dfrac12&lt;1$, luego $\sum|a_n|$ converge.</li><li><b>Conclusión:</b> la serie es absolutamente convergente y, por la Prop. 1.8 (U p.40), convergente. No hace falta Leibniz.</li><li><b>Dato:</b> su suma es $-\frac29$ (comprobado numéricamente); y por la Prop. 1.8, $\left|\sum a_n\right|\le\sum|a_n|$.</li></ol>
+    <p class="res">Resultado: absolutamente convergente</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2"><summary><span class="nv n2">★★ Medio</span> Práctica g2 · condicional con conjugado <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia la convergencia y la convergencia absoluta de $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^n}{\sqrt n+\sqrt{n+1}}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Multiplica $\frac1{\sqrt n+\sqrt{n+1}}$ por el conjugado: sale $\sqrt{n+1}-\sqrt n$, y $\sum|a_n|$ es telescópica. Para la serie con signos, Leibniz.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Tamaños:</b> la serie es alternada (U Def. 1.17, p.41) con $|a_n|=\frac1{\sqrt n+\sqrt{n+1}}$. Con el conjugado: $\frac1{\sqrt{n+1}+\sqrt n}\cdot\frac{\sqrt{n+1}-\sqrt n}{\sqrt{n+1}-\sqrt n}=\frac{\sqrt{n+1}-\sqrt n}{(n+1)-n}=\sqrt{n+1}-\sqrt n$.</li><li><b>¿Absoluta?</b> $\sum|a_n|$ es telescópica: $\sum_{k=1}^{n}\big(\sqrt{k+1}-\sqrt k\big)=\sqrt{n+1}-1\to+\infty$. No converge absolutamente.</li><li><b>Leibniz, decrecimiento:</b> al pasar de $n$ a $n+1$ los dos sumandos del denominador $\sqrt n+\sqrt{n+1}$ aumentan, así que $|a_n|$ disminuye: $\{|a_n|\}$ es decreciente.</li><li><b>Leibniz, límite:</b> el denominador tiende a $+\infty$, luego $|a_n|\to0$ y $a_n\to0$. Por el criterio de Leibniz (U p.41), la serie converge (suma $\approx-0{,}239$).</li><li><b>Clasificación:</b> converge, pero no absolutamente: es condicionalmente convergente.</li></ol>
+    <p class="res">Resultado: condicionalmente convergente</p>
+  </details>
+</details>
 </div>
-<h3>Ejercicios de E</h3>
-<details class="sol"><summary>Ejercicio 1.17 — suma de dos series divergentes <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.17, pp. 20-21">E pp.20-21</span></summary>
-<p class="enun">Sean $\sum_{n=1}^{+\infty}a_n$ y $\sum_{n=1}^{+\infty}b_n$ dos series de números reales que son divergentes. ¿Debe ser $\sum_{n=1}^{+\infty}(a_n+b_n)$ también divergente?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<!-- ============================ autoevaluación ============================ -->
+<h2 id="autoeval" data-vista="tipos"><span class="n">9</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="f">
+    <p><b>1.</b> (V/F) Si $\displaystyle\lim_{n\to\infty}a_n=0$, la serie $\sum a_n$ converge.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Es solo una condición necesaria (U Prop. 1.6, p.36). La armónica $\sum\frac1n$ tiene $\frac1n\to0$ y diverge (U Ej. 1.35, p.37).</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>2.</b> (V/F) Si el término general de una serie no tiende a $0$, la serie diverge.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Es el contrarrecíproco de la Prop. 1.6 (U p.36): «converge $\Rightarrow$ $a_n\to0$» equivale a «$a_n\not\to0$ $\Rightarrow$ no converge». Es la primera comprobación que hay que hacer siempre.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>3.</b> (Elige) $\displaystyle\sum_{n=0}^{\infty}\Big(-\frac23\Big)^n$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $\frac35$</button><button data-v="b">(b) $3$</button><button data-v="c">(c) $-\frac25$</button><button data-v="d">(d) no converge, porque los signos alternan</button></div>
+    <div class="exp">Geométrica de razón $r=-\frac23$, $|r|&lt;1$: converge. Empieza en $n=0$, así que el primer término es $1$: suma $\frac1{1-(-2/3)}=\frac1{5/3}=\frac35$ (U p.36). La opción (b) olvida el signo de la razón.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>4.</b> (V/F) Si $\displaystyle\lim_{n\to\infty}\frac{a_{n+1}}{a_n}=1$, la serie $\sum a_n$ diverge.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Con $\ell=1$ el criterio no decide (U p.38). $\sum\frac1n$ (diverge) y $\sum\frac1{n^2}$ (converge) tienen las dos cociente $\to1$. Hay que cambiar de método (comparación, condición necesaria…).</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>5.</b> (Elige) La serie $\displaystyle\sum_{n=1}^{\infty}\frac{n}{n^2\sqrt n}$:</p>
+    <div class="opts"><button data-v="a">(a) diverge, porque se parece a $\sum\frac1n$</button><button data-v="b">(b) converge, porque es $\sum\frac1{n^{3/2}}$</button><button data-v="c">(c) diverge, porque es $\sum\frac1{n^{1/2}}$</button><button data-v="d">(d) el cociente no decide, así que no se puede saber</button></div>
+    <div class="exp">Simplificando, $\frac{n}{n^2\sqrt n}=\frac1{n^{2+1/2-1}}=\frac1{n^{3/2}}$. Es una serie $\sum\frac1{n^\gamma}$ con $\gamma=\frac32&gt;1$: converge (U p.38). Que el cociente no decida no impide usar otro resultado.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>6.</b> (V/F) Si $0\le a_n\le b_n$ y $\sum b_n$ diverge, entonces $\sum a_n$ diverge.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">El sentido es el contrario (U p.38): la <b>mayor</b> convergente arrastra a la menor, y la <b>menor</b> divergente arrastra a la mayor. Contraejemplo: $\frac1{n^2}\le\frac1n$, $\sum\frac1n$ diverge y $\sum\frac1{n^2}$ converge.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>7.</b> (V/F) Toda serie convergente es absolutamente convergente.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Es al revés: absolutamente convergente $\Rightarrow$ convergente (U Prop. 1.8, p.40). $\sum\frac{(-1)^n}{n}$ converge por Leibniz, pero $\sum\frac1n$ diverge (U Ej. 1.41, p.41): es condicionalmente convergente.</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>8.</b> (Elige) La serie alternada $\displaystyle\sum_{n=1}^{\infty}(-1)^n\frac{n}{n+1}$:</p>
+    <div class="opts"><button data-v="a">(a) converge por Leibniz, porque es alternada</button><button data-v="b">(b) converge condicionalmente</button><button data-v="c">(c) diverge</button><button data-v="d">(d) converge absolutamente</button></div>
+    <div class="exp">$\left|a_n\right|=\frac n{n+1}\to1$, así que $a_n$ no tiende a $0$ y la serie diverge (U Prop. 1.6, p.36). Ser alternada no basta: Leibniz (U p.41) exige además $a_n\to0$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>9.</b> (V/F) El criterio del cociente se puede aplicar directamente a $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^n}{2^n}$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Cociente, raíz y comparación son para términos no negativos (U pp.38-39). Se aplican a $\sum|a_n|=\sum\frac1{2^n}$, que converge, y la Prop. 1.8 (U p.40) da la convergencia. (De hecho es geométrica de razón $-\frac12$.)</div>
+  </div>
+  <div class="q" data-ok="d">
+    <p><b>10.</b> (Elige) $\displaystyle\sum_{n=1}^{\infty}\left(\frac1n-\frac1{n+2}\right)$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $1$</button><button data-v="b">(b) $\frac12$</button><button data-v="c">(c) no converge, porque $\sum\frac1n$ diverge</button><button data-v="d">(d) $\frac32$</button></div>
+    <div class="exp">Telescópica «de salto 2»: $s_n=1+\frac12-\frac1{n+1}-\frac1{n+2}\to\frac32$. Sobreviven los dos primeros términos positivos. La (c) parte la serie en dos divergentes, lo que no está permitido (U Prop. 1.7, p.37, exige que ambas converjan).</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<!-- ============================ ejercicios ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">10</span>Ejercicios del libro (E 1.17-1.22), resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Tema 1, Ej. 1.17-1.22, pp. 20-25">E pp.20-25</span></h2>
+<p>Los ejercicios 1.17 a 1.22 de E están agrupados en tres bloques, de fácil a difícil, <b>conservando la numeración de E</b>. Cada uno es una tarjeta: el enunciado se ve siempre; al abrir la solución encuentras «Antes de calcular» y la receta, y dentro el desarrollo paso a paso. Al final hay ejemplos propios de dificultad creciente.</p>
+<details class="ver"><summary>Ver el orden recomendado, de fácil a difícil</summary>
+<table>
+  <tr><th>Orden</th><th>Ejercicio</th><th>Tipo</th></tr>
+  <tr><td>1</td><td>1.18</td><td>Comparación (mayorar) y convergencia absoluta</td></tr>
+  <tr><td>2</td><td>1.19</td><td>Comparación (minorar): diverge</td></tr>
+  <tr><td>3</td><td>1.17</td><td>Contraejemplo: suma de dos series divergentes</td></tr>
+  <tr><td>4</td><td>1.20</td><td>Cociente con un producto que se alarga</td></tr>
+  <tr><td>5</td><td>1.22</td><td>Alternada: absoluta y Leibniz</td></tr>
+  <tr><td>6</td><td>1.21</td><td>Raíz con logaritmos y Stolz</td></tr>
+</table>
+</details>
+<h3 id="bloqueA">Bloque A · Razonar y comparar (1.17 → 1.18 → 1.19)</h3>
+<article class="ejer" id="ej-1-17">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 1.17 · suma de dos series divergentes</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.17, pp. 20-21">E pp.20-21</span></header>
+<div class="ejer-enun"><p class="enun">Sean $\sum_{n=1}^{+\infty}a_n$ y $\sum_{n=1}^{+\infty}b_n$ dos series de números reales que son divergentes. ¿Debe ser $\sum_{n=1}^{+\infty}(a_n+b_n)$ también divergente?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si la suma de dos series divergentes es siempre divergente; si no, dar un ejemplo que lo muestre.</dd>
     <dt>Cómo lo pienso</dt><dd>Una pregunta «¿siempre?» se refuta con un solo caso en contra. Si los términos de una serie son los opuestos de los de la otra, al sumarlos se cancelan y queda una serie de ceros, que converge.</dd>
-    <dt>Qué uso</dt><dd>Contraejemplo; serie armónica (U Ej. 1.35, p.37); Prop. 1.7 (U p.37); Def. 1.15 (U p.35).</dd>
+    <dt>Qué uso</dt><dd>Contraejemplo con $b_n=-a_n$; la armónica diverge — <a href="#s3">ver teoría</a> (U Ej. 1.35 y Prop. 1.7, p.37).</dd>
     <dt>Por dónde empiezo</dt><dd>Elijo $a_n=\frac1n$ y $b_n=-\frac1n$ y compruebo que cada una diverge.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Qué se pregunta.</b> Es una pregunta «¿siempre?». Para responder <i>no</i> basta <b>un contraejemplo</b>: dos series divergentes cuya suma converja.</li>
-    <li><b>Por qué no sirve la Prop. 1.7 (U p.37).</b> Dice que la suma de dos series <i>sumables</i> es sumable. Aquí las hipótesis son las contrarias (divergentes), así que no dice nada: hay que investigar.</li>
-    <li><b>Idea.</b> Si los términos de una serie son los opuestos de los de la otra, se cancelan: tomamos $a_n=\dfrac1n$, $b_n=-\dfrac1n$.</li>
-    <li><b>$\sum a_n$ diverge.</b> Es la armónica: $s_n\to+\infty$ (U Ej. 1.35, p.37; demostración en el apartado 3).</li>
-    <li><b>$\sum b_n$ diverge.</b> Sus sumas parciales son $-s_n\to-\infty$.</li>
-    <li><b>La suma converge.</b> $a_n+b_n=\frac1n-\frac1n=0$ para todo $n$: las sumas parciales de $\sum(a_n+b_n)$ son todas $0$ y convergen a $0$. La serie es convergente con suma $0$ (Def. 1.15, U p.35).</li>
-  </ol>
-  <p><b>Respuesta: No</b>; la suma de dos series divergentes puede ser convergente. Otro contraejemplo igual de válido: $a_n=1$, $b_n=-1$ (ambas divergen por la Prop. 1.6, porque el término no tiende a $0$).</p>
-  <p><b>Observación.</b> Si $a_n\ge0$ y $b_n\ge0$, entonces $0\le a_n\le a_n+b_n$ y, por el criterio de comparación (U p.38: «si la menor no es convergente, la mayor tampoco»), $\sum(a_n+b_n)$ <b>sí</b> es divergente. El contraejemplo necesita signos distintos.</p>
   <div class="recipe"><b>Receta:</b> para refutar un «¿siempre…?» sobre series, busca el contraejemplo más simple: términos que se cancelen ($b_n=-a_n$) o series conocidas (armónica, geométrica, constante).</div>
-  <p><b>Error típico:</b> creer que «divergente + divergente = divergente» como si fueran «infinitos que se suman»: solo es cierto si ambas son de términos no negativos (o ambas tienden a $+\infty$).</p>
-  <p><i>Teoría:</i> U Def. 1.15 p.35; Ej. 1.35 p.37; Prop. 1.7 p.37; comparación p.38; Teorema 1.3 p.31. Mismo ejercicio: S §11.2 ej. 84 p.713; L §9.2 ej. 97 p.604.</p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Qué se pregunta.</b> Es una pregunta «¿siempre?». Para responder <i>no</i> basta <b>un contraejemplo</b>: dos series divergentes cuya suma converja.</li>
+      <li><b>Por qué no sirve la Prop. 1.7 (U p.37).</b> Dice que la suma de dos series <i>sumables</i> es sumable. Aquí las hipótesis son las contrarias (divergentes), así que no dice nada: hay que investigar.</li>
+      <li><b>Idea.</b> Si los términos de una serie son los opuestos de los de la otra, se cancelan: tomamos $a_n=\dfrac1n$, $b_n=-\dfrac1n$.</li>
+      <li><b>$\sum a_n$ diverge.</b> Es la armónica: $s_n\to+\infty$ (U Ej. 1.35, p.37; demostración en el apartado 3).</li>
+      <li><b>$\sum b_n$ diverge.</b> Sus sumas parciales son $-s_n\to-\infty$.</li>
+      <li><b>La suma converge.</b> $a_n+b_n=\frac1n-\frac1n=0$ para todo $n$: las sumas parciales de $\sum(a_n+b_n)$ son todas $0$ y convergen a $0$. La serie es convergente con suma $0$ (Def. 1.15, U p.35).</li>
+    </ol>
+    <p><b>Respuesta: No</b>; la suma de dos series divergentes puede ser convergente. Otro contraejemplo igual de válido: $a_n=1$, $b_n=-1$ (ambas divergen por la Prop. 1.6, porque el término no tiende a $0$).</p>
+    <p><b>Observación.</b> Si $a_n\ge0$ y $b_n\ge0$, entonces $0\le a_n\le a_n+b_n$ y, por el criterio de comparación (U p.38: «si la menor no es convergente, la mayor tampoco»), $\sum(a_n+b_n)$ <b>sí</b> es divergente. El contraejemplo necesita signos distintos.</p>
+  
+    <p><b>Error típico:</b> creer que «divergente + divergente = divergente» como si fueran «infinitos que se suman»: solo es cierto si ambas son de términos no negativos (o ambas tienden a $+\infty$).</p>
+    <p><i>Teoría:</i> U Def. 1.15 p.35; Ej. 1.35 p.37; Prop. 1.7 p.37; comparación p.38; Teorema 1.3 p.31. Mismo ejercicio: S §11.2 ej. 84 p.713; L §9.2 ej. 97 p.604.</p>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 1.18 — $a_n=\dfrac1{3+\cos n+n^{5/2}}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.18, p. 21">E p.21</span></summary>
-<p class="enun">Sea la serie $\sum_{n=1}^{+\infty}a_n$ de término general $a_n=\dfrac1{3+\cos n+n^{5/2}}$. Elige la opción u opciones correctas: a) es una serie convergente pero no es absolutamente convergente; b) es una serie absolutamente convergente; c) es una serie divergente; d) es una serie alternada.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-1-18">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 1.18 · comparación con $\sum1/n^{5/2}$ y convergencia absoluta</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.18, p. 21">E p.21</span></header>
+<div class="ejer-enun"><p class="enun">Sea la serie $\sum_{n=1}^{+\infty}a_n$ de término general $a_n=\dfrac1{3+\cos n+n^{5/2}}$. Elige la opción u opciones correctas: a) es una serie convergente pero no es absolutamente convergente; b) es una serie absolutamente convergente; c) es una serie divergente; d) es una serie alternada.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decir cuáles de las cuatro afirmaciones (convergente no absoluta, absoluta, divergente, alternada) son ciertas para $a_n=\frac1{3+\cos n+n^{5/2}}$.</dd>
     <dt>Cómo lo pienso</dt><dd>El $\cos n$ es «ruido» acotado: para $n$ grande manda $n^{5/2}$ y el término se parece a $\frac1{n^{5/2}}$, que se hace pequeño rápido. Además todo es positivo, así que no hay signos alternos.</dd>
-    <dt>Qué uso</dt><dd>Criterio de comparación y series $\sum1/n^\gamma$ (U p.38); convergencia absoluta (Def. 1.16, U p.40); serie alternada (Def. 1.17, U p.41).</dd>
+    <dt>Qué uso</dt><dd>$0\le a_n\le b_n$ y $\sum b_n$ converge $\Rightarrow\sum a_n$ converge; $\sum\frac1{n^\gamma}$ converge si $\gamma&gt;1$ — <a href="#s4">ver teoría</a> (U p.38).</dd>
     <dt>Por dónde empiezo</dt><dd>Veo el signo del término (positivo) y acoto el denominador por debajo para comparar con $\sum1/n^{5/2}$.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Signo de los términos.</b> Como $-1\le\cos n\le1$, se tiene $3+\cos n\ge2&gt;0$; además $n^{5/2}&gt;0$. El denominador es positivo y $a_n&gt;0$ para todo $n$. Luego <b>d) es falsa</b>: una serie alternada (Def. 1.17, U p.41) cambia de signo y esta no.</li>
-    <li><b>Con qué comparar.</b> Para $n$ grande manda $n^{5/2}$ (el $3+\cos n$ está acotado entre $2$ y $4$). Así $a_n\approx\dfrac1{n^{5/2}}$: serie $\sum1/n^\gamma$ con $\gamma=\tfrac52&gt;1$, <b>convergente</b> (U p.38).</li>
-    <li><b>Desigualdad término a término.</b> Para todo $n\ge1$: $3+\cos n+n^{5/2}\ge2+n^{5/2}&gt;n^{5/2}$, y al invertir números positivos la desigualdad cambia de sentido:
-      $$0&lt;a_n=\frac1{3+\cos n+n^{5/2}}&lt;\frac1{n^{5/2}}.$$</li>
-    <li><b>Criterio de comparación (U p.38).</b> Ambas series son de términos no negativos, $a_n\le b_n=1/n^{5/2}$ y $\sum b_n$ converge $\Rightarrow$ $\sum a_n$ <b>converge</b>.</li>
-    <li><b>Convergencia absoluta.</b> Como $a_n&gt;0$, $|a_n|=a_n$: $\sum|a_n|=\sum a_n$ converge. La serie es <b>absolutamente convergente</b> (Def. 1.16, U p.40) y <b>b) es correcta</b>.</li>
-    <li><b>Descartar a) y c).</b> a) afirma que <i>no</i> es absolutamente convergente: falso por el paso 5. c) afirma que diverge: falso por el paso 4.</li>
-  </ol>
-  <p><b>Respuesta: solo b).</b> (Comprobación numérica: $\sum a_n\approx0{,}4949&lt;\sum1/n^{5/2}\approx1{,}3415$.)</p>
-  <figure class="graf" data-g='{"p":[[1,0.22025],[2,0.121349],[3,0.056823],[4,0.029115],[5,0.016896],[6,0.010853],[7,0.007496],[8,0.005439]],"c":[{"e":"x**(-2.5)","n":"cota 1/n^(5/2)","d":1}],"x":[0,9],"ex":"n","ey":"aₙ"}' data-alt="Términos 1/(3+cos n+n^(5/2)) por debajo de 1/n^(5/2)"><figcaption>Los términos $a_n$ (puntos, todos positivos: no hay signos alternos) quedan por debajo de $\frac1{n^{5/2}}$ (curva de puntos), serie convergente: $0&lt;a_n&lt;\frac1{n^{5/2}}$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
   <div class="recipe"><b>Receta:</b> término general = cociente con una potencia dominante $n^\gamma$ más «ruido acotado» (senos, cosenos, constantes): acota el ruido para obtener $0\le a_n\le C/n^\gamma$ (o $\ge$) y compara con $\sum1/n^\gamma$. En series de términos positivos, <i>convergente = absolutamente convergente</i>.</div>
-  <p><b>Error típico:</b> (i) ver un $\cos n$ y pensar «alternada»: lo que decide es el signo de <b>todo</b> el término. (ii) Comparar en la dirección inútil: mayorar por una serie divergente o minorar por una convergente no concluye nada.</p>
-  <p><i>Teoría:</i> U Def. 1.16 y Prop. 1.8 p.40; Def. 1.17 p.41; comparación y $\sum1/n^\gamma$ p.38; ejemplo gemelo U Ej. 1.39 pp.40-41.</p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Signo de los términos.</b> Como $-1\le\cos n\le1$, se tiene $3+\cos n\ge2&gt;0$; además $n^{5/2}&gt;0$. El denominador es positivo y $a_n&gt;0$ para todo $n$. Luego <b>d) es falsa</b>: una serie alternada (Def. 1.17, U p.41) cambia de signo y esta no.</li>
+      <li><b>Con qué comparar.</b> Para $n$ grande manda $n^{5/2}$ (el $3+\cos n$ está acotado entre $2$ y $4$). Así $a_n\approx\dfrac1{n^{5/2}}$: serie $\sum1/n^\gamma$ con $\gamma=\tfrac52&gt;1$, <b>convergente</b> (U p.38).</li>
+      <li><b>Desigualdad término a término.</b> Para todo $n\ge1$: $3+\cos n+n^{5/2}\ge2+n^{5/2}&gt;n^{5/2}$, y al invertir números positivos la desigualdad cambia de sentido:
+        $$0&lt;a_n=\frac1{3+\cos n+n^{5/2}}&lt;\frac1{n^{5/2}}.$$</li>
+      <li><b>Criterio de comparación (U p.38).</b> Ambas series son de términos no negativos, $a_n\le b_n=1/n^{5/2}$ y $\sum b_n$ converge $\Rightarrow$ $\sum a_n$ <b>converge</b>.</li>
+      <li><b>Convergencia absoluta.</b> Como $a_n&gt;0$, $|a_n|=a_n$: $\sum|a_n|=\sum a_n$ converge. La serie es <b>absolutamente convergente</b> (Def. 1.16, U p.40) y <b>b) es correcta</b>.</li>
+      <li><b>Descartar a) y c).</b> a) afirma que <i>no</i> es absolutamente convergente: falso por el paso 5. c) afirma que diverge: falso por el paso 4.</li>
+    </ol>
+    <p><b>Respuesta: solo b).</b> (Comprobación numérica: $\sum a_n\approx0{,}4949&lt;\sum1/n^{5/2}\approx1{,}3415$.)</p>
+    <figure class="graf" data-g='{"p":[[1,0.22025],[2,0.121349],[3,0.056823],[4,0.029115],[5,0.016896],[6,0.010853],[7,0.007496],[8,0.005439]],"c":[{"e":"x**(-2.5)","n":"cota 1/n^(5/2)","d":1}],"x":[0,9],"ex":"n","ey":"aₙ"}' data-alt="Términos 1/(3+cos n+n^(5/2)) por debajo de 1/n^(5/2)"><figcaption>Los términos $a_n$ (puntos, todos positivos: no hay signos alternos) quedan por debajo de $\frac1{n^{5/2}}$ (curva de puntos), serie convergente: $0&lt;a_n&lt;\frac1{n^{5/2}}$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  
+    <p><b>Error típico:</b> (i) ver un $\cos n$ y pensar «alternada»: lo que decide es el signo de <b>todo</b> el término. (ii) Comparar en la dirección inútil: mayorar por una serie divergente o minorar por una convergente no concluye nada.</p>
+    <p><i>Teoría:</i> U Def. 1.16 y Prop. 1.8 p.40; Def. 1.17 p.41; comparación y $\sum1/n^\gamma$ p.38; ejemplo gemelo U Ej. 1.39 pp.40-41.</p>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 1.19 — $\displaystyle\sum\frac1{n^{1/2}+n^{2/3}}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.19, p. 22">E p.22</span></summary>
-<p class="enun">Se pide estudiar el carácter de la serie $\displaystyle\sum_{n=1}^{+\infty}\frac1{n^{1/2}+n^{2/3}}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-1-19">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 1.19 · divergencia por comparación (minorar)</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.19, p. 22">E p.22</span></header>
+<div class="ejer-enun"><p class="enun">Se pide estudiar el carácter de la serie $\displaystyle\sum_{n=1}^{+\infty}\frac1{n^{1/2}+n^{2/3}}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar si $\sum\frac1{n^{1/2}+n^{2/3}}$ converge o diverge.</dd>
     <dt>Cómo lo pienso</dt><dd>En el denominador manda la potencia mayor, $n^{2/3}$, y $\sum1/n^{2/3}$ diverge; sospecho que la serie diverge. Para probarlo hay que demostrar que mis términos son <i>mayores</i> que los de una serie divergente.</dd>
-    <dt>Qué uso</dt><dd>Criterio de comparación (segunda parte) y series $p$ (U p.38); Prop. 1.7 (U p.37) para sacar la constante $\frac12$.</dd>
+    <dt>Qué uso</dt><dd>Si $a_n\ge b_n\ge0$ y $\sum b_n$ diverge, $\sum a_n$ diverge; $\sum\frac1{n^\gamma}$ diverge si $\gamma\le1$ — <a href="#s4">ver teoría</a> (U p.38).</dd>
     <dt>Por dónde empiezo</dt><dd>Acoto el denominador: $n^{1/2}+n^{2/3}\le2n^{2/3}$, de donde $a_n\ge\frac1{2n^{2/3}}$.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Tipo de serie.</b> Términos positivos: se puede usar comparación (U p.38).</li>
-    <li><b>Qué potencia manda.</b> $\tfrac12&lt;\tfrac23$, así que para $n$ grande $n^{2/3}$ domina y $a_n\approx\dfrac1{n^{2/3}}$: serie $p$ con $\gamma=\tfrac23\le1$, <b>divergente</b> (U p.38). <b>Sospecha: diverge.</b> Para probarlo hay que <b>minorar</b> $a_n$ por algo divergente.</li>
-    <li><b>Comparar potencias.</b> Si $n\ge1$ y $p&lt;q$ entonces $n^p\le n^q$ (porque $n^q/n^p=n^{q-p}\ge1$). Con $p=\tfrac12$, $q=\tfrac23$: $n^{1/2}\le n^{2/3}$.</li>
-    <li><b>Acotar el denominador por arriba</b> (para acotar la fracción por abajo):
-      $$n^{1/2}+n^{2/3}\le2n^{2/3}\quad\Longrightarrow\quad a_n=\frac1{n^{1/2}+n^{2/3}}\ \ge\ \frac1{2n^{2/3}}\ \ge0\qquad(n\ge1).$$</li>
-    <li><b>La serie minorante diverge.</b> $\sum\frac1{2n^{2/3}}=\frac12\sum\frac1{n^{2/3}}$. Si convergiera, multiplicando por $2$ (Prop. 1.7) convergería $\sum1/n^{2/3}$, que diverge porque $\gamma=\tfrac23\le1$ (U p.38).</li>
-    <li><b>Criterio de comparación (U p.38),</b> segunda parte: si la menor $\sum\frac1{2n^{2/3}}$ no es convergente, la mayor $\sum a_n$ tampoco. <b>La serie es divergente</b> (numéricamente $s_{10^6}\approx253{,}5$; crece del orden de $3n^{1/3}$: cociente $\to1$).</li>
-  </ol>
-  <p><b>Respuesta:</b> diverge.</p>
-  <p><b>Alternativa con comparación por el límite</b> (apartado 4). Con $b_n=\dfrac1{n^{2/3}}$: $\dfrac{a_n}{b_n}=\dfrac{n^{2/3}}{n^{1/2}+n^{2/3}}=\dfrac1{n^{-1/6}+1}\to1\in(0,\infty)$, así que $\sum a_n$ y $\sum b_n$ tienen el mismo carácter, y $\sum b_n$ es una serie $p$ con $\gamma=\frac23\le1$: diverge.</p>
-  <figure class="graf" data-g='{"c":[{"e":"1/(x^0.5+x^(2/3))","n":"aₙ"},{"e":"1/(2*x^(2/3))","n":"minorante 1/(2n^(2/3))"},{"e":"x^(-2/3)","n":"1/n^(2/3)","d":1}],"x":[1,30],"ex":"n","ey":"aₙ"}' data-alt="Término aₙ y su minorante 1/(2n^(2/3))"><figcaption>Con $a_n=\frac1{n^{1/2}+n^{2/3}}$: $a_n$ queda <b>por encima</b> de $\frac1{2n^{2/3}}$ (serie divergente) y se parece cada vez más a $\frac1{n^{2/3}}$ (curva de puntos). Se lee en los valores enteros de $n$; la curva solo une los puntos. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
   <div class="recipe"><b>Receta:</b> suma de potencias en el denominador: quédate con la <b>mayor</b> potencia $n^\gamma$; si sospechas divergencia ($\gamma\le1$), sustituye las potencias pequeñas por la grande para <i>agrandar</i> el denominador ($\le k\,n^\gamma$) y obtener $a_n\ge\frac1{k\,n^\gamma}$.</div>
-  <p><b>Error típico:</b> acotar $a_n\le\frac1{n^{1/2}}$ (quitando $n^{2/3}$): es cierto, pero mayorar por una serie divergente <b>no concluye nada</b>. Para divergencia: $a_n\ge$ (divergente); para convergencia: $a_n\le$ (convergente).</p>
-  <p><i>Teoría:</i> U comparación y $\sum1/n^\gamma$ p.38; Prop. 1.7 p.37.</p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Tipo de serie.</b> Términos positivos: se puede usar comparación (U p.38).</li>
+      <li><b>Qué potencia manda.</b> $\tfrac12&lt;\tfrac23$, así que para $n$ grande $n^{2/3}$ domina y $a_n\approx\dfrac1{n^{2/3}}$: serie $p$ con $\gamma=\tfrac23\le1$, <b>divergente</b> (U p.38). <b>Sospecha: diverge.</b> Para probarlo hay que <b>minorar</b> $a_n$ por algo divergente.</li>
+      <li><b>Comparar potencias.</b> Si $n\ge1$ y $p&lt;q$ entonces $n^p\le n^q$ (porque $n^q/n^p=n^{q-p}\ge1$). Con $p=\tfrac12$, $q=\tfrac23$: $n^{1/2}\le n^{2/3}$.</li>
+      <li><b>Acotar el denominador por arriba</b> (para acotar la fracción por abajo):
+        $$n^{1/2}+n^{2/3}\le2n^{2/3}\quad\Longrightarrow\quad a_n=\frac1{n^{1/2}+n^{2/3}}\ \ge\ \frac1{2n^{2/3}}\ \ge0\qquad(n\ge1).$$</li>
+      <li><b>La serie minorante diverge.</b> $\sum\frac1{2n^{2/3}}=\frac12\sum\frac1{n^{2/3}}$. Si convergiera, multiplicando por $2$ (Prop. 1.7) convergería $\sum1/n^{2/3}$, que diverge porque $\gamma=\tfrac23\le1$ (U p.38).</li>
+      <li><b>Criterio de comparación (U p.38),</b> segunda parte: si la menor $\sum\frac1{2n^{2/3}}$ no es convergente, la mayor $\sum a_n$ tampoco. <b>La serie es divergente</b> (numéricamente $s_{10^6}\approx253{,}5$; crece del orden de $3n^{1/3}$: cociente $\to1$).</li>
+    </ol>
+    <p><b>Respuesta:</b> diverge.</p>
+    <p><b>Alternativa con comparación por el límite</b> (apartado 4). Con $b_n=\dfrac1{n^{2/3}}$: $\dfrac{a_n}{b_n}=\dfrac{n^{2/3}}{n^{1/2}+n^{2/3}}=\dfrac1{n^{-1/6}+1}\to1\in(0,\infty)$, así que $\sum a_n$ y $\sum b_n$ tienen el mismo carácter, y $\sum b_n$ es una serie $p$ con $\gamma=\frac23\le1$: diverge.</p>
+    <figure class="graf" data-g='{"c":[{"e":"1/(x^0.5+x^(2/3))","n":"aₙ"},{"e":"1/(2*x^(2/3))","n":"minorante 1/(2n^(2/3))"},{"e":"x^(-2/3)","n":"1/n^(2/3)","d":1}],"x":[1,30],"ex":"n","ey":"aₙ"}' data-alt="Término aₙ y su minorante 1/(2n^(2/3))"><figcaption>Con $a_n=\frac1{n^{1/2}+n^{2/3}}$: $a_n$ queda <b>por encima</b> de $\frac1{2n^{2/3}}$ (serie divergente) y se parece cada vez más a $\frac1{n^{2/3}}$ (curva de puntos). Se lee en los valores enteros de $n$; la curva solo une los puntos. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  
+    <p><b>Error típico:</b> acotar $a_n\le\frac1{n^{1/2}}$ (quitando $n^{2/3}$): es cierto, pero mayorar por una serie divergente <b>no concluye nada</b>. Para divergencia: $a_n\ge$ (divergente); para convergencia: $a_n\le$ (convergente).</p>
+    <p><i>Teoría:</i> U comparación y $\sum1/n^\gamma$ p.38; Prop. 1.7 p.37.</p>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 1.20 — $a_n=\dfrac{n^n}{1\cdot3\cdot5\cdots(2n-1)}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.20, pp. 22-23">E pp.22-23</span></summary>
-<p class="enun">Para la serie con sucesión de sumas parciales $\{s_k\}$ dada por $s_k=\sum_{n=1}^ka_n$, donde $a_n=\dfrac{n^n}{1\cdot3\cdot5\cdots(2n-3)\cdot(2n-1)}$, se pide estudiar su carácter.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<h3 id="bloqueB">Bloque B · Cociente y raíz (1.20 → 1.21)</h3>
+<article class="ejer" id="ej-1-20">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 1.20 · criterio del cociente con un producto que se alarga</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.20, pp. 22-23">E pp.22-23</span></header>
+<div class="ejer-enun"><p class="enun">Para la serie con sucesión de sumas parciales $\{s_k\}$ dada por $s_k=\sum_{n=1}^ka_n$, donde $a_n=\dfrac{n^n}{1\cdot3\cdot5\cdots(2n-3)\cdot(2n-1)}$, se pide estudiar su carácter.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar el carácter de la serie de término $a_n=\frac{n^n}{1\cdot3\cdots(2n-1)}$.</dd>
     <dt>Cómo lo pienso</dt><dd>El denominador es un producto que gana <b>un</b> factor por paso y el numerador es una potencia $n$-ésima: comparar cada término con el anterior simplifica casi todo. Si el cociente se queda por encima de $1$, los términos no se hacen pequeños.</dd>
-    <dt>Qué uso</dt><dd>Criterio del cociente (U p.38); $(1+\frac1n)^n\to e$ (Prop. 1.5, U p.31); condición necesaria (Prop. 1.6, U p.36).</dd>
+    <dt>Qué uso</dt><dd>Cociente: $\ell=\lim_{n\to\infty}\frac{a_{n+1}}{a_n}&gt;1\Rightarrow$ no converge; $(1+\frac1n)^n\to e$ — <a href="#s5">ver teoría</a> (U p.38; Prop. 1.5, p.31).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo $a_{n+1}/a_n$ con $P_{n+1}=P_n(2n+1)$ y simplifico.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Tipo de serie.</b> Numerador y denominador positivos: $a_n&gt;0$. Se pueden usar cociente o raíz (U p.38).</li>
-    <li><b>Por qué el cociente.</b> Al pasar de $a_n$ a $a_{n+1}$ el denominador solo gana <b>un</b> factor, $2n+1$. En los productos «que se alargan» el cociente $a_{n+1}/a_n$ simplifica casi todo; la raíz $n$-ésima de ese producto es difícil.</li>
-    <li><b>Calcular el cociente.</b> Sea $P_n=1\cdot3\cdots(2n-1)$, de modo que $P_{n+1}=P_n(2n+1)$:
-      $$\frac{a_{n+1}}{a_n}=\frac{(n+1)^{n+1}}{P_n(2n+1)}\cdot\frac{P_n}{n^n}=\frac{(n+1)^{n+1}}{(2n+1)\,n^n}=\Big(\frac{n+1}n\Big)^n\cdot\frac{n+1}{2n+1}.$$
-      (Se separa $(n+1)^{n+1}=(n+1)^n(n+1)$ para agrupar $\frac{(n+1)^n}{n^n}$.)</li>
-    <li><b>Límite de cada factor.</b> $\big(\frac{n+1}n\big)^n=\big(1+\frac1n\big)^n\to e$ (Prop. 1.5, U p.31). $\frac{n+1}{2n+1}=\frac{1+1/n}{2+1/n}\to\frac12$ (Prop. 1.3, U p.26). Ambos límites existen y son finitos, luego
-      $$\lim_{n\to\infty}\frac{a_{n+1}}{a_n}=\frac e2\approx1{,}359&gt;1.$$</li>
-    <li><b>Criterio del cociente (U p.38):</b> $\ell=e/2\in(1,\infty]$ $\Rightarrow$ la serie <b>no converge (diverge)</b>.</li>
-    <li><b>Comprobación elemental (propia).</b> Para todo $n\ge1$, $(1+\frac1n)^n\ge1+n\cdot\frac1n=2$ (primeros términos del binomio, todos positivos) y $\frac{n+1}{2n+1}&gt;\frac12$, así que $\frac{a_{n+1}}{a_n}&gt;1$: $\{a_n\}$ es creciente y $a_n\ge a_1=1$, luego $a_n\not\to0$ y la serie diverge también por la Prop. 1.6. (Numéricamente $a_{10}\approx15{,}3$.)</li>
-  </ol>
-  <p><b>Respuesta:</b> diverge.</p>
-  <figure class="graf" data-g='{"p":[[1,1.0],[2,1.3333],[3,1.8],[4,2.4381],[5,3.3069],[6,4.4883],[7,6.0942],[8,8.2768],[9,11.2428],[10,15.2735]],"x":[0,11],"ex":"n","ey":"aₙ","c":[]}' data-alt="Términos n^n/(1·3·…·(2n−1)) que crecen"><figcaption>Los términos $a_n=\frac{n^n}{1\cdot3\cdots(2n-1)}$ <b>crecen</b>: no tienden a $0$, así que la serie no puede converger. Es coherente con el cociente $\frac{a_{n+1}}{a_n}\to\frac e2&gt;1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
   <div class="recipe"><b>Receta:</b> productos que se alargan un factor por paso ($n!$, $1\cdot3\cdots(2n-1)$, $a^n$, $n^n$) $\Rightarrow$ <b>criterio del cociente</b>; simplifica $a_{n+1}/a_n$ antes de tomar límites y busca la forma $(1+1/n)^n\to e$.</div>
-  <p><b>Error típico:</b> escribir $a_{n+1}$ cambiando solo el numerador y olvidar que el denominador gana el factor $2n+1$ (los demás errores del cociente, en el apartado 5).</p>
-  <p><i>Teoría:</i> U criterio del cociente p.38; Prop. 1.5 p.31; Prop. 1.3 p.26; Prop. 1.6 p.36. Nota: $1\cdot3\cdots(2n-1)=\frac{(2n)!}{2^nn!}$.</p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Tipo de serie.</b> Numerador y denominador positivos: $a_n&gt;0$. Se pueden usar cociente o raíz (U p.38).</li>
+      <li><b>Por qué el cociente.</b> Al pasar de $a_n$ a $a_{n+1}$ el denominador solo gana <b>un</b> factor, $2n+1$. En los productos «que se alargan» el cociente $a_{n+1}/a_n$ simplifica casi todo; la raíz $n$-ésima de ese producto es difícil.</li>
+      <li><b>Calcular el cociente.</b> Sea $P_n=1\cdot3\cdots(2n-1)$, de modo que $P_{n+1}=P_n(2n+1)$:
+        $$\frac{a_{n+1}}{a_n}=\frac{(n+1)^{n+1}}{P_n(2n+1)}\cdot\frac{P_n}{n^n}=\frac{(n+1)^{n+1}}{(2n+1)\,n^n}=\Big(\frac{n+1}n\Big)^n\cdot\frac{n+1}{2n+1}.$$
+        (Se separa $(n+1)^{n+1}=(n+1)^n(n+1)$ para agrupar $\frac{(n+1)^n}{n^n}$.)</li>
+      <li><b>Límite de cada factor.</b> $\big(\frac{n+1}n\big)^n=\big(1+\frac1n\big)^n\to e$ (Prop. 1.5, U p.31). $\frac{n+1}{2n+1}=\frac{1+1/n}{2+1/n}\to\frac12$ (Prop. 1.3, U p.26). Ambos límites existen y son finitos, luego
+        $$\lim_{n\to\infty}\frac{a_{n+1}}{a_n}=\frac e2\approx1{,}359&gt;1.$$</li>
+      <li><b>Criterio del cociente (U p.38):</b> $\ell=e/2\in(1,\infty]$ $\Rightarrow$ la serie <b>no converge (diverge)</b>.</li>
+      <li><b>Comprobación elemental (propia).</b> Para todo $n\ge1$, $(1+\frac1n)^n\ge1+n\cdot\frac1n=2$ (primeros términos del binomio, todos positivos) y $\frac{n+1}{2n+1}&gt;\frac12$, así que $\frac{a_{n+1}}{a_n}&gt;1$: $\{a_n\}$ es creciente y $a_n\ge a_1=1$, luego $a_n\not\to0$ y la serie diverge también por la Prop. 1.6. (Numéricamente $a_{10}\approx15{,}3$.)</li>
+    </ol>
+    <p><b>Respuesta:</b> diverge.</p>
+    <figure class="graf" data-g='{"p":[[1,1.0],[2,1.3333],[3,1.8],[4,2.4381],[5,3.3069],[6,4.4883],[7,6.0942],[8,8.2768],[9,11.2428],[10,15.2735]],"x":[0,11],"ex":"n","ey":"aₙ","c":[]}' data-alt="Términos n^n/(1·3·…·(2n−1)) que crecen"><figcaption>Los términos $a_n=\frac{n^n}{1\cdot3\cdots(2n-1)}$ <b>crecen</b>: no tienden a $0$, así que la serie no puede converger. Es coherente con el cociente $\frac{a_{n+1}}{a_n}\to\frac e2&gt;1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  
+    <p><b>Error típico:</b> escribir $a_{n+1}$ cambiando solo el numerador y olvidar que el denominador gana el factor $2n+1$ (los demás errores del cociente, en el apartado 5).</p>
+    <p><i>Teoría:</i> U criterio del cociente p.38; Prop. 1.5 p.31; Prop. 1.3 p.26; Prop. 1.6 p.36. Nota: $1\cdot3\cdots(2n-1)=\frac{(2n)!}{2^nn!}$.</p>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 1.21 — $\displaystyle\sum\frac{n^{\ln n}}{(\ln n)^n}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.21, pp. 23-24">E pp.23-24</span></summary>
-<p class="enun">Estudia si la siguiente serie es convergente: $\displaystyle\sum_{n=1}^{+\infty}\frac{n^{\ln n}}{(\ln n)^n}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-1-21" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 1.21 · criterio de la raíz con logaritmos y Stolz</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.21, pp. 23-24">E pp.23-24</span></header>
+<div class="ejer-enun"><p class="enun">Estudia si la siguiente serie es convergente: $\displaystyle\sum_{n=1}^{+\infty}\frac{n^{\ln n}}{(\ln n)^n}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar si converge $\sum\frac{n^{\ln n}}{(\ln n)^n}$.</dd>
     <dt>Cómo lo pienso</dt><dd>El denominador es una potencia $n$-ésima, así que al sacar la raíz $n$-ésima queda $\ln n$, que crece sin límite; el numerador crece mucho más despacio. La raíz tiende a $0$ y la serie converge.</dd>
-    <dt>Qué uso</dt><dd>Criterio de la raíz (U p.38); $a^b=e^{b\ln a}$ y continuidad (U p.29); criterio de Stolz (U p.32); recta ampliada (Def. 1.12, U p.27).</dd>
+    <dt>Qué uso</dt><dd>Raíz: $\ell=\lim_{n\to\infty}\sqrt[n]{a_n}&lt;1\Rightarrow$ converge; $x^y=e^{y\ln x}$ y Stolz — <a href="#s5">ver teoría</a> (U p.38; Stolz, p.32).</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $\sqrt[n]{a_n}$ y tomo logaritmos para estudiar su límite.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Tipo de serie.</b> Para $n\ge2$, $\ln n&gt;0$ y $a_n=\frac{n^{\ln n}}{(\ln n)^n}&gt;0$.</li>
-    <li><b>Elegir criterio.</b> El denominador es una potencia $n$-ésima, $(\ln n)^n$: su raíz $n$-ésima es simplemente $\ln n$. El cociente no simplifica nada. $\Rightarrow$ <b>criterio de la raíz</b> (U p.38).</li>
-    <li><b>Raíz $n$-ésima.</b> $\displaystyle\sqrt[n]{a_n}=\frac{\big(n^{\ln n}\big)^{1/n}}{\ln n}=\frac{n^{(\ln n)/n}}{\ln n}.$</li>
-    <li><b>Tomar logaritmos</b> ($\ln(x^y)=y\ln x$). Sea $\lambda_n=\ln\sqrt[n]{a_n}$:
-      $$\lambda_n=\frac{\ln n}n\cdot\ln n-\ln(\ln n)=\frac{(\ln n)^2}n-\ln(\ln n).$$
-      (Calculamos primero $\lim_{n\to\infty}\lambda_n$ y luego volvemos a $\sqrt[n]{a_n}$.)</li>
-    <li><b>Límite auxiliar $\dfrac{(\ln n)^2}n\to0$.</b> Con el criterio de Stolz (U p.32; $b_n=n$ es monótona y $\to\infty$):
-      <ul>
-        <li>(a) $\dfrac{\ln n}n\to0$: Stolz lleva a $\dfrac{\ln(n+1)-\ln n}{(n+1)-n}=\ln\!\big(1+\tfrac1n\big)\to\ln1=0$.</li>
-        <li>(b) $\dfrac{(\ln n)^2}n$: Stolz lleva a $(\ln(n+1))^2-(\ln n)^2=\ln\!\big(1+\tfrac1n\big)\big(\ln(n+1)+\ln n\big)=\underbrace{n\ln\!\big(1+\tfrac1n\big)}_{\to\ln e=1}\cdot\underbrace{\dfrac{\ln(n+1)+\ln n}n}_{\to0}\to1\cdot0=0.$ El primer factor usa la Prop. 1.5 (U p.31) y la continuidad de $\ln$; en el segundo, $\frac{\ln n}n\to0$ por (a) y $\frac{\ln(n+1)}n=\frac{\ln(n+1)}{n+1}\cdot\frac{n+1}n\to0\cdot1=0$.</li>
-      </ul></li>
-    <li><b>Límite de $\lambda_n$.</b> $\ln(\ln n)\to+\infty$ (porque $\ln n\to\infty$ y $\ln$ es creciente y no acotada). Entonces $\lambda_n\to0-\infty=-\infty$ (operación válida en la recta ampliada, U Def. 1.12 p.27; no es indeterminación).</li>
-    <li><b>Deshacer el logaritmo.</b> $\sqrt[n]{a_n}=e^{\lambda_n}\to e^{-\infty}=0$ (continuidad de la exponencial, U p.29). <i>Atajo equivalente:</i> $n^{(\ln n)/n}=e^{(\ln n)^2/n}\to e^0=1$, luego $\sqrt[n]{a_n}=\frac{n^{(\ln n)/n}}{\ln n}\to\frac1\infty=0$.</li>
-    <li><b>Criterio de la raíz (U p.38):</b> $\ell=0\in[0,1)$ $\Rightarrow$ la serie $\sum_{n\ge2}a_n$ <b>converge</b>. (Numéricamente $\sum_{n=2}^\infty a_n\approx10{,}54$; los primeros términos son grandes, $a_2\approx3{,}37$, pero caen muy rápido: $a_{20}\approx2{,}3\cdot10^{-6}$.)</li>
-  </ol>
-  <p><b>Respuesta:</b> converge.</p>
-  <figure class="graf" data-g='{"p":[[2,3.365171],[3,2.521378," "],[4,1.850165," "],[5,1.234746," "],[6,0.749172," "],[7,0.41747," "],[8,0.215948," "],[9,0.104668," "],[10,0.04791," "],[11,0.020846," "],[12,0.008668," "],[13,0.003461]],"c":[{"e":"x**log(x)/log(x)**x","n":"aₙ"}],"x":[1.5,14],"y":[0,4],"ex":"n","ey":"aₙ"}' data-alt="Términos n^(ln n)/(ln n)^n que caen a 0"><figcaption>Los términos $a_n=\frac{n^{\ln n}}{(\ln n)^n}$ caen muy deprisa hacia $0$ (el denominador es una potencia $n$-ésima de algo que crece): coherente con $\sqrt[n]{a_n}\to0$ y serie convergente. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
   <div class="recipe"><b>Receta:</b> potencia $n$-ésima en el término general $\Rightarrow$ <b>criterio de la raíz</b>. Si queda algo del tipo $x_n^{y_n}$, toma logaritmos ($y_n\ln x_n$), calcula ese límite y vuelve con la exponencial. Jerarquía útil: $(\ln n)^k\ll n^\alpha\ll a^n\ll n!\ll n^n$ ($\alpha&gt;0$, $a&gt;1$), donde $x_n\ll y_n$ significa $x_n/y_n\to0$.</div>
-  <p><b>Error típico:</b> (i) no mirar el dominio (el término $n=1$ no existe); (ii) escribir $\ln(\lim_{n\to\infty} x_n)=\lim_{n\to\infty}\ln x_n$ sin saber aún que el límite existe y es positivo; (iii) tratar $0-\infty$ como indeterminación (no lo es: vale $-\infty$); (iv) confundir $n^{\ln n}$ con $(\ln n)^n$: $n^{\ln n}=e^{(\ln n)^2}$ crece mucho más despacio que $(\ln n)^n=e^{n\ln\ln n}$.</p>
-  <p><i>Teoría:</i> U raíz p.38; fórmula $a_n^{b_n}=e^{b_n\ln a_n}$ y continuidad p.29; Def. 1.12 p.27; Stolz p.32; Prop. 1.5 p.31; series desde $n=p$ p.35.</p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Tipo de serie.</b> Para $n\ge2$, $\ln n&gt;0$ y $a_n=\frac{n^{\ln n}}{(\ln n)^n}&gt;0$.</li>
+      <li><b>Elegir criterio.</b> El denominador es una potencia $n$-ésima, $(\ln n)^n$: su raíz $n$-ésima es simplemente $\ln n$. El cociente no simplifica nada. $\Rightarrow$ <b>criterio de la raíz</b> (U p.38).</li>
+      <li><b>Raíz $n$-ésima.</b> $\displaystyle\sqrt[n]{a_n}=\frac{\big(n^{\ln n}\big)^{1/n}}{\ln n}=\frac{n^{(\ln n)/n}}{\ln n}.$</li>
+      <li><b>Tomar logaritmos</b> ($\ln(x^y)=y\ln x$). Sea $\lambda_n=\ln\sqrt[n]{a_n}$:
+        $$\lambda_n=\frac{\ln n}n\cdot\ln n-\ln(\ln n)=\frac{(\ln n)^2}n-\ln(\ln n).$$
+        (Calculamos primero $\lim_{n\to\infty}\lambda_n$ y luego volvemos a $\sqrt[n]{a_n}$.)</li>
+      <li><b>Límite auxiliar $\dfrac{(\ln n)^2}n\to0$.</b> Con el criterio de Stolz (U p.32; $b_n=n$ es monótona y $\to\infty$):
+        <ul>
+          <li>(a) $\dfrac{\ln n}n\to0$: Stolz lleva a $\dfrac{\ln(n+1)-\ln n}{(n+1)-n}=\ln\!\big(1+\tfrac1n\big)\to\ln1=0$.</li>
+          <li>(b) $\dfrac{(\ln n)^2}n$: Stolz lleva a $(\ln(n+1))^2-(\ln n)^2=\ln\!\big(1+\tfrac1n\big)\big(\ln(n+1)+\ln n\big)=\underbrace{n\ln\!\big(1+\tfrac1n\big)}_{\to\ln e=1}\cdot\underbrace{\dfrac{\ln(n+1)+\ln n}n}_{\to0}\to1\cdot0=0.$ El primer factor usa la Prop. 1.5 (U p.31) y la continuidad de $\ln$; en el segundo, $\frac{\ln n}n\to0$ por (a) y $\frac{\ln(n+1)}n=\frac{\ln(n+1)}{n+1}\cdot\frac{n+1}n\to0\cdot1=0$.</li>
+        </ul></li>
+      <li><b>Límite de $\lambda_n$.</b> $\ln(\ln n)\to+\infty$ (porque $\ln n\to\infty$ y $\ln$ es creciente y no acotada). Entonces $\lambda_n\to0-\infty=-\infty$ (operación válida en la recta ampliada, U Def. 1.12 p.27; no es indeterminación).</li>
+      <li><b>Deshacer el logaritmo.</b> $\sqrt[n]{a_n}=e^{\lambda_n}\to e^{-\infty}=0$ (continuidad de la exponencial, U p.29). <i>Atajo equivalente:</i> $n^{(\ln n)/n}=e^{(\ln n)^2/n}\to e^0=1$, luego $\sqrt[n]{a_n}=\frac{n^{(\ln n)/n}}{\ln n}\to\frac1\infty=0$.</li>
+      <li><b>Criterio de la raíz (U p.38):</b> $\ell=0\in[0,1)$ $\Rightarrow$ la serie $\sum_{n\ge2}a_n$ <b>converge</b>. (Numéricamente $\sum_{n=2}^\infty a_n\approx10{,}54$; los primeros términos son grandes, $a_2\approx3{,}37$, pero caen muy rápido: $a_{20}\approx2{,}3\cdot10^{-6}$.)</li>
+    </ol>
+    <p><b>Respuesta:</b> converge.</p>
+    <figure class="graf" data-g='{"p":[[2,3.365171],[3,2.521378," "],[4,1.850165," "],[5,1.234746," "],[6,0.749172," "],[7,0.41747," "],[8,0.215948," "],[9,0.104668," "],[10,0.04791," "],[11,0.020846," "],[12,0.008668," "],[13,0.003461]],"c":[{"e":"x**log(x)/log(x)**x","n":"aₙ"}],"x":[1.5,14],"y":[0,4],"ex":"n","ey":"aₙ"}' data-alt="Términos n^(ln n)/(ln n)^n que caen a 0"><figcaption>Los términos $a_n=\frac{n^{\ln n}}{(\ln n)^n}$ caen muy deprisa hacia $0$ (el denominador es una potencia $n$-ésima de algo que crece): coherente con $\sqrt[n]{a_n}\to0$ y serie convergente. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  
+    <p><b>Error típico:</b> (i) no mirar el dominio (el término $n=1$ no existe); (ii) escribir $\ln(\lim_{n\to\infty} x_n)=\lim_{n\to\infty}\ln x_n$ sin saber aún que el límite existe y es positivo; (iii) tratar $0-\infty$ como indeterminación (no lo es: vale $-\infty$); (iv) confundir $n^{\ln n}$ con $(\ln n)^n$: $n^{\ln n}=e^{(\ln n)^2}$ crece mucho más despacio que $(\ln n)^n=e^{n\ln\ln n}$.</p>
+    <p><i>Teoría:</i> U raíz p.38; fórmula $a_n^{b_n}=e^{b_n\ln a_n}$ y continuidad p.29; Def. 1.12 p.27; Stolz p.32; Prop. 1.5 p.31; series desde $n=p$ p.35.</p>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 1.22 — $\displaystyle\sum\frac{(-1)^ne^n}{e^{2n}+1}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.22, pp. 24-25">E pp.24-25</span></summary>
-<p class="enun">Estudia si la siguiente serie es convergente: $\displaystyle\sum_{n=1}^{+\infty}\frac{(-1)^ne^n}{e^{2n}+1}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<h3 id="bloqueC">Bloque C · Signo variable (1.22)</h3>
+<article class="ejer" id="ej-1-22">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 1.22 · serie alternada: absoluta y Leibniz</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 1.22, pp. 24-25">E pp.24-25</span></header>
+<div class="ejer-enun"><p class="enun">Estudia si la siguiente serie es convergente: $\displaystyle\sum_{n=1}^{+\infty}\frac{(-1)^ne^n}{e^{2n}+1}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar si converge $\sum\frac{(-1)^ne^n}{e^{2n}+1}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es alternada, pero los tamaños $\frac{e^n}{e^{2n}+1}$ caen como $(1/e)^n$, tan deprisa que ya la suma sin signos converge. Si no me diera cuenta, Leibniz también serviría.</dd>
-    <dt>Qué uso</dt><dd>Serie alternada y Leibniz (U p.41); convergencia absoluta (Def. 1.16 y Prop. 1.8, U p.40); comparación y geométrica (U p.38, Ej. 1.33 p.36).</dd>
+    <dt>Qué uso</dt><dd>$\sum|a_n|$ converge $\Rightarrow\sum a_n$ converge; Leibniz — <a href="#s6">ver teoría</a> (U Prop. 1.8, p.40; p.41).</dd>
     <dt>Por dónde empiezo</dt><dd>Separo $(-1)^n$ y el tamaño $c_n=\frac{e^n}{e^{2n}+1}$ y compruebo si decrece y tiende a $0$ (o lo comparo con $(1/e)^n$).</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Tipo de serie.</b> Escribimos el término como $(-1)^nc_n$ con $c_n=\dfrac{e^n}{e^{2n}+1}&gt;0$: es <b>alternada</b> (Def. 1.17, U p.41). Comparación, cociente y raíz no se aplican directamente (solo valen para términos no negativos, U p.39).</li>
-    <li><b>Criterio de Leibniz (U p.41).</b> Para una serie alternada con $\{|a_n|\}=\{c_n\}$ decreciente, converge <b>si y solo si</b> el término general tiende a $0$. Hay que comprobar: $c_n$ decreciente y $c_n\to0$.</li>
-    <li><b>$c_n$ decrece (vía del cociente).</b> Como $c_n&gt;0$, «$c_{n+1}\le c_n$» equivale a «$c_{n+1}/c_n\le1$»:
-      $$\frac{c_{n+1}}{c_n}=\frac{e^{n+1}}{e^{2n+2}+1}\cdot\frac{e^{2n}+1}{e^n}=\frac{e^{2n+1}+e}{e^{2n+2}+1}.$$
-      Como el denominador es positivo, $\frac{c_{n+1}}{c_n}\le1\iff e^{2n+1}+e\le e^{2n+2}+1\iff e^{2n+1}(1-e)\le1-e$. Dividimos por $1-e&lt;0$ (<b>la desigualdad cambia de sentido</b>): $\iff e^{2n+1}\ge1$, cierto para todo $n\ge0$. <i>Vía más rápida (propia):</i> $c_n=\dfrac1{e^n+e^{-n}}$ (dividiendo por $e^n$) y $(e^{n+1}+e^{-n-1})-(e^n+e^{-n})=(e-1)(e^n-e^{-n-1})&gt;0$: el denominador crece y $c_n$ decrece.</li>
-    <li><b>$c_n\to0$.</b> $e^n+e^{-n}\to\infty$, luego $c_n\to0$ y por tanto $(-1)^nc_n\to0$.</li>
-    <li><b>Conclusión por Leibniz:</b> la serie <b>converge</b>.</li>
-    <li><b>Más fuerte.</b> $0&lt;c_n=\dfrac{e^n}{e^{2n}+1}&lt;\dfrac{e^n}{e^{2n}}=\Big(\dfrac1e\Big)^n$ y $\sum(1/e)^n$ es geométrica de razón $1/e&lt;1$, convergente (U Ej. 1.33). Por comparación, $\sum|a_n|=\sum c_n$ converge: la serie es <b>absolutamente convergente</b> y, por la Prop. 1.8 (U p.40), convergente. Esta vía hace innecesario Leibniz. (Valores: $\sum a_n\approx-0{,}2274$; $\sum|a_n|\approx0{,}5356&lt;\frac1{e-1}\approx0{,}5820$.)</li>
-  </ol>
-  <p><b>Respuesta:</b> converge, y es absolutamente convergente.</p>
-  <figure class="graf" data-g='{"p":[[1,-0.324027],[2,-0.191126],[3,-0.24079],[4,-0.22248],[5,-0.229218],[6,-0.226739],[7,-0.227651],[8,-0.227316]],"c":[{"e":"-0.227406","n":"suma ≈ −0,2274","d":1}],"x":[0,9],"ex":"n","ey":"sₙ"}' data-alt="Sumas parciales de una serie alternada con zigzag que se cierra"><figcaption>Sumas parciales $s_n$ de $\sum\frac{(-1)^ne^n}{e^{2n}+1}$: zigzag alrededor de la suma (recta de puntos) que se estrecha muy deprisa, porque los términos caen como $(1/e)^n$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
   <div class="recipe"><b>Receta:</b> ante una serie con $(-1)^n$, <b>primero</b> estudia $\sum|a_n|$ (comparación, cociente, raíz). Si converge, es absolutamente convergente y se acabó. Si no, Leibniz: comprueba que $|a_n|$ decrece (cociente $\le1$, diferencia $\le0$ o reescribiendo) y que tiende a $0$.</div>
-  <p><b>Error típico:</b> (i) dividir una desigualdad por un negativo ($1-e$) sin cambiar el sentido; (ii) aplicar el cociente al término con signo: se enuncia para $a_n&gt;0$; (iii) aplicar Leibniz sin comprobar el decrecimiento (apartado 6).</p>
-  <p><i>Teoría:</i> U Def. 1.17 y Leibniz p.41; Def. 1.16 y Prop. 1.8 p.40; geométrica Ej. 1.33 p.36; comparación p.38.</p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+      <li><b>Tipo de serie.</b> Escribimos el término como $(-1)^nc_n$ con $c_n=\dfrac{e^n}{e^{2n}+1}&gt;0$: es <b>alternada</b> (Def. 1.17, U p.41). Comparación, cociente y raíz no se aplican directamente (solo valen para términos no negativos, U p.39).</li>
+      <li><b>Criterio de Leibniz (U p.41).</b> Para una serie alternada con $\{|a_n|\}=\{c_n\}$ decreciente, converge <b>si y solo si</b> el término general tiende a $0$. Hay que comprobar: $c_n$ decreciente y $c_n\to0$.</li>
+      <li><b>$c_n$ decrece (vía del cociente).</b> Como $c_n&gt;0$, «$c_{n+1}\le c_n$» equivale a «$c_{n+1}/c_n\le1$»:
+        $$\frac{c_{n+1}}{c_n}=\frac{e^{n+1}}{e^{2n+2}+1}\cdot\frac{e^{2n}+1}{e^n}=\frac{e^{2n+1}+e}{e^{2n+2}+1}.$$
+        Como el denominador es positivo, $\frac{c_{n+1}}{c_n}\le1\iff e^{2n+1}+e\le e^{2n+2}+1\iff e^{2n+1}(1-e)\le1-e$. Dividimos por $1-e&lt;0$ (<b>la desigualdad cambia de sentido</b>): $\iff e^{2n+1}\ge1$, cierto para todo $n\ge0$. <i>Vía más rápida (propia):</i> $c_n=\dfrac1{e^n+e^{-n}}$ (dividiendo por $e^n$) y $(e^{n+1}+e^{-n-1})-(e^n+e^{-n})=(e-1)(e^n-e^{-n-1})&gt;0$: el denominador crece y $c_n$ decrece.</li>
+      <li><b>$c_n\to0$.</b> $e^n+e^{-n}\to\infty$, luego $c_n\to0$ y por tanto $(-1)^nc_n\to0$.</li>
+      <li><b>Conclusión por Leibniz:</b> la serie <b>converge</b>.</li>
+      <li><b>Más fuerte.</b> $0&lt;c_n=\dfrac{e^n}{e^{2n}+1}&lt;\dfrac{e^n}{e^{2n}}=\Big(\dfrac1e\Big)^n$ y $\sum(1/e)^n$ es geométrica de razón $1/e&lt;1$, convergente (U Ej. 1.33). Por comparación, $\sum|a_n|=\sum c_n$ converge: la serie es <b>absolutamente convergente</b> y, por la Prop. 1.8 (U p.40), convergente. Esta vía hace innecesario Leibniz. (Valores: $\sum a_n\approx-0{,}2274$; $\sum|a_n|\approx0{,}5356&lt;\frac1{e-1}\approx0{,}5820$.)</li>
+    </ol>
+    <p><b>Respuesta:</b> converge, y es absolutamente convergente.</p>
+    <figure class="graf" data-g='{"p":[[1,-0.324027],[2,-0.191126],[3,-0.24079],[4,-0.22248],[5,-0.229218],[6,-0.226739],[7,-0.227651],[8,-0.227316]],"c":[{"e":"-0.227406","n":"suma ≈ −0,2274","d":1}],"x":[0,9],"ex":"n","ey":"sₙ"}' data-alt="Sumas parciales de una serie alternada con zigzag que se cierra"><figcaption>Sumas parciales $s_n$ de $\sum\frac{(-1)^ne^n}{e^{2n}+1}$: zigzag alrededor de la suma (recta de puntos) que se estrecha muy deprisa, porque los términos caen como $(1/e)^n$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  
+    <p><b>Error típico:</b> (i) dividir una desigualdad por un negativo ($1-e$) sin cambiar el sentido; (ii) aplicar el cociente al término con signo: se enuncia para $a_n&gt;0$; (iii) aplicar Leibniz sin comprobar el decrecimiento (apartado 6).</p>
+    <p><i>Teoría:</i> U Def. 1.17 y Leibniz p.41; Def. 1.16 y Prop. 1.8 p.40; geométrica Ej. 1.33 p.36; comparación p.38.</p>
+  </details>
 </details>
+</article>
 <h3>Ejemplos propios (de fácil a difícil)</h3>
-<details class="sol"><summary>Ejemplo propio 1 (fácil) — término general y geométrica <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy y mpmath">P</span></summary>
+<article class="ejer" id="ej-a1" data-extra>
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Propio A1 · el término no tiende a $0$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y mpmath">P</span></header>
+<div class="ejer-enun"><p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac n{2n+5}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Carácter de $\sum\frac n{2n+5}$ y suma de $\sum_{n\ge1}\frac3{2^n}$.</dd>
-    <dt>Cómo lo pienso</dt><dd>Primero miro si los términos se acercan a $0$ (si no, diverge). Si la serie es geométrica, la suma se calcula exacta.</dd>
-    <dt>Qué uso</dt><dd>Prop. 1.6 (U p.36); suma geométrica (U p.36).</dd>
+    <dt>Qué me piden</dt><dd>Decidir si $\sum\frac n{2n+5}$ converge o diverge.</dd>
+    <dt>Cómo lo pienso</dt><dd>Si los sumandos no se hacen pequeños, sumar infinitos de ellos no puede dar un número. Lo primero es ver a qué tiende el término.</dd>
+    <dt>Qué uso</dt><dd>Condición necesaria: $a_n\not\to0\Rightarrow$ diverge — <a href="#s3">ver teoría</a> (U Prop. 1.6, p.36).</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $\lim_{n\to\infty}\frac n{2n+5}$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> primero mira si $a_n\to0$; si no, la serie diverge y has terminado.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <ol class="steps">
-    <li><b>(a) $\sum\dfrac n{2n+5}$.</b> $\dfrac n{2n+5}=\dfrac1{2+5/n}\to\dfrac12\ne0$. Por la Prop. 1.6 (contrarrecíproco), <b>diverge</b>.</li>
-    <li><b>(b) $\sum_{n\ge1}\dfrac3{2^n}$.</b> Geométrica de primer término $\frac32$ y razón $\tfrac12$: suma $\dfrac{3/2}{1-1/2}=3$.</li>
+    <li>$\dfrac n{2n+5}=\dfrac1{2+5/n}\to\dfrac12\ne0$.</li>
+    <li>Por la Prop. 1.6 (contrarrecíproco), la serie <b>diverge</b>.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> primero mira si $a_n\to0$; después, si es geométrica o telescópica (ejemplos del apartado 2), calcula la suma.</div>
+  </details>
 </details>
-<details class="sol"><summary>Ejemplo propio 2 (medio) — comparación en ambos sentidos, cociente y raíz <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy y mpmath">P</span></summary>
+</article>
+<article class="ejer" id="ej-a2" data-extra>
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Propio A2 · suma de una geométrica</span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y mpmath">P</span></header>
+<div class="ejer-enun"><p class="enun">Calcula $\displaystyle\sum_{n=1}^{\infty}\frac3{2^n}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Estudiar cuatro series con el criterio adecuado: comparación (dos sentidos), cociente y raíz.</dd>
-    <dt>Cómo lo pienso</dt><dd>Potencia dominante: comparo con $\sum1/n^\gamma$ (mayorar si converge, minorar si diverge). Factoriales o $n^n$: cociente. Exponente $n$ en una potencia: raíz.</dd>
-    <dt>Qué uso</dt><dd>Comparación, cociente y raíz (U p.38); $(1+\frac1n)^n\to e$ (Prop. 1.5, U p.31).</dd>
-    <dt>Por dónde empiezo</dt><dd>En cada apartado miro qué parte del término manda y elijo el criterio.</dd>
+    <dt>Qué me piden</dt><dd>La suma de $\sum_{n\ge1}\frac3{2^n}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada término es la mitad del anterior: es una geométrica, y su suma se calcula exacta con la fórmula.</dd>
+    <dt>Qué uso</dt><dd>Suma geométrica $\frac{\text{1.er término}}{1-r}$ si $|r|&lt;1$ — <a href="#s2">ver teoría</a> (U p.36).</dd>
+    <dt>Por dónde empiezo</dt><dd>Identifico primer término y razón.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> geométrica $\Rightarrow$ primer término entre $1-r$ (con el primer término del índice donde empieza).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <ol class="steps">
-    <li><b>(a) $\sum\dfrac{n+1}{n^3+2}$.</b> Para $n\ge1$: $n+1\le2n$ y $n^3+2&gt;n^3$, luego $0&lt;a_n\le\dfrac{2n}{n^3}=\dfrac2{n^2}$; como $\sum\frac1{n^2}$ converge, la serie <b>converge</b> (suma $\approx1{,}4247$).</li>
-    <li><b>(b) $\sum\dfrac1{\sqrt n+1}$.</b> $1\le\sqrt n$ $\Rightarrow$ $\sqrt n+1\le2\sqrt n$ $\Rightarrow$ $a_n\ge\dfrac1{2\sqrt n}$; $\sum\frac1{n^{1/2}}$ diverge ($\gamma=\tfrac12\le1$), luego <b>diverge</b>.</li>
-    <li><b>(c) $\sum\dfrac{n!}{n^n}$ (cociente).</b> $\dfrac{a_{n+1}}{a_n}=\dfrac{(n+1)!}{(n+1)^{n+1}}\cdot\dfrac{n^n}{n!}=\Big(\dfrac n{n+1}\Big)^n=\dfrac1{(1+1/n)^n}\to\dfrac1e&lt;1$: <b>converge</b> (suma $\approx1{,}8799$).</li>
-    <li><b>(d) $\sum\Big(\dfrac n{n+1}\Big)^{n^2}$ (raíz).</b> $\sqrt[n]{a_n}=\Big(\dfrac n{n+1}\Big)^n\to\dfrac1e&lt;1$: <b>converge</b> (suma $\approx0{,}8174$).</li>
+    <li>$\dfrac3{2^n}=3\left(\dfrac12\right)^n$: geométrica de razón $r=\tfrac12$ y primer término (el de $n=1$) $\tfrac32$.</li>
+    <li>$|r|&lt;1$, converge y su suma es $\dfrac{3/2}{1-1/2}=3$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> potencia dominante $\Rightarrow$ comparación (mayorar si converge, minorar si diverge); factorial o $n^n$ $\Rightarrow$ cociente; exponente $n^2$ o $n$ en una potencia $\Rightarrow$ raíz.</div>
+  </details>
 </details>
-<details class="sol"><summary>Ejemplo propio 3 (difícil) — Leibniz, condicional y la trampa del decrecimiento <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy y mpmath">P</span></summary>
+</article>
+<article class="ejer" id="ej-b1" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio B1 · comparación: mayorar por $2/n^2$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y mpmath">P</span></header>
+<div class="ejer-enun"><p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac{n+1}{n^3+2}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>(a) Probar que $\sum\frac{(-1)^nn}{n^2+1}$ converge condicionalmente; (b) ver por qué Leibniz no vale en $\sum\frac{(-1)^n}{\sqrt n+(-1)^n}$ y decidir su carácter.</dd>
-    <dt>Cómo lo pienso</dt><dd>Si sin signos la serie diverge, solo los signos alternos pueden hacerla converger, y eso exige que los tamaños bajen de forma ordenada. Si no bajan siempre, hay que reescribir el término para separar lo que converge de lo que no.</dd>
-    <dt>Qué uso</dt><dd>Leibniz (U p.41); convergencia absoluta (U p.40); comparación (U p.38); «convergente + divergente = divergente» (Prop. 1.7, U p.37).</dd>
-    <dt>Por dónde empiezo</dt><dd>En (a) comparo $\sum|a_n|$ con $\sum\frac1{2n}$; en (b) multiplico por el conjugado.</dd>
+    <dt>Qué me piden</dt><dd>Decidir si $\sum\frac{n+1}{n^3+2}$ converge.</dd>
+    <dt>Cómo lo pienso</dt><dd>Para $n$ grande el término se parece a $\frac n{n^3}=\frac1{n^2}$, que converge; hay que <i>mayorar</i> por algo convergente.</dd>
+    <dt>Qué uso</dt><dd>Comparación y $\sum\frac1{n^\gamma}$ ($\gamma&gt;1$ converge) — <a href="#s4">ver teoría</a> (U p.38).</dd>
+    <dt>Por dónde empiezo</dt><dd>Acoto numerador por arriba y denominador por abajo.</dd>
   </dl></div>
-  <p><b>(a) $\displaystyle\sum_{n\ge1}\frac{(-1)^nn}{n^2+1}$.</b></p>
+  <div class="recipe"><b>Receta:</b> dominante $n^p/n^q$ $\Rightarrow$ compara con $\sum1/n^{q-p}$ (mayora si converge, minora si diverge).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li>Para $n\ge1$: $n+1\le2n$ y $n^3+2&gt;n^3$, luego $0&lt;a_n\le\dfrac{2n}{n^3}=\dfrac2{n^2}$.</li>
+    <li>$\sum\frac1{n^2}$ converge ($\gamma=2&gt;1$), así que $\sum\frac2{n^2}$ también y, por comparación, la serie <b>converge</b> (suma $\approx1{,}4247$).</li>
+  </ol>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-b2" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio B2 · comparación: minorar por $\frac1{2\sqrt n}$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y mpmath">P</span></header>
+<div class="ejer-enun"><p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac1{\sqrt n+1}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si $\sum\frac1{\sqrt n+1}$ converge.</dd>
+    <dt>Cómo lo pienso</dt><dd>El término se parece a $\frac1{\sqrt n}$, que diverge; hay que <i>minorar</i> por algo divergente.</dd>
+    <dt>Qué uso</dt><dd>Comparación (segunda parte) y $\sum\frac1{n^\gamma}$ ($\gamma\le1$ diverge) — <a href="#s4">ver teoría</a> (U p.38).</dd>
+    <dt>Por dónde empiezo</dt><dd>Acoto el denominador por arriba: $\sqrt n+1\le2\sqrt n$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> si sospechas divergencia, agranda el denominador para obtener $a_n\ge\frac1{k\,n^\gamma}$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li>$1\le\sqrt n$ $\Rightarrow$ $\sqrt n+1\le2\sqrt n$ $\Rightarrow$ $a_n\ge\dfrac1{2\sqrt n}$.</li>
+    <li>$\sum\frac1{n^{1/2}}$ diverge ($\gamma=\tfrac12\le1$), luego la serie <b>diverge</b>.</li>
+  </ol>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-b3" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio B3 · cociente con $n!/n^n$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y mpmath">P</span></header>
+<div class="ejer-enun"><p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\frac{n!}{n^n}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si $\sum\frac{n!}{n^n}$ converge.</dd>
+    <dt>Cómo lo pienso</dt><dd>Hay un factorial y una potencia $n^n$: términos que ganan un factor por paso, justo lo que mide el cociente.</dd>
+    <dt>Qué uso</dt><dd>Cociente $\frac{a_{n+1}}{a_n}$ y $(1+\frac1n)^n\to e$ — <a href="#s5">ver teoría</a> (U p.38; Prop. 1.5, p.31).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo $\frac{a_{n+1}}{a_n}$ y simplifico.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> factorial o $n^n$ $\Rightarrow$ cociente.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li>$\dfrac{a_{n+1}}{a_n}=\dfrac{(n+1)!}{(n+1)^{n+1}}\cdot\dfrac{n^n}{n!}=\Big(\dfrac n{n+1}\Big)^n=\dfrac1{(1+1/n)^n}\to\dfrac1e&lt;1$.</li>
+    <li>Por el cociente, <b>converge</b> (suma $\approx1{,}8799$).</li>
+  </ol>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-b4" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio B4 · raíz con exponente $n^2$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y mpmath">P</span></header>
+<div class="ejer-enun"><p class="enun">Estudia el carácter de $\displaystyle\sum_{n=1}^{\infty}\Big(\frac n{n+1}\Big)^{n^2}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si $\sum\big(\frac n{n+1}\big)^{n^2}$ converge.</dd>
+    <dt>Cómo lo pienso</dt><dd>El exponente $n^2$ contiene un $n$ que la raíz $n$-ésima deshace; el cociente sería mucho más incómodo.</dd>
+    <dt>Qué uso</dt><dd>Raíz $\sqrt[n]{a_n}$ y $(1+\frac1n)^n\to e$ — <a href="#s5">ver teoría</a> (U p.38; Prop. 1.5, p.31).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo $\sqrt[n]{a_n}$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> exponente $n$ o $n^2$ en una potencia $\Rightarrow$ raíz.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li>$\sqrt[n]{a_n}=\Big(\dfrac n{n+1}\Big)^n\to\dfrac1e&lt;1$.</li>
+    <li>Por el criterio de la raíz, <b>converge</b> (suma $\approx0{,}8174$).</li>
+  </ol>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-c1" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio C1 · alternada condicionalmente convergente</span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y mpmath">P</span></header>
+<div class="ejer-enun"><p class="enun">Prueba que $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^nn}{n^2+1}$ converge condicionalmente.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Probar que converge, pero no absolutamente.</dd>
+    <dt>Cómo lo pienso</dt><dd>Sin signos la serie diverge (se parece a $\sum\frac1n$); solo los signos alternos pueden hacerla converger, y eso exige que los tamaños bajen de forma ordenada (Leibniz).</dd>
+    <dt>Qué uso</dt><dd>Comparación (U p.38), absoluta (U p.40) y Leibniz (U p.41) — <a href="#s6">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Comparo $\sum|a_n|$ con $\sum\frac1{2n}$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> en una alternada comprueba siempre las <b>dos</b> condiciones de Leibniz ($|a_n|$ decreciente y $a_n\to0$).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <ol class="steps">
     <li><i>No absolutamente:</i> $\dfrac n{n^2+1}\ge\dfrac1{2n}$ (equivale a $n^2\ge1$) y $\sum\frac1{2n}$ diverge; por comparación $\sum|a_n|$ diverge.</li>
     <li><i>Leibniz:</i> $c_n=\frac n{n^2+1}$ decrece: $c_{n+1}\le c_n\iff(n+1)(n^2+1)\le n\big((n+1)^2+1\big)\iff0\le n^2+n-1$, cierto para $n\ge1$. Y $c_n=\frac{1/n}{1+1/n^2}\to0$.</li>
     <li>Luego <b>converge, pero no absolutamente</b> (condicionalmente convergente). Suma $\approx-0{,}2696$.</li>
   </ol>
-  <p><b>(b) Trampa:</b> $\displaystyle\sum_{n\ge2}\frac{(-1)^n}{\sqrt n+(-1)^n}$. Es alternada y su término tiende a $0$, pero $|a_n|$ <b>no</b> decrece ($|a_2|\approx0{,}414&lt;|a_3|\approx1{,}366$), así que Leibniz no se aplica. Multiplicando por el conjugado:
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-c2" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio C2 · la trampa del decrecimiento en Leibniz</span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy y mpmath">P</span></header>
+<div class="ejer-enun"><p class="enun">Estudia el carácter de $\displaystyle\sum_{n=2}^{\infty}\frac{(-1)^n}{\sqrt n+(-1)^n}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si converge, sabiendo que Leibniz no se puede aplicar tal cual.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es alternada y el término tiende a $0$, pero $|a_n|$ no baja siempre. Hay que reescribir el término para separar lo que converge de lo que no.</dd>
+    <dt>Qué uso</dt><dd>Leibniz (U p.41); convergente $-$ divergente = divergente (U Prop. 1.7, p.37) — <a href="#s6">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Multiplico por el conjugado.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> si falla el decrecimiento, reescribe el término (conjugado, fracciones simples) para separar la parte que converge de la que no.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <p>Es alternada y su término tiende a $0$, pero $|a_n|$ <b>no</b> decrece ($|a_2|\approx0{,}414&lt;|a_3|\approx1{,}366$), así que Leibniz no se aplica. Multiplicando por el conjugado:
   $$\frac{(-1)^n}{\sqrt n+(-1)^n}=\frac{(-1)^n\big(\sqrt n-(-1)^n\big)}{n-1}=\underbrace{\frac{(-1)^n\sqrt n}{n-1}}_{\text{converge (Leibniz)}}-\underbrace{\frac1{n-1}}_{\text{armónica: diverge}}.$$</p>
   <ol class="steps">
     <li>$\frac{\sqrt n}{n-1}$ decrece para $n\ge2$ (elevando al cuadrado, $\frac{\sqrt{n+1}}{n}\le\frac{\sqrt n}{n-1}\iff(n+1)(n-1)^2\le n^3\iff0\le n^2+n-1$) y tiende a $0$: la primera serie converge.</li>
     <li>Convergente $-$ divergente = divergente (apartado 3): <b>la serie diverge</b> (sumas parciales: $-6{,}55$ en $n=10^3$, $-13{,}48$ en $n=10^6$; bajan como $-\ln n$). Moraleja: la hipótesis «$|a_n|$ decreciente» de Leibniz no es decorativa.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> en una alternada comprueba siempre las <b>dos</b> condiciones de Leibniz; si falla el decrecimiento, reescribe el término (conjugado, fracciones simples) para separar la parte que converge de la que no.</div>
+  </details>
 </details>
+</article>
 <h3>Los métodos del tema, en resumen</h3>
 <p>Contraejemplo con $b_n=-a_n$ (1.17) · comparar con la potencia dominante, mayorando si converge y minorando si diverge (1.18, 1.19) · cociente para productos que se alargan (1.20) · raíz para potencias $n$-ésimas, con logaritmos y Stolz si queda $x_n^{y_n}$ (1.21) · con $(-1)^n$, primero valor absoluto y después Leibniz con sus dos hipótesis (1.22) · sumas exactas: geométrica y telescópica.</p>
-<!-- ============================ 9 ============================ -->
-<h2 id="examenes"><span class="n">9</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (PDF), pp. 28, 52, 106, 109, 150 (página PDF)">X pp.28-150</span></h2>
+<!-- ============================ exámenes ============================ -->
+<h2 id="examenes" data-vista="examen"><span class="n">11</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo (PDF), pp. 28, 52, 106, 109, 150 (página PDF)">X pp.28-150</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>6 preguntas</b> de este tema (todas se resuelven aquí abajo con su redacción) y 6 ejercicios en el libro E. Se reparten en 4 tipos, y otros 2 se practican sin que hayan caído:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Criterio del cociente (aplicarlo y cuándo no decide) <small>(2 de 6)</small></td><td>Escribe $\frac{a_{n+1}}{a_n}$, simplifica y compara $\ell$ con $1$; si $\ell=1$, mira si $a_n\to0$ o compara con una serie $p$.</td>
+      <td><a href="#ej-1-20">1.20</a></td>
+      <td><a href="#ex-2">Examen 2</a> · <a href="#ex-5">Examen 5</a></td></tr>
+    <tr><td>Convergencia absoluta y Leibniz <small>(2 de 6)</small></td><td>Estudia primero $\sum|a_n|$ (serie $p$, comparación); si diverge y es alternada, comprueba las dos hipótesis de Leibniz.</td>
+      <td><a href="#ej-1-22">1.22</a> · <a href="#ej-1-18">1.18</a></td>
+      <td><a href="#ex-3">Examen 3</a> · <a href="#ex-4">Examen 4</a></td></tr>
+    <tr><td>Definiciones y teoría <small>(2 de 6)</small></td><td>Escribe la definición con su forma habitual y un ejemplo; en un test, descarta con $a_n\to0$ y refuta con $\frac1{n^2}$ frente a $\frac1n$.</td>
+      <td><a href="#ej-1-17">1.17</a></td>
+      <td><a href="#ex-1">Examen 1</a> · <a href="#ex-6">Examen 6</a></td></tr>
+    <tr><td>Comparación y series $p$ <small>(0 de 6)</small></td><td>Mayora por una convergente o minora por una divergente, siempre con términos $\ge0$.</td>
+      <td><a href="#ej-1-18">1.18</a> · <a href="#ej-1-19">1.19</a></td>
+      <td>—</td></tr>
+    <tr><td>Criterio de la raíz <small>(0 de 6)</small></td><td>Potencia $n$-ésima: calcula $\sqrt[n]{a_n}$, con logaritmos si queda $x_n^{y_n}$.</td>
+      <td><a href="#ej-1-21">1.21</a></td>
+      <td>—</td></tr>
+    <tr><td>Sumas exactas: geométrica y telescópica <small>(0 de 6)</small></td><td>Geométrica: primer término entre $1-r$. Telescópica: calcula $s_n$ y pasa al límite.</td>
+      <td>—</td>
+      <td>práctica <a href="#pr-a1">a</a> · <a href="#pr-b1">b</a></td></tr>
+  </table>
+  <p><small>Recuento propio sobre el índice de los exámenes resueltos (X), clasificando cada pregunta por su dificultad principal. En X no aparecen comparaciones, raíz ni sumas exactas de series numéricas (sí están en E y en las secciones de práctica); se practican en «Ahora hazlo tú» y en los ejercicios del libro.</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre el índice de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
 <p>Estos son los tipos <b>reales</b> de pregunta de §1.3 que han caído en exámenes anteriores (fuente X: <i>Exámenes resueltos de Cálculo</i>; se cita la página del PDF). La dificultad es moderada: casi siempre una pregunta corta de 1 punto que se resuelve eligiendo bien el criterio y escribiendo con orden las hipótesis. Van de más fácil a más difícil.</p>
-<details class="sol"><summary>Examen 1 — Definir serie alternada <span class="src" data-l="X" data-ref="X p.106 (I. Electrónica Industrial y Automática, examen sin fecha, pregunta corta 3, 1 punto)">X p.106</span></summary>
-<p class="enun">Defina serie alternada.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<article class="ejer" id="ex-1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Examen 1 · definir serie alternada</span> <span class="src" data-l="X" data-ref="X p.106 (I. Electrónica Industrial y Automática, examen sin fecha, pregunta corta 3, 1 punto)">X p.106</span></header>
+<div class="ejer-enun"><p class="enun">Defina serie alternada.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dar la definición de serie alternada.</dd>
     <dt>Cómo lo pienso</dt><dd>Una serie alternada es una suma cuyos términos van <b>cambiando de signo uno sí y uno no</b>: $+,-,+,-,\dots$</dd>
-    <dt>Qué uso</dt><dd>Definición de serie alternada (Def. 1.17, U p.41); Leibniz (U p.41) como añadido.</dd>
+    <dt>Qué uso</dt><dd>Definición de serie alternada y criterio de Leibniz — <a href="#s6">ver teoría</a> (U Def. 1.17, p.41).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo la definición y su forma habitual $a_n=(-1)^nb_n$, $b_n\ge0$, con un ejemplo.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Una serie $\sum_{n\ge1}a_n$ es <b>alternada</b> si sus términos son alternativamente positivos y negativos (U Def. 1.17, p.41), es decir, si se puede escribir $a_n=(-1)^nb_n$ (o $a_n=(-1)^{n-1}b_n$) con $b_n\ge0$.</p>
+  <p>Ejemplos: $\sum_{n\ge1}(-1)^n=-1+1-1+\cdots$ (U Ej. 1.40, p.41) y $\sum_{n\ge1}\frac{(-1)^n}{n}=-1+\frac12-\frac13+\cdots$. Si sobra tiempo: por Leibniz (U p.41), si $\{|a_n|\}$ decrece, la serie converge si y solo si $a_n\to0$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> definición + forma $(-1)^nb_n$ con $b_n\ge0$ + ejemplo. Contraejemplo útil: $\sum\frac{\cos n}{n^2}$ cambia de signo, pero sin patrón $+,-,+,-$: no es alternada.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
-    <li><b>Definición (U Def. 1.17, p.41).</b> $\sum_{n=1}^\infty a_n$ es <i>alternada</i> si sus términos son alternativamente positivos (o nulos) y negativos (o nulos).</li>
-    <li><b>Cómo se escribe casi siempre.</b> $a_n=(-1)^nb_n$ o $a_n=(-1)^{n-1}b_n$ con $b_n\ge0$. El factor $(-1)^n$ pone el signo y $b_n=|a_n|$ es el tamaño. Ejemplo: $\sum(-1)^n$ (U Ej. 1.40, p.41).</li>
-    <li><b>Contraejemplo.</b> $\sum\frac{\cos n}{n^2}$ cambia de signo, pero sin seguir el patrón $+,-,+,-$: no es alternada (U Ej. 1.39, pp.40-41).</li>
-  </ol>
-  <p><b>Lo que escribes en el examen:</b> la definición, la forma $a_n=(-1)^nb_n$ con $b_n\ge0$ y un ejemplo. Si sobra tiempo, añade Leibniz (U p.41): alternada con $\{|a_n|\}$ decreciente converge si y solo si $a_n\to0$.</p>
+      <li><b>Definición (U Def. 1.17, p.41).</b> $\sum_{n=1}^\infty a_n$ es <i>alternada</i> si sus términos son alternativamente positivos (o nulos) y negativos (o nulos).</li>
+      <li><b>Cómo se escribe casi siempre.</b> $a_n=(-1)^nb_n$ o $a_n=(-1)^{n-1}b_n$ con $b_n\ge0$. El factor $(-1)^n$ pone el signo y $b_n=|a_n|$ es el tamaño. Ejemplo: $\sum(-1)^n$ (U Ej. 1.40, p.41).</li>
+      <li><b>Contraejemplo.</b> $\sum\frac{\cos n}{n^2}$ cambia de signo, pero sin seguir el patrón $+,-,+,-$: no es alternada (U Ej. 1.39, pp.40-41).</li>
+    </ol>
+  </details>
 </details>
-<details class="sol"><summary>Examen 2 — $\sum\frac{n^2}{4^n}$ con el criterio del cociente <span class="src" data-l="X" data-ref="X p.106 (I. Electrónica Industrial y Automática, examen sin fecha, pregunta corta 1, 1 punto)">X p.106</span></summary>
-<p class="enun">Estudie si la serie $\displaystyle\sum_{n=1}^{\infty}\frac{n^2}{4^n}$ es convergente.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-2">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 2 · criterio del cociente con $n^2/4^n$</span> <span class="src" data-l="X" data-ref="X p.106 (I. Electrónica Industrial y Automática, examen sin fecha, pregunta corta 1, 1 punto)">X p.106</span></header>
+<div class="ejer-enun"><p class="enun">Estudie si la serie $\displaystyle\sum_{n=1}^{\infty}\frac{n^2}{4^n}$ es convergente.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si $\sum\frac{n^2}{4^n}$ converge.</dd>
     <dt>Cómo lo pienso</dt><dd>Si cada término es, más o menos, <b>una fracción fija del anterior</b> (menor que $1$), los términos se hacen pequeños muy deprisa y la serie converge. El criterio del cociente mide esa fracción.</dd>
-    <dt>Qué uso</dt><dd>Criterio del cociente (U p.38), que exige $a_n>0$.</dd>
+    <dt>Qué uso</dt><dd>Cociente: $\ell=\lim_{n\to\infty}\frac{a_{n+1}}{a_n}&lt;1\Rightarrow$ converge — <a href="#s5">ver teoría</a> (U p.38).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo $\frac{a_{n+1}}{a_n}$ y lo simplifico.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Mira el término.</b> $a_n=\frac{n^2}{4^n}$ es positivo y lleva una potencia $4^n$: usa el criterio del <b>cociente</b> (U p.38), que exige $a_n&gt;0$.</li>
-    <li><b>Escribe el cociente</b> $\frac{a_{n+1}}{a_n}$, cambiando $n$ por $n+1$ en el numerador de la fracción grande: $$\frac{a_{n+1}}{a_n}=\frac{(n+1)^2/4^{n+1}}{n^2/4^n}=\frac{(n+1)^2}{n^2}\cdot\frac{4^n}{4^{n+1}}.$$</li>
-    <li><b>Simplifica.</b> $\frac{4^n}{4^{n+1}}=\frac14$ y $\frac{(n+1)^2}{n^2}=\big(1+\frac1n\big)^2$. Queda $\frac14\big(1+\frac1n\big)^2$.</li>
-    <li><b>Límite.</b> Cuando $n$ es enorme, $\frac1n$ casi es $0$ y el paréntesis casi es $1$. Luego $\ell=\frac14$.</li>
-    <li><b>Conclusión.</b> $\ell=\frac14&lt;1$: la serie <b>converge</b>.</li>
-  </ol>
-  <p><b>Lo que escribes en el examen:</b> «$a_n&gt;0$; $\frac{a_{n+1}}{a_n}=\frac14(1+\frac1n)^2\to\frac14&lt;1$; por el criterio del cociente (U p.38) la serie converge».</p>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$a_n=\frac{n^2}{4^n}&gt;0$, así que se puede usar el criterio del cociente (U p.38):
+  $$\frac{a_{n+1}}{a_n}=\frac{(n+1)^2}{4^{n+1}}\cdot\frac{4^n}{n^2}=\frac14(1+\tfrac1n)^2\to\frac14&lt;1.$$</p>
+  <p>Como $\ell=\frac14&lt;1$, la serie <b>converge</b>.</p>
+  </div>
   <div class="recipe"><b>Receta:</b> polinomio en $n$ por (o entre) $a^n$ $\Rightarrow$ cociente; el polinomio aporta un factor que tiende a $1$ y el límite es $1/a$ (o $a$).</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <ol class="steps">
+      <li><b>Mira el término.</b> $a_n=\frac{n^2}{4^n}$ es positivo y lleva una potencia $4^n$: usa el criterio del <b>cociente</b> (U p.38), que exige $a_n&gt;0$.</li>
+      <li><b>Escribe el cociente</b> $\frac{a_{n+1}}{a_n}$, cambiando $n$ por $n+1$ en el numerador de la fracción grande: $$\frac{a_{n+1}}{a_n}=\frac{(n+1)^2/4^{n+1}}{n^2/4^n}=\frac{(n+1)^2}{n^2}\cdot\frac{4^n}{4^{n+1}}.$$</li>
+      <li><b>Simplifica.</b> $\frac{4^n}{4^{n+1}}=\frac14$ y $\frac{(n+1)^2}{n^2}=\big(1+\frac1n\big)^2$. Queda $\frac14\big(1+\frac1n\big)^2$.</li>
+      <li><b>Límite.</b> Cuando $n$ es enorme, $\frac1n$ casi es $0$ y el paréntesis casi es $1$. Luego $\ell=\frac14$.</li>
+      <li><b>Conclusión.</b> $\ell=\frac14&lt;1$: la serie <b>converge</b>.</li>
+    </ol>
+  </details>
 </details>
-<details class="sol"><summary>Examen 3 — $\sum\frac{(-1)^{n-1}}{n^3}$ es convergente <span class="src" data-l="X" data-ref="X p.28 (septiembre 2012, reserva, Ingeniería Mecánica, Modelo A, pregunta corta 1, 1 punto)">X p.28</span></summary>
-<p class="enun">Demuestre que es convergente la serie $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n^3}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-3">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 3 · convergencia absoluta con una serie $p$</span> <span class="src" data-l="X" data-ref="X p.28 (septiembre 2012, reserva, Ingeniería Mecánica, Modelo A, pregunta corta 1, 1 punto)">X p.28</span></header>
+<div class="ejer-enun"><p class="enun">Demuestre que es convergente la serie $\displaystyle\sum_{n=1}^{\infty}\frac{(-1)^{n-1}}{n^3}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Demostrar que $\sum\frac{(-1)^{n-1}}{n^3}$ converge.</dd>
     <dt>Cómo lo pienso</dt><dd>Quito los signos y miro si la serie de tamaños $\frac1{n^3}$ converge. Si converge, con los signos también (los $-$ solo hacen la suma más pequeña, nunca más grande).</dd>
-    <dt>Qué uso</dt><dd>Series $p$ (U p.38); convergencia absoluta (Def. 1.16, U p.40); Prop. 1.8 (U p.40). Alternativa: Leibniz (U p.41).</dd>
+    <dt>Qué uso</dt><dd>Serie $p$ y Prop. 1.8: absolutamente convergente $\Rightarrow$ convergente — <a href="#s6">ver teoría</a> (U p.38; p.40).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo $|a_n|=\frac1{n^3}$ y reconozco una serie $p$ con $\gamma=3$.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Tamaños.</b> $|a_n|=\frac1{n^3}$ (el factor $(-1)^{n-1}$ solo pone el signo).</li>
-    <li><b>Serie de referencia.</b> $\sum\frac1{n^\gamma}$ converge si y solo si $\gamma&gt;1$ (U p.38). Aquí $\gamma=3&gt;1$, así que $\sum|a_n|$ converge: la serie es <b>absolutamente convergente</b> (U Def. 1.16, p.40).</li>
-    <li><b>Conclusión.</b> Toda serie absolutamente convergente es convergente (U Prop. 1.8, p.40). Queda demostrado.</li>
-  </ol>
-  <p><b>Lo que escribes en el examen:</b> los tres pasos anteriores. Alternativa con Leibniz (U p.41): (a) es alternada; (b) $\{\frac1{n^3}\}$ decrece, porque $n^3$ crece al aumentar $n$ (por ejemplo $\frac18&gt;\frac1{27}$); (c) $\frac1{n^3}\to0$.</p>
-  <figure class="graf" data-g='{"p":[[1,1.0],[2,0.875],[3,0.912037],[4,0.896412],[5,0.904412],[6,0.899782],[7,0.902698],[8,0.900745]],"c":[{"e":"0.901543","n":"suma ≈ 0,9015","d":1}],"x":[0,9],"ex":"n","ey":"sₙ"}' data-alt="Sumas parciales de (−1)^(n−1)/n³ con zigzag que se cierra"><figcaption>Sumas parciales de $\sum\frac{(-1)^{n-1}}{n^3}$: saltan arriba y abajo alrededor de la suma ($\approx0{,}9015$) con saltos cada vez menores, como pide Leibniz. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Sea $a_n=\frac{(-1)^{n-1}}{n^3}$. Entonces $|a_n|=\frac1{n^3}$, y $\sum\frac1{n^3}$ converge por ser una serie $p$ con $\gamma=3&gt;1$ (U p.38).</p>
+  <p>Luego $\sum a_n$ es absolutamente convergente (U Def. 1.16, p.40) y, por la Prop. 1.8 (U p.40), <b>convergente</b>.</p>
+  </div>
   <div class="recipe"><b>Receta:</b> ante $(-1)^n$, prueba primero la convergencia absoluta con series $p$; Leibniz solo si la absoluta falla.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <ol class="steps">
+      <li><b>Tamaños.</b> $|a_n|=\frac1{n^3}$ (el factor $(-1)^{n-1}$ solo pone el signo).</li>
+      <li><b>Serie de referencia.</b> $\sum\frac1{n^\gamma}$ converge si y solo si $\gamma&gt;1$ (U p.38). Aquí $\gamma=3&gt;1$, así que $\sum|a_n|$ converge: la serie es <b>absolutamente convergente</b> (U Def. 1.16, p.40).</li>
+      <li><b>Conclusión.</b> Toda serie absolutamente convergente es convergente (U Prop. 1.8, p.40). Queda demostrado.</li>
+    </ol>
+    <p><b>Alternativa con Leibniz (U p.41):</b> (a) es alternada; (b) $\{\frac1{n^3}\}$ decrece, porque $n^3$ crece al aumentar $n$ (por ejemplo $\frac18&gt;\frac1{27}$); (c) $\frac1{n^3}\to0$.</p>
+    <figure class="graf" data-g='{"p":[[1,1.0],[2,0.875],[3,0.912037],[4,0.896412],[5,0.904412],[6,0.899782],[7,0.902698],[8,0.900745]],"c":[{"e":"0.901543","n":"suma ≈ 0,9015","d":1}],"x":[0,9],"ex":"n","ey":"sₙ"}' data-alt="Sumas parciales de (−1)^(n−1)/n³ con zigzag que se cierra"><figcaption>Sumas parciales de $\sum\frac{(-1)^{n-1}}{n^3}$: saltan arriba y abajo alrededor de la suma ($\approx0{,}9015$) con saltos cada vez menores, como pide Leibniz. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  </details>
 </details>
-<details class="sol"><summary>Examen 4 — $\sum\frac{(-1)^{n-1}}{\sqrt n}$: Leibniz imprescindible <span class="src" data-l="X" data-ref="X p.150 (febrero 2019, 1ª semana, I. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.150</span></summary>
-<p class="enun">Estudie la convergencia de la serie $\displaystyle\sum_{n=1}^{+\infty}\frac{(-1)^{n-1}}{\sqrt n}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-4">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Examen 4 · Leibniz imprescindible: $\sum\frac{(-1)^{n-1}}{\sqrt n}$</span> <span class="src" data-l="X" data-ref="X p.150 (febrero 2019, 1ª semana, I. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.150</span></header>
+<div class="ejer-enun"><p class="enun">Estudie la convergencia de la serie $\displaystyle\sum_{n=1}^{+\infty}\frac{(-1)^{n-1}}{\sqrt n}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la convergencia de $\sum\frac{(-1)^{n-1}}{\sqrt n}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Los tamaños $\frac1{\sqrt n}$ son <b>demasiado grandes</b> para que la suma sin signos converja, pero al alternar signos las subidas y bajadas se compensan y la suma se estabiliza. Eso lo garantiza Leibniz.</dd>
-    <dt>Qué uso</dt><dd>Series $p$ (U p.38); criterio de Leibniz (U p.41); convergencia condicional (U p.40).</dd>
+    <dt>Qué uso</dt><dd>Leibniz: $\{|a_n|\}$ decreciente y $a_n\to0\Rightarrow$ converge — <a href="#s6">ver teoría</a> (U p.41); serie $p$ (U p.38).</dd>
     <dt>Por dónde empiezo</dt><dd>Compruebo que $\sum|a_n|=\sum\frac1{n^{1/2}}$ diverge, para saber que necesito Leibniz.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Tamaños.</b> La serie es alternada (U Def. 1.17, p.41) y $|a_n|=\frac1{\sqrt n}=\frac1{n^{1/2}}$.</li>
-    <li><b>Sin signos.</b> $\sum\frac1{n^{1/2}}$ es una serie $p$ con $\gamma=\frac12\le1$: <b>diverge</b> (U p.38). No hay convergencia absoluta; hay que usar Leibniz.</li>
-    <li><b>Condición 1: los tamaños decrecen.</b> Al aumentar $n$, $\sqrt n$ aumenta y $\frac1{\sqrt n}$ disminuye (por ejemplo $\frac1{\sqrt4}=\frac12&gt;\frac1{\sqrt9}=\frac13$).</li>
-    <li><b>Condición 2: tienden a $0$.</b> $\frac1{\sqrt n}\to0$.</li>
-    <li><b>Conclusión.</b> Por Leibniz (U p.41) la serie <b>converge</b>; como no converge absolutamente, es <b>condicionalmente convergente</b>.</li>
-  </ol>
-  <p><b>Lo que escribes en el examen:</b> «alternada; $\sum|a_n|$ diverge (serie $p$, $\gamma=\frac12$); $\{|a_n|\}$ decreciente y $\to0$; por Leibniz converge: condicionalmente».</p>
-  <figure class="graf" data-g='{"p":[[1,1.0],[2,0.292893],[3,0.870243],[4,0.370243],[5,0.817457],[6,0.409209],[7,0.787173],[8,0.43362],[9,0.766953],[10,0.450725],[11,0.752237],[12,0.463562]],"c":[{"e":"0.604899","n":"suma ≈ 0,6049","d":1}],"x":[0,13],"ex":"n","ey":"sₙ"}' data-alt="Sumas parciales de (−1)^(n−1)/√n con zigzag lento"><figcaption>Sumas parciales de $\sum\frac{(-1)^{n-1}}{\sqrt n}$: zigzag alrededor de $\approx0{,}605$ que se cierra despacio, porque $\frac1{\sqrt n}$ baja lentamente (pero baja y tiende a $0$: Leibniz). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>La serie es alternada, con $|a_n|=\frac1{\sqrt n}$.</p>
+  <p>Sin signos, $\sum\frac1{n^{1/2}}$ es una serie $p$ con $\gamma=\frac12\le1$: diverge (U p.38). No hay convergencia absoluta.</p>
+  <p>Leibniz (U p.41): $\{\frac1{\sqrt n}\}$ es decreciente y $\frac1{\sqrt n}\to0$, luego la serie <b>converge</b>; es <b>condicionalmente convergente</b>.</p>
+  </div>
   <div class="recipe"><b>Receta:</b> alternada con $|a_n|=1/n^\gamma$: si $\gamma&gt;1$, absolutamente convergente; si $0&lt;\gamma\le1$, convergente solo por Leibniz (condicional).</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <ol class="steps">
+      <li><b>Tamaños.</b> La serie es alternada (U Def. 1.17, p.41) y $|a_n|=\frac1{\sqrt n}=\frac1{n^{1/2}}$.</li>
+      <li><b>Sin signos.</b> $\sum\frac1{n^{1/2}}$ es una serie $p$ con $\gamma=\frac12\le1$: <b>diverge</b> (U p.38). No hay convergencia absoluta; hay que usar Leibniz.</li>
+      <li><b>Condición 1: los tamaños decrecen.</b> Al aumentar $n$, $\sqrt n$ aumenta y $\frac1{\sqrt n}$ disminuye (por ejemplo $\frac1{\sqrt4}=\frac12&gt;\frac1{\sqrt9}=\frac13$).</li>
+      <li><b>Condición 2: tienden a $0$.</b> $\frac1{\sqrt n}\to0$.</li>
+      <li><b>Conclusión.</b> Por Leibniz (U p.41) la serie <b>converge</b>; como no converge absolutamente, es <b>condicionalmente convergente</b>.</li>
+    </ol>
+    <figure class="graf" data-g='{"p":[[1,1.0],[2,0.292893],[3,0.870243],[4,0.370243],[5,0.817457],[6,0.409209],[7,0.787173],[8,0.43362],[9,0.766953],[10,0.450725],[11,0.752237],[12,0.463562]],"c":[{"e":"0.604899","n":"suma ≈ 0,6049","d":1}],"x":[0,13],"ex":"n","ey":"sₙ"}' data-alt="Sumas parciales de (−1)^(n−1)/√n con zigzag lento"><figcaption>Sumas parciales de $\sum\frac{(-1)^{n-1}}{\sqrt n}$: zigzag alrededor de $\approx0{,}605$ que se cierra despacio, porque $\frac1{\sqrt n}$ baja lentamente (pero baja y tiende a $0$: Leibniz). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  </details>
 </details>
-<details class="sol"><summary>Examen 5 — $\sum\binom nk$: el cociente da $1$ y no decide <span class="src" data-l="X" data-ref="X p.52 (septiembre 2015, Grado en Ingeniería Mecánica, código 68031029, Modelo A, pregunta corta 1, 1 punto)">X p.52</span></summary>
-<p class="enun">Sean $k,n\in\mathbb N$, $k&gt;1$. ¿Podemos aplicar el criterio del cociente para estudiar el carácter de la serie $\displaystyle\sum_{n=1}^{\infty}\binom nk$? ¿Nos permite decidir si es convergente?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-5">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Examen 5 · el cociente da $1$ y no decide: $\sum\binom nk$</span> <span class="src" data-l="X" data-ref="X p.52 (septiembre 2015, Grado en Ingeniería Mecánica, código 68031029, Modelo A, pregunta corta 1, 1 punto)">X p.52</span></header>
+<div class="ejer-enun"><p class="enun">Sean $k,n\in\mathbb N$, $k&gt;1$. ¿Podemos aplicar el criterio del cociente para estudiar el carácter de la serie $\displaystyle\sum_{n=1}^{\infty}\binom nk$? ¿Nos permite decidir si es convergente?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decir si se puede aplicar el criterio del cociente a $\sum\binom nk$ y si decide la convergencia.</dd>
     <dt>Cómo lo pienso</dt><dd>Si el cociente de dos términos seguidos se acerca a $1$, el criterio no dice nada. Pero aquí los términos son números naturales no nulos, que nunca se acercan a $0$: la serie diverge.</dd>
-    <dt>Qué uso</dt><dd>Criterio del cociente (U p.38); condición necesaria (Prop. 1.6, U p.36).</dd>
+    <dt>Qué uso</dt><dd>Cociente: con $\ell=1$ no decide; condición necesaria $a_n\to0$ — <a href="#s5">ver teoría</a> (U p.38; Prop. 1.6, p.36).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo los primeros términos con un $k$ concreto ($k=2$: $0,1,3,6,10,\dots$) y calculo $\frac{a_{n+1}}{a_n}$ con factoriales.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Los términos.</b> $a_n=\binom nk=\frac{n!}{k!\,(n-k)!}$ si $n\ge k$ y $a_n=0$ si $n&lt;k$. Ejemplo con $k=2$: $0,1,3,6,10,\dots$</li>
-    <li><b>¿Se puede aplicar el cociente?</b> Sí. El criterio pide términos positivos (U p.38) y solo los primeros $k-1$ términos valen $0$; quitar unos pocos términos no cambia si la serie converge. Se aplica a partir de $n=k$.</li>
-    <li><b>Calcula el cociente</b> para $n\ge k$: $$\frac{a_{n+1}}{a_n}=\frac{(n+1)!}{k!\,(n+1-k)!}\cdot\frac{k!\,(n-k)!}{n!}=\frac{n+1}{n+1-k}.$$ (Comprobación con $k=2$, $n=3$: $\frac{a_4}{a_3}=\frac63=2=\frac{4}{2}$.)</li>
-    <li><b>Límite.</b> Para $n$ grande, $\frac{n+1}{n+1-k}$ es casi $\frac nn=1$. Con $\ell=1$ <b>el criterio no decide</b> (U p.38).</li>
-    <li><b>Para saber si converge.</b> Para $n\ge k$, $\binom nk$ es un natural distinto de $0$, luego $a_n\ge1$ y no tiende a $0$. Por la condición necesaria (U Prop. 1.6, p.36), la serie <b>diverge</b>.</li>
-  </ol>
-  <p><b>Lo que escribes en el examen:</b> «sí se puede aplicar (a partir de $n=k$); $\frac{a_{n+1}}{a_n}=\frac{n+1}{n+1-k}\to1$, luego no decide. (Además $a_n\ge1$, así que diverge)».</p>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Sí se puede aplicar: $a_n=\binom nk&gt;0$ para $n\ge k$ y los $k-1$ primeros términos, nulos, no cambian el carácter (U p.38). Para $n\ge k$:
+  $$\frac{a_{n+1}}{a_n}=\frac{(n+1)!}{k!\,(n+1-k)!}\cdot\frac{k!\,(n-k)!}{n!}=\frac{n+1}{n+1-k}\to1.$$</p>
+  <p>Con $\ell=1$ el criterio <b>no decide</b>. (La serie diverge: $a_n\ge1$ no tiende a $0$, Prop. 1.6, U p.36.)</p>
+  </div>
   <div class="recipe"><b>Receta:</b> si el cociente (o la raíz) da $\ell=1$, mira primero si $a_n\to0$: si no, diverge por la condición necesaria; si sí, compara con una serie $p$.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <ol class="steps">
+      <li><b>Los términos.</b> $a_n=\binom nk=\frac{n!}{k!\,(n-k)!}$ si $n\ge k$ y $a_n=0$ si $n&lt;k$. Ejemplo con $k=2$: $0,1,3,6,10,\dots$</li>
+      <li><b>¿Se puede aplicar el cociente?</b> Sí. El criterio pide términos positivos (U p.38) y solo los primeros $k-1$ términos valen $0$; quitar unos pocos términos no cambia si la serie converge. Se aplica a partir de $n=k$.</li>
+      <li><b>Calcula el cociente</b> para $n\ge k$: $$\frac{a_{n+1}}{a_n}=\frac{(n+1)!}{k!\,(n+1-k)!}\cdot\frac{k!\,(n-k)!}{n!}=\frac{n+1}{n+1-k}.$$ (Comprobación con $k=2$, $n=3$: $\frac{a_4}{a_3}=\frac63=2=\frac{4}{2}$.)</li>
+      <li><b>Límite.</b> Para $n$ grande, $\frac{n+1}{n+1-k}$ es casi $\frac nn=1$. Con $\ell=1$ <b>el criterio no decide</b> (U p.38).</li>
+      <li><b>Para saber si converge.</b> Para $n\ge k$, $\binom nk$ es un natural distinto de $0$, luego $a_n\ge1$ y no tiende a $0$. Por la condición necesaria (U Prop. 1.6, p.36), la serie <b>diverge</b>.</li>
+    </ol>
+  </details>
 </details>
-<details class="sol"><summary>Examen 6 — Test teórico: si $\sum a_n$ converge ($a_n&gt;0$), ¿qué otra serie converge? <span class="src" data-l="X" data-ref="X p.109 (Examen 1 elaborado con exámenes de asignaturas similares, ejercicio 1, tipo test, sin puntuación)">X p.109</span></summary>
-<p class="enun">Sea $\sum_{n=1}^{\infty}a_n$ una serie convergente de términos positivos. Señale la opción válida: <b>A)</b> $\sum e^{a_n}$ converge; <b>B)</b> $\sum\frac1{a_n}$ converge; <b>C)</b> $\sum a_n^2$ converge; <b>D)</b> $\sum\sqrt{a_n}$ converge.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-6">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Examen 6 · test teórico: ¿qué serie converge si $\sum a_n$ converge?</span> <span class="src" data-l="X" data-ref="X p.109 (Examen 1 elaborado con exámenes de asignaturas similares, ejercicio 1, tipo test, sin puntuación)">X p.109</span></header>
+<div class="ejer-enun"><p class="enun">Sea $\sum_{n=1}^{\infty}a_n$ una serie convergente de términos positivos. Señale la opción válida: <b>A)</b> $\sum e^{a_n}$ converge; <b>B)</b> $\sum\frac1{a_n}$ converge; <b>C)</b> $\sum a_n^2$ converge; <b>D)</b> $\sum\sqrt{a_n}$ converge.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Elegir, entre cuatro series construidas con $a_n$, la que converge siempre si $\sum a_n$ converge y $a_n>0$.</dd>
     <dt>Cómo lo pienso</dt><dd>Si $\sum a_n$ converge, los $a_n$ tienden a $0$: acaban siendo números diminutos. Elevar un número diminuto al cuadrado lo hace aún más pequeño; las otras opciones lo agrandan o no lo acercan a $0$.</dd>
-    <dt>Qué uso</dt><dd>Condición necesaria (Prop. 1.6, U p.36); comparación (U p.38); armónica (U Ej. 1.35, p.37).</dd>
+    <dt>Qué uso</dt><dd>Condición necesaria $a_n\to0$ y comparación (a partir de un $n_0$) — <a href="#s3">ver teoría</a> (U Prop. 1.6, p.36; p.38).</dd>
     <dt>Por dónde empiezo</dt><dd>Uso que $a_n\to0$ y descarto con eso las opciones cuyo término no tiende a $0$.</dd>
   </dl></div>
-  <ol class="steps">
-    <li><b>Dato clave.</b> $\sum a_n$ converge, así que $a_n\to0$ (U Prop. 1.6, p.36). Además $a_n&gt;0$.</li>
-    <li><b>A falsa.</b> $e^{a_n}$ es mayor que $1$, así que no tiende a $0$ y la serie diverge (condición necesaria).</li>
-    <li><b>B falsa.</b> Si $a_n$ se acerca a $0$, $\frac1{a_n}$ se hace enorme: no tiende a $0$ y la serie diverge.</li>
-    <li><b>C verdadera.</b> Desde cierto $n$ se cumple $a_n&lt;1$. Entonces $a_n^2&lt;a_n$ (ejemplo: $0{,}1^2=0{,}01&lt;0{,}1$). Por comparación con $\sum a_n$ (U p.38, vale «a partir de cierto $n$») la serie $\sum a_n^2$ converge.</li>
-    <li><b>D falsa (contraejemplo).</b> Con $a_n=\frac1{n^2}$: $\sum\frac1{n^2}$ converge, pero $\sqrt{a_n}=\frac1n$ y la armónica diverge (U Ej. 1.35, p.37).</li>
-  </ol>
-  <p><b>Resultado:</b> C.</p>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Como $\sum a_n$ converge, $a_n\to0$ (U Prop. 1.6, p.36).</p>
+  <p>A) $e^{a_n}\to1\ne0$: diverge. B) $\frac1{a_n}\to+\infty$: diverge. D) con $a_n=\frac1{n^2}$ converge, pero $\sqrt{a_n}=\frac1n$ es la armónica, que diverge.</p>
+  <p>C) Desde cierto $n$ es $a_n&lt;1$, luego $a_n^2&lt;a_n$ y, por comparación (U p.38), $\sum a_n^2$ converge. <b>Resultado:</b> C.</p>
+  </div>
   <div class="recipe"><b>Receta:</b> en un test «si $\sum a_n$ converge, ¿converge $\sum f(a_n)$?»: descarta con la condición necesaria lo que no tiende a $0$, demuestra con comparación ($a_n&lt;1$ desde un $n_0$) y refuta con series $p$ ($1/n^2$ frente a $1/n$).</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <ol class="steps">
+      <li><b>Dato clave.</b> $\sum a_n$ converge, así que $a_n\to0$ (U Prop. 1.6, p.36). Además $a_n&gt;0$.</li>
+      <li><b>A falsa.</b> $e^{a_n}$ es mayor que $1$, así que no tiende a $0$ y la serie diverge (condición necesaria).</li>
+      <li><b>B falsa.</b> Si $a_n$ se acerca a $0$, $\frac1{a_n}$ se hace enorme: no tiende a $0$ y la serie diverge.</li>
+      <li><b>C verdadera.</b> Desde cierto $n$ se cumple $a_n&lt;1$. Entonces $a_n^2&lt;a_n$ (ejemplo: $0{,}1^2=0{,}01&lt;0{,}1$). Por comparación con $\sum a_n$ (U p.38, vale «a partir de cierto $n$») la serie $\sum a_n^2$ converge.</li>
+      <li><b>D falsa (contraejemplo).</b> Con $a_n=\frac1{n^2}$: $\sum\frac1{n^2}$ converge, pero $\sqrt{a_n}=\frac1n$ y la armónica diverge (U Ej. 1.35, p.37).</li>
+    </ol>
+  </details>
 </details>
-<div class="box tip"><span class="h">Tipos que también caen y no están en el PDF</span>
+</article>
+<div class="box tip" data-extra><span class="h">Tipos que también caen y no están en el PDF</span>
 <ul>
   <li>Suma de una serie geométrica o telescópica (calcular $s_n$ y su límite; apartado 2).</li>
   <li>Criterio de la raíz aplicado a una serie numérica (en X solo aparece en series de potencias).</li>
@@ -762,9 +1319,9 @@ $$s_{2n}-s_n=\frac1{n+1}+\dots+\frac1{2n}\ge n\cdot\frac1{2n}=\frac12\quad\Longr
   <li>Alternada en la que falla, o hay que trabajar, el decrecimiento de $\{|a_n|\}$ (ejemplo propio 3).</li>
   <li>Linealidad / «convergente + divergente» (U Prop. 1.7, p.37; E 1.17).</li>
 </ul>
-Cúbrelos con E 1.17-1.22 y los ejemplos propios del apartado 8.</div>
-<!-- ============================ 10 ============================ -->
-<h2 id="chuleta"><span class="n">10</span>Chuleta y lista de comprobación</h2>
+Cúbrelos con E 1.17-1.22 y los ejemplos propios de la sección «Ejercicios del libro».</div>
+<!-- ============================ chuleta ============================ -->
+<h2 id="chuleta" data-vista="teoria"><span class="n">12</span>Chuleta y lista de comprobación</h2>
 <div class="box thm"><span class="h">Chuleta</span>
   <table>
     <tr><th>Concepto</th><th>Qué recordar</th></tr>
@@ -804,11 +1361,10 @@ Cúbrelos con E 1.17-1.22 y los ejemplos propios del apartado 8.</div>
   <li>Elegir cociente o raíz según la forma del término, calcular el límite y decidir (con el caso $\ell=1$).</li>
   <li>Estudiar $\sum|a_n|$ y concluir convergencia absoluta o condicional.</li>
   <li>Aplicar Leibniz comprobando sus dos condiciones (alternada, $|a_n|$ decreciente y $\to0$).</li>
-  <li>Elegir el criterio con la tabla-decisión y justificar por qué los demás no valen.</li>
+  <li>Elegir el criterio con el mapa de decisión y justificar por qué los demás no valen.</li>
   <li>Resolver E 1.17-1.22 sin mirar la solución.</li>
 </ul>
-<!-- ============================ 11 ============================ -->
-<h2 id="fuentes"><span class="n">11</span>Fuentes de este tema</h2>
+<h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
 <details class="fuentes-toggle">
 <summary>Mostrar lista de fuentes</summary>
 <p>Lista automática de todas las etiquetas usadas (libro y página impresa). Recuerda: <b>U</b> = Cálculo para Ingenieros, §1.3 (pp. 33-41; pág. impresa = PDF + 2), <b>E</b> = libro de ejercicios, <b>S</b> = Stewart §11.2-11.7 (pp. 703-741), <b>L</b> = Larson §9.2-9.6 (pp. 595-635; impresa = PDF − 17), <b>X</b> = <i>Exámenes resueltos de Cálculo</i> (página del PDF), <b>P</b> = explicación propia (telescópicas por ejemplo, ejemplos propios y tabla-decisión).</p>
