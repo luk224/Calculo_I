@@ -1,0 +1,18 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\frac{e^{n+3/n}+5}{2e^n}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Arriba y abajo manda $e^n$. Si lo saco como factor, lo que sobra es $e^{3/n}$, que se parece a $e^0=1$, y $\frac5{e^n}$, que desaparece.</dd>
+    <dt>Qué uso</dt><dd>Dividir entre la exponencial que manda y $e^{a+b}=e^ae^b$; $\frac5\infty=0$ — <a href="#s6">ver teoría</a> (U Def. 1.12, p.27).</dd>
+    <dt>Por dónde empiezo</dt><dd>Separo $e^{n+3/n}=e^n\,e^{3/n}$ y reparto el denominador en dos sumandos.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> ante un cociente $\frac\infty\infty$, divide numerador y denominador entre lo que crece más deprisa ($n^k$, $e^n$…) y aplica la Prop. 1.3.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Sustituir.</b> Numerador y denominador tienden a $+\infty$ ($e^\infty=\infty$ por Def. 1.12): sale $\frac\infty\infty$, indeterminación.</li>
+    <li><b>Separar lo que domina.</b> $e^{n+3/n}=e^n\,e^{3/n}$, luego $$x_n=\frac{e^ne^{3/n}}{2e^n}+\frac5{2e^n}=\frac{e^{3/n}}2+\frac5{2e^n}.$$ (La misma idea que «dividir entre el término de mayor grado», pero aquí manda $e^n$.)</li>
+    <li><b>Primer sumando.</b> $\frac3n\to0$; como la exponencial es continua, $e^{3/n}\to e^0=1$. El sumando tiende a $\frac12$.</li>
+    <li><b>Segundo sumando.</b> $2e^n\to\infty$ y $\frac5\infty=0$ (Def. 1.12).</li>
+    <li><b>Sumar</b> (Prop. 1.3): $\lim_{n\to\infty} x_n=\frac12+0=\boxed{\tfrac12}$.</li>
+  </ol>
+  <figure class="graf" data-g='{"p":[[1,10.962467],[2,2.579183," "],[3,1.483609," "],[4,1.104289," "],[5,0.927904," "],[6,0.830558," "],[7,0.769811," "],[8,0.728334," "],[9,0.698115," "],[10,0.675043," "],[11,0.656813," "],[12,0.642028]],"c":[{"e":"(exp(x+3/x)+5)/(2*exp(x))","n":"xₙ"},{"e":"0.5","n":"límite = 1/2","d":1}],"x":[0,13],"ex":"n"}' data-alt="Términos de xₙ acercándose a 1/2"><figcaption>Los términos $x_n$ (puntos; la curva solo los une) bajan hacia la recta $y=\frac12$: $\lim_{n\to\infty}x_n=\frac12$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  <p><b>Error típico:</b> escribir $e^{n+3/n}=e^n+e^{3/n}$. La exponencial convierte <b>sumas en productos</b>.</p>
+  </details>

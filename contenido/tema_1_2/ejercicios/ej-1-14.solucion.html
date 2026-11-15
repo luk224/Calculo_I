@@ -1,0 +1,16 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\bigl(\frac{n^4-n+1}{2n^4-n+2}\bigr)^{n^2/(n+1)}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Antes de pensar en el número $e$, miro qué hacen la base y el exponente. Si la base se acerca a $\frac12$ y el exponente crece sin freno, multiplicar $\frac12$ por sí mismo muchísimas veces da casi 0.</dd>
+    <dt>Qué uso</dt><dd>Base $\to\frac12$ (no es $1^\infty$): $x^\infty=0$ si $0&lt;x&lt;1$ — <a href="#s6">ver teoría</a> (U Def. 1.12, p.27).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo por separado $\lim_{n\to\infty}$ de la base y del exponente.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> ante $u_n^{t_n}$ calcula por separado $\lim_{n\to\infty} u_n$ y $\lim_{n\to\infty} t_n$. Solo necesitas técnica especial si sale $1^{\pm\infty}$, $0^0$ o $\infty^0$; en otro caso bastan (1.1) y las reglas de $\overline{\mathbb R}$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Estudia base y exponente por separado</b> (siempre, antes de lanzarte con el número $e$). Base: $u_n=\dfrac{1-\frac1{n^3}+\frac1{n^4}}{2-\frac1{n^3}+\frac2{n^4}}\to\frac12$ (dividiendo entre $n^4$) y $u_n&gt;0$. Exponente: $t_n=\dfrac{n^2}{n+1}=\dfrac n{1+1/n}\to+\infty$.</li>
+    <li><b>¿Indeterminación?</b> La forma es $\left(\frac12\right)^{+\infty}$, que <b>no</b> está en la lista de U (p. 30): $0^0$, $1^{\pm\infty}$, $\infty^0$. La Def. 1.12 dice $x^\infty=0$ si $x\in(0,1)$.</li>
+    <li><b>Justificación con (1.1):</b> $a_n=e^{t_n\ln u_n}$. Por la continuidad de $\ln$, $\ln u_n\to\ln\frac12&lt;0$; luego $t_n\ln u_n\to(+\infty)\cdot\ln\frac12=-\infty$ y $e^{-\infty}=0$. Así $\lim_{n\to\infty} a_n=\boxed0$.</li>
+    <li><b>Comprobación elemental (emparedado).</b> $u_n\le\frac35\iff5(n^4-n+1)\le3(2n^4-n+2)\iff0\le n^4+2n+1$ (siempre cierto). Además $t_n=\frac{n^2}{n+1}\ge n-1$, porque $n^2\ge n^2-1$. Con base en $(0,1)$, mayor exponente da menor valor: $0&lt;a_n\le\left(\frac35\right)^{n-1}\to0$.</li>
+  </ol>
+  <figure class="graf" data-g='{"p":[[1,0.57735],[2,0.364129," "],[3,0.201513," "],[4,0.106111," "],[5,0.054757," "],[6,0.027968," "],[7,0.014201," "],[8,0.007183," "],[9,0.003624," "],[10,0.001826," "],[11,0.000918," "],[12,0.000461," "],[13,0.000232," "],[14,0.000116]],"c":[{"e":"((x**4-x+1)/(2*x**4-x+2))**(x*x/(x+1))","n":"aₙ"},{"e":"0","n":"límite = 0","d":1}],"x":[0,15],"ex":"n"}' data-alt="Términos de una potencia con base cerca de 1/2 que tienden a 0"><figcaption>La base se acerca a $\frac12<1$ y el exponente $\frac{n^2}{n+1}\to\infty$: los términos caen a $0$ (no es indeterminación). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas y valores calculados con las expresiones del enunciado y verificados con sympy">P</span></figcaption></figure>
+  </details>

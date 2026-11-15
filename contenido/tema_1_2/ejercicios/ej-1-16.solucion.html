@@ -1,0 +1,19 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Calcular $\lim_{n\to\infty}\frac1{n^2}\sum_{k=1}^n\frac{(k+1)^k}{k^{k-1}}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es una suma de $n$ términos distintos entre sí dividida entre $n^2$. Con Stolz, al restar dos valores consecutivos de la suma queda solo el último sumando, y el problema se reduce a un límite normal.</dd>
+    <dt>Qué uso</dt><dd>Stolz con $b_n=n^2$ y la receta de $1^\infty$ — <a href="#s10">ver teoría</a> (U p.32).</dd>
+    <dt>Por dónde empiezo</dt><dd>Llamo $A_n$ a la suma y $B_n=n^2$; compruebo las hipótesis de Stolz.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> si el numerador (o el denominador) es una <b>suma de $n$ términos</b>, usa Stolz: al restar términos consecutivos, la suma se reduce a su último sumando.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Término $k$-ésimo:</b> $\frac{(k+1)^k}{k^{k-1}}$ (para $k=1,2,3$ da $\frac21,\frac{3^2}2,\frac{4^3}{3^2}$ ✓).</li>
+    <li><b>Como cociente:</b> $s_n=\frac{A_n}{B_n}$ con $A_n=\sum_{k=1}^n\frac{(k+1)^k}{k^{k-1}}$ y $B_n=n^2$. Cada sumando es $\ge1$, luego $A_n\ge n\to\infty$: forma $\frac\infty\infty$. Los sumandos son muy distintos entre sí, así que el emparedado del 1.11 no funciona bien.</li>
+    <li><b>Por qué Stolz:</b> al restar términos consecutivos <b>la suma desaparece</b>: $A_{n+1}-A_n=\dfrac{(n+2)^{n+1}}{(n+1)^n}$. Hipótesis: $B_n=n^2$ es creciente, $B_n\to\infty$ y $B_{n+1}-B_n=2n+1\ne0$ ✓.</li>
+    <li><b>Cociente de Stolz:</b> $\dfrac{A_{n+1}-A_n}{B_{n+1}-B_n}=\dfrac{(n+2)^{n+1}}{(2n+1)(n+1)^n}=\dfrac{n+2}{2n+1}\cdot\left(\dfrac{n+2}{n+1}\right)^{n}$.</li>
+    <li><b>Primer factor:</b> $\frac{n+2}{2n+1}=\frac{1+2/n}{2+1/n}\to\frac12$.</li>
+    <li><b>Segundo factor</b> ($1^\infty$). Con $m=n+1$: $\left(\frac{n+2}{n+1}\right)^n=\left(1+\frac1m\right)^{m-1}=\dfrac{(1+\frac1m)^m}{1+\frac1m}\to\dfrac e1=e$ (Prop. 1.5 con $a_m=m$ y Prop. 1.3).</li>
+    <li><b>Conclusión</b> (Stolz): $\lim_{n\to\infty} s_n=\frac12\cdot e=\boxed{\dfrac e2}\approx1{,}35914$. Comprobación numérica: $s_{100}\approx1{,}35967$, $s_{1000}\approx1{,}359149$.</li>
+  </ol>
+  <p><b>Error típico:</b> no comprobar la hipótesis sobre el denominador (monótono y con límite $\pm\infty$, o numerador y denominador con límite 0), o calcular $B_{n+1}-B_n$ como $1$ en lugar de $2n+1$.</p>
+  </details>
