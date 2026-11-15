@@ -140,3 +140,48 @@ details.ampl[open]>summary{border-bottom:1px dashed var(--bd);margin-bottom:8px}
   details.ampl{border:none;padding:0}
   article.ejer.hecho-ok .ejer-cab .tit::after{content:none}
 }
+
+/* ===== Capa «pilot» (G3/G4): pestañas de vista, fuentes ocultas por defecto, «Lo esencial» y «Qué cae».
+   Se activa con <html class="pilot">; sin JS (o sin la clase) todo se ve. Adaptado de ALGEBRA/pedagogia.css ===== */
+@media screen{
+  /* fuentes: ocultas salvo que se pulse «Mostrar fuentes» (el panel «Fuentes del tema» sigue disponible) */
+  html.pilot:not(.con-fuentes) main .src:not(#panel-fuentes .src),
+  html.pilot:not(.con-fuentes) .legend,
+  html.pilot:not(.con-fuentes) .chips span:not(:last-child){display:none}
+  html.pilot [id]{scroll-margin-top:calc(var(--tbh,45px) + 70px)}
+}
+#btn-fuentes[aria-pressed="true"]{border-color:var(--acc);color:var(--acc)}
+
+.vistas{position:sticky;top:var(--tbh,45px);z-index:15;display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:14px 0 18px;padding:8px 0;
+  background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--bd);font:600 14.5px var(--sans)}
+.vistas button{font:inherit;background:var(--card);color:var(--fg);border:1px solid var(--bd);border-radius:99px;padding:6px 14px;cursor:pointer}
+.vistas button[aria-selected="true"]{background:var(--acc);border-color:var(--acc);color:#fff}
+:root[data-theme="dark"] .vistas button[aria-selected="true"]{color:#10131b}
+.vistas .cnt{opacity:.75;font-weight:500;margin-left:3px}
+.vistas .vprog{margin-left:auto;color:var(--mut);font-weight:500;font-size:13.5px}
+@media (max-width:1024px),(hover:none) and (pointer:coarse){.vistas{position:static}}
+@media screen{
+  html[data-vista="teoria"] main [data-vv]:not([data-vv="teoria"]),
+  html[data-vista="tipos"] main [data-vv]:not([data-vv="tipos"]),
+  html[data-vista="ejercicios"] main [data-vv]:not([data-vv="ejercicios"]),
+  html[data-vista="examen"] main [data-vv]:not([data-vv="examen"]){display:none}
+}
+.side-toc a[hidden],.mnav-list a[hidden]{display:none}
+@media print{.vistas,.ir-examen{display:none!important}}
+
+/* acceso directo a los exámenes (tras «La idea del tema») */
+.ir-examen{margin:.2em 0 1em;font:600 15px var(--sans)}
+.ir-examen a{display:inline-block;padding:6px 14px;border:1px solid var(--acc);border-radius:99px;color:var(--acc);text-decoration:none}
+.ir-examen a:hover,.ir-examen a:focus-visible{background:var(--acc);color:#fff}
+:root[data-theme="dark"] .ir-examen a:hover,:root[data-theme="dark"] .ir-examen a:focus-visible{color:#10131b}
+
+/* «Lo esencial en 5 minutos» */
+.box.esencial{border-left:6px solid var(--acc);background:color-mix(in srgb,var(--acc) 6%,var(--card))}
+.box.esencial .sub{margin:1em 0 .2em;font:800 13px var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--acc)}
+.box.esencial ol,.box.esencial ul{margin:.3em 0 .2em;padding-left:1.3em}
+.box.esencial li{margin:.3em 0}
+.box.esencial table.cuando td:first-child{white-space:normal}
+
+/* «Qué cae en el examen» */
+table.queCae td:first-child{font-weight:600}
+table.queCae a{white-space:nowrap;color:var(--acc)}

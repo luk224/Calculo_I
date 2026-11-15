@@ -107,7 +107,7 @@
       var list = mn.querySelector('nav'), mb = mn.querySelector('button');
       tocLinks.forEach(function (a) { var c = d.createElement('a'); c.href = a.getAttribute('href'); c.innerHTML = a.innerHTML; list.appendChild(c); });
       function setOpen(o) { list.hidden = !o; mb.setAttribute('aria-expanded', o ? 'true' : 'false');
-        if (o) { var cur = null; hs.forEach(function (h) { if (h.getBoundingClientRect().top < 120) cur = h.id; });
+        if (o) { var cur = null; hs.forEach(function (h) { if (h.offsetParent && h.getBoundingClientRect().top < 120) cur = h.id; });
           [].forEach.call(list.children, function (x) { var on = x.getAttribute('href') === '#' + cur; x.classList.toggle('on', on); if (on) x.scrollIntoView({ block: 'center' }); }); } }
       mb.addEventListener('click', function (e) { e.stopPropagation(); setOpen(list.hidden); });
       list.addEventListener('click', function (e) { if (e.target.tagName === 'A') setOpen(false); });

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 2.3 Límites y derivación: regla de L'Hôpital</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -60,15 +61,23 @@ svg.fig .dash{stroke:var(--mut);stroke-width:1.3;stroke-dasharray:5 4;fill:none}
   </div>
 </header>
 
-<!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.3.1 Motivación, p. 81; §2.3.2, p. 82">U pp.81-82</span></h2>
-
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>Definimos la derivada como un límite. Ahora se da la vuelta: <b>la derivada ayuda a calcular límites</b>. Cuando un cociente $\dfrac{f(x)}{g(x)}$ «se atasca» porque arriba y abajo tienden a $0$ (o a $\infty$), basta mirar el cociente de las <i>velocidades de cambio</i> $\dfrac{f'(x)}{g'(x)}$. Con unos pocos trucos, productos, restas y potencias se convierten en un cociente y entran en la misma máquina.</p>
   <span class="src" data-l="U" data-ref="U §2.3.1 Introducción, p. 81">U p.81</span>
 </div>
 
-<div class="box tip"><span class="h">En 1 minuto</span>
+<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Sustituye y nombra el tipo.</b> ¿Sale $\tfrac00$, $\tfrac\infty\infty$, $0\cdot\infty$, $\infty-\infty$, $1^\infty$, $0^0$ o $\infty^0$? Si sale un número o un $\pm\infty$ «limpio», no hay indeterminación y no se aplica la regla.</li>
+    <li><b>Llévalo a $\tfrac00$ o $\tfrac\infty\infty$.</b> Producto: pasa un factor al denominador. Resta: una sola fracción. Potencia: $e^{g\ln f}$.</li>
+    <li><b>Comprueba las condiciones, deriva arriba y abajo por separado y simplifica.</b> Si aún sale $\tfrac00$ o $\tfrac\infty\infty$, repite.</li>
+    <li><b>Deshaz la transformación</b> (por ejemplo $e^{L}$). Si la regla da vueltas o $\lim_{x\to a}\frac{f'}{g'}$ no existe, cambia de método (dividir por el término dominante).</li>
+  </ol>
+  <p class="sub">Qué hago según el tipo</p>
   <ul>
     <li>¿Sale $\tfrac00$ o $\tfrac\infty\infty$? $\to$ L'Hôpital (tras comprobar las 3 condiciones).</li>
     <li>¿$0\cdot\infty$ o $\infty-\infty$? $\to$ conviértelo en cociente o en una sola fracción.</li>
@@ -76,6 +85,19 @@ svg.fig .dash{stroke:var(--mut);stroke-width:1.3;stroke-dasharray:5 4;fill:none}
     <li>¿Sucesión? $\to$ cambia $n$ por $x$ y aplica lo anterior.</li>
     <li>Si al derivar no mejora (da vueltas o el límite de $\frac{f'}{g'}$ no existe) $\to$ otro método (dividir por el término dominante).</li>
   </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$\displaystyle\lim_{x\to a}\frac{f(x)}{g(x)}=\lim_{x\to a}\frac{f'(x)}{g'(x)}$</td><td>Forma $\tfrac00$ o $\tfrac\infty\infty$, con $f,g$ derivables cerca de $a$, $g'\neq0$ cerca de $a$ y <b>si existe</b> el límite de la derecha.</td></tr>
+    <tr><td>$f\cdot g=\dfrac{f}{1/g}$</td><td>Producto $0\cdot\infty$: se pasa a cociente.</td></tr>
+    <tr><td>$f-g=$ una sola fracción</td><td>Resta $\infty-\infty$: denominador común o factor común.</td></tr>
+    <tr><td>$f^g=e^{g\ln f}$, y el límite es $e^{L}$ con $L=\lim_{x\to a} g\ln f$</td><td>Potencias $1^\infty$, $0^0$, $\infty^0$.</td></tr>
+    <tr><td>Prop. 2.2: $f\to\pm\infty\Rightarrow\left(1+\frac1f\right)^{f}\to e$</td><td>Atajo para $1^\infty$ cuando la base se escribe como $1+\frac1f$.</td></tr>
+    <tr><td>Prop. 2.3: $\lim_{x\to\infty}f(x)=l\Rightarrow\lim_{n\to\infty}f(n)=l$; escalera $\ln x\ll x^p\ll a^x$</td><td>Límites de sucesiones y comparación de crecimientos.</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos suele ser <b>una pregunta corta de 1 punto</b> con un único límite ($\tfrac00$ y $\tfrac\infty\infty$ son más de la mitad) y, a veces, la regla aparece dentro de un problema de continuidad y derivabilidad. En el libro de ejercicios son E 2.24-2.33. Tabla completa por tipo: <a href="#examenes" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §2.3.2, pp. 82-85 (regla, Prop. 2.2 y 2.3); resumen propio">U pp.82-85</span>
   <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.82-85">P</span>
 </div>
 
@@ -108,6 +130,9 @@ svg.fig .dash{stroke:var(--mut);stroke-width:1.3;stroke-dasharray:5 4;fill:none}
   </div>
 </div>
 
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.3.1 Motivación, p. 81; §2.3.2, p. 82">U pp.81-82</span></h2>
+
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li>Límites de funciones y su álgebra, con laterales y en el infinito (U §1.4). <span class="src" data-l="U" data-ref="U Prop. 1.11 (álgebra de límites), p. 46">U p.46</span></li>
@@ -132,7 +157,7 @@ svg.fig .dash{stroke:var(--mut);stroke-width:1.3;stroke-dasharray:5 4;fill:none}
 </details>
 
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>Indeterminaciones: cuando «sustituir» no basta <span class="src" data-l="S" data-ref="Stewart §4.4, pp. 301-302">S pp.301-302</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Indeterminaciones: cuando «sustituir» no basta <span class="src" data-l="S" data-ref="Stewart §4.4, pp. 301-302">S pp.301-302</span></h2>
 
 <p class="aprender"><b>Lo que vas a aprender.</b> qué significa que un límite sea «indeterminado» y por qué sustituir no basta en esos casos.</p>
 
@@ -155,7 +180,7 @@ svg.fig .dash{stroke:var(--mut);stroke-width:1.3;stroke-dasharray:5 4;fill:none}
 </div>
 
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>La regla de L'Hôpital <span class="src" data-l="U" data-ref="U §2.3.2 Regla de L'Hôpital, pp. 82-83">U pp.82-83</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>La regla de L'Hôpital <span class="src" data-l="U" data-ref="U §2.3.2 Regla de L'Hôpital, pp. 82-83">U pp.82-83</span></h2>
 
 <p class="aprender"><b>Lo que vas a aprender.</b> la herramienta principal: cómo y cuándo se puede cambiar un cociente de funciones por el cociente de sus derivadas.</p>
 
@@ -245,7 +270,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 </div>
 
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Productos y restas: $0\cdot\infty$ y $\infty-\infty$ <span class="src" data-l="U" data-ref="U §2.3.2, pp. 83-84">U pp.83-84</span></h2>
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Productos y restas: $0\cdot\infty$ y $\infty-\infty$ <span class="src" data-l="U" data-ref="U §2.3.2, pp. 83-84">U pp.83-84</span></h2>
 
 <p class="aprender"><b>Lo que vas a aprender.</b> la regla solo entiende <i>cocientes</i>: cómo convertir un producto $0\cdot\infty$ o una resta $\infty-\infty$ en un cociente sin cambiar su valor. <span class="src" data-l="U" data-ref="U §2.3.2, p. 84">U p.84</span></p>
 
@@ -304,7 +329,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 </div>
 
 <!-- ============================ 4 ============================ -->
-<h2 id="s4"><span class="n">4</span>Potencias: $1^\infty$, $0^0$, $\infty^0$ <span class="src" data-l="U" data-ref="U §2.3.2, pp. 84-85">U pp.84-85</span></h2>
+<h2 id="s4" data-vista="teoria"><span class="n">4</span>Potencias: $1^\infty$, $0^0$, $\infty^0$ <span class="src" data-l="U" data-ref="U §2.3.2, pp. 84-85">U pp.84-85</span></h2>
 
 <p class="aprender"><b>Lo que vas a aprender.</b> cómo calcular límites de potencias $f^g$ (en las que la variable está en la base y en el exponente) con un solo truco: la exponencial.</p>
 
@@ -373,7 +398,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 </div>
 
 <!-- ============================ 5 ============================ -->
-<h2 id="s5"><span class="n">5</span>L'Hôpital y sucesiones <span class="src" data-l="U" data-ref="U Proposición 2.3 y Ejemplo 2.14, p. 85">U p.85</span></h2>
+<h2 id="s5" data-vista="teoria"><span class="n">5</span>L'Hôpital y sucesiones <span class="src" data-l="U" data-ref="U Proposición 2.3 y Ejemplo 2.14, p. 85">U p.85</span></h2>
 
 <p class="aprender"><b>Lo que vas a aprender.</b> cómo usar la regla en sucesiones, que no se pueden derivar, pasando por una función de variable real.</p>
 
@@ -398,7 +423,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 </div>
 
 <!-- ============================ 6 ============================ -->
-<h2 id="s6"><span class="n">6</span>Tabla-decisión: qué indeterminación tengo y qué hago <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.82-85, S pp.302-307, L pp.557-563">P</span></h2>
+<h2 id="s6" data-vista="tipos"><span class="n">6</span>Tabla-decisión: qué indeterminación tengo y qué hago <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.82-85, S pp.302-307, L pp.557-563">P</span></h2>
 
 <p class="aprender"><b>Lo que vas a aprender.</b> qué hacer, en cada caso, en cuanto veas qué símbolo sale al sustituir (mapa de decisión y, desplegable, tabla con el detalle).</p>
 
@@ -473,7 +498,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 </div>
 
 <!-- ============================ practica ============================ -->
-<h2 id="practica"><span class="n">7</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<h2 id="practica" data-vista="tipos"><span class="n">7</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
 <p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
 <div class="pract"><span class="h">Ahora hazlo tú</span>
 <p class="sub">Mira primero qué tipo sale al sustituir.</p>
@@ -596,7 +621,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 </div>
 
 <!-- ============================ autoevaluación ============================ -->
-<h2 id="autoeval"><span class="n">8</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<h2 id="autoeval" data-vista="tipos"><span class="n">8</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
 <p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
 <div class="quiz">
   <div class="q" data-ok="f">
@@ -627,7 +652,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
   <div class="q" data-ok="f">
     <p><b>6.</b> (V/F) Toda forma $1^\infty$ vale $1$, porque $1$ elevado a cualquier cosa es $1$.</p>
     <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
-    <div class="exp">La base solo <b>tiende</b> a $1$; por ejemplo $\lim_{x\to0}(1+\operatorname{sen}x)^{1/x}=e$ (práctica e1). Hay que calcular $e^{\lim g(f-1)}$.</div>
+    <div class="exp">La base solo <b>tiende</b> a $1$; por ejemplo $\lim_{x\to0}(1+\operatorname{sen}x)^{1/x}=e$ (práctica e1). Hay que calcular $e^{\lim_{x\to a} g(f-1)}$.</div>
   </div>
   <div class="q" data-ok="b">
     <p><b>7.</b> (Elige) $\displaystyle\lim_{x\to0^+}x^{1/x}$ vale:</p>
@@ -653,7 +678,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 </div>
 
 <!-- ============================ ejercicios ============================ -->
-<h2 id="ejercicios"><span class="n">9</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.24-2.33, pp. 66-72">E pp.66-72</span></h2>
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">9</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.24-2.33, pp. 66-72">E pp.66-72</span></h2>
 
 <p>Todos los límites se han comprobado con cálculo simbólico; la numeración es la de E.</p>
 <details class="ver"><summary>Ver el orden recomendado, de fácil a difícil</summary>
@@ -1029,7 +1054,31 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 </article>
 
 <!-- ============================ exámenes ============================ -->
-<h2 id="examenes"><span class="n">10</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="X: Examenes-resueltos-Calculo.pdf (exámenes UNED resueltos), páginas PDF indicadas en cada problema">X</span></h2>
+<h2 id="examenes" data-vista="examen"><span class="n">10</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="X: Examenes-resueltos-Calculo.pdf (exámenes UNED resueltos), páginas PDF indicadas en cada problema">X</span></h2>
+
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>16 preguntas</b> de este tema (6 de ellas se resuelven aquí abajo con su redacción) y 10 ejercicios en el libro E. Se reparten en 5 tipos:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>$\tfrac00$ <small>(4 de 16)</small></td><td>Comprueba las condiciones, deriva arriba y abajo, simplifica y repite si sale otra vez $\tfrac00$.</td>
+      <td><a href="#ej-2-25">2.25</a> · <a href="#ej-2-26">2.26</a> · <a href="#ej-2-27">2.27</a></td>
+      <td><a href="#ex-1">Examen 1</a></td></tr>
+    <tr><td>$\tfrac\infty\infty$ <small>(5 de 16)</small></td><td>Igual; recuerda la escalera $\ln x\ll x^p\ll a^x$ para anticipar el resultado.</td>
+      <td><a href="#ej-2-28">2.28</a> · <a href="#ej-2-32">2.32</a></td>
+      <td><a href="#ex-2">Examen 2</a></td></tr>
+    <tr><td>$0\cdot\infty$ y $\infty-\infty$ <small>(1 de 16)</small></td><td>Producto: pasa un factor al denominador. Resta: una sola fracción; después $\tfrac00$ o $\tfrac\infty\infty$.</td>
+      <td><a href="#ej-2-30">2.30</a></td>
+      <td><a href="#ex-3">Examen 3</a></td></tr>
+    <tr><td>Potencias $1^\infty$, $0^0$, $\infty^0$ <small>(2 de 16)</small></td><td>Escribe $e^{g\ln f}$, calcula $L=\lim_{x\to a} g\ln f$ y devuelve $e^{L}$.</td>
+      <td><a href="#ej-2-24">2.24</a> · <a href="#ej-2-29">2.29</a> · <a href="#ej-2-31">2.31</a></td>
+      <td><a href="#ex-4">Examen 4</a> · <a href="#ex-5">Examen 5</a></td></tr>
+    <tr><td>La regla dentro de un problema de continuidad y derivabilidad <small>(4 de 16)</small></td><td>Calcula el límite en el punto con la regla; compara con el valor de la función; deriva con la definición.</td>
+      <td>—</td>
+      <td><a href="#ex-6">Examen 6</a></td></tr>
+  </table>
+  <p><small>Recuento propio sobre el índice de los exámenes resueltos (X), clasificando cada pregunta por su dificultad principal; no cuenta un límite de acotado entre infinito que no es indeterminado. Las sucesiones (E 2.33) no aparecen en esos exámenes. Los problemas largos que además piden extremos o concavidad usan lo del tema 3.4-3.5, que esta sección no cubre.</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre el índice de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
 
 <p>Estos son los tipos reales que caen en los exámenes resueltos (fuente <b>X</b>, páginas del PDF de exámenes). La dificultad es la de los ejercicios de E, con dos diferencias: casi siempre es <b>una pregunta corta de 1 punto</b> (un único límite, sin margen para dar vueltas) y, en las preguntas largas, la regla aparece <b>dentro de un problema de continuidad y derivabilidad</b>. Están ordenados de fácil a difícil.</p>
 
@@ -1233,7 +1282,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 <div class="box intu" data-extra><span class="h">Tipos que también caen y no están en el PDF</span>
   <ul>
     <li>$\infty^0$ (p. ej. $\lim_{x\to\infty}x^{1/x}$): no aparece en ningún examen del PDF.</li>
-    <li>Límite <b>con parámetro</b> (hallar $a$ para que un límite resuelto con la regla sea finito o tenga un valor dado): no hay ninguno en el PDF.</li>
+    <li>Límite <b>con parámetro</b> (hallar $a$ para que un límite resuelto con la regla sea finito o tenga un valor dado): solo aparece dentro de un problema de continuidad (X p.41, Feb. 2014: hallar $a$ para que $f(x)=\frac{a\,e^x}{2+x}$ sea continua en $x=-2$); el Examen 6 trabaja la misma idea.</li>
     <li>Límite de <b>sucesión</b> resuelto pasando a variable real y aplicando la regla (U Prop. 2.3): en el PDF las sucesiones $1^\infty$ se resuelven con el número $e$ (p. ej. X p.101), no con L'Hôpital.</li>
     <li>Producto $0\cdot\infty$ «puro», del tipo $\lim_{x\to0^+}x\ln x$: solo aparece como paso intermedio (Examen 4).</li>
   </ul>
@@ -1241,7 +1290,7 @@ El factor $(x-a)$, que producía el «$0$ del atasco», se cancela y queda el co
 
 
 <!-- ============================ chuleta ============================ -->
-<h2 id="chuleta"><span class="n">11</span>Chuleta y lista de comprobación</h2>
+<h2 id="chuleta" data-vista="teoria"><span class="n">11</span>Chuleta y lista de comprobación</h2>
 
 <div class="box thm"><span class="h">Fórmulas y enunciados clave</span>
   <p><b>Regla:</b> $f,g$ derivables cerca de $a$, $g'\neq0$ cerca de $a$, forma $\tfrac00$ o $\tfrac\infty\infty$; <b>si existe</b> $\lim_{x\to a}\frac{f'}{g'}=\ell\in\overline{\mathbb R}$, entonces $\lim_{x\to a}\frac fg=\ell$ (también con $a^\pm$ y $\pm\infty$).</p>
