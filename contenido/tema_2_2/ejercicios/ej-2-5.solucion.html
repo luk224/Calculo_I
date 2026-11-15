@@ -1,0 +1,23 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>La derivada de $f(x)=\operatorname{sen}\!\big(e^{x^2}+(x+1)\ln x^2\big)$, cuidando dónde existe.</dd>
+    <dt>Cómo lo pienso</dt><dd>Por fuera hay un seno (cadena); lo de dentro es una suma, y uno de sus sumandos es un producto con un logaritmo. Cada regla se aplica solo donde sus hipótesis se cumplen, y $\ln x^2$ obliga a $x\neq0$.</dd>
+    <dt>Qué uso</dt><dd>Cadena, suma y producto; filas $e^u$ y $\ln u$ de la tabla — <a href="#s5">ver teoría</a> (U pp.79-80).</dd>
+    <dt>Por dónde empiezo</dt><dd>Dominio primero: $\ln x^2$ exige $x^2>0$, es decir $x\neq0$. Luego derivo el seno y dejo $G'(x)$ pendiente.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> empieza por el dominio; luego «cadena por fuera, suma y producto por dentro», anotando cada subderivada aparte antes de juntarlas.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Dominio.</b> $\operatorname{sen}$ y $e^t$ existen en todo $\mathbb R$; $\ln t$ exige $t>0$, aquí $t=x^2>0\iff x\neq0$. $\operatorname{dom}f=\mathbb R\setminus\{0\}$.</li>
+    <li><b>Capa exterior.</b> $f=\operatorname{sen}\circ G$ con $G(x)=e^{x^2}+(x+1)\ln x^2$: $f'(x)=\cos(G(x))\cdot G'(x)$.</li>
+    <li><b>Derivar $G$ sumando a sumando:</b>
+      <ul>
+        <li>$\big(e^{x^2}\big)'=2x\,e^{x^2}$ (fila $e^{u}$).</li>
+        <li>$\big((x+1)\ln x^2\big)'$ es un producto: $1\cdot\ln x^2+(x+1)(\ln x^2)'$.</li>
+        <li>$(\ln x^2)'=\dfrac1{x^2}\cdot2x=\dfrac2x$ (fila $\ln u$), válido para $x>0$ <b>y</b> para $x&lt;0$.</li>
+        <li>Luego $\big((x+1)\ln x^2\big)'=\ln x^2+\dfrac{2(x+1)}x=\ln x^2+2+\dfrac2x$.</li>
+      </ul></li>
+    <li><b>Resultado</b> ($x\neq0$): $$f'(x)=\cos\!\big(e^{x^2}+(x+1)\ln x^2\big)\Big(2xe^{x^2}+\ln x^2+2+\frac2x\Big).$$</li>
+    <li><b>Dominio de $f'$:</b> en todo $x\neq0$ se han cumplido las hipótesis de cada regla: $\operatorname{dom}f'=\mathbb R\setminus\{0\}=\operatorname{dom}f$.</li>
+  </ol>
+  <p><b>Error típico:</b> simplificar $\ln x^2=2\ln x$: sólo vale para $x>0$; lo correcto es $2\ln|x|$. Derivar como $\ln u(x)$, como aquí, evita el problema.</p>
+  </details>

@@ -1,0 +1,32 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Derivar $f(x)=x^{1/x}$ para $x>0$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La variable está a la vez en la base y en el exponente, así que ni «potencia» ni «exponencial» valen. Se pasa todo a una exponencial de base $e$ con $x=e^{\ln x}$ y entonces solo queda derivar un exponente.</dd>
+    <dt>Qué uso</dt><dd>$A^B=e^{B\ln A}$ y cociente — <a href="#s9">ver teoría</a> (S pp.220-222).</dd>
+    <dt>Por dónde empiezo</dt><dd>Reescribo $f(x)=e^{\frac{\ln x}{x}}$ y derivo el exponente $u(x)=\frac{\ln x}{x}$ con el cociente.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta (derivación logarítmica):</b> si la variable está en la base y en el exponente, $f=A^B$ con $A>0$: escribe $f=e^{B\ln A}$ (o toma $\ln f=B\ln A$ y deriva). Entonces $f'=f\cdot(B\ln A)'$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Reescribir como potencia.</b> $\sqrt[x]x=x^{1/x}$.</li>
+    <li><b>Truco.</b> La tabla no sirve ($x^c$ exige exponente constante y $a^x$ base constante; aquí varían ambos). Para $x>0$, $x=e^{\ln x}$, luego $f(x)=e^{\frac{\ln x}x}$. (Equivale a «tomar logaritmos»: $\ln f=\frac1x\ln x$, posible porque $f>0$.)</li>
+    <li><b>Derivar el exponente</b> $u(x)=\dfrac{\ln x}x$ con el cociente: $u'(x)=\dfrac{\frac1x\cdot x-\ln x\cdot1}{x^2}=\dfrac{1-\ln x}{x^2}$.</li>
+    <li><b>Cadena con $e^{u}$:</b> $f'(x)=e^{u}u'=x^{1/x}\,\dfrac{1-\ln x}{x^2}$, $x>0$.</li>
+    <li><b>Comprobación de sentido.</b> $f'>0$ si $x&lt;e$ y $f'&lt;0$ si $x>e$: $x^{1/x}$ crece hasta $x=e$ y luego decrece (máximo $e^{1/e}\approx1{,}44$), y tiende a $1$ cuando $x\to\infty$ (U Ej. 2.12, p.84, calcula ese límite con logaritmos).</li>
+  </ol>
+  <figure>
+  <svg class="fig" viewBox="0 0 470 260" role="img" aria-label="Gráfica de x elevado a 1 partido por x: sube hasta el máximo en x igual a e, valor e elevado a 1 partido por e, y luego decrece acercándose a 1">
+    <line class="ax" x1="40" y1="235" x2="450" y2="235"/><line class="ax" x1="40" y1="235" x2="40" y2="8"/>
+    <line class="t22-dash" x1="40" y1="85" x2="440" y2="85"/>
+    <line class="t22-dash" x1="159.6" y1="235" x2="159.6" y2="18.3"/>
+    <path class="a" d="M46.6 235.0 L52.4 233.4 L58.1 217.6 L63.9 186.4 L69.6 151.6 L75.4 120.6 L81.1 95.4 L86.9 75.8 L92.7 60.7 L98.4 49.3 L104.2 40.7 L109.9 34.2 L115.7 29.4 L121.4 25.8 L127.2 23.2 L132.9 21.3 L138.7 20.0 L144.5 19.1 L150.2 18.6 L156.0 18.3 L161.7 18.3 L167.5 18.5 L173.2 18.7 L179.0 19.1 L184.8 19.6 L190.5 20.1 L196.3 20.7 L202.0 21.3 L207.8 21.9 L213.5 22.6 L219.3 23.3 L225.1 23.9 L230.8 24.6 L236.6 25.3 L242.3 26.0 L248.1 26.7 L253.8 27.3 L259.6 28.0 L265.4 28.7 L271.1 29.3 L276.9 29.9 L282.6 30.6 L288.4 31.2 L294.1 31.8 L299.9 32.4 L305.7 33.0 L311.4 33.5 L317.2 34.1 L322.9 34.7 L328.7 35.2 L334.4 35.7 L340.2 36.2 L345.9 36.8 L351.7 37.2 L357.5 37.7 L363.2 38.2 L369.0 38.7 L374.7 39.1 L380.5 39.6 L386.2 40.0 L392.0 40.5"/>
+    <circle class="pt" cx="159.6" cy="18.3" r="4.5"/>
+    <text class="sm" x="168" y="22">máximo (e, e^(1/e)) ≈ (2,72; 1,44)</text>
+    <text class="sm" x="44" y="80">y = 1</text>
+    <text class="sm" x="159.6" y="252" text-anchor="middle">e</text>
+    <text class="bd" x="330" y="60">f(x) = x^(1/x)</text>
+  </svg>
+  <figcaption>$f(x)=x^{1/x}$ crece hasta $x=e$ y decrece después hacia $1$, como indica el signo de $f'(x)=x^{1/x}\frac{1-\ln x}{x^2}$.</figcaption>
+  </figure>
+  <p><b>Resultado:</b> $f'(x)=x^{1/x}\dfrac{1-\ln x}{x^2}$.</p>
+  <p><b>Error típico:</b> aplicar la regla de la potencia $\frac1x x^{\frac1x-1}$ o la de la exponencial $x^{1/x}\ln x\cdot(\frac1x)'$: cada una trata como constante algo que no lo es (el resultado correcto es la <b>suma</b> de ambas). Otro: despejar $f'$ y olvidar multiplicar por $f(x)$.</p>
+  </details>

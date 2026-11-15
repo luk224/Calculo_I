@@ -1,0 +1,17 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>La derivada de $h(x)=\operatorname{sen}\big((1+\cos x)^2\big)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es una muñeca rusa: un seno que contiene un cuadrado que contiene $1+\cos x$. Se abre de fuera hacia dentro y cada capa aporta un factor: su derivada, evaluada en lo que tiene dentro.</dd>
+    <dt>Qué uso</dt><dd>Cadena: $(F\circ u)'=F'(u)\,u'$, una derivada por capa — <a href="#s5">ver teoría</a> (U p.79).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo las tres capas: $u=1+\cos x$, $v=u^2$, $F=\operatorname{sen}v$, y derivo la exterior dejando el interior intacto.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> con varias composiciones, escribe explícitamente las capas y multiplica una derivada por capa, cada una evaluada en lo que tiene dentro: 3 capas, 3 factores.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Capas</b> (de dentro hacia fuera): $u=1+\cos x\to v=u^2\to F=\operatorname{sen}v$. Todas derivables en $\mathbb R$; $h$ también.</li>
+    <li><b>Capa exterior</b> (U p.79): $h'(x)=\cos\big((1+\cos x)^2\big)\cdot\big[(1+\cos x)^2\big]'$.</li>
+    <li><b>Capa intermedia</b> (fila $u^c$, $c=2$, U p.80): $\big[(1+\cos x)^2\big]'=2(1+\cos x)\cdot(1+\cos x)'$.</li>
+    <li><b>Capa interior:</b> $(1+\cos x)'=0-\operatorname{sen}x=-\operatorname{sen}x$.</li>
+    <li><b>Juntar:</b> $$h'(x)=-2\operatorname{sen}x\,(1+\cos x)\cos\big((1+\cos x)^2\big).$$</li>
+  </ol>
+  <p><b>Error típico:</b> derivar dos capas de golpe y perder un factor (p. ej. el $-\operatorname{sen}x$), o cambiar el argumento del coseno.</p>
+  </details>
