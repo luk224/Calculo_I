@@ -73,6 +73,20 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 
 ---
 
+## 2b. Piezas globales (aprobadas el 2026-11-15; estilo Álgebra)
+
+Se hacen **una sola vez** y conviene tenerlas pronto, porque deciden en qué orden se estudia y qué se hace primero.
+
+| ✓ | Pieza | Qué es (modelo en `ALGEBRA/claude`) | Cómo hacerla aquí |
+|---|---|---|---|
+| [ ] | **G1. Página `prioridades.html`** | «¿Por dónde empiezo?»: cuánto cae cada tema en los exámenes (nº de ejercicios de X por tema) frente a cuánto cuesta (horas del camino mínimo). Tres rutas: **Imprescindible / Recomendada / Completa**, con las dependencias entre temas y las horas totales de cada ruta. | Datos: `fuentes_txt/indice_examenes_*.md` (preguntas de X por tema) + horas de la cabecera de cada tema. Un script `herramientas/prioridades.py` genera la página (modelo: `ALGEBRA/claude/herramientas/prioridades.py`) y un `datos/dependencias.json` con el orden y las dependencias. Enlazarla desde `index.html`. |
+| [ ] | **G2. Página `ruta.html`** | Calendario hacia atrás desde las PA y la PEC (CLAUDE.md §2) según las horas semanales que tengas. | Modelo: `ALGEBRA/claude/herramientas/ruta.py`. |
+| [ ] | **G3. «Exámenes arriba» y vistas por pestañas** | Dentro de cada tema: pestañas **Todo / Teoría / Por tipo / Ejercicios / Examen**, cada `h2` con `data-vista`; al elegir «Examen» se ven primero los problemas reales (redacción ✍️). Caja «Qué cae en el examen» al principio (tabla tipo de pregunta → receta → ejercicios enlazados). Botón «Mostrar fuentes» (ocultas por defecto). | Reutilizar `ALGEBRA/claude/assets/pedagogia.js|css` dentro de `assets/estudio.*`. Probar primero en el 2.3 y luego incluirlo en F5 de cada tema. |
+| [ ] | **G4. «Lo esencial en 5 minutos» como bloque fijo** | Caja al inicio de cada tema (método en 4 pasos, fórmulas con su «cuándo se usa», qué cae). Sustituye al «En 1 minuto» actual del 2.3. | Parte de F1; usar el formato de `ALGEBRA/claude/temas/tema_2_3_*.html` (`div.box.esencial`). |
+| [ ] | **G5. Test de integridad del sitio** | Que nunca baje el nº de ejercicios/exámenes, que los enlaces `#` y los JSON de gráficas sean válidos y que no haya `\lim` sin subíndice. | `herramientas/tests_sitio.py` (modelo: Álgebra/Física). |
+
+**Orden recomendado:** G3 (probar en el 2.3) → G1 (prioridades, para decidir el orden de los demás temas) → G4 → resto de temas (F1-F6) → G2 → G5.
+
 ## 3. Antes de dar el producto por final (una vez hecho todo)
 
 - [ ] Revisión visual con navegador real a 320 / 390 / 1280 px (sin scroll horizontal, tablas, SVG de mapas, interruptor «Solo lo esencial», casillas «hecho», quiz).
