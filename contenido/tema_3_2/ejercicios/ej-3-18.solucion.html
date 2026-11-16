@@ -1,0 +1,24 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Escribir $(1-x)^{-2}$ como serie de potencias en $(-1,1)$ a partir de la geométrica.</dd>
+    <dt>Cómo lo pienso</dt><dd>$(1-x)^{-2}$ es la derivada de $\frac1{1-x}$. Si derivo los dos lados de la igualdad conocida, a un lado queda lo que busco y al otro una serie.</dd>
+    <dt>Qué uso</dt><dd>$\frac1{1-x}=\sum x^n$ en $(-1,1)$ y $\left(\sum a_nx^n\right)'=\sum na_nx^{n-1}$ (U Teor. 3.1, p.116) — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivar $f(x)=\frac1{1-x}$ con la regla de la cadena y, aparte, derivar $\sum x^n$ sumando a sumando.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> para desarrollar una función que es la <b>derivada</b> de otra con serie conocida: derivar la serie conocida término a término (U Teor. 3.1), recordar que el término constante desaparece (el índice sube en 1) y conservar el radio; después, mirar los extremos.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"1/(1-x)^2","n":"(1−x)⁻²"},{"e":"1+2*x+3*x^2+4*x^3+5*x^4","n":"1+2x+3x²+4x³+5x⁴"}],"x":[-1,0.9],"y":[0,12]}' data-alt="La función (1-x)^-2 y las cinco primeras potencias de su serie"><figcaption>La función $(1-x)^{-2}$ y la suma de los cinco primeros sumandos de su serie $\sum (n+1)x^n$: coinciden bien para $x$ cerca de $0$ y se separan al acercarse a $1$, donde la función se dispara. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+
+  <ol class="steps">
+    <li><b>Lo que sabemos.</b> $1+x+x^2+\cdots=\frac1{1-x}$ si $|x|&lt;1$: serie de potencias con todos los $a_n=1$ y radio $1$ (U Ej. 1.33 p.36, Ej. 1.58 p.68).</li>
+    <li><b>¿Podemos derivar sumando a sumando?</b> Sí: Prop. 3.3 (U p.116) con $c=1$.</li>
+    <li><b>Lado derecho.</b> $f(x)=(1-x)^{-1}$; por la regla de la cadena $f'(x)=-(1-x)^{-2}\cdot(-1)=(1-x)^{-2}$. Es justo la función pedida.</li>
+    <li><b>Lado izquierdo.</b> $(x^n)'=nx^{n-1}$. El sumando $x^0=1$ es constante y desaparece, así que la serie derivada empieza en $n=1$:
+      $$\frac1{(1-x)^2}=\sum_{n=1}^\infty nx^{n-1}=1+2x+3x^2+4x^3+\cdots$$</li>
+    <li><b>Reindexar (opcional).</b> Con $m=n-1$ (cuando $n=1$, $m=0$):
+      $$\boxed{\frac1{(1-x)^2}=\sum_{m=0}^{\infty}(m+1)x^m,\qquad x\in(-1,1).}$$</li>
+    <li><b>¿Dónde vale?</b> El Teor. 3.1 garantiza el mismo radio $1$ (también sale con el cociente: $\frac{m+2}{m+1}\to1$). En $x=\pm1$ el término $(m+1)(\pm1)^m$ no tiende a $0$: diverge. Vale exactamente en $(-1,1)$.</li>
+    <li><b>Comprobación numérica.</b> En $x=\frac12$: $\frac1{(1/2)^2}=4$, y la serie es $1+1+\frac34+\frac12+\frac5{16}+\cdots$, que suma $4$.</li>
+  </ol>
+  
+    <p><b>Teoría:</b> <a href="#s3">apartado 3</a> (U Prop. 3.3 y Teor. 3.1, p. 116).</p>
+  </details>

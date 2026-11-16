@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_3_2/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 3.2 Series de Taylor y funciones analíticas</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -15,6 +16,8 @@
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -42,12 +45,73 @@
   </div>
 </header>
 
-<!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §3.2.1 Motivación y objetivos, p. 113">U p.113</span></h2>
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>En 3.1 aproximabas una función con un polinomio de grado $n$. Aquí te preguntas: <i>¿y si no paro nunca?</i> Si sigues añadiendo términos $\frac{f^{(n}(x_0)}{n!}(x-x_0)^n$ para siempre, obtienes una <b>serie de potencias</b>. Para las funciones «buenas» (las <b>analíticas</b>: polinomios, $e^x$, $\operatorname{sen}x$, $\cos x$, $\ln$…) esa suma infinita vale exactamente la función <b>dentro de su intervalo de convergencia</b>. Como una serie de potencias se comporta como un «polinomio infinito», se puede derivar sumando a sumando y combinar con otras series: así se obtienen desarrollos nuevos sin derivar una y otra vez.</p>
   <span class="src" data-l="U" data-ref="U §3.2.1 Motivación y objetivos, p. 113">U p.113</span>
 </div>
+<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Identifica qué te piden:</b> la serie de Taylor de una función, el radio o el intervalo de convergencia, la suma de una serie numérica, una derivada $f^{(n}(x_0)$ sin derivar, o un error con el resto de Lagrange.</li>
+    <li><b>Deja la serie en forma estándar:</b> $\sum a_n(x-x_0)^n$. Si aparece $(2x-1)^n$, escríbelo como $2^n\left(x-\frac12\right)^n$: centro $\frac12$ y el $2^n$ pasa al coeficiente.</li>
+    <li><b>Elige la herramienta más corta:</b> serie conocida con sustitución o derivación antes que derivar a mano; cociente si hay factoriales, raíz si el coeficiente es «algo elevado a $n$».</li>
+    <li><b>Cierra siempre:</b> el radio no dice nada de los extremos $x_0\pm R$; se sustituyen y se estudian a mano (¿el término tiende a $0$?).</li>
+  </ol>
+  <p class="sub">Qué hago según lo que piden</p>
+  <ul>
+    <li>¿Serie de Taylor de $f$ en $x_0$? $\to$ ¿es una conocida disfrazada? Sustituyo; si no, derivo 3-4 veces sin simplificar, evalúo en $x_0$ y divido entre $n!$.</li>
+    <li>¿Radio, centro o intervalo? $\to$ forma estándar, cociente o raíz, $R=\frac1S$ y los dos extremos aparte.</li>
+    <li>¿Sumar una serie o desarrollar $(1-x)^{-2}$? $\to$ derivo (o multiplico por $x$) una serie conocida dentro de $(-R,R)$ y evalúo.</li>
+    <li>¿$f^{(n}(x_0)$ sin derivar? $\to$ $f^{(n}(x_0)=n!\cdot(\text{coeficiente de }(x-x_0)^n)$.</li>
+    <li>¿Error o número de términos? $\to$ resto de Lagrange $|R_n(x)|\le\frac{M}{(n+1)!}|x-x_0|^{n+1}$.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>Serie de Taylor: $\displaystyle\sum_{n\ge0}\frac{f^{(n}(x_0)}{n!}(x-x_0)^n$</td><td>Desarrollar $f$ en un centro dado ($x_0=0$: Maclaurin).</td></tr>
+    <tr><td>$R=\dfrac1S$, con $S=\lim_{n\to\infty}\left|\dfrac{a_{n+1}}{a_n}\right|$ o $S=\lim_{n\to\infty}\sqrt[n]{|a_n|}$</td><td>Radio de convergencia (cociente con factoriales; raíz con potencias $n$ o $n^2$).</td></tr>
+    <tr><td>Extremos $x_0\pm R$: sustituir; si $a_n\not\to0$, diverge</td><td>Intervalo de convergencia completo.</td></tr>
+    <tr><td>$\left(\sum a_nx^n\right)'=\sum na_nx^{n-1}$, mismo radio, en $(-R,R)$</td><td>Obtener $(1-x)^{-2}$, sumar $\sum nx^{n-1}$ o $\sum\frac n{2^n}$.</td></tr>
+    <tr><td>$f^{(n}(x_0)=n!\,a_n$</td><td>Derivadas en el centro leídas de una serie.</td></tr>
+    <tr><td>$R_n(x)\to0\iff$ la serie suma $f(x)$</td><td>Analiticidad y aproximaciones con error.</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos: radio e intervalo de convergencia (5 de 8 preguntas), serie de Taylor de una función concreta (2 de 8) y reconocer una serie derivada (1 de 8). En el libro de ejercicios son E 3.17-3.20. Tabla completa por tipo: <a href="#examenes" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §3.2.3, pp. 116-119 (derivación término a término, serie de Taylor, analíticas); radio: U §1.5, p. 70; resumen propio">U pp.116-119</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §3.2">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 1,5 h</b>
+      <ul>
+        <li>Los apartados de <b>serie de Taylor, radio, derivación de series y desarrollos nuevos</b> (1-4) y el <b>mapa de decisión</b> (apartado 6).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-3-18">E 3.18</a> (derivar la geométrica), <a href="#ej-3-19">E 3.19</a> (serie de $e^x$), <a href="#ex-1">Examen 1</a> (radio), <a href="#ex-2">Examen 2</a> (centro $(2x-1)^n$), <a href="#ex-4">Examen 4</a> (extremos), <a href="#ex-6">Examen 6</a> (serie de $e^{\pi x}$), <a href="#ex-7">Examen 7</a> (Taylor y Lagrange) y <a href="#p1">P1</a> (intervalo completo).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 4 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»), con ampliaciones e interactivos.</li>
+        <li>E 3.17-3.20, los 8 exámenes, los 4 ejemplos propios y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#ej-3-20">E 3.20</a>, <a href="#ex-3">Examen 3</a> (raíz con $1^\infty$), <a href="#p3">P3</a>, <a href="#p4">P4</a> y las prácticas ★★.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
+<!-- ============================ prereq ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §3.2.1 Motivación y objetivos, p. 113">U p.113</span></h2>
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li>Polinomio de Taylor, resto de Lagrange y desarrollos básicos de $e^x$, $\operatorname{sen}x$, $\cos x$ (tema 3.1). <span class="src" data-l="U" data-ref="U §3.1.3, pp. 107-111">U pp.107-111</span></li>
@@ -55,14 +119,20 @@
   <li>Regla de la cadena y L'Hôpital (tema 2). <span class="src" data-l="U" data-ref="U regla de la cadena p. 79; L'Hôpital §2.3.2 p. 82">U pp.79, 82</span></li>
 </ul>
 <div class="box warn"><span class="h">Qué entra en examen y qué no</span>
-  <p><b>Sí entra:</b> series de Taylor y funciones analíticas (U §3.2.3, pp. 117-119); <b>derivación término a término de series de potencias</b> (U Prop. 3.3 y Teor. 3.1, p. 116), porque la usan E 3.18 y los exámenes; y el <b>radio de convergencia</b>. El criterio es el cronograma 2026-27. El radio viene de U §1.5 (pp. 67-70), cuyas series y sucesiones <i>funcionales</i> el cronograma excluye; pero el radio entra porque lo usan E 3.17-3.20 y el Tema 3 (series de Taylor), y además aparece en X (pp. 38, 46, 96, 99, 105, 112, 126). Se repasa en el apartado 2.<br>
+  <p><b>Sí entra:</b> series de Taylor y funciones analíticas (U §3.2.3, pp. 117-119); <b>derivación término a término de series de potencias</b> (U Prop. 3.3 y Teor. 3.1, p. 116), porque la usan E 3.18 y los exámenes; y el <b>radio de convergencia</b>. El criterio es el cronograma 2026-27. El radio viene de U §1.5 (pp. 67-70), cuyas series y sucesiones <i>funcionales</i> el cronograma excluye; pero el radio entra porque lo usan E 3.17-3.20 y el Tema 3 (series de Taylor), y además aparece en X (pp. 38, 46, 96, 99, 105, 112, 126). Se repasa en el <a href="#s2">apartado 2</a>.<br>
   <b>No entra</b> (va colapsado en «Fuera de examen»): convergencia uniforme y derivación de <i>sucesiones y series de funciones</i> (U §3.2.2, pp. 113-115) y los ejercicios E 3.15–3.16 (y la parte de convergencia uniforme de E 3.17). Las preguntas de X sobre convergencia uniforme son de U §1.5, excluida por el cronograma, y no se resuelven aquí.</p>
   <p>La inclusión de la derivación de series de potencias como materia de examen es una decisión de este resumen (basada en E 3.18 y X p. 112); conviene confirmarla con el equipo docente.</p>
 </div>
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>Calcular el radio</b> (y el intervalo) de convergencia de una serie de potencias. (B) <b>Derivar</b> una serie conocida para obtener otra (E 3.18). (C) <b>Escribir la serie de Taylor</b> de una función en un centro dado: encontrar el patrón de las derivadas (E 3.19, 3.20, X pp.142, 145). (D) Usar el <b>resto de Lagrange</b> para calcular un valor con un error dado (X pp.145-146, tema 3.1).</p>
-<!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>De polinomio a serie: la serie de Taylor <span class="src" data-l="U" data-ref="U §3.2.3 Funciones analíticas, definición de serie de Taylor y Ejemplos 3.13-3.14, p. 117">U p.117</span></h2>
+<!-- ============================ s1 ============================ -->
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>De polinomio a serie: la serie de Taylor <span class="src" data-l="U" data-ref="U §3.2.3 Funciones analíticas, definición de serie de Taylor y Ejemplos 3.13-3.14, p. 117">U p.117</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a escribir la serie de Taylor de una función en un centro dado: derivar, evaluar en el centro, dividir entre $n!$ y reconocer el patrón.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «serie de Taylor de $f$ en $x_0$», «desarrolla $f$ en potencias de $(x-x_0)$».</li>
+  <li><b>Qué haces:</b> derivas 3 o 4 veces sin simplificar, evalúas en $x_0$, ves el patrón de $f^{(n}(x_0)$ y divides entre $n!$.</li>
+  <li><b>Ejemplo mínimo:</b> $e^{2x}$ en $0$: $f^{(n}(0)=2^n$, serie $\sum\frac{2^n}{n!}x^n$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>El polinomio de Taylor de orden $n$ copia a $f$ en $x_0$ hasta la derivada $n$. Cuanto mayor es $n$, más derivadas copia. Si le dejas crecer sin límite, queda una lista infinita de sumandos con exactamente las mismas fórmulas para los coeficientes. Es como seguir añadiendo decimales a $\pi$: cada aproximación mejora la anterior, y «la suma infinita» es el número exacto (si todo va bien).</p>
   <span class="src" data-l="U" data-ref="U §3.2.3, observación sobre el polinomio de Taylor, p. 117">U p.117</span>
@@ -100,8 +170,14 @@
   <p><b>Contraejemplo (propio).</b> $g(x)=e^{-1/x^2}$ para $x\ne0$, $g(0)=0$, cumple $g^{(n}(0)=0$ para todo $n$: su serie en $0$ es $0+0x+0x^2+\cdots=0$, que converge siempre pero no suma $g$. Las funciones que sí igualan su serie son las <b>analíticas</b>.</p>
   <span class="src" data-l="P" data-ref="Ejemplo clásico, explicación propia (L p.666 hace la advertencia general)">P</span>
 </div>
-<!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>Radio de convergencia de una serie de potencias <span class="src" data-l="U" data-ref="U §1.5, Def. 1.29 p. 67; ejemplos 1.57-1.60 p. 68-69; criterios de la raíz y del cociente, p. 70">U pp.67-70</span></h2>
+<!-- ============================ s2 ============================ -->
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>Radio de convergencia de una serie de potencias <span class="src" data-l="U" data-ref="U §1.5, Def. 1.29 p. 67; ejemplos 1.57-1.60 p. 68-69; criterios de la raíz y del cociente, p. 70">U pp.67-70</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a calcular el centro, el radio y el intervalo de convergencia de una serie de potencias con el cociente o la raíz, sin olvidar los dos extremos.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «radio de convergencia», «intervalo de convergencia», «¿para qué $x$ converge?».</li>
+  <li><b>Qué haces:</b> lees $x_0$ y $a_n$ en la forma $a_n(x-x_0)^n$; cociente (factoriales) o raíz (potencia $n$); $R=\frac1S$; y sustituyes $x_0\pm R$ para decidir cada extremo.</li>
+  <li><b>Ejemplo mínimo:</b> $\sum\frac{x^n}{2^n}$: $S=\frac12$, $R=2$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Una serie de potencias $\sum a_n(x-x_0)^n$ es, para cada $x$ fijo, una serie de <i>números</i>. Lo que cambia es el $x$. El resultado es siempre así: converge en un intervalo centrado en $x_0$ y diverge fuera de él. Es como el alcance de una linterna: dentro del círculo de luz hay convergencia, fuera no; el <b>radio</b> $R$ es el alcance. Justo en el borde ($x_0\pm R$) hay que mirar a mano.</p>
   <span class="src" data-l="U" data-ref="U §1.5, Def. 1.29 y tipos 1-3, p. 67">U p.67</span>
@@ -146,8 +222,14 @@
   <p>En $x=x_0\pm R$ los criterios no deciden (el límite vale $1$). Se <b>sustituye</b> el valor y se estudia la serie numérica. Lo primero que se mira: ¿el término general tiende a $0$? Si no, <b>diverge</b> (U Prop. 1.6, p. 36). Si sí, hay que usar otro criterio: armónica (diverge), Leibniz (alternada con $|a_n|\downarrow0$ converge), etc. P1 tiene un extremo que converge y otro que no. Errores típicos: dar por convergente un extremo sin mirarlo, o creer que el radio llega hasta donde está definida $f$ (ver el interactivo).</p>
   <span class="src" data-l="U" data-ref="U Prop. 1.6, p. 36; Ej. 1.35, p. 37; Leibniz, p. 41; Ej. 1.60, pp. 68-69">U pp.36-41, 68-69</span>
 </div>
-<!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Derivar una serie de potencias término a término <span class="src" data-l="U" data-ref="U Proposición 3.3, Teorema 3.1 y Ejemplo 3.12, p. 116">U p.116</span></h2>
+<!-- ============================ s3 ============================ -->
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Derivar una serie de potencias término a término <span class="src" data-l="U" data-ref="U Proposición 3.3, Teorema 3.1 y Ejemplo 3.12, p. 116">U p.116</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a derivar una serie de potencias sumando a sumando, a reindexar y a saber en qué intervalo vale el resultado.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «a partir de la geométrica, expresa $(1-x)^{-2}$», «suma $\sum nx^{n-1}$», «pista: deriva».</li>
+  <li><b>Qué haces:</b> derivas los dos lados de una igualdad conocida: el exponente baja, la serie empieza en $n=1$, el radio no cambia y solo vale en $(-R,R)$.</li>
+  <li><b>Ejemplo mínimo:</b> $\left(\frac1{1-x}\right)'=\frac1{(1-x)^2}=\sum_{n\ge1}nx^{n-1}$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Un polinomio se deriva sumando por sumando. Una serie de potencias es un «polinomio infinito», y dentro de su intervalo de convergencia se porta igual de bien: se deriva cada sumando y la nueva serie tiene <b>el mismo radio</b>. Esto es lo que permite obtener $\frac1{(1-x)^2}$ a partir de $\frac1{1-x}$ en un paso.</p>
   <span class="src" data-l="P" data-ref="Explicación propia, sin página en los libros">P</span>
@@ -178,8 +260,14 @@
   </ul>
   <span class="src" data-l="P" data-ref="Explicación propia, sin página en los libros">P</span>
 </div>
-<!-- ============================ 4 ============================ -->
-<h2 id="s4"><span class="n">4</span>Funciones analíticas y cómo fabricar series nuevas <span class="src" data-l="U" data-ref="U §3.2.3, funciones analíticas y Ejemplo 3.15, pp. 117-119">U pp.117-119</span></h2>
+<!-- ============================ s4 ============================ -->
+<h2 id="s4" data-vista="teoria"><span class="n">4</span>Funciones analíticas y cómo fabricar series nuevas <span class="src" data-l="U" data-ref="U §3.2.3, funciones analíticas y Ejemplo 3.15, pp. 117-119">U pp.117-119</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a fabricar series nuevas sin derivar (sustituir, multiplicar por una potencia, derivar) y a pasar de coeficientes a derivadas en el centro.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «desarrolla $x^2\cos x^3$», «calcula $f^{(8}(0)$ sin derivar», «¿suma la serie a $f$?».</li>
+  <li><b>Qué haces:</b> sustituyes en una serie conocida, multiplicas por $x^k$ o derivas, y lees $f^{(n}(x_0)=n!\,a_n$ en la serie obtenida.</li>
+  <li><b>Ejemplo mínimo:</b> $e^{x^2}=1+x^2+\frac{x^4}{2!}+\cdots$: el coeficiente de $x^4$ es $\frac12$, luego $f^{(4}(0)=4!\cdot\frac12=12$.</li>
+</ul>
 <div class="box def"><span class="h">Función analítica</span>
   <p>U (p. 117): «Lo más deseable es que la serie de Taylor converja <i>uniformemente</i> a la función que la define en un intervalo que contenga a $x_0$». Aquí, como la convergencia uniforme es material fuera de examen, basta pensar en que la serie converge a $f$ en cada punto de ese intervalo (simplificación nuestra). Las funciones para las que esto ocurre se llaman <b>analíticas</b>. <b>Las funciones polinómicas, trigonométricas, exponenciales y logarítmicas son analíticas</b> (en su dominio, cerca de cada punto).</p>
   <span class="src" data-l="U" data-ref="U §3.2.3, texto sobre convergencia de la serie de Taylor y definición de función analítica, pp. 117-118">U pp.117-118</span>
@@ -217,8 +305,8 @@
   <span class="src" data-l="U" data-ref="U Ejemplo 3.15, pp. 118-119">U pp.118-119</span>
   <span class="src" data-l="L" data-ref="Larson §9.10, Ejemplo 3 (sen x^2 por sustitución) y directrices, p. 668">L p.668</span>
 </div>
-<!-- ============================ 5 ============================ -->
-<h2 id="fuera"><span class="n">5</span>Fuera de examen: sucesiones y series de funciones <span class="src" data-l="U" data-ref="U §3.2.2, pp. 113-115; E Ej. 3.15-3.17, pp. 100-104">U pp.113-115</span></h2>
+<!-- ============================ fuera ============================ -->
+<h2 id="fuera" data-vista="teoria"><span class="n">5</span>Fuera de examen: sucesiones y series de funciones <span class="src" data-l="U" data-ref="U §3.2.2, pp. 113-115; E Ej. 3.15-3.17, pp. 100-104">U pp.113-115</span></h2>
 <p>Esta parte no cae en examen. Se deja aquí, cerrada, por si quieres entender de dónde viene la Prop. 3.3 o mirar los ejercicios del libro.</p>
 <details class="fuera"><summary>Fuera de examen: derivación de sucesiones y series de funciones (U §3.2.2, pp. 113-115)</summary>
   <p><b>Idea.</b> Si una sucesión de funciones $f_n$ tiende a $f$, ¿se puede derivar «dentro del límite»? En general <b>no</b>: que $f_n\to f$ no obliga a que $f_n'\to f'$. Hace falta una convergencia más fuerte, la <b>uniforme</b>: $f_n\to f$ uniformemente en $I$ si $\lim_{n\to\infty}\sup_{x\in I}|f_n(x)-f(x)|=0$ (el error máximo, no punto a punto, tiende a $0$).</p>
@@ -251,59 +339,297 @@
   <div class="recipe"><b>Receta:</b> comprobar <b>todas</b> las hipótesis de un teorema (aquí, intervalo acotado). La misma sucesión puede converger uniformemente en un intervalo y no en otro.</div>
 
   <h4>Ejercicio 3.17 (sólo la parte de convergencia uniforme) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.17, p. 104">E p.104</span></h4>
-  <p>El enunciado recuerda que $\sum e^{-n}x^n$ converge absoluta y uniformemente en $[-k,k]$, $0&lt;k&lt;e$: eso es lo que queda fuera de examen. El cálculo del radio de la serie de derivadas es examen y se resuelve en el apartado 6.</p>
+  <p>El enunciado recuerda que $\sum e^{-n}x^n$ converge absoluta y uniformemente en $[-k,k]$, $0&lt;k&lt;e$: eso es lo que queda fuera de examen. El cálculo del radio de la serie de derivadas es examen y se resuelve en <a href="#ej-3-17">el ejercicio 3.17</a> de la sección de ejercicios.</p>
 </details>
-<!-- ============================ 6 ============================ -->
-<h2 id="ejercicios"><span class="n">6</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.17-3.20, pp. 104-107">E pp.104-107</span></h2>
-<p>Los ejercicios 3.15 y 3.16 (y la parte de convergencia uniforme de 3.17) están en el apartado 5 (fuera de examen). Pulsa «Mostrar soluciones» arriba para abrirlos todos.</p>
-<details class="sol" id="ej-3-17"><summary>Ejercicio 3.17 · radio de la serie de las derivadas de $\sum e^{-n}x^n$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.17, p. 104">E p.104</span></summary>
-<p class="enun">Sea $f_n(x)=e^{-n}x^n$, $n\ge1$ (serie absoluta y uniformemente convergente en $[-k,k]$, $0&lt;k&lt;e$; esa parte es fuera de examen). Construye $\sum f_n'(x)$ y calcula su radio de convergencia.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>El radio de convergencia de la serie formada por las derivadas $f_n'$ de los sumandos de $\sum e^{-n}x^n$.</dd>
-    <dt>Cómo lo pienso</dt><dd>Derivar sumando a sumando no cambia el «tamaño» de la zona donde la serie converge: la serie de derivadas debe tener el mismo radio que la original, que es una geométrica disfrazada.</dd>
-    <dt>Qué uso</dt><dd>Derivación término a término (U Teor. 3.1, p.116: misma $R$); criterio del cociente para el radio (U p.70).</dd>
-    <dt>Por dónde empiezo</dt><dd>Derivar $e^{-n}x^n$ con la regla de la potencia y escribir la serie resultante.</dd>
-  </dl></div>
+<!-- ============================ mapa ============================ -->
+<h2 id="mapa" data-vista="tipos"><span class="n">6</span>Mapa de decisión: qué hago con una serie <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §3.2 y §1.5 pp. 67-70">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué herramienta usar (sustituir en una conocida, derivar, cociente o raíz, resto de Lagrange) en cuanto leas lo que te piden; mapa de decisión y, desplegable, tabla con el detalle.</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja y «sí» te lleva a la acción de la derecha. Al final, antes de escribir, recuerda que <b>el radio no dice nada de los extremos</b> y que «la serie converge» no es «la serie suma $f$».</p>
+<svg class="flujo" viewBox="0 0 460 630" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión: qué hago con una serie de potencias o de Taylor</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Si piden la serie de Taylor de una función: sustituir en una serie conocida o derivar y buscar el patrón. Si piden radio o intervalo: forma estándar, cociente o raíz y los dos extremos. Si piden sumar una serie numérica o desarrollar una potencia negativa: derivar una serie conocida dentro del intervalo abierto y evaluar. Si piden derivadas en el centro sin derivar: n factorial por el coeficiente. Si piden un error o si la serie suma f: resto de Lagrange. Al final se redacta con serie, radio y extremos.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="nodo" x="10" y="10" width="200" height="62" rx="10"/><text x="110" y="37" text-anchor="middle">Leo qué me piden y localizo</text><text x="110" y="55" text-anchor="middle">la función, la serie y x0</text>
+<path class="lin" d="M110 72 V97" marker-end="url(#fl)"/>
+<rect class="preg" x="10" y="100" width="200" height="62" rx="10"/><text x="110" y="127" text-anchor="middle">¿Piden la serie de Taylor</text><text x="110" y="145" text-anchor="middle">(o un desarrollo) de f?</text>
+<path class="lin" d="M110 162 V187" marker-end="url(#fl)"/>
+<text class="no" x="118" y="179">no</text>
+<path class="lin" d="M210 131 H246" marker-end="url(#fl)"/><text class="si" x="215" y="126">sí</text>
+<rect class="nodo" x="250" y="100" width="200" height="62" rx="10"/><text x="350" y="118" text-anchor="middle">Si f sale de e^x, sen, cos,</text><text x="350" y="136" text-anchor="middle">1/(1−x): sustituyo. Si no:</text><text x="350" y="154" text-anchor="middle">derivo, patrón, f^(n)(x0)/n!</text>
+<rect class="preg" x="10" y="190" width="200" height="62" rx="10"/><text x="110" y="217" text-anchor="middle">¿Piden radio, centro o</text><text x="110" y="235" text-anchor="middle">intervalo de convergencia?</text>
+<path class="lin" d="M110 252 V277" marker-end="url(#fl)"/>
+<text class="no" x="118" y="269">no</text>
+<path class="lin" d="M210 221 H246" marker-end="url(#fl)"/><text class="si" x="215" y="216">sí</text>
+<rect class="nodo" x="250" y="190" width="200" height="62" rx="10"/><text x="350" y="208" text-anchor="middle">Dejo (x − x0)^n y leo a_n;</text><text x="350" y="226" text-anchor="middle">factoriales: cociente; a^n:</text><text x="350" y="244" text-anchor="middle">raíz; R = 1/S y los extremos</text>
+<rect class="preg" x="10" y="280" width="200" height="62" rx="10"/><text x="110" y="307" text-anchor="middle">¿Piden sumar una serie o</text><text x="110" y="325" text-anchor="middle">desarrollar (1−x)^(−2), ln…?</text>
+<path class="lin" d="M110 342 V367" marker-end="url(#fl)"/>
+<text class="no" x="118" y="359">no</text>
+<path class="lin" d="M210 311 H246" marker-end="url(#fl)"/><text class="si" x="215" y="306">sí</text>
+<rect class="nodo" x="250" y="280" width="200" height="62" rx="10"/><text x="350" y="298" text-anchor="middle">Derivo (o multiplico por x)</text><text x="350" y="316" text-anchor="middle">una serie conocida dentro</text><text x="350" y="334" text-anchor="middle">de (−R, R) y evalúo ahí</text>
+<rect class="preg" x="10" y="370" width="200" height="62" rx="10"/><text x="110" y="397" text-anchor="middle">¿Piden f^(n)(x0) sin</text><text x="110" y="415" text-anchor="middle">derivar la función?</text>
+<path class="lin" d="M110 432 V457" marker-end="url(#fl)"/>
+<text class="no" x="118" y="449">no</text>
+<path class="lin" d="M210 401 H246" marker-end="url(#fl)"/><text class="si" x="215" y="396">sí</text>
+<rect class="nodo" x="250" y="370" width="200" height="62" rx="10"/><text x="350" y="388" text-anchor="middle">Leo el coeficiente a_n del</text><text x="350" y="406" text-anchor="middle">desarrollo: f^(n)(x0) = n!·a_n</text><text x="350" y="424" text-anchor="middle">(a_n = coef. de (x − x0)^n)</text>
+<rect class="preg" x="10" y="460" width="200" height="62" rx="10"/><text x="110" y="487" text-anchor="middle">¿Piden un error, cuántos</text><text x="110" y="505" text-anchor="middle">términos o si suma f?</text>
+<path class="lin" d="M110 522 V547" marker-end="url(#fl)"/>
+<text class="no" x="118" y="539">no</text>
+<path class="lin" d="M210 491 H246" marker-end="url(#fl)"/><text class="si" x="215" y="486">sí</text>
+<rect class="nodo" x="250" y="460" width="200" height="62" rx="10"/><text x="350" y="478" text-anchor="middle">Resto de Lagrange: |R_n| ≤</text><text x="350" y="496" text-anchor="middle">M|x − x0|^(n+1)/(n+1)!;</text><text x="350" y="514" text-anchor="middle">si R_n → 0, la serie suma f</text>
+<rect class="fin" x="10" y="550" width="200" height="62" rx="10"/><text x="110" y="577" text-anchor="middle">Redacto: serie, radio y</text><text x="110" y="595" text-anchor="middle">extremos, con las fuentes</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso</summary>
+<table>
+  <tr><th>Piden…</th><th>Herramienta</th><th>Ojo con…</th></tr>
+  <tr><td>Serie de Taylor de $f$ en $x_0$</td><td>Sustituir en una serie conocida; o derivar, evaluar en $x_0$ y dividir entre $n!$</td><td>Evaluar en $x_0$ (no en $0$); no olvidar el $n!$</td></tr>
+  <tr><td>Radio de convergencia</td><td>Cociente (factoriales) o raíz (potencia $n$ o $n^2$): $R=\frac1S$</td><td>Dejar la serie en $a_n(x-x_0)^n$ antes</td></tr>
+  <tr><td>Intervalo de convergencia</td><td>Radio y después $x_0\pm R$ por separado</td><td>Si $a_n\not\to0$ en el extremo, diverge; si no, Leibniz o comparación</td></tr>
+  <tr><td>Suma de una serie numérica</td><td>Derivar (o multiplicar por $x$) una serie conocida y evaluar</td><td>El punto debe caer dentro de $(-R,R)$</td></tr>
+  <tr><td>$f^{(n}(x_0)$ sin derivar</td><td>$f^{(n}(x_0)=n!\,a_n$ con el desarrollo en potencias</td><td>No confundir el coeficiente con la derivada</td></tr>
+  <tr><td>Error de una aproximación</td><td>Lagrange: $|R_n(x)|\le\frac{M}{(n+1)!}|x-x_0|^{n+1}$</td><td>La cota debe ser <b>menor</b> que la tolerancia; centrar donde las derivadas son exactas</td></tr>
+  <tr><td>¿La serie suma $f$?</td><td>$R_n(x)\to0$ (función analítica)</td><td>Converger no es sumar $f$ ($e^{-1/x^2}$)</td></tr>
+</table>
+</details>
+<div class="box tip"><span class="h">Método en cinco pasos para el examen</span>
   <ol class="steps">
-    <li>$f_n'(x)=ne^{-n}x^{n-1}$. La serie es $\sum_{n=1}^\infty ne^{-n}x^{n-1}=\sum_{n=0}^\infty(n+1)e^{-(n+1)}x^n$ (reindexando).</li>
-    <li><b>Radio, por el cociente:</b> $\dfrac{(n+2)e^{-(n+2)}}{(n+1)e^{-(n+1)}}=\dfrac{n+2}{(n+1)e}\to\dfrac1e$, luego $R=e$.</li>
-    <li><b>Atajo:</b> la serie original es la geométrica $\sum\left(\frac xe\right)^n$, de radio $e$, y por el Teor. 3.1 la derivada conserva el radio.</li>
+    <li><b>Traduce lo que piden</b> a una de las filas del mapa.</li>
+    <li><b>Pon la serie en forma estándar</b> $\sum a_n(x-x_0)^n$ y escribe $x_0$ y $a_n$.</li>
+    <li><b>Aplica la herramienta</b> (sustitución, derivación, cociente o raíz, Lagrange) y simplifica los factoriales.</li>
+    <li><b>Estudia los extremos</b> si piden intervalo: primero, ¿el término general tiende a $0$?</li>
+    <li><b>Da la respuesta completa:</b> serie, radio y, si procede, intervalo.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> la serie de las derivadas tiene el mismo radio que la original.</div>
+  <span class="src" data-l="P" data-ref="Método propio, sintetizado a partir de U §3.2 y §1.5">P</span>
+</div>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">7</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub">Antes de calcular, decide qué te piden: la serie (¿derivo y busco el patrón, o sustituyo en una conocida?), dónde converge (centro, radio con cociente o raíz y, siempre, los dos extremos aparte), una suma (¿de qué serie conocida es un valor?) o si la serie suma $f$ (resto de Lagrange $\to0$).</p>
+<h3>Serie de Taylor a partir de las derivadas (buscar el patrón)</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · serie de Taylor de $\operatorname{sen}x$ en $\pi$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula la serie de Taylor de $f(x)=\operatorname{sen}x$ centrada en $x_0=\pi$ y su radio de convergencia.</p>
+  <details class="pista"><summary>Pista</summary><p>Las derivadas del seno se repiten cada cuatro: $\operatorname{sen},\cos,-\operatorname{sen},-\cos$. Evalúalas en $\pi$ (donde $\operatorname{sen}\pi=0$ y $\cos\pi=-1$): la mitad de los coeficientes se anulan.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Ciclo de derivadas:</b> $f=\operatorname{sen}x$, $f'=\cos x$, $f''=-\operatorname{sen}x$, $f'''=-\cos x$, $f^{(4}=\operatorname{sen}x$, y vuelta a empezar.</li><li><b>En $\pi$:</b> $f(\pi)=0$, $f'(\pi)=-1$, $f''(\pi)=0$, $f'''(\pi)=1$, $f^{(4}(\pi)=0$, $f^{(5}(\pi)=-1$… Las de orden par son $0$; las de orden impar valen $-1,1,-1,1,\dots$, es decir, $f^{(2n+1}(\pi)=(-1)^{n+1}$.</li><li><b>Serie</b> (U §3.2.3, p.117: coeficiente $\frac{f^{(n}(x_0)}{n!}$): solo quedan potencias impares de $(x-\pi)$:
+    $$-(x-\pi)+\frac{(x-\pi)^3}{3!}-\frac{(x-\pi)^5}{5!}+\cdots=\sum_{n=0}^\infty\frac{(-1)^{n+1}}{(2n+1)!}(x-\pi)^{2n+1}.$$</li><li><b>Radio:</b> con $t=(x-\pi)^2$ es la serie $\sum\frac{(-1)^{n+1}}{(2n+1)!}t^n$ multiplicada por $(x-\pi)$; el cociente $\frac{(2n+1)!}{(2n+3)!}=\frac1{(2n+2)(2n+3)}\to0$ (U p.70) da radio infinito en $t$, luego converge para todo $x$.</li><li><b>Comprobación:</b> $\operatorname{sen}x=-\operatorname{sen}(x-\pi)$; sustituyendo $x-\pi$ en la serie del seno (U Ej. 3.12, p.116) sale lo mismo cambiado de signo.</li></ol>
+    <p class="res">Resultado: $\operatorname{sen}x=\sum_{n=0}^\infty\frac{(-1)^{n+1}}{(2n+1)!}(x-\pi)^{2n+1}$, con $R=\infty$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-18"><summary>Ejercicio 3.18 · $(1-x)^{-2}$ como serie, derivando la geométrica <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.18, pp. 104-105">E pp.104-105</span></summary>
-<p class="enun">Sabemos que $\sum_{n=0}^{+\infty}x^n=\frac1{1-x}$ para $x\in(-1,1)$ por ser una serie geométrica. A partir de esta expresión, expresa $(1-x)^{-2}$ como una serie de potencias para $x\in(-1,1)$. Pista: calcula la derivada de $f(x)=\frac1{1-x}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Escribir $(1-x)^{-2}$ como serie de potencias en $(-1,1)$ a partir de la geométrica.</dd>
-    <dt>Cómo lo pienso</dt><dd>$(1-x)^{-2}$ es la derivada de $\frac1{1-x}$. Si derivo los dos lados de la igualdad conocida, a un lado queda lo que busco y al otro una serie.</dd>
-    <dt>Qué uso</dt><dd>Serie geométrica (U Ej. 1.33 p.36); derivación término a término (U Prop. 3.3 y Teor. 3.1, p.116).</dd>
-    <dt>Por dónde empiezo</dt><dd>Derivar $f(x)=\frac1{1-x}$ con la regla de la cadena y, aparte, derivar $\sum x^n$ sumando a sumando.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"1/(1-x)^2","n":"(1−x)⁻²"},{"e":"1+2*x+3*x^2+4*x^3+5*x^4","n":"1+2x+3x²+4x³+5x⁴"}],"x":[-1,0.9],"y":[0,12]}' data-alt="La función (1-x)^-2 y las cinco primeras potencias de su serie"><figcaption>La función $(1-x)^{-2}$ y la suma de los cinco primeros sumandos de su serie $\sum (n+1)x^n$: coinciden bien para $x$ cerca de $0$ y se separan al acercarse a $1$, donde la función se dispara. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
-  <ol class="steps">
-    <li><b>Lo que sabemos.</b> $1+x+x^2+\cdots=\frac1{1-x}$ si $|x|&lt;1$: serie de potencias con todos los $a_n=1$ y radio $1$ (U Ej. 1.33 p.36, Ej. 1.58 p.68).</li>
-    <li><b>¿Podemos derivar sumando a sumando?</b> Sí: Prop. 3.3 (U p.116) con $c=1$.</li>
-    <li><b>Lado derecho.</b> $f(x)=(1-x)^{-1}$; por la regla de la cadena $f'(x)=-(1-x)^{-2}\cdot(-1)=(1-x)^{-2}$. Es justo la función pedida.</li>
-    <li><b>Lado izquierdo.</b> $(x^n)'=nx^{n-1}$. El sumando $x^0=1$ es constante y desaparece, así que la serie derivada empieza en $n=1$:
-      $$\frac1{(1-x)^2}=\sum_{n=1}^\infty nx^{n-1}=1+2x+3x^2+4x^3+\cdots$$</li>
-    <li><b>Reindexar (opcional).</b> Con $m=n-1$ (cuando $n=1$, $m=0$):
-      $$\boxed{\frac1{(1-x)^2}=\sum_{m=0}^{\infty}(m+1)x^m,\qquad x\in(-1,1).}$$</li>
-    <li><b>¿Dónde vale?</b> El Teor. 3.1 garantiza el mismo radio $1$ (también sale con el cociente: $\frac{m+2}{m+1}\to1$). En $x=\pm1$ el término $(m+1)(\pm1)^m$ no tiende a $0$: diverge. Vale exactamente en $(-1,1)$.</li>
-    <li><b>Comprobación numérica.</b> En $x=\frac12$: $\frac1{(1/2)^2}=4$, y la serie es $1+1+\frac34+\frac12+\frac5{16}+\cdots$, que suma $4$.</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> para desarrollar una función que es la <b>derivada</b> de otra con serie conocida: derivar la serie conocida término a término (U Teor. 3.1), recordar que el término constante desaparece (el índice sube en 1) y conservar el radio; después, mirar los extremos.</div>
-    <p><b>Teoría:</b> apartado 3 (U Prop. 3.3 y Teor. 3.1, p. 116).</p>
+<details class="pr" id="pr-a2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica a2 · $\ln x$ en $x_0=1$: serie, radio e intervalo <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula la serie de Taylor de $f(x)=\ln x$ centrada en $x_0=1$, su radio y su intervalo de convergencia.</p>
+  <details class="pista"><summary>Pista</summary><p>Deriva cuatro o cinco veces <b>sin simplificar</b> los productos y fíjate en qué factor aparece cada vez. En los extremos del intervalo te quedarán la armónica y una alternada.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivadas:</b> $f'=x^{-1}$, $f''=-x^{-2}$, $f'''=2x^{-3}$, $f^{(4}=-2\cdot3\,x^{-4}$, $f^{(5}=2\cdot3\cdot4\,x^{-5}$. Patrón: $f^{(n}(x)=(-1)^{n+1}(n-1)!\,x^{-n}$ para $n\ge1$.</li><li><b>En $1$:</b> $f(1)=\ln1=0$ y $f^{(n}(1)=(-1)^{n+1}(n-1)!$.</li><li><b>Coeficientes</b> (U §3.2.3, p.117): $a_n=\frac{(-1)^{n+1}(n-1)!}{n!}=\frac{(-1)^{n+1}}n$, porque $n!=n\,(n-1)!$. La serie es
+    $$\sum_{n=1}^\infty\frac{(-1)^{n+1}}{n}(x-1)^n=(x-1)-\frac{(x-1)^2}2+\frac{(x-1)^3}3-\cdots$$</li><li><b>Radio</b> (cociente, U p.70): $\frac{1/(n+1)}{1/n}=\frac n{n+1}\to1$, luego $R=1$: converge si $|x-1|&lt;1$, es decir, en $(0,2)$.</li><li><b>Extremo $x=2$:</b> $\sum\frac{(-1)^{n+1}}n$, alternada con $\frac1n$ decreciente a $0$: converge (Leibniz, U p.41).</li><li><b>Extremo $x=0$:</b> $\sum\frac{(-1)^{n+1}(-1)^n}n=-\sum\frac1n$: menos la armónica, diverge (U Ej. 1.35, p.37). Además $\ln0$ ni existe.</li></ol>
+    <p class="res">Resultado: $\ln x=\sum_{n=1}^\infty\frac{(-1)^{n+1}}{n}(x-1)^n$, con $R=1$ e intervalo de convergencia $(0,2]$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-19"><summary>Ejercicio 3.19 · serie de Taylor de $e^x$ y su derivada <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.19, pp. 105-106">E pp.105-106</span></summary>
-<p class="enun">Sea $f(x)=e^x$. Calcula su serie de Taylor centrada en $0$ y deriva término a término la serie resultante. Comprueba que la serie formada por estas derivadas coincide con la serie de Taylor.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<h3>Serie de Taylor sin derivar: sustituir en una serie conocida</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · $\frac1{2-x}$ como geométrica <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Desarrolla $f(x)=\dfrac1{2-x}$ en serie de potencias de $x$ y di para qué $x$ es válido el desarrollo.</p>
+  <details class="pista"><summary>Pista</summary><p>Saca factor común $2$ en el denominador para que aparezca $\frac1{1-t}$ con $t=\frac x2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Forma geométrica:</b> $\dfrac1{2-x}=\dfrac1{2\left(1-\frac x2\right)}=\dfrac12\cdot\dfrac1{1-\frac x2}$.</li><li><b>Geométrica</b> (U Ej. 1.33, p.36): $\frac1{1-t}=\sum_{n\ge0}t^n$ si $|t|&lt;1$. Con $t=\frac x2$:
+    $$\frac1{2-x}=\frac12\sum_{n=0}^\infty\frac{x^n}{2^n}=\sum_{n=0}^\infty\frac{x^n}{2^{n+1}}=\frac12+\frac x4+\frac{x^2}8+\cdots$$</li><li><b>Dónde vale:</b> $\left|\frac x2\right|&lt;1\iff|x|&lt;2$. En $x=\pm2$ el término $\frac{(\pm2)^n}{2^{n+1}}=\frac{(\pm1)^n}2$ no tiende a $0$: diverge (U Prop. 1.6, p.36).</li><li><b>¿Es la de Taylor?</b> Sí: una serie de potencias es la serie de Taylor de su suma (U p.118). Comprobación: $f(0)=\frac12$ y $f'(x)=(2-x)^{-2}$, $f'(0)=\frac14$, que coinciden con los dos primeros coeficientes.</li></ol>
+    <p class="res">Resultado: $\frac1{2-x}=\sum_{n=0}^\infty\frac{x^n}{2^{n+1}}$ para $|x|&lt;2$ (intervalo $(-2,2)$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica b2 · $\operatorname{sen}^2x$ con una fórmula trigonométrica <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Desarrolla $f(x)=\operatorname{sen}^2x$ en serie de potencias de $x$ y calcula $f^{(4}(0)$ sin derivar.</p>
+  <details class="pista"><summary>Pista</summary><p>Elevar al cuadrado una serie es incómodo. Usa $\operatorname{sen}^2x=\dfrac{1-\cos2x}{2}$ y sustituye $t=2x$ en la serie del coseno.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Coseno con $t=2x$</b> (U Ej. 3.14, p.117): $\cos2x=\sum_{n\ge0}\frac{(-1)^n2^{2n}x^{2n}}{(2n)!}=1-\frac{4x^2}{2!}+\frac{16x^4}{4!}-\cdots$, válido para todo $x$.</li><li><b>$1-\cos2x$:</b> el $1$ se cancela con el sumando $n=0$, y los demás cambian de signo: $1-\cos2x=\sum_{n\ge1}\frac{(-1)^{n+1}2^{2n}x^{2n}}{(2n)!}$.</li><li><b>Dividir entre $2$:</b>
+    $$\operatorname{sen}^2x=\sum_{n=1}^\infty\frac{(-1)^{n+1}2^{2n-1}}{(2n)!}x^{2n}=x^2-\frac{x^4}3+\frac{2x^6}{45}-\cdots$$
+    válido para todo $x$.</li><li><b>Derivada cuarta</b> (U p.118: $f^{(n}(0)=n!\,a_n$): el coeficiente de $x^4$ es $-\frac{2^3}{4!}=-\frac13$, así que $f^{(4}(0)=4!\cdot\left(-\frac13\right)=-8$.</li><li><b>Comprobación rápida:</b> el primer término es $x^2$, como debe ser, pues $\operatorname{sen}x\approx x$ cerca de $0$.</li></ol>
+    <p class="res">Resultado: $\operatorname{sen}^2x=\sum_{n=1}^\infty\frac{(-1)^{n+1}2^{2n-1}}{(2n)!}x^{2n}$ para todo $x$, y $f^{(4}(0)=-8$</p>
+  </details>
+</details>
+<h3>Derivadas en el centro leídas de la serie</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · $f^{(5}(0)$ y $f^{(6}(0)$ de $e^{x^2}$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f(x)=e^{x^2}$. Calcula $f^{(5}(0)$ y $f^{(6}(0)$ sin derivar.</p>
+  <details class="pista"><summary>Pista</summary><p>Sustituye $t=x^2$ en $e^t=\sum\frac{t^n}{n!}$: solo aparecen potencias pares. Después usa $f^{(n}(0)=n!\cdot(\text{coeficiente de }x^n)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Serie:</b> con $t=x^2$ en la serie de la exponencial (válida para todo $t$, E 3.19): $e^{x^2}=\sum_{n\ge0}\frac{x^{2n}}{n!}=1+x^2+\frac{x^4}{2!}+\frac{x^6}{3!}+\cdots$</li><li><b>Coeficientes que interesan:</b> no hay término en $x^5$ (coeficiente $0$); el de $x^6$ es el sumando $n=3$: $\frac1{3!}=\frac16$.</li><li><b>Derivadas</b> (U p.118, $f^{(n}(0)=n!\,a_n$): $f^{(5}(0)=5!\cdot0=0$ y $f^{(6}(0)=6!\cdot\frac16=\frac{720}6=120$.</li><li><b>Por qué funciona:</b> la serie de potencias de $e^{x^2}$ es única; cualquier camino que lleve a una serie de potencias da la de Taylor (U p.118).</li></ol>
+    <p class="res">Resultado: $f^{(5}(0)=0$ y $f^{(6}(0)=120$</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica c2 · todas las derivadas de $x^3e^x$ en $0$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f(x)=x^3e^x$. Halla una fórmula para $f^{(n}(0)$ válida para todo $n\ge3$ y calcula $f^{(10}(0)$.</p>
+  <details class="pista"><summary>Pista</summary><p>Multiplica cada sumando de la serie de $e^x$ por $x^3$ y cambia el índice para que la potencia sea $x^n$. ¿Qué vale el coeficiente de $x^n$?</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Serie:</b> $x^3e^x=x^3\sum_{m\ge0}\frac{x^m}{m!}=\sum_{m\ge0}\frac{x^{m+3}}{m!}$, válida para todo $x$.</li><li><b>Reindexar</b> con $n=m+3$ (cuando $m=0$, $n=3$): $x^3e^x=\sum_{n\ge3}\frac{x^n}{(n-3)!}$. Los coeficientes de $x^0,x^1,x^2$ son $0$.</li><li><b>Derivadas</b> (U p.118): $f^{(n}(0)=n!\cdot\frac1{(n-3)!}=n(n-1)(n-2)$ para $n\ge3$, porque $n!=n(n-1)(n-2)\,(n-3)!$. Y $f(0)=f'(0)=f''(0)=0$.</li><li><b>Caso $n=10$:</b> $10\cdot9\cdot8=720$.</li><li><b>Control:</b> $n=3$ da $3\cdot2\cdot1=6$; directamente, $f'''(0)=3!\cdot(\text{coef. de }x^3)=6\cdot1=6$.</li></ol>
+    <p class="res">Resultado: $f^{(n}(0)=n(n-1)(n-2)$ para $n\ge3$; $f^{(10}(0)=720$</p>
+  </details>
+</details>
+<h3>Radio e intervalo de convergencia (con los extremos)</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · $\sum\frac n{5^n}(x-1)^n$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla el centro, el radio y el intervalo de convergencia de $\displaystyle\sum_{n=1}^\infty\frac{n}{5^n}(x-1)^n$.</p>
+  <details class="pista"><summary>Pista</summary><p>El centro se lee en $(x-x_0)^n$. Para el radio, cociente. En los extremos $x=1\pm R$ mira primero si el término general tiende a $0$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Centro y coeficiente:</b> $x_0=1$, $a_n=\frac n{5^n}$.</li><li><b>Cociente</b> (U p.70): $\frac{a_{n+1}}{a_n}=\frac{(n+1)/5^{n+1}}{n/5^n}=\frac{n+1}{5n}\to\frac15$. Luego $R=5$: converge si $|x-1|&lt;5$, es decir, en $(-4,6)$.</li><li><b>Extremo $x=6$:</b> $\sum\frac n{5^n}5^n=\sum n$; el término $n$ no tiende a $0$: diverge (U Prop. 1.6, p.36).</li><li><b>Extremo $x=-4$:</b> $\sum\frac n{5^n}(-5)^n=\sum(-1)^nn$; $|(-1)^nn|=n\not\to0$: diverge.</li></ol>
+    <p class="res">Resultado: centro $1$, $R=5$, intervalo de convergencia $(-4,6)$</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica d2 · $\sum\frac{(-1)^n(x+1)^n}{\sqrt n\,3^n}$: un extremo sí y otro no <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla el centro, el radio y el intervalo de convergencia de $\displaystyle\sum_{n=1}^\infty\frac{(-1)^n(x+1)^n}{\sqrt n\;3^n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Ojo con el centro: $x+1=x-(-1)$. Para el radio usa $|a_n|$ (el signo no influye). En un extremo saldrá una alternada (Leibniz) y en el otro $\sum\frac1{\sqrt n}$ (serie $\sum\frac1{n^\gamma}$ con $\gamma=\frac12$).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Centro y coeficiente:</b> $x_0=-1$, $a_n=\frac{(-1)^n}{\sqrt n\,3^n}$.</li><li><b>Cociente</b> (U p.70): $\left|\frac{a_{n+1}}{a_n}\right|=\frac{\sqrt n\,3^n}{\sqrt{n+1}\,3^{n+1}}=\frac13\sqrt{\frac n{n+1}}\to\frac13$. Luego $R=3$: converge en $|x+1|&lt;3$, es decir, en $(-4,2)$.</li><li><b>Extremo $x=2$</b> ($x+1=3$): el término es $\frac{(-1)^n3^n}{\sqrt n\,3^n}=\frac{(-1)^n}{\sqrt n}$. Alternada, con $\frac1{\sqrt n}$ decreciente y con límite $0$: converge (Leibniz, U p.41).</li><li><b>Extremo $x=-4$</b> ($x+1=-3$): el término es $\frac{(-1)^n(-1)^n3^n}{\sqrt n\,3^n}=\frac1{\sqrt n}$, pues $(-1)^n(-1)^n=1$. La serie $\sum\frac1{n^\gamma}$ con $\gamma=\frac12\le1$ diverge (U p.38).</li><li><b>Intervalo:</b> se añade $x=2$ y no $x=-4$.</li></ol>
+    <p class="res">Resultado: centro $-1$, $R=3$, intervalo de convergencia $(-4,2]$</p>
+  </details>
+</details>
+<h3>¿Cociente o raíz? Elegir el criterio para el radio</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · $\sum\frac{n^2}{n!}x^n$: factoriales, cociente <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula el radio de convergencia de $\displaystyle\sum_{n=1}^\infty\frac{n^2}{n!}x^n$.</p>
+  <details class="pista"><summary>Pista</summary><p>Hay un factorial: el cociente lo simplifica, porque $\frac{n!}{(n+1)!}=\frac1{n+1}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Criterio:</b> $a_n=\frac{n^2}{n!}$ lleva factorial, así que cociente (U p.70).</li><li><b>Cociente:</b> $\frac{a_{n+1}}{a_n}=\frac{(n+1)^2}{(n+1)!}\cdot\frac{n!}{n^2}=\frac{(n+1)^2}{(n+1)\,n^2}=\frac{n+1}{n^2}$.</li><li><b>Límite:</b> el grado del denominador es mayor: $\frac{n+1}{n^2}\to0$.</li><li><b>Radio:</b> $S=0$, luego $R=\infty$: converge para todo $x$ (no hay extremos que estudiar).</li></ol>
+    <p class="res">Resultado: $R=\infty$ (converge para todo $x\in\mathbb R$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica e2 · $\sum\left(\frac n{2n+1}\right)^nx^n$: potencia $n$, raíz <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula el radio y el intervalo de convergencia de $\displaystyle\sum_{n=1}^\infty\left(\frac{n}{2n+1}\right)^nx^n$.</p>
+  <details class="pista"><summary>Pista</summary><p>El coeficiente es «algo elevado a $n$»: criterio de la raíz. En los extremos aparece un $1^\infty$; escríbelo como $\left(1-\frac1{2n+1}\right)^n$ y relaciónalo con el número $e$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Raíz</b> (U p.70): $\sqrt[n]{a_n}=\frac n{2n+1}\to\frac12$. Luego $R=2$: converge en $(-2,2)$.</li><li><b>Extremo $x=2$:</b> el término es $\left(\frac{2n}{2n+1}\right)^n=\left(1-\frac1{2n+1}\right)^n$. Es un $1^\infty$: con $m=2n+1$, $\left(1-\frac1m\right)^m\to e^{-1}$ y el exponente $n$ es casi $\frac m2$, así que el término tiende a $e^{-1/2}\approx0{,}607\ne0$ (U Prop. 1.5, p.31, para el límite de tipo $e$).</li><li><b>Diverge en $x=2$</b> porque el término general no tiende a $0$ (U Prop. 1.6, p.36).</li><li><b>Extremo $x=-2$:</b> el término es $(-1)^n\left(\frac{2n}{2n+1}\right)^n$, cuyo valor absoluto tiende a $e^{-1/2}\ne0$: tampoco tiende a $0$, diverge.</li></ol>
+    <p class="res">Resultado: $R=2$, intervalo de convergencia $(-2,2)$</p>
+  </details>
+</details>
+<h3>Sumar series derivando la geométrica</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · $\sum\frac n{3^{n-1}}$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula la suma de la serie $\displaystyle\sum_{n=1}^\infty\frac{n}{3^{n-1}}$.</p>
+  <details class="pista"><summary>Pista</summary><p>$\frac n{3^{n-1}}=n\left(\frac13\right)^{n-1}$. ¿De qué serie de potencias es el valor en un punto? Recuerda E 3.18.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Reconocerla:</b> $\sum_{n\ge1}n\left(\frac13\right)^{n-1}$ es $\sum_{n\ge1}nx^{n-1}$ en $x=\frac13$.</li><li><b>Fórmula:</b> derivando la geométrica término a término (U Teor. 3.1, p.116; E 3.18), $\sum_{n\ge1}nx^{n-1}=\frac1{(1-x)^2}$ si $|x|&lt;1$.</li><li><b>¿Se puede evaluar en $\frac13$?</b> Sí: $\left|\frac13\right|&lt;1$, está dentro del intervalo abierto.</li><li><b>Valor:</b> $\frac1{(1-1/3)^2}=\frac1{4/9}=\frac94$.</li></ol>
+    <p class="res">Resultado: $\sum_{n=1}^\infty\frac{n}{3^{n-1}}=\frac94$</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica f2 · $\sum\frac{n(n-1)}{2^n}$: derivar dos veces <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula la suma de la serie $\displaystyle\sum_{n=2}^\infty\frac{n(n-1)}{2^n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>$n(n-1)x^{n-2}$ es la derivada segunda de $x^n$. Deriva dos veces $\sum x^n=\frac1{1-x}$, multiplica por $x^2$ y evalúa en $x=\frac12$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivar dos veces</b> (U Teor. 3.1, p.116, en $|x|&lt;1$): $\left(\frac1{1-x}\right)''=\frac2{(1-x)^3}$, y por el lado de la serie $\sum_{n\ge0}(x^n)''=\sum_{n\ge2}n(n-1)x^{n-2}$ (los sumandos $1$ y $x$ desaparecen).</li><li><b>Igualdad:</b> $\sum_{n\ge2}n(n-1)x^{n-2}=\frac2{(1-x)^3}$ para $|x|&lt;1$.</li><li><b>Multiplicar por $x^2$</b> cada sumando: $\sum_{n\ge2}n(n-1)x^n=\frac{2x^2}{(1-x)^3}$.</li><li><b>Evaluar en $x=\frac12$</b> (dentro de $(-1,1)$): $\frac{2\cdot\frac14}{\left(\frac12\right)^3}=\frac{1/2}{1/8}=4$.</li><li><b>Control:</b> los primeros términos son $\frac24+\frac68+\frac{12}{16}+\frac{20}{32}+\cdots=0{,}5+0{,}75+0{,}75+0{,}625+\cdots$, que va acercándose a $4$.</li></ol>
+    <p class="res">Resultado: $\sum_{n=2}^\infty\frac{n(n-1)}{2^n}=4$</p>
+  </details>
+</details>
+<h3>Reconocer una serie numérica como valor de una serie de Taylor</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · una serie que vale $0$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\sum_{n=0}^\infty\frac{(-1)^n\pi^{2n}}{4^n\,(2n)!}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Signo alternado, potencias pares y $(2n)!$ en el denominador: es la serie del coseno. Escribe $\frac{\pi^{2n}}{4^n}$ como una potencia $2n$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Potencia:</b> $\frac{\pi^{2n}}{4^n}=\frac{\pi^{2n}}{2^{2n}}=\left(\frac\pi2\right)^{2n}$.</li><li><b>Serie del coseno</b> (U Ej. 3.14, p.117): $\cos x=\sum_{n\ge0}\frac{(-1)^n}{(2n)!}x^{2n}$ para todo $x$ (el coseno es analítica, U p.118).</li><li><b>Evaluar en $x=\frac\pi2$:</b> la serie dada es $\cos\frac\pi2=0$.</li></ol>
+    <p class="res">Resultado: la suma es $\cos\frac\pi2=0$</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica g2 · $\sum\frac1{n\,2^n}=\ln2$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\sum_{n=1}^\infty\frac{1}{n\,2^n}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Usa $\ln(1+x)=\sum_{n\ge1}\frac{(-1)^{n+1}}nx^n$ (válida en $(-1,1)$) con un $x$ negativo que haga desaparecer el signo alternado.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Serie del logaritmo:</b> $\ln(1+x)=\sum_{n\ge1}\frac{(-1)^{n+1}}nx^n$ para $|x|&lt;1$ (se obtuvo derivando, con U Teor. 3.1, p.116, y U Teor. 2.4, p.97).</li><li><b>Elegir $x=-\frac12$</b> (está en $(-1,1)$): $(-1)^{n+1}\left(-\frac12\right)^n=(-1)^{n+1}(-1)^n\frac1{2^n}=-\frac1{2^n}$, porque $(-1)^{2n+1}=-1$.</li><li><b>Sustituir:</b> $\ln\left(1-\frac12\right)=-\sum_{n\ge1}\frac1{n\,2^n}$.</li><li><b>Despejar:</b> $\sum_{n\ge1}\frac1{n\,2^n}=-\ln\frac12=\ln2\approx0{,}6931$.</li></ol>
+    <p class="res">Resultado: $\sum_{n=1}^\infty\frac{1}{n\,2^n}=\ln2$</p>
+  </details>
+</details>
+<h3>Analiticidad y resto: ¿la serie suma $f$? ¿cuántos términos?</h3>
+<details class="pr" id="pr-h1"><summary><span class="nv n1">★ Básico</span> Práctica h1 · la serie del seno suma $\operatorname{sen}x$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Demuestra que $\operatorname{sen}x=\displaystyle\sum_{n=0}^\infty\frac{(-1)^n}{(2n+1)!}x^{2n+1}$ para todo $x\in\mathbb R$, usando el resto de Lagrange.</p>
+  <details class="pista"><summary>Pista</summary><p>Basta probar que $R_n(x)\to0$ cuando $n\to\infty$ para cada $x$ fijo. Acota $|f^{(n+1}(c)|\le1$ y, para ver que $\frac{|x|^{n+1}}{(n+1)!}\to0$, recuerda que $\sum\frac{|x|^n}{n!}$ converge.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Qué hay que probar:</b> la suma parcial hasta grado $n$ es el polinomio de Taylor $p_n(x)$, y $\operatorname{sen}x-p_n(x)=R_n(x)$. La serie suma $\operatorname{sen}x$ si y solo si $R_n(x)\to0$.</li><li><b>Resto de Lagrange</b> (U Prop. 3.2, p.111): $R_n(x)=\frac{f^{(n+1}(c)}{(n+1)!}x^{n+1}$ con $c$ entre $0$ y $x$.</li><li><b>Cota:</b> $f^{(n+1}$ es $\pm\operatorname{sen}$ o $\pm\cos$, así que $|f^{(n+1}(c)|\le1$ y $|R_n(x)|\le\frac{|x|^{n+1}}{(n+1)!}$.</li><li><b>Esa cota tiende a $0$:</b> $\frac{|x|^{n+1}}{(n+1)!}$ es el término general de la serie de $e^{|x|}$, que converge para todo $x$ (radio infinito, E 3.19). Si una serie converge, su término tiende a $0$ (U Prop. 1.6, p.36).</li><li><b>Conclusión:</b> $R_n(x)\to0$ para cada $x$, y la serie suma $\operatorname{sen}x$ en todo $\mathbb R$: el seno es analítica (U p.118).</li></ol>
+    <p class="res">Resultado: $|R_n(x)|\le\frac{|x|^{n+1}}{(n+1)!}\to0$ para todo $x$, luego la serie suma $\operatorname{sen}x$ en todo $\mathbb R$</p>
+  </details>
+</details>
+<details class="pr" id="pr-h2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica h2 · $e$ con error $&lt;0{,}001$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">¿Cuántos términos de la serie $\sum\frac{x^n}{n!}$ hay que sumar, en $x=1$, para obtener $e$ con un error menor que $0{,}001$? Da la aproximación. (Usa $e&lt;3$.)</p>
+  <details class="pista"><summary>Pista</summary><p>Resto de Lagrange de $e^x$ en $0$ con $x=1$: $R_n(1)=\frac{e^c}{(n+1)!}$ con $0&lt;c&lt;1$. Acota $e^c&lt;3$ y busca el primer $n$ con $\frac3{(n+1)!}&lt;0{,}001$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Resto</b> (U Prop. 3.2, p.111): todas las derivadas de $e^x$ son $e^x$, así que $R_n(1)=\frac{e^c}{(n+1)!}\cdot1^{n+1}$ con $c\in(0,1)$.</li><li><b>Cota:</b> $e^c&lt;e^1&lt;3$ (la exponencial es creciente), luego $0&lt;R_n(1)&lt;\frac3{(n+1)!}$.</li><li><b>Tabla:</b> $n=5$: $\frac3{720}\approx0{,}0042$, no basta. $n=6$: $\frac3{5040}\approx0{,}0006&lt;0{,}001$, sí.</li><li><b>Hacen falta $n=6$</b>, es decir, los sumandos de $\frac1{0!}$ a $\frac1{6!}$ (siete términos):
+    $$p_6(1)=1+1+\frac12+\frac16+\frac1{24}+\frac1{120}+\frac1{720}=\frac{1957}{720}\approx2{,}71806.$$</li><li><b>Control:</b> $e=2{,}718282\ldots$; el error real es $\approx0{,}00023$, menor que la cota $0{,}0006$.</li></ol>
+    <p class="res">Resultado: basta $n=6$ (siete términos): $e\approx\frac{1957}{720}\approx2{,}71806$, con error $&lt;\frac3{7!}&lt;0{,}001$</p>
+  </details>
+</details>
+</div>
+<!-- ============================ autoevaluación ============================ -->
+<h2 id="autoeval" data-vista="tipos"><span class="n">8</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="f">
+    <p><b>1.</b> (V/F) Si la serie de Taylor de $f$ en $0$ converge para todo $x$, entonces su suma es $f(x)$ para todo $x$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Converger no es sumar $f$. $g(x)=e^{-1/x^2}$ ($g(0)=0$) tiene todas sus derivadas nulas en $0$: su serie es $0$, converge siempre y no vale $g(x)$ si $x\ne0$. Hace falta $R_n(x)\to0$ (funciones analíticas, U pp.117-118).</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>2.</b> (Elige) Centro y radio de $\sum_{n\ge0}(3x+1)^n$:</p>
+    <div class="opts"><button data-v="a">(a) centro $-1$, $R=1$</button><button data-v="b">(b) centro $1$, $R=3$</button><button data-v="c">(c) centro $-\frac13$, $R=\frac13$</button><button data-v="d">(d) centro $0$, $R=1$</button></div>
+    <div class="exp">$(3x+1)^n=3^n\left(x+\frac13\right)^n$: centro $-\frac13$ y $a_n=3^n$, cociente $3$, $R=\frac13$ (U p.70). Equivale a $|3x+1|&lt;1$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>3.</b> (V/F) Una serie de potencias de centro $x_0$ y radio $R$ converge siempre en $x=x_0+R$ y en $x=x_0-R$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">En los extremos puede pasar de todo: $\sum x^n$ diverge en $\pm1$; $\sum\frac{x^n}n$ converge en $-1$ y diverge en $1$; $\sum\frac{x^n}{n^2}$ converge en los dos. Se estudian a mano (U pp.36-41, 68-69).</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>4.</b> (V/F) Como $\frac1{1+x^2}$ está definida y es derivable en todo $\mathbb R$, su serie de Taylor en $0$ converge en $x=2$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Su serie es $\sum(-1)^nx^{2n}$ (geométrica de razón $-x^2$), que solo converge si $x^2&lt;1$: radio $1$. En $x=2$ el término $4^n$ no tiende a $0$. El radio se calcula, no se deduce del dominio.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>5.</b> (Elige) El coeficiente de $x^6$ en la serie de $\cos2x$ en $0$ es:</p>
+    <div class="opts"><button data-v="a">(a) $-\frac1{720}$</button><button data-v="b">(b) $-\frac4{45}$</button><button data-v="c">(c) $\frac{64}{720}$</button><button data-v="d">(d) $-64$</button></div>
+    <div class="exp">Sustituyendo $t=2x$ en $\cos t$: el sumando $k=3$ es $\frac{(-1)^3(2x)^6}{6!}=-\frac{64}{720}x^6=-\frac4{45}x^6$ (U Ej. 3.14, p.117). La (a) olvida el $2^6$; la (d) es $f^{(6}(0)=6!\,a_6$, no el coeficiente.</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>6.</b> (Elige) Si $f(x)=e^{x^3}$, entonces $f^{(6}(0)$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $\frac12$</button><button data-v="b">(b) $0$</button><button data-v="c">(c) $360$</button><button data-v="d">(d) $720$</button></div>
+    <div class="exp">$e^{x^3}=1+x^3+\frac{x^6}{2}+\cdots$: el coeficiente de $x^6$ es $\frac12$ y $f^{(6}(0)=6!\cdot\frac12=360$ (U p.118). La (a) da el coeficiente, no la derivada.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>7.</b> (V/F) Si $\sum a_nx^n$ tiene radio $2$, la serie derivada $\sum na_nx^{n-1}$ también tiene radio $2$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Derivar término a término conserva el radio (U Teor. 3.1, p.116). Lo que puede cambiar es el comportamiento en los extremos: se deriva en el abierto $(-2,2)$.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>8.</b> (Elige) $\displaystyle\sum_{n=0}^\infty\frac{(-1)^n}{(2n+1)!}$ es igual a:</p>
+    <div class="opts"><button data-v="a">(a) $\operatorname{sen}1$</button><button data-v="b">(b) $\cos1$</button><button data-v="c">(c) $e^{-1}$</button><button data-v="d">(d) $\ln2$</button></div>
+    <div class="exp">Es $\sum\frac{(-1)^n}{(2n+1)!}x^{2n+1}$, la serie del seno (U Ej. 3.12, p.116), en $x=1$. El coseno lleva $(2n)!$; $e^{-1}$ lleva $n!$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>9.</b> (V/F) El intervalo de convergencia de $\sum_{n\ge1}\frac{x^n}{n^2}$ es $(-1,1)$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">El radio es $1$, pero en $x=1$ queda $\sum\frac1{n^2}$, convergente ($\gamma=2&gt;1$, U p.38), y en $x=-1$ converge absolutamente. El intervalo es $[-1,1]$.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>10.</b> (Elige) Para asegurar que la serie de Taylor de $f$ en $x_0$ suma $f(x)$ en un punto $x$, hay que comprobar que:</p>
+    <div class="opts"><button data-v="a">(a) $R_n(x)\to0$ cuando $n\to\infty$</button><button data-v="b">(b) la serie converge en $x$</button><button data-v="c">(c) $f$ es continua en $x$</button><button data-v="d">(d) $|f^{(n}(x_0)|\le1$ para un $n$</button></div>
+    <div class="exp">$f(x)-p_n(x)=R_n(x)$ (U Prop. 3.2, p.111): las sumas parciales tienden a $f(x)$ exactamente cuando el resto tiende a $0$. La (b) solo dice que converge a algo (pregunta 1).</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<!-- ============================ ejercicios ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">9</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.17-3.20, pp. 104-107">E pp.104-107</span></h2>
+<p>Los cuatro ejercicios de E de este tema (3.17-3.20) van en orden de fácil a difícil, <b>conservando la numeración de E</b>, y después cuatro ejemplos propios. Cada uno es una tarjeta: el enunciado se ve siempre; al abrir la solución encuentras «Antes de calcular» y la receta, y dentro el desarrollo paso a paso. Los ejercicios 3.15 y 3.16 (y la parte de convergencia uniforme de 3.17) están en el <a href="#fuera">apartado 5</a> (fuera de examen).</p>
+<details class="ver"><summary>Ver el orden recomendado, de fácil a difícil</summary>
+<table>
+  <tr><th>Orden</th><th>Ejercicio</th><th>Tipo</th><th>Resultado</th></tr>
+  <tr><td>1</td><td>3.19</td><td>Serie de Taylor de $e^x$ y su derivada</td><td>$\sum\frac{x^n}{n!}$</td></tr>
+  <tr><td>2</td><td>3.18</td><td>$(1-x)^{-2}$ derivando la geométrica</td><td>$\sum(n+1)x^n$</td></tr>
+  <tr><td>3</td><td>3.17</td><td>Radio de la serie de derivadas</td><td>$R=e$</td></tr>
+  <tr><td>4</td><td>3.20</td><td>Serie de $(1+x)^{-k}$ y su radio</td><td>$\sum(-1)^n\binom{k+n-1}{n}x^n$, $R=1$</td></tr>
+</table>
+</details>
+<article class="ejer" id="ej-3-19">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.19 · serie de Taylor de $e^x$ y su derivada</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.19, pp. 105-106">E pp.105-106</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=e^x$. Calcula su serie de Taylor centrada en $0$ y deriva término a término la serie resultante. Comprueba que la serie formada por estas derivadas coincide con la serie de Taylor.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La serie de Taylor de $e^x$ en $0$, su derivada término a término, y comprobar que coinciden.</dd>
     <dt>Cómo lo pienso</dt><dd>Todas las derivadas de $e^x$ valen $e^x$, así que todos los coeficientes son $\frac1{n!}$. Al derivar $\frac{x^n}{n!}$ sale $\frac{x^{n-1}}{(n-1)!}$, el sumando anterior: la serie se «desplaza» y queda igual.</dd>
-    <dt>Qué uso</dt><dd>Coeficientes de Taylor $a_n=\frac{f^{(n}(x_0)}{n!}$ (U §3.2.3, p.117); derivación término a término (U Teor. 3.1, p.116); cociente para el radio.</dd>
+    <dt>Qué uso</dt><dd>$a_n=\frac{f^{(n}(x_0)}{n!}$ (U p.117) y derivación término a término (U p.116) — <a href="#s1">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Calcular $f^{(n}(0)$ para varias $n$ y ver el patrón.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"exp(x)","n":"eˣ"},{"e":"1+x+x^2/2+x^3/6","n":"1+x+x²/2+x³/6"}],"x":[-3,3],"y":[-3,22]}' data-alt="e^x y su polinomio de Taylor de grado 3"><figcaption>La exponencial y la suma de los cuatro primeros sumandos de su serie. Derivar el polinomio da otro polinomio que aproxima a la derivada, que es la propia $e^x$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> serie de Taylor de $f$ en $x_0$: (1) calcular unas cuantas $f^{(n}(x_0)$ y ver el patrón; (2) dividir entre $n!$; (3) radio por el cociente. Para derivar término a término: bajar el exponente, simplificar $\frac n{n!}=\frac1{(n-1)!}$ y reindexar.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"exp(x)","n":"eˣ"},{"e":"1+x+x^2/2+x^3/6","n":"1+x+x²/2+x³/6"}],"x":[-3,3],"y":[-3,22]}' data-alt="e^x y su polinomio de Taylor de grado 3"><figcaption>La exponencial y la suma de los cuatro primeros sumandos de su serie. Derivar el polinomio da otro polinomio que aproxima a la derivada, que es la propia $e^x$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
     <li><b>Derivadas en $0$.</b> $f^{(n}(x)=e^x$ para todo $n$, así que $f^{(n}(0)=1$.</li>
@@ -316,18 +642,74 @@
     <li><b>Serie derivada.</b> $0+1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\cdots$. Con $m=n-1$ es $\sum_{m=0}^\infty\frac{x^m}{m!}$: <b>la misma serie</b>.</li>
     <li><b>Interpretación.</b> La suma $S(x)$ cumple $S'=S$ y $S(0)=1$, como $e^x$. Que la serie suma exactamente $e^x$ lo afirma U (p. 118: las exponenciales son analíticas) y se demuestra con el resto de Lagrange (S Ej. 2, p. 757).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> serie de Taylor de $f$ en $x_0$: (1) calcular unas cuantas $f^{(n}(x_0)$ y ver el patrón; (2) dividir entre $n!$; (3) radio por el cociente. Para derivar término a término: bajar el exponente, simplificar $\frac n{n!}=\frac1{(n-1)!}$ y reindexar.</div>
+  
   <p><b>Teoría:</b> U §3.2.3 p. 117 (y el Ej. 3.13, que hace lo mismo con $e^{2x}$); Teor. 3.1 p. 116.</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-20"><summary>Ejercicio 3.20 · serie de Taylor de $(1+x)^{-k}$ y su radio <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.20, pp. 106-107">E pp.106-107</span></summary>
-<p class="enun">Sea $f(x)=\dfrac1{(1+x)^k}$ para $x&gt;-1$, con $k\in\mathbb N$, $k&gt;0$. Obtén su desarrollo en serie de Taylor centrado en $x_0=0$ y su radio de convergencia. Nota: $f^{(n}(x)=(-1)^n\dfrac{(k+n-1)!}{(k-1)!\,(1+x)^{k+n}}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-3-18">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.18 · $(1-x)^{-2}$ como serie, derivando la geométrica</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.18, pp. 104-105">E pp.104-105</span></header>
+<div class="ejer-enun"><p class="enun">Sabemos que $\sum_{n=0}^{+\infty}x^n=\frac1{1-x}$ para $x\in(-1,1)$ por ser una serie geométrica. A partir de esta expresión, expresa $(1-x)^{-2}$ como una serie de potencias para $x\in(-1,1)$. Pista: calcula la derivada de $f(x)=\frac1{1-x}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Escribir $(1-x)^{-2}$ como serie de potencias en $(-1,1)$ a partir de la geométrica.</dd>
+    <dt>Cómo lo pienso</dt><dd>$(1-x)^{-2}$ es la derivada de $\frac1{1-x}$. Si derivo los dos lados de la igualdad conocida, a un lado queda lo que busco y al otro una serie.</dd>
+    <dt>Qué uso</dt><dd>$\frac1{1-x}=\sum x^n$ en $(-1,1)$ y $\left(\sum a_nx^n\right)'=\sum na_nx^{n-1}$ (U Teor. 3.1, p.116) — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivar $f(x)=\frac1{1-x}$ con la regla de la cadena y, aparte, derivar $\sum x^n$ sumando a sumando.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> para desarrollar una función que es la <b>derivada</b> de otra con serie conocida: derivar la serie conocida término a término (U Teor. 3.1), recordar que el término constante desaparece (el índice sube en 1) y conservar el radio; después, mirar los extremos.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"1/(1-x)^2","n":"(1−x)⁻²"},{"e":"1+2*x+3*x^2+4*x^3+5*x^4","n":"1+2x+3x²+4x³+5x⁴"}],"x":[-1,0.9],"y":[0,12]}' data-alt="La función (1-x)^-2 y las cinco primeras potencias de su serie"><figcaption>La función $(1-x)^{-2}$ y la suma de los cinco primeros sumandos de su serie $\sum (n+1)x^n$: coinciden bien para $x$ cerca de $0$ y se separan al acercarse a $1$, donde la función se dispara. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+
+  <ol class="steps">
+    <li><b>Lo que sabemos.</b> $1+x+x^2+\cdots=\frac1{1-x}$ si $|x|&lt;1$: serie de potencias con todos los $a_n=1$ y radio $1$ (U Ej. 1.33 p.36, Ej. 1.58 p.68).</li>
+    <li><b>¿Podemos derivar sumando a sumando?</b> Sí: Prop. 3.3 (U p.116) con $c=1$.</li>
+    <li><b>Lado derecho.</b> $f(x)=(1-x)^{-1}$; por la regla de la cadena $f'(x)=-(1-x)^{-2}\cdot(-1)=(1-x)^{-2}$. Es justo la función pedida.</li>
+    <li><b>Lado izquierdo.</b> $(x^n)'=nx^{n-1}$. El sumando $x^0=1$ es constante y desaparece, así que la serie derivada empieza en $n=1$:
+      $$\frac1{(1-x)^2}=\sum_{n=1}^\infty nx^{n-1}=1+2x+3x^2+4x^3+\cdots$$</li>
+    <li><b>Reindexar (opcional).</b> Con $m=n-1$ (cuando $n=1$, $m=0$):
+      $$\boxed{\frac1{(1-x)^2}=\sum_{m=0}^{\infty}(m+1)x^m,\qquad x\in(-1,1).}$$</li>
+    <li><b>¿Dónde vale?</b> El Teor. 3.1 garantiza el mismo radio $1$ (también sale con el cociente: $\frac{m+2}{m+1}\to1$). En $x=\pm1$ el término $(m+1)(\pm1)^m$ no tiende a $0$: diverge. Vale exactamente en $(-1,1)$.</li>
+    <li><b>Comprobación numérica.</b> En $x=\frac12$: $\frac1{(1/2)^2}=4$, y la serie es $1+1+\frac34+\frac12+\frac5{16}+\cdots$, que suma $4$.</li>
+  </ol>
+  
+    <p><b>Teoría:</b> <a href="#s3">apartado 3</a> (U Prop. 3.3 y Teor. 3.1, p. 116).</p>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-17">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 3.17 · radio de la serie de las derivadas de $\sum e^{-n}x^n$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.17, p. 104">E p.104</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f_n(x)=e^{-n}x^n$, $n\ge1$ (serie absoluta y uniformemente convergente en $[-k,k]$, $0&lt;k&lt;e$; esa parte es fuera de examen). Construye $\sum f_n'(x)$ y calcula su radio de convergencia.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>El radio de convergencia de la serie formada por las derivadas $f_n'$ de los sumandos de $\sum e^{-n}x^n$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Derivar sumando a sumando no cambia el «tamaño» de la zona donde la serie converge: la serie de derivadas debe tener el mismo radio que la original, que es una geométrica disfrazada.</dd>
+    <dt>Qué uso</dt><dd>Derivar sumando a sumando conserva el radio (U Teor. 3.1, p.116) y $R=\frac1S$ por el cociente (U p.70) — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivar $e^{-n}x^n$ con la regla de la potencia y escribir la serie resultante.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> la serie de las derivadas tiene el mismo radio que la original.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<ol class="steps">
+    <li>$f_n'(x)=ne^{-n}x^{n-1}$. La serie es $\sum_{n=1}^\infty ne^{-n}x^{n-1}=\sum_{n=0}^\infty(n+1)e^{-(n+1)}x^n$ (reindexando).</li>
+    <li><b>Radio, por el cociente:</b> $\dfrac{(n+2)e^{-(n+2)}}{(n+1)e^{-(n+1)}}=\dfrac{n+2}{(n+1)e}\to\dfrac1e$, luego $R=e$.</li>
+    <li><b>Atajo:</b> la serie original es la geométrica $\sum\left(\frac xe\right)^n$, de radio $e$, y por el Teor. 3.1 la derivada conserva el radio.</li>
+  </ol>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-20" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 3.20 · serie de Taylor de $(1+x)^{-k}$ y su radio</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.20, pp. 106-107">E pp.106-107</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=\dfrac1{(1+x)^k}$ para $x&gt;-1$, con $k\in\mathbb N$, $k&gt;0$. Obtén su desarrollo en serie de Taylor centrado en $x_0=0$ y su radio de convergencia. Nota: $f^{(n}(x)=(-1)^n\dfrac{(k+n-1)!}{(k-1)!\,(1+x)^{k+n}}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El desarrollo en serie de Taylor de $\frac1{(1+x)^k}$ en $x_0=0$ y su radio de convergencia.</dd>
     <dt>Cómo lo pienso</dt><dd>Cada derivada baja el exponente en $1$ y saca un factor nuevo (con signo menos). En $x=0$ el denominador vale $1$ y sólo queda un producto de factores; al dividir entre $n!$ sale un número combinatorio.</dd>
-    <dt>Qué uso</dt><dd>Coeficientes de Taylor $a_n=\frac{f^{(n}(0)}{n!}$ (U §3.2.3, p.117); criterio del cociente (U p.70); la nota del enunciado da $f^{(n}$.</dd>
+    <dt>Qué uso</dt><dd>$a_n=\frac{f^{(n}(0)}{n!}$ (U p.117) y $R=\frac1S$ por el cociente (U p.70) — <a href="#s2">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Derivar tres o cuatro veces sin simplificar y evaluar en $0$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"1/(1+x)^2","n":"(1+x)⁻²"},{"e":"1-2*x+3*x^2-4*x^3+5*x^4","n":"1−2x+3x²−4x³+5x⁴"}],"x":[-0.75,1.2],"y":[0,10]}' data-alt="k=2: 1/(1+x)^2 y su polinomio de Taylor de grado 4"><figcaption>Caso $k=2$: la función $(1+x)^{-2}$ y los cinco primeros sumandos de su serie. El ajuste es bueno dentro de $(-1,1)$ y se pierde fuera de ese intervalo (radio $1$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> para potencias $(1+x)^{-k}$: derivar 3 o 4 veces <b>sin simplificar</b> los productos, ver qué factor se añade cada vez, evaluar en $x_0$ y dividir entre $n!$. El radio, por el cociente, simplificando los productos que «telescopan».</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"1/(1+x)^2","n":"(1+x)⁻²"},{"e":"1-2*x+3*x^2-4*x^3+5*x^4","n":"1−2x+3x²−4x³+5x⁴"}],"x":[-0.75,1.2],"y":[0,10]}' data-alt="k=2: 1/(1+x)^2 y su polinomio de Taylor de grado 4"><figcaption>Caso $k=2$: la función $(1+x)^{-2}$ y los cinco primeros sumandos de su serie. El ajuste es bueno dentro de $(-1,1)$ y se pierde fuera de ese intervalo (radio $1$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
     <li><b>Primeras derivadas</b> (regla $((1+x)^a)'=a(1+x)^{a-1}$):<br>
@@ -342,36 +724,26 @@
     <li><b>Extremos</b>. Como $\binom{k+n-1}{n}\ge1$, en $x=\pm1$ el término general no tiende a $0$: diverge. Intervalo de convergencia: $(-1,1)$.</li>
     <li><b>¿La serie suma $f$?</b> Sí, en $(-1,1)$. Para $k=1$ es la geométrica de razón $-x$: $\frac1{1+x}=\sum(-x)^n$. Derivando $k-1$ veces término a término (Teor. 3.1) y dividiendo entre $(-1)^{k-1}(k-1)!$ sale la de cada $k$, porque $\frac{d^{k-1}}{dx^{k-1}}\frac1{1+x}=\frac{(-1)^{k-1}(k-1)!}{(1+x)^k}$. Por ejemplo $k=2$: $\frac1{(1+x)^2}=1-2x+3x^2-\cdots$ Así $f$ es analítica en $(-1,1)$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> para potencias $(1+x)^{-k}$: derivar 3 o 4 veces <b>sin simplificar</b> los productos, ver qué factor se añade cada vez, evaluar en $x_0$ y dividir entre $n!$. El radio, por el cociente, simplificando los productos que «telescopan».</div>
+  
   <p><b>Error típico:</b> pensar que el radio llega «hasta donde está definida $f$». $f$ existe en $(-1,\infty)$, pero la serie sólo converge en $(-1,1)$: en $x=2$, $f(2)=3^{-k}$ y la serie diverge. Aquí coincide con la distancia a $x=-1$, pero no es una regla ($\frac1{1+x^2}$, del interactivo, tiene $R=1$ siendo suave en todo $\mathbb R$): el radio se calcula con cociente o raíz.</p>
     <p><b>Teoría:</b> U §3.2.3 p. 117; criterio del cociente U p. 70; Teor. 3.1 p. 116. La fórmula general $(1+x)^\alpha=\sum\binom{\alpha}{n}x^n$ es la serie binomial de S Teor. 17 p. 761, con $\alpha=-k$ y $\binom{-k}{n}=(-1)^n\binom{k+n-1}{n}$.</p>
+  </details>
 </details>
-<!-- ============================ 7 ============================ -->
-<h2 id="propios"><span class="n">7</span>Ejemplos propios, de fácil a difícil <span class="src" data-l="P" data-ref="Ejemplos propios, todos verificados con sympy">P propios</span></h2>
-<details class="sol" id="p1"><summary>P1 · centro, radio e intervalo de $\sum\frac{(x-3)^n}{n\,2^n}$ <span class="src" data-l="P" data-ref="Ejemplo propio, método de U Ej. 1.60 pp. 68-69">P</span></summary>
-<div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Centro, radio e intervalo de convergencia de $\sum\frac{(x-3)^n}{n\,2^n}$.</dd>
-    <dt>Cómo lo pienso</dt><dd>Una serie de potencias converge en un intervalo centrado en $x_0$; el radio dice hasta dónde, pero los dos extremos hay que mirarlos a mano.</dd>
-    <dt>Qué uso</dt><dd>Criterio del cociente (U p.70); armónica (U Ej. 1.35 p.37); Leibniz (U p.41).</dd>
-    <dt>Por dónde empiezo</dt><dd>Leer el centro $x_0=3$ y el coeficiente $a_n=\frac1{n2^n}$.</dd>
-  </dl></div>
-  <ol class="steps">
-    <li><b>Centro</b> $x_0=3$; coeficientes $a_n=\frac1{n2^n}$.</li>
-    <li><b>Cociente.</b> $\frac{a_{n+1}}{a_n}=\frac{n\,2^n}{(n+1)2^{n+1}}=\frac{n}{2(n+1)}\to\frac12$. Luego $R=2$ y converge en $(1,5)$.</li>
-    <li><b>Extremo $x=5$.</b> $\sum\frac{2^n}{n2^n}=\sum\frac1n$: armónica, diverge (U Ej. 1.35 p.37).</li>
-    <li><b>Extremo $x=1$.</b> $\sum\frac{(-2)^n}{n2^n}=\sum\frac{(-1)^n}{n}$: alternada con $\frac1n$ decreciente a $0$; converge por Leibniz (U p.41).</li>
-    <li><b>Intervalo de convergencia:</b> $[1,5)$.</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> los dos extremos se estudian por separado; pueden comportarse distinto.</div>
-</details>
-<details class="sol" id="p2"><summary>P2 · serie de Taylor de $e^{2x}$ en $x_0=1$ <span class="src" data-l="P" data-ref="Ejemplo propio, basado en U Ej. 3.13 p. 117">P</span></summary>
+</article>
+<h3 id="propios">Ejemplos propios (de fácil a difícil)</h3>
+<article class="ejer" id="p2" data-extra>
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">P2 · serie de Taylor de $e^{2x}$ en $x_0=1$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, basado en U Ej. 3.13 p. 117">P</span></header>
+<div class="ejer-enun"><p class="enun">Calcula la serie de Taylor de $f(x)=e^{2x}$ centrada en $x_0=1$ y su radio de convergencia.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La serie de Taylor de $e^{2x}$ centrada en $x_0=1$.</dd>
     <dt>Cómo lo pienso</dt><dd>Cambiar el centro sólo cambia dónde se evalúan las derivadas; las derivadas de $e^{2x}$ siguen la misma regla.</dd>
-    <dt>Qué uso</dt><dd>Serie de Taylor $\sum\frac{f^{(n}(x_0)}{n!}(x-x_0)^n$ (U §3.2.3); derivadas de $e^{2x}$ de U Ej. 3.13, p.117.</dd>
+    <dt>Qué uso</dt><dd>$a_n=\frac{f^{(n}(1)}{n!}$ con $f^{(n}(1)=2^ne^2$ (U Ej. 3.13, p.117) — <a href="#s1">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $f^{(n}(x)=2^ne^{2x}$ y evaluar en $x=1$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"exp(2*x)","n":"e²ˣ"},{"e":"exp(2)*(1+2*(x-1)+2*(x-1)^2+4/3*(x-1)^3)","n":"polinomio de grado 3 en x₀=1"}],"x":[-0.5,2],"y":[0,60],"q":[[1,7.389056,"(1, e²)"]]}' data-alt="e^(2x) y su polinomio de Taylor de grado 3 centrado en 1"><figcaption>La curva $e^{2x}$ y el polinomio de Taylor de grado $3$ centrado en $x_0=1$: se tocan en $(1,e^2)$ y se separan al alejarse de ese punto. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> cambiar de centro sólo cambia dónde se evalúan las derivadas; a veces basta factorizar y sustituir en una serie conocida.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"exp(2*x)","n":"e²ˣ"},{"e":"exp(2)*(1+2*(x-1)+2*(x-1)^2+4/3*(x-1)^3)","n":"polinomio de grado 3 en x₀=1"}],"x":[-0.5,2],"y":[0,60],"q":[[1,7.389056,"(1, e²)"]]}' data-alt="e^(2x) y su polinomio de Taylor de grado 3 centrado en 1"><figcaption>La curva $e^{2x}$ y el polinomio de Taylor de grado $3$ centrado en $x_0=1$: se tocan en $(1,e^2)$ y se separan al alejarse de ese punto. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
     <li>$f^{(n}(x)=2^ne^{2x}$ (U Ej. 3.13), así que $f^{(n}(1)=2^ne^2$.</li>
@@ -379,34 +751,66 @@
     <li><b>Radio:</b> $\frac{2}{n+1}\to0$, luego $R=\infty$.</li>
     <li><b>Comprobación sin derivar:</b> $e^{2x}=e^2\cdot e^{2(x-1)}$; se sustituye $t=2(x-1)$ en $e^t=\sum\frac{t^n}{n!}$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> cambiar de centro sólo cambia dónde se evalúan las derivadas; a veces basta factorizar y sustituir en una serie conocida.</div>
+  </details>
 </details>
-<details class="sol" id="p3"><summary>P3 · $x^2\cos x^3$ y sus derivadas en $0$ sin derivar <span class="src" data-l="P" data-ref="Ejemplo propio, basado en U Ej. 3.15 pp. 118-119">P</span></summary>
-<p class="enun">Desarrolla $f(x)=x^2\cos x^3$ en serie de potencias y calcula $f^{(8}(0)$ y $f^{(9}(0)$ <b>sin derivar</b>.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="p1">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">P1 · centro, radio e intervalo de $\sum\frac{(x-3)^n}{n\,2^n}$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, método de U Ej. 1.60 pp. 68-69">P</span></header>
+<div class="ejer-enun"><p class="enun">Calcula el centro, el radio y el intervalo de convergencia de $\displaystyle\sum_{n=1}^\infty\frac{(x-3)^n}{n\,2^n}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Centro, radio e intervalo de convergencia de $\sum\frac{(x-3)^n}{n\,2^n}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una serie de potencias converge en un intervalo centrado en $x_0$; el radio dice hasta dónde, pero los dos extremos hay que mirarlos a mano.</dd>
+    <dt>Qué uso</dt><dd>Cociente (U p.70), armónica (U Ej. 1.35, p.37) y Leibniz (U p.41) — <a href="#s2">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Leer el centro $x_0=3$ y el coeficiente $a_n=\frac1{n2^n}$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> los dos extremos se estudian por separado; pueden comportarse distinto.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<ol class="steps">
+    <li><b>Centro</b> $x_0=3$; coeficientes $a_n=\frac1{n2^n}$.</li>
+    <li><b>Cociente.</b> $\frac{a_{n+1}}{a_n}=\frac{n\,2^n}{(n+1)2^{n+1}}=\frac{n}{2(n+1)}\to\frac12$. Luego $R=2$ y converge en $(1,5)$.</li>
+    <li><b>Extremo $x=5$.</b> $\sum\frac{2^n}{n2^n}=\sum\frac1n$: armónica, diverge (U Ej. 1.35 p.37).</li>
+    <li><b>Extremo $x=1$.</b> $\sum\frac{(-2)^n}{n2^n}=\sum\frac{(-1)^n}{n}$: alternada con $\frac1n$ decreciente a $0$; converge por Leibniz (U p.41).</li>
+    <li><b>Intervalo de convergencia:</b> $[1,5)$.</li>
+  </ol>
+  </details>
+</details>
+</article>
+<article class="ejer" id="p3" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">P3 · $x^2\cos x^3$ y sus derivadas en $0$ sin derivar</span> <span class="src" data-l="P" data-ref="Ejemplo propio, basado en U Ej. 3.15 pp. 118-119">P</span></header>
+<div class="ejer-enun"><p class="enun">Desarrolla $f(x)=x^2\cos x^3$ en serie de potencias y calcula $f^{(8}(0)$ y $f^{(9}(0)$ <b>sin derivar</b>.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El desarrollo de $x^2\cos x^3$ en potencias de $x$ y los valores $f^{(8}(0)$ y $f^{(9}(0)$ sin derivar.</dd>
     <dt>Cómo lo pienso</dt><dd>En vez de derivar, parto de una serie conocida: sustituyo $x^3$ en el coseno y multiplico por $x^2$. En la serie, el coeficiente de $x^n$ ya contiene la derivada $n$-ésima.</dd>
-    <dt>Qué uso</dt><dd>Serie del coseno (U Ej. 3.14, p.117) y ejemplo U 3.15 (pp.118-119); relación $f^{(n}(0)=n!\,a_n$.</dd>
+    <dt>Qué uso</dt><dd>$f^{(n}(0)=n!\,a_n$ (U p.118) y sustitución en el coseno (U Ej. 3.15, pp.118-119) — <a href="#s4">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Sustituir $t=x^3$ en $\cos t=\sum\frac{(-1)^k}{(2k)!}t^{2k}$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x^2*cos(x^3)","n":"x² cos x³"},{"e":"x^2-x^8/2+x^14/24","n":"x²−x⁸/2+x¹⁴/4!"}],"x":[-1.25,1.25],"y":[-2,3]}' data-alt="x^2 cos x^3 y la suma de sus tres primeros sumandos"><figcaption>La función $x^2\cos x^3$ y los tres primeros sumandos de su desarrollo; el polinomio es par, como la función, y las dos curvas casi se confunden cerca del origen. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> sustituir en una serie conocida es mucho más rápido que derivar, y la serie da <b>todas</b> las derivadas en el centro: $f^{(n}(x_0)=n!\cdot(\text{coeficiente de }(x-x_0)^n)$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"x^2*cos(x^3)","n":"x² cos x³"},{"e":"x^2-x^8/2+x^14/24","n":"x²−x⁸/2+x¹⁴/4!"}],"x":[-1.25,1.25],"y":[-2,3]}' data-alt="x^2 cos x^3 y la suma de sus tres primeros sumandos"><figcaption>La función $x^2\cos x^3$ y los tres primeros sumandos de su desarrollo; el polinomio es par, como la función, y las dos curvas casi se confunden cerca del origen. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
-    <li><b>Serie</b> (sustituir $t=x^3$ en el coseno y multiplicar por $x^2$, como en U Ej. 3.15, apartado 4): $f(x)=x^2-\frac{x^8}{2}+\frac{x^{14}}{24}-\frac{x^{20}}{720}+\cdots=\sum_{k\ge0}\frac{(-1)^k}{(2k)!}x^{6k+2}$, válido en todo $\mathbb R$.</li>
+    <li><b>Serie</b> (sustituir $t=x^3$ en el coseno y multiplicar por $x^2$, como en U Ej. 3.15, <a href="#s4">apartado 4</a>): $f(x)=x^2-\frac{x^8}{2}+\frac{x^{14}}{24}-\frac{x^{20}}{720}+\cdots=\sum_{k\ge0}\frac{(-1)^k}{(2k)!}x^{6k+2}$, válido en todo $\mathbb R$.</li>
     <li><b>Derivadas en $0$:</b> como $a_n=\frac{f^{(n}(0)}{n!}$, entonces $f^{(n}(0)=n!\,a_n$. El coeficiente de $x^8$ es $-\frac12$, luego $f^{(8}(0)=-\frac{8!}{2}=-20160$. No hay término en $x^9$, luego $f^{(9}(0)=0$.</li>
     <li><b>Otro valor:</b> $f^{(14}(0)=\frac{14!}{24}$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> sustituir en una serie conocida es mucho más rápido que derivar, y la serie da <b>todas</b> las derivadas en el centro: $f^{(n}(x_0)=n!\cdot(\text{coeficiente de }(x-x_0)^n)$.</div>
+  </details>
 </details>
-<details class="sol" id="p4"><summary>P4 · sumar una serie y demostrar el desarrollo de $\ln(1+x)$ derivando <span class="src" data-l="P" data-ref="Ejemplo propio; usa U Teor. 3.1 p. 116 y Teor. 2.4 p. 97">P</span></summary>
-<p class="enun">(a) Calcula $\sum_{n=1}^\infty\frac n{2^n}$. (b) Demuestra que $\ln(1+x)=\sum_{n=1}^\infty\frac{(-1)^{n+1}}{n}x^n$ para $x\in(-1,1)$ usando sólo derivación de series.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="p4" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">P4 · sumar una serie y demostrar el desarrollo de $\ln(1+x)$ derivando</span> <span class="src" data-l="P" data-ref="Ejemplo propio; usa U Teor. 3.1 p. 116 y Teor. 2.4 p. 97">P</span></header>
+<div class="ejer-enun"><p class="enun">(a) Calcula $\sum_{n=1}^\infty\frac n{2^n}$. (b) Demuestra que $\ln(1+x)=\sum_{n=1}^\infty\frac{(-1)^{n+1}}{n}x^n$ para $x\in(-1,1)$ usando sólo derivación de series.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>(a) La suma de $\sum\frac n{2^n}$. (b) Probar que $\ln(1+x)=\sum\frac{(-1)^{n+1}}{n}x^n$ en $(-1,1)$ derivando series.</dd>
     <dt>Cómo lo pienso</dt><dd>(a) Es la serie de E 3.18 evaluada en un punto, tras multiplicar por $x$. (b) Si dos funciones tienen la misma derivada y el mismo valor en un punto, son la misma función.</dd>
-    <dt>Qué uso</dt><dd>Derivación término a término (U Teor. 3.1, p.116); derivada nula implica constante (U Teor. 2.4, p.97); serie geométrica.</dd>
+    <dt>Qué uso</dt><dd>Derivar término a término (U Teor. 3.1, p.116) y $f'=0\Rightarrow f$ constante (U Teor. 2.4, p.97) — <a href="#s3">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>(a) Partir de $\sum nx^{n-1}=\frac1{(1-x)^2}$. (b) Derivar la serie propuesta.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"ln(1+x)","n":"ln(1+x)"},{"e":"x-x^2/2+x^3/3-x^4/4","n":"x−x²/2+x³/3−x⁴/4"}],"x":[-0.85,1],"y":[-2,1]}' data-alt="ln(1+x) y su polinomio de Taylor de grado 4"><figcaption>La función $\ln(1+x)$ y los cuatro primeros sumandos de su serie: se parecen en $(-1,1)$, sobre todo cerca de $0$; hacia $x=-1$ la función cae a $-\infty$ y el polinomio no la sigue. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> para «sumar» una serie, buscar una serie conocida cuya derivada (o $x$ por ella) sea la dada. Para demostrar un desarrollo: misma derivada y mismo valor en el centro implican misma función. (Integrar término a término es el camino directo; aparece en el Tema 6: Prop. 6.1, p. 280.)</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"ln(1+x)","n":"ln(1+x)"},{"e":"x-x^2/2+x^3/3-x^4/4","n":"x−x²/2+x³/3−x⁴/4"}],"x":[-0.85,1],"y":[-2,1]}' data-alt="ln(1+x) y su polinomio de Taylor de grado 4"><figcaption>La función $\ln(1+x)$ y los cuatro primeros sumandos de su serie: se parecen en $(-1,1)$, sobre todo cerca de $0$; hacia $x=-1$ la función cae a $-\infty$ y el polinomio no la sigue. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <p><b>(a)</b></p>
   <ol class="steps">
@@ -423,137 +827,249 @@
     <li><b>Esa constante es $0$:</b> $h(0)=S(0)-\ln1=0$. Por tanto $S(x)=\ln(1+x)$ en $(-1,1)$.</li>
     <li><b>Uso:</b> con $x=\frac12$ y 5 términos, $\ln\frac32\approx0{,}40729$ (valor real $0{,}405465$).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> para «sumar» una serie, buscar una serie conocida cuya derivada (o $x$ por ella) sea la dada. Para demostrar un desarrollo: misma derivada y mismo valor en el centro implican misma función. (Integrar término a término es el camino directo; aparece en el Tema 6: Prop. 6.1, p. 280.)</div>
+  </details>
 </details>
-<!-- ============================ 8 ============================ -->
-<h2 id="examenes"><span class="n">8</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="X, Exámenes resueltos de Cálculo (Examenes-resueltos-Calculo.pdf); páginas del PDF">X exámenes</span></h2>
-<p>Problemas reales de <i>Exámenes resueltos de Cálculo</i> (fuente <b>X</b>; las páginas son las del PDF). Casi todo lo que se pregunta de este tema es: <b>radio de convergencia</b> y <b>serie de Taylor de una función concreta</b>. Algunos encabezados de X no traen fecha (se indica «sin fecha»). Las preguntas de X sobre Taylor y resto de Lagrange que no usan series están en el tema 3.1.</p>
-<details class="sol" id="ex-1"><summary>Examen 1 · radio de $\sum\frac{x^n}{2^n}$ y de $\sum\frac{x^n}{3^n}$ <span class="src" data-l="X" data-ref="X p.46 (Septiembre 2014, Grado en Ing. Mecánica, Modelo A, pregunta corta 1) y X p.96 (Septiembre 2018, Mecánica, Modelo A, pregunta corta 1)">X pp.46, 96</span></summary>
-<p class="enun">Calcúlese el radio de convergencia de la serie de potencias $\sum_{n=0}^\infty\frac{x^n}{2^n}$. (X p.96: lo mismo con $\frac{x^n}{3^n}$.)</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<!-- ============================ exámenes ============================ -->
+<h2 id="examenes" data-vista="examen"><span class="n">10</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="X, Exámenes resueltos de Cálculo (Examenes-resueltos-Calculo.pdf); páginas del PDF">X exámenes</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>8 preguntas</b> de este tema (todas se resuelven aquí abajo con su redacción) y 4 ejercicios en el libro E. Se reparten en 3 tipos:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Radio, centro e intervalo de convergencia <small>(5 de 8)</small></td><td>Forma estándar $a_n(x-x_0)^n$; cociente (factoriales) o raíz (potencia $n$); $R=\frac1S$; después los dos extremos.</td>
+      <td><a href="#ej-3-17">3.17</a></td>
+      <td><a href="#ex-1">Examen 1</a> · <a href="#ex-1b">1b</a> · <a href="#ex-2">2</a> · <a href="#ex-3">3</a> · <a href="#ex-4">4</a></td></tr>
+    <tr><td>Serie de Taylor de una función concreta <small>(2 de 8)</small></td><td>Ciclo o patrón de las derivadas, evaluar en $x_0$ y dividir entre $n!$; o sustituir en una conocida. Con Lagrange, tabla de cotas.</td>
+      <td><a href="#ej-3-19">3.19</a> · <a href="#ej-3-20">3.20</a></td>
+      <td><a href="#ex-6">Examen 6</a> · <a href="#ex-7">Examen 7</a></td></tr>
+    <tr><td>Derivar o reconocer una serie <small>(1 de 8)</small></td><td>Es la derivada término a término de una conocida: mismo radio, y los extremos se miran aparte.</td>
+      <td><a href="#ej-3-18">3.18</a></td>
+      <td><a href="#ex-5">Examen 5</a></td></tr>
+  </table>
+  <p><small>Recuento propio sobre las preguntas de X resueltas aquí. El resto de Lagrange sin series (X de Taylor) está en el tema 3.1; las preguntas de convergencia uniforme de X (pp. 22, 26, 74, 115-116, 135, 142, 144) son de U §1.5, excluida por el cronograma 2026-27, y no se resuelven aquí.</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre las preguntas de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
+<p>Estos son los tipos reales que caen de este tema en los exámenes resueltos de la UNED (<span class="src" data-l="X" data-ref="X: Exámenes resueltos de Cálculo (UNED); se cita la página del PDF">X</span> = <i>Exámenes resueltos de Cálculo</i>; página del PDF). Casi todo lo que se pregunta es el <b>radio de convergencia</b> o la <b>serie de Taylor de una función concreta</b>. Intenta cada uno antes de abrir la solución; van de fácil a difícil. Algunos encabezados de X no traen fecha (se indica «sin fecha»).</p>
+<article class="ejer" id="ex-1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 1 · Sep. 2014 y Sep. 2018 · radio de $\sum\frac{x^n}{2^n}$ y de $\sum\frac{x^n}{3^n}$</span> <span class="src" data-l="X" data-ref="X p.46 (Septiembre 2014, Grado en Ing. Mecánica, Modelo A, pregunta corta 1) y X p.96 (Septiembre 2018, Mecánica, Modelo A, pregunta corta 1)">X pp.46, 96</span></header>
+<div class="ejer-enun"><p class="enun">Calcúlese el radio de convergencia de la serie de potencias $\sum_{n=0}^\infty\frac{x^n}{2^n}$. (X p.96: lo mismo con $\frac{x^n}{3^n}$.)</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El radio de convergencia de $\sum\frac{x^n}{2^n}$ (y de $\sum\frac{x^n}{3^n}$).</dd>
     <dt>Cómo lo pienso</dt><dd>$\frac{x^n}{2^n}=\left(\frac x2\right)^n$ es una geométrica: converge si $\left|\frac x2\right|&lt;1$, es decir, $|x|&lt;2$.</dd>
-    <dt>Qué uso</dt><dd>Criterio del cociente para series de potencias (U p.70): $R=\frac1{\lim_{n\to\infty}|a_{n+1}/a_n|}$.</dd>
+    <dt>Qué uso</dt><dd>$R=\frac1S$ con $S=\lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|$ (U p.70) — <a href="#s2">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Identificar el coeficiente $a_n=\frac1{2^n}$.</dd>
   </dl></div>
-  <ol class="steps">
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Coeficiente.</b> $a_n=\frac1{2^n}$.</p>
+  <p><b>Cociente.</b> $\left|\frac{a_{n+1}}{a_n}\right|=\frac{2^n}{2^{n+1}}=\frac12$, que tiene límite $\frac12$.</p>
+  <p><b>Radio.</b> $R=\frac1{1/2}=2$. (Con $\frac{x^n}{3^n}$ el mismo cálculo da $R=3$.)</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> si $a_n=\frac1{b^n}$, entonces $R=b$: se reconoce la geométrica $\left(\frac xb\right)^n$.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.46 (Septiembre 2014, Grado en Ing. Mecánica, Modelo A, pregunta corta 1) y X p.96 (Septiembre 2018, Mecánica, Modelo A, pregunta corta 1)">X pp.46, 96</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
     <li><b>Coeficiente:</b> $a_n=\frac1{2^n}$.</li>
     <li><b>Cociente:</b> $\frac{a_{n+1}}{a_n}=\frac{2^n}{2^{n+1}}=\frac12$, y su límite es $\frac12$.</li>
     <li><b>Radio:</b> $R=\frac1{1/2}=2$. Con $3^n$: $R=3$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> si $a_n=\frac1{b^n}$, entonces $R=b$: se reconoce la geométrica $\left(\frac xb\right)^n$.</div>
-  <p><b>Teoría:</b> apartado 2 (U p.70).</p>
+  
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a> (U p.70).</p>
+  </details>
 </details>
-<details class="sol" id="ex-1b"><summary>Examen 1b · radio de $\sum e^{-n}x^n$ <span class="src" data-l="X" data-ref="X p.38 (Septiembre 2013, Mecánica y Electrónica/Automática, Modelo A, pregunta 1)">X p.38</span></summary>
-<p class="enun">Calcule el radio de convergencia de la serie de funciones $\sum_{n}e^{-n}x^n$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-1b" data-extra>
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Examen 1b · Sep. 2013 · radio de $\sum e^{-n}x^n$</span> <span class="src" data-l="X" data-ref="X p.38 (Septiembre 2013, Mecánica y Electrónica/Automática, Modelo A, pregunta 1)">X p.38</span></header>
+<div class="ejer-enun"><p class="enun">Calcule el radio de convergencia de la serie de funciones $\sum_{n}e^{-n}x^n$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El radio de convergencia de $\sum e^{-n}x^n$.</dd>
     <dt>Cómo lo pienso</dt><dd>$e^{-n}x^n=\left(\frac xe\right)^n$ es una geométrica de razón $\frac xe$: converge si $|x|&lt;e$.</dd>
-    <dt>Qué uso</dt><dd>Criterio del cociente para series de potencias (U p.70).</dd>
+    <dt>Qué uso</dt><dd>$R=\frac1S$ con $S=\lim_{n\to\infty}\left|\frac{a_{n+1}}{a_n}\right|$ (U p.70) — <a href="#s2">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Identificar el coeficiente $a_n=e^{-n}$.</dd>
   </dl></div>
-  <ol class="steps">
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Coeficiente.</b> $a_n=e^{-n}$.</p>
+  <p><b>Cociente.</b> $\left|\frac{a_{n+1}}{a_n}\right|=\frac{e^{-(n+1)}}{e^{-n}}=e^{-1}$, con límite $\frac1e$.</p>
+  <p><b>Radio.</b> $R=\frac1{1/e}=e$, es decir, la serie converge para $|x|&lt;e$ y diverge para $|x|&gt;e$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> como en el Examen 1: si $a_n=r^n$, entonces $R=\frac1{|r|}$; se reconoce la geométrica $(rx)^n$.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.38 (Septiembre 2013, Mecánica y Electrónica/Automática, Modelo A, pregunta 1)">X p.38</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
     <li><b>Coeficiente:</b> $a_n=e^{-n}$.</li>
     <li><b>Cociente:</b> $\frac{a_{n+1}}{a_n}=\frac{e^{-(n+1)}}{e^{-n}}=e^{-1}$, límite $\frac1e$.</li>
     <li><b>Radio:</b> $R=e$ (extremos $x=\pm e$: el término $(\pm1)^n$ no tiende a $0$, divergen).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> como en el Examen 1: si $a_n=r^n$, entonces $R=\frac1{|r|}$; se reconoce la geométrica $(rx)^n$.</div>
-  <p><b>Teoría:</b> apartado 2. Es la serie de E 3.17.</p>
+  
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a>. Es la serie de E 3.17.</p>
+  </details>
 </details>
-<details class="sol" id="ex-2"><summary>Examen 2 · centro, radio e intervalo de $\sum\frac{(2x-1)^n}{n!}$ <span class="src" data-l="X" data-ref="X p.99 (I. Electrónica Industrial y Automática, sin fecha, pregunta corta 2)">X p.99</span></summary>
-<p class="enun">Calcule el centro, radio de convergencia e intervalo de convergencia de $\sum_{n=1}^\infty\frac{(2x-1)^n}{n!}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Examen 2 · centro, radio e intervalo de $\sum\frac{(2x-1)^n}{n!}$</span> <span class="src" data-l="X" data-ref="X p.99 (I. Electrónica Industrial y Automática, sin fecha, pregunta corta 2)">X p.99</span></header>
+<div class="ejer-enun"><p class="enun">Calcule el centro, radio de convergencia e intervalo de convergencia de $\sum_{n=1}^\infty\frac{(2x-1)^n}{n!}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Centro, radio e intervalo de convergencia de $\sum\frac{(2x-1)^n}{n!}$.</dd>
     <dt>Cómo lo pienso</dt><dd>El centro y los coeficientes sólo se leen cuando la serie está escrita como $\sum a_n(x-x_0)^n$; aquí hay un $2$ dentro de la potencia que hay que sacar antes.</dd>
-    <dt>Qué uso</dt><dd>Forma estándar de una serie de potencias; criterio del cociente (U p.70).</dd>
+    <dt>Qué uso</dt><dd>$(bx-c)^n=b^n\left(x-\frac cb\right)^n$ para leer el centro, y $R=\frac1S$ (U p.70) — <a href="#s2">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $2x-1=2\left(x-\frac12\right)$ y pasar el $2^n$ al coeficiente.</dd>
   </dl></div>
-  <ol class="steps">
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Forma estándar.</b> Como $2x-1=2\left(x-\frac12\right)$, la serie es $\displaystyle\sum_{n=1}^\infty\frac{2^n}{n!}\left(x-\frac12\right)^n$: es una serie de potencias de <b>centro</b> $x_0=\frac12$ y coeficiente $a_n=\frac{2^n}{n!}$.</p>
+  <p><b>Cociente.</b> $\left|\frac{a_{n+1}}{a_n}\right|=\frac{2^{n+1}}{(n+1)!}\cdot\frac{n!}{2^n}=\frac2{n+1}\to0$.</p>
+  <p><b>Radio e intervalo.</b> $R=\infty$; la serie converge en todo $\mathbb R$ (no hay extremos).</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> si aparece $(bx-c)^n$, escribir $b^n\left(x-\frac cb\right)^n$: centro $\frac cb$, y el $b^n$ pasa al coeficiente.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.99 (I. Electrónica Industrial y Automática, sin fecha, pregunta corta 2)">X p.99</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
     <li><b>Forma estándar.</b> $2x-1=2\left(x-\frac12\right)$, así que $(2x-1)^n=2^n\left(x-\frac12\right)^n$. La serie es $\sum\frac{2^n}{n!}\left(x-\frac12\right)^n$.</li>
     <li><b>Centro:</b> $x_0=\frac12$ (no $1$ ni $-1$).</li>
     <li><b>Cociente:</b> $a_n=\frac{2^n}{n!}$, $\ \frac{2^{n+1}/(n+1)!}{2^n/n!}=\frac2{n+1}\to0$.</li>
     <li><b>Radio</b> $R=\infty$; <b>intervalo de convergencia:</b> todo $\mathbb R$ (no hay extremos).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> si aparece $(bx-c)^n$, escribir $b^n\left(x-\frac cb\right)^n$: centro $\frac cb$, y el $b^n$ pasa al coeficiente.</div>
+  
   <p><b>Error típico:</b> tomar centro $1$, o leer $a_n=\frac1{n!}$ olvidando el $2^n$. Aquí no cambia el radio, pero en $\sum(2x-1)^n$ el radio sería $\frac12$, no $1$.</p>
+  </details>
 </details>
-<details class="sol" id="ex-3"><summary>Examen 3 · radio de $\sum\left(1+\frac1n\right)^{2n^2}x^n$ <span class="src" data-l="X" data-ref="X p.126 (I. Electrónica Industrial y Automática, sin fecha, pregunta corta 1)">X p.126</span></summary>
-<p class="enun">Calcule el radio de convergencia de $\sum_{n=1}^\infty\left(1+\frac1n\right)^{2n^2}x^n$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-3" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Examen 3 · radio de $\sum\left(1+\frac1n\right)^{2n^2}x^n$</span> <span class="src" data-l="X" data-ref="X p.126 (I. Electrónica Industrial y Automática, sin fecha, pregunta corta 1)">X p.126</span></header>
+<div class="ejer-enun"><p class="enun">Calcule el radio de convergencia de $\sum_{n=1}^\infty\left(1+\frac1n\right)^{2n^2}x^n$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El radio de convergencia de $\sum\left(1+\frac1n\right)^{2n^2}x^n$.</dd>
     <dt>Cómo lo pienso</dt><dd>El coeficiente es «algo elevado a $n^2$»: la raíz $n$-ésima lo baja a «algo elevado a $n$», que es el límite que define el número $e$.</dd>
-    <dt>Qué uso</dt><dd>Criterio de la raíz para series de potencias: $R=\frac1{\lim_{n\to\infty}\sqrt[n]{|a_n|}}$; $\left(1+\frac1n\right)^n\to e$ (U Prop. 1.5, p.31).</dd>
+    <dt>Qué uso</dt><dd>$R=\frac1S$ con $S=\lim_{n\to\infty}\sqrt[n]{|a_n|}$ (U p.70) y $\left(1+\frac1n\right)^n\to e$ (U Prop. 1.5, p.31) — <a href="#s2">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Calcular $\sqrt[n]{a_n}$ y reconocer $\left[\left(1+\frac1n\right)^n\right]^2$.</dd>
   </dl></div>
-  <ol class="steps">
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Criterio.</b> El coeficiente es $a_n=\left(1+\frac1n\right)^{2n^2}$, con exponente en $n^2$: se usa la raíz.</p>
+  <p><b>Raíz.</b> $\sqrt[n]{a_n}=\left(1+\frac1n\right)^{2n}=\left[\left(1+\frac1n\right)^n\right]^2\to e^2$, porque $\left(1+\frac1n\right)^n\to e$.</p>
+  <p><b>Radio.</b> $R=\frac1{e^2}$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> coeficientes con potencia $n$ o $n^2$, criterio de la raíz; si sale $1^\infty$, usar $\left(1+\frac1{a_n}\right)^{a_n}\to e$.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.126 (I. Electrónica Industrial y Automática, sin fecha, pregunta corta 1)">X p.126</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
     <li><b>Criterio.</b> Raíz (por el exponente $n^2$).</li>
     <li><b>Raíz $n$-ésima.</b> $\sqrt[n]{a_n}=\left(1+\frac1n\right)^{2n^2/n}=\left(1+\frac1n\right)^{2n}=\left[\left(1+\frac1n\right)^n\right]^2$.</li>
     <li><b>Límite.</b> $\left(1+\frac1n\right)^n\to e$ (U Prop. 1.5, p. 31), luego el límite es $e^2$.</li>
     <li><b>Radio:</b> $R=\frac1{e^2}$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> coeficientes con potencia $n$ o $n^2$, criterio de la raíz; si sale $1^\infty$, usar $\left(1+\frac1{a_n}\right)^{a_n}\to e$.</div>
+  
   <p><b>Error típico:</b> «$1+\frac1n\to1$ y $1^{\text{lo que sea}}=1$», lo que daría $R=1$. Es una indeterminación $1^\infty$.</p>
+  </details>
 </details>
-<details class="sol" id="ex-4"><summary>Examen 4 · $\sum\ln(n+1)(x+1)^n$: centro, intervalo y extremos <span class="src" data-l="X" data-ref="X p.105 (I. Electrónica Industrial y Automática, sin fecha, Ej. 6, 3 puntos)">X p.105</span></summary>
-<p class="enun">Dada la serie de funciones $\sum_{n=0}^\infty\ln(n+1)(x+1)^n$: discuta si es una serie de potencias y, en caso afirmativo, indique su centro; estudie si existe un intervalo en el que la serie es convergente; estudie si para $x=-2$ y $x=0$ las series numéricas asociadas son convergentes.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-4">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Examen 4 · $\sum\ln(n+1)(x+1)^n$: centro, intervalo y extremos</span> <span class="src" data-l="X" data-ref="X p.105 (I. Electrónica Industrial y Automática, sin fecha, Ej. 6, 3 puntos)">X p.105</span></header>
+<div class="ejer-enun"><p class="enun">Dada la serie de funciones $\sum_{n=0}^\infty\ln(n+1)(x+1)^n$: discuta si es una serie de potencias y, en caso afirmativo, indique su centro; estudie si existe un intervalo en el que la serie es convergente; estudie si para $x=-2$ y $x=0$ las series numéricas asociadas son convergentes.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si $\sum\ln(n+1)(x+1)^n$ es de potencias, su centro, un intervalo de convergencia y qué pasa en $x=-2$ y $x=0$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es de potencias con centro $-1$ y radio $1$; $-2$ y $0$ son justo los extremos del intervalo, y allí el término general no tiende a $0$.</dd>
-    <dt>Qué uso</dt><dd>Criterio del cociente (U p.70) con L'Hôpital; condición necesaria de convergencia: si $a_n\not\to0$, la serie diverge (U Prop. 1.6, p.36).</dd>
+    <dt>Qué uso</dt><dd>Cociente (U p.70) y «si $a_n\not\to0$, la serie diverge» en los extremos (U Prop. 1.6, p.36) — <a href="#s2">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Comparar $\ln(n+1)(x+1)^n$ con $a_n(x-x_0)^n$ para leer $a_n$ y $x_0$.</dd>
   </dl></div>
-  <ol class="steps">
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>¿Serie de potencias?</b> Sí: $a_n=\ln(n+1)$ y $(x-x_0)^n=(x+1)^n$, así que el <b>centro</b> es $x_0=-1$.</p>
+  <p><b>Cociente.</b> $\frac{a_{n+1}}{a_n}=\frac{\ln(n+2)}{\ln(n+1)}\to1$ (por L'Hôpital, $\frac{1/(x+2)}{1/(x+1)}\to1$). Luego $R=1$ y la serie converge en $|x+1|&lt;1$, es decir, en $(-2,0)$.</p>
+  <p><b>Extremos.</b> En $x=0$ queda $\sum\ln(n+1)$ y en $x=-2$ queda $\sum(-1)^n\ln(n+1)$: el término general no tiende a $0$, luego ambas series numéricas <b>divergen</b>. Intervalo de convergencia: $(-2,0)$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> centro, radio (cociente o raíz) y, <b>siempre</b>, los dos extremos por separado; lo primero en un extremo es ver si el término general tiende a $0$.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.105 (I. Electrónica Industrial y Automática, sin fecha, Ej. 6, 3 puntos)">X p.105</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
     <li><b>¿Serie de potencias?</b> Sí: $a_n=\ln(n+1)$ y $x-x_0=x+1$, es decir, <b>centro $x_0=-1$</b>.</li>
     <li><b>Cociente.</b> $\frac{a_{n+1}}{a_n}=\frac{\ln(n+2)}{\ln(n+1)}$ (con $n\ge1$, porque $a_0=\ln1=0$).</li>
     <li><b>Límite</b> ($\frac\infty\infty$, con L'Hôpital sobre $\frac{\ln(x+2)}{\ln(x+1)}$): $\frac{1/(x+2)}{1/(x+1)}=\frac{x+1}{x+2}\to1$. Luego $R=1$.</li>
     <li><b>Intervalo:</b> $|x+1|&lt;1$, es decir, $(-2,0)$.</li>
     <li><b>Extremos.</b> En $x=0$: $\sum\ln(n+1)$, el término tiende a $+\infty$. En $x=-2$: $\sum(-1)^n\ln(n+1)$, el valor absoluto tiende a $\infty$. En ambos el término <b>no tiende a $0$</b>: divergen (U Prop. 1.6, p. 36). Intervalo de convergencia: $(-2,0)$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> centro, radio (cociente o raíz) y, <b>siempre</b>, los dos extremos por separado; lo primero en un extremo es ver si el término general tiende a $0$.</div>
+  
   <p><b>Error típico:</b> decir que en $x=-2$ «converge por Leibniz» por ser alternada. Leibniz exige que $|a_n|$ decrezca a $0$ y aquí crece.</p>
+  </details>
 </details>
-<details class="sol" id="ex-5"><summary>Examen 5 · test: la serie $\sum nx^{n-1}$ <span class="src" data-l="X" data-ref="X pp.112-113 (Examen 2 elaborado con exámenes de asignaturas similares, sin fecha, Ej. 4, test)">X pp.112-113</span></summary>
-<p class="enun">Dada la serie $\sum_{n=1}^\infty nx^{n-1}$, señale la opción correcta: A) converge para todo $x$; B) no converge para ningún $x$; C) converge en el intervalo $(-1,1)$; D) ninguna de las anteriores.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-5">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Examen 5 · test: la serie $\sum nx^{n-1}$</span> <span class="src" data-l="X" data-ref="X pp.112-113 (Examen 2 elaborado con exámenes de asignaturas similares, sin fecha, Ej. 4, test)">X pp.112-113</span></header>
+<div class="ejer-enun"><p class="enun">Dada la serie $\sum_{n=1}^\infty nx^{n-1}$, señale la opción correcta: A) converge para todo $x$; B) no converge para ningún $x$; C) converge en el intervalo $(-1,1)$; D) ninguna de las anteriores.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Elegir la opción correcta sobre la convergencia de $\sum nx^{n-1}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es la derivada término a término de la geométrica (Ejercicio 3.18): tiene el mismo radio, $1$. Con eso se descartan las otras opciones probando un par de valores.</dd>
-    <dt>Qué uso</dt><dd>Derivación término a término (U Teor. 3.1, p.116: misma $R$); condición necesaria de convergencia (U Prop. 1.6, p.36).</dd>
+    <dt>Qué uso</dt><dd>Derivar sumando a sumando conserva $R$ (U Teor. 3.1, p.116); los extremos se miran aparte — <a href="#s3">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Reconocer $\sum_{n\ge1}nx^{n-1}=\frac d{dx}\sum_{n\ge0}x^n$.</dd>
   </dl></div>
-  <ol class="steps">
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Reconocerla.</b> $\sum_{n\ge1}nx^{n-1}$ es la serie que resulta de derivar término a término la geométrica $\sum_{n\ge0}x^n=\frac1{1-x}$, que converge en $(-1,1)$.</p>
+  <p><b>Radio.</b> Derivar conserva el radio: $R=1$. En $x=\pm1$ el término $n(\pm1)^{n-1}$ no tiende a $0$: diverge.</p>
+  <p><b>Opciones.</b> A es falsa (en $x=2$ diverge) y B es falsa (en $x=0$ converge). <b>Respuesta C</b>: converge en $(-1,1)$ (y suma $\frac1{(1-x)^2}$).</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> en un test, reconocer la serie como derivada de una conocida da el radio en un paso. Pero el radio <b>no dice nada de los extremos</b>: se miran aparte.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X pp.112-113 (Examen 2 elaborado con exámenes de asignaturas similares, sin fecha, Ej. 4, test)">X pp.112-113</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
     <li><b>Reconocerla.</b> $\sum_{n\ge1}nx^{n-1}=\frac d{dx}\sum_{n\ge0}x^n$.</li>
     <li><b>Radio.</b> El de $\sum x^n$ es $1$; por el Teor. 3.1 la derivada tiene el mismo radio (también por el cociente: $\frac{n+1}n\to1$).</li>
     <li><b>Extremos</b>. En $x=1$ el término es $n\to\infty$; en $x=-1$ es $n(-1)^{n-1}$, que no tiende a $0$. Divergen.</li>
     <li><b>Descartar.</b> A es falsa ($x=2$ diverge); B es falsa ($x=0$ da $1$). <b>Respuesta C</b>, con suma $\frac1{(1-x)^2}$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> en un test, reconocer la serie como derivada de una conocida da el radio en un paso. Pero el radio <b>no dice nada de los extremos</b>: se miran aparte.</div>
+  </details>
 </details>
-<details class="sol" id="ex-6"><summary>Examen 6 · serie de Taylor de $e^{\pi x}$ en $0$ <span class="src" data-l="X" data-ref="X p.142 (Septiembre 2018, I. Electrónica Industrial y Automática, pregunta corta 3)">X p.142</span></summary>
-<p class="enun">Calcule la serie de Taylor de $f(x)=e^{\pi x}$ centrada en $x=0$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-6">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 6 · Sep. 2018 · serie de Taylor de $e^{\pi x}$ en $0$</span> <span class="src" data-l="X" data-ref="X p.142 (Septiembre 2018, I. Electrónica Industrial y Automática, pregunta corta 3)">X p.142</span></header>
+<div class="ejer-enun"><p class="enun">Calcule la serie de Taylor de $f(x)=e^{\pi x}$ centrada en $x=0$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La serie de Taylor de $e^{\pi x}$ centrada en $0$.</dd>
     <dt>Cómo lo pienso</dt><dd>Igual que $e^{2x}$ (U Ej. 3.13), con $\pi$ en lugar de $2$: cada derivada saca un factor $\pi$.</dd>
-    <dt>Qué uso</dt><dd>Serie de Taylor $\sum\frac{f^{(n}(0)}{n!}x^n$ (U §3.2.3, p.117); regla de la cadena.</dd>
+    <dt>Qué uso</dt><dd>$a_n=\frac{f^{(n}(0)}{n!}$ (U p.117) y $e^{ax}=\sum\frac{a^n}{n!}x^n$ (U Ej. 3.13, p.117) — <a href="#s1">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>Calcular $f'$, $f''$, $f'''$ y ver el patrón $\pi^ne^{\pi x}$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"exp(pi*x)","n":"e^(πx)"},{"e":"1+pi*x+(pi*x)^2/2+(pi*x)^3/6","n":"1+πx+(πx)²/2+(πx)³/3!"}],"x":[-1,1],"y":[-2,25]}' data-alt="e^(pi x) y su polinomio de Taylor de grado 3"><figcaption>La función $e^{\pi x}$ y los cuatro primeros sumandos de su serie de Taylor en $0$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Derivadas.</b> $f(x)=e^{\pi x}$ y, por la regla de la cadena, $f^{(n}(x)=\pi^ne^{\pi x}$; en $0$, $f^{(n}(0)=\pi^n$.</p>
+  <p><b>Serie de Taylor en $0$.</b> $\displaystyle\sum_{n=0}^\infty\frac{\pi^n}{n!}x^n=1+\pi x+\frac{\pi^2x^2}{2!}+\frac{\pi^3x^3}{3!}+\cdots$</p>
+  <p><b>Radio.</b> $\frac{\pi^{n+1}/(n+1)!}{\pi^n/n!}=\frac\pi{n+1}\to0$, luego $R=\infty$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> $e^{ax}=\sum\frac{a^n}{n!}x^n$ para todo $x$. Conviene dar el radio aunque no se pida.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.142 (Septiembre 2018, I. Electrónica Industrial y Automática, pregunta corta 3)">X p.142</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<figure class="graf" data-g='{"c":[{"e":"exp(pi*x)","n":"e^(πx)"},{"e":"1+pi*x+(pi*x)^2/2+(pi*x)^3/6","n":"1+πx+(πx)²/2+(πx)³/3!"}],"x":[-1,1],"y":[-2,25]}' data-alt="e^(pi x) y su polinomio de Taylor de grado 3"><figcaption>La función $e^{\pi x}$ y los cuatro primeros sumandos de su serie de Taylor en $0$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
     <li><b>Derivadas.</b> Cada derivada saca un factor $\pi$ (regla de la cadena): $f^{(n}(x)=\pi^ne^{\pi x}$, y $f^{(n}(0)=\pi^n$.</li>
     <li><b>Serie:</b> $\displaystyle\sum_{n=0}^\infty\frac{\pi^n}{n!}x^n$.</li>
     <li><b>Radio</b>: $\frac{\pi^{n+1}/(n+1)!}{\pi^n/n!}=\frac\pi{n+1}\to0$, luego $R=\infty$. Atajo: sustituir $t=\pi x$ en $e^t=\sum\frac{t^n}{n!}$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> $e^{ax}=\sum\frac{a^n}{n!}x^n$ para todo $x$. Conviene dar el radio aunque no se pida.</div>
+  </details>
 </details>
-<details class="sol" id="ex-7"><summary>Examen 7 · serie de Taylor de $\cos x$ en $\frac12$ y $\cos\frac14$ con error $&lt;0{,}002$ <span class="src" data-l="X" data-ref="X pp.145-146 (Febrero 2018, 1ª semana, I. Electrónica Industrial y Automática, Ej. 5, 3 puntos)">X pp.145-146</span></summary>
-<p class="enun">Dada $f(x)=\cos x$: (a) Calcule de manera razonada la serie de Taylor de $f$ centrada en $x=\frac12$. (b) Usando el resto de Lagrange de orden $n$, calcule $\cos\left(\frac14\right)$ con un error en valor absoluto menor que $0{,}002$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-7">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="nv min">Mínimo</span><span class="tit">Examen 7 · Feb. 2018 (1ª sem.) · serie de Taylor de $\cos x$ en $\frac12$ y $\cos\frac14$ con error $&lt;0{,}002$</span> <span class="src" data-l="X" data-ref="X pp.145-146 (Febrero 2018, 1ª semana, I. Electrónica Industrial y Automática, Ej. 5, 3 puntos)">X pp.145-146</span></header>
+<div class="ejer-enun"><p class="enun">Dada $f(x)=\cos x$: (a) Calcule de manera razonada la serie de Taylor de $f$ centrada en $x=\frac12$. (b) Usando el resto de Lagrange de orden $n$, calcule $\cos\left(\frac14\right)$ con un error en valor absoluto menor que $0{,}002$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>(a) La serie de Taylor de $\cos x$ en $x_0=\frac12$. (b) Calcular $\cos\frac14$ con error menor que $0{,}002$ usando el resto de Lagrange.</dd>
     <dt>Cómo lo pienso</dt><dd>(a) Las derivadas de $\cos$ se repiten cada 4: basta evaluar $\cos$ y $\operatorname{sen}$ en $\frac12$. (b) Se busca el primer $n$ cuya <b>cota</b> del resto sea menor que $0{,}002$: con $n=2$ la cota es $0{,}0026$ y no basta; con $n=3$ sí.</dd>
-    <dt>Qué uso</dt><dd>Serie de Taylor (U §3.2.3); resto de Lagrange (U Prop. 3.2 y Def. 3.3, p.111).</dd>
+    <dt>Qué uso</dt><dd>Serie de Taylor (U p.117) y resto de Lagrange $|R_n(x)|\le\frac{M}{(n+1)!}|x-x_0|^{n+1}$ (U Prop. 3.2, p.111) — <a href="#s1">ver teoría</a>.</dd>
     <dt>Por dónde empiezo</dt><dd>(a) Escribir el ciclo de derivadas de $\cos$. (b) Elegir el centro $0$, donde las derivadas son exactas.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"cos(x)","n":"cos x"},{"e":"1-x^2/2","n":"1−x²/2"}],"x":[-2,2],"y":[-1.5,1.2],"q":[[0.25,0.968912,"(1/4, cos 1/4)"]]}' data-alt="coseno y 1-x^2/2 con el punto x=1/4"><figcaption>El coseno y su polinomio de Taylor en $0$ (el de grado $3$ es $1-\frac{x^2}{2}$, pues no hay término cúbico). En $x=\frac14$ las dos curvas apenas se distinguen: es el valor $\cos\frac14\approx0{,}9689$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>(a) Serie en $x_0=\frac12$.</b> Las derivadas de $\cos x$ se repiten cada cuatro: $\cos,\,-\operatorname{sen},\,-\cos,\,\operatorname{sen}$. Evaluadas en $\frac12$ y divididas entre $n!$:
+  $$\cos x=\cos\tfrac12-\operatorname{sen}\tfrac12\left(x-\tfrac12\right)-\frac{\cos\frac12}{2!}\left(x-\tfrac12\right)^2+\frac{\operatorname{sen}\frac12}{3!}\left(x-\tfrac12\right)^3+\cdots$$
+  con $R=\infty$; $\cos$ es analítica, luego la serie suma $\cos x$.</p>
+  <p><b>(b) $\cos\frac14$.</b> Se desarrolla en $x_0=0$, donde las derivadas son exactas. Resto de Lagrange: $|R_n(\frac14)|\le\frac{(1/4)^{n+1}}{(n+1)!}$, porque $|f^{(n+1}(c)|\le1$. Para $n=2$ la cota es $\frac1{384}\approx0{,}0026$, que no es menor que $0{,}002$; para $n=3$ es $\frac1{6144}\approx0{,}00016&lt;0{,}002$.</p>
+  <p><b>Resultado.</b> $p_3(x)=1-\frac{x^2}2$ (no hay término cúbico), así que $\cos\frac14\approx1-\frac1{32}=\frac{31}{32}=0{,}96875$, con error menor que $0{,}002$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> (a) derivadas cíclicas: escribir el ciclo y evaluar en $x_0$. (b) Tabular la cota $\frac{M}{(n+1)!}|x-x_0|^{n+1}$ para $n=0,1,2,\dots$ hasta que sea <b>menor</b> que la tolerancia. Si $f^{(n+1}(x_0)=0$, entonces $p_n=p_{n+1}$ y se puede usar la cota de $R_{n+1}$, que es mejor.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X pp.145-146 (Febrero 2018, 1ª semana, I. Electrónica Industrial y Automática, Ej. 5, 3 puntos)">X pp.145-146</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<figure class="graf" data-g='{"c":[{"e":"cos(x)","n":"cos x"},{"e":"1-x^2/2","n":"1−x²/2"}],"x":[-2,2],"y":[-1.5,1.2],"q":[[0.25,0.968912,"(1/4, cos 1/4)"]]}' data-alt="coseno y 1-x^2/2 con el punto x=1/4"><figcaption>El coseno y su polinomio de Taylor en $0$ (el de grado $3$ es $1-\frac{x^2}{2}$, pues no hay término cúbico). En $x=\frac14$ las dos curvas apenas se distinguen: es el valor $\cos\frac14\approx0{,}9689$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <p><b>(a) Serie en $x_0=\frac12$</b></p>
   <ol class="steps">
@@ -579,12 +1095,20 @@
     <li><b>Hace falta $n=3$.</b> El polinomio de Maclaurin de orden 3 de $\cos x$ es $p_3(x)=1-\frac{x^2}2$, porque $f'''(0)=\operatorname{sen}0=0$: <b>$p_3=p_2$</b> (truco de la unidad 3.1).</li>
     <li><b>Resultado.</b> $\cos\frac14\approx p_3(\tfrac14)=1-\frac1{32}=\frac{31}{32}=0{,}96875$, con error garantizado $\le0{,}000163&lt;0{,}002$. (Valor real $0{,}9689124$; error real $0{,}000162$.)</li>
   </ol>
-    <div class="recipe"><b>Receta:</b> (a) derivadas cíclicas: escribir el ciclo y evaluar en $x_0$. (b) Tabular la cota $\frac{M}{(n+1)!}|x-x_0|^{n+1}$ para $n=0,1,2,\dots$ hasta que sea <b>menor</b> que la tolerancia. Si $f^{(n+1}(x_0)=0$, entonces $p_n=p_{n+1}$ y se puede usar la cota de $R_{n+1}$, que es mejor.</div>
+    
   <p><b>Error típico:</b> dar por buena una cota «casi» menor que la tolerancia: $0{,}0026$ no es menor que $0{,}002$.</p>
+  </details>
 </details>
-<p><b>Tipos de pregunta que este tema no cubre.</b> En X hay preguntas de convergencia uniforme (pp. 22, 26, 74, 115-116, 135, 142, 144), de U §1.5, excluida por el cronograma 2026-27. Las preguntas de resto de Lagrange y Taylor sin serie están en el tema 3.1.</p>
-<!-- ============================ 9 ============================ -->
-<h2 id="chuleta"><span class="n">9</span>Errores frecuentes y chuleta</h2>
+</article>
+<div class="box tip"><span class="h">Tipos que también caen y no están en el PDF</span>
+  <p>Se practican con los ejemplos de los apartados 1-4, con E 3.17-3.20 y con las prácticas:</p>
+  <ul>
+    <li>Sumar una serie numérica derivando la geométrica (apartado 3, P4 y las prácticas de la sección «Sumar series»).</li>
+    <li>Derivadas en el centro leídas de una serie, como $f^{(8}(0)$ de $x^2\cos x^3$ (apartado 4 y P3).</li>
+    <li>Justificar que una serie suma $f$: el resto de Lagrange tiende a $0$ (apartado 1 y las prácticas h).</li>
+  </ul></div>
+<!-- ============================ chuleta ============================ -->
+<h2 id="chuleta" data-vista="teoria"><span class="n">11</span>Errores frecuentes y chuleta</h2>
 <h3>Errores frecuentes</h3>
 <p>Los de cada ejercicio están en su sitio; los generales:</p>
 <ul>

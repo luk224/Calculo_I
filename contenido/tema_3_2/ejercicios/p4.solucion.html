@@ -1,0 +1,26 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>(a) La suma de $\sum\frac n{2^n}$. (b) Probar que $\ln(1+x)=\sum\frac{(-1)^{n+1}}{n}x^n$ en $(-1,1)$ derivando series.</dd>
+    <dt>Cómo lo pienso</dt><dd>(a) Es la serie de E 3.18 evaluada en un punto, tras multiplicar por $x$. (b) Si dos funciones tienen la misma derivada y el mismo valor en un punto, son la misma función.</dd>
+    <dt>Qué uso</dt><dd>Derivar término a término (U Teor. 3.1, p.116) y $f'=0\Rightarrow f$ constante (U Teor. 2.4, p.97) — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>(a) Partir de $\sum nx^{n-1}=\frac1{(1-x)^2}$. (b) Derivar la serie propuesta.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> para «sumar» una serie, buscar una serie conocida cuya derivada (o $x$ por ella) sea la dada. Para demostrar un desarrollo: misma derivada y mismo valor en el centro implican misma función. (Integrar término a término es el camino directo; aparece en el Tema 6: Prop. 6.1, p. 280.)</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"ln(1+x)","n":"ln(1+x)"},{"e":"x-x^2/2+x^3/3-x^4/4","n":"x−x²/2+x³/3−x⁴/4"}],"x":[-0.85,1],"y":[-2,1]}' data-alt="ln(1+x) y su polinomio de Taylor de grado 4"><figcaption>La función $\ln(1+x)$ y los cuatro primeros sumandos de su serie: se parecen en $(-1,1)$, sobre todo cerca de $0$; hacia $x=-1$ la función cae a $-\infty$ y el polinomio no la sigue. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+
+  <p><b>(a)</b></p>
+  <ol class="steps">
+    <li>Por E 3.18, $\sum_{n\ge1}nx^{n-1}=\frac1{(1-x)^2}$ para $|x|&lt;1$.</li>
+    <li>Multiplicando cada sumando por $x$: $\sum_{n\ge1}nx^n=\frac{x}{(1-x)^2}$.</li>
+    <li>Como $x=\frac12\in(-1,1)$: $\sum\frac n{2^n}=\frac{1/2}{1/4}=2$. (Repitiendo el truco, $\sum\frac{n^2}{2^n}=6$.)</li>
+  </ol>
+  <p><b>(b)</b></p>
+  <ol class="steps">
+    <li>Sea $S(x)=\sum_{n\ge1}\frac{(-1)^{n+1}}{n}x^n$. <b>Radio:</b> $\frac n{n+1}\to1$, luego $R=1$.</li>
+    <li><b>Derivamos término a término</b> (Teor. 3.1): $S'(x)=\sum_{n\ge1}(-1)^{n+1}x^{n-1}=1-x+x^2-\cdots=\frac1{1+x}$ (geométrica de razón $-x$).</li>
+    <li>La función $g(x)=\ln(1+x)$ también cumple $g'(x)=\frac1{1+x}$.</li>
+    <li><b>Misma derivada $\Rightarrow$ difieren en una constante:</b> $h=S-g$ tiene $h'=0$ en $(-1,1)$, luego es constante (U Teor. 2.4, p. 97).</li>
+    <li><b>Esa constante es $0$:</b> $h(0)=S(0)-\ln1=0$. Por tanto $S(x)=\ln(1+x)$ en $(-1,1)$.</li>
+    <li><b>Uso:</b> con $x=\frac12$ y 5 términos, $\ln\frac32\approx0{,}40729$ (valor real $0{,}405465$).</li>
+  </ol>
+  </details>
