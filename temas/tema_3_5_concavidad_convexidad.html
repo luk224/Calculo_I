@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_3_5/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 3.5 Concavidad y convexidad</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -15,6 +16,8 @@
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -42,8 +45,72 @@
   </div>
 </header>
 
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Una gráfica se puede «curvar» como una <b>sonrisa</b> ($\cup$, convexa) o como una <b>cara triste</b> ($\cap$, cóncava). El signo de la <b>segunda derivada</b> lo decide ($f''>0$ sonrisa, $f''&lt;0$ cara triste) y los puntos donde la gráfica pasa de una a otra son las <b>inflexiones</b>. Con esto, más el dominio, las asíntotas y el crecimiento, se dibuja una función entera.</p>
+  <p>Es como una carretera: la curva a la izquierda es una sonrisa, la curva a la derecha una cara triste, y en el cambio el volante pasa un instante por el centro.</p>
+  <span class="src" data-l="U" data-ref="U §3.5.1-3.5.2, pp. 134-136 (convexa, cóncava, caracterización con f'')">U pp.134-136</span>
+</div>
+<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Identifica qué te piden:</b> intervalos de concavidad y convexidad, puntos de inflexión, leer una gráfica de $f'$ o de $f''$, o un estudio completo con dibujo.</li>
+    <li><b>Dominio y derivadas:</b> escribe el dominio y calcula $f''$ (o $f'$ si te dan su gráfica). Factoriza $f''$ para ver dónde se anula.</li>
+    <li><b>Tabla de signos de $f''$:</b> un punto de prueba en cada intervalo, partiendo también en los puntos que no son del dominio. $f''>0$: convexa; $f''&lt;0$: cóncava.</li>
+    <li><b>Responde con palabras:</b> cada intervalo por separado (sin unir con $\cup$); inflexión = punto <b>del dominio</b> donde $f''$ <b>cambia de signo</b>, con su altura $f(c)$.</li>
+  </ol>
+  <p class="sub">Qué hago según lo que piden</p>
+  <ul>
+    <li>¿«¿Cuándo es cóncava y cuándo convexa?»? $\to$ $f''$, factorizar, tabla de signos.</li>
+    <li>¿«¿Es $c$ punto de inflexión?»? $\to$ $c$ en el dominio y $f''$ cambia de signo en $c$ (o Prop. 3.12). $f''(c)=0$ solo no basta.</li>
+    <li>¿Te dan la gráfica de $f''$ o de $f'$? $\to$ $f''$ sobre el eje: convexa; $f'$ creciente: convexa; cambios de signo de $f''$ o extremos de $f'$: inflexiones.</li>
+    <li>¿Estudio completo y dibujo? $\to$ dominio, cortes, asíntotas, signo de $f'$ y de $f''$, tabla única y esbozo.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$f''\ge0$ en $I\Rightarrow$ convexa; $f''\le0\Rightarrow$ cóncava (Prop. 3.10)</td><td>Cualquier «¿cuándo es cóncava/convexa?» con $f$ dos veces derivable.</td></tr>
+    <tr><td>$f$ convexa $\iff f'$ creciente; cóncava $\iff f'$ decreciente (Prop. 3.9)</td><td>Te dan la gráfica de $f'$ (E 3.36, 3.42).</td></tr>
+    <tr><td>Inflexión en $c$: $f''$ cambia de signo en $c$ (Def. 3.10); candidato: $f''(c)=0$ (Prop. 3.11)</td><td>«¿Tiene puntos de inflexión?»; $f''(c)=0$ no basta ($x^4$).</td></tr>
+    <tr><td>$f''(c)=0$ y primera derivada no nula de orden impar $\Rightarrow$ inflexión (Prop. 3.12)</td><td>Control rápido de un candidato con polinomios o exponenciales.</td></tr>
+    <tr><td>Vertical: $\lim_{x\to a^\pm}f=\pm\infty$; horizontal: $\lim_{x\to\pm\infty}f=b$; oblicua: $m=\lim_{x\to\pm\infty}\frac fx$, $b=\lim_{x\to\pm\infty}(f-mx)$</td><td>Estudio completo y dibujo (E 3.46, X10).</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos hay 10 problemas de este tema: intervalos de curvatura de una fórmula (el más frecuente), lectura de la gráfica de $f''$, inflexiones con la Prop. 3.12 y un dibujo con asíntotas. En el libro de ejercicios son E 3.39-3.43 y 3.45-3.48 (más la parte de inflexión de 3.30 y 3.36). Tabla completa por tipo: <a href="#examenes" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §3.5, pp. 134-140 (Prop. 3.9-3.12, Def. 3.8-3.10); resumen propio">U pp.134-140</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §3.5">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 2 h</b>
+      <ul>
+        <li>Los apartados de <b>definición y signo de $f''$</b> (1-2), <b>inflexiones</b> (3), <b>asíntotas y estudio completo</b> (4) y el <b>mapa de decisión</b> (apartado 5).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-3-39">E 3.39</a> (curvatura de una fórmula), <a href="#ej-3-43">E 3.43</a> (inflexión y asíntota), <a href="#ej-3-42">E 3.42</a> (leer la gráfica de $f'$), <a href="#ej-3-46">E 3.46</a> (estudio completo), <a href="#x1">Examen 1</a> (gráfica de $f''$), <a href="#x6">Examen 6</a> (cociente) y <a href="#x7">Examen 7</a> (denominador positivo).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 4 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»), con el interactivo.</li>
+        <li>E 3.39-3.43 y 3.45-3.48, los 10 exámenes, los ejemplos propios y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#ej-3-41">E 3.41</a> (convexa en $\mathbb R$ con un pico), <a href="#ej-3-47">E 3.47</a> y <a href="#ej-3-48">E 3.48</a> (inventar funciones), <a href="#x9">Examen 9</a> (familia $e^{x^k}$), <a href="#x10">Examen 10</a> (dibujo con asíntotas), los ejemplos propios <a href="#p3">P3</a> y <a href="#p4">P4</a> y las prácticas ★★.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
 <!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §3.5.1 Motivación y objetivos, pp. 134-135">U pp.134-135</span></h2>
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §3.5.1 Motivación y objetivos, pp. 134-135">U pp.134-135</span></h2>
 <h3>Qué necesitas saber ya <span class="src" data-l="U" data-ref="U §2.2 (derivación), Prop. 2.4 p. 98 (monotonía), §3.4 Prop. 3.7 p. 131 (2.ª derivada), §1.4 pp. 48-50 (asíntotas)">U §2.2, §3.4, §1.4</span></h3>
 <ul>
   <li>Derivar dos veces y <b>factorizar</b> la segunda derivada (Tema 2).</li>
@@ -51,10 +118,16 @@
   <li>Crecimiento: $f'>0\Rightarrow f$ estrictamente creciente (Prop. 2.4, p. 98) y extremos relativos con $f'$ y $f''$ (tema 3.4, Prop. 3.7).</li>
   <li>Límites en $\pm\infty$ y límites laterales (asíntotas horizontales, verticales y oblicuas: §1.4, pp. 48-50, se repasan en el apartado 4).</li>
 </ul>
-en los ejercicios y en el examen</h3>
+<h3>Qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>Intervalos de concavidad y convexidad</b> de una fórmula: calcular $f''$, factorizar y tabla de signos (E 3.39; X 2013, 2016, 2018). (B) <b>Lo mismo leyendo la gráfica</b> de $f''$ o de $f'$ (E 3.36, 3.42, 3.45; X 2011, 2014, 2017). (C) <b>Puntos de inflexión</b>: decidir si un candidato lo es (E 3.40, 3.43; X 2016, 2018). (D) <b>Estudio completo</b> y dibujo con asíntotas (E 3.46, 3.48; X Electrónica). (E) <b>Inventar una función</b> con propiedades dadas (E 3.47, 3.48; X Electrónica). Es el tipo de pregunta corta (1 punto) que más se repite: conviene dominarla.</p>
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>La idea y las definiciones <span class="src" data-l="U" data-ref="U §3.5.2 Definiciones 3.8 y 3.9, Ejemplos 3.27-3.28, pp. 135-136">U pp.135-136</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>La idea y las definiciones <span class="src" data-l="U" data-ref="U §3.5.2 Definiciones 3.8 y 3.9, Ejemplos 3.27-3.28, pp. 135-136">U pp.135-136</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a distinguir una función convexa de una cóncava con cuerdas y tangentes, y a leer la definición de U.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «¿Es convexa o cóncava?», «¿qué significa?», o comprobar la definición con dos puntos.</li>
+  <li><b>Qué haces:</b> Une dos puntos de la gráfica con una cuerda: si la gráfica queda <b>bajo</b> la cuerda, es convexa ($\cup$); si queda <b>sobre</b> ella, cóncava ($\cap$).</li>
+  <li><b>Ejemplo mínimo:</b> $f(x)=x^2$ es convexa: entre $(0,0)$ y $(2,4)$ la cuerda pasa por $(1,2)$ y la gráfica en $x=1$ vale $1&lt;2$, bajo la cuerda.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · sonrisa y cara triste</span>
   <p>Mira una gráfica con forma de cuenco, como $x^2$: parece una <b>sonrisa</b> $\cup$. Esa función es <b>convexa</b>. Mira ahora una con forma de colina, como $\ln x$ o $-x^2$: parece una <b>cara triste</b> $\cap$. Esa función es <b>cóncava</b>. Dos maneras de comprobarlo sobre el dibujo:</p>
   <ul>
@@ -98,7 +171,13 @@ en los ejercicios y en el examen</h3>
 </div>
 <p><i>Matiz:</i> las desigualdades son no estrictas, así que una recta (o una constante) es a la vez convexa y cóncava. Y la convexidad se predica de un <b>intervalo</b>: no existe «convexa en $(-\infty,-2)\cup(2,\infty)$», se dice «convexa en $(-\infty,-2)$ y en $(2,\infty)$» (X 2018, apartado 2).</p>
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>Cómo decidirlo con derivadas <span class="src" data-l="U" data-ref="U §3.5.2 Proposiciones 3.9 y 3.10, p. 136">U p.136</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>Cómo decidirlo con derivadas <span class="src" data-l="U" data-ref="U §3.5.2 Proposiciones 3.9 y 3.10, p. 136">U p.136</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a decidir la curvatura con el signo de $f''$ y a convertir la gráfica de $f'$ en información sobre $f$.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «¿Cuándo es cóncava y cuándo convexa?», o te dan la gráfica de $f'$ o de $f''$.</li>
+  <li><b>Qué haces:</b> Calculas $f''$, la factorizas y haces la tabla de signos con un punto de prueba por intervalo: $f''\ge0$ convexa, $f''\le0$ cóncava. Con la gráfica de $f'$: creciente = convexa, decreciente = cóncava.</li>
+  <li><b>Ejemplo mínimo:</b> $f(x)=x^3$: $f''(x)=6x$, negativa en $(-\infty,0)$ y positiva en $(0,\infty)$: cóncava en $(-\infty,0]$ y convexa en $[0,\infty)$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Comprobar la definición con cuerdas es laborioso. Basta recordar que en una sonrisa la pendiente $f'$ <b>crece</b> y en una cara triste <b>decrece</b>, y eso se lee en el signo de su derivada, $f''$. Como el semáforo de $f'$ era «$f'>0$ sube, $f'&lt;0$ baja», el de $f''$ es «$f''>0$ sonrisa, $f''&lt;0$ cara triste». (Analogía del coche: $f'$ es la velocidad y $f''$ la aceleración; $f''>0$ significa que la velocidad va aumentando.)</p>
   <span class="src" data-l="P" data-ref="Analogía propia">P</span>
@@ -130,7 +209,13 @@ en los ejercicios y en el examen</h3>
   <span class="src" data-l="P" data-ref="Receta propia a partir de U Prop. 3.10, p. 136">P</span>
 </div>
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Puntos de inflexión <span class="src" data-l="U" data-ref="U §3.5.3 Puntos de inflexión, Def. 3.10, Prop. 3.11-3.12, Ejemplos 3.29-3.30, pp. 137-138">U pp.137-138</span></h2>
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Puntos de inflexión <span class="src" data-l="U" data-ref="U §3.5.3 Puntos de inflexión, Def. 3.10, Prop. 3.11-3.12, Ejemplos 3.29-3.30, pp. 137-138">U pp.137-138</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a encontrar los puntos de inflexión y a distinguir un candidato ($f''(c)=0$) de una inflexión de verdad.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «¿Tiene puntos de inflexión?», «¿es $c$ punto de inflexión?».</li>
+  <li><b>Qué haces:</b> Resuelves $f''=0$ (candidatos), miras si $f''$ <b>cambia de signo</b> y si el punto está <b>en el dominio</b>; con la Prop. 3.12 también vale $f''(c)=0$ y primera derivada no nula de orden impar.</li>
+  <li><b>Ejemplo mínimo:</b> $f(x)=x^4$: $f''(0)=0$ pero $f''=12x^2\ge0$ no cambia de signo: no hay inflexión. En $x^3$ sí ($f''$ pasa de $-$ a $+$).</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Una carretera que pasa de una curva hacia la izquierda a una curva hacia la derecha: justo en el cambio el volante está recto un instante. Ese punto es la <b>inflexión</b>: la gráfica deja de ser sonrisa y pasa a ser cara triste (o al revés). En términos de $f''$: <b>cambia de signo</b>. Como $f''$ pasa del signo $+$ al $-$, o al revés, y suele ser continua, vale $0$ ahí (Prop. 3.11). Pero ojo: valer $0$ no basta, tiene que <b>cambiar de signo</b>.</p>
   <span class="src" data-l="P" data-ref="Analogía propia">P</span>
@@ -194,7 +279,13 @@ en los ejercicios y en el examen</h3>
   <span class="src" data-l="P" data-ref="Resumen propio de la aplicación de U Prop. 3.9 y 3.10, p. 136">P</span>
 </div>
 <!-- ============================ 4 ============================ -->
-<h2 id="s4"><span class="n">4</span>Asíntotas y estudio completo de una gráfica <span class="src" data-l="U" data-ref="U §1.4 (asíntotas), pp. 48-50, y §3.5.4 Representación gráfica, p. 139">U pp.48-50, 139</span></h2>
+<h2 id="s4" data-vista="teoria"><span class="n">4</span>Asíntotas y estudio completo de una gráfica <span class="src" data-l="U" data-ref="U §1.4 (asíntotas), pp. 48-50, y §3.5.4 Representación gráfica, p. 139">U pp.48-50, 139</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a calcular asíntotas y a juntar todo (dominio, cortes, crecimiento, curvatura) en un estudio completo y un dibujo.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Estudia y dibuja la función», «halla las asíntotas», o inventar una función con propiedades dadas.</li>
+  <li><b>Qué haces:</b> Dominio y cortes; límites en los bordes del dominio y en $\pm\infty$ (vertical, horizontal, oblicua); signo de $f'$ (crecimiento y extremos) y de $f''$ (curvatura e inflexiones); una tabla única; esbozo.</li>
+  <li><b>Ejemplo mínimo:</b> $f(x)=\frac{x^2+1}x$: vertical $x=0$; $m=1$ y $b=0$, oblicua $y=x$ en los dos lados; $f'=1-\frac1{x^2}$ se anula en $\pm1$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Una asíntota es una recta a la que la gráfica se acerca tanto como quieras sin llegar (necesariamente) a tocarla: el «raíl» sobre el que viaja la curva cuando $x$ se va a $\pm\infty$ o cuando se acerca a un punto prohibido. Con el dominio, las asíntotas, el crecimiento y los extremos, y la curvatura con sus inflexiones (la lista de U), se dibuja una gráfica aproximada; la receta de abajo lo ordena.</p>
   <span class="src" data-l="U" data-ref="U §3.5.4, p. 139 (representación gráfica de funciones)">U p.139</span>
@@ -224,17 +315,290 @@ en los ejercicios y en el examen</h3>
   <span class="src" data-l="S" data-ref="Stewart §4.5, guía A-H para el trazado de curvas, pp. 311-313 (ejemplo 6, p. 316)">S pp.311-316</span>
   <span class="src" data-l="L" data-ref="Larson §3.6, resumen del trazado de curvas, pp. 206-209">L pp.206-209</span>
 </div>
-<!-- ============================ 5 ============================ -->
-<h2 id="ejercicios"><span class="n">5</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.39-3.43 y 3.45-3.48, pp. 122-134; partes de 3.30 (p. 114) y 3.36 (p. 120)">E pp.114-134</span></h2>
-<p>Orden de estudio recomendado (de fácil a difícil): 3.39 → 3.30 → 3.43 → 3.40 → 3.36 → 3.42 → 3.45 → 3.41 → 3.47 → 3.48 → 3.46. Los ejercicios 3.30 y 3.36 son de 3.4 (extremos) y aquí solo se completa su parte de inflexión o de $f''$.</p>
-<details class="sol" id="ej-3-39"><summary>Ejercicio 3.39 · $f(x)=3x^5-5x^4-20x^3+2x-1$: ¿cuándo es cóncava y cuándo convexa? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.39, pp. 122-123 · teoría: U Prop. 3.10, p. 136; Def. 3.10 y Prop. 3.12, p. 137">E pp.122-123</span></summary>
-<p class="enun">Sea $f(x)=3x^5-5x^4-20x^3+2x-1$. ¿Cuándo es cóncava y cuándo convexa?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<!-- ============================ mapa ============================ -->
+<h2 id="mapa" data-vista="tipos"><span class="n">5</span>Mapa de decisión: qué hago según lo que me piden <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.134-140">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué hacer según lo que te pidan (curvatura de una fórmula, ¿es inflexión?, leer una gráfica, estudio completo) con un mapa de decisión y, desplegable, una tabla con el detalle de cada caso.</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja a la siguiente y «sí» te lleva a la acción de la derecha. En casi todos los casos el camino es el mismo: $f''$, factorizar, tabla de signos y respuesta con intervalos separados. Al final comprueba que el punto de inflexión <b>es del dominio</b> y que no has unido intervalos con $\cup$: es lo que más puntos se pierde.</p>
+<svg class="flujo" viewBox="0 0 600 508" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión: qué hacer según lo que piden sobre concavidad, inflexiones y estudio de una función</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Si dan la gráfica de la derivada o de la segunda derivada, se lee la curvatura en ella. Si piden decidir si un punto es de inflexión, se comprueba que está en el dominio y que la segunda derivada cambia de signo. Si piden un estudio completo o asíntotas, se calculan dominio, asíntotas, signos de la primera y de la segunda derivada y se dibuja. Si piden intervalos de concavidad y convexidad de una fórmula, se calcula la segunda derivada, se factoriza y se hace la tabla de signos. Al final se responde con intervalos separados y puntos del dominio.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="210" height="76" rx="10"/>
+<text x="115" y="39" text-anchor="middle">¿Te dan la gráfica de f′</text>
+<text x="115" y="57" text-anchor="middle">o de f″ (en vez de la fórmula)?</text>
+<path class="lin" d="M220 48 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="43">sí</text>
+<rect class="nodo" x="250" y="10" width="340" height="76" rx="10"/>
+<text x="420" y="28" text-anchor="middle">Gráfica de f″: sobre el eje, f convexa; bajo el</text>
+<text x="420" y="44" text-anchor="middle">eje, cóncava; los cortes con el eje (con cambio</text>
+<text x="420" y="60" text-anchor="middle">de signo) son las inflexiones. Gráfica de f′:</text>
+<text x="420" y="76" text-anchor="middle">creciente = convexa; extremos de f′ = inflexión</text>
+<path class="lin" d="M115 86 V109" marker-end="url(#fl)"/>
+<text class="no" x="123" y="102">no</text>
+<rect class="preg" x="10" y="112" width="210" height="76" rx="10"/>
+<text x="115" y="141" text-anchor="middle">¿Piden decidir si un punto c</text>
+<text x="115" y="159" text-anchor="middle">concreto es de inflexión?</text>
+<path class="lin" d="M220 150 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="145">sí</text>
+<rect class="nodo" x="250" y="112" width="340" height="76" rx="10"/>
+<text x="420" y="130" text-anchor="middle">Compruebo que c es del dominio y que f″ cambia</text>
+<text x="420" y="146" text-anchor="middle">de signo en c. Control con la Prop. 3.12: f″(c)=0</text>
+<text x="420" y="162" text-anchor="middle">y primera derivada no nula de orden impar.</text>
+<text x="420" y="178" text-anchor="middle">Si f″(c)=0 sin cambio de signo: no hay</text>
+<path class="lin" d="M115 188 V211" marker-end="url(#fl)"/>
+<text class="no" x="123" y="204">no</text>
+<rect class="preg" x="10" y="214" width="210" height="76" rx="10"/>
+<text x="115" y="243" text-anchor="middle">¿Piden estudiar y dibujar la</text>
+<text x="115" y="261" text-anchor="middle">función, o sus asíntotas?</text>
+<path class="lin" d="M220 252 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="247">sí</text>
+<rect class="nodo" x="250" y="214" width="340" height="76" rx="10"/>
+<text x="420" y="232" text-anchor="middle">Dominio y cortes; asíntotas (límites laterales,</text>
+<text x="420" y="248" text-anchor="middle">m y b); signo de f′ y de f″ en una sola tabla,</text>
+<text x="420" y="264" text-anchor="middle">partida también en los puntos fuera del dominio;</text>
+<text x="420" y="280" text-anchor="middle">esbozo con extremos e inflexiones marcados</text>
+<path class="lin" d="M115 290 V313" marker-end="url(#fl)"/>
+<text class="no" x="123" y="306">no</text>
+<rect class="preg" x="10" y="316" width="210" height="76" rx="10"/>
+<text x="115" y="345" text-anchor="middle">¿Piden «¿cuándo es cóncava y</text>
+<text x="115" y="363" text-anchor="middle">cuándo convexa?» de una fórmula?</text>
+<path class="lin" d="M220 354 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="349">sí</text>
+<rect class="nodo" x="250" y="316" width="340" height="76" rx="10"/>
+<text x="420" y="334" text-anchor="middle">f″, la factorizo y hago la tabla de signos con un</text>
+<text x="420" y="350" text-anchor="middle">punto de prueba por intervalo. f″≥0: convexa;</text>
+<text x="420" y="366" text-anchor="middle">f″≤0: cóncava. Escribo cada intervalo por</text>
+<text x="420" y="382" text-anchor="middle">separado (sin unir con ∪)</text>
+<path class="lin" d="M115 392 V415" marker-end="url(#fl)"/>
+<text class="no" x="123" y="408">no</text>
+<rect class="fin" x="10" y="418" width="580" height="76" rx="10"/>
+<text x="300" y="440" text-anchor="middle">Respondo con palabras: cada intervalo por separado, las inflexiones</text>
+<text x="300" y="456" text-anchor="middle">como puntos (x, f(x)) del dominio y, si dibujo, extremos e inflexiones marcados.</text>
+<text x="300" y="472" text-anchor="middle">Compruebo: ¿partí en los puntos fuera del dominio?, ¿f″(c)=0 sin cambio de signo?,</text>
+<text x="300" y="488" text-anchor="middle">¿f″ existe en c? (valor absoluto, raíz): si no, decido con la definición</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso</summary>
+<table>
+  <tr><th>Piden…</th><th>Herramienta</th><th>Ojo con…</th></tr>
+  <tr><td>Intervalos de concavidad y convexidad de una fórmula</td><td>$f''$, factorizar, tabla de signos (Prop. 3.10)</td><td>No unir intervalos con $\cup$; excluir los puntos fuera del dominio</td></tr>
+  <tr><td>Puntos de inflexión</td><td>$f''$ cambia de signo en $c\in\operatorname{Dom}f$ (Def. 3.10); Prop. 3.12 como control</td><td>$f''(c)=0$ solo es candidato ($x^4$); una asíntota no es inflexión</td></tr>
+  <tr><td>Inflexión donde $f''$ no existe ($|x-4|$, $\sqrt[3]x$)</td><td>Definición: curvatura a cada lado; $f$ continua en $c$</td><td>Que no exista $f''(c)$ no descarta la inflexión</td></tr>
+  <tr><td>¿Es convexa en todo un intervalo con un punto malo?</td><td>Definición con cuerdas o contraejemplo numérico</td><td>Convexa a cada lado no implica convexa en la unión ($\sqrt{|x|}$, $-|x|$)</td></tr>
+  <tr><td>Gráfica de $f''$</td><td>Sobre el eje: convexa; bajo el eje: cóncava; cortes con cambio de signo: inflexiones</td><td>Es la gráfica de $f''$, no la de $f$</td></tr>
+  <tr><td>Gráfica de $f'$</td><td>$f'$ creciente: convexa; decreciente: cóncava; extremos de $f'$: inflexiones</td><td>Los ceros de $f'$ son los críticos, no las inflexiones</td></tr>
+  <tr><td>Asíntotas</td><td>Verticales: límites laterales; horizontales: $x\to\pm\infty$; oblicuas: $m$ y $b$ (Prop. 1.12)</td><td>Calcular $+\infty$ y $-\infty$ por separado</td></tr>
+  <tr><td>Estudio completo y dibujo</td><td>Dominio, cortes, asíntotas, signo de $f'$ y de $f''$, tabla única, esbozo</td><td>Partir también en los puntos fuera del dominio</td></tr>
+  <tr><td>Hallar parámetros o inventar una función</td><td>Condiciones $f(c)=\dots$, $f''(c)=0$; sumar una recta para una asíntota oblicua</td><td>Comprobar al final que el signo cambia de verdad</td></tr>
+</table>
+</details>
+<div class="box tip"><span class="h">Método en cinco pasos para el examen</span>
+  <ol class="steps">
+    <li><b>Traduce lo que piden</b> a una fila del mapa (curvatura, inflexión, gráfica, estudio completo).</li>
+    <li><b>Escribe el dominio</b> y comprueba que $f$ es dos veces derivable (o dónde deja de serlo).</li>
+    <li><b>Calcula $f''$ y factorízala</b>; busca sus ceros y los puntos fuera del dominio.</li>
+    <li><b>Haz la tabla de signos</b> con un punto de prueba por intervalo; si hace falta, controla con la Prop. 3.12.</li>
+    <li><b>Responde con palabras:</b> intervalos separados, inflexiones como puntos del dominio con su altura y, si dibujas, asíntotas y extremos marcados.</li>
+  </ol>
+  <span class="src" data-l="P" data-ref="Método propio, sintetizado a partir de U §3.5">P</span>
+</div>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">6</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub">La curvatura la da el <b>signo de $f''$</b> (factoriza y haz la tabla); una inflexión exige que <b>cambie</b> la curvatura en un punto <b>del dominio</b>. En el estudio completo, parte las tablas también en los puntos fuera del dominio. Para desigualdades: una función convexa queda bajo sus cuerdas y sobre sus tangentes (al revés si es cóncava).</p>
+<h3>A · Concavidad e inflexiones de una fórmula</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · $x^4-6x^2+5$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia la concavidad y los puntos de inflexión de $f(x)=x^4-6x^2+5$.</p>
+  <details class="pista"><summary>Pista</summary><p>Deriva dos veces y saca factor común en $f''$: queda una diferencia de cuadrados. Luego, tabla de signos con un punto de prueba en cada intervalo.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>¿Se puede usar la Prop. 3.10 (U p.136)?</b> Es un polinomio: dos veces derivable en todo $\mathbb R$. Sí.</li><li><b>Derivadas:</b> $f'(x)=4x^3-12x$ y $f''(x)=12x^2-12=12(x-1)(x+1)$.</li><li><b>Signo de $f''$</b> (prueba con $-2$, $0$, $2$): $f''(-2)=36>0$, $f''(0)=-12&lt;0$, $f''(2)=36>0$. Entre raíces consecutivas el signo no cambia.</li><li><b>Curvatura</b> (Prop. 3.10): convexa en $(-\infty,-1]$ y en $[1,\infty)$; cóncava en $[-1,1]$.</li><li><b>Inflexiones</b> (Def. 3.10, U p.137): $f''$ cambia de signo en $x=-1$ y en $x=1$, que son del dominio. Alturas: $f(\pm1)=1-6+5=0$. Control con la Prop. 3.12 (U p.137): $f'''(x)=24x$, $f'''(-1)=-24&lt;0$ (de convexa a cóncava) y $f'''(1)=24>0$ (de cóncava a convexa).</li></ol>
+    <p class="res">Resultado: convexa en $(-\infty,-1]$ y en $[1,\infty)$; cóncava en $[-1,1]$; inflexiones $(-1,0)$ y $(1,0)$</p>
+  </details>
+</details>
+<details class="pr" id="pr-a2"><summary><span class="nv n2">★★ Medio</span> Práctica a2 · $x^2\ln x$ en $(0,\infty)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia la concavidad y los puntos de inflexión de $f(x)=x^2\ln x$.</p>
+  <details class="pista"><summary>Pista</summary><p>Primero el dominio: el logaritmo exige $x>0$. Derivando (regla del producto) llegarás a $f''(x)=2\ln x+3$; para su signo usa que $\ln$ es creciente.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Dominio:</b> $(0,\infty)$. Ahí $f$ es producto de funciones derivables: dos veces derivable.</li><li><b>Derivadas</b> (regla del producto, U §2.2): $f'(x)=2x\ln x+x^2\cdot\frac1x=2x\ln x+x$; $f''(x)=2\ln x+2x\cdot\frac1x+1=2\ln x+3$.</li><li><b>Cero de $f''$:</b> $2\ln x+3=0\iff\ln x=-\frac32\iff x=e^{-3/2}\approx0{,}223$.</li><li><b>Signo:</b> $\ln$ es estrictamente creciente, así que $2\ln x+3&lt;0$ si $0&lt;x&lt;e^{-3/2}$ y $>0$ si $x>e^{-3/2}$.</li><li><b>Curvatura</b> (Prop. 3.10, U p.136): cóncava en $(0,e^{-3/2}]$, convexa en $[e^{-3/2},\infty)$.</li><li><b>Inflexión</b> (Def. 3.10, U p.137): $f''$ cambia de signo en $x=e^{-3/2}$, que está en el dominio. Altura: $f(e^{-3/2})=e^{-3}\cdot(-\tfrac32)=-\frac3{2e^3}\approx-0{,}075$.</li></ol>
+    <p class="res">Resultado: cóncava en $(0,e^{-3/2}]$, convexa en $[e^{-3/2},\infty)$; inflexión en $x=e^{-3/2}\approx0{,}223$</p>
+  </details>
+</details>
+<h3>B · ¿Hay inflexión? Casos dudosos ($f''$ no existe o $f''(c)=0$)</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · $\sqrt[3]x$: inflexión sin segunda derivada <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia la concavidad de $f(x)=\sqrt[3]x$ y decide si tiene un punto de inflexión en $x=0$.</p>
+  <details class="pista"><summary>Pista</summary><p>Fuera de $0$, escribe $f(x)=x^{1/3}$ y deriva dos veces. En $0$ no hay derivada (la tangente es vertical), así que la Prop. 3.11 no se aplica: decide con la Def. 3.10 mirando la curvatura a cada lado.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Dominio y continuidad:</b> $\mathbb R$; $f$ es continua en todo $\mathbb R$ y $f(0)=0$.</li><li><b>Derivadas fuera de $0$:</b> $f'(x)=\frac1{3\sqrt[3]{x^2}}$ y $f''(x)=-\frac2{9\sqrt[3]{x^5}}$.</li><li><b>En $0$ no hay derivada:</b> $\frac{f(h)-f(0)}h=\frac1{\sqrt[3]{h^2}}\to+\infty$ cuando $h\to0$. Por tanto tampoco hay $f''(0)$ y la Prop. 3.11 (U p.137) no dice nada.</li><li><b>Signo de $f''$:</b> si $x&lt;0$, $\sqrt[3]{x^5}&lt;0$ y $f''(x)>0$; si $x>0$, $f''(x)&lt;0$.</li><li><b>Curvatura</b> (Prop. 3.10, U p.136, en cada semirrecta): convexa en $(-\infty,0]$ y cóncava en $[0,\infty)$.</li><li><b>Inflexión</b> (Def. 3.10, U p.137): $0$ está en el dominio, $f$ es continua allí y pasa de convexa a cóncava: sí es punto de inflexión, con tangente vertical.</li></ol>
+    <p class="res">Resultado: convexa en $(-\infty,0]$, cóncava en $[0,\infty)$; inflexión en $(0,0)$ aunque $f''(0)$ no existe</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2"><summary><span class="nv n2">★★ Medio</span> Práctica b2 · $e^x+e^{-x}-x^2$: $f''(0)=0$ sin inflexión <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f(x)=e^x+e^{-x}-x^2$. Comprueba que $f''(0)=0$ y decide si $f$ tiene un punto de inflexión en $x=0$. ¿Dónde es convexa?</p>
+  <details class="pista"><summary>Pista</summary><p>Comprueba que $e^x+e^{-x}-2=\big(e^{x/2}-e^{-x/2}\big)^2$ desarrollando el cuadrado. Como control, calcula $f'''(0)$ y $f^{(4)}(0)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivadas:</b> $f'(x)=e^x-e^{-x}-2x$ y $f''(x)=e^x+e^{-x}-2$. En $0$: $f''(0)=1+1-2=0$. Es candidato (Prop. 3.11, U p.137), pero solo candidato.</li><li><b>Escribir $f''$ como un cuadrado:</b> $\big(e^{x/2}-e^{-x/2}\big)^2=e^x-2\,e^{x/2}e^{-x/2}+e^{-x}=e^x-2+e^{-x}$. Luego $f''(x)=\big(e^{x/2}-e^{-x/2}\big)^2\ge0$ para todo $x$.</li><li><b>Curvatura</b> (Prop. 3.10, U p.136): $f$ es convexa en todo $\mathbb R$.</li><li><b>¿Inflexión en $0$?</b> No: a ambos lados es convexa, no cambia de curvatura (Def. 3.10, U p.137).</li><li><b>Control con derivadas:</b> $f'''(x)=e^x-e^{-x}$, $f'''(0)=0$; $f^{(4)}(x)=e^x+e^{-x}$, $f^{(4)}(0)=2\neq0$. La primera derivada no nula tras $f''$ es de orden $4$, par: la Prop. 3.12 no da inflexión, coherente con lo anterior.</li></ol>
+    <p class="res">Resultado: convexa en $\mathbb R$; no hay inflexión en $x=0$ aunque $f''(0)=0$</p>
+  </details>
+</details>
+<h3>C · Solo conoces $f'$</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · $f'(x)=(x-1)^2(x+2)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">De una función $f:\mathbb R\to\mathbb R$ solo se sabe que $f'(x)=(x-1)^2(x+2)$. Halla sus intervalos de concavidad y convexidad, sus puntos de inflexión y sus extremos relativos.</p>
+  <details class="pista"><summary>Pista</summary><p>No necesitas $f$: la curvatura depende de $f''=(f')'$ y los extremos del signo de $f'$. Al derivar $f'$, saca factor común $(x-1)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>$f''$:</b> $f''(x)=2(x-1)(x+2)+(x-1)^2=(x-1)\big[2(x+2)+(x-1)\big]=(x-1)(3x+3)=3(x-1)(x+1)$.</li><li><b>Signo de $f''$:</b> $+$ en $(-\infty,-1)$, $-$ en $(-1,1)$, $+$ en $(1,\infty)$. Por la Prop. 3.10 (U p.136): convexa en $(-\infty,-1]$ y en $[1,\infty)$, cóncava en $[-1,1]$.</li><li><b>Inflexiones</b> (Def. 3.10, U p.137): en $x=-1$ y $x=1$ cambia el signo de $f''$.</li><li><b>Extremos:</b> $(x-1)^2\ge0$, así que el signo de $f'$ es el de $x+2$: $f'&lt;0$ si $x&lt;-2$ y $f'>0$ si $x>-2$ (salvo $f'(1)=0$). En $x=-2$, $f$ pasa de decrecer a crecer: mínimo relativo (Prop. 3.5, U p.130; $f$ es derivable, luego continua).</li><li><b>El punto $x=1$:</b> es crítico ($f'(1)=0$) pero $f'\ge0$ a ambos lados: no es extremo. Es a la vez punto crítico e inflexión: tangente horizontal que atraviesa la curva.</li></ol>
+    <p class="res">Resultado: cóncava en $[-1,1]$, convexa en $(-\infty,-1]$ y en $[1,\infty)$; inflexiones en $x=\pm1$; mínimo relativo en $x=-2$</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2"><summary><span class="nv n2">★★ Medio</span> Práctica c2 · $f'(x)=xe^{-x}$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Una función $f:\mathbb R\to\mathbb R$ cumple $f'(x)=xe^{-x}$. Sin calcular $f$, estudia su concavidad, sus puntos de inflexión y sus extremos relativos.</p>
+  <details class="pista"><summary>Pista</summary><p>Deriva $f'$ con la regla del producto y saca $e^{-x}$ factor común. Recuerda que $e^{-x}>0$: el signo lo decide el otro factor.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>$f''$:</b> $f''(x)=e^{-x}+x\cdot(-e^{-x})=(1-x)e^{-x}$. Existe en todo $\mathbb R$.</li><li><b>Signo de $f''$:</b> como $e^{-x}>0$, es el de $1-x$: $f''>0$ si $x&lt;1$ y $f''&lt;0$ si $x>1$.</li><li><b>Curvatura</b> (Prop. 3.10, U p.136): convexa en $(-\infty,1]$, cóncava en $[1,\infty)$. Lo mismo dice la Prop. 3.9: $f'$ crece hasta $1$ y luego decrece.</li><li><b>Inflexión</b> (Def. 3.10, U p.137): en $x=1$ cambia la curvatura. Control: $f'''(x)=(x-2)e^{-x}$, $f'''(1)=-e^{-1}&lt;0$, de convexa a cóncava (Prop. 3.12).</li><li><b>Extremos:</b> el signo de $f'=xe^{-x}$ es el de $x$: $f$ decrece en $(-\infty,0]$ y crece en $[0,\infty)$ (Prop. 2.4, U p.98). En $0$ hay un mínimo relativo (Prop. 3.5, U p.130). También $f''(0)=1>0$ (Prop. 3.7, U p.131).</li></ol>
+    <p class="res">Resultado: convexa en $(-\infty,1]$, cóncava en $[1,\infty)$; inflexión en $x=1$; mínimo relativo en $x=0$</p>
+  </details>
+</details>
+<h3>D · Asíntotas (repaso para el estudio completo)</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · $\frac{2x^2+1}{x+2}$: vertical y oblicua <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla las asíntotas de $f(x)=\dfrac{2x^2+1}{x+2}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Vertical: donde se anula el denominador (límites laterales). Oblicua: $m=\lim_{x\to\pm\infty}\frac{f(x)}x$ y después $b=\lim_{x\to\pm\infty}\big(f(x)-mx\big)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Dominio:</b> $\mathbb R\setminus\{-2\}$.</li><li><b>Vertical</b> (U p.49): en $x=-2$ el numerador vale $9>0$ y el denominador tiende a $0$: $\lim_{x\to-2^-}f(x)=-\infty$ y $\lim_{x\to-2^+}f(x)=+\infty$. Asíntota $x=-2$.</li><li><b>Horizontal:</b> el numerador tiene mayor grado, $\lim_{x\to\pm\infty}f(x)=\pm\infty$: no hay.</li><li><b>Pendiente</b> (Prop. 1.12, U p.49): $m=\lim_{x\to\pm\infty}\frac{2x^2+1}{x^2+2x}=2$.</li><li><b>Ordenada:</b> $b=\lim_{x\to\pm\infty}\Big(\frac{2x^2+1}{x+2}-2x\Big)=\lim_{x\to\pm\infty}\frac{1-4x}{x+2}=-4$. Asíntota oblicua $y=2x-4$ por los dos lados.</li><li><b>Comprobación con la división:</b> $2x^2+1=(x+2)(2x-4)+9$, así que $f(x)=2x-4+\frac9{x+2}$ y el último sumando tiende a $0$.</li></ol>
+    <p class="res">Resultado: asíntota vertical $x=-2$ y oblicua $y=2x-4$ (en $+\infty$ y en $-\infty$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2"><summary><span class="nv n2">★★ Medio</span> Práctica d2 · $\sqrt{x^2+2x}$: una oblicua distinta en cada lado <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla el dominio y las asíntotas de $f(x)=\sqrt{x^2+2x}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Calcula por separado en $+\infty$ y en $-\infty$: $\sqrt{x^2}=|x|$, que vale $x$ si $x>0$ y $-x$ si $x&lt;0$. Para $b$, multiplica y divide por el conjugado.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Dominio:</b> $x^2+2x=x(x+2)\ge0\iff x\le-2$ o $x\ge0$. Dominio $(-\infty,-2]\cup[0,\infty)$; $f$ es continua en él.</li><li><b>Verticales y horizontales:</b> en los bordes $-2$ y $0$ la función vale $0$ (finito): no hay verticales. $\lim_{x\to\pm\infty}f(x)=+\infty$: no hay horizontales.</li><li><b>En $+\infty$</b> ($x>0$, $\sqrt{x^2}=x$): $m=\lim_{x\to+\infty}\frac{\sqrt{x^2+2x}}x=\lim_{x\to+\infty}\sqrt{1+\tfrac2x}=1$ (Prop. 1.12, U p.49). $b=\lim_{x\to+\infty}\big(\sqrt{x^2+2x}-x\big)=\lim_{x\to+\infty}\frac{2x}{\sqrt{x^2+2x}+x}=\lim_{x\to+\infty}\frac2{\sqrt{1+2/x}+1}=1$. Asíntota $y=x+1$.</li><li><b>En $-\infty$</b> ($x&lt;0$, $\sqrt{x^2}=-x$): $\frac{\sqrt{x^2+2x}}x=\frac{-x\sqrt{1+2/x}}x\to-1$, así que $m=-1$. $b=\lim_{x\to-\infty}\big(\sqrt{x^2+2x}+x\big)=\lim_{x\to-\infty}\frac{2x}{\sqrt{x^2+2x}-x}=\lim_{x\to-\infty}\frac{2x}{-x\big(\sqrt{1+2/x}+1\big)}=-1$. Asíntota $y=-x-1$.</li><li><b>Por qué cambian:</b> la gráfica es media hipérbola que en cada lado se pega a una recta distinta; por eso hay que calcular los dos límites por separado.</li></ol>
+    <p class="res">Resultado: $y=x+1$ en $+\infty$ e $y=-x-1$ en $-\infty$; sin asíntotas verticales ni horizontales</p>
+  </details>
+</details>
+<h3>E · Estudio completo y gráfica</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · $\frac{x^2-1}{x^2}$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Haz el estudio completo de $f(x)=\dfrac{x^2-1}{x^2}$ (dominio, cortes, asíntotas, crecimiento, extremos, curvatura) y esboza su gráfica.</p>
+  <details class="pista"><summary>Pista</summary><p>Escribe $f(x)=1-\frac1{x^2}=1-x^{-2}$: así las derivadas salen en una línea. Es par: basta pensar en $x>0$ y reflejar.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Dominio:</b> $\mathbb R\setminus\{0\}$. Simetría: $f(-x)=f(x)$, par.</li><li><b>Cortes:</b> $f(x)=0\iff x=\pm1$: puntos $(-1,0)$ y $(1,0)$. No corta el eje $y$ ($0\notin$ dominio).</li><li><b>Asíntotas</b> (U pp.48-49): $\lim_{x\to0}f(x)=-\infty$ (numerador $\to-1$, denominador $\to0^+$): vertical $x=0$. $\lim_{x\to\pm\infty}f(x)=1$: horizontal $y=1$ por los dos lados (y entonces no hay oblicua).</li><li><b>Crecimiento</b> (Prop. 2.4, U p.98): $f'(x)=2x^{-3}=\frac2{x^3}$: $&lt;0$ si $x&lt;0$ (decreciente en $(-\infty,0)$) y $>0$ si $x>0$ (creciente en $(0,\infty)$). $f'$ nunca se anula: no hay extremos relativos.</li><li><b>Curvatura</b> (Prop. 3.10, U p.136): $f''(x)=-6x^{-4}=-\frac6{x^4}&lt;0$ en todo el dominio: cóncava en $(-\infty,0)$ y en $(0,\infty)$. Sin inflexiones (no cambia nunca de signo; el único punto «especial», $0$, no es del dominio).</li><li><b>Dibujo:</b> dos ramas en forma de $\cap$ que bajan a $-\infty$ junto al eje $y$, cortan el eje $x$ en $\pm1$ y se acercan a $y=1$ por debajo ($f(x)=1-\frac1{x^2}&lt;1$).</li></ol>
+    <p class="res">Resultado: asíntotas $x=0$ e $y=1$; decreciente en $(-\infty,0)$, creciente en $(0,\infty)$; sin extremos; cóncava en $(-\infty,0)$ y en $(0,\infty)$; sin inflexiones</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2"><summary><span class="nv n2">★★ Medio</span> Práctica e2 · $x^2e^{-x}$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Haz el estudio completo de $f(x)=x^2e^{-x}$ y esboza su gráfica.</p>
+  <details class="pista"><summary>Pista</summary><p>Saca $e^{-x}$ factor común en $f'$ y en $f''$; como $e^{-x}>0$, solo importa el polinomio. Para el límite en $+\infty$ aplica L'Hôpital a $\frac{x^2}{e^x}$ dos veces.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Dominio:</b> $\mathbb R$; $f$ es derivable las veces que haga falta. Además $f(x)\ge0$ y solo vale $0$ en $x=0$: único corte, $(0,0)$.</li><li><b>Asíntotas:</b> no hay verticales. En $+\infty$: $\lim_{x\to+\infty}\frac{x^2}{e^x}=\lim_{x\to+\infty}\frac{2x}{e^x}=\lim_{x\to+\infty}\frac2{e^x}=0$ (L'Hôpital, U §2.3, p.82): horizontal $y=0$. En $-\infty$: $f\to+\infty$ y $\frac{f(x)}x=xe^{-x}\to-\infty$: ni horizontal ni oblicua (Prop. 1.12, U p.49).</li><li><b>Crecimiento</b> (Prop. 2.4, U p.98): $f'(x)=2xe^{-x}-x^2e^{-x}=x(2-x)e^{-x}$. Decreciente en $(-\infty,0]$, creciente en $[0,2]$, decreciente en $[2,\infty)$.</li><li><b>Extremos</b> (Prop. 3.5, U p.130): mínimo relativo en $(0,0)$, que es absoluto porque $f\ge0$; máximo relativo en $(2,4e^{-2})\approx(2;0{,}541)$, no absoluto porque $f\to+\infty$ en $-\infty$.</li><li><b>Curvatura</b> (Prop. 3.10, U p.136): $f''(x)=(2-2x)e^{-x}-(2x-x^2)e^{-x}=(x^2-4x+2)e^{-x}$. Ceros: $x=2\pm\sqrt2$ ($\approx0{,}59$ y $3{,}41$). Parábola hacia arriba: convexa en $(-\infty,2-\sqrt2]$ y en $[2+\sqrt2,\infty)$, cóncava en $[2-\sqrt2,2+\sqrt2]$.</li><li><b>Inflexiones</b> (Def. 3.10, U p.137): en $x=2\pm\sqrt2$ (cambia el signo), con alturas $\approx0{,}191$ y $\approx0{,}384$.</li><li><b>Dibujo:</b> baja desde $+\infty$ (izquierda) en forma de $\cup$ hasta el mínimo $(0,0)$; sube, cambia a $\cap$ en $x\approx0{,}59$, llega al máximo en $x=2$, baja, vuelve a $\cup$ en $x\approx3{,}41$ y se pega al eje $x$ por encima.</li></ol>
+    <p class="res">Resultado: mínimo $(0,0)$, máximo relativo $(2,4e^{-2})$; inflexiones en $x=2\pm\sqrt2$; asíntota $y=0$ en $+\infty$</p>
+  </details>
+</details>
+<h3>F · Desigualdades con la convexidad (cuerdas y tangentes)</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · media geométrica $\le$ media aritmética <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Usando que $\ln x$ es cóncava en $(0,\infty)$, demuestra que $\sqrt{ab}\le\dfrac{a+b}2$ para todo $a,b>0$.</p>
+  <details class="pista"><summary>Pista</summary><p>Escribe la Def. 3.9 (cóncava: la gráfica queda por encima de la cuerda) con $t=\frac12$, puntos $a$ y $b$. Luego usa $\frac{\ln a+\ln b}2=\ln\sqrt{ab}$ y que $e^x$ es creciente.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>$\ln$ es cóncava:</b> $(\ln x)''=-\frac1{x^2}&lt;0$ en $(0,\infty)$; por la Prop. 3.10 (U p.136) es cóncava ahí.</li><li><b>Definición con $t=\frac12$</b> (Def. 3.8 y 3.9, U p.135): para $f$ cóncava, $f\big((1-t)a+tb\big)\ge(1-t)f(a)+tf(b)$. Con $t=\frac12$: $\ln\frac{a+b}2\ge\frac{\ln a+\ln b}2$.</li><li><b>Simplificar la derecha:</b> $\frac{\ln a+\ln b}2=\frac12\ln(ab)=\ln\sqrt{ab}$. Queda $\ln\frac{a+b}2\ge\ln\sqrt{ab}$.</li><li><b>Quitar el logaritmo:</b> $e^x$ es creciente, así que aplicándola a los dos lados se conserva la desigualdad: $\frac{a+b}2\ge\sqrt{ab}$. $\blacksquare$</li><li><b>Comprobación:</b> $a=2$, $b=8$: $\sqrt{16}=4\le5=\frac{2+8}2$.</li></ol>
+    <p class="res">Resultado: $\sqrt{ab}\le\frac{a+b}2$ para $a,b>0$</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2"><summary><span class="nv n2">★★ Medio</span> Práctica f2 · $\ln x\le x-1$: el logaritmo bajo su tangente <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Demuestra que $\ln x\le x-1$ para todo $x>0$, con igualdad solo en $x=1$. ¿Qué significa geométricamente?</p>
+  <details class="pista"><summary>Pista</summary><p>Estudia $g(x)=x-1-\ln x$ en $(0,\infty)$: calcula $g'$ y $g''$. Si $g''>0$, $g'$ es creciente y solo puede anularse una vez.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Función auxiliar:</b> $g(x)=x-1-\ln x$, $x>0$. Hay que probar $g(x)\ge0$.</li><li><b>Derivadas:</b> $g'(x)=1-\frac1x$ y $g''(x)=\frac1{x^2}>0$. Así $g$ es convexa (Prop. 3.10, U p.136) y $g'$ es estrictamente creciente (Prop. 2.4, U p.98, aplicada a $g'$).</li><li><b>Signo de $g'$:</b> $g'(1)=0$; como $g'$ crece estrictamente, $g'&lt;0$ en $(0,1)$ y $g'>0$ en $(1,\infty)$.</li><li><b>Mínimo:</b> $g$ decrece en $(0,1]$ y crece en $[1,\infty)$ (Prop. 2.4), así que $g(x)\ge g(1)=0$, y $g(x)>g(1)$ si $x\neq1$. Es decir, $\ln x\le x-1$, con igualdad solo en $x=1$. $\blacksquare$</li><li><b>Geometría:</b> $y=x-1$ es la tangente a $y=\ln x$ en $(1,0)$ (pendiente $\frac11=1$). La desigualdad dice que la función cóncava $\ln x$ queda por debajo de su tangente.</li><li><b>Uso numérico:</b> $\ln1{,}1\le0{,}1$ (de hecho $\ln1{,}1\approx0{,}0953$).</li></ol>
+    <p class="res">Resultado: $\ln x\le x-1$ para todo $x>0$, con igualdad solo en $x=1$; por ejemplo, $\ln1{,}1\le0{,}1$</p>
+  </details>
+</details>
+<h3>G · Parámetros: imponer una inflexión o la convexidad</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · $ax^3+bx^2$ con inflexión en $(1,2)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla $a$ y $b$ para que $f(x)=ax^3+bx^2$ tenga un punto de inflexión en $(1,2)$.</p>
+  <details class="pista"><summary>Pista</summary><p>Dos condiciones, dos incógnitas: el punto está en la gráfica ($f(1)=2$) y es candidato a inflexión ($f''(1)=0$, Prop. 3.11). Al final comprueba que de verdad cambia la curvatura.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Pasa por $(1,2)$:</b> $f(1)=a+b=2$.</li><li><b>Candidato a inflexión</b> (Prop. 3.11, U p.137): $f''(x)=6ax+2b$, $f''(1)=6a+2b=0$, es decir $b=-3a$.</li><li><b>Resolver:</b> $a-3a=2\iff a=-1$, y $b=3$. Queda $f(x)=-x^3+3x^2$.</li><li><b>Comprobar que es inflexión:</b> $f''(x)=-6x+6=6(1-x)$: $>0$ si $x&lt;1$ y $&lt;0$ si $x>1$. Cambia de signo: inflexión, de convexa a cóncava (Def. 3.10). Igual con la Prop. 3.12: $f'''=-6&lt;0$.</li></ol>
+    <p class="res">Resultado: $a=-1$, $b=3$; $f(x)=-x^3+3x^2$ pasa de convexa a cóncava en $(1,2)$</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2"><summary><span class="nv n2">★★ Medio</span> Práctica g2 · ¿para qué $k$ es convexa $x^4+kx^3+6x^2$? <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">¿Para qué valores de $k\in\mathbb R$ es convexa en todo $\mathbb R$ la función $f(x)=x^4+kx^3+6x^2$?</p>
+  <details class="pista"><summary>Pista</summary><p>$f''$ es una parábola hacia arriba. Una parábola así es $\ge0$ en todo $\mathbb R$ exactamente cuando su discriminante es $\le0$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Qué hay que pedir:</b> $f$ es un polinomio (dos veces derivable). Es convexa en $\mathbb R$ si y solo si $f''(x)\ge0$ para todo $x$ (Prop. 3.9 y 3.10, U p.136, con su recíproco).</li><li><b>$f''$:</b> $f'(x)=4x^3+3kx^2+12x$ y $f''(x)=12x^2+6kx+12$.</li><li><b>Discriminante:</b> $\Delta=(6k)^2-4\cdot12\cdot12=36k^2-576$. Con coeficiente principal $12>0$: $f''\ge0$ en todo $\mathbb R\iff\Delta\le0\iff k^2\le16\iff-4\le k\le4$.</li><li><b>Los bordes sirven:</b> con $k=4$, $f''(x)=12(x+1)^2\ge0$ (se anula en $-1$ sin cambiar de signo: convexa, sin inflexión). Igual con $k=-4$: $12(x-1)^2$.</li><li><b>Fuera no:</b> con $k=5$, $f''(-1)=12-30+12=-6&lt;0$: hay un intervalo donde $f$ es cóncava, luego no es convexa en $\mathbb R$.</li></ol>
+    <p class="res">Resultado: $f$ es convexa en $\mathbb R$ si y solo si $-4\le k\le4$</p>
+  </details>
+</details>
+</div>
+<!-- ============================ autoevaluación ============================ -->
+<h2 id="autoeval" data-vista="tipos"><span class="n">7</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico de concavidad, inflexiones o asíntotas, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="f">
+    <p><b>1.</b> (V/F) Si $f''(c)=0$, entonces $c$ es un punto de inflexión de $f$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Solo es candidato (Prop. 3.11, U p.137). $f(x)=x^4$ tiene $f''(0)=0$ y es convexa a ambos lados: no hay inflexión. Hace falta que $f''$ cambie de signo (Def. 3.10).</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>2.</b> (Elige) $f$ es dos veces derivable en $I$ y $f''\ge0$ en $I$. Entonces, en $I$, $f$ es:</p>
+    <div class="opts"><button data-v="a">(a) creciente</button><button data-v="b">(b) convexa (forma $\cup$)</button><button data-v="c">(c) cóncava</button><button data-v="d">(d) positiva</button></div>
+    <div class="exp">Prop. 3.10 (U p.136). Convexa no es creciente: $x^2$ en $(-\infty,0)$ es convexa y decreciente. El crecimiento lo da el signo de $f'$, no el de $f''$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>3.</b> (V/F) Si $f$ es convexa en $(-\infty,0)$ y en $(0,\infty)$, entonces es convexa en $\mathbb R$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$f(x)=-|x|$ es una recta a cada lado ($f''=0\ge0$: convexa en cada semirrecta), pero con $x=-1$, $y=1$, $t=\frac12$: $f(0)=0>-1=\frac12f(-1)+\frac12f(1)$, falla la Def. 3.8 (U p.135). La convexidad no se conserva al unir intervalos (como en E 3.41 y 3.45).</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>4.</b> (V/F) $f(x)=\frac1x$ es cóncava en $(-\infty,0)$ y convexa en $(0,\infty)$; por tanto tiene un punto de inflexión en $x=0$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Una inflexión es un punto de la gráfica (Def. 3.10, U p.137) y $0$ no está en el dominio: allí hay una asíntota vertical. Mismo caso que E 3.43.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>5.</b> (Elige) Si $f''(x)=(x-2)^2(x+1)$, los puntos de inflexión de $f$ son:</p>
+    <div class="opts"><button data-v="a">(a) $x=2$ y $x=-1$</button><button data-v="b">(b) solo $x=-1$</button><button data-v="c">(c) solo $x=2$</button><button data-v="d">(d) ninguno</button></div>
+    <div class="exp">$(x-2)^2\ge0$ no cambia de signo en $2$; el signo de $f''$ es el de $x+1$, que cambia solo en $-1$ (Def. 3.10, U p.137). Un factor con exponente par no da inflexión.</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>6.</b> (Elige) En un punto $c$, $f''(c)=f'''(c)=0$ y $f^{(4)}(c)=5$. Entonces:</p>
+    <div class="opts"><button data-v="a">(a) hay inflexión de cóncava a convexa</button><button data-v="b">(b) hay inflexión de convexa a cóncava</button><button data-v="c">(c) no hay inflexión: $f$ es convexa a ambos lados de $c$</button><button data-v="d">(d) $c$ es un máximo de $f$</button></div>
+    <div class="exp">La primera derivada no nula es de orden $4$, par: la Prop. 3.12 (U p.137) no da inflexión. Aplicando la Prop. 3.7 (U p.131) a $g=f''$: $g(c)=0$, $g'(c)=0$, $g''(c)=5>0$, así que $f''$ tiene un mínimo relativo de valor $0$ en $c$; cerca de $c$, $f''\ge0$ (convexa a ambos lados).</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>7.</b> (Elige) La asíntota oblicua de $f(x)=\dfrac{x^2+1}x$ es:</p>
+    <div class="opts"><button data-v="a">(a) $y=x$</button><button data-v="b">(b) $y=x+1$</button><button data-v="c">(c) $y=1$</button><button data-v="d">(d) no tiene</button></div>
+    <div class="exp">$m=\lim_{x\to\pm\infty}\frac{x^2+1}{x^2}=1$ y $b=\lim_{x\to\pm\infty}\big(\frac{x^2+1}x-x\big)=\lim_{x\to\pm\infty}\frac1x=0$ (Prop. 1.12, U p.49): $y=x$.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>8.</b> (V/F) Existe una función dos veces derivable $f:[0,1]\to\mathbb R$ con $f(x)>0$, $f'(x)>0$ y $f''(x)&lt;0$ en $[0,1]$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Es la afirmación 9 de la autoevaluación de U (p.140). Ejemplo: $f(x)=\sqrt{x+1}$: $f>0$, $f'=\frac1{2\sqrt{x+1}}>0$, $f''=-\frac1{4(x+1)^{3/2}}&lt;0$. Positiva, creciente y cóncava a la vez: son tres propiedades independientes.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>9.</b> (V/F) Si $f$ es derivable y convexa en un intervalo $I$, su gráfica queda por encima de cada recta tangente trazada en un punto de $I$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Sea $g(x)=f(x)-\big[f(c)+f'(c)(x-c)\big]$. Por la Prop. 3.9 (U p.136), $g'=f'-f'(c)$ es creciente y $g'(c)=0$: $g'\le0$ antes de $c$ y $g'\ge0$ después. Así $g$ tiene un mínimo en $c$, con $g(c)=0$: $g\ge0$. (Práctica f2, con $\ln x$ cóncava: al revés, bajo la tangente.)</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>10.</b> (Elige) En un intervalo, la gráfica de $f'$ es decreciente. Entonces, en ese intervalo, $f$ es:</p>
+    <div class="opts"><button data-v="a">(a) decreciente</button><button data-v="b">(b) cóncava</button><button data-v="c">(c) convexa</button><button data-v="d">(d) negativa</button></div>
+    <div class="exp">Prop. 3.9 (U p.136): $f'$ decreciente $\iff f$ cóncava. Que $f$ sea decreciente depende del <em>signo</em> de $f'$, no de si $f'$ sube o baja (E 3.42).</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<!-- ============================ ejercicios ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">8</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.39-3.43 y 3.45-3.48, pp. 122-134; partes de 3.30 (p. 114) y 3.36 (p. 120)">E pp.114-134</span></h2>
+<p>Se mantiene la numeración de E, pero se agrupan en bloques según lo que enseñan: A (curvatura de una fórmula), B (puntos delicados: valor absoluto, picos, convexa en todo $\mathbb R$), C (leer las gráficas de $f'$ y $f''$), D (estudio completo, dibujo e inventar funciones) y E (ejemplos propios). Cada ejercicio muestra el enunciado, «Antes de calcular» y la receta; la resolución paso a paso está desplegable. Orden recomendado, de fácil a difícil: 3.39 → 3.30 → 3.43 → 3.40 → 3.36 → 3.42 → 3.45 → 3.41 → 3.47 → 3.48 → 3.46. Los ejercicios 3.30 y 3.36 son de 3.4 (extremos) y aquí solo se completa su parte de inflexión o de $f''$.</p>
+<h3>Bloque A · Curvatura de una fórmula</h3>
+<article class="ejer" id="ej-3-39">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.39 · $f(x)=3x^5-5x^4-20x^3+2x-1$: ¿cuándo es cóncava y cuándo convexa?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.39, pp. 122-123 · teoría: U Prop. 3.10, p. 136; Def. 3.10 y Prop. 3.12, p. 137">E pp.122-123</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=3x^5-5x^4-20x^3+2x-1$. ¿Cuándo es cóncava y cuándo convexa?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Los intervalos donde $f(x)=3x^5-5x^4-20x^3+2x-1$ es cóncava y donde es convexa.</dd>
     <dt>Cómo lo pienso</dt><dd>La curvatura la decide el signo de $f''$: donde es positiva la gráfica es una sonrisa (convexa) y donde es negativa una cara triste (cóncava). Un producto solo cambia de signo en sus raíces, así que basta factorizar $f''$ y probar un punto por intervalo.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136): $f''\ge0\Rightarrow$ convexa, $f''\le0\Rightarrow$ cóncava.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136): $f''\ge0\Rightarrow$ convexa, $f''\le0\Rightarrow$ cóncava — <a href="#s2">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Derivar dos veces y sacar factor común en $f''$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> concavidad de un polinomio: $f''$ $\to$ factorizar $\to$ tabla de signos $\to$ $f''\ge0$ convexa, $f''\le0$ cóncava; donde cambia el signo, inflexión.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"3*x^5-5*x^4-20*x^3+2*x-1","n":"3x⁵−5x⁴−20x³+2x−1"}],"x":[-2,3],"y":[-240,60],"q":[[-1,9,"(−1, 9)"],[0,-1,"(0, −1)"],[2,-141,"(2, −141)"]]}' data-alt="Quintica con tres inflexiones"><figcaption>$f(x)=3x^5-5x^4-20x^3+2x-1$: la segunda derivada $f''$ cambia de signo en $x=-1$, $x=0$ y $x=2$, que son los tres puntos de inflexión marcados. Cóncava donde la curva queda por debajo de sus tangentes, convexa donde queda por encima. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -252,18 +616,26 @@ en los ejercicios y en el examen</h3>
     <li><b>Conclusión (Prop. 3.10).</b> $f$ es <b>convexa en $[-1,0]$ y en $[2,\infty)$</b> y <b>cóncava en $(-\infty,-1]$ y en $[0,2]$</b>. (Se pueden cerrar porque en los extremos $f''=0$ cumple a la vez $\ge0$ y $\le0$.)</li>
     <li><b>Extra (no se pide): inflexiones.</b> $f''$ cambia de signo en $-1$, $0$ y $2$: tres puntos de inflexión $(-1,9)$, $(0,-1)$, $(2,-141)$. Con la Prop. 3.12: $f'''(x)=180x^2-120x-120$, $f'''(-1)=180>0$ (cóncava $\to$ convexa), $f'''(0)=-120&lt;0$ (convexa $\to$ cóncava), $f'''(2)=360>0$ (cóncava $\to$ convexa).</li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f''(x)=60x(x-2)(x+1)$. Signo de $f''$: $-$ en $(-\infty,-1)$, $+$ en $(-1,0)$, $-$ en $(0,2)$, $+$ en $(2,\infty)$. Por la Prop. 3.10, $f$ es convexa en $[-1,0]$ y en $[2,\infty)$, y cóncava en $(-\infty,-1]$ y en $[0,2]$.»</p></div>
-  <div class="recipe"><b>Receta:</b> concavidad de un polinomio: $f''$ $\to$ factorizar $\to$ tabla de signos $\to$ $f''\ge0$ convexa, $f''\le0$ cóncava; donde cambia el signo, inflexión.</div>
+  
+  
   <div class="box warn"><span class="h">Error típico</span><p>Estudiar el signo de $f'$ en vez del de $f''$ (eso da crecimiento, no curvatura); escribir «convexa en $[-1,0]\cup[2,\infty)$»; creer que «creciente» es «convexa» ($-x^2$ en $x&lt;0$ es creciente y cóncava).</p></div>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f''(x)=60x(x-2)(x+1)$. Signo de $f''$: $-$ en $(-\infty,-1)$, $+$ en $(-1,0)$, $-$ en $(0,2)$, $+$ en $(2,\infty)$. Por la Prop. 3.10, $f$ es convexa en $[-1,0]$ y en $[2,\infty)$, y cóncava en $(-\infty,-1]$ y en $[0,2]$.»</p></div>
+  <p><b>Teoría:</b> <a href="#s2">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-30"><summary>Ejercicio 3.30 (parte de inflexión) · cúbica $ax^3+bx^2+cx+d$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.30, p. 114 · teoría: U Prop. 3.11-3.12, p. 137">E p.114</span></summary>
-<p class="enun">Sea $f(x)=ax^3+bx^2+cx+d$ con $a\ne0$. ¿Es cierto que $f$ tiene exactamente un máximo local y un mínimo local en su dominio, cualesquiera que sean $a,b,c,d$?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-3-30">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 3.30 (parte de inflexión) · cúbica $ax^3+bx^2+cx+d$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.30, p. 114 · teoría: U Prop. 3.11-3.12, p. 137">E p.114</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=ax^3+bx^2+cx+d$ con $a\ne0$. ¿Es cierto que $f$ tiene exactamente un máximo local y un mínimo local en su dominio, cualesquiera que sean $a,b,c,d$?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Completar el Ejercicio 3.30: cuántos puntos de inflexión tiene una cúbica $ax^3+bx^2+cx+d$ y dónde están.</dd>
     <dt>Cómo lo pienso</dt><dd>Toda cúbica tiene $f''$ de grado 1, una recta con pendiente no nula: se anula una sola vez y allí cambia de signo. Por tanto hay exactamente una inflexión, aunque la cúbica no tenga máximo ni mínimo.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.11 y 3.12 de U (p. 137): candidatos con $f''=0$; inflexión si $f''$ cambia de signo (o primera derivada no nula de orden impar).</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.11 y 3.12 de U (p. 137): candidatos con $f''=0$; inflexión si $f''$ cambia de signo (o primera derivada no nula de orden impar) — <a href="#s3">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Calcular $f''(x)=6ax+2b$ y resolver $f''=0$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> inflexión: candidatos con $f''=0$ (no con $f'=0$) y comprobar que $f''$ cambia de signo (o Prop. 3.12).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"x^3-3*x","n":"x³−3x"}],"x":[-2.2,2.2],"y":[-4,4],"q":[[0,0,"(0, 0)"]]}' data-alt="Cubica con inflexion en el origen"><figcaption>Una cúbica, $x^3-3x$: tiene un único punto de inflexión $(0,0)$, donde pasa de cóncava (a la izquierda) a convexa (a la derecha); toda cúbica tiene exactamente uno. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <p>La parte de extremos está en el tema 3.4 (respuesta: <b>no</b>; contraejemplos $2x^3+6x$, sin puntos críticos, y $x^3$, con un punto crítico que no es extremo). Aquí se completa lo que toca a 3.5.</p>
@@ -272,16 +644,22 @@ en los ejercicios y en el examen</h3>
     <li>Por la Def. 3.10 (o por la Prop. 3.12: $f'''=6a\neq0$, orden 3, impar), $x_0$ es <b>el único punto de inflexión</b>. Si $a>0$, pasa de cóncava a convexa; si $a&lt;0$, al revés.</li>
     <li>En $f=x^3$: $x_0=0$ y $f'(0)=0$, inflexión con tangente horizontal (y no es extremo). En $f=2x^3+6x$: $x_0=0$ pero $f'(0)=6\neq0$: inflexión con tangente inclinada.</li>
   </ol>
-    <div class="recipe"><b>Receta:</b> inflexión: candidatos con $f''=0$ (no con $f'=0$) y comprobar que $f''$ cambia de signo (o Prop. 3.12).</div>
+  <p><b>Teoría:</b> <a href="#s3">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-43"><summary>Ejercicio 3.43 · $f(x)=\dfrac1{1-x}$: extremos e inflexión <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.43, pp. 125-126 · teoría: U Def. 3.10 y Prop. 3.11, p. 137; asíntota vertical: U p. 49">E pp.125-126</span></summary>
-<p class="enun">Sea $f(x)=\dfrac1{1-x}$. ¿Alcanza extremos relativos? ¿Tiene algún punto de inflexión?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-3-43">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.43 · $f(x)=\dfrac1{1-x}$: extremos e inflexión</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.43, pp. 125-126 · teoría: U Def. 3.10 y Prop. 3.11, p. 137; asíntota vertical: U p. 49">E pp.125-126</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=\dfrac1{1-x}$. ¿Alcanza extremos relativos? ¿Tiene algún punto de inflexión?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si $f(x)=\frac1{1-x}$ tiene extremos relativos y puntos de inflexión.</dd>
     <dt>Cómo lo pienso</dt><dd>La curvatura cambia de lado a lado de $x=1$, pero ahí la función no existe: es una asíntota vertical. Un punto de inflexión tiene que ser un punto <b>de la gráfica</b>, así que ese cambio no cuenta.</dd>
-    <dt>Qué uso</dt><dd>Def. 3.10 y Prop. 3.11 de U (p. 137); puntos críticos (U p. 131); asíntota vertical (U p. 49).</dd>
+    <dt>Qué uso</dt><dd>Def. 3.10 y Prop. 3.11 de U (p. 137); puntos críticos (U p. 131); asíntota vertical (U p. 49) — <a href="#s3">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Escribir el dominio, $\mathbb R\setminus\{1\}$, y calcular $f'$ y $f''$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> antes de declarar una inflexión, comprobar que el punto está <b>en el dominio</b> de $f$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"abs(x-1)<0.06?NaN:1/(1-x)","n":"1/(1−x)"}],"x":[-3,5],"y":[-6,6]}' data-alt="1/(1-x) con asintota vertical en x=1"><figcaption>$f(x)=\frac1{1-x}$: a la izquierda de la asíntota $x=1$ es convexa y a la derecha cóncava, pero $x=1$ no es del dominio, así que no hay punto de inflexión; tampoco hay extremos. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -291,18 +669,27 @@ en los ejercicios y en el examen</h3>
     <li><b>¿Inflexión?</b> Un punto de inflexión es un punto <b>de la gráfica</b> donde cambia la curvatura (Def. 3.10). El cambio ocurre «a través» de $x=1$, pero $f(1)$ no existe. Y $f''$ no se anula en ningún punto del dominio, así que la Prop. 3.11 no da otro candidato. <b>No tiene puntos de inflexión.</b></li>
     <li><b>Asíntota.</b> $\lim_{x\to1^-}f(x)=+\infty$ y $\lim_{x\to1^+}f(x)=-\infty$: $x=1$ es asíntota vertical.</li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f'(x)=1/(1-x)^2>0$: sin puntos críticos, sin extremos. $f''(x)=2/(1-x)^3$ no se anula; cambia de signo en $x=1$, pero $1\notin\operatorname{Dom}f$ (asíntota vertical). No hay puntos de inflexión.»</p></div>
-  <div class="recipe"><b>Receta:</b> antes de declarar una inflexión, comprobar que el punto está <b>en el dominio</b> de $f$.</div>
+  
+  
   <div class="box warn"><span class="h">Error típico</span><p>Ver el cambio de signo de $f''$ en la tabla y anotar «inflexión en $x=1$».</p></div>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f'(x)=1/(1-x)^2>0$: sin puntos críticos, sin extremos. $f''(x)=2/(1-x)^3$ no se anula; cambia de signo en $x=1$, pero $1\notin\operatorname{Dom}f$ (asíntota vertical). No hay puntos de inflexión.»</p></div>
+  <p><b>Teoría:</b> <a href="#s3">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-40"><summary>Ejercicio 3.40 · $f(x)=x\,|x-4|$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.40, p. 123 · teoría: U Prop. 3.10, p. 136; Def. 3.10, p. 137">E p.123</span></summary>
-<p class="enun">Sea $f(x)=x\,|x-4|$. Es cierto que: <b>a)</b> es cóncava en $(4,+\infty)$; <b>b)</b> es convexa en $(-4,4)$; <b>c)</b> en $x=4$ tiene un punto de inflexión; <b>d)</b> ninguna de las anteriores.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<h3>Bloque B · Puntos delicados: valor absoluto, picos y convexidad en todo $\mathbb R$</h3>
+<article class="ejer" id="ej-3-40">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 3.40 · $f(x)=x\,|x-4|$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.40, p. 123 · teoría: U Prop. 3.10, p. 136; Def. 3.10, p. 137">E p.123</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=x\,|x-4|$. Es cierto que: <b>a)</b> es cóncava en $(4,+\infty)$; <b>b)</b> es convexa en $(-4,4)$; <b>c)</b> en $x=4$ tiene un punto de inflexión; <b>d)</b> ninguna de las anteriores.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir cuál de las afirmaciones a), b), c), d) sobre $f(x)=x\,|x-4|$ es cierta.</dd>
     <dt>Cómo lo pienso</dt><dd>Sin el valor absoluto, $f$ es una parábola «hacia abajo» a la izquierda de $4$ y otra «hacia arriba» a la derecha: en $x=4$ cambia la curvatura, aunque allí no exista la derivada.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) en cada trozo; Def. 3.10 (p. 137) para la inflexión en el punto de unión.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) en cada trozo; Def. 3.10 (p. 137) para la inflexión en el punto de unión — <a href="#s3">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $f$ a trozos quitando el valor absoluto.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> valor absoluto $\to$ escribir a trozos $\to$ $f''$ en cada trozo $\to$ mirar la inflexión también en el punto de unión (si es del dominio y $f$ es continua allí).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"x*abs(x-4)","n":"x|x−4|"}],"x":[-2,7],"y":[-10,22],"q":[[4,0,"(4, 0)"]]}' data-alt="x por valor absoluto de x-4"><figcaption>$f(x)=x|x-4|$: cóncava para $x<4$ y convexa para $x>4$; en $x=4$ hay un «pico» (no derivable) con $f(4)=0$, donde la curva cambia de curvatura. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -314,82 +701,24 @@ en los ejercicios y en el examen</h3>
     <li><b>¿Contradice la Prop. 3.11?</b> No: $f$ <b>no es derivable</b> en $4$ ($f'(4^-)=-4$, $f'(4^+)=4$) y esa proposición no se aplica. Es una inflexión donde $f''$ no existe.</li>
     <li><b>Respuesta: c).</b></li>
   </ol>
-  <div class="recipe"><b>Receta:</b> valor absoluto $\to$ escribir a trozos $\to$ $f''$ en cada trozo $\to$ mirar la inflexión también en el punto de unión (si es del dominio y $f$ es continua allí).</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Descartar c) porque «$f''(4)$ no existe».</p></div>
+  <p><b>Teoría:</b> <a href="#s3">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-36"><summary>Ejercicio 3.36 (apartado c) · $f''(x)=0$ a partir de la gráfica de $f'$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.36, p. 120 · teoría: U Prop. 3.9, p. 136; Prop. 3.6, p. 131">E p.120</span></summary>
-<p class="enun">La gráfica de la derivada de una función dos veces derivable $f$ con dominio todo $\mathbb R$ aparece en la figura. Razona si alguna de las afirmaciones es correcta: a) $f$ tiene dos puntos críticos, pero un solo extremo relativo. b) $f$ tiene dos extremos relativos. <b>c) La ecuación $f''(x)=0$ no tiene soluciones reales.</b></p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Razonar si la ecuación $f''(x)=0$ puede no tener soluciones reales, a partir de la gráfica de $f'$ (apartado c).</dd>
-    <dt>Cómo lo pienso</dt><dd>$f''$ es la derivada de $f'$: vale $0$ donde la gráfica de $f'$ tiene tangente horizontal, es decir, en sus picos y sus valles.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.6 de U (p. 131) aplicada a $f'$: en un extremo relativo interior de una función derivable, la derivada vale $0$. Prop. 3.9 (p. 136) para el extra.</dd>
-    <dt>Por dónde empiezo</dt><dd>Localizar en la figura los máximos y mínimos relativos de $f'$.</dd>
-  </dl></div>
-  <figure class="bookfig">
-  <img src="../assets/img/fig_e_3_36.png" alt="Gráfica de f': corta al eje x en -2 subiendo, máximo de altura 2 en x=-1, vale 1 en x=0, toca el eje en x=1 sin cruzarlo y luego crece" loading="lazy">
-  <figcaption>Gráfica de $f'$ del enunciado. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.36, figura de p. 120">E p.120</span></figcaption>
-  </figure>
-  <ol class="steps">
-    <li>$f$ es dos veces derivable: $f'$ es derivable y $f''=(f')'$.</li>
-    <li>En la figura, $f'$ tiene un <b>máximo relativo</b> en $x=-1$ (altura $2$) y un <b>mínimo relativo</b> en $x=1$ (altura $0$). En un extremo relativo interior de una función derivable, su derivada vale $0$ (U Prop. 3.6, aplicada a $f'$): $f''(-1)=0$ y $f''(1)=0$.</li>
-    <li><b>c) es falsa</b>: $f''(x)=0$ tiene al menos dos soluciones reales. (Las afirmaciones a) y b) se tratan en el tema 3.4.)</li>
-    <li><b>Extra (3.5):</b> $f'$ crece en $(-\infty,-1)$, decrece en $(-1,1)$ y crece en $(1,\infty)$. Por la Prop. 3.9, $f$ es convexa en $(-\infty,-1]$, cóncava en $[-1,1]$ y convexa en $[1,\infty)$; $x=-1$ y $x=1$ son <b>puntos de inflexión</b>. Fíjate: $x=1$ es a la vez punto crítico ($f'(1)=0$) e inflexión: el «punto de silla» de a).</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> con la gráfica de $f'$: ceros de $f'$ $\to$ críticos de $f$; <b>puntos donde $f'$ crece a un lado y decrece al otro</b> $\to$ inflexiones de $f$ (ahí $f''=0$); tramos donde $f'$ sube $\to$ $f$ convexa; donde baja $\to$ cóncava.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Buscar los ceros de $f''$ donde $f'$ corta al eje (esos son los ceros de $f'$).</p></div>
-</details>
-<details class="sol" id="ej-3-42"><summary>Ejercicio 3.42 · leer la concavidad en la gráfica de $f'$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.42, p. 125 · teoría: U Prop. 3.9, p. 136; Def. 3.10, p. 137">E p.125</span></summary>
-<p class="enun">De $f:\mathbb R\to\mathbb R$ tres veces derivable conocemos la gráfica de $f'$ (figura). Razona si son correctas: <b>a)</b> $f$ es cóncava en $(-\infty,0)$. <b>b)</b> $f$ es convexa en $(-\infty,0)$. <b>c)</b> $f$ tiene un punto de inflexión en $x=1$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir, a partir de la gráfica de $f'$, si $f$ es cóncava o convexa en $(-\infty,0)$ y si tiene una inflexión en $x=1$.</dd>
-    <dt>Cómo lo pienso</dt><dd>La gráfica es la de $f'$: donde $f'$ sube, la pendiente de $f$ aumenta y $f$ es una sonrisa (convexa); donde baja, es cara triste (cóncava). Una inflexión es un punto donde $f'$ pasa de subir a bajar o al revés.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.9 de U (p. 136): $f$ derivable es convexa $\Leftrightarrow f'$ creciente, cóncava $\Leftrightarrow f'$ decreciente. Def. 3.10 (p. 137).</dd>
-    <dt>Por dónde empiezo</dt><dd>Anotar en la figura los tramos donde $f'$ crece y donde decrece.</dd>
-  </dl></div>
-  <figure class="bookfig">
-  <img src="../assets/img/fig_e_3_42.png" alt="Gráfica de f': baja desde valores grandes hasta 0 en x=0, sube a un máximo pequeño en x=0,5, baja hasta 0 en x=1 y vuelve a subir" loading="lazy">
-  <figcaption>Gráfica de $f'$ del Ejercicio 3.42. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.42, figura de p. 125">E p.125</span></figcaption>
-  </figure>
-  <ol class="steps">
-    <li><b>Tramos de $f'$</b> (lectura de la figura): decreciente en $(-\infty,0]$, creciente en $[0;0{,}5]$, decreciente en $[0{,}5;1]$, creciente en $[1,\infty)$.</li>
-    <li><b>a) y b).</b> $f$ es derivable y $f'$ es decreciente en $(-\infty,0)$: $f$ es <b>cóncava</b> en $(-\infty,0)$ (Prop. 3.9). <b>a) correcta, b) falsa.</b></li>
-    <li><b>c).</b> En $(0{,}5;1)$ $f'$ decrece: $f$ cóncava; en $(1,\infty)$ $f'$ crece: $f$ convexa. Hay cambio de curvatura en $x=1$, que está en el dominio: <b>inflexión en $x=1$</b> (Def. 3.10). <b>c) correcta.</b></li>
-    <li><b>Extra.</b> Igual ocurre en $x=0$ (cóncava $\to$ convexa) y $x=0{,}5$ (convexa $\to$ cóncava). En los tres $f'$ crece a un lado y decrece al otro (son extremos de $f'$) y $f''=0$, como exige la Prop. 3.11. $x=0$ y $x=1$ son además puntos críticos de $f$ que no son extremos ($f'\ge0$: $f$ crece a ambos lados).</li>
-  </ol>
-    <div class="recipe"><b>Receta:</b> gráfica de $f'$: sube $\Rightarrow$ $f$ convexa; baja $\Rightarrow$ $f$ cóncava; si $f'$ crece a un lado y decrece al otro, hay inflexión de $f$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Mirar el <b>signo</b> de $f'$ ($f'\ge0$ siempre) y concluir algo de la curvatura: el signo de $f'$ da el crecimiento de $f$; la curvatura la da la <b>monotonía</b> de $f'$.</p></div>
-</details>
-<details class="sol" id="ej-3-45"><summary>Ejercicio 3.45 · ¿es convexa en todo $\mathbb R$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.45, pp. 127-128 · teoría: U Def. 3.8, p. 135; Prop. 3.9, p. 136; TVM: U §2.5.3, p. 96">E pp.127-128</span></summary>
-<p class="enun">Sea $f:\mathbb R\to\mathbb R$ dos veces derivable con continuidad en $\mathbb R\setminus\{1\}$. Su derivada se representa en la figura. A partir de la gráfica de $f'$, ¿cuáles son los intervalos de concavidad y convexidad de $f$? ¿Tiene puntos de inflexión? ¿Es convexa en $\mathbb R$?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Dar los intervalos de concavidad y convexidad de $f$ y sus inflexiones a partir de la gráfica de $f'$, y decidir si $f$ es convexa en todo $\mathbb R$.</dd>
-    <dt>Cómo lo pienso</dt><dd>$f'$ sube a cada lado de $x=1$, así que $f$ es convexa a cada lado; pero al cruzar $x=1$ la pendiente pasa de «muy positiva» a «muy negativa», lo que dibuja un pico $\wedge$: no puede ser convexa en todo $\mathbb R$.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.9 de U (p. 136); Def. 3.8 (p. 135) de convexa; teorema del valor medio (U p. 96) para relacionar la cuerda con la derivada.</dd>
-    <dt>Por dónde empiezo</dt><dd>Leer en la figura si $f'$ crece o decrece en $(-\infty,1)$ y en $(1,\infty)$.</dd>
-  </dl></div>
-  <figure class="bookfig">
-  <img src="../assets/img/fig_e_3_45.png" alt="Gráfica de f' con dos ramas separadas por la recta x=1: la izquierda pasa por el origen y sube hacia más infinito cuando x tiende a 1; la derecha viene de menos infinito, corta al eje en x=2 y sigue creciendo" loading="lazy">
-  <figcaption>Gráfica de $f'$ del Ejercicio 3.45. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.45, figura de p. 127">E p.127</span></figcaption>
-  </figure>
-  <ol class="steps">
-    <li><b>Intervalos.</b> En $(-\infty,1)$, $f$ es derivable y $f'$ es creciente: <b>convexa en $(-\infty,1)$</b> (Prop. 3.9). Igual en $(1,\infty)$: <b>convexa en $(1,\infty)$</b>. No es cóncava en ningún intervalo, porque $f'$ no decrece en ningún tramo.</li>
-    <li><b>Inflexiones.</b> No hay: a ambos lados de cualquier punto $f$ es convexa, nunca pasa a cóncava (Def. 3.10).</li>
-    <li><b>¿Convexa en $\mathbb R$?</b> <b>No.</b> Intuición: justo antes de $1$ la gráfica sube con pendiente enorme y justo después baja con pendiente enorme: cerca de $1$ tiene forma de $\cap$.</li>
-    <li><b>Un ejemplo numérico primero.</b> En una sonrisa las cuerdas se van «empinando» de izquierda a derecha (pendientes crecientes; se obtiene de la Def. 3.8 escribiendo $q=(1-t)p+tr$). Con $f=x^2$: la cuerda de $[0,1]$ tiene pendiente $\frac{1-0}{1}=1$, la de $[1,2]$ tiene $\frac{4-1}{1}=3$ y la de $[2,3]$ tiene $\frac{9-4}{1}=5$: $1<3<5$. Si $f$ fuese convexa, con cuatro puntos $0{,}5&lt;0{,}6&lt;1{,}2&lt;1{,}3$ habría que tener
-      $$\text{pend. de }[0{,}5;0{,}6]\ \le\ \text{pend. de }[0{,}6;1{,}2]\ \le\ \text{pend. de }[1{,}2;1{,}3].$$</li>
-    <li><b>Qué valen las pendientes de los extremos.</b> $f$ es derivable en $[0{,}5;0{,}6]$ y en $[1{,}2;1{,}3]$ (no contienen a $1$), y el teorema del valor medio (U p. 96) dice que la pendiente de la cuerda es $f'(\xi)$ con $\xi\in(0{,}5;0{,}6)$, y la última es $f'(\eta)$ con $\eta\in(1{,}2;1{,}3)$. En la figura, $f'>0$ en $(0,1)$ y $f'&lt;0$ en $(1,2)$: queda «número positivo $\le$ número negativo». Gráficamente: una cuerda que sube con fuerza antes de $1$ y otra que baja después de $1$ no pueden ir «empinándose». <b>Contradicción</b>: $f$ no es convexa en $\mathbb R$, sea o no continua en $1$.</li>
-  </ol>
-    <div class="recipe"><b>Receta:</b> «¿convexa en todo $\mathbb R$?» cuando hay un punto malo $c$: la derivada (donde exista) debe seguir creciendo <b>al cruzar $c$</b>; si $f'$ «salta hacia abajo» en $c$, no es convexa.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Unir los intervalos: «convexa en $(-\infty,1)$ y en $(1,\infty)$, luego convexa en $\mathbb R$».</p></div>
-</details>
-<details class="sol" id="ej-3-41"><summary>Ejercicio 3.41 · $\sqrt{|x|}$ no es cóncava en $\mathbb R$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.41, pp. 123-124 · teoría: U Def. 3.9, p. 135; Prop. 3.10, p. 136">E pp.123-124</span></summary>
-<p class="enun">La función $f(x)=\sqrt{|x|}$ es continua en $\mathbb R$ y tiene derivada segunda negativa en $\mathbb R\setminus\{0\}$. Muestra que no es cóncava en $\mathbb R$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-3-41">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 3.41 · $\sqrt{|x|}$ no es cóncava en $\mathbb R$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.41, pp. 123-124 · teoría: U Def. 3.9, p. 135; Prop. 3.10, p. 136">E pp.123-124</span></header>
+<div class="ejer-enun"><p class="enun">La función $f(x)=\sqrt{|x|}$ es continua en $\mathbb R$ y tiene derivada segunda negativa en $\mathbb R\setminus\{0\}$. Muestra que no es cóncava en $\mathbb R$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Probar que $f(x)=\sqrt{|x|}$ no es cóncava en $\mathbb R$, aunque $f''<0$ fuera de $0$.</dd>
     <dt>Cómo lo pienso</dt><dd>Para probar que algo <b>no</b> es cóncavo basta un solo contraejemplo a la definición: una cuerda que quede por encima de la gráfica. Hay que buscarla a ambos lados del punto problemático $x=0$.</dd>
-    <dt>Qué uso</dt><dd>Def. 3.9 de U (p. 135) de cóncava; Prop. 3.10 (p. 136), que exige $f$ dos veces derivable en todo el intervalo y aquí no se cumple.</dd>
+    <dt>Qué uso</dt><dd>Def. 3.9 de U (p. 135) de cóncava; Prop. 3.10 (p. 136), que exige $f$ dos veces derivable en todo el intervalo y aquí no se cumple — <a href="#s2">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Escoger dos puntos a lados opuestos de $0$, por ejemplo $a=-1$ y $b=1$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> para negar la concavidad o la convexidad en un intervalo, elige dos puntos a ambos lados del punto problemático y comprueba el punto medio ($t=\tfrac12$).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"sqrt(abs(x))","n":"√|x|"}],"x":[-4,4],"y":[-0.2,2.4],"q":[[-1,1.0,"(−1, 1)"],[1,1.0,"(1, 1)"],[0,0.0,"(0, 0)"]]}' data-alt="Raiz de |x| con pico en el origen"><figcaption>$f(x)=\sqrt{|x|}$: cóncava a cada lado del origen, pero la cuerda entre $(-1,1)$ y $(1,1)$ queda por encima de la curva en $x=0$, así que no es cóncava en todo $\mathbb R$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -399,17 +728,112 @@ en los ejercicios y en el examen</h3>
     <li><b>Punto medio ($t=\tfrac12$).</b> $(1-t)a+tb=0$ y $f(0)=0$. La cuerda en ese punto vale $\tfrac12\cdot1+\tfrac12\cdot1=1$. Como $0&lt;1$, la gráfica queda <b>por debajo</b> de la cuerda: falla la desigualdad de concavidad.</li>
     <li><b>Conclusión.</b> $f$ no es cóncava en $\mathbb R$. Sí lo es en $(-\infty,0]$ y en $[0,\infty)$ por separado: la concavidad <b>no se conserva al unir intervalos</b>.</li>
   </ol>
-    <div class="recipe"><b>Receta:</b> para negar la concavidad o la convexidad en un intervalo, elige dos puntos a ambos lados del punto problemático y comprueba el punto medio ($t=\tfrac12$).</div>
+    
   <div class="box warn"><span class="h">Error típico</span><p>«$f''&lt;0$ en todos los puntos donde existe, luego es cóncava». Falla en cuanto hay en el intervalo un punto sin $f''$.</p></div>
+  <p><b>Teoría:</b> <a href="#s2">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-47"><summary>Ejercicio 3.47 · inventar funciones con propiedades dadas <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.47, pp. 131-133 · teoría: U Def. 2.5 y Prop. 2.4, p. 98; Prop. 3.10, p. 136; asíntota vertical: U p. 49">E pp.131-133</span></summary>
-<p class="enun">Da una expresión, si es posible, que defina una función real de una variable real con las propiedades indicadas: <b>a)</b> derivable en su dominio, creciente en $(-\infty,2)$ y decreciente en $(2,+\infty)$; <b>b)</b> derivable, <i>estrictamente</i> creciente en $(-\infty,2)$ y <i>estrictamente</i> decreciente en $(2,+\infty)$; <b>c)</b> derivable, convexa en $(-\infty,0)$ y cóncava en $(0,+\infty)$; <b>d)</b> derivable en su dominio y con asíntota vertical $x=-\pi$; <b>e)</b> positiva en $(-\infty,1)$, con gráfica que corta al eje $x$ en $(2,0)$ y al eje $y$ en $(0,-3)$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<h3>Bloque C · Leer las gráficas de $f'$ y de $f''$</h3>
+<article class="ejer" id="ej-3-36">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 3.36 (apartado c) · $f''(x)=0$ a partir de la gráfica de $f'$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.36, p. 120 · teoría: U Prop. 3.9, p. 136; Prop. 3.6, p. 131">E p.120</span></header>
+<div class="ejer-enun"><p class="enun">La gráfica de la derivada de una función dos veces derivable $f$ con dominio todo $\mathbb R$ aparece en la figura. Razona si alguna de las afirmaciones es correcta: a) $f$ tiene dos puntos críticos, pero un solo extremo relativo. b) $f$ tiene dos extremos relativos. <b>c) La ecuación $f''(x)=0$ no tiene soluciones reales.</b></p>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_3_36.png" alt="Gráfica de f': corta al eje x en -2 subiendo, máximo de altura 2 en x=-1, vale 1 en x=0, toca el eje en x=1 sin cruzarlo y luego crece" loading="lazy">
+  <figcaption>Gráfica de $f'$ del enunciado. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.36, figura de p. 120">E p.120</span></figcaption>
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Razonar si la ecuación $f''(x)=0$ puede no tener soluciones reales, a partir de la gráfica de $f'$ (apartado c).</dd>
+    <dt>Cómo lo pienso</dt><dd>$f''$ es la derivada de $f'$: vale $0$ donde la gráfica de $f'$ tiene tangente horizontal, es decir, en sus picos y sus valles.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.6 de U (p. 131) aplicada a $f'$: en un extremo relativo interior de una función derivable, la derivada vale $0$. Prop. 3.9 (p. 136) para el extra — <a href="#s2">ver teoría</a></dd>
+    <dt>Por dónde empiezo</dt><dd>Localizar en la figura los máximos y mínimos relativos de $f'$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> con la gráfica de $f'$: ceros de $f'$ $\to$ críticos de $f$; <b>puntos donde $f'$ crece a un lado y decrece al otro</b> $\to$ inflexiones de $f$ (ahí $f''=0$); tramos donde $f'$ sube $\to$ $f$ convexa; donde baja $\to$ cóncava.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li>$f$ es dos veces derivable: $f'$ es derivable y $f''=(f')'$.</li>
+    <li>En la figura, $f'$ tiene un <b>máximo relativo</b> en $x=-1$ (altura $2$) y un <b>mínimo relativo</b> en $x=1$ (altura $0$). En un extremo relativo interior de una función derivable, su derivada vale $0$ (U Prop. 3.6, aplicada a $f'$): $f''(-1)=0$ y $f''(1)=0$.</li>
+    <li><b>c) es falsa</b>: $f''(x)=0$ tiene al menos dos soluciones reales. (Las afirmaciones a) y b) se tratan en el tema 3.4.)</li>
+    <li><b>Extra (3.5):</b> $f'$ crece en $(-\infty,-1)$, decrece en $(-1,1)$ y crece en $(1,\infty)$. Por la Prop. 3.9, $f$ es convexa en $(-\infty,-1]$, cóncava en $[-1,1]$ y convexa en $[1,\infty)$; $x=-1$ y $x=1$ son <b>puntos de inflexión</b>. Fíjate: $x=1$ es a la vez punto crítico ($f'(1)=0$) e inflexión: el «punto de silla» de a).</li>
+  </ol>
+  
+  <div class="box warn"><span class="h">Error típico</span><p>Buscar los ceros de $f''$ donde $f'$ corta al eje (esos son los ceros de $f'$).</p></div>
+  <p><b>Teoría:</b> <a href="#s2">ver el apartado</a>.</p>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-42">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.42 · leer la concavidad en la gráfica de $f'$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.42, p. 125 · teoría: U Prop. 3.9, p. 136; Def. 3.10, p. 137">E p.125</span></header>
+<div class="ejer-enun"><p class="enun">De $f:\mathbb R\to\mathbb R$ tres veces derivable conocemos la gráfica de $f'$ (figura). Razona si son correctas: <b>a)</b> $f$ es cóncava en $(-\infty,0)$. <b>b)</b> $f$ es convexa en $(-\infty,0)$. <b>c)</b> $f$ tiene un punto de inflexión en $x=1$.</p>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_3_42.png" alt="Gráfica de f': baja desde valores grandes hasta 0 en x=0, sube a un máximo pequeño en x=0,5, baja hasta 0 en x=1 y vuelve a subir" loading="lazy">
+  <figcaption>Gráfica de $f'$ del Ejercicio 3.42. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.42, figura de p. 125">E p.125</span></figcaption>
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir, a partir de la gráfica de $f'$, si $f$ es cóncava o convexa en $(-\infty,0)$ y si tiene una inflexión en $x=1$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La gráfica es la de $f'$: donde $f'$ sube, la pendiente de $f$ aumenta y $f$ es una sonrisa (convexa); donde baja, es cara triste (cóncava). Una inflexión es un punto donde $f'$ pasa de subir a bajar o al revés.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.9 de U (p. 136): $f$ derivable es convexa $\Leftrightarrow f'$ creciente, cóncava $\Leftrightarrow f'$ decreciente. Def. 3.10 (p. 137) — <a href="#s2">ver teoría</a></dd>
+    <dt>Por dónde empiezo</dt><dd>Anotar en la figura los tramos donde $f'$ crece y donde decrece.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> gráfica de $f'$: sube $\Rightarrow$ $f$ convexa; baja $\Rightarrow$ $f$ cóncava; si $f'$ crece a un lado y decrece al otro, hay inflexión de $f$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Tramos de $f'$</b> (lectura de la figura): decreciente en $(-\infty,0]$, creciente en $[0;0{,}5]$, decreciente en $[0{,}5;1]$, creciente en $[1,\infty)$.</li>
+    <li><b>a) y b).</b> $f$ es derivable y $f'$ es decreciente en $(-\infty,0)$: $f$ es <b>cóncava</b> en $(-\infty,0)$ (Prop. 3.9). <b>a) correcta, b) falsa.</b></li>
+    <li><b>c).</b> En $(0{,}5;1)$ $f'$ decrece: $f$ cóncava; en $(1,\infty)$ $f'$ crece: $f$ convexa. Hay cambio de curvatura en $x=1$, que está en el dominio: <b>inflexión en $x=1$</b> (Def. 3.10). <b>c) correcta.</b></li>
+    <li><b>Extra.</b> Igual ocurre en $x=0$ (cóncava $\to$ convexa) y $x=0{,}5$ (convexa $\to$ cóncava). En los tres $f'$ crece a un lado y decrece al otro (son extremos de $f'$) y $f''=0$, como exige la Prop. 3.11. $x=0$ y $x=1$ son además puntos críticos de $f$ que no son extremos ($f'\ge0$: $f$ crece a ambos lados).</li>
+  </ol>
+    
+  <div class="box warn"><span class="h">Error típico</span><p>Mirar el <b>signo</b> de $f'$ ($f'\ge0$ siempre) y concluir algo de la curvatura: el signo de $f'$ da el crecimiento de $f$; la curvatura la da la <b>monotonía</b> de $f'$.</p></div>
+  <p><b>Teoría:</b> <a href="#s2">ver el apartado</a>.</p>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-45">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 3.45 · ¿es convexa en todo $\mathbb R$?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.45, pp. 127-128 · teoría: U Def. 3.8, p. 135; Prop. 3.9, p. 136; TVM: U §2.5.3, p. 96">E pp.127-128</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f:\mathbb R\to\mathbb R$ dos veces derivable con continuidad en $\mathbb R\setminus\{1\}$. Su derivada se representa en la figura. A partir de la gráfica de $f'$, ¿cuáles son los intervalos de concavidad y convexidad de $f$? ¿Tiene puntos de inflexión? ¿Es convexa en $\mathbb R$?</p>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_3_45.png" alt="Gráfica de f' con dos ramas separadas por la recta x=1: la izquierda pasa por el origen y sube hacia más infinito cuando x tiende a 1; la derecha viene de menos infinito, corta al eje en x=2 y sigue creciendo" loading="lazy">
+  <figcaption>Gráfica de $f'$ del Ejercicio 3.45. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.45, figura de p. 127">E p.127</span></figcaption>
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Dar los intervalos de concavidad y convexidad de $f$ y sus inflexiones a partir de la gráfica de $f'$, y decidir si $f$ es convexa en todo $\mathbb R$.</dd>
+    <dt>Cómo lo pienso</dt><dd>$f'$ sube a cada lado de $x=1$, así que $f$ es convexa a cada lado; pero al cruzar $x=1$ la pendiente pasa de «muy positiva» a «muy negativa», lo que dibuja un pico $\wedge$: no puede ser convexa en todo $\mathbb R$.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.9 de U (p. 136); Def. 3.8 (p. 135) de convexa; teorema del valor medio (U p. 96) para relacionar la cuerda con la derivada — <a href="#s2">ver teoría</a></dd>
+    <dt>Por dónde empiezo</dt><dd>Leer en la figura si $f'$ crece o decrece en $(-\infty,1)$ y en $(1,\infty)$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> «¿convexa en todo $\mathbb R$?» cuando hay un punto malo $c$: la derivada (donde exista) debe seguir creciendo <b>al cruzar $c$</b>; si $f'$ «salta hacia abajo» en $c$, no es convexa.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Intervalos.</b> En $(-\infty,1)$, $f$ es derivable y $f'$ es creciente: <b>convexa en $(-\infty,1)$</b> (Prop. 3.9). Igual en $(1,\infty)$: <b>convexa en $(1,\infty)$</b>. No es cóncava en ningún intervalo, porque $f'$ no decrece en ningún tramo.</li>
+    <li><b>Inflexiones.</b> No hay: a ambos lados de cualquier punto $f$ es convexa, nunca pasa a cóncava (Def. 3.10).</li>
+    <li><b>¿Convexa en $\mathbb R$?</b> <b>No.</b> Intuición: justo antes de $1$ la gráfica sube con pendiente enorme y justo después baja con pendiente enorme: cerca de $1$ tiene forma de $\cap$.</li>
+    <li><b>Un ejemplo numérico primero.</b> En una sonrisa las cuerdas se van «empinando» de izquierda a derecha (pendientes crecientes; se obtiene de la Def. 3.8 escribiendo $q=(1-t)p+tr$). Con $f=x^2$: la cuerda de $[0,1]$ tiene pendiente $\frac{1-0}{1}=1$, la de $[1,2]$ tiene $\frac{4-1}{1}=3$ y la de $[2,3]$ tiene $\frac{9-4}{1}=5$: $1<3<5$. Si $f$ fuese convexa, con cuatro puntos $0{,}5&lt;0{,}6&lt;1{,}2&lt;1{,}3$ habría que tener
+      $$\text{pend. de }[0{,}5;0{,}6]\ \le\ \text{pend. de }[0{,}6;1{,}2]\ \le\ \text{pend. de }[1{,}2;1{,}3].$$</li>
+    <li><b>Qué valen las pendientes de los extremos.</b> $f$ es derivable en $[0{,}5;0{,}6]$ y en $[1{,}2;1{,}3]$ (no contienen a $1$), y el teorema del valor medio (U p. 96) dice que la pendiente de la cuerda es $f'(\xi)$ con $\xi\in(0{,}5;0{,}6)$, y la última es $f'(\eta)$ con $\eta\in(1{,}2;1{,}3)$. En la figura, $f'>0$ en $(0,1)$ y $f'&lt;0$ en $(1,2)$: queda «número positivo $\le$ número negativo». Gráficamente: una cuerda que sube con fuerza antes de $1$ y otra que baja después de $1$ no pueden ir «empinándose». <b>Contradicción</b>: $f$ no es convexa en $\mathbb R$, sea o no continua en $1$.</li>
+  </ol>
+    
+  <div class="box warn"><span class="h">Error típico</span><p>Unir los intervalos: «convexa en $(-\infty,1)$ y en $(1,\infty)$, luego convexa en $\mathbb R$».</p></div>
+  <p><b>Teoría:</b> <a href="#s2">ver el apartado</a>.</p>
+  </details>
+</details>
+</article>
+<h3>Bloque D · Estudio completo, dibujo e inventar funciones</h3>
+<article class="ejer" id="ej-3-47">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 3.47 · inventar funciones con propiedades dadas</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.47, pp. 131-133 · teoría: U Def. 2.5 y Prop. 2.4, p. 98; Prop. 3.10, p. 136; asíntota vertical: U p. 49">E pp.131-133</span></header>
+<div class="ejer-enun"><p class="enun">Da una expresión, si es posible, que defina una función real de una variable real con las propiedades indicadas: <b>a)</b> derivable en su dominio, creciente en $(-\infty,2)$ y decreciente en $(2,+\infty)$; <b>b)</b> derivable, <i>estrictamente</i> creciente en $(-\infty,2)$ y <i>estrictamente</i> decreciente en $(2,+\infty)$; <b>c)</b> derivable, convexa en $(-\infty,0)$ y cóncava en $(0,+\infty)$; <b>d)</b> derivable en su dominio y con asíntota vertical $x=-\pi$; <b>e)</b> positiva en $(-\infty,1)$, con gráfica que corta al eje $x$ en $(2,0)$ y al eje $y$ en $(0,-3)$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dar, si se puede, una función con cada grupo de propiedades a)-e) del enunciado.</dd>
     <dt>Cómo lo pienso</dt><dd>Se parte de una función «modelo» que ya conoces ($-x^2$, $x^3$, $\ln x$, ...), se traslada o se le cambia el signo y se comprueba derivando. Si dos condiciones se contradicen, no existe.</dd>
-    <dt>Qué uso</dt><dd>Def. 2.5 y Prop. 2.4 de U (p. 98) para la monotonía; Prop. 3.10 (p. 136) para la curvatura; asíntota vertical (U p. 49).</dd>
+    <dt>Qué uso</dt><dd>Def. 2.5 y Prop. 2.4 de U (p. 98) para la monotonía; Prop. 3.10 (p. 136) para la curvatura; asíntota vertical (U p. 49) — <a href="#s4">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Para cada apartado, elegir un modelo y decidir si hace falta trasladarlo o cambiarle el signo.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> modelo $+$ traslación ($x\mapsto x-a$) $+$ cambio de signo; comprobar con $f'$ (monotonía) o $f''$ (curvatura). Si dos condiciones hablan del mismo punto, comprobar que son compatibles (e).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <ol class="steps">
     <li><b>a) $f(x)=\pi$</b> (o cualquier constante). Es derivable y, con la <b>Def. 2.5 de U (no estricta)</b>, una constante es a la vez creciente y decreciente en cualquier intervalo ($a&lt;b\Rightarrow f(a)\le f(b)$ y $f(b)\le f(a)$). También sirve la de b).</li>
     <li><b>b) $f(x)=-(x-2)^2$.</b> $f'(x)=-2(x-2)$: $>0$ si $x&lt;2$ y $&lt;0$ si $x>2$: estrictamente creciente en $(-\infty,2)$ y estrictamente decreciente en $(2,\infty)$ (Prop. 2.4). Es $-x^2$ con el vértice trasladado a $x=2$.</li>
@@ -417,17 +841,24 @@ en los ejercicios y en el examen</h3>
     <li><b>d) $f(x)=\ln(x+\pi)$</b> (dominio $(-\pi,\infty)$, $\lim_{x\to-\pi^+}f(x)=-\infty$) o <b>$f(x)=\dfrac1{x+\pi}$</b>. Ambas derivables en su dominio y con asíntota vertical en $x=-\pi$.</li>
     <li><b>e) No existe.</b> $0\in(-\infty,1)$: «positiva en $(-\infty,1)$» exige $f(0)>0$; pero «corta al eje $y$ en $(0,-3)$» dice $f(0)=-3&lt;0$. Contradicción.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> modelo $+$ traslación ($x\mapsto x-a$) $+$ cambio de signo; comprobar con $f'$ (monotonía) o $f''$ (curvatura). Si dos condiciones hablan del mismo punto, comprobar que son compatibles (e).</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Dar $\operatorname{tg}x$ en c) sin mirar su dominio ni el signo de $f''$.</p></div>
+  <p><b>Teoría:</b> <a href="#s4">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-48"><summary>Ejercicio 3.48 · decreciente, cóncava, convexa y dos asíntotas <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.48, pp. 133-134 · teoría: U Prop. 1.12, p. 49; Prop. 3.10, p. 136; Def. 3.10, p. 137">E pp.133-134</span></summary>
-<p class="enun">Dibuja la gráfica de una función continua que sea decreciente en todo $\mathbb R$, cóncava en $(-\infty,0)$, convexa en $(0,+\infty)$ y tenga dos asíntotas (una horizontal y una oblicua).</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-3-48">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 3.48 · decreciente, cóncava, convexa y dos asíntotas</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.48, pp. 133-134 · teoría: U Prop. 1.12, p. 49; Prop. 3.10, p. 136; Def. 3.10, p. 137">E pp.133-134</span></header>
+<div class="ejer-enun"><p class="enun">Dibuja la gráfica de una función continua que sea decreciente en todo $\mathbb R$, cóncava en $(-\infty,0)$, convexa en $(0,+\infty)$ y tenga dos asíntotas (una horizontal y una oblicua).</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dibujar una función continua, decreciente en $\mathbb R$, cóncava en $(-\infty,0)$, convexa en $(0,\infty)$ y con una asíntota horizontal y otra oblicua.</dd>
     <dt>Cómo lo pienso</dt><dd>$-\operatorname{arctg}x$ ya baja, es cóncava a la izquierda y convexa a la derecha y tiene asíntotas horizontales. Para conseguir una oblicua a la derecha se le suma una recta de pendiente negativa solo para $x>0$: una recta no cambia $f''$.</dd>
-    <dt>Qué uso</dt><dd>Asíntotas (U Prop. 1.12, p. 49); Prop. 3.10 (p. 136) y Def. 3.10 (p. 137); monotonía con Prop. 2.4 (U p. 98).</dd>
+    <dt>Qué uso</dt><dd>Asíntotas (U Prop. 1.12, p. 49); Prop. 3.10 (p. 136) y Def. 3.10 (p. 137); monotonía con Prop. 2.4 (U p. 98) — <a href="#s4">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Proponer la función a trozos $-\operatorname{arctg}x$ para $x\le0$ y $-\tfrac x2-\operatorname{arctg}x$ para $x>0$, y comprobar la continuidad en $0$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> gráfica con propiedades dadas: elegir una función base con la curvatura pedida y <b>sumarle una recta</b> en el lado donde haga falta una asíntota oblicua (no cambia $f''$; sí cambia $f'$, así que comprobar la monotonía).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <ol class="steps">
     <li><b>Propuesta (E):</b> $f(x)=\begin{cases}-\operatorname{arctg}x,&amp;x\le0,\\[2pt] -\tfrac x2-\operatorname{arctg}x,&amp;x>0.\end{cases}$</li>
     <li><b>Continua.</b> Cada trozo es continuo. En $0$: $f(0)=0$ y $\lim_{x\to0^+}\big(-\tfrac x2-\operatorname{arctg}x\big)=0$.</li>
@@ -440,17 +871,24 @@ en los ejercicios y en el examen</h3>
   <img src="../assets/img/fig_e_3_48.png" alt="Gráfica decreciente: a la izquierda se acerca a la asíntota horizontal y igual a pi medios, pasa por el origen y a la derecha se acerca a una recta oblicua descendente de pendiente menos un medio" loading="lazy">
   <figcaption>Gráfica del Ejercicio 3.48, con las dos asíntotas a trazos. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.48, figura de p. 134">E p.134</span></figcaption>
   </figure>
-  <div class="recipe"><b>Receta:</b> gráfica con propiedades dadas: elegir una función base con la curvatura pedida y <b>sumarle una recta</b> en el lado donde haga falta una asíntota oblicua (no cambia $f''$; sí cambia $f'$, así que comprobar la monotonía).</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Sumar la recta con pendiente positiva ($+\tfrac x2$): se rompe «decreciente».</p></div>
+  <p><b>Teoría:</b> <a href="#s4">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-46"><summary>Ejercicio 3.46 · estudio completo de $f(x)=\dfrac{x^2}{x-1}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.46, pp. 128-131 · teoría: U Prop. 1.12, p. 49; Prop. 2.4, p. 98; Prop. 3.7, p. 131; Prop. 3.10, p. 136; lista de U p. 139">E pp.128-131</span></summary>
-<p class="enun">Sea $f$ la función definida por $f(x)=\dfrac{x^2}{x-1}$. ¿Cuál es su representación gráfica?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-3-46">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.46 · estudio completo de $f(x)=\dfrac{x^2}{x-1}$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.46, pp. 128-131 · teoría: U Prop. 1.12, p. 49; Prop. 2.4, p. 98; Prop. 3.7, p. 131; Prop. 3.10, p. 136; lista de U p. 139">E pp.128-131</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f$ la función definida por $f(x)=\dfrac{x^2}{x-1}$. ¿Cuál es su representación gráfica?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hacer el estudio completo de $f(x)=\frac{x^2}{x-1}$ y dibujarla.</dd>
     <dt>Cómo lo pienso</dt><dd>Se junta toda la información: dónde existe, dónde corta los ejes, hacia qué rectas se pega, dónde sube o baja y dónde es sonrisa o cara triste. Con eso el dibujo sale casi solo.</dd>
-    <dt>Qué uso</dt><dd>Lista de U (p. 139) para representar gráficas; asíntotas (U Prop. 1.12, p. 49); Prop. 2.4 (p. 98); Prop. 3.7 (p. 131); Prop. 3.10 (p. 136).</dd>
+    <dt>Qué uso</dt><dd>Lista de U (p. 139) para representar gráficas; asíntotas (U Prop. 1.12, p. 49); Prop. 2.4 (p. 98); Prop. 3.7 (p. 131); Prop. 3.10 (p. 136) — <a href="#s4">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Dominio ($x\neq1$) y cortes con los ejes.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta (estudio completo):</b> dominio $\to$ cortes $\to$ asíntotas (vertical en los ceros del denominador; oblicua con $m$ y $b$) $\to$ $f'$ factorizada: crecimiento y extremos $\to$ $f''$: curvatura e inflexiones (solo en puntos del dominio) $\to$ dibujo.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <ol class="steps">
     <li><b>Dominio.</b> $x-1\neq0$: $\mathbb R\setminus\{1\}$. Ahí $f$ es cociente de polinomios con denominador no nulo: continua y derivable las veces que haga falta.</li>
     <li><b>Cortes.</b> Eje $y$: $f(0)=0$. Eje $x$: $\frac{x^2}{x-1}=0\iff x=0$. Único corte: el origen.</li>
@@ -467,20 +905,27 @@ en los ejercicios y en el examen</h3>
   <img src="../assets/img/fig_e_3_46.png" alt="Gráfica de x al cuadrado entre x menos uno: a la izquierda de x=1 una curva con máximo en el origen que cae hacia menos infinito, a la derecha una curva con mínimo en (2,4) que sube hacia más infinito" loading="lazy">
   <figcaption>Figura 3.5 de E: gráfica de $x^2/(x-1)$. <span class="src" data-l="E" data-ref="Libro de ejercicios, Figura 3.5 del Ej. 3.46, p. 131">E p.131</span></figcaption>
   </figure>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>La tabla: dominio $\mathbb R\setminus\{1\}$; asíntotas $x=1$ e $y=x+1$; $f'=x(x-2)/(x-1)^2$ ($\nearrow$ en $(-\infty,0)$ y $(2,\infty)$; $\searrow$ en $(0,1)$ y $(1,2)$); máximo en $(0,0)$ y mínimo en $(2,4)$; $f''=2/(x-1)^3$ ($\cap$ en $(-\infty,1)$, $\cup$ en $(1,\infty)$); sin inflexiones; y el dibujo.</p></div>
-  <div class="recipe"><b>Receta (estudio completo):</b> dominio $\to$ cortes $\to$ asíntotas (vertical en los ceros del denominador; oblicua con $m$ y $b$) $\to$ $f'$ factorizada: crecimiento y extremos $\to$ $f''$: curvatura e inflexiones (solo en puntos del dominio) $\to$ dibujo.</div>
+  
+  
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el punto $x=1$ al partir los intervalos de las tablas de signos de $f'$ y $f''$ (hay que partir también en los puntos fuera del dominio).</p></div>
+  <div class="box tip"><span class="h">En el examen escribe</span><p>La tabla: dominio $\mathbb R\setminus\{1\}$; asíntotas $x=1$ e $y=x+1$; $f'=x(x-2)/(x-1)^2$ ($\nearrow$ en $(-\infty,0)$ y $(2,\infty)$; $\searrow$ en $(0,1)$ y $(1,2)$); máximo en $(0,0)$ y mínimo en $(2,4)$; $f''=2/(x-1)^3$ ($\cap$ en $(-\infty,1)$, $\cup$ en $(1,\infty)$); sin inflexiones; y el dibujo.</p></div>
+  <p><b>Teoría:</b> <a href="#s4">ver el apartado</a>.</p>
+  </details>
 </details>
-<!-- ============================ 6 ============================ -->
-<h2 id="propios"><span class="n">6</span>Ejemplos propios (de fácil a difícil) <span class="src" data-l="P" data-ref="Ejemplos propios">P</span></h2>
-<details class="sol" id="p1"><summary>Propio 1 · $f(x)=\ln(1+x^2)$: curvatura e inflexiones <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
-<p class="enun">Estudia la curvatura y los puntos de inflexión de $f(x)=\ln(1+x^2)$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<h3>Bloque E · Ejemplos propios, de fácil a difícil</h3>
+<article class="ejer" id="p1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Propio 1 · $f(x)=\ln(1+x^2)$: curvatura e inflexiones</span> <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></header>
+<div class="ejer-enun"><p class="enun">Estudia la curvatura y los puntos de inflexión de $f(x)=\ln(1+x^2)$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La curvatura y los puntos de inflexión de $f(x)=\ln(1+x^2)$.</dd>
     <dt>Cómo lo pienso</dt><dd>$f''$ es un cociente con denominador siempre positivo: el signo lo da solo el numerador $1-x^2$.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 y 3.12 de U (pp. 136-137).</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 y 3.12 de U (pp. 136-137) — <a href="#s2">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Derivar dos veces con la regla del cociente.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> $f''\to$ denominador positivo fuera $\to$ signo del numerador.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"ln(1+x^2)","n":"ln(1+x²)"}],"x":[-4,4],"y":[-0.3,3],"q":[[-1,0.693147,"(−1; 0,693)"],[1,0.693147,"(1; 0,693)"]]}' data-alt="ln(1+x^2) con inflexiones en +-1"><figcaption>$f(x)=\ln(1+x^2)$: convexa en $[-1,1]$ (forma de valle) y cóncava fuera; las inflexiones $(\pm1,\ln2)$ están marcadas. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -489,33 +934,46 @@ en los ejercicios y en el examen</h3>
     <li>Signo de $1-x^2$: $>0$ en $(-1,1)$ y $&lt;0$ si $|x|>1$. <b>Convexa en $[-1,1]$; cóncava en $(-\infty,-1]$ y en $[1,\infty)$.</b></li>
     <li><b>Inflexiones</b> en $x=\pm1$, puntos $(\pm1,\ln2)$. Control con la Prop. 3.12: $f'''(1)=-1&lt;0$ (de convexa a cóncava).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> $f''\to$ denominador positivo fuera $\to$ signo del numerador.</div>
+  <p><b>Teoría:</b> <a href="#s2">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="p2"><summary>Propio 2 · $f''(c)=0$ sin inflexión, y con inflexión <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
-<p class="enun">(a) Estudia la curvatura de $f(x)=x^4-4x^3+6x^2+x$. (b) Lo mismo para $g(x)=x^5-5x^4+10x^3-10x^2$. ¿Hay inflexión en $x=1$ en cada una?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="p2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 2 · $f''(c)=0$ sin inflexión, y con inflexión</span> <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></header>
+<div class="ejer-enun"><p class="enun">(a) Estudia la curvatura de $f(x)=x^4-4x^3+6x^2+x$. (b) Lo mismo para $g(x)=x^5-5x^4+10x^3-10x^2$. ¿Hay inflexión en $x=1$ en cada una?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la curvatura de dos polinomios y decidir si hay inflexión en $x=1$ en cada uno.</dd>
     <dt>Cómo lo pienso</dt><dd>$f''(c)=0$ es solo un candidato: lo que cuenta es si $f''$ <b>cambia de signo</b>. Un factor $(x-c)$ con exponente par no cambia el signo; con exponente impar, sí.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.11 (condición necesaria) y Prop. 3.12 (derivadas superiores) de U (p. 137).</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.11 (condición necesaria) y Prop. 3.12 (derivadas superiores) de U (p. 137) — <a href="#s3">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Calcular $f''$ y factorizarla en potencias de $(x-1)$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> factorizar $f''$: un factor $(x-c)^{\text{par}}$ no cambia el signo (no hay inflexión); $(x-c)^{\text{impar}}$ sí.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"x^4-4*x^3+6*x^2+x","n":"f=x⁴−4x³+6x²+x"},{"e":"x^5-5*x^4+10*x^3-10*x^2","n":"g=x⁵−5x⁴+10x³−10x²"}],"x":[-0.5,2.5],"y":[-8,20],"q":[[1,4,"(1, 4)"],[1,-4,"(1, −4)"]]}' data-alt="Dos polinomios con f segunda nula en x=1"><figcaption>En $x=1$ las dos segundas derivadas valen $0$: $f$ sigue siendo convexa a ambos lados (sin inflexión en $(1,4)$); $g$ pasa de cóncava a convexa en $(1,-4)$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
     <li>(a) $f''(x)=12x^2-24x+12=12(x-1)^2\ge0$: <b>convexa en $\mathbb R$</b>. $f''(1)=0$, pero no cambia de signo: <b>no hay inflexión</b>. Con derivadas: $f'''(1)=0$ y $f^{(4)}(1)=24$ (orden 4, <b>par</b>): la Prop. 3.12 no da inflexión.</li>
     <li>(b) $g''(x)=20x^3-60x^2+60x-20=20(x-1)^3$: $&lt;0$ si $x&lt;1$ y $>0$ si $x>1$. <b>Cóncava en $(-\infty,1]$, convexa en $[1,\infty)$; inflexión en $(1,-4)$.</b> Con derivadas: $g''(1)=g'''(1)=g^{(4)}(1)=0$ y $g^{(5)}(1)=120>0$ (orden 5, impar, positiva): de cóncava a convexa.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> factorizar $f''$: un factor $(x-c)^{\text{par}}$ no cambia el signo (no hay inflexión); $(x-c)^{\text{impar}}$ sí.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>«$f''(1)=0\Rightarrow$ inflexión»: es la afirmación 10 de la autoevaluación de U (p. 140), que es falsa.</p></div>
+  <p><b>Teoría:</b> <a href="#s3">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="p3"><summary>Propio 3 · una desigualdad sacada de la concavidad <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
-<p class="enun">Demuestra que $\operatorname{sen}x\ge\dfrac2\pi x$ para todo $x\in\big[0,\tfrac\pi2\big]$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="p3">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio 3 · una desigualdad sacada de la concavidad</span> <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></header>
+<div class="ejer-enun"><p class="enun">Demuestra que $\operatorname{sen}x\ge\dfrac2\pi x$ para todo $x\in\big[0,\tfrac\pi2\big]$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Demostrar que $\operatorname{sen}x\ge\frac2\pi x$ en $[0,\tfrac\pi2]$.</dd>
     <dt>Cómo lo pienso</dt><dd>Una función cóncava queda por encima de sus cuerdas; la recta $y=\frac2\pi x$ es justo la cuerda del seno entre $0$ y $\frac\pi2$.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) para ver que el seno es cóncavo ahí; Def. 3.9 (p. 135) de cóncava con $x=0$ e $y=\frac\pi2$.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) para ver que el seno es cóncavo ahí; Def. 3.9 (p. 135) de cóncava con $x=0$ e $y=\frac\pi2$ — <a href="#s2">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Comprobar que $(\operatorname{sen}x)''=-\operatorname{sen}x\le0$ en $[0,\tfrac\pi2]$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> desigualdad «función $\ge$ recta» en un intervalo: si la recta es la cuerda, basta la concavidad; si es «función $\le$ cuerda», la convexidad.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"sin(x)","n":"sen x"},{"e":"2*x/pi","n":"2x/π"}],"x":[-0.2,1.8],"y":[-0.2,1.2],"q":[[0,0.0,"(0, 0)"],[1.570796,1.0,"(π/2, 1)"]]}' data-alt="Seno y la cuerda 2x/pi"><figcaption>El seno (cóncavo en $[0,\frac\pi2]$) queda por encima de su cuerda $y=\frac{2}{\pi}x$ que une $(0,0)$ con $(\frac\pi2,1)$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -525,17 +983,24 @@ en los ejercicios y en el examen</h3>
     <li><b>Comprobación numérica:</b> $x=\tfrac\pi6$: $\operatorname{sen}\tfrac\pi6=0{,}5\ge\tfrac13$.</li>
     <li><b>Variante:</b> $\sqrt x$ es cóncava en $[0,\infty)$; con $t=\tfrac12$ en la Def. 3.9, $\dfrac{\sqrt a+\sqrt b}2\le\sqrt{\dfrac{a+b}2}$ para $a,b\ge0$ (p. ej. $a=3$, $b=11$: $2{,}524\le2{,}646$).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> desigualdad «función $\ge$ recta» en un intervalo: si la recta es la cuerda, basta la concavidad; si es «función $\le$ cuerda», la convexidad.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Usar la cuerda fuera del intervalo $[x,y]$: fuera de $[0,\tfrac\pi2]$ la desigualdad puede fallar ($x=\pi$: $\operatorname{sen}\pi=0&lt;2$).</p></div>
+  <p><b>Teoría:</b> <a href="#s2">ver el apartado</a>.</p>
+  </details>
 </details>
-<details class="sol" id="p4"><summary>Propio 4 · estudio completo de $f(x)=\dfrac{x^3}{x^2-1}$ <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
-<p class="enun">Representa $f(x)=\dfrac{x^3}{x^2-1}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="p4">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio 4 · estudio completo de $f(x)=\dfrac{x^3}{x^2-1}$</span> <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></header>
+<div class="ejer-enun"><p class="enun">Representa $f(x)=\dfrac{x^3}{x^2-1}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Representar $f(x)=\frac{x^3}{x^2-1}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es impar, tiene dos asíntotas verticales, la oblicua $y=x$, dos extremos y una inflexión en el origen con tangente horizontal; la simetría ahorra la mitad del trabajo.</dd>
-    <dt>Qué uso</dt><dd>La receta del Ejercicio 3.46 (lista de U p. 139) más la simetría de las funciones impares.</dd>
+    <dt>Qué uso</dt><dd>La receta del Ejercicio 3.46 (lista de U p. 139) más la simetría de las funciones impares — <a href="#s4">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Dominio, simetría y cortes con los ejes.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> la del Ejercicio 3.46, más <b>simetría</b> (si es par o impar, basta estudiar $x\ge0$) y <b>partir las tablas en todos los puntos fuera del dominio</b>.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"abs(x*x-1)<0.1?NaN:x^3/(x^2-1)","n":"x³/(x²−1)"},{"e":"x","n":"asíntota y=x","d":1}],"x":[-4,4],"y":[-8,8],"q":[[1.732051,2.598076,"(√3; 2,598)"],[-1.732051,-2.598076,"(−√3; −2,598)"],[0,-0.0,"(0, 0)"]]}' data-alt="x^3/(x^2-1) con asintotas verticales y la oblicua y=x"><figcaption>$f(x)=\frac{x^3}{x^2-1}$: asíntotas verticales $x=\pm1$ y oblicua $y=x$ (discontinua); extremos en $x=\pm\sqrt3$ e inflexión en el origen con tangente horizontal. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -555,80 +1020,136 @@ en los ejercicios y en el examen</h3>
     <li><b>Inflexión:</b> solo en $x=0$ (los cambios en $\pm1$ son en asíntotas, fuera del dominio). $f'''(0)=-6&lt;0$: de convexa a cóncava, y como $f'(0)=0$, la tangente es horizontal.</li>
     <li><b>Dibujo.</b> Rama $x&lt;-1$: sube por debajo de $y=x$ hasta el máximo en $-\sqrt3$ y cae a $-\infty$ junto a $x=-1$ ($\cap$). Rama central: baja desde $+\infty$ (junto a $x=-1$), pasa por el origen con tangente horizontal cambiando de $\cup$ a $\cap$, y baja a $-\infty$ junto a $x=1$. Rama $x>1$: simétrica de la primera respecto del origen.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> la del Ejercicio 3.46, más <b>simetría</b> (si es par o impar, basta estudiar $x\ge0$) y <b>partir las tablas en todos los puntos fuera del dominio</b>.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Poner inflexiones en $x=\pm1$; o decir que $x=0$ es un extremo porque $f'(0)=0$.</p></div>
+  <p><b>Teoría:</b> <a href="#s4">ver el apartado</a>.</p>
+  </details>
 </details>
-<!-- ============================ 7 ============================ -->
-<h2 id="examen"><span class="n">7</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
-<p>Estos 10 problemas de X son de este tema; los de lectura de gráfica y de «intervalos de concavidad y convexidad» son <b>preguntas cortas de 1 punto</b>. La mayoría son de Ingeniería Mecánica; X9 y X10, de I. Electrónica Industrial y Automática (sin fecha). No aparece en X: justificar una desigualdad con la definición (sí en E). Los apartados de otros temas van marcados (Taylor de 3.1, punto fijo de 2.4) y la integral (Tema 6) va <b>colapsada</b>.</p>
-<details class="sol" id="x1"><summary>X1 · leer la gráfica de $f''$ (parábola) <span class="src" data-l="X" data-ref="X pp.16-17 (Septiembre 2011, Mecánica, pregunta corta 4, 1 punto; la figura y la solución están en la p. 17)">X pp.16-17 (sep. 2011)</span></summary>
-<p class="enun">Sea $f:\mathbb R\to\mathbb R$ continua y derivable cinco veces cuya derivada segunda se representa en la figura. Determine sus puntos de inflexión y los intervalos de concavidad y convexidad. Razone la respuesta.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Dar los puntos de inflexión y los intervalos de concavidad y convexidad de $f$ viendo la gráfica de $f''$.</dd>
-    <dt>Cómo lo pienso</dt><dd>La figura es la de $f''$, no la de $f$: sobre el eje horizontal $f$ es convexa, bajo el eje es cóncava, y los cruces con el eje son las inflexiones.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) y Def. 3.10 (p. 137).</dd>
-    <dt>Por dónde empiezo</dt><dd>Leer en la figura dónde $f''$ es positiva, dónde negativa y dónde corta el eje.</dd>
-  </dl></div>
+</article>
+<!-- ============================ exámenes ============================ -->
+<h2 id="examenes" data-vista="examen"><span class="n">9</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>10 preguntas</b> de este tema (todas se resuelven aquí abajo con su redacción) y 11 ejercicios en el libro E. Se reparten en 4 tipos:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Intervalos de curvatura de una fórmula <small>(5 de 10)</small></td><td>$f''$, factorizar, tabla de signos; $f''\ge0$ convexa, $f''\le0$ cóncava; intervalos por separado.</td>
+      <td><a href="#ej-3-39">3.39</a> · <a href="#ej-3-30">3.30</a> · <a href="#ej-3-43">3.43</a></td>
+      <td><a href="#x4">Examen 4</a> · <a href="#x5">Examen 5</a> · <a href="#x6">Examen 6</a> · <a href="#x7">Examen 7</a> · <a href="#x9">Examen 9</a></td></tr>
+    <tr><td>Leer la gráfica de $f''$ o de $f'$ <small>(3 de 10)</small></td><td>$f''$ sobre el eje: convexa; bajo el eje: cóncava; cambios de signo: inflexiones.</td>
+      <td><a href="#ej-3-36">3.36</a> · <a href="#ej-3-42">3.42</a> · <a href="#ej-3-45">3.45</a></td>
+      <td><a href="#x1">Examen 1</a> · <a href="#x2">Examen 2</a> · <a href="#x3">Examen 3</a></td></tr>
+    <tr><td>Inflexiones, con la Prop. 3.12 y extremos <small>(1 de 10)</small></td><td>$f''(c)=0$ y $f^{(3)}(c)\ne0$ da inflexión; comprobar que $c$ es del dominio.</td>
+      <td><a href="#ej-3-40">3.40</a> · <a href="#ej-3-41">3.41</a> · <a href="#ej-3-43">3.43</a></td>
+      <td><a href="#x8">Examen 8</a></td></tr>
+    <tr><td>Estudio completo, dibujo e inventar una función <small>(1 de 10)</small></td><td>Dominio, asíntotas, signo de $f'$ y de $f''$, tabla única; sumar una recta para una oblicua.</td>
+      <td><a href="#ej-3-46">3.46</a> · <a href="#ej-3-47">3.47</a> · <a href="#ej-3-48">3.48</a></td>
+      <td><a href="#x10">Examen 10</a></td></tr>
+  </table>
+  <p><small>Recuento propio sobre las preguntas de X resueltas aquí (X8 cuenta también para extremos, tema 3.4).</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre las preguntas de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
+<p>Estos 10 problemas de X son de este tema; los de lectura de gráfica y de «intervalos de concavidad y convexidad» son <b>preguntas cortas de 1 punto</b>. La mayoría son de Ingeniería Mecánica; X9 y X10, de I. Electrónica Industrial y Automática (sin fecha). Tipo de pregunta que <b>no</b> aparece en X: justificar una desigualdad con la definición (sí en E). Los apartados de otros temas van marcados (Taylor de 3.1, punto fijo de 2.4) y la integral (Tema 6) va <b>colapsada</b>.</p>
+<article class="ejer" id="x1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">X1 · leer la gráfica de $f''$ (parábola)</span> <span class="src" data-l="X" data-ref="X pp.16-17 (Septiembre 2011, Mecánica, pregunta corta 4, 1 punto; la figura y la solución están en la p. 17)">X pp.16-17 (sep. 2011)</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f:\mathbb R\to\mathbb R$ continua y derivable cinco veces cuya derivada segunda se representa en la figura. Determine sus puntos de inflexión y los intervalos de concavidad y convexidad. Razone la respuesta.</p>
   <figure class="bookfig">
   <img src="../assets/img/fig_x_2011_f2.png" alt="Gráfica de f'': parábola con vértice en (0,-1) que corta al eje horizontal en x=-2 y x=2" loading="lazy">
   <figcaption>Gráfica de $f''$ del enunciado. <span class="src" data-l="X" data-ref="X p.17 (Septiembre 2011, pregunta corta 4, figura)">X p.17</span></figcaption>
-  </figure>
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Dar los puntos de inflexión y los intervalos de concavidad y convexidad de $f$ viendo la gráfica de $f''$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La figura es la de $f''$, no la de $f$: sobre el eje horizontal $f$ es convexa, bajo el eje es cóncava, y los cruces con el eje son las inflexiones.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) y Def. 3.10 (p. 137) — <a href="#s2">ver teoría</a></dd>
+    <dt>Por dónde empiezo</dt><dd>Leer en la figura dónde $f''$ es positiva, dónde negativa y dónde corta el eje.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Como $f''>0$ en $(-\infty,-2)$ y $(2,\infty)$, $f$ es convexa en cada uno de ellos; como $f''&lt;0$ en $(-2,2)$, es cóncava. $f''$ cambia de signo en $x=\pm2$, que son los puntos de inflexión.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> gráfica de $f''$: encima del eje $\to$ convexa; debajo $\to$ cóncava; cruces del eje $\to$ inflexiones.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
     <li>$f''>0$ en $(-\infty,-2)$ y en $(2,\infty)$: <b>convexa</b> ahí (Prop. 3.10).</li>
     <li>$f''&lt;0$ en $(-2,2)$: <b>cóncava</b> ahí.</li>
     <li>$f''$ cambia de signo en $x=-2$ y en $x=2$: <b>puntos de inflexión</b> $x=-2$ y $x=2$ (Def. 3.10).</li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«Como $f''>0$ en $(-\infty,-2)$ y $(2,\infty)$, $f$ es convexa en cada uno de ellos; como $f''&lt;0$ en $(-2,2)$, es cóncava. $f''$ cambia de signo en $x=\pm2$, que son los puntos de inflexión.»</p></div>
-  <div class="recipe"><b>Receta:</b> gráfica de $f''$: encima del eje $\to$ convexa; debajo $\to$ cóncava; cruces del eje $\to$ inflexiones.</div>
+  </details>
 </details>
-<details class="sol" id="x2"><summary>X2 · gráfica de $f''$ con tres ceros (cúbica) <span class="src" data-l="X" data-ref="X p.43 (Febrero 2014, Mecánica Modelo B, pregunta corta 2, 1 punto)">X p.43 (feb. 2014)</span></summary>
-<p class="enun">Sea $f:[-2,2]\to\mathbb R$ continua y dos veces derivable con continuidad. Su derivada segunda se representa en la figura. Determine los intervalos de concavidad, de convexidad y sus puntos de inflexión. Razone la respuesta.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Dar los intervalos de concavidad, convexidad y las inflexiones de $f$ viendo la gráfica de $f''$ en $[-2,2]$.</dd>
-    <dt>Cómo lo pienso</dt><dd>Igual que X1: los ceros de $f''$ son $-1$, $0$ y $1$; entre ellos se lee el signo de la gráfica. Hay que respetar que el dominio es $[-2,2]$.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) y Def. 3.10 (p. 137).</dd>
-    <dt>Por dónde empiezo</dt><dd>Marcar en la figura los tres cortes con el eje y el signo de $f''$ en cada tramo.</dd>
-  </dl></div>
+</article>
+<article class="ejer" id="x2">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">X2 · gráfica de $f''$ con tres ceros (cúbica)</span> <span class="src" data-l="X" data-ref="X p.43 (Febrero 2014, Mecánica Modelo B, pregunta corta 2, 1 punto)">X p.43 (feb. 2014)</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f:[-2,2]\to\mathbb R$ continua y dos veces derivable con continuidad. Su derivada segunda se representa en la figura. Determine los intervalos de concavidad, de convexidad y sus puntos de inflexión. Razone la respuesta.</p>
   <figure class="bookfig">
   <img src="../assets/img/fig_x_2014_f2.png" alt="Gráfica de f'' en [-2,2] con forma de cúbica: negativa hasta x=-1, positiva entre -1 y 0, negativa entre 0 y 1, positiva desde 1" loading="lazy">
   <figcaption>Gráfica de $f''$ del enunciado. <span class="src" data-l="X" data-ref="X p.43 (Febrero 2014, Modelo B, pregunta corta 2, figura)">X p.43</span></figcaption>
-  </figure>
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Dar los intervalos de concavidad, convexidad y las inflexiones de $f$ viendo la gráfica de $f''$ en $[-2,2]$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Igual que X1: los ceros de $f''$ son $-1$, $0$ y $1$; entre ellos se lee el signo de la gráfica. Hay que respetar que el dominio es $[-2,2]$.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) y Def. 3.10 (p. 137) — <a href="#s2">ver teoría</a></dd>
+    <dt>Por dónde empiezo</dt><dd>Marcar en la figura los tres cortes con el eje y el signo de $f''$ en cada tramo.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>De la figura: $f''\ge0$ en $[-1,0]$ y en $[1,2]$, luego $f$ es <b>convexa</b> en cada uno de ellos (Prop. 3.10); $f''\le0$ en $[-2,-1]$ y en $[0,1]$, luego es <b>cóncava</b> en cada uno.</p>
+  <p>$f''$ cambia de signo en $x=-1$, $x=0$ y $x=1$: son los <b>puntos de inflexión</b> (Def. 3.10). Los extremos $x=\pm2$ no lo son: falta un trozo a cada lado.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> como X1.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
     <li>$f''\ge0$ en $[-1,0]$ y en $[1,2]$: <b>convexa</b> ahí.</li>
     <li>$f''\le0$ en $[-2,-1]$ y en $[0,1]$: <b>cóncava</b> ahí.</li>
     <li>$f''$ cambia de signo en $-1$, $0$ y $1$: <b>inflexiones en $x=-1,0,1$</b>. Los extremos $\pm2$ del dominio no son de inflexión: la Def. 3.10 necesita un trozo a cada lado.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> como X1.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Olvidarse de que el intervalo del dominio es $[-2,2]$ y dar «convexa en $(1,\infty)$».</p></div>
+  </details>
 </details>
-<details class="sol" id="x3"><summary>X3 · gráfica de $f''$ con ceros $x_0,x_1,x_2$ <span class="src" data-l="X" data-ref="X p.77 (Febrero 2017, Mecánica Modelo A, pregunta corta 3, 1 punto)">X p.77 (feb. 2017)</span></summary>
-<p class="enun">Sea $f$ una función cuya derivada segunda, en $[a,b]$, se representa en la gráfica. Llamamos $x_0,x_1,x_2$ a los puntos de corte de $f''(x)$ con el eje $x$, de menor a mayor. Indique en qué intervalos es $f$ cóncava y en cuáles convexa.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decir en qué intervalos $f$ es cóncava y en cuáles convexa, viendo la gráfica de $f''$ con ceros $x_0<x_1<x_2$.</dd>
-    <dt>Cómo lo pienso</dt><dd>Es X1 con letras en lugar de números: se mira el signo de $f''$ entre cada par de cortes consecutivos con el eje.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136): $f''\ge0\Rightarrow$ convexa, $f''\le0\Rightarrow$ cóncava.</dd>
-    <dt>Por dónde empiezo</dt><dd>Escribir el signo de $f''$ en $[a,x_0]$, $[x_0,x_1]$, $[x_1,x_2]$ y $[x_2,b]$.</dd>
-  </dl></div>
+</article>
+<article class="ejer" id="x3">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">X3 · gráfica de $f''$ con ceros $x_0,x_1,x_2$</span> <span class="src" data-l="X" data-ref="X p.77 (Febrero 2017, Mecánica Modelo A, pregunta corta 3, 1 punto)">X p.77 (feb. 2017)</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f$ una función cuya derivada segunda, en $[a,b]$, se representa en la gráfica. Llamamos $x_0,x_1,x_2$ a los puntos de corte de $f''(x)$ con el eje $x$, de menor a mayor. Indique en qué intervalos es $f$ cóncava y en cuáles convexa.</p>
   <figure class="bookfig">
   <img src="../assets/img/fig_x_2017_f2.png" alt="Gráfica de f'' sobre [a,b]: negativa en [a,x0), positiva entre x0 y x1, negativa entre x1 y x2 y positiva entre x2 y b" loading="lazy">
   <figcaption>Gráfica de $f''$ del enunciado. <span class="src" data-l="X" data-ref="X p.77 (Febrero 2017, Modelo A, pregunta corta 3, figura)">X p.77</span></figcaption>
-  </figure>
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decir en qué intervalos $f$ es cóncava y en cuáles convexa, viendo la gráfica de $f''$ con ceros $x_0<x_1<x_2$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Es X1 con letras en lugar de números: se mira el signo de $f''$ entre cada par de cortes consecutivos con el eje.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136): $f''\ge0\Rightarrow$ convexa, $f''\le0\Rightarrow$ cóncava — <a href="#s2">ver teoría</a></dd>
+    <dt>Por dónde empiezo</dt><dd>Escribir el signo de $f''$ en $[a,x_0]$, $[x_0,x_1]$, $[x_1,x_2]$ y $[x_2,b]$.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>De la figura: $f''\le0$ en $[a,x_0]$ y en $[x_1,x_2]$, luego $f$ es <b>cóncava</b> en cada uno; $f''\ge0$ en $[x_0,x_1]$ y en $[x_2,b]$, luego es <b>convexa</b> en cada uno (Prop. 3.10).</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> como X1.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
     <li>$f''\le0$ en $[a,x_0]$ y en $[x_1,x_2]$: <b>cóncava</b> en cada uno.</li>
     <li>$f''\ge0$ en $[x_0,x_1]$ y en $[x_2,b]$: <b>convexa</b> en cada uno.</li>
     <li>(No se pide: inflexiones en $x_0$, $x_1$, $x_2$.)</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> como X1.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Poner los signos al revés (convexa cuando $f''&lt;0$): recuerda $f''>0$ = sonrisa = convexa.</p></div>
+  </details>
 </details>
-<details class="sol" id="x4"><summary>X4 · $f(x)=x^4-2x$ <span class="src" data-l="X" data-ref="X p.93 (Febrero 2018, Mecánica Modelo B, pregunta corta 3, 1 punto)">X p.93 (feb. 2018)</span></summary>
-<p class="enun">Determine los intervalos de concavidad y convexidad de $f(x)=x^4-2x$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x4">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">X4 · $f(x)=x^4-2x$</span> <span class="src" data-l="X" data-ref="X p.93 (Febrero 2018, Mecánica Modelo B, pregunta corta 3, 1 punto)">X p.93 (feb. 2018)</span></header>
+<div class="ejer-enun"><p class="enun">Determine los intervalos de concavidad y convexidad de $f(x)=x^4-2x$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dar los intervalos de concavidad y convexidad de $f(x)=x^4-2x$.</dd>
     <dt>Cómo lo pienso</dt><dd>$f''=12x^2$ nunca es negativa: la gráfica es una sonrisa en todo $\mathbb R$, aunque $f''(0)=0$.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136); Prop. 3.11 (p. 137): $f''(c)=0$ es solo condición necesaria de inflexión.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136); Prop. 3.11 (p. 137): $f''(c)=0$ es solo condición necesaria de inflexión — <a href="#s3">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Derivar dos veces.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f''(x)=12x^2\ge0$ para todo $x\in\mathbb R$; por la Prop. 3.10, $f$ es convexa en $\mathbb R$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> si $f''$ es un cuadrado ($\ge0$ siempre), convexa en todo $\mathbb R$.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"x^4-2*x","n":"x⁴−2x"}],"x":[-1.5,1.8],"y":[-3,8],"q":[[0,0,"(0, 0)"]]}' data-alt="x^4-2x convexa en todo R"><figcaption>$f(x)=x^4-2x$: $f''=12x^2\ge0$, la gráfica es un único valle (convexa en $\mathbb R$) y en $x=0$ la curvatura se anula sin cambiar de signo, luego no hay inflexión. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -636,17 +1157,25 @@ en los ejercicios y en el examen</h3>
     <li><b>Convexa en $(-\infty,\infty)$</b> (Prop. 3.10). No es cóncava en ningún intervalo.</li>
     <li><b>Sin inflexiones:</b> $f''(0)=0$ pero no cambia de signo. (Con derivadas: $f'''(0)=0$, $f^{(4)}(0)=24\neq0$, orden <b>par</b>.)</li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f''(x)=12x^2\ge0$ para todo $x\in\mathbb R$; por la Prop. 3.10, $f$ es convexa en $\mathbb R$.»</p></div>
-  <div class="recipe"><b>Receta:</b> si $f''$ es un cuadrado ($\ge0$ siempre), convexa en todo $\mathbb R$.</div>
+  </details>
 </details>
-<details class="sol" id="x5"><summary>X5 · $f(x)=xe^x$: curvatura (el apartado de la integral es del Tema 6) <span class="src" data-l="X" data-ref="X p.33 (Febrero 2013, 1.ª semana, Mecánica Modelo A, Problema 5, apartado a)">X p.33 (feb. 2013)</span></summary>
-<p class="enun">Sea $f:\mathbb R\to\mathbb R$ dada por $f(x)=xe^x$. (a) ¿Cuáles son los intervalos de concavidad y de convexidad? (b) Calcule $\int f(x)\,dx$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x5">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">X5 · $f(x)=xe^x$: curvatura (el apartado de la integral es del Tema 6)</span> <span class="src" data-l="X" data-ref="X p.33 (Febrero 2013, 1.ª semana, Mecánica Modelo A, Problema 5, apartado a)">X p.33 (feb. 2013)</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f:\mathbb R\to\mathbb R$ dada por $f(x)=xe^x$. (a) ¿Cuáles son los intervalos de concavidad y de convexidad? (b) Calcule $\int f(x)\,dx$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dar los intervalos de concavidad y convexidad de $f(x)=xe^x$ (el apartado de la integral es del Tema 6).</dd>
     <dt>Cómo lo pienso</dt><dd>Como $e^x>0$ siempre, el signo de $f''$ es el del factor polinómico que acompaña a $e^x$.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136); regla del producto.</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136); regla del producto — <a href="#s2">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Derivar dos veces sacando $e^x$ como factor común.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f'(x)=(1+x)e^x$ y $f''(x)=(x+2)e^x$. Como $e^x>0$, el signo de $f''$ es el de $x+2$: $f''\le0$ si $x\le-2$ y $f''\ge0$ si $x\ge-2$.</p>
+  <p>Por la Prop. 3.10, $f$ es <b>cóncava en $(-\infty,-2]$</b> y <b>convexa en $[-2,\infty)$</b>. Como $f''$ cambia de signo, hay <b>inflexión</b> en $x=-2$, punto $(-2,-2e^{-2})$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> producto por exponencial: sacar $e^x$ factor común y estudiar solo el signo del polinomio.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"x*exp(x)","n":"x eˣ"}],"x":[-6,2],"y":[-0.6,4],"q":[[-2,-0.270671,"(−2; −0,271)"]]}' data-alt="x e^x con inflexion en x=-2"><figcaption>$f(x)=xe^x$: cóncava para $x<-2$ y convexa para $x>-2$; la inflexión es $(-2,-2e^{-2})\approx(-2;-0{,}271)$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -654,20 +1183,29 @@ en los ejercicios y en el examen</h3>
     <li>Como $e^x>0$: $f''\le0\iff x\le-2$ y $f''\ge0\iff x\ge-2$.</li>
     <li><b>Cóncava en $(-\infty,-2]$, convexa en $[-2,\infty)$</b>; inflexión en $x=-2$ (cambia el signo), punto $(-2,-2e^{-2})$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> producto por exponencial: sacar $e^x$ factor común y estudiar solo el signo del polinomio.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar que $(xe^x)''$ lleva <b>dos</b> veces el término $e^x$: $(x+2)e^x$, no $(x+1)e^x$.</p></div>
+  </details>
   <details class="fuera"><summary>Fuera de este tema: apartado (b), $\int xe^x\,dx$ (requiere el Tema 6) <span class="src" data-l="X" data-ref="X p.33 (Febrero 2013, Modelo A, Problema 5, apartado b)">X p.33</span></summary>
     <p>Es integración por partes: $\int xe^x\,dx=xe^x-\int e^x\,dx=xe^x-e^x+C=(x-1)e^x+C$. Se entenderá al estudiar el Tema 6.</p>
   </details>
 </details>
-<details class="sol" id="x6"><summary>X6 · $f(x)=\dfrac{x^2}{x+1}$ <span class="src" data-l="X" data-ref="X pp.64-65 (Febrero 2016, Mecánica Modelo B, pregunta corta 3, 1 punto)">X pp.64-65 (feb. 2016)</span></summary>
-<p class="enun">Determine los intervalos donde la función $f(x)=\dfrac{x^2}{x+1}$ sea cóncava y donde sea convexa.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x6">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X6 · $f(x)=\dfrac{x^2}{x+1}$</span> <span class="src" data-l="X" data-ref="X pp.64-65 (Febrero 2016, Mecánica Modelo B, pregunta corta 3, 1 punto)">X pp.64-65 (feb. 2016)</span></header>
+<div class="ejer-enun"><p class="enun">Determine los intervalos donde la función $f(x)=\dfrac{x^2}{x+1}$ sea cóncava y donde sea convexa.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dar los intervalos de concavidad y convexidad de $f(x)=\frac{x^2}{x+1}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es «hermana» de E 3.46: el cambio de curvatura ocurre en la asíntota vertical $x=-1$, que no está en el dominio.</dd>
-    <dt>Qué uso</dt><dd>Regla del cociente; Prop. 3.10 de U (p. 136); Def. 3.10 (p. 137).</dd>
+    <dt>Qué uso</dt><dd>Regla del cociente; Prop. 3.10 de U (p. 136); Def. 3.10 (p. 137) — <a href="#s2">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Anotar el dominio, $\mathbb R\setminus\{-1\}$, y derivar con la regla del cociente.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f''(x)=2/(x+1)^3$. Es $>0$ si $x>-1$ y $&lt;0$ si $x&lt;-1$: cóncava en $(-\infty,-1)$ y convexa en $(-1,\infty)$. No hay inflexión: $f''$ no se anula y $-1\notin\operatorname{Dom}f$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> cociente: regla del cociente, <b>sacar factor común</b> $(x+1)$ antes de simplificar, y comprobar sustituyendo un número.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"abs(x+1)<0.06?NaN:x^2/(x+1)","n":"x²/(x+1)"}],"x":[-5,4],"y":[-10,10]}' data-alt="x^2/(x+1) con asintota vertical x=-1"><figcaption>$f(x)=\frac{x^2}{x+1}$: cóncava para $x<-1$ y convexa para $x>-1$; no hay inflexión porque el cambio de curvatura ocurre en la asíntota $x=-1$, que no es del dominio. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -677,17 +1215,24 @@ en los ejercicios y en el examen</h3>
     <li>$f''>0\iff x>-1$: <b>convexa en $(-1,\infty)$</b>; $f''&lt;0\iff x&lt;-1$: <b>cóncava en $(-\infty,-1)$</b>.</li>
     <li><b>Sin inflexiones:</b> $f''\neq0$ y $x=-1$ no es del dominio (asíntota vertical).</li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f''(x)=2/(x+1)^3$. Es $>0$ si $x>-1$ y $&lt;0$ si $x&lt;-1$: cóncava en $(-\infty,-1)$ y convexa en $(-1,\infty)$. No hay inflexión: $f''$ no se anula y $-1\notin\operatorname{Dom}f$.»</p></div>
-    <div class="recipe"><b>Receta:</b> cociente: regla del cociente, <b>sacar factor común</b> $(x+1)$ antes de simplificar, y comprobar sustituyendo un número.</div>
+  </details>
 </details>
-<details class="sol" id="x7"><summary>X7 · $f(x)=\dfrac1{x^2+4}$: curvatura (apartado b) <span class="src" data-l="X" data-ref="X pp.89-90 (Febrero 2018, Mecánica Modelo A, Ejercicio 5, apartado b)">X pp.89-90 (feb. 2018)</span></summary>
-<p class="enun">Sea $f(x)=\dfrac1{x^2+4}$. (a) Estudie si es continua y derivable en $\mathbb R$, determinando la derivada cuando exista. (b) Determine los intervalos de concavidad y convexidad. (c) Aproxime un punto fijo (ver abajo).</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x7">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X7 · $f(x)=\dfrac1{x^2+4}$: curvatura (apartado b)</span> <span class="src" data-l="X" data-ref="X pp.89-90 (Febrero 2018, Mecánica Modelo A, Ejercicio 5, apartado b)">X pp.89-90 (feb. 2018)</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=\dfrac1{x^2+4}$. (a) Estudie si es continua y derivable en $\mathbb R$, determinando la derivada cuando exista. (b) Determine los intervalos de concavidad y convexidad. (c) Aproxime un punto fijo (ver abajo).</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dar los intervalos de concavidad y convexidad de $f(x)=\frac1{x^2+4}$ (apartado b; los demás apartados son de otras secciones).</dd>
     <dt>Cómo lo pienso</dt><dd>El denominador de $f''$ es siempre positivo: el signo lo da solo el numerador.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136).</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) — <a href="#s2">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Derivar dos veces con la regla del cociente (o de la cadena).</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f''(x)=\dfrac{6x^2-8}{(x^2+4)^3}$, con denominador positivo. $f''\ge0\iff|x|\ge2/\sqrt3$. $f$ es convexa en $(-\infty,-2/\sqrt3]$ y en $[2/\sqrt3,\infty)$ y cóncava en $[-2/\sqrt3,2/\sqrt3]$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> cociente con denominador $(\dots)^n$ siempre positivo: solo importa el signo del numerador de $f''$.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"1/(x^2+4)","n":"1/(x²+4)"}],"x":[-5,5],"y":[0,0.3],"q":[[-1.154701,0.1875,"(−1,155; 0,1875)"],[1.154701,0.1875,"(1,155; 0,1875)"]]}' data-alt="1/(x^2+4) con inflexiones en +-2/raiz 3"><figcaption>$f(x)=\frac1{x^2+4}$: convexa para $|x|\ge\frac{2}{\sqrt3}\approx1{,}155$ y cóncava entre esos puntos; las inflexiones tienen altura $\frac3{16}=0{,}1875$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -697,21 +1242,30 @@ en los ejercicios y en el examen</h3>
     <li><b>Convexa en $\big(-\infty,-\tfrac2{\sqrt3}\big]$ y en $\big[\tfrac2{\sqrt3},\infty\big)$; cóncava en $\big[-\tfrac2{\sqrt3},\tfrac2{\sqrt3}\big]$.</b></li>
     <li><b>Inflexiones en $x=\pm\frac2{\sqrt3}$</b> (cambia el signo de $f''$), con $f\big(\pm\tfrac2{\sqrt3}\big)=\frac1{4/3+4}=\frac3{16}$.</li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f''(x)=\dfrac{6x^2-8}{(x^2+4)^3}$, con denominador positivo. $f''\ge0\iff|x|\ge2/\sqrt3$. $f$ es convexa en $(-\infty,-2/\sqrt3]$ y en $[2/\sqrt3,\infty)$ y cóncava en $[-2/\sqrt3,2/\sqrt3]$.»</p></div>
-    <div class="recipe"><b>Receta:</b> cociente con denominador $(\dots)^n$ siempre positivo: solo importa el signo del numerador de $f''$.</div>
+  </details>
   <div class="box ex"><span class="h">Apartado (c) · punto fijo (de la sección 2.4)</span>
     <p>«Aproxime un punto fijo de $f$, sabiendo que es contractiva y que el punto fijo está en $[0,1]$, con $x_0=0$ y tres iteraciones.» Iterando $x_{n+1}=f(x_n)$: $x_1=\tfrac14$, $x_2=\tfrac{16}{65}\approx0{,}24615$, $x_3=\tfrac{4225}{17156}\approx0{,}24627$. Se explica en el tema 2.4.</p>
   
     <span class="src" data-l="X" data-ref="X pp.89-90 (Febrero 2018, Modelo A, Ejercicio 5, apartado c)">X p.90</span></div>
 </details>
-<details class="sol" id="x8"><summary>X8 · $f(x)=(3x-1)e^x$: crecimiento, inflexión y extremos (apartados b y c) <span class="src" data-l="X" data-ref="X pp.70-71 (Septiembre 2016, Mecánica Modelo A, Ejercicio 5, 3 puntos; apartado a es de 3.1)">X pp.70-71 (sep. 2016)</span></summary>
-<p class="enun">Sea $f(x)=(3x-1)e^x$ definida en $\mathbb R$. (a) Polinomio de Taylor de orden 3 centrado en $x=-1$ (apartado de la sección 3.1). (b) Intervalos de crecimiento y decrecimiento de $f$. ¿Tiene puntos de inflexión? (c) Puntos donde se alcanzan extremos relativos y si son máximos o mínimos.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x8">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X8 · $f(x)=(3x-1)e^x$: crecimiento, inflexión y extremos (apartados b y c)</span> <span class="src" data-l="X" data-ref="X pp.70-71 (Septiembre 2016, Mecánica Modelo A, Ejercicio 5, 3 puntos; apartado a es de 3.1)">X pp.70-71 (sep. 2016)</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=(3x-1)e^x$ definida en $\mathbb R$. (a) Polinomio de Taylor de orden 3 centrado en $x=-1$ (apartado de la sección 3.1). (b) Intervalos de crecimiento y decrecimiento de $f$. ¿Tiene puntos de inflexión? (c) Puntos donde se alcanzan extremos relativos y si son máximos o mínimos.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Para $f(x)=(3x-1)e^x$: dar los intervalos de crecimiento y decrecimiento, decir si hay inflexiones y dónde están los extremos relativos (apartados b y c).</dd>
     <dt>Cómo lo pienso</dt><dd>Cada derivada suma $3$ al término independiente del factor polinómico: $f^{(k)}(x)=(3x-1+3k)e^x$. Como $e^x>0$, los signos los da ese polinomio de grado 1.</dd>
-    <dt>Qué uso</dt><dd>Crecimiento con Prop. 2.4 (U p. 98); extremos con Prop. 3.6-3.7 (U p. 131); inflexión con Prop. 3.12 (U p. 137).</dd>
+    <dt>Qué uso</dt><dd>Crecimiento con Prop. 2.4 (U p. 98); extremos con Prop. 3.6-3.7 (U p. 131); inflexión con Prop. 3.12 (U p. 137) — <a href="#s3">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Calcular $f'$, $f''$ y $f'''$ sacando $e^x$ factor común.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f'(x)=(3x+2)e^x$, $f''(x)=(3x+5)e^x$, $f'''(x)=(3x+8)e^x$. Como $e^x>0$, el signo de $f'$ es el de $3x+2$: $f$ decrece en $(-\infty,-\tfrac23]$ y crece en $[-\tfrac23,\infty)$.</p>
+  <p><b>Inflexión:</b> $f''(x)=0\iff x=-\tfrac53$ y $f'''(-\tfrac53)=3e^{-5/3}\ne0$ (Prop. 3.12): hay punto de inflexión en $x=-\tfrac53$ (de cóncava a convexa).</p>
+  <p><b>Extremos:</b> único crítico $x=-\tfrac23$; $f'$ pasa de $-$ a $+$: <b>mínimo relativo</b>, de valor $f(-\tfrac23)=-3e^{-2/3}$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> inflexión con la Prop. 3.12: $f''(c)=0$ y $f'''(c)\neq0$ $\Rightarrow$ inflexión (el signo de $f'''$ da el sentido del cambio).</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"(3*x-1)*exp(x)","n":"(3x−1)eˣ"}],"x":[-5,1.2],"y":[-2,9],"q":[[-0.666667,-1.540251,"(−2/3; −1,54)"],[-1.666667,-1.133254,"(−5/3; −1,13)"]]}' data-alt="(3x-1)e^x con minimo en -2/3 e inflexion en -5/3"><figcaption>$f(x)=(3x-1)e^x$: mínimo relativo en $x=-\frac23$ (valor $-3e^{-2/3}\approx-1{,}54$) e inflexión en $x=-\frac53$ (valor $-6e^{-5/3}\approx-1{,}13$); decrece antes del mínimo y crece después. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -720,21 +1274,31 @@ en los ejercicios y en el examen</h3>
     <li>(b) <b>Inflexión.</b> $f''=0\iff x=-\tfrac53$. $f'''(-\tfrac53)=3e^{-5/3}\neq0$ (orden 3, impar, positiva): <b>inflexión en $x=-\tfrac53$</b>, de cóncava a convexa (Prop. 3.12). Equivalente: $f''&lt;0$ si $x&lt;-\tfrac53$ (cóncava) y $f''>0$ si $x>-\tfrac53$ (convexa).</li>
     <li>(c) <b>Extremos.</b> Único crítico $x=-\tfrac23$; $f$ decrece antes y crece después: <b>mínimo relativo</b>, valor $f(-\tfrac23)=-3e^{-2/3}$. (También $f''(-\tfrac23)=3e^{-2/3}>0$.)</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> inflexión con la Prop. 3.12: $f''(c)=0$ y $f'''(c)\neq0$ $\Rightarrow$ inflexión (el signo de $f'''$ da el sentido del cambio).</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Contestar a «¿tiene puntos de inflexión?» con el punto donde $f'=0$ (que es el mínimo, no la inflexión).</p></div>
+  </details>
   <div class="box ex"><span class="h">Apartado (a) · Taylor de orden 3 (de la sección 3.1)</span>
     <p>Valores en $-1$: $f(-1)=-4e^{-1}$, $f'(-1)=-e^{-1}$, $f''(-1)=2e^{-1}$, $f'''(-1)=5e^{-1}$. Entonces $p_3(x)=-4e^{-1}-e^{-1}(x+1)+e^{-1}(x+1)^2+\tfrac56e^{-1}(x+1)^3$.</p>
   
     <span class="src" data-l="X" data-ref="X p.70 (Septiembre 2016, Modelo A, Ejercicio 5, apartado a)">X p.70</span></div>
 </details>
-<details class="sol" id="x9"><summary>X9 · $f(x)=e^{x^k}$ para $k=2$ y $k=3$: curvatura <span class="src" data-l="X" data-ref="X pp.127-128 (I. Electrónica Industrial y Automática (A), sin fecha, Ejercicio 5, 3 puntos)">X pp.127-128 (Electrónica)</span></summary>
-<p class="enun">Para $f(x)=e^{x^k}$ con $k\in\{0,1,2,3,\dots\}$: calcule su dominio y su imagen según $k$; sus intervalos de crecimiento, decrecimiento, <b>concavidad y convexidad</b> para $k=2$ y $k=3$; sus asíntotas y extremos relativos para $k=2$ y $k=3$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x9">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">X9 · $f(x)=e^{x^k}$ para $k=2$ y $k=3$: curvatura</span> <span class="src" data-l="X" data-ref="X pp.127-128 (I. Electrónica Industrial y Automática (A), sin fecha, Ejercicio 5, 3 puntos)">X pp.127-128 (Electrónica)</span></header>
+<div class="ejer-enun"><p class="enun">Para $f(x)=e^{x^k}$ con $k\in\{0,1,2,3,\dots\}$: calcule su dominio y su imagen según $k$; sus intervalos de crecimiento, decrecimiento, <b>concavidad y convexidad</b> para $k=2$ y $k=3$; sus asíntotas y extremos relativos para $k=2$ y $k=3$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar la curvatura de $f(x)=e^{x^k}$ para $k=2$ y $k=3$ (más dominio, imagen, asíntotas y extremos).</dd>
     <dt>Cómo lo pienso</dt><dd>Con la regla de la cadena, $(e^u)''=(u''+u'^2)e^u$ y $e^u>0$ siempre: el signo de $f''$ lo da el polinomio $u''+u'^2$.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) y Def. 3.10 (p. 137); asíntotas (U p. 49).</dd>
+    <dt>Qué uso</dt><dd>Prop. 3.10 de U (p. 136) y Def. 3.10 (p. 137); asíntotas (U p. 49) — <a href="#s2">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Tomar $u=x^k$ y calcular $f'$ y $f''$ para $k=2$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>$k=2$:</b> $f''(x)=(4x^2+2)e^{x^2}>0$ para todo $x$: $f$ es <b>convexa en $\mathbb R$</b>, sin inflexiones.</p>
+  <p><b>$k=3$:</b> $f''(x)=3x(3x^3+2)e^{x^3}$, con ceros en $x=-\sqrt[3]{2/3}$ y $x=0$. Signo: $+$ en $(-\infty,-\sqrt[3]{2/3})$, $-$ en $(-\sqrt[3]{2/3},0)$, $+$ en $(0,\infty)$. Convexa en $(-\infty,-\sqrt[3]{2/3}]$ y en $[0,\infty)$; cóncava en $[-\sqrt[3]{2/3},0]$; <b>dos inflexiones</b>.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> $e^{u(x)}$: $f'=u'e^u$, $f''=(u''+u'^2)e^u$; tabla de signos del polinomio $u''+u'^2$.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"exp(x^2)","n":"k=2: e^(x²)"},{"e":"exp(x^3)","n":"k=3: e^(x³)"}],"x":[-2,1.6],"y":[-0.3,9],"q":[[-0.87358,0.513417,"(−0,874; 0,521)"],[0,1.0,"(0, 1)"]]}' data-alt="Graficas de e^(x^2) y e^(x^3)"><figcaption>Con $k=2$ la curva es un valle convexo en todo $\mathbb R$; con $k=3$ es creciente y tiene dos inflexiones, en $x=-\sqrt[3]{2/3}\approx-0{,}874$ y en $x=0$, y se pega al eje $x$ cuando $x\to-\infty$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
 
   <ol class="steps">
@@ -749,17 +1313,27 @@ en los ejercicios y en el examen</h3>
       </table></li>
     <li><b>Dos inflexiones en $k=3$:</b> $x=-\sqrt[3]{2/3}$ y $x=0$. Asíntota horizontal $y=0$ cuando $x\to-\infty$ ($e^{x^3}\to0$); ninguna en $+\infty$.</li>
   </ol>
-    <div class="recipe"><b>Receta:</b> $e^{u(x)}$: $f'=u'e^u$, $f''=(u''+u'^2)e^u$; tabla de signos del polinomio $u''+u'^2$.</div>
+    
   <div class="box warn"><span class="h">Error típico</span><p>Quedarse con la inflexión que coincide con el punto crítico y olvidar la otra raíz de $f''$.</p></div>
+  </details>
 </details>
-<details class="sol" id="x10"><summary>X10 · dibujar una gráfica creciente, convexa, cóncava y con dos asíntotas <span class="src" data-l="X" data-ref="X p.99 (I. Electrónica Industrial y Automática, sin fecha, pregunta corta 3, 1 punto)">X p.99 (Electrónica)</span></summary>
-<p class="enun">Dibuje la gráfica de una función que sea creciente en todo $\mathbb R$, convexa en $(-\infty,0)$, cóncava en $(0,\infty)$ y tenga dos asíntotas (una horizontal y una oblicua).</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x10">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">X10 · dibujar una gráfica creciente, convexa, cóncava y con dos asíntotas</span> <span class="src" data-l="X" data-ref="X p.99 (I. Electrónica Industrial y Automática, sin fecha, pregunta corta 3, 1 punto)">X p.99 (Electrónica)</span></header>
+<div class="ejer-enun"><p class="enun">Dibuje la gráfica de una función que sea creciente en todo $\mathbb R$, convexa en $(-\infty,0)$, cóncava en $(0,\infty)$ y tenga dos asíntotas (una horizontal y una oblicua).</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dibujar una función creciente en $\mathbb R$, convexa en $(-\infty,0)$, cóncava en $(0,\infty)$ y con una asíntota horizontal y otra oblicua.</dd>
     <dt>Cómo lo pienso</dt><dd>Es el Ejercicio 3.48 cambiado de signo: $\operatorname{arctg}x$ a la izquierda y $\tfrac x2+\operatorname{arctg}x$ a la derecha.</dd>
-    <dt>Qué uso</dt><dd>Asíntotas (U Prop. 1.12, p. 49); Prop. 2.4 (p. 98); Prop. 3.10 (p. 136) y Def. 3.10 (p. 137).</dd>
+    <dt>Qué uso</dt><dd>Asíntotas (U Prop. 1.12, p. 49); Prop. 2.4 (p. 98); Prop. 3.10 (p. 136) y Def. 3.10 (p. 137) — <a href="#s4">ver teoría</a></dd>
     <dt>Por dónde empiezo</dt><dd>Escribir la función a trozos y comprobar la continuidad en $0$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Creciente:</b> $f'>0$ a cada lado de $0$ y $f$ es continua en $0$. <b>Curvatura:</b> $f''(x)=\dfrac{-2x}{(1+x^2)^2}$ en los dos trozos: convexa para $x\le0$ y cóncava para $x\ge0$; inflexión en $x=0$.</p>
+  <p><b>Asíntotas:</b> $y=-\tfrac\pi2$ en $-\infty$ y $y=\tfrac x2+\tfrac\pi2$ en $+\infty$. Dibujo: curva creciente que pasa por el origen, se pega a la horizontal por la izquierda y a la oblicua por la derecha.</p>
+  </div>
+  <div class="recipe"><b>Receta / error típico:</b> como E 3.48.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
     <li>$f(x)=\begin{cases}\operatorname{arctg}x,&amp;x\le0,\\[2pt] \tfrac x2+\operatorname{arctg}x,&amp;x>0.\end{cases}$ Continua en $0$ (ambos lados valen $0$).</li>
     <li><b>Creciente:</b> $f'=\frac1{1+x^2}>0$ ($x&lt;0$) y $f'=\tfrac12+\frac1{1+x^2}>0$ ($x>0$), y $f$ continua en $0$.</li>
@@ -770,10 +1344,11 @@ en los ejercicios y en el examen</h3>
   <img src="../assets/img/fig_x_electronica_3.png" alt="Gráfica creciente: a la izquierda se acerca a una asíntota horizontal en menos pi medios, pasa por el origen, y a la derecha crece como una recta de pendiente un medio" loading="lazy">
   <figcaption>Gráfica del examen (arctg $x$ a la izquierda; $\tfrac x2+\operatorname{arctg}x$ a la derecha). <span class="src" data-l="X" data-ref="X p.99 (Electrónica, pregunta corta 3, figura de la solución)">X p.99</span></figcaption>
   </figure>
-  <div class="recipe"><b>Receta / error típico:</b> como E 3.48.</div>
+  </details>
 </details>
-<!-- ============================ 8 ============================ -->
-<h2 id="chuleta"><span class="n">8</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+</article>
+<!-- ============================ chuleta ============================ -->
+<h2 id="chuleta" data-vista="teoria"><span class="n">10</span>Errores frecuentes, chuleta y lista de comprobación</h2>
 <h3>Errores frecuentes</h3>
 <p>Cada ejercicio resuelto lleva el suyo; los generales:</p>
 <ul>

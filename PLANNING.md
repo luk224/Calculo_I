@@ -101,7 +101,7 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 | [x] | 3.2 Series de Taylor | E 3.18-3.20 + X | Solo series de Taylor/analíticas son examen; el resto ya va en `details.fuera`. |
 | [x] | 3.3 Interpolación | E 3.21-3.28 + X | Ya tiene `graf` y tabla `dd`. Mapa: ¿Newton/Lagrange/cota de error? |
 | [x] | 3.4 Optimización y extremos | E 3.29-3.48 + X | Mapa: pasos para hallar extremos absolutos en intervalo cerrado / problema de optimización. |
-| [ ] | 3.5 Concavidad y convexidad | E 3.39-3.48 + X | Mapa de gráfica de una función (dominio, asíntotas, crecimiento, extremos, concavidad). |
+| [x] | 3.5 Concavidad y convexidad | E 3.39-3.48 + X | Mapa de gráfica de una función (dominio, asíntotas, crecimiento, extremos, concavidad). |
 | [ ] | 4.1 Espacio ℝⁿ | E 4.x + X | Menos ejercicios de cálculo: priorizar conceptos y práctica corta. Sin `graf` (3D/interactivos). |
 | [ ] | 4.2 Funciones de varias variables | E 4.x + X | Mapa: ¿existe el límite? (trayectorias, polares, acotación). |
 | [ ] | 4.3 Derivadas parciales | E 4.x + X | Mapa: ¿diferenciable? (parciales continuas ⇒ sí; definición). |
