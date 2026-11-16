@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_3_4/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 3.4 Optimización. Extremos relativos y absolutos</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -15,6 +16,8 @@
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -42,12 +45,74 @@
   </div>
 </header>
 
-<!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §3.4.1 Motivación y objetivos, p. 125">U p.125</span></h2>
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
-  <p>Todos buscamos «lo máximo con lo mínimo»: la caja de más volumen con una lámina dada, la lata que gasta menos chapa, el instante de máxima velocidad. Matemáticamente: dada una función, encontrar <b>dónde</b> alcanza su valor más grande o más pequeño. Los únicos sospechosos son los <b>puntos críticos</b>: donde la tangente es horizontal o donde hay un «pico» sin tangente.</p>
+  <p>Todos buscamos «lo máximo con lo mínimo»: la caja de más volumen con una lámina dada, la lata que gasta menos chapa, el instante de máxima velocidad. Matemáticamente: dada una función, encontrar <b>dónde</b> alcanza su valor más grande o más pequeño. Los únicos sospechosos son los <b>puntos críticos</b> (donde la tangente es horizontal o donde hay un «pico» sin tangente) y, si el dominio tiene extremos, <b>los bordes</b>.</p>
+  <p>Es como buscar la cima y el valle de una ruta de senderismo: o están donde el camino se aplana, o en un pico afilado, o en el punto de partida o llegada.</p>
   <span class="src" data-l="U" data-ref="U §3.4.1, p. 125 (Optimización; extremos relativos y absolutos, punto crítico, condiciones suficientes)">U p.125</span>
 </div>
+<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Identifica qué te piden:</b> extremos <i>absolutos</i> (el mayor y el menor valor) o <i>relativos</i> (picos y valles), y en qué dominio: intervalo cerrado, abierto o infinito. Si es un problema con enunciado, escribe la función y su dominio.</li>
+    <li><b>Lista de candidatos:</b> los <b>puntos críticos</b> ($f'=0$ o $f$ no derivable) y, si el intervalo tiene extremos, <b>los bordes</b>.</li>
+    <li><b>Decide:</b> en un <b>intervalo cerrado</b>, tabla de valores y gana el mayor y el menor; en uno <b>abierto o infinito</b>, signo de $f'$ y límites en los bordes (puede no haber máximo o mínimo); para <b>clasificar</b> un crítico, signo de $f'$ a cada lado o $f''$.</li>
+    <li><b>Responde con palabras:</b> dónde se alcanza y cuánto vale, si es relativo o absoluto, y en optimización los valores de <i>todas</i> las variables. Comprueba que no te dejas bordes ni puntos sin derivada.</li>
+  </ol>
+  <p class="sub">Qué hago según lo que piden</p>
+  <ul>
+    <li>¿«Extremos absolutos en $[a,b]$»? $\to$ críticos + bordes, tabla de valores, comparar.</li>
+    <li>¿«¿Alcanza máximo y mínimo?» sin calcularlos? $\to$ Weierstrass: continua en un cerrado y acotado.</li>
+    <li>¿«Clasifica los puntos críticos» o «¿es máximo o mínimo?»? $\to$ signo de $f'$ o $f''$; si $f''(c)=0$, primera derivada no nula.</li>
+    <li>¿Problema con enunciado (lados, cajas, suma fija)? $\to$ la restricción deja una variable; luego intervalo cerrado.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$f$ continua en $[a,b]$ $\Rightarrow$ máximo y mínimo absolutos (Weierstrass)</td><td>«¿Alcanza máximo y mínimo?»; justifica que la tabla de valores sirve.</td></tr>
+    <tr><td>Punto crítico: $f'(c)=0$ o $f$ no derivable en $c$</td><td>Lista de candidatos; valores absolutos y picos de $|x|$ o $x^{2/3}$.</td></tr>
+    <tr><td>Extremos absolutos en $[a,b]$: críticos $\cup\{a,b\}$, comparar $f$</td><td>Intervalo cerrado y acotado.</td></tr>
+    <tr><td>1.ª derivada: $f'$ pasa de $-$ a $+$: mínimo; de $+$ a $-$: máximo</td><td>$f$ continua en $c$; vale también en picos sin derivada.</td></tr>
+    <tr><td>2.ª derivada: $f'(c)=0$ y $f''(c)>0$ mínimo, $f''(c)&lt;0$ máximo</td><td>Polinomios y funciones cómodas; si $f''(c)=0$ no decide.</td></tr>
+    <tr><td>Primera derivada no nula de orden $n$: par, extremo; impar, silla</td><td>Cuando $f''(c)=0$ (E 3.30, $x^5-5x^4$).</td></tr>
+    <tr><td>Optimización: restricción $\to$ una variable $\to$ dominio $\to$ críticos $\to$ comparar</td><td>Cualquier problema «hacer máxima/mínima…».</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos hay 8 problemas de este tema: tabla de valores en un intervalo cerrado, «¿tiene un extremo?» con valor absoluto o Weierstrass, puntos críticos y su clasificación, y el clásico «dos números con suma fija y producto máximo». En el libro de ejercicios son E 3.29-3.38 y 3.44. Tabla completa por tipo: <a href="#examenes" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §3.4, pp. 125-134 (Prop. 3.4-3.8, Def. 3.4-3.7); resumen propio">U pp.125-134</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §3.4">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 2 h</b>
+      <ul>
+        <li>Los apartados de <b>extremos absolutos</b> (1), <b>clasificación de críticos</b> (2) y <b>optimización</b> (3) y el <b>mapa de decisión</b> (apartado 4).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-3-32">E 3.32</a> (intervalo cerrado), <a href="#ej-3-34">E 3.34</a> (valor absoluto, sin derivada), <a href="#ej-3-44">E 3.44</a> (clasificar y absoluto), <a href="#ej-3-37">E 3.37</a> (optimización), <a href="#x3">Examen 3</a> (Weierstrass), <a href="#x5">Examen 5</a> (suma fija, producto máximo), <a href="#x6">Examen 6</a> (tabla de valores) y <a href="#x7">Examen 7</a> (orden superior).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 5 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»), con el interactivo.</li>
+        <li>E 3.29-3.38 y 3.44, los 8 exámenes, los ejemplos propios y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#ej-3-31">E 3.31</a> (extremos de la velocidad en $[0,\infty)$), <a href="#ej-3-33">E 3.33</a> (hallar coeficientes y extremos), <a href="#ej-3-36">E 3.36</a> (leer la gráfica de $f'$), los ejemplos propios <a href="#p3">P3</a> y <a href="#p4">P4</a> y las prácticas ★★.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §3.4.1 Motivación y objetivos, p. 125">U p.125</span></h2>
 <h3>Qué necesitas saber ya <span class="src" data-l="U" data-ref="U §2.2 (reglas de derivación), §2.3 (L'Hôpital), Proposición 2.4 p. 98 y Proposición 1.15 p. 52">U §2.2-2.3, pp.52, 98</span></h3>
 <ul>
   <li>Derivar y resolver $f'(x)=0$ (reglas de derivación, Tema 2).</li>
@@ -56,9 +121,15 @@
   <li>Una función continua en un intervalo cerrado y acotado alcanza máximo y mínimo (Weierstrass, Prop. 1.15, p. 52).</li>
 </ul>
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
-<p>(A) <b>Extremos en un intervalo cerrado</b>: lista de candidatos, tabla de valores (E 3.32-3.33; X feb. 2010, Electrónica s/f). (B) <b>Clasificar puntos críticos</b> con la 1.ª o la 2.ª derivada, o con derivadas de orden superior (E 3.29-3.31, 3.36, 3.44; X Examen 5). (C) <b>Casos con valor absoluto o raíz</b>, donde no hay derivada (E 3.34-3.35). (D) <b>Problemas de optimización</b>: «dos números con suma fija y producto máximo», cajas, rectángulos (E 3.37-3.38; X sep. 2017, feb. 2018). (E) Preguntas teóricas: «¿alcanza máximo y mínimo?» (Weierstrass). Los ejercicios E 3.39-3.43, 3.45-3.48 (concavidad, inflexión, representación gráfica) son de <b>3.5</b> y se verán en 3.5.</p>
+<p>(A) <b>Extremos en un intervalo cerrado</b>: lista de candidatos, tabla de valores (E 3.31-3.33; Examen 1 y Examen 6). (B) <b>Casos con valor absoluto o raíz</b>, donde no hay derivada, y «¿alcanza máximo y mínimo?» (E 3.34-3.35; Examen 2 y Examen 3, con Weierstrass). (C) <b>Clasificar puntos críticos</b> con la 1.ª o la 2.ª derivada, con derivadas de orden superior o leyendo la gráfica de $f'$ (E 3.29, 3.30, 3.36, 3.44; Examen 4 y Examen 7). (D) <b>Problemas de optimización</b>: «dos números con suma fija y producto máximo», cajas, rectángulos (E 3.37-3.38; Examen 5 y Examen 8). Los ejercicios E 3.39-3.43, 3.45-3.48 (concavidad, inflexión, representación gráfica) son de <b>3.5</b> y se verán allí.</p>
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>Extremos absolutos y puntos críticos <span class="src" data-l="U" data-ref="U §3.4.2 Extremos absolutos, pp. 125-129">U pp.125-129</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Extremos absolutos y puntos críticos <span class="src" data-l="U" data-ref="U §3.4.2 Extremos absolutos, pp. 125-129">U pp.125-129</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a decidir si una función tiene mayor y menor valor, a listar los candidatos (puntos críticos y bordes) y a escribir la tabla de valores que lo resuelve.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Halla los extremos absolutos en $[a,b]$», «¿alcanza máximo y mínimo?», o un dominio abierto o infinito.</li>
+  <li><b>Qué haces:</b> Compruebas que $f$ es continua en el cerrado (Weierstrass); buscas los críticos ($f'=0$ o sin derivada); evalúas $f$ en críticos y bordes y comparas. En abierto o infinito añades límites en los bordes y la monotonía.</li>
+  <li><b>Ejemplo mínimo:</b> $f(x)=x^2$ en $[-1,2]$: crítico $x=0$; $f(-1)=1$, $f(0)=0$, $f(2)=4$. Máximo absoluto $4$ en el borde $x=2$; mínimo absoluto $0$ en $x=0$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Imagina la gráfica como un perfil de montaña recorrido por un excursionista. El <b>máximo absoluto</b> es la cumbre más alta de todo el recorrido; el <b>mínimo absoluto</b>, el punto más bajo. Una función continua sobre un tramo con principio y final (un intervalo cerrado) <i>no puede evitar</i> tener un punto más alto y uno más bajo: no hay huecos por los que «escaparse». Si el recorrido no tiene final (intervalo infinito) o no incluye sus extremos (abierto), la cima puede quedar «fuera» y no existir.</p>
   <span class="src" data-l="P" data-ref="Analogía propia">P</span>
@@ -141,7 +212,13 @@
 <figcaption>Figura 3.2: $x/(x^2+1)$ y su máximo absoluto en $(0,\infty)$. <span class="src" data-l="U" data-ref="U Figura 3.2, p. 129">U p.129</span></figcaption>
 </figure>
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>Extremos relativos y su clasificación <span class="src" data-l="U" data-ref="U §3.4.3 Extremos relativos, pp. 130-133">U pp.130-133</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>Extremos relativos y su clasificación <span class="src" data-l="U" data-ref="U §3.4.3 Extremos relativos, pp. 130-133">U pp.130-133</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a distinguir extremo relativo de absoluto y a clasificar un punto crítico con la 1.ª derivada, la 2.ª o las derivadas de orden superior.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Clasifica los puntos críticos», «¿máximo, mínimo o ninguno?», la gráfica de $f'$, o un crítico con $f''(c)=0$.</li>
+  <li><b>Qué haces:</b> Hallas los críticos; en cada uno miras si $f'$ cambia de signo (vale con $f$ continua) o el signo de $f''(c)$. Si $f''(c)=0$, sigues derivando: la primera derivada no nula de orden par da extremo (su signo dice cuál) y de orden impar, silla.</li>
+  <li><b>Ejemplo mínimo:</b> $f(x)=x^3$ en $0$: $f'=3x^2\ge0$ no cambia de signo; $f''(0)=0$ y $f'''(0)=6$, de orden $3$ (impar): punto de silla, no hay extremo.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Un máximo <b>relativo</b> es una cima «de su vecindad»: la más alta si solo miras alrededor, aunque la montaña de al lado sea más alta. Todo extremo absoluto es también relativo, pero no al revés. U lo motiva con la bolsa: comprar antes de que suba y vender antes de que baje es aprovechar los extremos relativos.</p>
   <span class="src" data-l="P" data-ref="Analogía propia; motivación bursátil en U p. 130">P</span>
@@ -217,7 +294,13 @@
   <span class="src" data-l="P" data-ref="Consejo propio">P</span>
 </div>
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Problemas de optimización <span class="src" data-l="U" data-ref="U Ejemplos 3.25-3.26, pp. 132-134">U pp.132-134</span></h2>
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Problemas de optimización <span class="src" data-l="U" data-ref="U Ejemplos 3.25-3.26, pp. 132-134">U pp.132-134</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a convertir un problema de texto en una función de una variable y a justificar que el extremo hallado es el absoluto.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Con tanta valla, ¿qué dimensiones dan mayor área?», «dos números de suma fija y producto máximo», cajas, latas, distancias mínimas.</li>
+  <li><b>Qué haces:</b> Nombras las variables, escribes la cantidad a optimizar, usas la restricción para dejar una sola variable, fijas el dominio, buscas críticos y comparas con los bordes (o límites); respondes con todas las variables.</li>
+  <li><b>Ejemplo mínimo:</b> Dos números positivos de suma $10$ con producto máximo: $P(x)=x(10-x)$ en $[0,10]$; $P'=10-2x=0\Rightarrow x=5$; $P(0)=P(10)=0&lt;P(5)=25$. Los números son $5$ y $5$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Un problema de optimización es un problema de texto disfrazado: hay una cantidad que quieres hacer máxima o mínima (área, volumen, coste) y una <b>condición</b> que limita (perímetro fijo, material fijo). Se usa la condición para dejar la cantidad en función de <b>una sola</b> variable, y entonces ya es el método del intervalo cerrado de siempre.</p>
   <span class="src" data-l="P" data-ref="Explicación propia">P</span>
@@ -263,179 +346,303 @@
   <img class="int-static" src="../assets/img/int_optimizacion.png" alt="Interactivo: la figura de un problema de optimización cambia con x y la gráfica de la cantidad a optimizar marca el óptimo">
   <figcaption>Interactivo propio. A la izquierda, la gráfica de la cantidad $A(x)$ con el punto que mueves con $x$; a la derecha, la figura del problema (naranja) cambiando de forma. El punto verde es el óptimo absoluto y los azules son los puntos con $A'=0$. Ejemplo 3.25: el máximo está en el punto crítico ($x=25$). Ejemplo 3.26: el único crítico es un <b>mínimo</b> y el máximo está en el borde $x=0$. Lata (Propio 4): mínimo de material en $r=\sqrt[3]{500/\pi}\approx5{,}42$ cm. <span class="src" data-l="P" data-ref="Explicación propia; Ejemplos 3.25 y 3.26: U pp. 132-134; lata: problema clásico (S §4.7 Ej. 2, p. 327)">P</span></figcaption>
 </figure>
-<!-- ============================ 4 ============================ -->
-<h2 id="ejercicios"><span class="n">4</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.29-3.38 y 3.44, pp. 114-127">E pp.114-127</span></h2>
-<p>Orden de estudio recomendado (de fácil a difícil): 3.44 → 3.34 → 3.35 → 3.29 → 3.36 → 3.30 → 3.38 → 3.37 → 3.32 → 3.31 → 3.33. Los ejercicios 3.39-3.43 y 3.45-3.48 (concavidad, inflexión, representación gráfica, asíntotas) <b>se verán en 3.5</b>.</p>
-<details class="sol" id="ej-3-44"><summary>Ejercicio 3.44 · $f(x)=(x-1)^2$: ¿qué hay en $x=1$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.44, pp. 126-127 · teoría: U Prop. 3.7, p. 131 y Def. 3.4, p. 126">E pp.126-127</span></summary>
-<p class="enun">Sea $f(x)=(x-1)^2$. ¿Cuál es correcta? a) En $x=1$ hay un máximo relativo. b) En $x=1$ hay un mínimo relativo no absoluto. c) En $x=1$ alcanza el único mínimo relativo y absoluto. d) En $x=1$ tiene un punto de inflexión.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir cuál de cuatro afirmaciones describe lo que ocurre en $x=1$ para $f(x)=(x-1)^2$ (relativo/absoluto, máximo/mínimo, inflexión).</dd>
-    <dt>Cómo lo pienso</dt><dd>Un cuadrado nunca es negativo y solo vale $0$ cuando lo de dentro es $0$: $x=1$ es el fondo de la parábola. Hay que comprobar además si ese mínimo es solo local o global.</dd>
-    <dt>Qué uso</dt><dd>Punto crítico y Prop. 3.6 (U p.131); criterio de la 2.ª derivada, Prop. 3.7 (U p.131); definición de extremo absoluto, Def. 3.4 (U p.126).</dd>
-    <dt>Por dónde empiezo</dt><dd>Derivo y resuelvo $f'(x)=0$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"(x-1)^2","n":"(x−1)²"}],"x":[-1,3],"y":[-0.5,5],"q":[[1,0,"(1, 0)"]]}' data-alt="Parábola (x-1)^2 con mínimo en (1,0)"><figcaption>La parábola $(x-1)^2$: el fondo $(1,0)$ es el único mínimo, relativo y absoluto. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
-  <ol class="steps">
-    <li><b>Críticos.</b> $f$ es polinomio (derivable en todo $\mathbb R$): $f'(x)=2(x-1)=0\iff x=1$.</li>
-    <li><b>2.ª derivada.</b> $f''(1)=2>0$: mínimo relativo (Prop. 3.7). Descarta a).</li>
-    <li><b>¿Absoluto?</b> $f(x)=(x-1)^2\ge0=f(1)$ para todo $x$: mínimo absoluto (Def. 3.4). Descarta b).</li>
-    <li><b>¿Único?</b> Los extremos relativos de una función derivable están en puntos críticos (Prop. 3.6) y el único es $x=1$.</li>
-    <li><b>Inflexión</b> (de 3.5): la concavidad cambiaría si $f''$ cambiase de signo; aquí $f''=2>0$ siempre. d) es falsa.</li>
-    <li><b>Respuesta: c).</b></li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> polinomio: $f'=0$, signo de $f''$ en el crítico y, para «absoluto», una desigualdad global (cuadrado $\ge0$) o los límites en $\pm\infty$.</div>
+<!-- ============================ mapa ============================ -->
+<h2 id="mapa" data-vista="tipos"><span class="n">4</span>Mapa de decisión: qué hago según lo que me piden <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.125-134">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué hacer según lo que te pidan (¿alcanza extremos?, problema con enunciado, intervalo cerrado, abierto o infinito, clasificar un crítico) con un mapa de decisión y, desplegable, una tabla con el detalle de cada caso.</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja a la siguiente y «sí» te lleva a la acción de la derecha. Para <b>hallar extremos absolutos en un intervalo cerrado</b> el camino es siempre el mismo: críticos, bordes, tabla, comparar. Al final comprueba que no te dejas <b>los bordes</b> ni los <b>puntos sin derivada</b>: es lo que más puntos se pierde.</p>
+<svg class="flujo" viewBox="0 0 600 606" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión: cómo hallar extremos absolutos en un intervalo cerrado o resolver un problema de optimización</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Si solo preguntan si hay máximo y mínimo, se aplica Weierstrass. Si es un problema con enunciado, se escribe la función de una variable con su dominio. Si el dominio es un intervalo cerrado, se evalúa la función en los puntos críticos y en los bordes y se comparan los valores. Si es abierto o infinito, se estudian el signo de la derivada y los límites en los bordes. Si piden clasificar un punto crítico, se usa la primera derivada, la segunda o las derivadas de orden superior. Al final se responde comprobando bordes y puntos sin derivada.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="210" height="76" rx="10"/>
+<text x="115" y="43" text-anchor="middle">¿Solo preguntan si hay</text>
+<text x="115" y="61" text-anchor="middle">máximo y mínimo («¿alcanza…?»)?</text>
+<path class="lin" d="M220 48 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="43">sí</text>
+<rect class="nodo" x="250" y="10" width="340" height="76" rx="10"/>
+<text x="420" y="28" text-anchor="middle">Weierstrass: si f es continua en un cerrado</text>
+<text x="420" y="44" text-anchor="middle">y acotado [a,b], sí los alcanza. Si el</text>
+<text x="420" y="60" text-anchor="middle">intervalo no es cerrado o acotado, no hay</text>
+<text x="420" y="76" text-anchor="middle">garantía: sigo con las preguntas siguientes</text>
+<path class="lin" d="M115 86 V109" marker-end="url(#fl)"/>
+<text class="no" x="123" y="102">no</text>
+<rect class="preg" x="10" y="112" width="210" height="76" rx="10"/>
+<text x="115" y="136" text-anchor="middle">¿Es un problema con</text>
+<text x="115" y="154" text-anchor="middle">enunciado (lados, cajas,</text>
+<text x="115" y="172" text-anchor="middle">suma fija, distancia)?</text>
+<path class="lin" d="M220 150 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="145">sí</text>
+<rect class="nodo" x="250" y="112" width="340" height="76" rx="10"/>
+<text x="420" y="130" text-anchor="middle">Dibujo, nombro variables y escribo la cantidad a</text>
+<text x="420" y="146" text-anchor="middle">optimizar. Con la restricción dejo UNA variable</text>
+<text x="420" y="162" text-anchor="middle">y fijo su dominio (lados ≥ 0). Después sigo como</text>
+<text x="420" y="178" text-anchor="middle">en las dos preguntas de abajo</text>
+<path class="lin" d="M115 188 V211" marker-end="url(#fl)"/>
+<text class="no" x="123" y="204">no</text>
+<rect class="preg" x="10" y="214" width="210" height="76" rx="10"/>
+<text x="115" y="247" text-anchor="middle">¿El dominio es un</text>
+<text x="115" y="265" text-anchor="middle">intervalo cerrado [a, b]?</text>
+<path class="lin" d="M220 252 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="247">sí</text>
+<rect class="nodo" x="250" y="214" width="340" height="76" rx="10"/>
+<text x="420" y="232" text-anchor="middle">Críticos de (a, b): f′ = 0 o f sin derivada.</text>
+<text x="420" y="248" text-anchor="middle">Tabla de valores de f en críticos Y en a y b.</text>
+<text x="420" y="264" text-anchor="middle">El mayor es el máximo absoluto; el menor,</text>
+<text x="420" y="280" text-anchor="middle">el mínimo absoluto. Digo en qué puntos</text>
+<path class="lin" d="M115 290 V313" marker-end="url(#fl)"/>
+<text class="no" x="123" y="306">no</text>
+<rect class="preg" x="10" y="316" width="210" height="76" rx="10"/>
+<text x="115" y="349" text-anchor="middle">¿El dominio es abierto o</text>
+<text x="115" y="367" text-anchor="middle">infinito: (a, b), (0, ∞), ℝ?</text>
+<path class="lin" d="M220 354 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="349">sí</text>
+<rect class="nodo" x="250" y="316" width="340" height="76" rx="10"/>
+<text x="420" y="334" text-anchor="middle">Críticos, signo de f′ a cada lado y límites de f</text>
+<text x="420" y="350" text-anchor="middle">en los bordes (L'Hôpital si hace falta). Puede</text>
+<text x="420" y="366" text-anchor="middle">no haber máximo o mínimo: si f → ±∞ no hay;</text>
+<text x="420" y="382" text-anchor="middle">si baja y luego sube, el crítico es el mínimo</text>
+<path class="lin" d="M115 392 V415" marker-end="url(#fl)"/>
+<text class="no" x="123" y="408">no</text>
+<rect class="preg" x="10" y="418" width="210" height="76" rx="10"/>
+<text x="115" y="451" text-anchor="middle">¿Piden clasificar un crítico</text>
+<text x="115" y="469" text-anchor="middle">o los extremos relativos?</text>
+<path class="lin" d="M220 456 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="451">sí</text>
+<rect class="nodo" x="250" y="418" width="340" height="76" rx="10"/>
+<text x="420" y="436" text-anchor="middle">1.ª derivada: ¿cambia de signo f′? (− a +: mín;</text>
+<text x="420" y="452" text-anchor="middle">+ a −: máx; sin cambio: silla). 2.ª: f″(c)&gt;0 mín,</text>
+<text x="420" y="468" text-anchor="middle">f″(c)<0 máx. Si f″(c)=0: primera derivada no</text>
+<text x="420" y="484" text-anchor="middle">nula; orden par, extremo; impar, silla</text>
+<path class="lin" d="M115 494 V517" marker-end="url(#fl)"/>
+<text class="no" x="123" y="510">no</text>
+<rect class="fin" x="10" y="520" width="580" height="76" rx="10"/>
+<text x="300" y="546" text-anchor="middle">Respondo con palabras: dónde se alcanza y cuánto vale, relativo o absoluto.</text>
+<text x="300" y="564" text-anchor="middle">Compruebo: ¿miré los bordes?, ¿y los puntos sin derivada?, ¿el dominio?,</text>
+<text x="300" y="582" text-anchor="middle">¿valores de todas las variables? (en optimización)</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso</summary>
+<table>
+  <tr><th>Piden…</th><th>Herramienta</th><th>Ojo con…</th></tr>
+  <tr><td>¿Alcanza máximo y mínimo?</td><td>Weierstrass: continua en $[a,b]$ cerrado y acotado</td><td>Sin intervalo cerrado y acotado no hay garantía ($x$ en $(0,1)$ no tiene máximo)</td></tr>
+  <tr><td>Extremos absolutos en $[a,b]$</td><td>Críticos de $(a,b)$ + bordes; tabla de valores; comparar</td><td>Los bordes cuentan; los puntos sin derivada también</td></tr>
+  <tr><td>Extremos absolutos en $(a,b)$, $(0,\infty)$ o $\mathbb R$</td><td>Críticos, signo de $f'$ y límites en los bordes</td><td>Si $f\to\pm\infty$ en un borde, ese extremo no existe; $f''&lt;0$ solo da máximo relativo</td></tr>
+  <tr><td>Extremo con valor absoluto o raíz ($|x-1|$, $x^{2/3}$)</td><td>Derivadas laterales; definición ($f\ge f(c)$) o monotonía</td><td>«$f'$ nunca vale $0$» no basta: falta el punto sin derivada</td></tr>
+  <tr><td>Clasificar un crítico $c$ con $f$ continua</td><td>Signo de $f'$ a cada lado; o $f''(c)\ne0$</td><td>$f'(c)=0$ no garantiza extremo</td></tr>
+  <tr><td>$f''(c)=0$</td><td>Primera derivada no nula: par, extremo; impar, silla</td><td>$f''(c)=0$ no implica silla ($x^4$ tiene mínimo)</td></tr>
+  <tr><td>Leer la gráfica de $f'$</td><td>Extremos de $f$ donde $f'$ corta el eje cambiando de signo</td><td>Si $f'$ solo toca el eje, silla; la gráfica no es la de $f$</td></tr>
+  <tr><td>Problema con enunciado</td><td>Restricción $\to$ una variable $\to$ dominio $\to$ críticos $\to$ comparar</td><td>Escribir el dominio; un cero de $f'$ en un borde es un borde, no un crítico</td></tr>
+  <tr><td>Hallar parámetros para que haya un extremo</td><td>$f'(c)=0$ (y $f(c)$ dado) $\to$ sistema; después comprobar con $f''$</td><td>$f'(c)=0$ es necesaria, no suficiente</td></tr>
+</table>
 </details>
-<details class="sol" id="ej-3-34"><summary>Ejercicio 3.34 · $f(x)=|x-1|$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.34, p. 119 · teoría: U Def. 3.4-3.5, p. 126; Prop. 3.5, p. 130">E p.119</span></summary>
-<p class="enun">Sea $f(x)=|x-1|$. ¿Tiene un extremo en $x=1$? ¿Es máximo o mínimo?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir si $f(x)=|x-1|$ tiene un extremo en $x=1$ y de qué tipo.</dd>
-    <dt>Cómo lo pienso</dt><dd>La gráfica es una «V»: en el vértice no hay derivada, pero es claramente el punto más bajo. Lo que no se puede hacer es buscar el extremo solo donde $f'=0$.</dd>
-    <dt>Qué uso</dt><dd>Punto crítico = $f'=0$ o $f$ no derivable (Def. 3.5, U p.126); extremos solo en críticos (Prop. 3.6); definición de mínimo (Def. 3.4-3.5, U p.126).</dd>
-    <dt>Por dónde empiezo</dt><dd>Escribo $f$ a trozos y calculo las derivadas laterales en $x=1$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"abs(x-1)","n":"|x−1|"}],"x":[-2,4],"y":[-0.5,3.5],"q":[[1,0,"(1, 0)"]]}' data-alt="Valor absoluto |x-1| con vértice en (1,0)"><figcaption>La «V» de $|x-1|$: en el vértice $(1,0)$ no hay derivada, pero es el punto más bajo (mínimo absoluto). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
+<div class="box tip"><span class="h">Método en cinco pasos para el examen</span>
   <ol class="steps">
-    <li><b>A trozos.</b> $f(x)=x-1$ si $x\ge1$; $f(x)=1-x$ si $x&lt;1$. Donde sí hay derivada: $f'=1$ (si $x>1$) y $f'=-1$ (si $x&lt;1$); nunca vale $0$.</li>
-    <li><b>En $x=1$.</b> Derivadas laterales: $\lim_{x\to1^-}\frac{f(x)-f(1)}{x-1}=-1$ y $\lim_{x\to1^+}\frac{f(x)-f(1)}{x-1}=1$. Distintas: $f$ no es derivable en $1$, que es por tanto punto crítico (Def. 3.5), el único candidato (Prop. 3.6).</li>
-    <li><b>Decidir por la definición.</b> $|x-1|\ge0=f(1)$ para todo $x$: <b>mínimo absoluto</b> en $x=1$ (y, por tanto, relativo).</li>
-    <li>(Alternativa con la Prop. 3.5: $f$ continua, decreciente a la izquierda ($f'=-1$) y creciente a la derecha ($f'=1$).)</li>
+    <li><b>Traduce lo que piden</b> a una fila del mapa (absoluto o relativo, y dominio).</li>
+    <li><b>Escribe el dominio</b> y comprueba la continuidad ($f$ continua en $[a,b]$: hay máximo y mínimo).</li>
+    <li><b>Halla los candidatos:</b> $f'=0$, puntos sin derivada y bordes.</li>
+    <li><b>Evalúa y compara</b> (tabla de valores), o estudia el signo de $f'$ y los límites; para clasificar, usa $f'$, $f''$ o la primera derivada no nula.</li>
+    <li><b>Responde con palabras</b> y comprueba: bordes, puntos sin derivada, relativo frente a absoluto, valores de todas las variables.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> con un valor absoluto o una raíz, mira <b>también</b> los puntos donde no hay derivada; muchas veces basta $|\cdot|\ge0$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>«$f'$ nunca vale $0$, luego no hay extremos»: se olvida la otra mitad de la Def. 3.5 (no derivable).</p></div>
+  <span class="src" data-l="P" data-ref="Método propio, sintetizado a partir de U §3.4">P</span>
+</div>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">5</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub">Primero mira el <b>dominio</b>: si es un intervalo cerrado, lista de candidatos (críticos y bordes) y tabla de valores; si es abierto o infinito, añade los límites en los bordes. Para clasificar un crítico: signo de $f'$ a cada lado (siempre vale con $f$ continua) o $f''$ (más rápido si no se anula). En los problemas con enunciado, la restricción deja una sola variable.</p>
+<h3>Extremos absolutos en un intervalo cerrado</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · cúbica en $[-2,3]$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla los extremos absolutos de $f(x)=2x^3-3x^2-12x$ en $[-2,3]$.</p>
+  <details class="pista"><summary>Pista</summary><p>Es un polinomio: continuo en $[-2,3]$ y derivable en todas partes. Los candidatos son los ceros de $f'$ dentro del intervalo y los dos bordes.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Existencia:</b> $f$ es continua en el intervalo cerrado y acotado $[-2,3]$; por Weierstrass (Prop. 1.15, U p.52) tiene máximo y mínimo absolutos.</li><li><b>Críticos</b> (Def. 3.5, U p.126): $f'(x)=6x^2-6x-12=6(x-2)(x+1)=0\iff x=-1$ o $x=2$; los dos están en $(-2,3)$.</li><li><b>Tabla de valores</b> (Prop. 3.4, U p.126): $f(-2)=-16-12+24=-4$; $f(-1)=-2-3+12=7$; $f(2)=16-12-24=-20$; $f(3)=54-27-36=-9$.</li><li><b>Comparar:</b> el mayor es $7$ y el menor $-20$; los bordes ($-4$ y $-9$) no ganan.</li></ol>
+    <p class="res">Resultado: máximo absoluto $7$ en $x=-1$; mínimo absoluto $-20$ en $x=2$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-35"><summary>Ejercicio 3.35 · $f(x)=x^{2/3}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.35, pp. 119-120 · teoría: U Def. 3.4-3.5, p. 126">E pp.119-120</span></summary>
-<p class="enun">Sea $f(x)=x^{2/3}$. ¿Alcanza un extremo relativo en $x=0$? Si es así, ¿de qué tipo?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Averiguar si $f(x)=x^{2/3}$ tiene un extremo relativo en $x=0$ y de qué tipo.</dd>
-    <dt>Cómo lo pienso</dt><dd>$x^{2/3}=(\sqrt[3]{x})^2$ es un cuadrado, nunca negativo; en $0$ vale $0$: mínimo, aunque la gráfica tenga ahí un pico vertical (sin derivada).</dd>
-    <dt>Qué uso</dt><dd>Punto crítico: derivada nula o inexistente (Def. 3.5, U p.126); definición de mínimo (Def. 3.4, U p.126).</dd>
-    <dt>Por dónde empiezo</dt><dd>Calculo las derivadas laterales de $f$ en $0$ con el cociente incremental.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"pow(abs(x),2/3)","n":"x^(2/3)"}],"x":[-3,3],"y":[-0.3,2.5],"q":[[0,0.0,"(0, 0)"]]}' data-alt="x^(2/3) con pico en el origen"><figcaption>La gráfica de $x^{2/3}$: pico con tangente vertical en $(0,0)$, que es el mínimo (relativo y absoluto). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
-  <ol class="steps">
-    <li><b>¿Derivable en 0?</b> $\lim_{x\to0^-}\frac{x^{2/3}-0}{x}=\lim_{x\to0^-}x^{-1/3}=-\infty$ y $\lim_{x\to0^+}x^{-1/3}=+\infty$. (Ejemplo: $x=-0{,}001$ da $x^{-1/3}=-10$; con $x=-10^{-6}$, $-100$: crece sin límite en negativo.)</li>
-    <li><b>Conclusión.</b> No es derivable en $0$: punto crítico (Def. 3.5).</li>
-    <li><b>Clasificar.</b> $f(x)=(\sqrt[3]x)^2\ge0=f(0)$: <b>mínimo absoluto</b> y relativo.</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> en potencias fraccionarias, derivadas laterales en el punto sospechoso; si no existen, es crítico y se clasifica por definición o por monotonía.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Sustituir $x=0$ en $f'=\frac23x^{-1/3}$, ver «división por cero» y decir «no hay extremo». La no derivabilidad no impide el extremo: lo hace candidato.</p></div>
+<details class="pr" id="pr-a2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica a2 · $x-2\operatorname{sen}x$ en $[0,\pi]$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla los extremos absolutos de $f(x)=x-2\operatorname{sen}x$ en $[0,\pi]$.</p>
+  <details class="pista"><summary>Pista</summary><p>$f'(x)=1-2\cos x$. ¿Para qué ángulo de $(0,\pi)$ vale $\cos x=\frac12$? Para comparar los valores, usa $\pi\approx3{,}14$ y $\sqrt3\approx1{,}73$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Existencia:</b> suma de funciones continuas en el cerrado $[0,\pi]$: hay máximo y mínimo absolutos (Prop. 1.15, U p.52).</li><li><b>Críticos</b> (Def. 3.5, U p.126): $f'(x)=1-2\cos x=0\iff\cos x=\frac12$. En $(0,\pi)$ el coseno es estrictamente decreciente, así que solo hay una solución: $x=\frac\pi3$.</li><li><b>Tabla</b> (Prop. 3.4, U p.126): $f(0)=0$; $f(\frac\pi3)=\frac\pi3-2\cdot\frac{\sqrt3}2=\frac\pi3-\sqrt3\approx1{,}047-1{,}732=-0{,}685$; $f(\pi)=\pi-0=\pi\approx3{,}142$.</li><li><b>Comparar:</b> el menor es $\frac\pi3-\sqrt3$ (en el punto crítico) y el mayor es $\pi$ (en el borde derecho).</li><li><b>Control con la monotonía:</b> $f'&lt;0$ en $(0,\frac\pi3)$ ($\cos x>\frac12$) y $f'>0$ en $(\frac\pi3,\pi)$: baja y luego sube, coherente con la tabla.</li></ol>
+    <p class="res">Resultado: mínimo absoluto $\frac\pi3-\sqrt3\approx-0{,}685$ en $x=\frac\pi3$; máximo absoluto $\pi$ en $x=\pi$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-29"><summary>Ejercicio 3.29 · leer la gráfica de $f'$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.29, p. 114 · teoría: U Prop. 3.5, p. 130; Prop. 2.4, p. 98">E p.114</span></summary>
-<p class="enun">De $f:\mathbb R\to\mathbb R$ tres veces derivable conocemos la gráfica de su derivada $f'$ (en E, p. 114: una curva tipo $y=x^3$, negativa a la izquierda de $0$ y positiva a la derecha, con tangente horizontal en el origen). ¿Cuál es correcta? a) $f$ alcanza un mínimo relativo en $x=0$. b) Máximo relativo en $x=0$. c) $f$ es siempre creciente. d) Ninguna.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>A partir de la gráfica de $f'$, decidir qué ocurre con $f$ en $x=0$ (mínimo, máximo, siempre creciente, ninguna).</dd>
-    <dt>Cómo lo pienso</dt><dd>La gráfica de $f'$ es el «semáforo» de $f$: bajo el eje $x$, $f$ baja; sobre el eje, $f$ sube. Un extremo aparece donde $f'$ cruza el eje cambiando de signo.</dd>
-    <dt>Qué uso</dt><dd>Signo de $f'$ y monotonía (Prop. 2.4, U p.98); criterio de la 1.ª derivada (Prop. 3.5, U p.130).</dd>
-    <dt>Por dónde empiezo</dt><dd>Localizo dónde $f'$ corta al eje $x$ y miro su signo a cada lado.</dd>
-  </dl></div>
-  <figure class="bookfig">
-  <img src="../assets/img/fig_e_3_29.png" alt="Gráfica de f': curva tipo x al cubo, negativa a la izquierda del origen, positiva a la derecha, con tangente horizontal en el origen" loading="lazy">
-  <figcaption>Gráfica de $f'$ del enunciado. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.29, figura de p. 114">E p.114</span></figcaption>
-  </figure>
-  <ol class="steps">
-    <li><b>Críticos:</b> donde $f'$ corta al eje $x$: solo $x=0$.</li>
-    <li><b>Signos:</b> en $(-\infty,0)$, $f'&lt;0$, $f$ decreciente (Prop. 2.4); en $(0,\infty)$, $f'>0$, creciente.</li>
-    <li><b>Clasificar:</b> $f$ es continua (derivable), baja y luego sube: mínimo relativo (Prop. 3.5). De hecho absoluto.</li>
-    <li>b) es lo contrario; c) falla porque decrece en $(-\infty,0)$.</li>
-    <li><b>Respuesta: a).</b></li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> con la gráfica de $f'$: críticos = cortes con el eje $x$; hay extremo si $f'$ <b>cambia de signo</b> (de $-$ a $+$ mínimo; de $+$ a $-$ máximo).</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Razonar con «la curva sube» de la gráfica de $f'$ como si fuera la de $f$. Aquí tampoco sirve la Prop. 3.7: $f''(0)=0$ (tangente horizontal de $f'$).</p></div>
+<h3>Intervalo cerrado con puntos sin derivada (valor absoluto, raíces)</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · $|x^2-4|$ en $[-3,1]$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla los extremos absolutos de $f(x)=|x^2-4|$ en $[-3,1]$.</p>
+  <details class="pista"><summary>Pista</summary><p>Escribe $f$ a trozos: el valor absoluto cambia de fórmula donde $x^2-4=0$. En ese punto la gráfica tiene un pico (no hay derivada): también es candidato.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>A trozos:</b> $x^2-4\ge0\iff|x|\ge2$. En $[-3,-2]$, $f(x)=x^2-4$; en $(-2,1]$, $f(x)=4-x^2$. Es continua (valor absoluto de un polinomio): hay máximo y mínimo (Prop. 1.15, U p.52).</li><li><b>Críticos donde hay derivada:</b> en $(-3,-2)$, $f'=2x\ne0$; en $(-2,1)$, $f'=-2x=0\iff x=0$.</li><li><b>Crítico sin derivada</b> (Def. 3.5, U p.126): en $x=-2$ las derivadas laterales son $2(-2)=-4$ (izquierda) y $-2(-2)=4$ (derecha), distintas: no es derivable.</li><li><b>Tabla</b> (Prop. 3.4, U p.126): $f(-3)=5$; $f(-2)=0$; $f(0)=4$; $f(1)=3$.</li><li><b>Comparar:</b> mayor $5$ (borde $x=-3$); menor $0$ (en el pico $x=-2$, donde además $f\ge0$ obliga a que sea mínimo).</li></ol>
+    <p class="res">Resultado: máximo absoluto $5$ en $x=-3$; mínimo absoluto $0$ en $x=-2$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-36"><summary>Ejercicio 3.36 · cortar el eje o solo tocarlo <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.36, p. 120 · teoría: U Prop. 3.5-3.6 y Def. 3.7, pp. 130-131">E p.120</span></summary>
-<p class="enun">La gráfica de $f'$ (de $f$ dos veces derivable en $\mathbb R$) aparece en E p. 120: corta al eje en $x=-2$ subiendo, tiene un máximo de altura $2$ en $x=-1$, vale $1$ en $x=0$, toca el eje en $x=1$ sin cruzarlo y luego crece. a) $f$ tiene dos puntos críticos, pero un solo extremo relativo. b) $f$ tiene dos extremos relativos. c) $f''(x)=0$ no tiene soluciones reales.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Con la gráfica de $f'$, decidir cuántos puntos críticos y cuántos extremos relativos tiene $f$ y si $f''=0$ tiene soluciones.</dd>
-    <dt>Cómo lo pienso</dt><dd>Un cero de $f'$ donde $f'$ <b>cruza</b> el eje da extremo; si solo <b>toca</b> y rebota, $f$ sigue creciendo (o decreciendo): punto de silla. Los picos y valles de $f'$ tienen tangente horizontal, es decir, $f''=0$ ahí.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.5 (1.ª derivada) y Prop. 3.6 (U pp.130-131); punto de silla (Def. 3.7, U p.131); $f''=(f')'$.</dd>
-    <dt>Por dónde empiezo</dt><dd>Marco los ceros de $f'$ en la gráfica y miro, uno a uno, si hay cambio de signo.</dd>
-  </dl></div>
-  <figure class="bookfig">
-  <img src="../assets/img/fig_e_3_36.png" alt="Gráfica de f': corta al eje x en -2 subiendo, máximo de altura 2 en x=-1, vale 1 en x=0, toca el eje en x=1 sin cruzarlo y luego crece" loading="lazy">
-  <figcaption>Gráfica de $f'$ del enunciado. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.36, figura de p. 120">E p.120</span></figcaption>
-  </figure>
-  <ol class="steps">
-    <li><b>Críticos:</b> $x=-2$ y $x=1$ (dos).</li>
-    <li><b>$x=-2$:</b> $f'$ pasa de $-$ a $+$: mínimo relativo (Prop. 3.5).</li>
-    <li><b>$x=1$:</b> $f'>0$ a ambos lados: $f$ creciente en $(-2,\infty)$, sin extremo: punto de silla (Def. 3.7).</li>
-    <li><b>a) correcta, b) falsa.</b></li>
-    <li><b>c):</b> $f''=(f')'$. $f'$ tiene un máximo relativo en $x=-1$ y un mínimo en $x=1$ (se ve en la gráfica); son puntos críticos de $f'$, luego $f''(-1)=f''(1)=0$. c) es <b>falsa</b>.</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> clasifica cada cero de $f'$ mirando si hay cambio de signo; los picos y valles de la gráfica de $f'$ son ceros de $f''$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>«Dos ceros de $f'$ = dos extremos».</p></div>
+<details class="pr" id="pr-b2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica b2 · $x^{2/3}(x-5)$: el máximo está en un pico <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla los extremos absolutos de $f(x)=x^{2/3}(x-5)$ en $[-1,4]$. (Aquí $x^{2/3}=(\sqrt[3]x)^2$, definida también para $x&lt;0$.)</p>
+  <details class="pista"><summary>Pista</summary><p>Escribe $f(x)=x^{5/3}-5x^{2/3}$ y deriva: $f'(x)=\frac53x^{2/3}-\frac{10}3x^{-1/3}$. Saca factor común $\frac53x^{-1/3}$. ¿Qué pasa en $x=0$?</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Existencia:</b> producto de continuas en $[-1,4]$: hay máximo y mínimo (Prop. 1.15, U p.52).</li><li><b>Derivada</b> (para $x\ne0$): $f'(x)=\frac53x^{2/3}-\frac{10}3x^{-1/3}=\frac53x^{-1/3}(x-2)=\dfrac{5(x-2)}{3\sqrt[3]x}$.</li><li><b>Críticos</b> (Def. 3.5, U p.126): $f'=0\iff x=2$; y en $x=0$ el denominador se anula: $f$ no es derivable (tangente vertical), luego $x=0$ también es crítico.</li><li><b>Tabla</b> (Prop. 3.4, U p.126): $f(-1)=1\cdot(-6)=-6$; $f(0)=0$; $f(2)=2^{2/3}(-3)=-3\sqrt[3]4\approx-4{,}76$; $f(4)=4^{2/3}(-1)=-2\sqrt[3]2\approx-2{,}52$.</li><li><b>Comparar:</b> el mayor es $0$ (en el punto sin derivada) y el menor $-6$ (en el borde izquierdo).</li><li><b>Por qué no basta con $f'=0$:</b> el único cero de $f'$, $x=2$, no es ninguno de los dos extremos absolutos. Signos: $f'>0$ en $(-1,0)$ y $f'&lt;0$ en $(0,2)$: sube hasta el pico $x=0$ y luego baja (máximo relativo, Prop. 3.5, U p.130).</li></ol>
+    <p class="res">Resultado: máximo absoluto $0$ en $x=0$ (no derivable); mínimo absoluto $-6$ en $x=-1$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-30"><summary>Ejercicio 3.30 · cúbica: ¿siempre un máximo y un mínimo? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.30, p. 114 · teoría: U Prop. 3.6, p. 131">E p.114</span></summary>
-<p class="enun">Sea $f(x)=ax^3+bx^2+cx+d$, $a\ne0$. ¿Es cierto que $f$ tiene exactamente un máximo local y un mínimo local, cualesquiera que sean $a,b,c,d$?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir si toda cúbica $ax^3+bx^2+cx+d$ ($a\ne0$) tiene exactamente un máximo y un mínimo locales.</dd>
-    <dt>Cómo lo pienso</dt><dd>Los extremos están en los ceros de $f'$, que es una parábola; una parábola puede cortar el eje dos veces, una (tangente) o ninguna. Así que la respuesta probable es «no», y basta un contraejemplo.</dd>
-    <dt>Qué uso</dt><dd>Extremos relativos de una función derivable solo en ceros de $f'$ (Prop. 3.6, U p.131).</dd>
-    <dt>Por dónde empiezo</dt><dd>Calculo $f'(x)=3ax^2+2bx+c$ y pienso cuántas raíces reales puede tener.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x^3-3*x","n":"x³−3x (dos extremos)"},{"e":"x^3","n":"x³ (silla)"},{"e":"2*x^3+6*x","n":"2x³+6x (creciente)"}],"x":[-2,2],"y":[-7,7],"q":[[-1,2,"(−1, 2)"],[1,-2,"(1, −2)"]]}' data-alt="Tres cúbicas: con dos extremos, con punto de silla y creciente"><figcaption>Tres cúbicas: $x^3-3x$ tiene un máximo $(-1,2)$ y un mínimo $(1,-2)$; $x^3$ y $2x^3+6x$ no tienen ningún extremo, luego no toda cúbica tiene uno de cada. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
-  <ol class="steps">
-    <li><b>Derivada:</b> $f'(x)=3ax^2+2bx+c$, de grado 2.</li>
-    <li><b>Dónde:</b> $f$ es derivable: los extremos relativos solo están en los ceros de $f'$ (Prop. 3.6).</li>
-    <li><b>Contraejemplos</b> (basta uno):
-      <ul>
-        <li>$f(x)=2x^3+6x$: $f'=6x^2+6>0$, sin raíces; $f$ estrictamente creciente, <b>ningún</b> extremo.</li>
-        <li>$f(x)=x^3$: $f'=3x^2$ solo se anula en $0$ y no cambia de signo: punto de silla.</li>
-      </ul></li>
-    <li><b>Respuesta: no es cierto.</b> Solo ocurre si $f'$ tiene dos raíces reales distintas: discriminante $4b^2-12ac>0$ (ej.: $x^3-3x$, críticos $\pm1$).</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> para «¿siempre…?», busca un contraejemplo sencillo; en cúbicas, mira el discriminante de $f'$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Creer que toda cúbica tiene forma de S con un pico y un valle.</p></div>
+<h3>Extremos relativos por el signo de $f'$ (1.ª derivada)</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · $(x-2)^2(x+1)$ con tabla de signos <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla los intervalos de crecimiento y los extremos relativos de $f(x)=(x-2)^2(x+1)$.</p>
+  <details class="pista"><summary>Pista</summary><p>Deriva con la regla del producto y saca factor común $(x-2)$: queda un producto de factores lineales, fácil de estudiar en una tabla de signos.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivada:</b> $f'(x)=2(x-2)(x+1)+(x-2)^2=(x-2)(2x+2+x-2)=3x(x-2)$.</li><li><b>Críticos:</b> $f$ es polinomio (derivable en $\mathbb R$); $f'=0\iff x=0$ o $x=2$ (Prop. 3.6, U p.131).</li><li><b>Signos de $f'=3x(x-2)$:</b> en $(-\infty,0)$, $(-)(-)=+$; en $(0,2)$, $(+)(-)=-$; en $(2,\infty)$, $(+)(+)=+$.</li><li><b>Monotonía</b> (Prop. 2.4, U p.98): creciente en $(-\infty,0)$ y en $(2,\infty)$; decreciente en $(0,2)$.</li><li><b>Clasificar</b> (Prop. 3.5, U p.130): en $x=0$, $f'$ pasa de $+$ a $-$: máximo relativo, $f(0)=4\cdot1=4$. En $x=2$, de $-$ a $+$: mínimo relativo, $f(2)=0$.</li></ol>
+    <p class="res">Resultado: máximo relativo $f(0)=4$; mínimo relativo $f(2)=0$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-38"><summary>Ejercicio 3.38 · rectángulo de perímetro 100 y área máxima <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.38, pp. 121-122 · equivale a U Ej. 3.25, pp. 132-133">E pp.121-122</span></summary>
-<p class="enun">Queremos construir un rectángulo con 100 cm de perímetro de forma que su área sea máxima. ¿Cuál es la longitud de sus lados?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Entre los rectángulos de perímetro 100 cm, hallar los lados del de área máxima.</dd>
-    <dt>Cómo lo pienso</dt><dd>Si un lado es muy corto el área es casi nula, y lo mismo si es muy largo (el otro se encoge): el máximo está en medio. La restricción del perímetro deja el área en función de un solo lado.</dd>
-    <dt>Qué uso</dt><dd>Método del intervalo cerrado: extremos absolutos en bordes o críticos (Prop. 3.4, U p.126); optimización (U Ej. 3.25, pp.132-133).</dd>
-    <dt>Por dónde empiezo</dt><dd>Llamo $a,b$ a los lados y despejo $b=50-a$ en $2a+2b=100$.</dd>
-  </dl></div>
-  <p>Mismo problema que el Ejemplo 3.25 de U (§3), con $a$ y $b$ en lugar de $x$ y $50-x$.</p>
-  <ol class="steps">
-    <li><b>Función y dominio.</b> $2a+2b=100\Rightarrow b=50-a$; $S(a)=a(50-a)$, $a\in[0,50]$.</li>
-    <li><b>Crítico y comparación.</b> $S'(a)=50-2a=0\iff a=25$; $S(0)=S(50)=0&lt;S(25)=625$: máximo absoluto.</li>
-    <li><b>Respuesta:</b> $a=b=25$ cm (un cuadrado), área $625$ cm².</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> la de optimización de §3.</div>
+<details class="pr" id="pr-c2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica c2 · $(x^2-1)^{2/3}$: tres candidatos, dos sin derivada <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia los extremos relativos y absolutos de $f(x)=(x^2-1)^{2/3}=\left(\sqrt[3]{x^2-1}\right)^2$ en $\mathbb R$.</p>
+  <details class="pista"><summary>Pista</summary><p>Por la regla de la cadena, $f'(x)=\frac23(x^2-1)^{-1/3}\cdot2x=\dfrac{4x}{3\sqrt[3]{x^2-1}}$. Busca dónde se anula el numerador y dónde se anula el denominador; el signo de una raíz cúbica es el de lo de dentro.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Críticos</b> (Def. 3.5, U p.126): $f'=0\iff x=0$; en $x=\pm1$ el denominador vale $0$ y $f$ no es derivable (tangente vertical). Candidatos: $-1,0,1$; $f$ es continua en todo $\mathbb R$.</li><li><b>Signos de $f'$</b> (numerador $4x$; el denominador tiene el signo de $x^2-1$): en $(-\infty,-1)$: $\frac{-}{+}=-$; en $(-1,0)$: $\frac{-}{-}=+$; en $(0,1)$: $\frac{+}{-}=-$; en $(1,\infty)$: $\frac{+}{+}=+$.</li><li><b>Clasificar</b> (Prop. 3.5, U p.130, $f$ continua): $x=-1$, de $-$ a $+$: mínimo relativo, $f(-1)=0$. $x=0$, de $+$ a $-$: máximo relativo, $f(0)=(\sqrt[3]{-1})^2=1$. $x=1$, de $-$ a $+$: mínimo relativo, $f(1)=0$.</li><li><b>Absolutos:</b> $f$ es un cuadrado, $f\ge0=f(\pm1)$: mínimo absoluto $0$ en $x=\pm1$ (Def. 3.4, U p.126). Como $\lim_{x\to\pm\infty}f(x)=+\infty$, no hay máximo absoluto: el máximo en $0$ es solo relativo.</li></ol>
+    <p class="res">Resultado: mínimos relativos y absolutos $0$ en $x=\pm1$; máximo relativo (no absoluto) $1$ en $x=0$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-37"><summary>Ejercicio 3.37 · la caja de mayor volumen <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.37, pp. 120-121 · teoría: U Prop. 3.4, p. 126; Prop. 3.7, p. 131">E pp.120-121</span></summary>
-<p class="enun">A una lámina de acero cuadrada de 40 cm de lado se le quitan cuatro cuadrados iguales en las esquinas y se doblan los lados para formar una caja de base cuadrada. Calcula el lado del cuadrado que hay que quitar para maximizar el volumen.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Hallar el lado del cuadrado que hay que recortar en las esquinas de una lámina de $40\times40$ cm para que la caja tenga volumen máximo.</dd>
-    <dt>Cómo lo pienso</dt><dd>Si recorto casi nada la caja es casi plana; si recorto demasiado no queda base: el volumen es $0$ en ambos extremos, luego el máximo está en medio.</dd>
-    <dt>Qué uso</dt><dd>Extremos absolutos en bordes o críticos (Prop. 3.4, U p.126); 2.ª derivada (Prop. 3.7, U p.131).</dd>
-    <dt>Por dónde empiezo</dt><dd>Llamo $d$ al lado recortado y escribo el volumen $V(d)=(40-2d)^2d$ con su dominio.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x*(40-2*x)^2","n":"V(x)=x(40−2x)²"}],"x":[0,20],"y":[0,5500],"ex":"x (cm)","ey":"V (cm³)","q":[[6.666667,4740.740741,"(20/3, 4740,7)"]]}' data-alt="Volumen de la caja en funcion del lado recortado"><figcaption>Volumen de la caja según el lado $x$ (cm) del cuadrado recortado, $x\in[0,20]$: vale $0$ en los dos extremos y el máximo está en $x=\frac{20}{3}$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
-  <ol class="steps">
-    <li><b>Variable.</b> $d$ = lado del cuadrado recortado = altura de la caja. La base es un cuadrado de lado $40-2d$.</li>
-    <li><b>Función.</b> $V(d)=(40-2d)^2d=4d^3-160d^2+1600d$.</li>
-    <li><b>Dominio.</b> $d\ge0$ y $40-2d\ge0$: $d\in[0,20]$.</li>
-    <li><b>Críticos.</b> $V'(d)=12d^2-320d+1600=4(3d^2-80d+400)=0\iff d=\frac{80\pm\sqrt{6400-4800}}{6}=\frac{80\pm40}6$, es decir $d=\frac{20}3$ o $d=20$. $d=20$ es un borde (no queda base); el único crítico interior es $d=\frac{20}3$.</li>
-    <li><b>Comparar.</b> $V(0)=V(20)=0$ y $V(\tfrac{20}3)=\left(\tfrac{80}3\right)^2\tfrac{20}3=\tfrac{128000}{27}\approx4740{,}7$ cm³: máximo absoluto. (Comprobación: $V''(d)=24d-320$, $V''(\tfrac{20}3)=-160&lt;0$.)</li>
-    <li><b>Respuesta:</b> $d=\frac{20}3\approx6{,}67$ cm (volumen máximo $\approx4741$ cm³).</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> igual que 3.38. Un cero de $V'$ que cae en un borde se trata como extremo del intervalo, no como crítico.</div>
+<h3>2.ª derivada y derivadas de orden superior</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · $\operatorname{sen}x+\cos x$ con $f''$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla y clasifica con el criterio de la 2.ª derivada los extremos relativos de $f(x)=\operatorname{sen}x+\cos x$ en $(0,2\pi)$.</p>
+  <details class="pista"><summary>Pista</summary><p>$f'=0\iff\operatorname{sen}x=\cos x\iff\operatorname{tg}x=1$. Hay dos soluciones en $(0,2\pi)$. Después, $f''(x)=-\operatorname{sen}x-\cos x=-f(x)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Críticos</b> (Prop. 3.6, U p.131: intervalo abierto, solo críticos): $f'(x)=\cos x-\operatorname{sen}x=0\iff\operatorname{tg}x=1\iff x=\frac\pi4$ o $x=\frac{5\pi}4$.</li><li><b>2.ª derivada:</b> $f''(x)=-\operatorname{sen}x-\cos x$.</li><li><b>En $\frac\pi4$:</b> $f''(\frac\pi4)=-\frac{\sqrt2}2-\frac{\sqrt2}2=-\sqrt2&lt;0$: máximo relativo (Prop. 3.7, U p.131), $f(\frac\pi4)=\sqrt2$.</li><li><b>En $\frac{5\pi}4$:</b> $f''(\frac{5\pi}4)=\frac{\sqrt2}2+\frac{\sqrt2}2=\sqrt2>0$: mínimo relativo, $f(\frac{5\pi}4)=-\sqrt2$.</li></ol>
+    <p class="res">Resultado: máximo relativo $\sqrt2$ en $x=\frac\pi4$; mínimo relativo $-\sqrt2$ en $x=\frac{5\pi}4$</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-32"><summary>Ejercicio 3.32 · $\dfrac{1-x^2}{x+3}$ en $[-1,1]$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.32, pp. 116-117 · teoría: U Prop. 1.15, p. 52; Prop. 3.4, p. 126; Prop. 3.6-3.7, p. 131. Igual que X Feb 2010, p. 2">E pp.116-117</span></summary>
-<p class="enun">Sea $f(x)=\dfrac{1-x^2}{x+3}$. ¿Dónde alcanza los extremos relativos y absolutos en $[-1,1]$? ¿Cuáles son esos valores extremos?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<details class="pr" id="pr-d2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica d2 · cuando $f''(0)=0$: $e^x-x-\frac{x^2}2$ y $\cos x+\frac{x^2}2$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Las funciones $f(x)=e^x-x-\frac{x^2}2$ y $g(x)=\cos x+\frac{x^2}2$ tienen un punto crítico en $x=0$. Clasifícalo en cada caso.</p>
+  <details class="pista"><summary>Pista</summary><p>En las dos, $f''(0)=g''(0)=0$: el criterio de la 2.ª derivada no decide. Sigue derivando hasta encontrar la primera derivada que no se anula en $0$ y mira si su orden es par o impar.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>$f$:</b> $f'(x)=e^x-1-x$, $f'(0)=0$ ✓; $f''(x)=e^x-1$, $f''(0)=0$; $f'''(x)=e^x$, $f'''(0)=1\ne0$.</li><li><b>Clasificar $f$</b> (Prop. 3.8, U p.132): la primera derivada no nula es de orden $3$ (impar): punto de silla, no hay extremo. (Control: $h(x)=f'(x)=e^x-1-x$ tiene $h'(x)=e^x-1$, negativa si $x&lt;0$ y positiva si $x>0$; su mínimo es $h(0)=0$, luego $f'(x)>0$ para $x\ne0$: $f$ crece a ambos lados de $0$.)</li><li><b>$g$:</b> $g'(x)=-\operatorname{sen}x+x$, $g'(0)=0$ ✓; $g''(x)=-\cos x+1$, $g''(0)=0$; $g'''(x)=\operatorname{sen}x$, $g'''(0)=0$; $g^{(4)}(x)=\cos x$, $g^{(4)}(0)=1>0$.</li><li><b>Clasificar $g$</b> (Prop. 3.8, U p.132): orden $4$ (par) y positiva: mínimo relativo, $g(0)=1$. (Control: $g'(x)=x-\operatorname{sen}x$ tiene derivada $1-\cos x\ge0$, así que es creciente y se anula en $0$: negativa para $x&lt;0$ y positiva para $x>0$.)</li></ol>
+    <p class="res">Resultado: $f$ tiene un punto de silla en $0$ ($f'''(0)=1$); $g$ tiene un mínimo relativo $g(0)=1$ ($g^{(4)}(0)=1>0$)</p>
+  </details>
+</details>
+<h3>Intervalos abiertos o infinitos: límites en los bordes</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · $x+\frac1x$ en $(0,\infty)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia si $f(x)=x+\dfrac1x$ alcanza máximo y mínimo absolutos en $(0,\infty)$.</p>
+  <details class="pista"><summary>Pista</summary><p>El intervalo no es cerrado: Weierstrass no garantiza nada. Halla el crítico y calcula los límites de $f$ en $0^+$ y en $+\infty$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Críticos:</b> $f'(x)=1-\frac1{x^2}=0\iff x^2=1\iff x=1$ (el $-1$ no está en el intervalo).</li><li><b>Límites en los bordes</b> (U p.128): $\lim_{x\to0^+}\left(x+\frac1x\right)=+\infty$ y $\lim_{x\to+\infty}\left(x+\frac1x\right)=+\infty$.</li><li><b>Monotonía:</b> $f'(x)=\frac{x^2-1}{x^2}&lt;0$ en $(0,1)$ y $>0$ en $(1,\infty)$: baja hasta $x=1$ y luego sube (Prop. 2.4, U p.98).</li><li><b>Conclusión:</b> $f(x)\ge f(1)=2$ para todo $x>0$: mínimo absoluto. Como $f$ toma valores tan grandes como se quiera, no hay máximo absoluto.</li></ol>
+    <p class="res">Resultado: mínimo absoluto $2$ en $x=1$; no tiene máximo absoluto</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica e2 · $\frac{\ln x}{x}$ en $(0,\infty)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia los extremos absolutos de $f(x)=\dfrac{\ln x}{x}$ en $(0,\infty)$.</p>
+  <details class="pista"><summary>Pista</summary><p>$f'(x)=\dfrac{1-\ln x}{x^2}$. Para los límites: en $0^+$ no hay indeterminación ($\ln x\to-\infty$ y se divide entre algo que tiende a $0^+$); en $+\infty$ es $\frac\infty\infty$: L'Hôpital.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Críticos:</b> $f'(x)=\frac{\frac1x\cdot x-\ln x}{x^2}=\frac{1-\ln x}{x^2}=0\iff\ln x=1\iff x=e$.</li><li><b>Monotonía:</b> $x^2>0$; $1-\ln x>0$ si $x&lt;e$ y $&lt;0$ si $x>e$: $f$ crece en $(0,e)$ y decrece en $(e,\infty)$ (Prop. 2.4, U p.98). Máximo en $x=e$, $f(e)=\frac1e$.</li><li><b>Límites</b> (U p.128): $\lim_{x\to0^+}\frac{\ln x}{x}=-\infty$ (numerador $\to-\infty$, denominador $\to0^+$); $\lim_{x\to+\infty}\frac{\ln x}{x}=\lim_{x\to+\infty}\frac{1/x}{1}=0$ (L'Hôpital, U §2.3).</li><li><b>Conclusión:</b> sube hasta $x=e$ y luego baja: $f(x)\le\frac1e$ para todo $x>0$, máximo absoluto. Como $f\to-\infty$ en $0^+$, no hay mínimo absoluto.</li></ol>
+    <p class="res">Resultado: máximo absoluto $\frac1e$ en $x=e$; no tiene mínimo absoluto</p>
+  </details>
+</details>
+<h3>Problemas de optimización con enunciado</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · cercado junto a un río <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Con $120$ m de valla se quiere cercar un terreno rectangular junto a un río; el lado que da al río no se valla. ¿Qué dimensiones dan el área máxima?</p>
+  <details class="pista"><summary>Pista</summary><p>Llama $x$ a cada uno de los dos lados perpendiculares al río e $y$ al paralelo. La valla cumple $2x+y=120$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Variables y restricción:</b> $2x+y=120\Rightarrow y=120-2x$.</li><li><b>Función:</b> $A(x)=x(120-2x)=120x-2x^2$.</li><li><b>Dominio:</b> $x\ge0$ e $y\ge0$: $x\in[0,60]$ (cerrado: método del intervalo cerrado, Prop. 3.4, U p.126).</li><li><b>Crítico:</b> $A'(x)=120-4x=0\iff x=30$.</li><li><b>Comparar:</b> $A(0)=A(60)=0&lt;A(30)=30\cdot60=1800$: máximo absoluto. (También $A''=-4&lt;0$.)</li><li><b>Respuesta:</b> $x=30$ m, $y=60$ m: el lado paralelo al río es el doble de los otros (no sale un cuadrado, porque solo se pagan tres lados).</li></ol>
+    <p class="res">Resultado: lados perpendiculares de $30$ m y lado paralelo de $60$ m; área máxima $1800$ m²</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica f2 · punto de la parábola más cercano a $(3,0)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla el punto de la parábola $y=x^2$ más cercano al punto $(3,0)$ y la distancia mínima.</p>
+  <details class="pista"><summary>Pista</summary><p>Un punto de la parábola es $(x,x^2)$. Minimiza el cuadrado de la distancia, $D(x)=(x-3)^2+x^4$ (es mínimo donde lo es la distancia, y no tiene raíz). Prueba si $x=1$ anula $D'$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Función:</b> la distancia de $(x,x^2)$ a $(3,0)$ es $d(x)=\sqrt{(x-3)^2+x^4}$. Como la raíz es creciente, $d$ y $D=d^2$ tienen el mínimo en el mismo punto: se trabaja con $D(x)=(x-3)^2+x^4$, $x\in\mathbb R$.</li><li><b>Críticos:</b> $D'(x)=2(x-3)+4x^3=2(2x^3+x-3)$. $x=1$ es raíz ($2+1-3=0$); dividiendo (Ruffini): $2x^3+x-3=(x-1)(2x^2+2x+3)$. El factor $2x^2+2x+3$ tiene discriminante $4-24&lt;0$: no se anula y es siempre positivo.</li><li><b>Signo:</b> $D'(x)=2(x-1)(2x^2+2x+3)$ tiene el signo de $x-1$: $D$ decrece en $(-\infty,1)$ y crece en $(1,\infty)$ (Prop. 2.4, U p.98).</li><li><b>Absoluto:</b> baja hasta $x=1$ y luego sube: $D(x)\ge D(1)$ para todo $x\in\mathbb R$ (dominio no acotado: se razona con la monotonía, U p.128).</li><li><b>Respuesta:</b> punto $(1,1)$; $D(1)=4+1=5$, distancia $\sqrt5\approx2{,}236$.</li></ol>
+    <p class="res">Resultado: el punto $(1,1)$, a distancia mínima $\sqrt5$</p>
+  </details>
+</details>
+<h3>Parámetros: imponer que haya un extremo</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · $x^3+ax^2+bx$ con extremo dado <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla $a$ y $b$ para que $f(x)=x^3+ax^2+bx$ tenga un extremo relativo en $x=1$ con $f(1)=-2$. ¿Es máximo o mínimo?</p>
+  <details class="pista"><summary>Pista</summary><p>«Extremo relativo en $x=1$» de una función derivable obliga a $f'(1)=0$ (Prop. 3.6). Con $f(1)=-2$ tienes dos ecuaciones lineales en $a$ y $b$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Condiciones:</b> $f$ es polinomio, así que un extremo relativo en $1$ exige $f'(1)=0$ (Prop. 3.6, U p.131). $f'(x)=3x^2+2ax+b$.</li><li><b>Sistema:</b> $f(1)=1+a+b=-2$, es decir $a+b=-3$; $f'(1)=3+2a+b=0$, es decir $2a+b=-3$.</li><li><b>Resolver:</b> restando, $a=0$; entonces $b=-3$. Queda $f(x)=x^3-3x$.</li><li><b>Comprobar que es extremo</b> (la condición $f'(1)=0$ es necesaria, no suficiente): $f''(x)=6x$, $f''(1)=6>0$: mínimo relativo (Prop. 3.7, U p.131). $f(1)=1-3=-2$ ✓.</li></ol>
+    <p class="res">Resultado: $a=0$, $b=-3$; mínimo relativo en $x=1$</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica g2 · ¿qué $a$ da extremo de $x^2e^{ax}$ en $x=1$? <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla $a$ para que $f(x)=x^2e^{ax}$ tenga un punto crítico en $x=1$. Con ese valor, halla y clasifica todos los extremos relativos de $f$.</p>
+  <details class="pista"><summary>Pista</summary><p>$f'(x)=2xe^{ax}+ax^2e^{ax}=xe^{ax}(2+ax)$. La exponencial nunca se anula. Impón $f'(1)=0$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivada:</b> $f'(x)=xe^{ax}(2+ax)$.</li><li><b>Condición:</b> $f'(1)=e^{a}(2+a)=0$; como $e^a>0$, $a=-2$.</li><li><b>Críticos con $a=-2$:</b> $f(x)=x^2e^{-2x}$, $f'(x)=2x(1-x)e^{-2x}=0\iff x=0$ o $x=1$ (Prop. 3.6, U p.131).</li><li><b>Signos de $f'$</b> ($e^{-2x}>0$, se mira $2x(1-x)$): en $(-\infty,0)$, $(-)(+)=-$; en $(0,1)$, $(+)(+)=+$; en $(1,\infty)$, $(+)(-)=-$.</li><li><b>Clasificar</b> (Prop. 3.5, U p.130): $x=0$, de $-$ a $+$: mínimo relativo, $f(0)=0$ (de hecho absoluto, porque $f\ge0$). $x=1$, de $+$ a $-$: máximo relativo, $f(1)=e^{-2}\approx0{,}135$.</li></ol>
+    <p class="res">Resultado: $a=-2$; mínimo relativo $f(0)=0$ y máximo relativo $f(1)=e^{-2}$</p>
+  </details>
+</details>
+</div>
+<!-- ============================ autoevaluación ============================ -->
+<h2 id="autoeval" data-vista="tipos"><span class="n">6</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="f">
+    <p><b>1.</b> (V/F) Si $f'(c)=0$, entonces $f$ tiene un extremo relativo en $c$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$f'(c)=0$ solo hace de $c$ un candidato. Contraejemplo: $f(x)=x^3$ en $c=0$ es un punto de silla (Def. 3.7, U p.131).</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>2.</b> (Elige) Los extremos absolutos de una función continua en $[a,b]$ hay que buscarlos entre:</p>
+    <div class="opts"><button data-v="a">(a) los ceros de $f'$</button><button data-v="b">(b) los ceros de $f'$ y los bordes $a$, $b$</button><button data-v="c">(c) los puntos críticos ($f'=0$ o sin derivada) y los bordes</button><button data-v="d">(d) los ceros de $f''$</button></div>
+    <div class="exp">Prop. 3.4 (U p.126), con la Def. 3.5 de punto crítico: también cuentan los puntos donde $f$ no es derivable. La (b) olvida, por ejemplo, el pico de $|x^2-4|$ en $x=-2$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>3.</b> (V/F) Si $f$ no es derivable en $c$, no puede tener un extremo relativo en $c$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$|x-1|$ tiene un mínimo en $x=1$ y $x^{2/3}$ en $x=0$, sin derivada (E 3.34, 3.35). No ser derivable convierte el punto en candidato (Def. 3.5, U p.126).</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>4.</b> (Elige) En un punto crítico $c$ resulta $f''(c)=0$. Entonces:</p>
+    <div class="opts"><button data-v="a">(a) es un punto de silla</button><button data-v="b">(b) no hay extremo</button><button data-v="c">(c) el criterio de la 2.ª derivada no decide: hay que seguir derivando o mirar el signo de $f'$</button><button data-v="d">(d) es un mínimo</button></div>
+    <div class="exp">Prop. 3.7 (U p.131) no dice nada si $f''(c)=0$. $x^4$ (mínimo), $-x^4$ (máximo) y $x^3$ (silla) tienen todas $f''(0)=0$; decide la Prop. 3.8 (U p.132) o el signo de $f'$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>5.</b> (V/F) Toda función continua en $(0,1)$ alcanza un máximo absoluto.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Weierstrass (Prop. 1.15, U p.52) exige intervalo cerrado y acotado. $f(x)=x$ en $(0,1)$ se acerca a $1$ sin alcanzarlo: no tiene máximo.</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>6.</b> (Elige) El máximo absoluto de $f(x)=x^3-3x$ en $[0,3]$ es:</p>
+    <div class="opts"><button data-v="a">(a) $2$, en $x=-1$</button><button data-v="b">(b) $-2$, en $x=1$</button><button data-v="c">(c) $18$, en $x=3$</button><button data-v="d">(d) no tiene</button></div>
+    <div class="exp">Candidatos en $[0,3]$: $0$, $1$ y $3$ ($x=-1$ no está en el intervalo). $f(0)=0$, $f(1)=-2$, $f(3)=18$: gana un borde (Prop. 3.4, U p.126). En $x=1$ está el mínimo.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>7.</b> (V/F) En un problema de optimización, si el único punto crítico $c$ cumple $f''(c)&lt;0$, eso solo ya prueba que $f(c)$ es el máximo absoluto.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$f''(c)&lt;0$ da un máximo <em>relativo</em> (Prop. 3.7, U p.131). Para el absoluto hay que comparar con los bordes o los límites, o ver que $f$ crece antes de $c$ y decrece después (U pp.126-128).</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>8.</b> (Elige) En un punto crítico $c$ se anulan $f''$, $f'''$ y $f^{(4)}$, y $f^{(5)}(c)=7$. Entonces en $c$ hay:</p>
+    <div class="opts"><button data-v="a">(a) un mínimo relativo</button><button data-v="b">(b) un máximo relativo</button><button data-v="c">(c) un punto de silla</button><button data-v="d">(d) no se puede saber</button></div>
+    <div class="exp">La primera derivada no nula es de orden $5$, impar: punto de silla (Prop. 3.8, U p.132). El signo solo importa cuando el orden es par.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>9.</b> (V/F) Si $f'&lt;0$ a la izquierda de $c$ y $f'>0$ a la derecha, $f$ tiene siempre un mínimo relativo en $c$, aunque $f$ no sea continua en $c$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">El criterio de la 1.ª derivada (Prop. 3.5, U p.130) pide $f$ continua en $c$. Con un salto puede fallar, como en el Ejemplo 3.23 de U (pp.130-131).</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>10.</b> (Elige) Se busca el rectángulo de perímetro $20$ y área máxima, llamando $x$ a uno de sus lados. El dominio de la función área es:</p>
+    <div class="opts"><button data-v="a">(a) $(0,\infty)$</button><button data-v="b">(b) $[0,20]$</button><button data-v="c">(c) $[0,10]$</button><button data-v="d">(d) $\mathbb R$</button></div>
+    <div class="exp">El otro lado es $10-x$; los dos deben ser $\ge0$: $0\le x\le10$. Con el dominio cerrado se aplica el método del intervalo cerrado (U pp.132-133).</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<!-- ============================ ejercicios ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">7</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.29-3.38 y 3.44, pp. 114-127">E pp.114-127</span></h2>
+<p>Se mantiene la numeración de E, pero se agrupan en bloques según lo que enseñan: A (intervalo cerrado), B (valor absoluto y raíces: puntos sin derivada), C (clasificar críticos, también con la gráfica de $f'$) y D (optimización). Cada ejercicio muestra el enunciado, «Antes de calcular» y la receta; la resolución paso a paso está desplegable. Orden recomendado, de fácil a difícil: 3.44 → 3.34 → 3.35 → 3.29 → 3.38 → 3.36 → 3.30 → 3.37 → 3.32 → 3.31 → 3.33. Los ejercicios 3.39-3.43 y 3.45-3.48 (concavidad, inflexión, representación gráfica) <b>se verán en 3.5</b>.</p>
+<h3>Bloque A · Extremos absolutos en un intervalo cerrado</h3>
+<article class="ejer" id="ej-3-32">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.32 · $\dfrac{1-x^2}{x+3}$ en $[-1,1]$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.32, pp. 116-117 · teoría: U Prop. 1.15, p. 52; Prop. 3.4, p. 126; Prop. 3.6-3.7, p. 131. Igual que X Feb 2010, p. 2">E pp.116-117</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=\dfrac{1-x^2}{x+3}$. ¿Dónde alcanza los extremos relativos y absolutos en $[-1,1]$? ¿Cuáles son esos valores extremos?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar dónde y con qué valor alcanza $f(x)=\dfrac{1-x^2}{x+3}$ sus extremos relativos y absolutos en $[-1,1]$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es el método del intervalo cerrado: el máximo y el mínimo absolutos están o en los bordes o donde $f'=0$; basta hacer la lista de candidatos, evaluar y comparar.</dd>
-    <dt>Qué uso</dt><dd>Weierstrass (Prop. 1.15, U p.52); Prop. 3.4 (U p.126); Prop. 3.6-3.7 (U p.131).</dd>
+    <dt>Qué uso</dt><dd>Críticos y bordes → tabla → mayor y menor — <a href="#s1">ver teoría</a> (Weierstrass, U p.52; Prop. 3.4, U p.126).</dd>
     <dt>Por dónde empiezo</dt><dd>Compruebo que $f$ es continua en $[-1,1]$ y derivo con la regla del cociente.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta (intervalo cerrado):</b> continua en $[a,b]$ → críticos interiores → evaluar en críticos y bordes → mayor = máximo, menor = mínimo.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"(1-x^2)/(x+3)","n":"(1−x²)/(x+3)"}],"x":[-1,1],"y":[-0.1,0.45],"q":[[-0.171573,0.343146,"(−0,172; 0,343)"],[-1,0.0,"(−1, 0)"],[1,0.0,"(1, 0)"]]}' data-alt="Grafica de (1-x^2)/(x+3) en [-1,1]"><figcaption>$f(x)=\frac{1-x^2}{x+3}$ en $[-1,1]$: máximo absoluto en $x=-3+2\sqrt2\approx-0{,}172$ (valor $\approx0{,}343$) y mínimo absoluto $0$ en los dos bordes. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li><b>Continuidad.</b> Cociente de polinomios cuyo denominador solo se anula en $x=-3\notin[-1,1]$: continua y derivable en $[-1,1]$. Por Weierstrass (Prop. 1.15) hay máximo y mínimo.</li>
     <li><b>Derivada.</b> $f'(x)=\dfrac{-2x(x+3)-(1-x^2)}{(x+3)^2}=-\dfrac{x^2+6x+1}{(x+3)^2}$.</li>
@@ -444,18 +651,50 @@
     <li><b>Valores.</b> $f(-1)=0$, $f(1)=0$, $f(x_1)=6-2\sqrt8=6-4\sqrt2\approx0{,}343$.</li>
     <li><b>Conclusión.</b> Máximo absoluto (y relativo) en $x_1=-3+2\sqrt2\approx-0{,}17$, de valor $6-4\sqrt2\approx0{,}343$. Mínimo absoluto $0$ en $x=-1$ y en $x=1$; con la Def. 3.6 de U, son también <b>mínimos relativos</b> (en el borde).</li>
   </ol>
-  <div class="recipe"><b>Receta (intervalo cerrado):</b> continua en $[a,b]$ → críticos interiores → evaluar en críticos y bordes → mayor = máximo, menor = mínimo.</div>
+  <p><b>Teoría:</b> <a href="#s1">apartado 1</a> (U pp.126-128).</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-31"><summary>Ejercicio 3.31 · extremos de la velocidad $v=s'$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.31, pp. 115-116 · teoría: U Prop. 3.5-3.7, pp. 130-131; U §2.1 (derivada como velocidad)">E pp.115-116</span></summary>
-<p class="enun">Un móvil recorre $s(t)=t^4-8t^3+18t^2$ metros, con $t\in[0,+\infty)$ en segundos. ¿Cuáles son su velocidad y su aceleración? ¿Alcanza la velocidad algún valor máximo o mínimo relativo? ¿Cuándo? ¿Y absolutos?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-3-33" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 3.33 · sistema + intervalo cerrado</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.33, pp. 117-118 · teoría: U Prop. 3.4-3.7, pp. 126-131">E pp.117-118</span></header>
+<div class="ejer-enun"><p class="enun">La distancia (m) de una partícula a un punto fijo $P$ es $s(t)=at^3+bt^2+ct+d$, $t\in[0,6]$. Está en $P$ en $t=0$ y a 10 m al cabo de un segundo; su velocidad es nula en $t=0$ y $t=5$. Determina $a,b,c,d$ y los valores extremos relativos y absolutos de la distancia en $[0,6]$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Determinar los coeficientes de $s(t)=at^3+bt^2+ct+d$ a partir de los datos y hallar sus extremos relativos y absolutos en $[0,6]$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada frase del enunciado («está en $P$ en $t=0$», «velocidad nula en…») es una ecuación sobre $s$ o $s'$. Con los coeficientes ya conocidos, queda un problema de intervalo cerrado de manual.</dd>
+    <dt>Qué uso</dt><dd>Cuatro datos = cuatro ecuaciones; después, críticos y bordes — <a href="#s1">ver teoría</a> (Prop. 3.4, U p.126).</dd>
+    <dt>Por dónde empiezo</dt><dd>Traduzco los cuatro datos a ecuaciones: $s(0)=0$, $s(1)=10$, $s'(0)=0$, $s'(5)=0$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> «pasa por… / velocidad nula en…» → ecuaciones lineales en los coeficientes; después, método del intervalo cerrado y, para cada borde, mirar si la función crece o decrece al llegar a él.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"c":[{"e":"(-20*x^3+150*x^2)/13","n":"s(t)"}],"x":[0,6],"y":[-5,105],"ex":"t (s)","ey":"s (m)","q":[[0,0.0,"(0, 0)"],[5,96.153846,"(5; 96,15)"],[6,83.076923,"(6; 83,08)"]]}' data-alt="Distancia s(t) en [0,6]"><figcaption>Distancia $s(t)=-\frac{20}{13}t^3+\frac{150}{13}t^2$ en $[0,6]$: mínimo absoluto $0$ en $t=0$, máximo absoluto $\frac{1250}{13}\approx96{,}15$ en $t=5$ y en $t=6$ un mínimo relativo no absoluto ($\approx83{,}08$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Traducir.</b> «En $P$ en $t=0$»: $s(0)=0$. «A 10 m tras 1 s»: $s(1)=10$. «Velocidad nula en 0 y 5»: $s'(0)=0$, $s'(5)=0$.</li>
+    <li><b>Sistema.</b> $s'(t)=3at^2+2bt+c$. Queda: $d=0$; $a+b+c+d=10$; $c=0$; $75a+10b+c=0$.</li>
+    <li><b>Resolver.</b> Con $c=d=0$: $a+b=10$ y $75a+10b=0\Rightarrow b=-7{,}5a$; $a-7{,}5a=10\Rightarrow a=-\frac{20}{13}$, $b=\frac{150}{13}$. Así $s(t)=-\frac{20}{13}t^3+\frac{150}{13}t^2$.</li>
+    <li><b>Críticos.</b> $s'(t)=-\frac{60}{13}t(t-5)=0\iff t=0$ (borde) o $t=5$ (interior).</li>
+    <li><b>Monotonía.</b> En $(0,5)$: $t>0$, $t-5&lt;0$ y el signo $-$ delante dan $s'>0$ (crece). En $(5,6)$: $s'&lt;0$ (decrece). Máximo relativo en $t=5$ ($s''(5)=-\frac{300}{13}&lt;0$).</li>
+    <li><b>Valores.</b> $s(0)=0$; $s(5)=\frac{1250}{13}\approx96{,}15$; $s(6)=\frac{1080}{13}\approx83{,}08$.</li>
+    <li><b>Conclusión.</b> Mínimo absoluto $0$ en $t=0$ (también relativo, en el borde). Máximo absoluto y relativo $\frac{1250}{13}$ m en $t=5$. En $t=6$ hay un <b>mínimo relativo</b> (borde derecho, $s$ viene decreciendo) pero <b>no</b> absoluto, porque $s(0)=0&lt;s(6)$.</li>
+  </ol>
+  <div class="box warn"><span class="h">Error típico</span><p>Olvidar que $t=6$ es candidato (borde, no crítico) o llamarlo mínimo absoluto.</p></div>
+  <p><b>Teoría:</b> <a href="#s1">apartado 1</a> (U pp.126-128).</p>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-31" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 3.31 · extremos de la velocidad $v=s'$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.31, pp. 115-116 · teoría: U Prop. 3.5-3.7, pp. 130-131; U §2.1 (derivada como velocidad)">E pp.115-116</span></header>
+<div class="ejer-enun"><p class="enun">Un móvil recorre $s(t)=t^4-8t^3+18t^2$ metros, con $t\in[0,+\infty)$ en segundos. ¿Cuáles son su velocidad y su aceleración? ¿Alcanza la velocidad algún valor máximo o mínimo relativo? ¿Cuándo? ¿Y absolutos?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dada la posición $s(t)$, hallar velocidad y aceleración y los extremos relativos y absolutos de la <b>velocidad</b> en $[0,\infty)$.</dd>
     <dt>Cómo lo pienso</dt><dd>La función que estudio es la velocidad $v=s'$, así que «su derivada» es la aceleración: los críticos de $v$ son los ceros de $a$. Como el dominio no está acotado, para los absolutos miraré qué pasa en el infinito.</dd>
-    <dt>Qué uso</dt><dd>Criterio de la 1.ª y 2.ª derivada (Prop. 3.5-3.7, U pp.130-131); derivada como velocidad (U §2.1).</dd>
+    <dt>Qué uso</dt><dd>Extremos de $v$ = ceros de $a=v'$ y su signo; absolutos con límites — <a href="#s2">ver teoría</a> (Prop. 3.5-3.7, U pp.130-131).</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $v=s'$ y $a=v'$ y factorizo $a$ para ver sus ceros.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> «extremos de la velocidad» = extremos de $s'$: derivar una vez más y tabla de signos. En dominios no acotados, el máximo/mínimo absoluto se decide con los <b>límites</b> en el infinito.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"4*x^3-24*x^2+36*x","n":"v(t)=4t³−24t²+36t"}],"x":[0,4.2],"y":[-2,30],"ex":"t (s)","ey":"v (m/s)","q":[[1,16,"(1, 16)"],[3,0,"(3, 0)"],[0,0,"(0, 0)"]]}' data-alt="Velocidad v(t) con maximo relativo en t=1 y minimo en t=3"><figcaption>Velocidad $v(t)$ para $t\ge0$: máximo relativo $v(1)=16$, mínimo relativo y absoluto $v(3)=0$ (también $v(0)=0$) y crece sin límite después. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li><b>Velocidad y aceleración.</b> $v(t)=s'(t)=4t^3-24t^2+36t$; $a(t)=v'(t)=12t^2-48t+36=12(t-1)(t-3)$.</li>
     <li><b>Candidatos.</b> $a=0\iff t=1$ o $t=3$; además $t=0$ es el borde de $[0,\infty)$ (Prop. 3.6).</li>
@@ -469,79 +708,277 @@
     <li><b>Relativos (Prop. 3.5).</b> $t=1$: sube y luego baja, <b>máximo relativo</b>, $v(1)=16$ m/s. $t=3$: baja y luego sube, <b>mínimo relativo</b>, $v(3)=0$. $t=0$: borde izquierdo con $v$ creciendo, <b>mínimo relativo</b> en el borde, $v(0)=0$. (Con Prop. 3.7: $v''=24t-48$; $v''(1)=-24&lt;0$, $v''(3)=24>0$.)</li>
     <li><b>Absolutos.</b> $\lim_{t\to+\infty}v(t)=+\infty$ (domina $4t^3$): <b>no hay máximo absoluto</b>. Como $v(t)=4t(t-3)^2\ge0$ para $t\ge0$ y vale $0$ en $t=0$ y $t=3$: <b>mínimo absoluto $0$ en $t=0$ y $t=3$</b>.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> «extremos de la velocidad» = extremos de $s'$: derivar una vez más y tabla de signos. En dominios no acotados, el máximo/mínimo absoluto se decide con los <b>límites</b> en el infinito.</div>
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a> (U pp.130-131).</p>
+  </details>
 </details>
-<details class="sol" id="ej-3-33"><summary>Ejercicio 3.33 · sistema + intervalo cerrado <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.33, pp. 117-118 · teoría: U Prop. 3.4-3.7, pp. 126-131">E pp.117-118</span></summary>
-<p class="enun">La distancia (m) de una partícula a un punto fijo $P$ es $s(t)=at^3+bt^2+ct+d$, $t\in[0,6]$. Está en $P$ en $t=0$ y a 10 m al cabo de un segundo; su velocidad es nula en $t=0$ y $t=5$. Determina $a,b,c,d$ y los valores extremos relativos y absolutos de la distancia en $[0,6]$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Determinar los coeficientes de $s(t)=at^3+bt^2+ct+d$ a partir de los datos y hallar sus extremos relativos y absolutos en $[0,6]$.</dd>
-    <dt>Cómo lo pienso</dt><dd>Cada frase del enunciado («está en $P$ en $t=0$», «velocidad nula en…») es una ecuación sobre $s$ o $s'$. Con los coeficientes ya conocidos, queda un problema de intervalo cerrado de manual.</dd>
-    <dt>Qué uso</dt><dd>Método del intervalo cerrado (Prop. 3.4, U p.126); criterios de extremos relativos (Prop. 3.5-3.7, U pp.130-131).</dd>
-    <dt>Por dónde empiezo</dt><dd>Traduzco los cuatro datos a ecuaciones: $s(0)=0$, $s(1)=10$, $s'(0)=0$, $s'(5)=0$.</dd>
+</article>
+<h3>Bloque B · Valor absoluto y raíces: puntos sin derivada</h3>
+<article class="ejer" id="ej-3-34">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.34 · $f(x)=|x-1|$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.34, p. 119 · teoría: U Def. 3.4-3.5, p. 126; Prop. 3.5, p. 130">E p.119</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=|x-1|$. ¿Tiene un extremo en $x=1$? ¿Es máximo o mínimo?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si $f(x)=|x-1|$ tiene un extremo en $x=1$ y de qué tipo.</dd>
+    <dt>Cómo lo pienso</dt><dd>La gráfica es una «V»: en el vértice no hay derivada, pero es claramente el punto más bajo. Lo que no se puede hacer es buscar el extremo solo donde $f'=0$.</dd>
+    <dt>Qué uso</dt><dd>Crítico = $f'=0$ o $f$ no derivable — <a href="#s1">ver teoría</a> (Def. 3.5, U p.126; Prop. 3.6, U p.131).</dd>
+    <dt>Por dónde empiezo</dt><dd>Escribo $f$ a trozos y calculo las derivadas laterales en $x=1$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"(-20*x^3+150*x^2)/13","n":"s(t)"}],"x":[0,6],"y":[-5,105],"ex":"t (s)","ey":"s (m)","q":[[0,0.0,"(0, 0)"],[5,96.153846,"(5; 96,15)"],[6,83.076923,"(6; 83,08)"]]}' data-alt="Distancia s(t) en [0,6]"><figcaption>Distancia $s(t)=-\frac{20}{13}t^3+\frac{150}{13}t^2$ en $[0,6]$: mínimo absoluto $0$ en $t=0$, máximo absoluto $\frac{1250}{13}\approx96{,}15$ en $t=5$ y en $t=6$ un mínimo relativo no absoluto ($\approx83{,}08$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
+  <div class="recipe"><b>Receta:</b> con un valor absoluto o una raíz, mira <b>también</b> los puntos donde no hay derivada; muchas veces basta $|\cdot|\ge0$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"c":[{"e":"abs(x-1)","n":"|x−1|"}],"x":[-2,4],"y":[-0.5,3.5],"q":[[1,0,"(1, 0)"]]}' data-alt="Valor absoluto |x-1| con vértice en (1,0)"><figcaption>La «V» de $|x-1|$: en el vértice $(1,0)$ no hay derivada, pero es el punto más bajo (mínimo absoluto). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
   <ol class="steps">
-    <li><b>Traducir.</b> «En $P$ en $t=0$»: $s(0)=0$. «A 10 m tras 1 s»: $s(1)=10$. «Velocidad nula en 0 y 5»: $s'(0)=0$, $s'(5)=0$.</li>
-    <li><b>Sistema.</b> $s'(t)=3at^2+2bt+c$. Queda: $d=0$; $a+b+c+d=10$; $c=0$; $75a+10b+c=0$.</li>
-    <li><b>Resolver.</b> Con $c=d=0$: $a+b=10$ y $75a+10b=0\Rightarrow b=-7{,}5a$; $a-7{,}5a=10\Rightarrow a=-\frac{20}{13}$, $b=\frac{150}{13}$. Así $s(t)=-\frac{20}{13}t^3+\frac{150}{13}t^2$.</li>
-    <li><b>Críticos.</b> $s'(t)=-\frac{60}{13}t(t-5)=0\iff t=0$ (borde) o $t=5$ (interior).</li>
-    <li><b>Monotonía.</b> En $(0,5)$: $t>0$, $t-5&lt;0$ y el signo $-$ delante dan $s'>0$ (crece). En $(5,6)$: $s'&lt;0$ (decrece). Máximo relativo en $t=5$ ($s''(5)=-\frac{300}{13}&lt;0$).</li>
-    <li><b>Valores.</b> $s(0)=0$; $s(5)=\frac{1250}{13}\approx96{,}15$; $s(6)=\frac{1080}{13}\approx83{,}08$.</li>
-    <li><b>Conclusión.</b> Mínimo absoluto $0$ en $t=0$ (también relativo, en el borde). Máximo absoluto y relativo $\frac{1250}{13}$ m en $t=5$. En $t=6$ hay un <b>mínimo relativo</b> (borde derecho, $s$ viene decreciendo) pero <b>no</b> absoluto, porque $s(0)=0&lt;s(6)$.</li>
+    <li><b>A trozos.</b> $f(x)=x-1$ si $x\ge1$; $f(x)=1-x$ si $x&lt;1$. Donde sí hay derivada: $f'=1$ (si $x>1$) y $f'=-1$ (si $x&lt;1$); nunca vale $0$.</li>
+    <li><b>En $x=1$.</b> Derivadas laterales: $\lim_{x\to1^-}\frac{f(x)-f(1)}{x-1}=-1$ y $\lim_{x\to1^+}\frac{f(x)-f(1)}{x-1}=1$. Distintas: $f$ no es derivable en $1$, que es por tanto punto crítico (Def. 3.5), el único candidato (Prop. 3.6).</li>
+    <li><b>Decidir por la definición.</b> $|x-1|\ge0=f(1)$ para todo $x$: <b>mínimo absoluto</b> en $x=1$ (y, por tanto, relativo).</li>
+    <li>(Alternativa con la Prop. 3.5: $f$ continua, decreciente a la izquierda ($f'=-1$) y creciente a la derecha ($f'=1$).)</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> «pasa por… / velocidad nula en…» → ecuaciones lineales en los coeficientes; después, método del intervalo cerrado y, para cada borde, mirar si la función crece o decrece al llegar a él.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Olvidar que $t=6$ es candidato (borde, no crítico) o llamarlo mínimo absoluto.</p></div>
+  <div class="box warn"><span class="h">Error típico</span><p>«$f'$ nunca vale $0$, luego no hay extremos»: se olvida la otra mitad de la Def. 3.5 (no derivable).</p></div>
+  <p><b>Teoría:</b> <a href="#s1">apartado 1</a> (U p.126).</p>
+  </details>
 </details>
-<!-- ============================ 5 ============================ -->
-<h2 id="propios"><span class="n">5</span>Ejemplos propios (de fácil a difícil) <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></h2>
-<details class="sol" id="p1"><summary>Propio 1 · intervalo cerrado: el ganador es un borde  <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
-<p class="enun">Halla los extremos absolutos de $f(x)=x^3-3x+1$ en $[-2,3]$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-3-35">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 3.35 · $f(x)=x^{2/3}$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.35, pp. 119-120 · teoría: U Def. 3.4-3.5, p. 126">E pp.119-120</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=x^{2/3}$. ¿Alcanza un extremo relativo en $x=0$? Si es así, ¿de qué tipo?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Averiguar si $f(x)=x^{2/3}$ tiene un extremo relativo en $x=0$ y de qué tipo.</dd>
+    <dt>Cómo lo pienso</dt><dd>$x^{2/3}=(\sqrt[3]{x})^2$ es un cuadrado, nunca negativo; en $0$ vale $0$: mínimo, aunque la gráfica tenga ahí un pico vertical (sin derivada).</dd>
+    <dt>Qué uso</dt><dd>Crítico = $f'=0$ o $f$ no derivable; se clasifica por definición — <a href="#s1">ver teoría</a> (Def. 3.4-3.5, U p.126).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo las derivadas laterales de $f$ en $0$ con el cociente incremental.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> en potencias fraccionarias, derivadas laterales en el punto sospechoso; si no existen, es crítico y se clasifica por definición o por monotonía.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"c":[{"e":"pow(abs(x),2/3)","n":"x^(2/3)"}],"x":[-3,3],"y":[-0.3,2.5],"q":[[0,0.0,"(0, 0)"]]}' data-alt="x^(2/3) con pico en el origen"><figcaption>La gráfica de $x^{2/3}$: pico con tangente vertical en $(0,0)$, que es el mínimo (relativo y absoluto). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>¿Derivable en 0?</b> $\lim_{x\to0^-}\frac{x^{2/3}-0}{x}=\lim_{x\to0^-}x^{-1/3}=-\infty$ y $\lim_{x\to0^+}x^{-1/3}=+\infty$. (Ejemplo: $x=-0{,}001$ da $x^{-1/3}=-10$; con $x=-10^{-6}$, $-100$: crece sin límite en negativo.)</li>
+    <li><b>Conclusión.</b> No es derivable en $0$: punto crítico (Def. 3.5).</li>
+    <li><b>Clasificar.</b> $f(x)=(\sqrt[3]x)^2\ge0=f(0)$: <b>mínimo absoluto</b> y relativo.</li>
+  </ol>
+  <div class="box warn"><span class="h">Error típico</span><p>Sustituir $x=0$ en $f'=\frac23x^{-1/3}$, ver «división por cero» y decir «no hay extremo». La no derivabilidad no impide el extremo: lo hace candidato.</p></div>
+  <p><b>Teoría:</b> <a href="#s1">apartado 1</a> (U p.126).</p>
+  </details>
+</details>
+</article>
+<h3>Bloque C · Clasificar puntos críticos</h3>
+<article class="ejer" id="ej-3-44">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.44 · $f(x)=(x-1)^2$: ¿qué hay en $x=1$?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.44, pp. 126-127 · teoría: U Prop. 3.7, p. 131 y Def. 3.4, p. 126">E pp.126-127</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=(x-1)^2$. ¿Cuál es correcta? a) En $x=1$ hay un máximo relativo. b) En $x=1$ hay un mínimo relativo no absoluto. c) En $x=1$ alcanza el único mínimo relativo y absoluto. d) En $x=1$ tiene un punto de inflexión.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir cuál de cuatro afirmaciones describe lo que ocurre en $x=1$ para $f(x)=(x-1)^2$ (relativo/absoluto, máximo/mínimo, inflexión).</dd>
+    <dt>Cómo lo pienso</dt><dd>Un cuadrado nunca es negativo y solo vale $0$ cuando lo de dentro es $0$: $x=1$ es el fondo de la parábola. Hay que comprobar además si ese mínimo es solo local o global.</dd>
+    <dt>Qué uso</dt><dd>$f'(c)=0$ y $f''(c)>0$ ⇒ mínimo relativo; para el absoluto, una desigualdad global — <a href="#s2">ver teoría</a> (Prop. 3.7, U p.131; Def. 3.4, U p.126).</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivo y resuelvo $f'(x)=0$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> polinomio: $f'=0$, signo de $f''$ en el crítico y, para «absoluto», una desigualdad global (cuadrado $\ge0$) o los límites en $\pm\infty$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"c":[{"e":"(x-1)^2","n":"(x−1)²"}],"x":[-1,3],"y":[-0.5,5],"q":[[1,0,"(1, 0)"]]}' data-alt="Parábola (x-1)^2 con mínimo en (1,0)"><figcaption>La parábola $(x-1)^2$: el fondo $(1,0)$ es el único mínimo, relativo y absoluto. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Críticos.</b> $f$ es polinomio (derivable en todo $\mathbb R$): $f'(x)=2(x-1)=0\iff x=1$.</li>
+    <li><b>2.ª derivada.</b> $f''(1)=2>0$: mínimo relativo (Prop. 3.7). Descarta a).</li>
+    <li><b>¿Absoluto?</b> $f(x)=(x-1)^2\ge0=f(1)$ para todo $x$: mínimo absoluto (Def. 3.4). Descarta b).</li>
+    <li><b>¿Único?</b> Los extremos relativos de una función derivable están en puntos críticos (Prop. 3.6) y el único es $x=1$.</li>
+    <li><b>Inflexión</b> (de 3.5): la concavidad cambiaría si $f''$ cambiase de signo; aquí $f''=2>0$ siempre. d) es falsa.</li>
+    <li><b>Respuesta: c).</b></li>
+  </ol>
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a> (U pp.130-131).</p>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-29">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 3.29 · leer la gráfica de $f'$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.29, p. 114 · teoría: U Prop. 3.5, p. 130; Prop. 2.4, p. 98">E p.114</span></header>
+<div class="ejer-enun"><p class="enun">De $f:\mathbb R\to\mathbb R$ tres veces derivable conocemos la gráfica de su derivada $f'$ (en E, p. 114: una curva tipo $y=x^3$, negativa a la izquierda de $0$ y positiva a la derecha, con tangente horizontal en el origen). ¿Cuál es correcta? a) $f$ alcanza un mínimo relativo en $x=0$. b) Máximo relativo en $x=0$. c) $f$ es siempre creciente. d) Ninguna.</p>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_3_29.png" alt="Gráfica de f': curva tipo x al cubo, negativa a la izquierda del origen, positiva a la derecha, con tangente horizontal en el origen" loading="lazy">
+  <figcaption>Gráfica de $f'$ del enunciado. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.29, figura de p. 114">E p.114</span></figcaption>
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>A partir de la gráfica de $f'$, decidir qué ocurre con $f$ en $x=0$ (mínimo, máximo, siempre creciente, ninguna).</dd>
+    <dt>Cómo lo pienso</dt><dd>La gráfica de $f'$ es el «semáforo» de $f$: bajo el eje $x$, $f$ baja; sobre el eje, $f$ sube. Un extremo aparece donde $f'$ cruza el eje cambiando de signo.</dd>
+    <dt>Qué uso</dt><dd>Hay extremo donde $f'$ corta el eje cambiando de signo — <a href="#s2">ver teoría</a> (Prop. 3.5, U p.130; Prop. 2.4, U p.98).</dd>
+    <dt>Por dónde empiezo</dt><dd>Localizo dónde $f'$ corta al eje $x$ y miro su signo a cada lado.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> con la gráfica de $f'$: críticos = cortes con el eje $x$; hay extremo si $f'$ <b>cambia de signo</b> (de $-$ a $+$ mínimo; de $+$ a $-$ máximo).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Críticos:</b> donde $f'$ corta al eje $x$: solo $x=0$.</li>
+    <li><b>Signos:</b> en $(-\infty,0)$, $f'&lt;0$, $f$ decreciente (Prop. 2.4); en $(0,\infty)$, $f'>0$, creciente.</li>
+    <li><b>Clasificar:</b> $f$ es continua (derivable), baja y luego sube: mínimo relativo (Prop. 3.5). De hecho absoluto.</li>
+    <li>b) es lo contrario; c) falla porque decrece en $(-\infty,0)$.</li>
+    <li><b>Respuesta: a).</b></li>
+  </ol>
+  <div class="box warn"><span class="h">Error típico</span><p>Razonar con «la curva sube» de la gráfica de $f'$ como si fuera la de $f$. Aquí tampoco sirve la Prop. 3.7: $f''(0)=0$ (tangente horizontal de $f'$).</p></div>
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a> (U pp.130-131).</p>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-36">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 3.36 · cortar el eje o solo tocarlo</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.36, p. 120 · teoría: U Prop. 3.5-3.6 y Def. 3.7, pp. 130-131">E p.120</span></header>
+<div class="ejer-enun"><p class="enun">La gráfica de $f'$ (de $f$ dos veces derivable en $\mathbb R$) aparece en E p. 120: corta al eje en $x=-2$ subiendo, tiene un máximo de altura $2$ en $x=-1$, vale $1$ en $x=0$, toca el eje en $x=1$ sin cruzarlo y luego crece. a) $f$ tiene dos puntos críticos, pero un solo extremo relativo. b) $f$ tiene dos extremos relativos. c) $f''(x)=0$ no tiene soluciones reales.</p>
+  <figure class="bookfig">
+  <img src="../assets/img/fig_e_3_36.png" alt="Gráfica de f': corta al eje x en -2 subiendo, máximo de altura 2 en x=-1, vale 1 en x=0, toca el eje en x=1 sin cruzarlo y luego crece" loading="lazy">
+  <figcaption>Gráfica de $f'$ del enunciado. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.36, figura de p. 120">E p.120</span></figcaption>
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Con la gráfica de $f'$, decidir cuántos puntos críticos y cuántos extremos relativos tiene $f$ y si $f''=0$ tiene soluciones.</dd>
+    <dt>Cómo lo pienso</dt><dd>Un cero de $f'$ donde $f'$ <b>cruza</b> el eje da extremo; si solo <b>toca</b> y rebota, $f$ sigue creciendo (o decreciendo): punto de silla. Los picos y valles de $f'$ tienen tangente horizontal, es decir, $f''=0$ ahí.</dd>
+    <dt>Qué uso</dt><dd>Extremo si $f'$ cambia de signo; si solo toca el eje, silla — <a href="#s2">ver teoría</a> (Prop. 3.5, U p.130; Def. 3.7, U p.131).</dd>
+    <dt>Por dónde empiezo</dt><dd>Marco los ceros de $f'$ en la gráfica y miro, uno a uno, si hay cambio de signo.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> clasifica cada cero de $f'$ mirando si hay cambio de signo; los picos y valles de la gráfica de $f'$ son ceros de $f''$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Críticos:</b> $x=-2$ y $x=1$ (dos).</li>
+    <li><b>$x=-2$:</b> $f'$ pasa de $-$ a $+$: mínimo relativo (Prop. 3.5).</li>
+    <li><b>$x=1$:</b> $f'>0$ a ambos lados: $f$ creciente en $(-2,\infty)$, sin extremo: punto de silla (Def. 3.7).</li>
+    <li><b>a) correcta, b) falsa.</b></li>
+    <li><b>c):</b> $f''=(f')'$. $f'$ tiene un máximo relativo en $x=-1$ y un mínimo en $x=1$ (se ve en la gráfica); son puntos críticos de $f'$, luego $f''(-1)=f''(1)=0$. c) es <b>falsa</b>.</li>
+  </ol>
+  <div class="box warn"><span class="h">Error típico</span><p>«Dos ceros de $f'$ = dos extremos».</p></div>
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a> (U pp.130-131).</p>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-30" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 3.30 · cúbica: ¿siempre un máximo y un mínimo?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.30, p. 114 · teoría: U Prop. 3.6, p. 131">E p.114</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=ax^3+bx^2+cx+d$, $a\ne0$. ¿Es cierto que $f$ tiene exactamente un máximo local y un mínimo local, cualesquiera que sean $a,b,c,d$?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si toda cúbica $ax^3+bx^2+cx+d$ ($a\ne0$) tiene exactamente un máximo y un mínimo locales.</dd>
+    <dt>Cómo lo pienso</dt><dd>Los extremos están en los ceros de $f'$, que es una parábola; una parábola puede cortar el eje dos veces, una (tangente) o ninguna. Así que la respuesta probable es «no», y basta un contraejemplo.</dd>
+    <dt>Qué uso</dt><dd>Un extremo relativo de una función derivable exige $f'=0$, y aquí $f'$ es una parábola — <a href="#s2">ver teoría</a> (Prop. 3.6, U p.131).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo $f'(x)=3ax^2+2bx+c$ y pienso cuántas raíces reales puede tener.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> para «¿siempre…?», busca un contraejemplo sencillo; en cúbicas, mira el discriminante de $f'$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"c":[{"e":"x^3-3*x","n":"x³−3x (dos extremos)"},{"e":"x^3","n":"x³ (silla)"},{"e":"2*x^3+6*x","n":"2x³+6x (creciente)"}],"x":[-2,2],"y":[-7,7],"q":[[-1,2,"(−1, 2)"],[1,-2,"(1, −2)"]]}' data-alt="Tres cúbicas: con dos extremos, con punto de silla y creciente"><figcaption>Tres cúbicas: $x^3-3x$ tiene un máximo $(-1,2)$ y un mínimo $(1,-2)$; $x^3$ y $2x^3+6x$ no tienen ningún extremo, luego no toda cúbica tiene uno de cada. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Derivada:</b> $f'(x)=3ax^2+2bx+c$, de grado 2.</li>
+    <li><b>Dónde:</b> $f$ es derivable: los extremos relativos solo están en los ceros de $f'$ (Prop. 3.6).</li>
+    <li><b>Contraejemplos</b> (basta uno):
+      <ul>
+        <li>$f(x)=2x^3+6x$: $f'=6x^2+6>0$, sin raíces; $f$ estrictamente creciente, <b>ningún</b> extremo.</li>
+        <li>$f(x)=x^3$: $f'=3x^2$ solo se anula en $0$ y no cambia de signo: punto de silla.</li>
+      </ul></li>
+    <li><b>Respuesta: no es cierto.</b> Solo ocurre si $f'$ tiene dos raíces reales distintas: discriminante $4b^2-12ac>0$ (ej.: $x^3-3x$, críticos $\pm1$).</li>
+  </ol>
+  <div class="box warn"><span class="h">Error típico</span><p>Creer que toda cúbica tiene forma de S con un pico y un valle.</p></div>
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a> (U p.131).</p>
+  </details>
+</details>
+</article>
+<h3>Bloque D · Problemas de optimización</h3>
+<article class="ejer" id="ej-3-38">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 3.38 · rectángulo de perímetro 100 y área máxima</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.38, pp. 121-122 · equivale a U Ej. 3.25, pp. 132-133">E pp.121-122</span></header>
+<div class="ejer-enun"><p class="enun">Queremos construir un rectángulo con 100 cm de perímetro de forma que su área sea máxima. ¿Cuál es la longitud de sus lados?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Entre los rectángulos de perímetro 100 cm, hallar los lados del de área máxima.</dd>
+    <dt>Cómo lo pienso</dt><dd>Si un lado es muy corto el área es casi nula, y lo mismo si es muy largo (el otro se encoge): el máximo está en medio. La restricción del perímetro deja el área en función de un solo lado.</dd>
+    <dt>Qué uso</dt><dd>Restricción → una variable → intervalo cerrado — <a href="#s3">ver teoría</a> (Ej. 3.25, U pp.132-133; Prop. 3.4, U p.126).</dd>
+    <dt>Por dónde empiezo</dt><dd>Llamo $a,b$ a los lados y despejo $b=50-a$ en $2a+2b=100$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> la de optimización de §3.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <p>Mismo problema que el Ejemplo 3.25 de U (§3), con $a$ y $b$ en lugar de $x$ y $50-x$.</p>
+  <ol class="steps">
+    <li><b>Función y dominio.</b> $2a+2b=100\Rightarrow b=50-a$; $S(a)=a(50-a)$, $a\in[0,50]$.</li>
+    <li><b>Crítico y comparación.</b> $S'(a)=50-2a=0\iff a=25$; $S(0)=S(50)=0&lt;S(25)=625$: máximo absoluto.</li>
+    <li><b>Respuesta:</b> $a=b=25$ cm (un cuadrado), área $625$ cm².</li>
+  </ol>
+  <p><b>Teoría:</b> <a href="#s3">apartado 3</a> (U pp.132-133).</p>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-3-37">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 3.37 · la caja de mayor volumen</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 3.37, pp. 120-121 · teoría: U Prop. 3.4, p. 126; Prop. 3.7, p. 131">E pp.120-121</span></header>
+<div class="ejer-enun"><p class="enun">A una lámina de acero cuadrada de 40 cm de lado se le quitan cuatro cuadrados iguales en las esquinas y se doblan los lados para formar una caja de base cuadrada. Calcula el lado del cuadrado que hay que quitar para maximizar el volumen.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar el lado del cuadrado que hay que recortar en las esquinas de una lámina de $40\times40$ cm para que la caja tenga volumen máximo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Si recorto casi nada la caja es casi plana; si recorto demasiado no queda base: el volumen es $0$ en ambos extremos, luego el máximo está en medio.</dd>
+    <dt>Qué uso</dt><dd>Restricción → una variable → intervalo cerrado → comparar con los bordes — <a href="#s3">ver teoría</a> (Prop. 3.4, U p.126; Ej. 3.25, U p.132).</dd>
+    <dt>Por dónde empiezo</dt><dd>Llamo $d$ al lado recortado y escribo el volumen $V(d)=(40-2d)^2d$ con su dominio.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> igual que 3.38. Un cero de $V'$ que cae en un borde se trata como extremo del intervalo, no como crítico.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"c":[{"e":"x*(40-2*x)^2","n":"V(x)=x(40−2x)²"}],"x":[0,20],"y":[0,5500],"ex":"x (cm)","ey":"V (cm³)","q":[[6.666667,4740.740741,"(20/3, 4740,7)"]]}' data-alt="Volumen de la caja en funcion del lado recortado"><figcaption>Volumen de la caja según el lado $x$ (cm) del cuadrado recortado, $x\in[0,20]$: vale $0$ en los dos extremos y el máximo está en $x=\frac{20}{3}$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>Variable.</b> $d$ = lado del cuadrado recortado = altura de la caja. La base es un cuadrado de lado $40-2d$.</li>
+    <li><b>Función.</b> $V(d)=(40-2d)^2d=4d^3-160d^2+1600d$.</li>
+    <li><b>Dominio.</b> $d\ge0$ y $40-2d\ge0$: $d\in[0,20]$.</li>
+    <li><b>Críticos.</b> $V'(d)=12d^2-320d+1600=4(3d^2-80d+400)=0\iff d=\frac{80\pm\sqrt{6400-4800}}{6}=\frac{80\pm40}6$, es decir $d=\frac{20}3$ o $d=20$. $d=20$ es un borde (no queda base); el único crítico interior es $d=\frac{20}3$.</li>
+    <li><b>Comparar.</b> $V(0)=V(20)=0$ y $V(\tfrac{20}3)=\left(\tfrac{80}3\right)^2\tfrac{20}3=\tfrac{128000}{27}\approx4740{,}7$ cm³: máximo absoluto. (Comprobación: $V''(d)=24d-320$, $V''(\tfrac{20}3)=-160&lt;0$.)</li>
+    <li><b>Respuesta:</b> $d=\frac{20}3\approx6{,}67$ cm (volumen máximo $\approx4741$ cm³).</li>
+  </ol>
+  <p><b>Teoría:</b> <a href="#s3">apartado 3</a> (U pp.132-134).</p>
+  </details>
+</details>
+</article>
+<h3>Ejemplos propios (de fácil a difícil)</h3>
+<article class="ejer" id="p1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Propio 1 · intervalo cerrado: el ganador es un borde </span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></header>
+<div class="ejer-enun"><p class="enun">Halla los extremos absolutos de $f(x)=x^3-3x+1$ en $[-2,3]$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar los extremos absolutos de $x^3-3x+1$ en $[-2,3]$.</dd>
     <dt>Cómo lo pienso</dt><dd>Función continua en un cerrado: el ganador puede ser un punto crítico o un borde, así que hay que comparar todos los candidatos.</dd>
-    <dt>Qué uso</dt><dd>Weierstrass (Prop. 1.15) y método del intervalo cerrado (Prop. 3.4, U p.126).</dd>
+    <dt>Qué uso</dt><dd>Críticos y bordes → tabla → mayor y menor — <a href="#s1">ver teoría</a> (Weierstrass, U p.52; Prop. 3.4, U p.126).</dd>
     <dt>Por dónde empiezo</dt><dd>Resuelvo $f'(x)=0$ y escribo la tabla con los bordes.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> método del intervalo cerrado.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"x^3-3*x+1","n":"x³−3x+1"}],"x":[-2,3],"y":[-3,21],"q":[[3,19,"(3, 19)"],[-1,3,"(−1, 3)"],[-2,-1,"(−2, −1)"],[1,-1,"(1, −1)"]]}' data-alt="x^3-3x+1 en [-2,3]"><figcaption>$f(x)=x^3-3x+1$ en $[-2,3]$: el máximo absoluto está en el borde $x=3$ (valor $19$), no en el máximo relativo $(-1,3)$; el mínimo $-1$ se alcanza en $x=-2$ y en $x=1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li>$f$ continua en $[-2,3]$: hay máximo y mínimo (Prop. 1.15).</li>
     <li>$f'(x)=3x^2-3=3(x-1)(x+1)=0\iff x=\pm1$, ambos en $(-2,3)$.</li>
     <li>Tabla: $f(-2)=-1$, $f(-1)=3$, $f(1)=-1$, $f(3)=19$.</li>
     <li><b>Máximo absoluto $19$ en $x=3$</b> (un borde). <b>Mínimo absoluto $-1$</b>, alcanzado en dos puntos: $x=-2$ y $x=1$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> método del intervalo cerrado.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Creer que el máximo absoluto es el relativo $x=-1$ (valor $3$): el borde da más.</p></div>
+  <p><b>Teoría:</b> <a href="#s1">apartado 1</a> (U pp.126-128).</p>
+  </details>
 </details>
-<details class="sol" id="p2"><summary>Propio 2 · $f(x)=xe^{-x^2/2}$ en $\mathbb R$: relativos y absolutos  <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
-<p class="enun">Estudia los extremos relativos y absolutos de $f(x)=xe^{-x^2/2}$ en $\mathbb R$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="p2" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 2 · $f(x)=xe^{-x^2/2}$ en $\mathbb R$: relativos y absolutos </span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></header>
+<div class="ejer-enun"><p class="enun">Estudia los extremos relativos y absolutos de $f(x)=xe^{-x^2/2}$ en $\mathbb R$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Estudiar los extremos relativos y absolutos de $xe^{-x^2/2}$ en todo $\mathbb R$.</dd>
     <dt>Cómo lo pienso</dt><dd>No hay bordes y el dominio es infinito: los relativos salen de $f'$ y $f''$; para los absolutos hay que saber hacia dónde va $f$ en $\pm\infty$ y comparar con los relativos.</dd>
-    <dt>Qué uso</dt><dd>Criterios de 2.ª derivada (Prop. 3.7, U p.131) y de monotonía (Prop. 3.5, U p.130); límites en el infinito.</dd>
+    <dt>Qué uso</dt><dd>Relativos con $f'$ y $f''$; absolutos con la monotonía y los límites en $\pm\infty$ — <a href="#s2">ver teoría</a> (Prop. 3.5 y 3.7, U pp.130-131; Ej. 3.21, U p.128).</dd>
     <dt>Por dónde empiezo</dt><dd>Derivo y uso que $e^{-x^2/2}>0$ para hallar los ceros de $f'$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> dominio no acotado: relativos con $f''$; absolutos con la monotonía y los límites en $\pm\infty$ (como el Ej. 3.21 de U).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"x*exp(-x^2/2)","n":"x e^(−x²/2)"}],"x":[-4,4],"y":[-0.8,0.8],"q":[[1,0.606531,"(1; 0,607)"],[-1,-0.606531,"(−1; −0,607)"]]}' data-alt="x e^(-x^2/2) con maximo en 1 y minimo en -1"><figcaption>$f(x)=xe^{-x^2/2}$: máximo absoluto $e^{-1/2}\approx0{,}607$ en $x=1$, mínimo absoluto $-e^{-1/2}$ en $x=-1$, y la gráfica se pega al eje $x$ en $\pm\infty$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li>$f'(x)=(1-x^2)e^{-x^2/2}$. Como $e^{-x^2/2}>0$, los críticos son $x=\pm1$.</li>
     <li>$f''(x)=x(x^2-3)e^{-x^2/2}$. $f''(1)=-2e^{-1/2}&lt;0$: máximo relativo, $f(1)=e^{-1/2}\approx0{,}607$. $f''(-1)=2e^{-1/2}>0$: mínimo relativo, $f(-1)=-e^{-1/2}$.</li>
     <li>Límites: $\lim_{x\to+\infty}xe^{-x^2/2}=0$ y $\lim_{x\to-\infty}xe^{-x^2/2}=0$ (la exponencial gana a la potencia; L'Hôpital).</li>
     <li>En $(0,\infty)$, $f'>0$ en $(0,1)$ y $f'&lt;0$ en $(1,\infty)$: sube hasta $x=1$ y luego baja hacia $0$, así que su mayor valor es $f(1)$; en $x\le0$, $f\le0$. <b>Máximo absoluto $e^{-1/2}$ en $x=1$</b>; como $f$ es impar, <b>mínimo absoluto $-e^{-1/2}$ en $x=-1$</b>.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> dominio no acotado: relativos con $f''$; absolutos con la monotonía y los límites en $\pm\infty$ (como el Ej. 3.21 de U).</div>
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a> (U pp.128-131).</p>
+  </details>
 </details>
-<details class="sol" id="p3"><summary>Propio 3 · $f(x)=x^5-5x^4$: cuando $f''(c)=0$  <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
-<p class="enun">Clasifica los puntos críticos de $f(x)=x^5-5x^4$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="p3" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 3 · $f(x)=x^5-5x^4$: cuando $f''(c)=0$ </span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></header>
+<div class="ejer-enun"><p class="enun">Clasifica los puntos críticos de $f(x)=x^5-5x^4$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Clasificar los puntos críticos de $x^5-5x^4$, incluido uno donde $f''$ se anula.</dd>
     <dt>Cómo lo pienso</dt><dd>Donde $f''=0$ el criterio de la 2.ª derivada no decide; hay que mirar la primera derivada que no se anula: orden par, extremo; orden impar, silla.</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.7 (U p.131) y Prop. 3.8 (derivadas de orden superior, U p.132).</dd>
+    <dt>Qué uso</dt><dd>Si $f''(c)=0$, primera derivada no nula: orden par extremo, impar silla — <a href="#s2">ver teoría</a> (Prop. 3.8, U p.132).</dd>
     <dt>Por dónde empiezo</dt><dd>Resuelvo $f'(x)=0$ y evalúo $f''$ en cada crítico.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> si $f''(c)=0$, sigue derivando y mira el orden de la primera derivada no nula (par: extremo; impar: silla). Controla con el signo de $f'$ a ambos lados.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"x^5-5*x^4","n":"x⁵−5x⁴"}],"x":[-1,5],"y":[-300,60],"q":[[0,0,"(0, 0)"],[4,-256,"(4, −256)"]]}' data-alt="x^5-5x^4 con maximo relativo en 0 y minimo en 4"><figcaption>$f(x)=x^5-5x^4$: máximo relativo en $(0,0)$ (un pico muy plano) y mínimo relativo en $(4,-256)$; no hay extremos absolutos. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li>$f'(x)=5x^4-20x^3=5x^3(x-4)$: críticos $x=0$ y $x=4$.</li>
     <li>$x=4$: $f''(x)=20x^3-60x^2$, $f''(4)=1280-960=320>0$: mínimo relativo, $f(4)=-256$.</li>
@@ -549,18 +986,23 @@
     <li>Control con signos de $f'=5x^3(x-4)$: en $x=-0{,}1$ es positiva; en $x=0{,}1$, negativa: crece y luego decrece (máximo).</li>
     <li>No hay extremos absolutos: $\lim_{x\to+\infty}f(x)=+\infty$ y $\lim_{x\to-\infty}f(x)=-\infty$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> si $f''(c)=0$, sigue derivando y mira el orden de la primera derivada no nula (par: extremo; impar: silla). Controla con el signo de $f'$ a ambos lados.</div>
+  <p><b>Teoría:</b> <a href="#s2">apartado 2</a> (U p.132).</p>
+  </details>
 </details>
-<details class="sol" id="p4"><summary>Propio 4 · la lata de 1 litro: optimización en un intervalo abierto  <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></summary>
-<p class="enun">Se quiere fabricar una lata cilíndrica cerrada de 1 litro ($1000$ cm³) con la menor chapa posible. ¿Qué radio y qué altura debe tener?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="p4" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 4 · la lata de 1 litro: optimización en un intervalo abierto </span> <span class="src" data-l="P" data-ref="Ejemplo propio, verificado con sympy">P</span></header>
+<div class="ejer-enun"><p class="enun">Se quiere fabricar una lata cilíndrica cerrada de 1 litro ($1000$ cm³) con la menor chapa posible. ¿Qué radio y qué altura debe tener?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar radio y altura de la lata cilíndrica de 1 litro con menor superficie de chapa.</dd>
     <dt>Cómo lo pienso</dt><dd>Hay dos variables ligadas por el volumen fijo; la restricción permite dejar una sola. El dominio es un intervalo abierto, así que el mínimo absoluto se justifica con el signo de $A'$ o con límites.</dd>
-    <dt>Qué uso</dt><dd>Optimización (U pp.132-134); 2.ª derivada (Prop. 3.7, U p.131); límites en los bordes del dominio.</dd>
+    <dt>Qué uso</dt><dd>Restricción → una variable → dominio abierto: signo de $A'$ y límites — <a href="#s3">ver teoría</a> (Prop. 3.7, U p.131; U pp.132-134).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo $h$ en función de $r$ con $\pi r^2h=1000$ y planteo $A(r)$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> restricción → eliminar una variable → dominio (abierto) → críticos → para el absoluto, signo de $f'$ a cada lado o límites en los bordes.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"c":[{"e":"2*pi*x^2+2000/x","n":"A(r)=2πr²+2000/r"}],"x":[2,10],"y":[450,1050],"ex":"r (cm)","ey":"A (cm²)","q":[[5.419261,553.581045,"(5,42; 553,6)"]]}' data-alt="Superficie de la lata en funcion del radio"><figcaption>Superficie $A(r)$ (cm²) según el radio: baja hasta $r_0\approx5{,}42$ cm y luego sube; el mínimo vale $\approx553{,}6$ cm². Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li><b>Variables y restricción.</b> Radio $r>0$, altura $h>0$ (cm): $\pi r^2h=1000\Rightarrow h=\frac{1000}{\pi r^2}$.</li>
     <li><b>Superficie</b> (dos tapas y el lateral): $A=2\pi r^2+2\pi rh=2\pi r^2+\dfrac{2000}{r}$, con $r\in(0,\infty)$.</li>
@@ -570,82 +1012,147 @@
     <li><b>Altura.</b> $h_0=\frac{1000}{\pi r_0^2}=\frac{1000}{\pi r_0^3}r_0=\frac{1000}{500}r_0=2r_0\approx10{,}84$ cm. Superficie mínima $\approx553{,}6$ cm².</li>
     <li><b>Respuesta:</b> $r\approx5{,}42$ cm y $h=2r\approx10{,}84$ cm (la altura es igual al diámetro).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> restricción → eliminar una variable → dominio (abierto) → críticos → para el absoluto, signo de $f'$ a cada lado o límites en los bordes.</div>
   <div class="box warn"><span class="h">Error típico</span><p>No usar la restricción y derivar $A$ «respecto de $r$» tratando $h$ como constante.</p></div>
+  <p><b>Teoría:</b> <a href="#s3">apartado 3</a> (U pp.132-134).</p>
+  </details>
 </details>
-<!-- ============================ 6 ============================ -->
-<h2 id="examen"><span class="n">6</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+</article>
+<!-- ============================ exámenes ============================ -->
+<h2 id="examenes" data-vista="examen"><span class="n">8</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>8 preguntas</b> de este tema (todas se resuelven aquí abajo con su redacción) y 11 ejercicios en el libro E. Se reparten en 4 tipos:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Extremos en un intervalo cerrado (tabla de valores) <small>(2 de 8)</small></td><td>Continua $\Rightarrow$ hay máximo y mínimo; críticos + bordes; evaluar y comparar.</td>
+      <td><a href="#ej-3-32">3.32</a> · <a href="#ej-3-33">3.33</a> · <a href="#ej-3-31">3.31</a></td>
+      <td><a href="#x1">Examen 1</a> · <a href="#x6">Examen 6</a></td></tr>
+    <tr><td>¿Hay extremo? Valor absoluto, definición o Weierstrass <small>(2 de 8)</small></td><td>$f\ge f(c)$ para todo $x$ da el mínimo sin derivar; continua en cerrado y acotado $\Rightarrow$ máximo y mínimo.</td>
+      <td><a href="#ej-3-34">3.34</a> · <a href="#ej-3-35">3.35</a> · <a href="#ej-3-44">3.44</a></td>
+      <td><a href="#x2">Examen 2</a> · <a href="#x3">Examen 3</a></td></tr>
+    <tr><td>Puntos críticos y su clasificación <small>(2 de 8)</small></td><td>$f'=0$ o sin derivada; signo de $f'$ o de $f''$; si $f''(c)=0$, primera derivada no nula.</td>
+      <td><a href="#ej-3-29">3.29</a> · <a href="#ej-3-30">3.30</a> · <a href="#ej-3-36">3.36</a> · <a href="#ej-3-44">3.44</a></td>
+      <td><a href="#x4">Examen 4</a> · <a href="#x7">Examen 7</a></td></tr>
+    <tr><td>Optimización: suma fija y producto máximo <small>(2 de 8)</small></td><td>Restricción $\to$ una variable; dominio; críticos; comparar con los bordes.</td>
+      <td><a href="#ej-3-37">3.37</a> · <a href="#ej-3-38">3.38</a></td>
+      <td><a href="#x5">Examen 5</a> · <a href="#x8">Examen 8</a></td></tr>
+  </table>
+  <p><small>Recuento propio sobre las preguntas de X resueltas aquí. Quedan fuera las mezclas con concavidad e inflexión (tema 3.5) y los extremos de una función definida por una integral (X9, abajo, que requiere el Tema 6).</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre las preguntas de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
 <p>Estos 8 problemas de X solo necesitan este tema (y Weierstrass). Tipos de pregunta que <b>no</b> se cubren aquí: las mezclas con concavidad e inflexión (3.5) y los extremos de funciones definidas por una integral (X9, abajo, que requiere el Tema 6).</p>
-<details class="sol" id="x1"><summary>X1 · $(1-x^2)/(x+3)$ en $[-1,1]$ (intervalo cerrado) <span class="src" data-l="X" data-ref="X p.2 (Febrero 2010, 1.ª semana, Eléctrica, Ej. 5, 3 puntos)">X p.2 (feb. 2010)</span></summary>
-<p class="enun">Calcule los extremos relativos y absolutos de $f(x)=\dfrac{1-x^2}{x+3}$ en el intervalo $[-1,1]$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<article class="ejer" id="x1">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X1 · $(1-x^2)/(x+3)$ en $[-1,1]$ (intervalo cerrado)</span> <span class="src" data-l="X" data-ref="X p.2 (Febrero 2010, 1.ª semana, Eléctrica, Ej. 5, 3 puntos)">X p.2 (feb. 2010)</span></header>
+<div class="ejer-enun"><p class="enun">Calcule los extremos relativos y absolutos de $f(x)=\dfrac{1-x^2}{x+3}$ en el intervalo $[-1,1]$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular los extremos relativos y absolutos de $\dfrac{1-x^2}{x+3}$ en $[-1,1]$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es el método del intervalo cerrado: candidatos = bordes $\pm1$ y puntos críticos; se evalúa $f$ en todos y se comparan los valores.</dd>
-    <dt>Qué uso</dt><dd>Weierstrass (Prop. 1.15, U p.52); Prop. 3.4 (U p.126); Prop. 3.6-3.7 (U p.131). Mismo ejercicio que E 3.32.</dd>
+    <dt>Qué uso</dt><dd>Críticos y bordes → tabla → mayor y menor — <a href="#s1">ver teoría</a> (Weierstrass, U p.52; Prop. 3.4, U p.126). Igual que E 3.32.</dd>
     <dt>Por dónde empiezo</dt><dd>Derivo y busco los ceros de $f'$ dentro de $[-1,1]$.</dd>
   </dl></div>
-  <p>Es idéntico a E 3.32 (resuelto arriba). Lo que hay que escribir: continua en $[-1,1]$ (Prop. 1.15) → $f'$ → crítico $x_1=-3+2\sqrt2$ (el otro, fuera) → $f''(x_1)=-\frac{\sqrt2}2&lt;0$ → tabla $f(-1)=0$, $f(x_1)=6-4\sqrt2\approx0{,}343$, $f(1)=0$ → «máximo absoluto y relativo en $x_1$; mínimo absoluto (y relativo, en el borde) en $x=\pm1$».</p>
-  <div class="recipe"><b>Receta:</b> método del intervalo cerrado.</div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f$ es continua en $[-1,1]$ (cociente de polinomios cuyo denominador solo se anula en $x=-3$), luego tiene máximo y mínimo absolutos (Prop. 1.15).</p>
+  <p>$f'(x)=\dfrac{-2x(x+3)-(1-x^2)}{(x+3)^2}=-\dfrac{x^2+6x+1}{(x+3)^2}=0\iff x=-3\pm2\sqrt2$; solo $x_1=-3+2\sqrt2\approx-0{,}17$ está en $(-1,1)$. Como $f''(x_1)=-\frac{\sqrt2}2&lt;0$, es máximo relativo.</p>
+  <p>Valores: $f(-1)=0$, $f(1)=0$, $f(x_1)=6-4\sqrt2\approx0{,}343$. <b>Máximo absoluto (y relativo)</b> $6-4\sqrt2$ en $x_1$; <b>mínimo absoluto</b> $0$ en $x=\pm1$ (relativo en los bordes).</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> método del intervalo cerrado. Mismo método (y mismo ejercicio) que E 3.32.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <p>Es el mismo ejercicio que <a href="#ej-3-32">E 3.32</a>, resuelto arriba con todos los pasos y la gráfica.</p>
+  </details>
 </details>
-<details class="sol" id="x2"><summary>X2 · $|x-1|$: ¿extremo en $x=1$? <span class="src" data-l="X" data-ref="X p.19 (Febrero 2012, 1.ª semana, Mecánica Modelo A, pregunta corta 2, 1 punto)">X p.19 (feb. 2012)</span></summary>
-<p class="enun">Dada $f(x)=|x-1|$, ¿tiene un extremo en $x=1$? ¿Es máximo o mínimo? Justifique la respuesta.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x2">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">X2 · $|x-1|$: ¿extremo en $x=1$?</span> <span class="src" data-l="X" data-ref="X p.19 (Febrero 2012, 1.ª semana, Mecánica Modelo A, pregunta corta 2, 1 punto)">X p.19 (feb. 2012)</span></header>
+<div class="ejer-enun"><p class="enun">Dada $f(x)=|x-1|$, ¿tiene un extremo en $x=1$? ¿Es máximo o mínimo? Justifique la respuesta.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si $f(x)=|x-1|$ tiene un extremo en $x=1$ y si es máximo o mínimo, justificando.</dd>
     <dt>Cómo lo pienso</dt><dd>Un valor absoluto nunca es negativo y vale $0$ solo en $x=1$: es el punto más bajo de la gráfica, sin necesidad de derivar.</dd>
-    <dt>Qué uso</dt><dd>Definición de mínimo absoluto (Def. 3.4, U p.126).</dd>
+    <dt>Qué uso</dt><dd>Si $f\ge f(1)$ para todo $x$, hay mínimo absoluto — <a href="#s1">ver teoría</a> (Def. 3.4, U p.126).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo $|x-1|\ge0$ y miro cuándo se da la igualdad.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$|x-1|\ge0$ para todo $x$ y $|x-1|=0$ solo si $x=1$. Luego $f(x)\ge f(1)=0$ para todo $x$: <b>mínimo absoluto</b> (y relativo) en $x=1$ (Def. 3.4). No es máximo: $f(x)\to+\infty$ cuando $x\to\pm\infty$.</p>
+  <p>(En $x=1$ no hay derivada —derivadas laterales $-1$ y $1$—, pero es punto crítico, y la desigualdad basta.)</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> valor absoluto o cuadrado: la desigualdad $\ge0$ da el mínimo sin derivar.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
     <li>$f$ es continua (valor absoluto de un polinomio).</li>
     <li>$|x-1|\ge0$ para todo $x$ y $|x-1|=0\iff x=1$.</li>
     <li>$f(x)\ge f(1)=0$ para todo $x$: <b>mínimo absoluto</b> en $x=1$ (Def. 3.4), también relativo.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> valor absoluto o cuadrado: la desigualdad $\ge0$ da el mínimo sin derivar.</div>
+  </details>
 </details>
-<details class="sol" id="x3"><summary>X3 · ¿alcanza máximo y mínimo? (Weierstrass) <span class="src" data-l="X" data-ref="X p.40 (Febrero 2014, Mecánica Modelo A, pregunta corta 2, 1 punto)">X p.40 (feb. 2014)</span></summary>
-<p class="enun">Razone si es verdadero o falso que $f(x)=x^3\cos(x+1)$ alcanza el máximo y el mínimo absoluto en $[-\pi,\pi]$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x3">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">X3 · ¿alcanza máximo y mínimo? (Weierstrass)</span> <span class="src" data-l="X" data-ref="X p.40 (Febrero 2014, Mecánica Modelo A, pregunta corta 2, 1 punto)">X p.40 (feb. 2014)</span></header>
+<div class="ejer-enun"><p class="enun">Razone si es verdadero o falso que $f(x)=x^3\cos(x+1)$ alcanza el máximo y el mínimo absoluto en $[-\pi,\pi]$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decir si es verdadero o falso que $x^3\cos(x+1)$ alcanza máximo y mínimo absolutos en $[-\pi,\pi]$.</dd>
     <dt>Cómo lo pienso</dt><dd>No hay que calcular nada: una función continua en un intervalo cerrado y acotado siempre alcanza su máximo y su mínimo.</dd>
-    <dt>Qué uso</dt><dd>Teorema de Weierstrass (Prop. 1.15, U p.52).</dd>
+    <dt>Qué uso</dt><dd>Continua en un cerrado y acotado ⇒ máximo y mínimo — <a href="#s1">ver teoría</a> (Weierstrass, Prop. 1.15, U p.52).</dd>
     <dt>Por dónde empiezo</dt><dd>Compruebo que $f$ es continua y que $[-\pi,\pi]$ es cerrado y acotado.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f(x)=x^3\cos(x+1)$ es continua en $\mathbb R$ (producto de un polinomio y la composición de $\cos$ con un polinomio), y $[-\pi,\pi]$ es cerrado y acotado. Por el teorema de Weierstrass (Prop. 1.15, U p.52), existen $c,d\in[-\pi,\pi]$ con $f(c)\le f(x)\le f(d)$ para todo $x$ del intervalo. <b>Verdadero.</b></p>
+  </div>
+  <div class="recipe"><b>Receta:</b> «¿alcanza máximo y mínimo?» → continua + cerrado y acotado ⇒ sí.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
     <li>$x^3$ es polinomio y $\cos(x+1)$ es composición de continuas: el producto es <b>continuo</b> en $\mathbb R$.</li>
     <li>$[-\pi,\pi]$ es cerrado y acotado.</li>
     <li>Por la Prop. 1.15 (U p. 52), existen $c,d\in[-\pi,\pi]$ con $f(c)\le f(x)\le f(d)$ para todo $x$ del intervalo. <b>Verdadero.</b></li>
   </ol>
-  <div class="recipe"><b>Receta:</b> «¿alcanza máximo y mínimo?» → continua + cerrado y acotado ⇒ sí.</div>
+  </details>
 </details>
-<details class="sol" id="x4"><summary>X4 · ¿dónde puede haber extremo relativo? <span class="src" data-l="X" data-ref="X p.85 (Septiembre 2017, Mecánica Modelo A, pregunta corta 2, 1 punto)">X p.85 (sep. 2017)</span></summary>
-<p class="enun">Señale los puntos donde puede alcanzar los extremos relativos $f(x)=x^3-3x^2-9x+2$. No es necesario estudiar si son extremos.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x4">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">X4 · ¿dónde puede haber extremo relativo?</span> <span class="src" data-l="X" data-ref="X p.85 (Septiembre 2017, Mecánica Modelo A, pregunta corta 2, 1 punto)">X p.85 (sep. 2017)</span></header>
+<div class="ejer-enun"><p class="enun">Señale los puntos donde puede alcanzar los extremos relativos $f(x)=x^3-3x^2-9x+2$. No es necesario estudiar si son extremos.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Señalar los puntos donde $x^3-3x^2-9x+2$ <b>puede</b> tener extremos relativos (sin clasificarlos).</dd>
     <dt>Cómo lo pienso</dt><dd>«Dónde puede haber extremo» = «cuáles son los candidatos»: en una función derivable en todo $\mathbb R$, los puntos donde $f'=0$.</dd>
-    <dt>Qué uso</dt><dd>Extremo relativo ⇒ punto crítico (Prop. 3.6, U p.131).</dd>
+    <dt>Qué uso</dt><dd>Extremo relativo de una función derivable ⇒ $f'=0$ — <a href="#s2">ver teoría</a> (Prop. 3.6, U p.131).</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $f'(x)$ y la igualo a cero.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f$ es un polinomio: derivable en $\mathbb R$ y sin bordes, así que un extremo relativo solo puede estar donde $f'=0$ (Prop. 3.6).</p>
+  <p>$f'(x)=3x^2-6x-9=3(x+1)(x-3)=0\iff x=-1$ o $x=3$. <b>Pueden alcanzar extremos relativos en $x=-1$ y $x=3$.</b></p>
+  </div>
+  <div class="recipe"><b>Receta:</b> «dónde puede alcanzar» = puntos críticos.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"x^3-3*x^2-9*x+2","n":"x³−3x²−9x+2"}],"x":[-3,5],"y":[-30,30],"q":[[-1,7,"(−1, 7)"],[3,-25,"(3, −25)"]]}' data-alt="x^3-3x^2-9x+2 con puntos criticos en -1 y 3"><figcaption>$f(x)=x^3-3x^2-9x+2$: los puntos críticos son $x=-1$ (máximo, valor $7$) y $x=3$ (mínimo, valor $-25$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li>$f$ es polinomio: derivable en $\mathbb R$ y sin bordes; los extremos relativos solo pueden estar donde $f'=0$ (Prop. 3.6).</li>
     <li>$f'(x)=3x^2-6x-9=3(x+1)(x-3)$.</li>
     <li><b>Candidatos: $x=-1$ y $x=3$.</b></li>
     <li>(No se pide: $f''=6x-6$; $f''(-1)=-12&lt;0$, máximo relativo, $f(-1)=7$; $f''(3)=12>0$, mínimo relativo, $f(3)=-25$.)</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> «dónde puede alcanzar» = puntos críticos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Factorizar mal: comprueba sustituyendo ($3(-1)^2-6(-1)-9=0$).</p></div>
+  </details>
 </details>
-<details class="sol" id="x5"><summary>X5 · dos números positivos con suma 9 y producto máximo <span class="src" data-l="X" data-ref="X p.87 (Septiembre 2017, Mecánica Modelo A, Ej. 6, 3 puntos)">X p.87 (sep. 2017)</span></summary>
-<p class="enun">Encuentre dos números positivos tales que su suma sea $9$ y su producto sea máximo.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x5">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">X5 · dos números positivos con suma 9 y producto máximo</span> <span class="src" data-l="X" data-ref="X p.87 (Septiembre 2017, Mecánica Modelo A, Ej. 6, 3 puntos)">X p.87 (sep. 2017)</span></header>
+<div class="ejer-enun"><p class="enun">Encuentre dos números positivos tales que su suma sea $9$ y su producto sea máximo.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar dos números positivos de suma $9$ con producto máximo.</dd>
     <dt>Cómo lo pienso</dt><dd>Como el rectángulo de perímetro fijo: con suma fija, el producto es máximo cuando los dos números son iguales. Al despejar uno en función del otro, queda una función de una variable.</dd>
-    <dt>Qué uso</dt><dd>Método del intervalo cerrado (Prop. 3.4, U p.126); 2.ª derivada (Prop. 3.7, U p.131).</dd>
+    <dt>Qué uso</dt><dd>Restricción → una variable → intervalo cerrado — <a href="#s3">ver teoría</a> (Prop. 3.4, U p.126; Ej. 3.25, U p.132).</dd>
     <dt>Por dónde empiezo</dt><dd>Despejo $y=9-x$ y escribo $P(x)=x(9-x)$ con su dominio.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Sean $x,y>0$ con $x+y=9$; entonces $y=9-x$ y el producto es $P(x)=x(9-x)$, $x\in(0,9)$ (se estudia en $[0,9]$).</p>
+  <p>$P'(x)=9-2x=0\iff x=\tfrac92$. $P(0)=P(9)=0&lt;P(\tfrac92)=\tfrac{81}4$, luego es el máximo absoluto (también $P''=-2&lt;0$).</p>
+  <p><b>Los números son $x=y=\tfrac92$</b>, con producto $\tfrac{81}4=20{,}25$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> la de optimización de §3.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"x*(9-x)","n":"x(9−x)"}],"x":[0,9],"y":[0,24],"q":[[4.5,20.25,"(4,5; 20,25)"]]}' data-alt="Producto x(9-x) con maximo en 4,5"><figcaption>Producto $x(9-x)$ de dos números de suma $9$: máximo $\frac{81}{4}=20{,}25$ en $x=\frac92$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li><b>Variables y condición.</b> $x,y>0$, $x+y=9\Rightarrow y=9-x$.</li>
     <li><b>Función.</b> $P(x)=x(9-x)=9x-x^2$.</li>
@@ -654,54 +1161,78 @@
     <li><b>Absoluto.</b> $P(0)=P(9)=0&lt;P(\tfrac92)=\tfrac{81}4$ (Prop. 3.4); además $P''=-2&lt;0$.</li>
     <li><b>Respuesta:</b> $x=y=\tfrac92$, producto $\tfrac{81}4=20{,}25$.</li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«Sean $x,y>0$ con $x+y=9$; entonces $y=9-x$ y el producto es $P(x)=x(9-x)$, $x\in(0,9)$ (se estudia en $[0,9]$). $P'(x)=9-2x=0\iff x=9/2$. $P(0)=P(9)=0&lt;P(9/2)=81/4$, luego es el máximo (también $P''=-2&lt;0$). Los números son $x=y=9/2$.»</p></div>
-  <div class="recipe"><b>Receta:</b> la de optimización de §3.</div>
+  </details>
 </details>
-<details class="sol" id="x6"><summary>X6 · $xe^{-x}$ en $[0,2]$ <span class="src" data-l="X" data-ref="X p.104 (I. Electrónica Industrial y Automática, sin fecha en la cabecera; el índice la llama «Electrónica 3», pregunta corta 2, 1 punto)">X p.104 (Electrónica, sin fecha)</span></summary>
-<p class="enun">Calcule los extremos absolutos de $f(x)=xe^{-x}$ en $[0,2]$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x6">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">X6 · $xe^{-x}$ en $[0,2]$</span> <span class="src" data-l="X" data-ref="X p.104 (I. Electrónica Industrial y Automática, sin fecha en la cabecera; el índice la llama «Electrónica 3», pregunta corta 2, 1 punto)">X p.104 (Electrónica, sin fecha)</span></header>
+<div class="ejer-enun"><p class="enun">Calcule los extremos absolutos de $f(x)=xe^{-x}$ en $[0,2]$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular los extremos absolutos de $xe^{-x}$ en $[0,2]$.</dd>
     <dt>Cómo lo pienso</dt><dd>Función continua en un cerrado: lista de candidatos (los dos bordes y el punto donde $f'=0$), se evalúa en cada uno y gana el mayor y el menor.</dd>
-    <dt>Qué uso</dt><dd>Weierstrass (Prop. 1.15) y método del intervalo cerrado (Prop. 3.4, U p.126).</dd>
+    <dt>Qué uso</dt><dd>Críticos y bordes → tabla → mayor y menor — <a href="#s1">ver teoría</a> (Weierstrass, U p.52; Prop. 3.4, U p.126).</dd>
     <dt>Por dónde empiezo</dt><dd>Derivo $f$ y saco factor común $e^{-x}$ para resolver $f'=0$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f$ es continua en $[0,2]$: tiene máximo y mínimo. $f'(x)=(1-x)e^{-x}=0\iff x=1\in(0,2)$ (la exponencial no se anula).</p>
+  <p>Valores: $f(0)=0$, $f(1)=1/e$, $f(2)=2/e^2$; como $1/e>2/e^2>0$: <b>mínimo absoluto $0$ en $x=0$</b> y <b>máximo absoluto $1/e$ en $x=1$</b>.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> intervalo cerrado; la exponencial nunca se anula y se «quita» al buscar ceros de $f'$.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"x*exp(-x)","n":"x e^(−x)"}],"x":[0,2],"y":[-0.03,0.42],"q":[[1,0.367879,"(1; 0,368)"],[0,0.0,"(0, 0)"],[2,0.270671,"(2; 0,271)"]]}' data-alt="x e^(-x) en [0,2]"><figcaption>$f(x)=xe^{-x}$ en $[0,2]$: máximo absoluto $e^{-1}\approx0{,}368$ en $x=1$ y mínimo absoluto $0$ en $x=0$; en el borde $x=2$ vale $2e^{-2}\approx0{,}271$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <ol class="steps">
     <li>$f$ es continua y derivable: hay máximo y mínimo.</li>
     <li>$f'(x)=e^{-x}-xe^{-x}=(1-x)e^{-x}$. Como $e^{-x}>0$, $f'=0\iff x=1\in(0,2)$.</li>
     <li>Tabla: $f(0)=0$, $f(1)=e^{-1}\approx0{,}368$, $f(2)=2e^{-2}\approx0{,}271$.</li>
     <li><b>Mínimo absoluto $0$ en $x=0$; máximo absoluto $1/e$ en $x=1$.</b></li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«$f$ es continua en $[0,2]$, luego alcanza máximo y mínimo. $f'(x)=(1-x)e^{-x}=0\iff x=1$. Valores: $f(0)=0$, $f(1)=1/e$, $f(2)=2/e^2$. Como $1/e>2/e^2>0$: mínimo absoluto $0$ en $x=0$ y máximo absoluto $1/e$ en $x=1$.»</p></div>
-  <div class="recipe"><b>Receta:</b> intervalo cerrado; la exponencial nunca se anula y se «quita» al buscar ceros de $f'$.</div>
+  </details>
 </details>
-<details class="sol" id="x7"><summary>X7 · $x^4-2x^3$: ¿silla o extremo? <span class="src" data-l="X" data-ref="X pp.122-123 (Examen 5 elaborado con exámenes de asignaturas similares, Ej. 3; fuera del rango de convocatorias). Equivale a U Ej. 3.24, p. 132">X pp.122-123 (Examen 5)</span></summary>
-<p class="enun">Señale la afirmación correcta sobre $f(x)=x^4-2x^3$: A) es creciente; B) tiene dos extremos relativos; C) tiene un punto de silla; D) ninguna de las anteriores.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x7">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X7 · $x^4-2x^3$: ¿silla o extremo?</span> <span class="src" data-l="X" data-ref="X pp.122-123 (Examen 5 elaborado con exámenes de asignaturas similares, Ej. 3; fuera del rango de convocatorias). Equivale a U Ej. 3.24, p. 132">X pp.122-123 (Examen 5)</span></header>
+<div class="ejer-enun"><p class="enun">Señale la afirmación correcta sobre $f(x)=x^4-2x^3$: A) es creciente; B) tiene dos extremos relativos; C) tiene un punto de silla; D) ninguna de las anteriores.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Elegir la afirmación correcta sobre $x^4-2x^3$: creciente, dos extremos relativos, punto de silla o ninguna.</dd>
     <dt>Cómo lo pienso</dt><dd>Cada cero de $f'$ hay que clasificarlo; si $f''$ se anula en uno, sigo derivando hasta la primera derivada no nula y miro si su orden es par (extremo) o impar (silla).</dd>
-    <dt>Qué uso</dt><dd>Prop. 3.7 (U p.131) y Prop. 3.8 (derivadas de orden superior, U p.132); punto de silla (U p.131).</dd>
+    <dt>Qué uso</dt><dd>Si $f''(c)=0$, primera derivada no nula: orden par extremo, impar silla — <a href="#s2">ver teoría</a> (Prop. 3.7-3.8, U pp.131-132; Ej. 3.24, U p.132).</dd>
     <dt>Por dónde empiezo</dt><dd>Resuelvo $f'(x)=0$ y evalúo $f''$ en cada raíz.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f'(x)=4x^3-6x^2=2x^2(2x-3)=0\iff x=0$ o $x=\tfrac32$.</p>
+  <p>$f''(x)=12x^2-12x$: $f''(\tfrac32)=9>0$, mínimo relativo en $\tfrac32$. $f''(0)=0$: se sigue derivando, $f'''(x)=24x-12$, $f'''(0)=-12\ne0$, de orden $3$ (impar): <b>punto de silla</b> en $x=0$ (Prop. 3.8).</p>
+  <p>A) falsa: $f'&lt;0$ en $(-\infty,0)$. B) falsa: solo hay un extremo relativo. <b>Correcta: C).</b></p>
+  </div>
+  <div class="recipe"><b>Receta:</b> primera derivada no nula en el crítico: orden par → extremo (positiva: mínimo; negativa: máximo); orden impar → silla.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"c":[{"e":"x^4-2*x^3","n":"x⁴−2x³"}],"x":[-1,2.2],"y":[-2,3],"q":[[0,0,"(0, 0)"],[1.5,-1.6875,"(3/2; −1,6875)"]]}' data-alt="x^4-2x^3 con silla en 0 y minimo en 3/2"><figcaption>$f(x)=x^4-2x^3$: en $x=0$ la derivada se anula pero la curva no cambia de sentido (punto de silla); en $x=\frac32$ hay un único mínimo, de valor $-\frac{27}{16}$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia, hecha con las expresiones del ejercicio y verificada con sympy">P</span></figcaption></figure>
-
   <p>Es el Ejemplo 3.24 de U (§2): mínimo relativo en $x=\frac32$ (Prop. 3.7) y, en $x=0$, $f''(0)=0$ y $f'''(0)=-12\neq0$: orden 3 (impar), <b>punto de silla</b> (Prop. 3.8).</p>
   <ol class="steps">
     <li><b>A)</b> falsa: $f'=2x^2(2x-3)&lt;0$ en $(-\infty,\frac32)$ salvo en $0$, así que no es creciente.</li>
     <li><b>B)</b> falsa: solo hay un extremo relativo ($x=\frac32$).</li>
     <li><b>C) correcta</b> (punto de silla en $0$).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> primera derivada no nula en el crítico: orden par → extremo (positiva: mínimo; negativa: máximo); orden impar → silla.</div>
+  </details>
 </details>
-<details class="sol" id="x8"><summary>X8 · dos números negativos con suma $-15$ y producto máximo <span class="src" data-l="X" data-ref="X p.146 (Febrero 2018, 1.ª semana, Ej. 6, 3 puntos)">X p.146 (feb. 2018)</span></summary>
-<p class="enun">Encuentre dos números reales negativos tales que su suma sea $-15$ y su producto sea máximo. Razone la solución.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="x8">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">X8 · dos números negativos con suma $-15$ y producto máximo</span> <span class="src" data-l="X" data-ref="X p.146 (Febrero 2018, 1.ª semana, Ej. 6, 3 puntos)">X p.146 (feb. 2018)</span></header>
+<div class="ejer-enun"><p class="enun">Encuentre dos números reales negativos tales que su suma sea $-15$ y su producto sea máximo. Razone la solución.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar dos números negativos de suma $-15$ con producto máximo.</dd>
     <dt>Cómo lo pienso</dt><dd>Es X5 con otros números: suma fija, producto máximo cuando los dos son iguales. Hay que cuidar el dominio, porque ahora ambos deben ser negativos.</dd>
-    <dt>Qué uso</dt><dd>Método del intervalo cerrado (Prop. 3.4, U p.126); 2.ª derivada (Prop. 3.7, U p.131).</dd>
+    <dt>Qué uso</dt><dd>Restricción → una variable → intervalo cerrado — <a href="#s3">ver teoría</a> (Prop. 3.4, U p.126; Ej. 3.25, U p.132).</dd>
     <dt>Por dónde empiezo</dt><dd>Despejo $y=-15-x$ y fijo el dominio $x\in(-15,0)$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Sean $x,y&lt;0$ con $x+y=-15$: $y=-15-x$ y $x\in(-15,0)$. $P(x)=x(-15-x)$, $P'(x)=-15-2x=0\iff x=-\tfrac{15}2$.</p>
+  <p>$P(-15)=P(0)=0&lt;P(-\tfrac{15}2)=\tfrac{225}4$ y $P''=-2&lt;0$: máximo. <b>Los números son $x=y=-\tfrac{15}2$</b>, con producto $\tfrac{225}4=56{,}25$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> igual que X5.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
     <li>$x,y&lt;0$, $x+y=-15\Rightarrow y=-15-x$; $y&lt;0\iff x>-15$. Dominio: $x\in(-15,0)$.</li>
     <li>$P(x)=x(-15-x)=-15x-x^2$.</li>
@@ -709,9 +1240,9 @@
     <li>Absoluto: en $[-15,0]$, $P(-15)=P(0)=0&lt;P(-\tfrac{15}2)=\tfrac{225}4$ (Prop. 3.4); además $P''=-2&lt;0$.</li>
     <li><b>Respuesta:</b> $x=y=-\tfrac{15}2$, producto $\tfrac{225}4=56{,}25$.</li>
   </ol>
-  <div class="box tip"><span class="h">En el examen escribe</span><p>«Sean $x,y&lt;0$ con $x+y=-15$: $y=-15-x$ y $x\in(-15,0)$. $P(x)=x(-15-x)$, $P'(x)=-15-2x=0\iff x=-15/2$. $P(-15)=P(0)=0&lt;P(-15/2)=225/4$ y $P''=-2&lt;0$: máximo. Los números son $x=y=-15/2$, con producto $225/4$.»</p></div>
-  <div class="recipe"><b>Receta:</b> igual que X5.</div>
+  </details>
 </details>
+</article>
 <details class="fuera"><summary>X9 · extremos de una función definida por una integral (requiere el Tema 6) <span class="src" data-l="X" data-ref="X pp.109-110 (Examen 1 elaborado con exámenes de asignaturas similares, Ej. 4)">X pp.109-110 (Examen 1)</span></summary>
   <p class="enun">Dada $F(x)=\int_0^x t\operatorname{sen}t\,dt$ definida en $[0,\infty)$, señale la opción correcta: A) $F$ es creciente; B) $F$ tiene un máximo en $x=7\pi$; C) $F$ es decreciente; D) ninguna de las anteriores.</p>
   <p>Se entiende del todo tras el Tema 6 (teorema fundamental del cálculo); la parte de extremos es de este tema.</p>
@@ -723,8 +1254,8 @@
   </ol>
   <div class="recipe"><b>Receta:</b> derivar con el teorema fundamental y aplicar los criterios de siempre a $F'$.</div>
 </details>
-<!-- ============================ 7 ============================ -->
-<h2 id="chuleta"><span class="n">7</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+<!-- ============================ chuleta ============================ -->
+<h2 id="chuleta" data-vista="teoria"><span class="n">9</span>Errores frecuentes, chuleta y lista de comprobación</h2>
 <h3>Errores frecuentes</h3>
 <ul>
   <li>Confundir <b>dónde</b> se alcanza el extremo con <b>cuánto vale</b>.</li>
