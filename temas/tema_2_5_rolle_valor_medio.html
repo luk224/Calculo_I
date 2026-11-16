@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_2_5/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 2.5 Teoremas de Rolle y del valor medio. Funciones monótonas</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -15,6 +16,8 @@
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 <style>
 /* Extras propios del tema 2.5 (prefijo t25-) */
 svg.fig .t25-dash{stroke:var(--mut);stroke-width:1.3;fill:none;stroke-dasharray:5 4}
@@ -38,7 +41,7 @@ svg.fig .t25-o{fill:var(--S)}
   <div class="kick">Módulo II · Funciones derivables · Tema 2.5</div>
   <h1>Teoremas de Rolle y del valor medio. Funciones monótonas</h1>
   <p>Cómo la derivada, que es información «local» en un punto, permite sacar conclusiones sobre toda una función en un intervalo: dónde hay tangentes horizontales, cuándo una función es constante, cuándo sube o baja.</p>
-  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §2.5 (pp. 94-101)</span><span>Ejercicios: E Ej. 2.39–2.51</span><span>⏱ ~5 h de estudio</span></div>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §2.5 (pp. 94-101)</span><span>Ejercicios: E Ej. 2.39–2.51 (pp. 76-86)</span><span>⏱ ~5 h de estudio</span></div>
   <div class="legend">
     <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
     <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
@@ -50,7 +53,73 @@ svg.fig .t25-o{fill:var(--S)}
   </div>
 </header>
 
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.5.1 Motivación, p. 94">U p.94</span></h2>
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>La derivada es información <b>local</b> (la pendiente en un punto), pero con unas pocas hipótesis permite sacar conclusiones sobre <b>todo un intervalo</b>: si sales y vuelves a la misma altura, en algún momento la pendiente fue $0$ (Rolle); en algún momento la pendiente igualó a la media (valor medio); y de ahí se deduce que, si $f'=0$, $f$ es constante, y que el signo de $f'$ dice dónde sube y dónde baja.</p>
+  <p>Es el viaje en coche: si has hecho 180 km en 2 h, en algún instante el velocímetro marcó 90 km/h; si el velocímetro marcó siempre $0$, no te has movido.</p>
+  <span class="src" data-l="U" data-ref="U §2.5.1 Introducción, p. 94">U p.94</span>
+  <span class="src" data-l="S" data-ref="Stewart §4.2 Ejemplo 4, p. 287">S p.287</span>
+</div>
+<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Identifica qué te piden:</b> un punto con $f'$ conocida (tangente horizontal o paralela a la cuerda), el número de soluciones de $f(x)=0$, una cota o desigualdad, dónde sube o baja $f$, o probar que algo es constante.</li>
+    <li><b>Comprueba las hipótesis una a una</b>: continua en el <i>cerrado</i> $[a,b]$, derivable en el <i>abierto</i> $(a,b)$ y, solo para Rolle, $f(a)=f(b)$. Si falla una, el teorema no se puede usar.</li>
+    <li><b>Aplica el teorema y traduce</b> el $c$ a lo que piden: $f'(c)=0$ (tangente horizontal), $f'(c)=\frac{f(b)-f(a)}{b-a}$ (paralela a la cuerda), signo de $f'(c)$ (signo de $f(b)-f(a)$).</li>
+    <li><b>Si es verdadero/falso</b>, para refutar basta un contraejemplo: un «pico» $|x|$, un salto, o un dominio que no es intervalo.</li>
+  </ol>
+  <p class="sub">Qué hago según lo que piden</p>
+  <ul>
+    <li>¿Tangente horizontal y $f(a)=f(b)$? $\to$ Rolle. ¿Tangente paralela a una cuerda, cota o desigualdad? $\to$ valor medio.</li>
+    <li>¿Cuántas soluciones tiene $f(x)=0$? $\to$ Bolzano (existe) + Rolle o estricta monotonía (como mucho una por tramo).</li>
+    <li>¿Dónde crece o decrece? $\to$ factoriza $f'$, ceros, un número de prueba por tramo y Prop. 2.4.</li>
+    <li>¿Probar que una expresión es constante, o que $f'=g'$ da $f=g+k$? $\to$ $f'=0$ en un <i>intervalo</i> y valor en un punto.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>Rolle: $f(a)=f(b)\Rightarrow\exists c\in(a,b),\ f'(c)=0$</td><td>Tangente horizontal; contar raíces (entre dos ceros de $f$ hay un cero de $f'$).</td></tr>
+    <tr><td>TVM: $f'(c)=\dfrac{f(b)-f(a)}{b-a}$</td><td>Tangente paralela a la cuerda; cotas $|f(y)-f(x)|\le M|y-x|$; desigualdades.</td></tr>
+    <tr><td>$f'=0$ en un intervalo $\iff f$ constante (Teor. 2.4)</td><td>Probar identidades, como $\cosh^2x-\operatorname{senh}^2x=1$.</td></tr>
+    <tr><td>$f'>0\Rightarrow$ estr. creciente; $f'<0\Rightarrow$ estr. decreciente (Prop. 2.4)</td><td>Intervalos de crecimiento con la tabla de signos; unicidad de raíces.</td></tr>
+    <tr><td>Bolzano: continua con $f(a)f(b)<0\Rightarrow$ hay raíz</td><td>Existencia de soluciones.</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos son preguntas cortas de 1 punto: enunciar o aplicar Rolle y el valor medio, los intervalos de crecimiento de una función con exponencial y contar soluciones con Bolzano más monotonía. En el libro de ejercicios son E 2.39-2.51 (las gráficas 2.50-2.51 usan además extremos y concavidad del Tema 3). Tabla completa por tipo: <a href="#examenes" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §2.5, pp. 94-100 (Rolle, valor medio, Teorema 2.4, Prop. 2.4); resumen propio">U pp.94-100</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §2.5">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 2 h</b>
+      <ul>
+        <li>Los apartados de <b>Rolle, valor medio, funciones constantes y monótonas</b> (2-5) y el <b>mapa de decisión</b> (apartado 9).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-2-39">E 2.39</a> (Rolle), <a href="#ej-2-41">E 2.41</a> (valor medio), <a href="#ej-2-45">E 2.45</a> (constante), <a href="#ej-2-48">E 2.48</a> (monotonía), <a href="#ex-1">Examen 1</a> (enunciar el TVM), <a href="#ex-2">Examen 2</a> (Rolle), <a href="#ex-3">Examen 3</a> (intervalos de crecimiento) y <a href="#ex-6">Examen 6</a> (contar raíces).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 5 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»), con ampliaciones e interactivos.</li>
+        <li>E 2.39-2.49, los 6 exámenes y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#ej-2-42">E 2.42</a>, <a href="#ej-2-46">E 2.46</a>, <a href="#ej-2-49">E 2.49</a>, las gráficas <a href="#ej-2-50">E 2.50</a> y <a href="#ej-2-51">E 2.51</a> (requieren los extremos y la concavidad del Tema 3, §3.4-3.5) y las prácticas ★★.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
+<!-- ============================ prereq ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.5.1 Motivación, p. 94">U p.94</span></h2>
 <p><b>Qué necesitas saber ya.</b></p>
 <ul>
   <li><b>Continuidad y teorema de Bolzano</b> (U §1.4, p. 52): una función continua en un intervalo que cambia de signo se anula en algún punto.</li>
@@ -61,12 +130,21 @@ svg.fig .t25-o{fill:var(--S)}
 <p><b>Mapa del tema: qué se pide en los ejercicios y en el examen.</b> Todo el tema es una cadena de consecuencias: <b>Rolle</b> (tangente horizontal) $\Rightarrow$ <b>valor medio</b> (tangente paralela a la cuerda) $\Rightarrow$ <b>funciones constantes</b> ($f'=0$) $\Rightarrow$ <b>monotonía</b> (signo de $f'$) $\Rightarrow$ aplicación a identificar gráficas. En E son los ejercicios <b>2.39-2.51</b> (todos resueltos abajo): reconocer cuándo se puede aplicar Rolle o el valor medio, razonar con la definición de monotonía y con el signo de $f'$, y elegir la gráfica correcta. La orientación de U es una sola frase clave: <i>fíjese en la importancia de que todas las hipótesis de un teorema se cumplan para poder aplicarlo</i>. <span class="src" data-l="U" data-ref="U §2.5.1 Orientaciones, p. 94">U p.94</span></p>
 <div class="box warn"><span class="h">Dos prerrequisitos</span>
   <p>Los ejercicios 2.50 y 2.51 (identificar gráficas) usan un mínimo de <b>extremos relativos y concavidad</b> (Tema 3, §3.4-3.5); lo estrictamente necesario está resumido en la sección 7. Las <b>funciones hiperbólicas</b> de E 2.45 se explican en la sección 6.</p></div>
-<h2 id="s1"><span class="n">1</span>Idea general: de Bolzano a Rolle <span class="src" data-l="U" data-ref="U §2.5.1 Introducción, p. 94">U p.94</span></h2>
+<!-- ============================ s1 ============================ -->
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Idea general: de Bolzano a Rolle <span class="src" data-l="U" data-ref="U §2.5.1 Introducción, p. 94">U p.94</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a entender por qué el paso de Bolzano a Rolle es natural: misma altura al salir y al volver implica pendiente cero en algún punto.</p>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Bolzano decía: si una función continua pasa de negativa a positiva, en algún momento vale <i>cero</i>. Rolle dice algo parecido, pero para la <i>derivada</i>: si sales de un punto y vuelves a la misma altura, en algún momento tu pendiente fue <i>cero</i>. Piensa en lanzar una pelota hacia arriba: sale de la mano a una altura y vuelve a la misma altura; en el punto más alto la velocidad es exactamente $0$.</p>
   <span class="src" data-l="S" data-ref="Stewart §4.2 Ejemplo 1, p. 284">S p.284</span></div>
 <p>El plan de U: del teorema de Rolle se obtiene el del valor medio, y de este las condiciones para que una función sea constante, creciente o decreciente.</p>
-<h2 id="rolle"><span class="n">2</span>Teorema de Rolle <span class="src" data-l="U" data-ref="U §2.5.2 Teorema de Rolle, p. 95">U p.95</span></h2>
+<!-- ============================ rolle ============================ -->
+<h2 id="rolle" data-vista="teoria"><span class="n">2</span>Teorema de Rolle <span class="src" data-l="U" data-ref="U §2.5.2 Teorema de Rolle, p. 95">U p.95</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a enunciar Rolle, comprobar sus tres hipótesis y usarlo para hallar tangentes horizontales o acotar el número de raíces.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Existe un punto con $f'=0$», «tangente horizontal», o «a lo sumo tantas raíces como…».</li>
+  <li><b>Qué haces:</b> Compruebas las tres hipótesis en una lista y concluyes $f'(c)=0$ con $c\in(a,b)$.</li>
+  <li><b>Ejemplo mínimo:</b> $f(x)=x^2-4x+1$ en $[0,4]$: $f(0)=f(4)=1$, $c=2$.</li>
+</ul>
 <div class="box thm"><span class="h">Teorema de Rolle</span>
   <p>Sea $f:[a,b]\to\mathbb R$ <b>continua en $[a,b]$</b>, <b>derivable en $(a,b)$</b> y con <b>$f(a)=f(b)$</b>. Entonces existe al menos un $c\in(a,b)$ tal que $f'(c)=0$.</p>
   <span class="src" data-l="U" data-ref="U §2.5.2 Teorema de Rolle, p. 95">U p.95</span>
@@ -114,7 +192,14 @@ svg.fig .t25-o{fill:var(--S)}
   <span class="src" data-l="P" data-ref="Ejemplo propio (comprobado con sympy)">propio</span>
   <span class="src" data-l="S" data-ref="Stewart §4.2 Ejemplo 2 (x³+x+1=0), pp. 284-285">S p.285</span></div>
 <div class="recipe"><b>Receta «tantas raíces como ceros de $f'$»:</b> Bolzano da que hay raíz; Rolle dice que entre dos raíces de $f$ hay una raíz de $f'$. Si $f'$ no se anula nunca (o solo una vez), $f$ tiene a lo sumo una (o dos) raíces.</div>
-<h2 id="tvm"><span class="n">3</span>Teorema del valor medio <span class="src" data-l="U" data-ref="U §2.5.3 Teorema del valor medio, p. 96">U p.96</span></h2>
+<!-- ============================ tvm ============================ -->
+<h2 id="tvm" data-vista="teoria"><span class="n">3</span>Teorema del valor medio <span class="src" data-l="U" data-ref="U §2.5.3 Teorema del valor medio, p. 96">U p.96</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a enunciar el valor medio, hallar su $c$ y usarlo para cotas y desigualdades.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> Piden una tangente paralela a una cuerda, una cota de $f(b)-f(a)$ o una desigualdad.</li>
+  <li><b>Qué haces:</b> Comprueba continuidad y derivabilidad, escribe $f(b)-f(a)=f'(c)(b-a)$ y acota o resuelve $f'(c)=$ pendiente.</li>
+  <li><b>Ejemplo mínimo:</b> $5-\frac4x$ en $[1,4]$: pendiente $1$, $c=2$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Haces 180 km en 2 horas: tu velocidad <i>media</i> fue 90 km/h. El teorema dice que en algún instante el velocímetro marcó exactamente 90 km/h. Geométricamente: si inclinas la figura de Rolle para que los extremos ya no estén a la misma altura, en algún punto la tangente es <b>paralela a la cuerda</b> que une los extremos.</p>
   <span class="src" data-l="S" data-ref="Stewart §4.2 Ejemplo 4, p. 287">S p.287</span></div>
@@ -158,7 +243,14 @@ svg.fig .t25-o{fill:var(--S)}
 <div class="box ex"><span class="h">Ejemplo resuelto: acotar $f(2)$ (Stewart)</span>
   <p>Si $f(0)=-3$ y $f'(x)\le5$ para todo $x$, el TVM en $[0,2]$ da $f(2)=f(0)+2f'(c)\le-3+2\cdot5=7$: $f(2)$ vale a lo sumo $7$.</p>
   <span class="src" data-l="S" data-ref="Stewart §4.2 Ejemplo 5, p. 287">S p.287</span></div>
-<h2 id="const"><span class="n">4</span>Funciones constantes <span class="src" data-l="U" data-ref="U Teorema 2.4, p. 97">U p.97</span></h2>
+<!-- ============================ const ============================ -->
+<h2 id="const" data-vista="teoria"><span class="n">4</span>Funciones constantes <span class="src" data-l="U" data-ref="U Teorema 2.4, p. 97">U p.97</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a probar que una función es constante (o que dos funciones difieren en una constante) con $f'=0$.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> Piden probar una identidad o que $f$ no depende de $x$.</li>
+  <li><b>Qué haces:</b> Derivas, ves que da $0$ en un intervalo y calculas el valor en un punto.</li>
+  <li><b>Ejemplo mínimo:</b> $\cosh^2x-\operatorname{senh}^2x$ tiene derivada $0$ y vale $1$ en $x=0$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Si tu velocidad es $0$ en todo momento, no te mueves: tu posición es constante. El valor medio es lo que convierte esta idea en teorema.</p></div>
 <div class="box thm"><span class="h">Teorema 2.4 (caracterización de las funciones constantes)</span>
@@ -174,7 +266,14 @@ svg.fig .t25-o{fill:var(--S)}
 <div class="box warn"><span class="h">Error típico: «intervalo» no es un detalle</span>
   <p>La hipótesis es que el dominio sea un <b>intervalo</b>. Sin ella, falla: $f(x)=\dfrac{x}{|x|}$ vale $-1$ si $x&lt;0$ y $1$ si $x&gt;0$; tiene $f'=0$ en todo su dominio $\mathbb R\setminus\{0\}$, pero no es constante, porque el dominio son dos trozos separados (en cada trozo sí es constante).</p>
   <span class="src" data-l="S" data-ref="Stewart §4.2, Nota tras el Corolario 7 (f(x)=x/|x|), p. 288">S p.288</span></div>
-<h2 id="mono"><span class="n">5</span>Funciones monótonas <span class="src" data-l="U" data-ref="U §2.5.4 Funciones monótonas, p. 98">U p.98</span></h2>
+<!-- ============================ mono ============================ -->
+<h2 id="mono" data-vista="teoria"><span class="n">5</span>Funciones monótonas <span class="src" data-l="U" data-ref="U §2.5.4 Funciones monótonas, p. 98">U p.98</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a hallar dónde crece y decrece una función con la tabla de signos de $f'$ y a razonar la monotonía con la definición.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> Piden «intervalos de crecimiento y decrecimiento» o si $f$ es (estrictamente) creciente.</li>
+  <li><b>Qué haces:</b> Derivas, factorizas, hallas los ceros de $f'$, un valor de prueba por tramo y aplicas la Prop. 2.4.</li>
+  <li><b>Ejemplo mínimo:</b> $x^3-3x$: $f'=3(x-1)(x+1)$; crece, decrece, crece.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>«Creciente» significa que, al avanzar hacia la derecha, la gráfica <i>no baja</i>. Y la pendiente de la tangente es la derivada: pendiente positiva $\Rightarrow$ la curva sube, pendiente negativa $\Rightarrow$ baja.</p></div>
 <div class="box def"><span class="h">Definición 2.5 (monotonía)</span>
@@ -238,7 +337,9 @@ svg.fig .t25-o{fill:var(--S)}
   </ol>
   <p>Es la misma idea que $x^3$: que $f'$ se anule en puntos aislados no rompe la monotonía estricta.</p>
   <span class="src" data-l="P" data-ref="Ejemplo propio (comprobado con sympy); idea de U Ej. 2.22, p. 99">propio</span></div>
-<h2 id="hip"><span class="n">6</span>Funciones hiperbólicas (para E 2.45) <span class="src" data-l="S" data-ref="Stewart §3.11 Funciones hiperbólicas, p. 257">S p.257</span></h2>
+<!-- ============================ hip ============================ -->
+<h2 id="hip" data-vista="teoria"><span class="n">6</span>Funciones hiperbólicas (para E 2.45) <span class="src" data-l="S" data-ref="Stewart §3.11 Funciones hiperbólicas, p. 257">S p.257</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> las funciones $\operatorname{senh}$, $\cosh$ y $\tanh$, que aparecen en E 2.45.</p>
 <p>Aparecen en el enunciado de E 2.45; conviene conocerlas.</p>
 <div class="box def"><span class="h">Definición</span>
   <p>$$\operatorname{senh}x=\frac{e^x-e^{-x}}2,\qquad \cosh x=\frac{e^x+e^{-x}}2,\qquad \tanh x=\frac{\operatorname{senh}x}{\cosh x}.$$</p>
@@ -260,7 +361,9 @@ svg.fig .t25-o{fill:var(--S)}
 <div class="box ex"><span class="h">Ejemplo resuelto: monotonía y mínimo de $\cosh$ (C2, propio)</span>
   <p>$(\operatorname{senh})'=\cosh x=\dfrac{e^x+e^{-x}}2&gt;0$, luego $\operatorname{senh}$ es estrictamente creciente. Para $\cosh$: $(\cosh x)'=\operatorname{senh}x$ es $\lt0$ si $x\lt0$ (porque $e^x\lt e^{-x}$) y $&gt;0$ si $x&gt;0$, así que $\cosh$ decrece hasta $0$ y luego crece: mínimo absoluto $\cosh0=1$.</p>
   <span class="src" data-l="P" data-ref="Ejemplo propio (comprobado con sympy)">propio</span></div>
-<h2 id="ext"><span class="n">7</span>Lo mínimo de extremos y concavidad (del Tema 3, para E 2.50-2.51) <span class="src" data-l="U" data-ref="U §3.4 pp. 126-132 y §3.5 pp. 136-137">U pp.126-137</span></h2>
+<!-- ============================ ext ============================ -->
+<h2 id="ext" data-vista="teoria"><span class="n">7</span>Lo mínimo de extremos y concavidad (del Tema 3, para E 2.50-2.51) <span class="src" data-l="U" data-ref="U §3.4 pp. 126-132 y §3.5 pp. 136-137">U pp.126-137</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> lo mínimo de extremos y concavidad del Tema 3 que necesitan E 2.50-2.51 (adelanto, no es de este tema).</p>
 <p>Esta sección es un <b>adelanto</b>: solo lo que hace falta para identificar gráficas. Se estudia con calma en el tema 3.4-3.5.</p>
 <div class="box def"><span class="h">Punto crítico y extremos</span>
   <ul>
@@ -283,7 +386,14 @@ svg.fig .t25-o{fill:var(--S)}
 <div class="box def"><span class="h">Convexidad e inflexión</span>
   <p>En <b>U</b> (Def. 3.8-3.9), una función es <b>convexa</b> si tiene forma de $x^2$ (gráfica por debajo de sus cuerdas) y <b>cóncava</b> si $-f$ es convexa (forma de $\ln x$). Con $f$ dos veces derivable: $f''\ge0$ en $I$ $\Rightarrow$ convexa; $f''\le0$ $\Rightarrow$ cóncava. Un <b>punto de inflexión</b> es donde cambia una por otra (si $f$ es dos veces derivable, en él $f''=0$: U Prop. 3.11).</p>
   <span class="src" data-l="U" data-ref="U Definiciones 3.8-3.9, p. 135; Figura 3.5 y Prop. 3.10, p. 136; Definición 3.10 y Proposiciones 3.11-3.12, p. 137">U pp.135-137</span></div>
-<h2 id="graf"><span class="n">8</span>Identificar y esbozar gráficas <span class="src" data-l="S" data-ref="Stewart §4.5 Resumen de trazado de curvas, pp. 310-311">S pp.310-311</span></h2>
+<!-- ============================ graf ============================ -->
+<h2 id="graf" data-vista="teoria"><span class="n">8</span>Identificar y esbozar gráficas <span class="src" data-l="S" data-ref="Stewart §4.5 Resumen de trazado de curvas, pp. 310-311">S pp.310-311</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a descartar gráficas con dominio, límites, cortes y signo de $f'$.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> Piden elegir la gráfica de una función entre cuatro figuras.</li>
+  <li><b>Qué haces:</b> Descartas figuras con dominio, asíntotas, cortes y signo de $f'$, de lo más barato a lo más caro.</li>
+  <li><b>Ejemplo mínimo:</b> $x^2+\frac1x$: sube a $+\infty$ en $\pm\infty$; sobran las figuras con asíntota horizontal.</li>
+</ul>
 <p>E 2.50-2.51 lo piden. Sirve este orden, de lo más barato a lo más caro:</p>
 <div class="recipe"><b>Receta «identificar una gráfica»:</b> (1) dominio y asíntotas verticales; (2) límites en $\pm\infty$ (asíntotas horizontales u oblicuas, U §1.4 pp. 48-49); (3) cortes con los ejes y signo; (4) signo de $f'$ (monotonía y extremos); (5) si aún hay dudas, $f''$. <b>Descarta una figura en cuanto un dato la contradiga.</b></div>
 <div class="box ex"><span class="h">Ejemplo resuelto: $f(x)=x+\dfrac1x$ (D1, propio)</span>
@@ -295,36 +405,439 @@ svg.fig .t25-o{fill:var(--S)}
 <div class="box ex"><span class="h">Ejemplo resuelto: $f(x)=xe^{-x^2}$ (D3, propio)</span>
   <p>Impar. $\lim_{x\to\pm\infty}xe^{-x^2}=0$ (la exponencial domina): asíntota horizontal $y=0$. $f'(x)=(1-2x^2)e^{-x^2}$: crece en $\big(-\tfrac1{\sqrt2},\tfrac1{\sqrt2}\big)$ y decrece fuera; máximo $f(\tfrac1{\sqrt2})=\tfrac1{\sqrt{2e}}\approx0{,}43$ y mínimo simétrico. $f''(x)=2x(2x^2-3)e^{-x^2}$ cambia de signo en $0$ y en $\pm\sqrt{3/2}$: <b>3 puntos de inflexión</b>. Es la versión difícil de U Ej. 2.23.</p>
   <span class="src" data-l="P" data-ref="Ejemplo propio (comprobado con sympy)">propio</span></div>
-<h2 id="ejercicios"><span class="n">9</span>Ejercicios del libro, resueltos</h2>
-<p>Agrupados por método (bloques A-D); el número de E va en cada título. En cada uno, el «por qué» de cada paso y una receta reutilizable. Pulsa «Mostrar soluciones» arriba para abrirlos todos.</p>
-<h3>Bloque A: Rolle y valor medio</h3>
-<details class="sol"><summary>Ejercicio 2.39 (Rolle y tangente horizontal) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.39, p. 76">E p.76</span></summary>
-<p class="enun">Dada $f:[-1,1]\to\mathbb R$ continua en $[-1,1]$, con $f(-1)=f(1)$ y derivable en $(-1,1)$: a) para algún $c$ la tangente es paralela al eje $y$; b) para algún $c$ la tangente es perpendicular al eje $y$; c) para algún $c$ la tangente es perpendicular al eje $x$; d) ninguna de las anteriores.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<!-- ============================ mapa ============================ -->
+<h2 id="mapa" data-vista="tipos"><span class="n">9</span>Mapa de decisión: qué teorema aplico y cuántas raíces hay <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.52, 95-98">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué teorema usar, y cuántas raíces tiene una ecuación, en cuanto leas lo que te piden (mapa de decisión y, desplegable, tabla con el detalle).</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja y «sí» te lleva a la acción de la derecha. Al final, antes de aplicar, comprueba <b>siempre</b> las hipótesis: es lo que más puntos se pierde en este tema.</p>
+<svg class="flujo" viewBox="0 0 460 720" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión: qué teorema aplico y cuántas raíces hay</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Si piden contar soluciones de f(x)=0, Bolzano da la existencia y Rolle o la monotonía estricta limitan cuántas hay. Si piden un punto con f prima conocida, Rolle si f(a)=f(b) y el valor medio si no. Si piden una cota o desigualdad, valor medio o función auxiliar. Si piden dónde sube o baja, el signo de f prima. Si piden probar que algo es constante, f prima cero en un intervalo. Antes de aplicar cualquier teorema se comprueban las hipótesis; si falla alguna no se puede asegurar nada.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="nodo" x="10" y="10" width="200" height="62" rx="10"/><text x="110" y="37" text-anchor="middle">Leo qué me piden y escribo</text><text x="110" y="55" text-anchor="middle">la función y el intervalo</text>
+<path class="lin" d="M110 72 V97" marker-end="url(#fl)"/>
+<rect class="preg" x="10" y="100" width="200" height="62" rx="10"/><text x="110" y="127" text-anchor="middle">¿Piden contar o localizar</text><text x="110" y="145" text-anchor="middle">soluciones de f(x) = 0?</text>
+<path class="lin" d="M110 162 V187" marker-end="url(#fl)"/>
+<text class="no" x="118" y="179">no</text>
+<path class="lin" d="M210 131 H246" marker-end="url(#fl)"/><text class="si" x="215" y="126">sí</text>
+<rect class="nodo" x="250" y="100" width="200" height="62" rx="10"/><text x="350" y="118" text-anchor="middle">Existe: Bolzano (f continua</text><text x="350" y="136" text-anchor="middle">y cambia de signo). Única o</text><text x="350" y="154" text-anchor="middle">cuántas: Rolle o monotonía</text>
+<rect class="preg" x="10" y="190" width="200" height="62" rx="10"/><text x="110" y="217" text-anchor="middle">¿Piden un punto donde f′</text><text x="110" y="235" text-anchor="middle">vale algo (una tangente)?</text>
+<path class="lin" d="M110 252 V277" marker-end="url(#fl)"/>
+<text class="no" x="118" y="269">no</text>
+<path class="lin" d="M210 221 H246" marker-end="url(#fl)"/><text class="si" x="215" y="216">sí</text>
+<rect class="nodo" x="250" y="190" width="200" height="62" rx="10"/><text x="350" y="208" text-anchor="middle">Si f(a)=f(b): Rolle, f′(c)=0</text><text x="350" y="226" text-anchor="middle">Si no: valor medio, f′(c) =</text><text x="350" y="244" text-anchor="middle">(f(b)−f(a))/(b−a)</text>
+<rect class="preg" x="10" y="280" width="200" height="62" rx="10"/><text x="110" y="307" text-anchor="middle">¿Piden una cota o una</text><text x="110" y="325" text-anchor="middle">desigualdad?</text>
+<path class="lin" d="M110 342 V367" marker-end="url(#fl)"/>
+<text class="no" x="118" y="359">no</text>
+<path class="lin" d="M210 311 H246" marker-end="url(#fl)"/><text class="si" x="215" y="306">sí</text>
+<rect class="nodo" x="250" y="280" width="200" height="62" rx="10"/><text x="350" y="298" text-anchor="middle">Valor medio con f′ acotada:</text><text x="350" y="316" text-anchor="middle">|f(y)−f(x)| ≤ M·|y−x|; o</text><text x="350" y="334" text-anchor="middle">h = f − g y signo de h′</text>
+<rect class="preg" x="10" y="370" width="200" height="62" rx="10"/><text x="110" y="397" text-anchor="middle">¿Piden dónde sube o baja f</text><text x="110" y="415" text-anchor="middle">(o si es creciente)?</text>
+<path class="lin" d="M110 432 V457" marker-end="url(#fl)"/>
+<text class="no" x="118" y="449">no</text>
+<path class="lin" d="M210 401 H246" marker-end="url(#fl)"/><text class="si" x="215" y="396">sí</text>
+<rect class="nodo" x="250" y="370" width="200" height="62" rx="10"/><text x="350" y="388" text-anchor="middle">Factorizo f′ y hallo sus</text><text x="350" y="406" text-anchor="middle">ceros; un valor de prueba</text><text x="350" y="424" text-anchor="middle">por tramo; Prop. 2.4</text>
+<rect class="preg" x="10" y="460" width="200" height="62" rx="10"/><text x="110" y="487" text-anchor="middle">¿Piden probar que algo es</text><text x="110" y="505" text-anchor="middle">constante, o que f′ = g′?</text>
+<path class="lin" d="M110 522 V547" marker-end="url(#fl)"/>
+<text class="no" x="118" y="539">no</text>
+<path class="lin" d="M210 491 H246" marker-end="url(#fl)"/><text class="si" x="215" y="486">sí</text>
+<rect class="nodo" x="250" y="460" width="200" height="62" rx="10"/><text x="350" y="478" text-anchor="middle">f′ = 0 en un intervalo ⇒</text><text x="350" y="496" text-anchor="middle">constante (Teor. 2.4); su</text><text x="350" y="514" text-anchor="middle">valor, en un punto cómodo</text>
+<rect class="preg" x="10" y="550" width="200" height="62" rx="10"/><text x="110" y="568" text-anchor="middle">¿Se cumplen todas las</text><text x="110" y="586" text-anchor="middle">hipótesis del teorema?</text><text x="110" y="604" text-anchor="middle">(cerrado, abierto, f(a)=f(b))</text>
+<path class="lin" d="M110 612 V637" marker-end="url(#fl)"/>
+<text class="no" x="118" y="629">sí</text>
+<path class="lin" d="M210 581 H246" marker-end="url(#fl)"/><text class="no" x="215" y="576">no</text>
+<rect class="nada" x="250" y="550" width="200" height="62" rx="10"/><text x="350" y="568" text-anchor="middle">No se puede asegurar nada:</text><text x="350" y="586" text-anchor="middle">busco un contraejemplo</text><text x="350" y="604" text-anchor="middle">(pico |x| o salto)</text>
+<rect class="fin" x="10" y="640" width="200" height="62" rx="10"/><text x="110" y="667" text-anchor="middle">Aplico, traduzco c a lo</text><text x="110" y="685" text-anchor="middle">que piden y redacto</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso</summary>
+<table>
+  <tr><th>Piden…</th><th>Herramienta</th><th>Ojo con…</th></tr>
+  <tr><td>Que existe una solución de $f(x)=0$</td><td>Bolzano: $f$ continua en $[a,b]$ y $f(a)f(b)<0$</td><td>Sin continuidad no vale (E: salto en $0$)</td></tr>
+  <tr><td>Que hay <b>como mucho</b> $k$ soluciones</td><td>Rolle: entre dos ceros de $f$ hay uno de $f'$; o $f$ estrictamente monótona</td><td>Si $f'$ no se anula, a lo sumo una raíz</td></tr>
+  <tr><td>Una tangente horizontal</td><td>Rolle ($f(a)=f(b)$)</td><td>$c$ está en el abierto $(a,b)$</td></tr>
+  <tr><td>Una tangente paralela a la cuerda</td><td>Valor medio</td><td>No se pide $f(a)=f(b)$; basta derivable en el abierto</td></tr>
+  <tr><td>Una cota de $f(b)-f(a)$</td><td>Valor medio con $|f'|\le M$</td><td>Multiplicar por la longitud $b-a$</td></tr>
+  <tr><td>Una desigualdad entre funciones</td><td>$h=f-g$, $h(a)=0$ y signo de $h'$ con el TVM</td><td>$h'$ puede anularse en un punto</td></tr>
+  <tr><td>Dónde crece o decrece</td><td>Signo de $f'$ (Prop. 2.4) en cada intervalo</td><td>Nombrar cada intervalo por separado; no unir $A\cup B$</td></tr>
+  <tr><td>Que algo es constante</td><td>$f'=0$ en un intervalo (Teor. 2.4)</td><td>El dominio debe ser un <b>intervalo</b></td></tr>
+</table>
+</details>
+<div class="box tip"><span class="h">Método en cinco pasos para el examen</span>
+  <ol class="steps">
+    <li><b>Traduce lo que piden</b> a una de las filas del mapa.</li>
+    <li><b>Escribe las hipótesis</b> del teorema y comprueba cada una (continua en $[a,b]$, derivable en $(a,b)$, $f(a)=f(b)$ si es Rolle).</li>
+    <li><b>Aplica el teorema</b> y escribe qué dice de $c$.</li>
+    <li><b>Traduce $c$</b> a la pregunta (tangente, signo, cota, número de raíces).</li>
+    <li><b>Si es V/F y es falso</b>, da un contraejemplo concreto.</li>
+  </ol>
+  <span class="src" data-l="P" data-ref="Método propio, sintetizado a partir de U §2.5">P</span>
+</div>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">10</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub">Antes de calcular, decide qué te piden: un punto donde $f'$ vale algo (Rolle/TVM), cuántas soluciones hay (Bolzano + Rolle), una cota (TVM con $|f'|$ acotada) o por dónde sube y baja $f$ (signo de $f'$). Y comprueba siempre las hipótesis: intervalo, continuidad en el cerrado, derivabilidad en el abierto.</p>
+<h3>Rolle: comprobar las hipótesis y hallar $c$</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · Rolle con seno y coseno <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Comprueba que $f(x)=\operatorname{sen}x+\cos x$ cumple las hipótesis del teorema de Rolle en $\left[0,\frac\pi2\right]$ y halla el punto $c$ que garantiza.</p>
+  <details class="pista"><summary>Pista</summary><p>Tres comprobaciones: continua en el cerrado, derivable en el abierto, mismo valor en los extremos. Después resuelve $f'(x)=0$ y quédate con las soluciones de $\left(0,\frac\pi2\right)$; dividir entre $\cos x$ convierte la ecuación en una de tangente.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Continuidad y derivabilidad:</b> $\operatorname{sen}$ y $\cos$ son derivables en todo $\mathbb R$ (tabla, U p.79), luego su suma también; en particular $f$ es continua en $\left[0,\frac\pi2\right]$ y derivable en $\left(0,\frac\pi2\right)$.</li><li><b>Extremos:</b> $f(0)=0+1=1$ y $f\left(\frac\pi2\right)=1+0=1$. Coinciden.</li><li><b>Rolle</b> (U p.95): existe $c\in\left(0,\frac\pi2\right)$ con $f'(c)=0$.</li><li><b>Hallarlo:</b> $f'(x)=\cos x-\operatorname{sen}x=0\iff\operatorname{sen}x=\cos x$. En $\left(0,\frac\pi2\right)$ es $\cos x&gt;0$, así que se puede dividir: $\operatorname{tg}x=1$, cuya única solución en ese intervalo es $x=\frac\pi4$.</li><li><b>Comprobación:</b> $f'\left(\frac\pi4\right)=\frac{\sqrt2}2-\frac{\sqrt2}2=0$ y $0&lt;\frac\pi4&lt;\frac\pi2$.</li></ol>
+    <p class="res">Resultado: $c=\frac\pi4$</p>
+  </details>
+</details>
+<details class="pr" id="pr-a2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica a2 · $\sqrt[3]{x^2}$: misma altura y sin tangente horizontal <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f(x)=\sqrt[3]{x^2}$ en $[-1,1]$. Comprueba que $f(-1)=f(1)$ pero que $f'$ no se anula en ningún punto de $(-1,1)$. ¿Contradice esto el teorema de Rolle?</p>
+  <details class="pista"><summary>Pista</summary><p>Fuera de $0$ usa la regla de la potencia. En $x=0$ la fórmula de $f'$ no sirve: calcula el cociente incremental $\frac{f(h)-f(0)}h$ y mira si tiene límite finito.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Extremos:</b> $f(-1)=\sqrt[3]{1}=1$ y $f(1)=1$. Coinciden. Además $f$ es continua en $[-1,1]$ (raíz cúbica de un polinomio).</li><li><b>Derivada fuera de $0$</b> (tabla, $u^c$ con $c=\frac23$, U p.80): $f'(x)=\dfrac{2}{3\sqrt[3]x}$ para $x\neq0$. Una fracción con numerador $2$ nunca vale $0$.</li><li><b>En $x=0$</b> (U Def. 2.1, p.75): $\dfrac{f(h)-f(0)}h=\dfrac{\sqrt[3]{h^2}}h=\dfrac1{\sqrt[3]h}$, que tiende a $+\infty$ si $h\to0^+$ y a $-\infty$ si $h\to0^-$. No hay límite finito: $f$ <b>no es derivable en $0$</b> (la gráfica tiene un pico en el origen).</li><li><b>¿Contradicción?</b> No. Rolle (U p.95) exige que $f$ sea derivable en todo $(-1,1)$, y falla en $x=0\in(-1,1)$. Sin esa hipótesis, el teorema no promete nada, y aquí, de hecho, no hay tangente horizontal.</li></ol>
+    <p class="res">Resultado: $f(-1)=f(1)=1$ pero no existe $c$ con $f'(c)=0$: falla la derivabilidad en $x=0$</p>
+  </details>
+</details>
+<h3>¿Cuántas raíces? Bolzano para que existan, Rolle para que no sobren</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · $x^5+x-1=0$: una sola raíz <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Demuestra que la ecuación $x^5+x-1=0$ tiene exactamente una solución real y localízala entre dos enteros consecutivos.</p>
+  <details class="pista"><summary>Pista</summary><p>Dos partes. <b>Existe:</b> busca dos enteros donde $p(x)=x^5+x-1$ cambie de signo (Bolzano). <b>No hay otra:</b> si hubiera dos raíces, Rolle daría un cero de $p'$; mira si $p'$ puede anularse.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Existencia</b> (Bolzano, U p.52): $p(x)=x^5+x-1$ es un polinomio, continuo en $[0,1]$, con $p(0)=-1&lt;0$ y $p(1)=1&gt;0$. Hay al menos una raíz en $(0,1)$.</li><li><b>Unicidad, por reducción al absurdo:</b> si hubiera dos raíces $r_1&lt;r_2$, como $p(r_1)=p(r_2)=0$ y $p$ es derivable, Rolle (U p.95) daría $c\in(r_1,r_2)$ con $p'(c)=0$.</li><li><b>Pero $p'$ no se anula:</b> $p'(x)=5x^4+1\ge1&gt;0$ para todo $x$. Contradicción: solo hay una raíz.</li><li><b>Afinando (opcional):</b> $p(0{,}75)\approx-0{,}013&lt;0$ y $p(0{,}76)\approx0{,}014&gt;0$, así que la raíz está en $(0{,}75;\,0{,}76)$.</li></ol>
+    <p class="res">Resultado: exactamente una raíz real, en $(0,1)$ ($\approx0{,}755$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica b2 · $x^3-12x+1=0$: exactamente tres raíces <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Demuestra que $x^3-12x+1=0$ tiene exactamente tres soluciones reales e indica un intervalo que contenga a cada una.</p>
+  <details class="pista"><summary>Pista</summary><p>Evalúa $p(x)=x^3-12x+1$ en $-4,-3,0,1,4$ y cuenta los cambios de signo (Bolzano da «al menos»). Para «como mucho tres»: si hubiera cuatro raíces, Rolle daría tres ceros distintos de $p'$, que es de grado $2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Tabla de valores:</b> $p(-4)=-15$, $p(-3)=10$, $p(0)=1$, $p(1)=-10$, $p(4)=17$.</li><li><b>Al menos tres</b> (Bolzano, U p.52, en cada intervalo; $p$ es continua): cambia de signo en $(-4,-3)$, en $(0,1)$ y en $(1,4)$. Los tres intervalos no se solapan, así que son tres raíces distintas.</li><li><b>Como mucho tres:</b> si hubiera cuatro raíces $r_1&lt;r_2&lt;r_3&lt;r_4$, Rolle (U p.95) en $[r_1,r_2]$, $[r_2,r_3]$ y $[r_3,r_4]$ daría tres puntos distintos donde $p'=0$.</li><li><b>Pero</b> $p'(x)=3x^2-12=3(x-2)(x+2)$ solo se anula en $x=\pm2$: dos puntos. Contradicción.</li><li><b>Conclusión:</b> exactamente tres raíces (aprox. $-3{,}505$; $0{,}083$; $3{,}422$). Fíjate en que los ceros de $p'$ separan las raíces: $-3{,}505&lt;-2&lt;0{,}083&lt;2&lt;3{,}422$.</li></ol>
+    <p class="res">Resultado: exactamente tres raíces reales, en $(-4,-3)$, $(0,1)$ y $(1,4)$</p>
+  </details>
+</details>
+<h3>Valor medio: el $c$ concreto</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · el $c$ de $x^3$ en $[0,3]$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Comprueba que $f(x)=x^3$ cumple las hipótesis del teorema del valor medio en $[0,3]$ y halla el valor $c$ que proporciona.</p>
+  <details class="pista"><summary>Pista</summary><p>Calcula la pendiente de la cuerda $\frac{f(3)-f(0)}{3-0}$ e iguálala a $f'(c)=3c^2$. De las soluciones, solo vale la que está en el intervalo abierto.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis:</b> $x^3$ es un polinomio: continuo en $[0,3]$ y derivable en $(0,3)$.</li><li><b>Pendiente de la cuerda:</b> $\dfrac{f(3)-f(0)}{3-0}=\dfrac{27-0}{3}=9$.</li><li><b>TVM</b> (U p.96): existe $c\in(0,3)$ con $f'(c)=9$, es decir $3c^2=9$, $c^2=3$, $c=\pm\sqrt3$.</li><li><b>Elegir:</b> $-\sqrt3\notin(0,3)$; $\sqrt3\approx1{,}732\in(0,3)$. En ese punto la tangente es paralela a la cuerda que une $(0,0)$ con $(3,27)$.</li></ol>
+    <p class="res">Resultado: $c=\sqrt3$</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica c2 · $\sqrt x$ en $[0,4]$: basta la derivabilidad en el abierto <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">La función $f(x)=\sqrt x$ no es derivable en $x=0$. ¿Se puede aplicar el teorema del valor medio en $[0,4]$? Si es así, halla $c$.</p>
+  <details class="pista"><summary>Pista</summary><p>Relee las hipótesis del TVM: ¿dónde se pide la continuidad y dónde la derivabilidad? $0$ es un extremo del intervalo, no un punto interior.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis del TVM</b> (U p.96): continua en el cerrado $[0,4]$ y derivable en el abierto $(0,4)$. No se pide nada sobre la derivada en los extremos.</li><li><b>Continuidad:</b> $\sqrt x$ es continua en $[0,+\infty)$, en particular en $[0,4]$.</li><li><b>Derivabilidad:</b> para $x&gt;0$, $f'(x)=\dfrac1{2\sqrt x}$ (U p.80). Todo punto de $(0,4)$ es $&gt;0$. Que no sea derivable en $0$ no importa: $0\notin(0,4)$. Sí se puede aplicar.</li><li><b>Cuerda:</b> $\dfrac{f(4)-f(0)}{4-0}=\dfrac{2-0}4=\dfrac12$.</li><li><b>Resolver</b> $\dfrac1{2\sqrt c}=\dfrac12$: $\sqrt c=1$, $c=1\in(0,4)$.</li></ol>
+    <p class="res">Resultado: $c=1$</p>
+  </details>
+</details>
+<h3>Estimar y acotar con el valor medio</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · acotar $\sqrt{101}$ sin calculadora <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Usa el teorema del valor medio para $f(x)=\sqrt x$ en $[100,101]$ y demuestra que $10&lt;\sqrt{101}&lt;10{,}05$.</p>
+  <details class="pista"><summary>Pista</summary><p>El TVM da $\sqrt{101}-\sqrt{100}=f'(c)\cdot1$ con $100&lt;c&lt;101$. No sabes cuánto vale $c$, pero sí que $\sqrt c&gt;\sqrt{100}=10$: con eso acotas $f'(c)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis:</b> $\sqrt x$ es continua en $[100,101]$ y derivable en $(100,101)$, con $f'(x)=\frac1{2\sqrt x}$ (U p.80).</li><li><b>TVM</b> (U p.96): existe $c\in(100,101)$ con $\sqrt{101}-\sqrt{100}=\dfrac1{2\sqrt c}\,(101-100)$, es decir $\sqrt{101}=10+\dfrac1{2\sqrt c}$.</li><li><b>Cota inferior:</b> $\frac1{2\sqrt c}&gt;0$, luego $\sqrt{101}&gt;10$.</li><li><b>Cota superior:</b> como $c&gt;100$, $\sqrt c&gt;10$ y $\frac1{2\sqrt c}&lt;\frac1{20}=0{,}05$. Luego $\sqrt{101}&lt;10{,}05$.</li><li><b>Comprobación:</b> $\sqrt{101}\approx10{,}0499$. (Usando además $\sqrt c&lt;11$ se obtiene $\sqrt{101}&gt;10+\frac1{22}\approx10{,}045$: la estimación es muy fina.)</li></ol>
+    <p class="res">Resultado: $10&lt;\sqrt{101}&lt;10{,}05$</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica d2 · dos cotas para $\ln\frac ba$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Demuestra que, si $0&lt;a&lt;b$, entonces $\dfrac{b-a}{b}&lt;\ln\dfrac ba&lt;\dfrac{b-a}{a}$. Deduce una cota para $\ln\left(1+\frac1n\right)$, $n\in\mathbb N$.</p>
+  <details class="pista"><summary>Pista</summary><p>$\ln\frac ba=\ln b-\ln a$: es la diferencia de valores que aparece en el TVM para $\ln$ en $[a,b]$. Después acota $\frac1c$ sabiendo que $a&lt;c&lt;b$. Para la segunda parte, toma $a=n$, $b=n+1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis:</b> $\ln$ es continua y derivable en $(0,+\infty)$, que contiene a $[a,b]$; $(\ln x)'=\frac1x$ (U p.79).</li><li><b>TVM</b> (U p.96): existe $c\in(a,b)$ con $\ln b-\ln a=\dfrac1c\,(b-a)$.</li><li><b>Acotar $\frac1c$:</b> de $0&lt;a&lt;c&lt;b$ se sigue $\frac1b&lt;\frac1c&lt;\frac1a$ (al invertir números positivos se da la vuelta a la desigualdad).</li><li><b>Multiplicar por $b-a&gt;0$</b> (no cambia el sentido): $\dfrac{b-a}b&lt;\dfrac{b-a}c=\ln\dfrac ba&lt;\dfrac{b-a}a$.</li><li><b>Con $a=n$, $b=n+1$:</b> $b-a=1$ y $\frac ba=1+\frac1n$, así que $\dfrac1{n+1}&lt;\ln\left(1+\dfrac1n\right)&lt;\dfrac1n$. Ejemplo $n=1$: $0{,}5&lt;\ln2\approx0{,}693&lt;1$.</li></ol>
+    <p class="res">Resultado: $\dfrac{b-a}{b}&lt;\ln\dfrac ba&lt;\dfrac{b-a}{a}$; con $b=n+1$, $a=n$: $\dfrac1{n+1}&lt;\ln\left(1+\dfrac1n\right)&lt;\dfrac1n$</p>
+  </details>
+</details>
+<h3>Monotonía: tabla de signos de $f'$</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · $x^4-8x^2$: cuatro tramos <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla los intervalos de crecimiento y decrecimiento de $f(x)=x^4-8x^2$.</p>
+  <details class="pista"><summary>Pista</summary><p>Deriva y factoriza del todo: $f'(x)=4x(x^2-4)$ y $x^2-4$ es una diferencia de cuadrados. Los ceros de $f'$ parten la recta en cuatro tramos; un número de prueba en cada uno.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivar y factorizar:</b> $f'(x)=4x^3-16x=4x(x^2-4)=4x(x-2)(x+2)$.</li><li><b>Ceros de $f'$:</b> $x=-2$, $0$, $2$. Tramos: $(-\infty,-2)$, $(-2,0)$, $(0,2)$, $(2,+\infty)$.</li><li><b>Un número de prueba por tramo:</b> $f'(-3)=4(-3)(-5)(-1)=-60&lt;0$; $f'(-1)=4(-1)(-3)(1)=12&gt;0$; $f'(1)=4(1)(-1)(3)=-12&lt;0$; $f'(3)=4(3)(1)(5)=60&gt;0$. (En cada tramo $f'$ no se anula y es continua, así que no puede cambiar de signo dentro: basta un punto.)</li><li><b>Leer la conclusión</b> (Prop. 2.4, U p.98, en cada intervalo abierto): estrictamente decreciente en $(-\infty,-2)$ y en $(0,2)$; estrictamente creciente en $(-2,0)$ y en $(2,+\infty)$.</li><li><b>Coherencia:</b> $f(-2)=f(2)=-16$ y $f(0)=0$: baja hasta $-16$, sube a $0$, baja a $-16$ y sube. La función es par, y la tabla es simétrica como debe.</li></ol>
+    <p class="res">Resultado: decreciente en $(-\infty,-2)$ y $(0,2)$; creciente en $(-2,0)$ y $(2,+\infty)$</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica e2 · $\frac{\ln x}x$ y quién es mayor, $\pi^e$ o $e^\pi$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Estudia la monotonía de $f(x)=\dfrac{\ln x}{x}$ en $(0,+\infty)$ y úsala para decidir, sin calculadora, cuál es mayor: $\pi^e$ o $e^\pi$.</p>
+  <details class="pista"><summary>Pista</summary><p>Cociente: $f'(x)=\frac{1-\ln x}{x^2}$, y $x^2&gt;0$. Después compara $f(e)$ con $f(\pi)$ sabiendo que $e&lt;\pi$, y transforma $\frac{\ln\pi}\pi&lt;\frac{\ln e}e$ multiplicando por $e\pi&gt;0$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivar</b> (cociente, U Prop. 2.1, p.79): $f'(x)=\dfrac{\frac1x\cdot x-\ln x\cdot1}{x^2}=\dfrac{1-\ln x}{x^2}$.</li><li><b>Signo:</b> $x^2&gt;0$, así que manda $1-\ln x$. Como $\ln$ es estrictamente creciente y $\ln e=1$: $1-\ln x&gt;0$ si $x&lt;e$ y $&lt;0$ si $x&gt;e$.</li><li><b>Monotonía</b> (Prop. 2.4, U p.98): estrictamente creciente en $(0,e)$ y estrictamente decreciente en $(e,+\infty)$.</li><li><b>Comparar $f(e)$ y $f(\pi)$:</b> TVM (U p.96) en $[e,\pi]$: $f(\pi)-f(e)=f'(c)(\pi-e)$ con $c\in(e,\pi)$, donde $f'(c)&lt;0$. Luego $f(\pi)&lt;f(e)$: $\dfrac{\ln\pi}\pi&lt;\dfrac1e$.</li><li><b>Traducir:</b> multiplicando por $e\pi&gt;0$, $e\ln\pi&lt;\pi$, es decir $\ln(\pi^e)&lt;\ln(e^\pi)$. Como $\ln$ es estrictamente creciente, $\pi^e&lt;e^\pi$. (Comprobación: $\pi^e\approx22{,}46$, $e^\pi\approx23{,}14$.)</li></ol>
+    <p class="res">Resultado: crece en $(0,e)$, decrece en $(e,+\infty)$; $\pi^e&lt;e^\pi$</p>
+  </details>
+</details>
+<h3>Desigualdades con una función auxiliar</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · $e^x\ge1+x$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Demuestra que $e^x\ge1+x$ para todo $x\in\mathbb R$, y que la igualdad solo se da en $x=0$.</p>
+  <details class="pista"><summary>Pista</summary><p>Pasa todo a un lado: $h(x)=e^x-1-x$, con $h(0)=0$. Hay que ver $h(x)&gt;0$ si $x\neq0$. Aplica el TVM a $h$ entre $0$ y $x$ (por separado si $x&gt;0$ o $x&lt;0$) y mira el signo de $h'(c)=e^c-1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Función auxiliar:</b> $h(x)=e^x-1-x$, derivable en $\mathbb R$, con $h(0)=1-1-0=0$ y $h'(x)=e^x-1$. Signo de $h'$: $e^c&gt;1$ si $c&gt;0$ y $e^c&lt;1$ si $c&lt;0$ ($e^x$ es estrictamente creciente y $e^0=1$).</li><li><b>Si $x&gt;0$:</b> TVM (U p.96) en $[0,x]$: $h(x)-h(0)=h'(c)\,(x-0)$ con $c\in(0,x)$. Aquí $h'(c)&gt;0$ y $x&gt;0$, luego $h(x)&gt;0$.</li><li><b>Si $x&lt;0$:</b> TVM en $[x,0]$: $h(0)-h(x)=h'(c)\,(0-x)$ con $c\in(x,0)$. Ahora $h'(c)&lt;0$ y $0-x&gt;0$, así que $h(0)-h(x)&lt;0$, es decir $h(x)&gt;0$.</li><li><b>Conclusión:</b> $h(x)&gt;0$ si $x\neq0$ y $h(0)=0$: $e^x\ge1+x$, con igualdad solo en $0$. (Geométricamente: la recta $y=1+x$ es la tangente a $e^x$ en $x=0$ y queda siempre por debajo.)</li></ol>
+    <p class="res">Resultado: $e^x\ge1+x$ para todo $x\in\mathbb R$, con igualdad solo en $x=0$</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica f2 · $\operatorname{sen}x&gt;x-\frac{x^3}6$: derivar dos veces <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Demuestra que $\operatorname{sen}x&gt;x-\dfrac{x^3}{6}$ para todo $x&gt;0$.</p>
+  <details class="pista"><summary>Pista</summary><p>Con $h(x)=\operatorname{sen}x-x+\frac{x^3}6$ se tiene $h(0)=0$ y $h'(0)=0$, pero el signo de $h'$ no se ve a simple vista. Deriva otra vez: $h''(x)=x-\operatorname{sen}x$. Prueba primero que $\operatorname{sen}x&lt;x$ para $x&gt;0$ y luego «sube» de $h''$ a $h'$ y de $h'$ a $h$ con el TVM.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Paso previo: $\operatorname{sen}x&lt;x$ si $x&gt;0$.</b> Si $x&gt;1$: $\operatorname{sen}x\le1&lt;x$. Si $0&lt;x\le1$: TVM (U p.96) en $[0,x]$, $\operatorname{sen}x-\operatorname{sen}0=\cos c\cdot x$ con $c\in(0,1)$, y ahí $\cos c&lt;1$; luego $\operatorname{sen}x&lt;x$.</li><li><b>Función auxiliar:</b> $h(x)=\operatorname{sen}x-x+\frac{x^3}6$, derivable cuantas veces se quiera, con $h(0)=0$, $h'(x)=\cos x-1+\frac{x^2}2$, $h'(0)=0$ y $h''(x)=-\operatorname{sen}x+x$.</li><li><b>Signo de $h''$:</b> por el paso previo, $h''(x)=x-\operatorname{sen}x&gt;0$ para $x&gt;0$.</li><li><b>De $h''$ a $h'$:</b> para $x&gt;0$, TVM aplicado a $h'$ en $[0,x]$: $h'(x)-h'(0)=h''(c)\,x$ con $c\in(0,x)$. Como $h''(c)&gt;0$ y $h'(0)=0$: $h'(x)&gt;0$ para todo $x&gt;0$.</li><li><b>De $h'$ a $h$:</b> TVM aplicado a $h$ en $[0,x]$: $h(x)-h(0)=h'(d)\,x$ con $d\in(0,x)$, y $h'(d)&gt;0$. Luego $h(x)&gt;0$, que es la desigualdad pedida. (Ejemplo: $\operatorname{sen}1\approx0{,}8415&gt;1-\frac16\approx0{,}8333$.)</li></ol>
+    <p class="res">Resultado: $\operatorname{sen}x&gt;x-\dfrac{x^3}6$ para todo $x&gt;0$</p>
+  </details>
+</details>
+<h3>Derivada nula: funciones constantes</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · $\operatorname{arctg}x+\operatorname{arctg}\frac1x$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Demuestra que $\operatorname{arctg}x+\operatorname{arctg}\dfrac1x=\dfrac\pi2$ para todo $x&gt;0$. ¿Qué vale la expresión si $x&lt;0$?</p>
+  <details class="pista"><summary>Pista</summary><p>Llama $F(x)$ a la suma y derívala con $\operatorname{arctg}'(y)=\frac1{1+y^2}$ y la cadena: sale $0$. Por el Teorema 2.4, $F$ es constante en cada <b>intervalo</b> de su dominio; el valor se obtiene en un punto cómodo ($x=1$, $x=-1$).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivada del arcotangente</b> (como el arcoseno en U Ej. 2.6, p.80): derivando $\operatorname{tg}(\operatorname{arctg}y)=y$ se obtiene $(1+y^2)\operatorname{arctg}'(y)=1$, es decir $\operatorname{arctg}'(y)=\frac1{1+y^2}$.</li><li><b>Derivar $F(x)=\operatorname{arctg}x+\operatorname{arctg}\frac1x$</b> ($x\neq0$), con la cadena (U p.79): $F'(x)=\dfrac1{1+x^2}+\dfrac1{1+\frac1{x^2}}\cdot\left(-\dfrac1{x^2}\right)=\dfrac1{1+x^2}-\dfrac1{x^2+1}=0$.</li><li><b>Teorema 2.4</b> (U p.97) en el intervalo $(0,+\infty)$: $F$ es constante allí. Su valor: $F(1)=\frac\pi4+\frac\pi4=\frac\pi2$.</li><li><b>Para $x&lt;0$:</b> $(-\infty,0)$ es otro intervalo; $F$ es constante en él y vale $F(-1)=-\frac\pi4-\frac\pi4=-\frac\pi2$.</li><li><b>Observación:</b> $F'=0$ en todo su dominio y, sin embargo, $F$ no es constante en $\mathbb R\setminus\{0\}$: ese dominio no es un intervalo.</li></ol>
+    <p class="res">Resultado: $\operatorname{arctg}x+\operatorname{arctg}\dfrac1x=\dfrac\pi2$ si $x&gt;0$ (y $-\dfrac\pi2$ si $x&lt;0$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica g2 · la función con $f'=2xf$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f:\mathbb R\to\mathbb R$ derivable con $f'(x)=2x\,f(x)$ para todo $x$ y $f(0)=3$. Demuestra que $f(x)=3e^{x^2}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Considera $g(x)=f(x)\,e^{-x^2}$. Derívala con la regla del producto y usa el dato $f'=2xf$: sale $g'=0$. Después, Teorema 2.4.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Función auxiliar:</b> $g(x)=f(x)\,e^{-x^2}$, derivable en $\mathbb R$ (producto de derivables).</li><li><b>Derivar</b> (producto y cadena, U p.79): $g'(x)=f'(x)e^{-x^2}+f(x)\cdot(-2x)e^{-x^2}=\big(f'(x)-2xf(x)\big)e^{-x^2}$.</li><li><b>Usar el dato:</b> $f'(x)-2xf(x)=0$, luego $g'(x)=0$ para todo $x$.</li><li><b>Teorema 2.4</b> (U p.97): en cada intervalo $(-n,n)$, $g$ es constante; todos contienen al $0$, así que esa constante es siempre $g(0)=f(0)\,e^0=3$. Como todo $x$ está en algún $(-n,n)$, $g(x)=3$ para todo $x\in\mathbb R$.</li><li><b>Despejar:</b> $f(x)=3e^{x^2}$. <b>Comprobación:</b> $f'(x)=6xe^{x^2}=2x\cdot3e^{x^2}=2xf(x)$ y $f(0)=3$.</li></ol>
+    <p class="res">Resultado: $f(x)=3e^{x^2}$</p>
+  </details>
+</details>
+</div>
+<!-- ============================ autoevaluación ============================ -->
+<h2 id="autoeval" data-vista="tipos"><span class="n">11</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="f">
+    <p><b>1.</b> (V/F) $f(x)=|x-2|$ cumple $f(0)=f(4)=2$; por tanto, existe $c\in(0,4)$ con $f'(c)=0$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Falta una hipótesis de Rolle (U p.95): $f$ no es derivable en $x=2\in(0,4)$ (pico). De hecho $f'=-1$ en $(0,2)$ y $f'=1$ en $(2,4)$: nunca vale $0$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>2.</b> (V/F) Si $f$ es derivable en $\mathbb R$ y $f'(c)=0$ para algún $c\in(a,b)$, entonces $f(a)=f(b)$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Es Rolle leído al revés, y no vale. $f(x)=x^3$ en $[-1,2]$: $f'(0)=0$, pero $f(-1)=-1\neq8=f(2)$ (U p.96).</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>3.</b> (Elige) El punto $c$ del teorema del valor medio para $f(x)=x^2$ en $[1,3]$ es:</p>
+    <div class="opts"><button data-v="a">(a) $c=2$</button><button data-v="b">(b) $c=\sqrt5$</button><button data-v="c">(c) $c=4$</button><button data-v="d">(d) no existe</button></div>
+    <div class="exp">Cuerda: $\frac{9-1}{3-1}=4$. Se resuelve $f'(c)=2c=4$: $c=2\in(1,3)$ (U p.96). La (c) confunde la pendiente de la cuerda con el punto; la (b) es el punto donde $f$ vale la media de $f(1)$ y $f(3)$, que no es lo que pide el TVM.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>4.</b> (Elige) Si $f$ es derivable en $\mathbb R$, $f(1)=2$ y $|f'(x)|\le3$ para todo $x$, entonces $f(3)$ está seguro en:</p>
+    <div class="opts"><button data-v="a">(a) $[-4,8]$</button><button data-v="b">(b) $[-1,5]$</button><button data-v="c">(c) $[2,8]$</button><button data-v="d">(d) $[-6,6]$</button></div>
+    <div class="exp">TVM en $[1,3]$: $f(3)=f(1)+f'(c)\cdot2=2+2f'(c)$ con $-3\le f'(c)\le3$, luego $-4\le f(3)\le8$. La (b) olvida multiplicar por la longitud $3-1=2$; la (c) supone $f'\ge0$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>5.</b> (V/F) Si $f$ es derivable y estrictamente creciente en $\mathbb R$, entonces $f'(x)&gt;0$ para todo $x$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">La Prop. 2.4 (U p.98) va en un solo sentido. $x^3$ es estrictamente creciente y $f'(0)=0$ (U Ej. 2.22, p.99). Lo único seguro es $f'\ge0$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>6.</b> (V/F) Si $f'(x)=g'(x)$ para todo $x\in(0,5)$, entonces $f(x)=g(x)$ para todo $x\in(0,5)$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Solo se puede asegurar que difieren en una constante: $f-g$ tiene derivada $0$ en un intervalo y es constante (Teorema 2.4, U p.97). Ejemplo: $f(x)=x^2$, $g(x)=x^2+1$.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>7.</b> (Elige) ¿Cuántas soluciones reales tiene $x^3+x+5=0$?</p>
+    <div class="opts"><button data-v="a">(a) ninguna</button><button data-v="b">(b) exactamente una</button><button data-v="c">(c) exactamente tres</button><button data-v="d">(d) no se puede saber sin calcularlas</button></div>
+    <div class="exp">Existe: $p(-2)=-5&lt;0&lt;5=p(0)$ (Bolzano, U p.52). Es única: $p'(x)=3x^2+1&gt;0$ no se anula, y dos raíces darían, por Rolle, un cero de $p'$. (Está cerca de $-1{,}516$.)</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>8.</b> (V/F) Si $f$ es derivable en $\mathbb R$ y $f'$ se anula exactamente en dos puntos, entonces $f$ tiene como mucho tres ceros.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Con cuatro ceros $r_1&lt;r_2&lt;r_3&lt;r_4$, Rolle (U p.95) en los tres intervalos $[r_i,r_{i+1}]$ daría tres ceros distintos de $f'$. Regla: entre dos ceros de $f$ siempre hay uno de $f'$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>9.</b> (V/F) $f(x)=-\dfrac1x$ tiene $f'(x)=\dfrac1{x^2}&gt;0$ en todo su dominio; por tanto $f(-1)&lt;f(1)$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$f(-1)=1&gt;-1=f(1)$. La Prop. 2.4 (U p.98) exige un <b>intervalo</b>: $f$ crece en $(-\infty,0)$ y en $(0,+\infty)$ por separado, pero $-1$ y $1$ están en trozos distintos.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>10.</b> (Elige) Para demostrar que $\ln x\le x-1$ si $x&gt;0$ se usa $h(x)=x-1-\ln x$. ¿Qué es cierto?</p>
+    <div class="opts"><button data-v="a">(a) $h$ decrece en $(0,1)$ y crece en $(1,+\infty)$, así que $h(x)\ge h(1)=0$</button><button data-v="b">(b) $h$ es creciente en $(0,+\infty)$</button><button data-v="c">(c) $h'(x)=1-\ln x$</button><button data-v="d">(d) $h$ es decreciente en $(0,+\infty)$</button></div>
+    <div class="exp">$h'(x)=1-\frac1x=\frac{x-1}x$: negativa en $(0,1)$ y positiva en $(1,+\infty)$ (Prop. 2.4, U p.98). Con el TVM entre $1$ y $x$, como en los ejercicios F, se obtiene $h(x)\ge h(1)=0$. La (c) deriva mal el logaritmo.</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<h3>Afirmaciones de la autoevaluación de U <span class="src" data-l="U" data-ref="U Ejercicios de autoevaluación, pp. 100-101">U pp.100-101</span><span class="src" data-l="U" data-ref="U Soluciones ejercicios propuestos, Capítulo 2, pp. 284-285">U pp.284-285</span></h3>
+<p>Las 10 afirmaciones de U mezclan todo el Tema 2. Estas tres son de esta sección o se resuelven con ella; las respuestas son las de U (Soluciones, pp. 284-285).</p>
+<ul>
+  <li><b>1.</b> «La tangente a $f(x)=x^3-x^2+2$ es paralela al eje $x$ solamente en $(0,2)$ y $(\tfrac23,\tfrac{50}{27})$». <b>Verdadera</b> (U, p. 284). $f'(x)=3x^2-2x=0\iff x=0$ o $x=\tfrac23$, con $f(0)=2$ y $f(\tfrac23)=\tfrac8{27}-\tfrac49+2=\tfrac{50}{27}$.</li>
+  <li><b>9.</b> «Si $f''=g''$ en $I$, entonces $f=g+k$ para una constante $k$». <b>Falsa</b> (U, p. 285). Solo se deduce que $f'-g'$ es constante. Contraejemplo de U: $f(x)=x^2+x$ y $g(x)=x^2$, con $f-g=x$ no constante.</li>
+  <li><b>10.</b> «Una función creciente en $I$ verifica $f'(x)\ge0$ para todo $x\in I$». <b>Falsa</b> (U, p. 285): una función creciente puede ser discontinua (y por lo tanto no derivable), como en el Ej. 2.21. Recuerda: el recíproco del tercer apartado de la Prop. 2.4 vale si $f$ es derivable; el del primero, nunca.</li>
+</ul>
+<!-- ============================ ejercicios ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">12</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.39-2.51, pp. 76-86">E pp.76-86</span></h2>
+<p>Todos los resultados se han comprobado con cálculo simbólico; la numeración es la de E. Cada ejercicio muestra el enunciado, «Antes de calcular» y la receta; la resolución paso a paso está desplegable. E 2.50 y 2.51 usan además extremos y concavidad (Tema 3, §3.4-3.5, resumidos en el apartado 7).</p>
+<details class="ver"><summary>Ver el orden recomendado, de fácil a difícil</summary>
+<table>
+  <tr><th>Orden</th><th>Ejercicio</th><th>Tipo</th><th>Respuesta</th></tr>
+  <tr><td>1</td><td>2.39</td><td>Rolle y tangente horizontal</td><td>b)</td></tr>
+  <tr><td>2</td><td>2.41</td><td>valor medio y signo de $f'$</td><td>b)</td></tr>
+  <tr><td>3</td><td>2.47</td><td>$f'=\ln(x^2+2)>0$</td><td>c)</td></tr>
+  <tr><td>4</td><td>2.43</td><td>suma de estrictamente crecientes</td><td>verdadera</td></tr>
+  <tr><td>5</td><td>2.48</td><td>monotonía de $e^{2x^2-x}$</td><td>correcta</td></tr>
+  <tr><td>6</td><td>2.45</td><td>$\cosh^2-\operatorname{senh}^2$ constante</td><td>d)</td></tr>
+  <tr><td>7</td><td>2.40</td><td>tres ceros, dos tangentes horizontales</td><td>demostración</td></tr>
+  <tr><td>8</td><td>2.44</td><td>decreciente en dos trozos</td><td>falsa</td></tr>
+  <tr><td>9</td><td>2.42</td><td>hipótesis del valor medio</td><td>b)</td></tr>
+  <tr><td>10</td><td>2.46</td><td>$f'$ cambia de signo</td><td>d)</td></tr>
+  <tr><td>11</td><td>2.49</td><td>función a trozos con $|\cdot|$</td><td>c)</td></tr>
+  <tr><td>12</td><td>2.50-2.51</td><td>identificar gráficas</td><td>a), a)</td></tr>
+</table>
+</details>
+<article class="ejer" id="ej-2-39">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 2.39 · Rolle y tangente horizontal</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.39, p. 76">E p.76</span></header>
+<div class="ejer-enun"><p class="enun">Dada $f:[-1,1]\to\mathbb R$ continua en $[-1,1]$, con $f(-1)=f(1)$ y derivable en $(-1,1)$: a) para algún $c$ la tangente es paralela al eje $y$; b) para algún $c$ la tangente es perpendicular al eje $y$; c) para algún $c$ la tangente es perpendicular al eje $x$; d) ninguna de las anteriores.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir qué tipo de tangente (paralela o perpendicular a cada eje) existe seguro para una $f$ con $f(-1)=f(1)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Si la curva sale y llega a la misma altura, en medio sube y baja (o al revés), así que en algún punto se queda «plana». Una tangente plana es horizontal.</dd>
-    <dt>Qué uso</dt><dd><b>Teorema de Rolle (U p.95):</b> $f$ continua en $[a,b]$, derivable en $(a,b)$, $f(a)=f(b)\Rightarrow\exists c\in(a,b)$ con $f'(c)=0$.</dd>
+    <dt>Qué uso</dt><dd>Rolle: continua en $[a,b]$, derivable en $(a,b)$, $f(a)=f(b)\Rightarrow f'(c)=0$ — <a href="#rolle">ver teoría</a> (U p.95).</dd>
     <dt>Por dónde empiezo</dt><dd>Compruebo que el enunciado da las tres hipótesis de Rolle y traduzco «$f'(c)=0$» a «tangente horizontal».</dd>
   </dl></div>
-  <p><b>Respuesta: b).</b></p>
+  <div class="recipe"><b>Receta:</b> misma altura en los extremos + continua en el cerrado + derivable en el abierto $\Rightarrow$ tangente horizontal en algún punto interior. La pendiente de la tangente es $f'(c)$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p><b>Respuesta: b).</b></p>
   <ol class="steps">
     <li><b>Hipótesis de Rolle.</b> El enunciado da las tres: continua en el cerrado, derivable en el abierto, $f(-1)=f(1)$ (U p. 95).</li>
     <li><b>Aplicar Rolle.</b> Existe $c\in(-1,1)$ con $f'(c)=0$.</li>
     <li><b>Traducir a geometría.</b> La tangente en $(c,f(c))$ es $y-f(c)=f'(c)(x-c)$; con pendiente $0$ es la recta horizontal $y=f(c)$, que es <b>paralela al eje $x$</b> y <b>perpendicular al eje $y$</b>. Es b).</li>
     <li><b>Por qué a) y c) son falsas.</b> Ambas dicen «tangente vertical». Pero $f$ es derivable en cada punto del intervalo, y la pendiente $f'(x_0)$, con $x_0\in(-1,1)$, es un número real finito; una recta con pendiente finita nunca es vertical. Contraejemplo: $x^2$ en $[-1,1]$ cumple todo y ninguna tangente es vertical.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> misma altura en los extremos + continua en el cerrado + derivable en el abierto $\Rightarrow$ tangente horizontal en algún punto interior. La pendiente de la tangente es $f'(c)$.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Confundir «paralela al eje $x$» con «paralela al eje $y$». Horizontal = pendiente $0$ = paralela al eje $x$ = perpendicular al eje $y$.</p></div>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 2.40 (polinomio con tres ceros) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.40, p. 77">E p.77</span></summary>
-<p class="enun">Demuestra que si un polinomio de grado mayor o igual que tres tiene tres ceros, existen al menos dos puntos en los que su recta tangente es horizontal.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-2-41">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 2.41 · valor medio y signo de $f'$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.41, p. 77">E p.77</span></header>
+<div class="ejer-enun"><p class="enun">Dada $f:[0,1]\to\mathbb R$ continua en $[0,1]$ y derivable en $(0,1)$: a) si $f(0)&gt;f(1)$, existe $c$ con $f'(c)&gt;0$; b) si $f(0)&gt;f(1)$, existe $c$ con $f'(c)\lt0$; c) siempre existe $c$ con $f'(c)=0$; d) siempre existe $c$ con $f'(c)=1$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir qué se puede afirmar de $f'$ cuando $f(0)>f(1)$, sin saber nada más.</dd>
+    <dt>Cómo lo pienso</dt><dd>Si $f$ acaba más baja de lo que empezó, su pendiente media es negativa; en algún punto la pendiente real tiene que valer justo esa media, luego es negativa.</dd>
+    <dt>Qué uso</dt><dd>TVM: $f'(c)=\frac{f(b)-f(a)}{b-a}$ — <a href="#tvm">ver teoría</a> (U p.96).</dd>
+    <dt>Por dónde empiezo</dt><dd>Veo que Rolle no sirve ($f(0)\ne f(1)$) y aplico el TVM en $[0,1]$; luego miro el signo de $f(1)-f(0)$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> si solo sabes que $f$ es continua en $[a,b]$ y derivable en $(a,b)$, usa el TVM: el <b>signo</b> de $f(b)-f(a)$ pasa a $f'(c)$ para algún $c$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p><b>Respuesta: b).</b></p>
+  <ol class="steps">
+    <li><b>Hipótesis del TVM.</b> Continua en $[0,1]$ y derivable en $(0,1)$ es exactamente lo que pide el TVM (U p. 96). Ojo: no se sabe que $f(0)=f(1)$, así que <b>Rolle no se puede usar</b>.</li>
+    <li><b>Aplicar el TVM.</b> Existe $c\in(0,1)$ con $f'(c)=\dfrac{f(1)-f(0)}{1-0}=f(1)-f(0)$.</li>
+    <li><b>Signo.</b> Si $f(0)&gt;f(1)$, entonces $f(1)-f(0)\lt0$, luego $f'(c)\lt0$. Esto prueba b).</li>
+    <li><b>Un solo contraejemplo para a), c) y d):</b> $f(x)=-x$. Es continua y derivable, $f(0)=0&gt;-1=f(1)$ y $f'\equiv-1$: nunca es $&gt;0$ (falla a), nunca $0$ (falla c), nunca $1$ (falla d).</li>
+  </ol>
+  
+  <div class="box warn"><span class="h">Error típico</span><p>Elegir c) aplicando Rolle «de forma automática»: Rolle exige $f(a)=f(b)$ y aquí no se cumple.</p></div>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-2-47">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 2.47 · $f'=\ln(x^2+2)$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.47, pp. 81-82">E pp.81-82</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f:\mathbb R\to\mathbb R$ con $f'(x)=\ln(x^2+2)$. a) creciente pero no estrictamente; b) decreciente; c) estrictamente creciente; d) ninguna.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si $f$ con $f'=\ln(x^2+2)$ es creciente, estrictamente creciente, etc.</dd>
+    <dt>Cómo lo pienso</dt><dd>Si la derivada es siempre positiva, la función siempre sube. Hay que ver que $\ln(x^2+2)>0$ para todo $x$.</dd>
+    <dt>Qué uso</dt><dd>Prop. 2.4: $f'>0\Rightarrow$ estrictamente creciente — <a href="#mono">ver teoría</a> (U p.98).</dd>
+    <dt>Por dónde empiezo</dt><dd>Acoto $x^2+2\ge2>1$ para concluir $\ln(x^2+2)>0$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> si $f'$ tiene signo constante, acótala por debajo con una constante $&gt;0$ (o por arriba con una $\lt0$).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"log(x*x+2)","n":"f′(x)=ln(x²+2)"},{"e":"log(2)","n":"y=ln 2","d":1}],"x":[-4,4],"y":[0,3]}' data-alt="Gráfica de ln(x^2+2)"><figcaption>La derivada $f'(x)=\ln(x^2+2)$ nunca baja de $\ln2\approx0{,}693>0$: $f$ es estrictamente creciente. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <p><b>Respuesta: c).</b></p>
+  <ol class="steps">
+    <li><b>Signo de $f'$.</b> $x^2\ge0$, luego $x^2+2\ge2&gt;1$. Como $\ln$ es estrictamente creciente y $\ln1=0$: $\ln(x^2+2)\ge\ln2\approx0{,}693&gt;0$.</li>
+    <li><b>Prop. 2.4</b> con $I=\mathbb R$: $f'&gt;0$ en todo $\mathbb R$ $\Rightarrow$ $f$ estrictamente creciente. c) es verdadera.</li>
+    <li>a) contradice c); b) es falsa ($f(0)\lt f(1)$); d) es falsa porque c) es cierta.</li>
+  </ol>
+  
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar que el $\ln$ «puede ser negativo» sin mirar el argumento: solo lo es si el argumento está en $(0,1)$.</p></div>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-2-43">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 2.43 · suma de estrictamente crecientes</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.43, p. 79">E p.79</span></header>
+<div class="ejer-enun"><p class="enun">Razona la veracidad o falsedad: si $f$ y $g$ son estrictamente crecientes en $I$, entonces $f+g$ es estrictamente creciente en $I$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si la suma de dos funciones estrictamente crecientes es estrictamente creciente.</dd>
+    <dt>Cómo lo pienso</dt><dd>Si cada sumando sube al pasar de $a$ a $b$, la suma también sube. No hace falta derivar.</dd>
+    <dt>Qué uso</dt><dd>Definición de estrictamente creciente (Def. 2.5) — <a href="#mono">ver teoría</a> (U p.98).</dd>
+    <dt>Por dónde empiezo</dt><dd>Tomo $a\lt b$ en $I$ y escribo $f(a)\lt f(b)$ y $g(a)\lt g(b)$; las sumo.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> para la monotonía de una combinación de funciones sin datos de derivabilidad, trabaja con la <b>definición</b>: toma $a\lt b$ y encadena desigualdades.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p><b>Verdadera.</b></p>
+  <ol class="steps">
+    <li><b>Qué probar</b> (Def. 2.5): para $a\lt b$ en $I$, $(f+g)(a)\lt(f+g)(b)$.</li>
+    <li>Toma $a\lt b$ en $I$. Como $f$ es estrictamente creciente, $f(a)\lt f(b)$; sumando $g(a)$ a ambos lados: $f(a)+g(a)\lt f(b)+g(a)$.</li>
+    <li>Como $g$ es estrictamente creciente, $g(a)\lt g(b)$; sumando $f(b)$: $f(b)+g(a)\lt f(b)+g(b)$.</li>
+    <li><b>Encadena:</b> $(f+g)(a)\lt f(b)+g(a)\lt(f+g)(b)$.</li>
+    <li><b>Por qué no usar la derivada:</b> el enunciado no dice que sean derivables, y aunque lo fueran «estrictamente creciente» no implica $f'&gt;0$ ($x^3$ en $0$).</li>
+  </ol>
+  
+  <div class="box warn"><span class="h">Error típico</span><p>Generalizar al producto: $f=g=x$ son estrictamente crecientes en $\mathbb R$, pero $fg=x^2$ no es creciente ($(-1)^2&gt;0^2$). Con la diferencia tampoco: $x-x=0$.</p></div>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-2-48">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 2.48 · monotonía de $e^{2x^2-x}$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.48, p. 82">E p.82</span></header>
+<div class="ejer-enun"><p class="enun">Calcula los intervalos de crecimiento y decrecimiento de $f(x)=e^{2x^2-x}$ y discute si es correcta la afirmación: «$f$ es decreciente en $J=(-\infty,-\tfrac18)$».</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar dónde crece y decrece $e^{2x^2-x}$ y decidir si es decreciente en $(-\infty,-\tfrac18)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La función sube donde $f'>0$ y baja donde $f'\lt0$. Si baja en un intervalo grande, también baja en cualquier trozo de él.</dd>
+    <dt>Qué uso</dt><dd>Cadena $(e^u)'=u'e^u$ y Prop. 2.4 — <a href="#mono">ver teoría</a> (U p.98).</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivo y saco factor común; como la exponencial es positiva, el signo lo da $4x-1$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> la tabla de signos de $f'$ de la sección 5.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"q":[[0.25,0.882497,"mínimo"]],"c":[{"e":"exp(2*x*x-x)","n":"f(x)=e^(2x²−x)"}],"x":[-1,1.2],"y":[0,5]}' data-alt="Gráfica de e^(2x^2-x)"><figcaption>$f(x)=e^{2x^2-x}$ decrece hasta $x=\frac14$ (mínimo) y crece después; en particular decrece en $(-\infty,-\frac18)$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <p><b>La afirmación es correcta.</b></p>
+  <ol class="steps">
+    <li><b>Deriva</b> con la regla de la cadena: $f'(x)=e^{2x^2-x}(4x-1)$.</li>
+    <li><b>Signo.</b> $e^{2x^2-x}&gt;0$, así que $f'$ tiene el signo de $4x-1$: $f'\lt0$ si $x\lt\tfrac14$, $f'&gt;0$ si $x&gt;\tfrac14$, $f'(\tfrac14)=0$.</li>
+    <li><b>Prop. 2.4:</b> $f$ es estrictamente decreciente en $(-\infty,\tfrac14)$ y estrictamente creciente en $(\tfrac14,\infty)$. (En $x=\tfrac14$ hay un mínimo, U Prop. 3.5.)</li>
+    <li><b>La afirmación.</b> $J=(-\infty,-\tfrac18)\subset(-\infty,\tfrac14)$. Estrictamente decreciente implica decreciente, y la condición «$a\lt b\Rightarrow f(a)\ge f(b)$» se cumple en particular para $a,b\in J$.</li>
+  </ol>
+  
+  <div class="box warn"><span class="h">Error típico</span><p>Pensar que es falsa «porque el intervalo de decrecimiento es $(-\infty,\tfrac14)$, no $(-\infty,-\tfrac18)$». La monotonía <b>se hereda a los subintervalos</b>.</p></div>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-2-45">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 2.45 · $\operatorname{senh}$ y $\cosh$: una expresión constante</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.45, pp. 80-81">E pp.80-81</span></header>
+<div class="ejer-enun"><p class="enun">Sean $\cosh x=\dfrac{e^x+e^{-x}}2$ y $\operatorname{senh}x=\dfrac{e^x-e^{-x}}2$. a) $(\cosh x)'=-\operatorname{senh}x$; b) $\operatorname{senh}x+\cosh x$ es constante; c) $(\operatorname{senh}x)'=-\cosh x$; d) $\cosh^2x-\operatorname{senh}^2x$ es constante.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir cuál de cuatro afirmaciones sobre $\cosh$ y $\operatorname{senh}$ es verdadera.</dd>
+    <dt>Cómo lo pienso</dt><dd>Derivando se ve quién es quién (sin signos menos). Y si una expresión tiene derivada cero en todo un intervalo, es una constante: basta calcularla en un punto.</dd>
+    <dt>Qué uso</dt><dd>$(\cosh)'=\operatorname{senh}$, $(\operatorname{senh})'=\cosh$ y Teorema 2.4 ($f'=0\Rightarrow$ constante) — <a href="#const">ver teoría</a> (U p.97).</dd>
+    <dt>Por dónde empiezo</dt><dd>Derivo $\cosh$ y $\operatorname{senh}$ a partir de su definición con exponenciales.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> para probar que una expresión es constante en un intervalo, derívala, comprueba que la derivada es $0$ (Teorema 2.4) y evalúala en un punto cómodo.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p><b>Respuesta: d).</b></p>
+  <ol class="steps">
+    <li><b>Deriva</b> ($(e^{-x})'=-e^{-x}$): $(\cosh x)'=\dfrac{e^x-e^{-x}}2=\operatorname{senh}x$ y $(\operatorname{senh}x)'=\dfrac{e^x+e^{-x}}2=\cosh x$. <b>No hay signo menos</b>: a) y c) son falsas.</li>
+    <li><b>b)</b> $\cosh x+\operatorname{senh}x=e^x$, que no es constante ($e^0=1\ne e$). Falsa.</li>
+    <li><b>d) con la derivada.</b> $g(x)=\cosh^2x-\operatorname{senh}^2x$ tiene $g'(x)=2\cosh x\operatorname{senh}x-2\operatorname{senh}x\cosh x=0$ en todo $\mathbb R$. Por el <b>Teorema 2.4</b> (U p. 97), $g$ es constante, y vale $g(0)=1^2-0^2=1$.</li>
+  </ol>
+  <p><b>A memorizar:</b> $\cosh^2x-\operatorname{senh}^2x=1$.</p>
+  
+  <div class="box warn"><span class="h">Error típico</span><p>Copiar los signos de las trigonométricas: $(\cos)'=-\operatorname{sen}$, pero $(\cosh)'=+\operatorname{senh}$.</p></div>
+  </details>
+</details>
+</article>
+<article class="ejer" id="ej-2-40">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 2.40 · polinomio con tres ceros: dos tangentes horizontales</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.40, p. 77">E p.77</span></header>
+<div class="ejer-enun"><p class="enun">Demuestra que si un polinomio de grado mayor o igual que tres tiene tres ceros, existen al menos dos puntos en los que su recta tangente es horizontal.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Probar que un polinomio con tres ceros distintos tiene al menos dos puntos de tangente horizontal.</dd>
     <dt>Cómo lo pienso</dt><dd>Entre dos veces que la gráfica toca el eje $x$ tiene que haber una cima o un valle. Con tres ceros hay dos «huecos» y, por tanto, dos cimas/valles distintos.</dd>
-    <dt>Qué uso</dt><dd><b>Rolle (U p.95)</b> y que un polinomio es continuo y derivable en $\mathbb R$ (U pp.79-80). Tangente horizontal $\iff f'=0$.</dd>
+    <dt>Qué uso</dt><dd>Rolle aplicado una vez por cada hueco entre ceros — <a href="#rolle">ver teoría</a> (U p.95).</dd>
     <dt>Por dónde empiezo</dt><dd>Llamo $a\lt b\lt c$ a los ceros y aplico Rolle por separado en $[a,b]$ y en $[b,c]$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"q":[[-1.21525,2.112612,"tangente horizontal"],[0.548584,-0.63113,"tangente horizontal"]],"p":[[-2,0],[0,0],[1,0]],"c":[{"e":"x**3+x**2-2*x","n":"f(x)=x³+x²−2x"}],"x":[-2.6,1.6],"y":[-2,4]}' data-alt="Cúbica con tres ceros y dos tangentes horizontales"><figcaption>Ejemplo: $f(x)=x(x-1)(x+2)$ tiene ceros en $-2,\,0,\,1$; entre cada dos ceros consecutivos hay un punto de tangente horizontal ($x=\frac{-1\pm\sqrt7}{3}$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> entre dos ceros consecutivos de $f$ hay un cero de $f'$: aplica Rolle en cada hueco entre ceros.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"q":[[-1.21525,2.112612,"tangente horizontal"],[0.548584,-0.63113,"tangente horizontal"]],"p":[[-2,0],[0,0],[1,0]],"c":[{"e":"x**3+x**2-2*x","n":"f(x)=x³+x²−2x"}],"x":[-2.6,1.6],"y":[-2,4]}' data-alt="Cúbica con tres ceros y dos tangentes horizontales"><figcaption>Ejemplo: $f(x)=x(x-1)(x+2)$ tiene ceros en $-2,\,0,\,1$; entre cada dos ceros consecutivos hay un punto de tangente horizontal ($x=\frac{-1\pm\sqrt7}{3}$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Precisar el enunciado.</b> «Tres ceros» debe entenderse como tres ceros <b>distintos</b> $a\lt b\lt c$. Con raíces repetidas es falso: $x^3$ tiene el cero $0$ «tres veces» pero solo una tangente horizontal.</li>
     <li><b>Regularidad.</b> Un polinomio $f$ es continuo y derivable en todo $\mathbb R$ (U pp. 79-80), luego en cualquier $[p,q]$ y $(p,q)$.</li>
@@ -334,36 +847,47 @@ svg.fig .t25-o{fill:var(--S)}
     <li><b>Conclusión.</b> En $s$ y en $t$ la pendiente es $0$: dos tangentes horizontales.</li>
   </ol>
   <p><b>Observación.</b> La hipótesis «grado $\ge3$» no se usa: un polinomio no nulo con tres raíces distintas ya tiene grado $\ge3$. En general, $n$ ceros distintos de $f$ dan al menos $n-1$ ceros de $f'$.</p>
-  <div class="recipe"><b>Receta:</b> entre dos ceros consecutivos de $f$ hay un cero de $f'$: aplica Rolle en cada hueco entre ceros.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Aplicar Rolle una sola vez en $[a,c]$: eso solo da <b>un</b> punto.</p></div>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 2.41 (valor medio y signo) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.41, p. 77">E p.77</span></summary>
-<p class="enun">Dada $f:[0,1]\to\mathbb R$ continua en $[0,1]$ y derivable en $(0,1)$: a) si $f(0)&gt;f(1)$, existe $c$ con $f'(c)&gt;0$; b) si $f(0)&gt;f(1)$, existe $c$ con $f'(c)\lt0$; c) siempre existe $c$ con $f'(c)=0$; d) siempre existe $c$ con $f'(c)=1$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir qué se puede afirmar de $f'$ cuando $f(0)>f(1)$, sin saber nada más.</dd>
-    <dt>Cómo lo pienso</dt><dd>Si $f$ acaba más baja de lo que empezó, su pendiente media es negativa; en algún punto la pendiente real tiene que valer justo esa media, luego es negativa.</dd>
-    <dt>Qué uso</dt><dd><b>Teorema del valor medio (U p.96):</b> $f$ continua en $[a,b]$ y derivable en $(a,b)\Rightarrow\exists c$ con $f'(c)=\dfrac{f(b)-f(a)}{b-a}$.</dd>
-    <dt>Por dónde empiezo</dt><dd>Veo que Rolle no sirve ($f(0)\ne f(1)$) y aplico el TVM en $[0,1]$; luego miro el signo de $f(1)-f(0)$.</dd>
+</article>
+<article class="ejer" id="ej-2-44" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 2.44 · decreciente en dos trozos</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.44, pp. 79-80">E pp.79-80</span></header>
+<div class="ejer-enun"><p class="enun">Razona la veracidad o falsedad: si $f:\mathbb R\to\mathbb R$ es continua y decreciente en $[-\pi,0]$ y en $[\pi,2\pi]$, entonces $f(a)\ge f(b)$ para todo $a\in[-\pi,0]$ y $b\in[\pi,2\pi]$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir si, siendo $f$ decreciente en $[-\pi,0]$ y en $[\pi,2\pi]$, se cumple $f(a)\ge f(b)$ para todos esos $a,b$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La hipótesis dice cómo se comporta $f$ dentro de cada trozo, pero no en el hueco $(0,\pi)$, y ahí puede subir tanto como quiera. Eso sugiere que es falso.</dd>
+    <dt>Qué uso</dt><dd>Def. 2.5 y Prop. 2.4 — <a href="#mono">ver teoría</a> (U p.98).</dd>
+    <dt>Por dónde empiezo</dt><dd>Busco una función cuya derivada sea $\le0$ en los dos trozos pero que suba en el hueco; pruebo con $-\cos x$.</dd>
   </dl></div>
-  <p><b>Respuesta: b).</b></p>
+  <div class="recipe"><b>Receta:</b> para refutar un «para todo» basta <b>un</b> contraejemplo; hazlo subir en el hueco que el enunciado no controla.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p><b>Falsa.</b></p>
   <ol class="steps">
-    <li><b>Hipótesis del TVM.</b> Continua en $[0,1]$ y derivable en $(0,1)$ es exactamente lo que pide el TVM (U p. 96). Ojo: no se sabe que $f(0)=f(1)$, así que <b>Rolle no se puede usar</b>.</li>
-    <li><b>Aplicar el TVM.</b> Existe $c\in(0,1)$ con $f'(c)=\dfrac{f(1)-f(0)}{1-0}=f(1)-f(0)$.</li>
-    <li><b>Signo.</b> Si $f(0)&gt;f(1)$, entonces $f(1)-f(0)\lt0$, luego $f'(c)\lt0$. Esto prueba b).</li>
-    <li><b>Un solo contraejemplo para a), c) y d):</b> $f(x)=-x$. Es continua y derivable, $f(0)=0&gt;-1=f(1)$ y $f'\equiv-1$: nunca es $&gt;0$ (falla a), nunca $0$ (falla c), nunca $1$ (falla d).</li>
+    <li><b>Qué da la hipótesis.</b> Para $a\in[-\pi,0]$: $f(a)\ge f(0)$. Para $b\in[\pi,2\pi]$: $f(\pi)\ge f(b)$.</li>
+    <li><b>El eslabón que falta.</b> Para concluir haría falta $f(0)\ge f(\pi)$, pero nada dice cómo se comporta $f$ en $(0,\pi)$, y puede subir.</li>
+    <li><b>Contraejemplo:</b> $f(x)=-\cos x$, continua, con $f'(x)=\operatorname{sen}x\le0$ en $[-\pi,0]$ y en $[\pi,2\pi]$ (Prop. 2.4: decreciente en ambos). Pero con $a=0$ y $b=\pi$: $f(0)=-1\lt1=f(\pi)$.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> si solo sabes que $f$ es continua en $[a,b]$ y derivable en $(a,b)$, usa el TVM: el <b>signo</b> de $f(b)-f(a)$ pasa a $f'(c)$ para algún $c$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Elegir c) aplicando Rolle «de forma automática»: Rolle exige $f(a)=f(b)$ y aquí no se cumple.</p></div>
+  
+  <div class="box warn"><span class="h">Error típico</span><p>Creer que «decreciente en $A$ y en $B$» equivale a «decreciente en $A\cup B$». Clásico: $1/x$ es decreciente en $(-\infty,0)$ y en $(0,\infty)$, pero $1/(-1)\lt1/1$.</p></div>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 2.42 (qué hipótesis se necesitan) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.42, pp. 78-79">E pp.78-79</span></summary>
-<p class="enun">Dada una función continua $f:[0,1]\to\mathbb R$: a) existe $c\in(0,1)$ con $f'(c)=f(1)-f(0)$; b) si $f$ es derivable en $(0,1)$, existe $c$ con $f'(c)=f(1)-f(0)$; c) solamente si $f$ es derivable en $(0,1)$, existe tal $c$; d) existe $c$ con $f'(c)=f(0)-f(1)$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-2-42">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 2.42 · qué hipótesis necesita el valor medio</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.42, pp. 78-79">E pp.78-79</span></header>
+<div class="ejer-enun"><p class="enun">Dada una función continua $f:[0,1]\to\mathbb R$: a) existe $c\in(0,1)$ con $f'(c)=f(1)-f(0)$; b) si $f$ es derivable en $(0,1)$, existe $c$ con $f'(c)=f(1)-f(0)$; c) solamente si $f$ es derivable en $(0,1)$, existe tal $c$; d) existe $c$ con $f'(c)=f(0)-f(1)$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir qué hipótesis hacen falta para que exista $c$ con $f'(c)=f(1)-f(0)$.</dd>
     <dt>Cómo lo pienso</dt><dd>El TVM dice que, si la curva es lisa por dentro, hay una tangente paralela a la cuerda. Si la curva tiene un «pico», puede ocurrir que ninguna tangente sea paralela a la cuerda.</dd>
-    <dt>Qué uso</dt><dd><b>TVM (U p.96)</b>; derivada y derivadas laterales (U Def. 2.3, p.81). Para refutar basta un contraejemplo.</dd>
+    <dt>Qué uso</dt><dd>TVM y derivadas laterales — <a href="#tvm">ver teoría</a> (U p.96; Def. 2.3, p.81).</dd>
     <dt>Por dónde empiezo</dt><dd>Reconozco que b) es literalmente el TVM y busco contraejemplos con pico ($|x-x_0|$) para las demás.</dd>
   </dl></div>
-  <p><b>Respuesta: b).</b></p>
+  <div class="recipe"><b>Receta</b> para «existe $c$ con $f'(c)=\dots$»: (i) comprueba <b>todas</b> las hipótesis del TVM o Rolle; (ii) si falta alguna, busca un contraejemplo con un «pico» $|x-x_0|$; (iii) si dice «solamente si», busca una función que incumpla la hipótesis y aun así cumpla la tesis.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p><b>Respuesta: b).</b></p>
   <ol class="steps">
     <li><b>b) es el TVM</b> en $[0,1]$: $f'(c)=\dfrac{f(1)-f(0)}{1-0}$. Verdadera.</li>
     <li><b>a) es falsa: falta derivabilidad.</b> Contraejemplo $f(x)=|x-\tfrac12|$, continua. $f'=-1$ en $(0,\tfrac12)$, $f'=1$ en $(\tfrac12,1)$ y en $\tfrac12$ las derivadas laterales valen $-1\ne1$ (U Def. 2.3, p. 81). Pero $f(1)-f(0)=\tfrac12-\tfrac12=0$ y $f'$ no vale $0$ en ningún punto donde existe.</li>
@@ -376,71 +900,22 @@ svg.fig .t25-o{fill:var(--S)}
       El TVM da una condición <b>suficiente</b>, no necesaria.</li>
     <li><b>d) es falsa.</b> Con $f(x)=x$: $f'\equiv1$, pero $f(0)-f(1)=-1$.</li>
   </ol>
-  <div class="recipe"><b>Receta</b> para «existe $c$ con $f'(c)=\dots$»: (i) comprueba <b>todas</b> las hipótesis del TVM o Rolle; (ii) si falta alguna, busca un contraejemplo con un «pico» $|x-x_0|$; (iii) si dice «solamente si», busca una función que incumpla la hipótesis y aun así cumpla la tesis.</div>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 2.49 (Rolle, derivabilidad y límite en el infinito) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.49, pp. 82-83">E pp.82-83</span></summary>
-<p class="enun">Sea $f(x)=|\operatorname{sen}(x-1)|$ si $x\ge1$ y $f(x)=x-2$ si $x\lt1$. a) $f$ es derivable en $1$; b) $\lim_{x\to+\infty}f(x)=0$; c) $f$ verifica las hipótesis de Rolle en $[1+2\pi,1+3\pi]$; d) $f$ es derivable en $\mathbb R\setminus\{1\}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir cuál de cuatro afirmaciones sobre una función a trozos con valor absoluto es cierta.</dd>
-    <dt>Cómo lo pienso</dt><dd>Hay que ir afirmación por afirmación: ¿se rompe la curva en $1$? ¿se acerca a algún número en el infinito? ¿tiene picos en otros puntos? Sólo una resiste.</dd>
-    <dt>Qué uso</dt><dd>Derivable $\Rightarrow$ continua; derivadas laterales (U p.81); <b>Rolle (U p.95)</b>; unicidad del límite (si hay dos sucesiones con límites distintos, no hay límite).</dd>
-    <dt>Por dónde empiezo</dt><dd>Calculo los límites laterales en $x=1$ para a) y d), y miro el signo de $\operatorname{sen}(x-1)$ en el intervalo de c).</dd>
-  </dl></div>
-  <p><b>Respuesta: c).</b></p>
-  <ol class="steps">
-    <li><b>a) falsa.</b> $\lim_{x\to1^-}(x-2)=-1$ pero $f(1)=|\operatorname{sen}0|=0$: $f$ es discontinua en $1$; como derivable implica continua, no es derivable en $1$.</li>
-    <li><b>b) falsa: el límite en $+\infty$ no existe.</b> Si existiera $\lim_{x\to+\infty}f(x)=l$, entonces $f(x_n)\to l$ para <b>toda</b> sucesión $x_n\to+\infty$ (dado $\varepsilon$, hay $M$ con $|f(x)-l|\lt\varepsilon$ si $x&gt;M$, y $x_n&gt;M$ desde cierto índice). Pero con $a_n=1+\tfrac\pi2+2n\pi\to\infty$ es $f(a_n)=1$, y con $b_n=1+2n\pi\to\infty$ es $f(b_n)=0$. Dos límites distintos: no hay límite.</li>
-    <li><b>c) verdadera.</b> En $[1+2\pi,1+3\pi]$ se tiene $x\ge1$ y $x-1\in[2\pi,3\pi]$, donde el seno es $\ge0$; luego $f(x)=\operatorname{sen}(x-1)$ en <b>todo</b> el cerrado. Esta es continua y derivable en $\mathbb R$, así que $f$ es continua en el cerrado y derivable en el abierto. Y $f(1+2\pi)=\operatorname{sen}2\pi=0=\operatorname{sen}3\pi=f(1+3\pi)$. Las tres hipótesis se cumplen.</li>
-    <li><b>d) falsa.</b> Sea $p=1+3\pi$: $f(p)=0$ y $f(p+h)=|\operatorname{sen}(3\pi+h)|=|\operatorname{sen}h|$. Con la definición de derivada lateral (U p. 81) y $\lim_{h\to0}\operatorname{sen}h/h=1$: $f'(p^+)=\lim_{h\to0^+}\frac{|\operatorname{sen}h|}h=1$ y $f'(p^-)=\lim_{h\to0^-}\frac{|\operatorname{sen}h|}h=-1$. Distintas: no es derivable en $p\ne1$ (ni en ningún $1+k\pi$, $k\ge1$).</li>
-  </ol>
-  <div class="recipe"><b>Receta</b> para funciones a trozos o con $|\cdot|$: (1) estudia la continuidad donde cambia la fórmula; (2) calcula las derivadas laterales por definición; (3) para Rolle, quita el valor absoluto estudiando el <b>signo</b> de lo de dentro en el intervalo; (4) para ver que un límite en $\infty$ no existe, busca dos sucesiones con límites distintos.</div>
-</details>
-<h3>Bloque B: monotonía</h3>
-<details class="sol"><summary>Ejercicio 2.43 (suma de estrictamente crecientes) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.43, p. 79">E p.79</span></summary>
-<p class="enun">Razona la veracidad o falsedad: si $f$ y $g$ son estrictamente crecientes en $I$, entonces $f+g$ es estrictamente creciente en $I$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir si la suma de dos funciones estrictamente crecientes es estrictamente creciente.</dd>
-    <dt>Cómo lo pienso</dt><dd>Si cada sumando sube al pasar de $a$ a $b$, la suma también sube. No hace falta derivar.</dd>
-    <dt>Qué uso</dt><dd><b>Definición de estrictamente creciente (Def. 2.5):</b> $a\lt b\Rightarrow f(a)\lt f(b)$.</dd>
-    <dt>Por dónde empiezo</dt><dd>Tomo $a\lt b$ en $I$ y escribo $f(a)\lt f(b)$ y $g(a)\lt g(b)$; las sumo.</dd>
-  </dl></div>
-  <p><b>Verdadera.</b></p>
-  <ol class="steps">
-    <li><b>Qué probar</b> (Def. 2.5): para $a\lt b$ en $I$, $(f+g)(a)\lt(f+g)(b)$.</li>
-    <li>Toma $a\lt b$ en $I$. Como $f$ es estrictamente creciente, $f(a)\lt f(b)$; sumando $g(a)$ a ambos lados: $f(a)+g(a)\lt f(b)+g(a)$.</li>
-    <li>Como $g$ es estrictamente creciente, $g(a)\lt g(b)$; sumando $f(b)$: $f(b)+g(a)\lt f(b)+g(b)$.</li>
-    <li><b>Encadena:</b> $(f+g)(a)\lt f(b)+g(a)\lt(f+g)(b)$.</li>
-    <li><b>Por qué no usar la derivada:</b> el enunciado no dice que sean derivables, y aunque lo fueran «estrictamente creciente» no implica $f'&gt;0$ ($x^3$ en $0$).</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> para la monotonía de una combinación de funciones sin datos de derivabilidad, trabaja con la <b>definición</b>: toma $a\lt b$ y encadena desigualdades.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Generalizar al producto: $f=g=x$ son estrictamente crecientes en $\mathbb R$, pero $fg=x^2$ no es creciente ($(-1)^2&gt;0^2$). Con la diferencia tampoco: $x-x=0$.</p></div>
-</details>
-<details class="sol"><summary>Ejercicio 2.44 (decreciente en dos trozos) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.44, pp. 79-80">E pp.79-80</span></summary>
-<p class="enun">Razona la veracidad o falsedad: si $f:\mathbb R\to\mathbb R$ es continua y decreciente en $[-\pi,0]$ y en $[\pi,2\pi]$, entonces $f(a)\ge f(b)$ para todo $a\in[-\pi,0]$ y $b\in[\pi,2\pi]$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir si, siendo $f$ decreciente en $[-\pi,0]$ y en $[\pi,2\pi]$, se cumple $f(a)\ge f(b)$ para todos esos $a,b$.</dd>
-    <dt>Cómo lo pienso</dt><dd>La hipótesis dice cómo se comporta $f$ dentro de cada trozo, pero no en el hueco $(0,\pi)$, y ahí puede subir tanto como quiera. Eso sugiere que es falso.</dd>
-    <dt>Qué uso</dt><dd><b>Definición de decreciente</b> y <b>Prop. 2.4</b> (U p.98): $f'\le0\Rightarrow f$ decreciente. Un solo contraejemplo refuta un «para todo».</dd>
-    <dt>Por dónde empiezo</dt><dd>Busco una función cuya derivada sea $\le0$ en los dos trozos pero que suba en el hueco; pruebo con $-\cos x$.</dd>
-  </dl></div>
-  <p><b>Falsa.</b></p>
-  <ol class="steps">
-    <li><b>Qué da la hipótesis.</b> Para $a\in[-\pi,0]$: $f(a)\ge f(0)$. Para $b\in[\pi,2\pi]$: $f(\pi)\ge f(b)$.</li>
-    <li><b>El eslabón que falta.</b> Para concluir haría falta $f(0)\ge f(\pi)$, pero nada dice cómo se comporta $f$ en $(0,\pi)$, y puede subir.</li>
-    <li><b>Contraejemplo:</b> $f(x)=-\cos x$, continua, con $f'(x)=\operatorname{sen}x\le0$ en $[-\pi,0]$ y en $[\pi,2\pi]$ (Prop. 2.4: decreciente en ambos). Pero con $a=0$ y $b=\pi$: $f(0)=-1\lt1=f(\pi)$.</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> para refutar un «para todo» basta <b>un</b> contraejemplo; hazlo subir en el hueco que el enunciado no controla.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Creer que «decreciente en $A$ y en $B$» equivale a «decreciente en $A\cup B$». Clásico: $1/x$ es decreciente en $(-\infty,0)$ y en $(0,\infty)$, pero $1/(-1)\lt1/1$.</p></div>
-</details>
-<details class="sol"><summary>Ejercicio 2.46 ($f'$ cambia de signo) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.46, p. 81">E p.81</span></summary>
-<p class="enun">Sea $f:\mathbb R\to\mathbb R$ con $f'(x)=\operatorname{sen}(\pi x)e^{2x^2-x}$. a) $f$ es creciente; b) $f$ es decreciente; c) $f$ es estrictamente creciente; d) ninguna de las anteriores.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-2-46" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 2.46 · $f'$ cambia de signo</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.46, p. 81">E p.81</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f:\mathbb R\to\mathbb R$ con $f'(x)=\operatorname{sen}(\pi x)e^{2x^2-x}$. a) $f$ es creciente; b) $f$ es decreciente; c) $f$ es estrictamente creciente; d) ninguna de las anteriores.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si $f$ es creciente, decreciente o ninguna de las dos, conociendo sólo $f'$.</dd>
     <dt>Cómo lo pienso</dt><dd>$f'$ cambia de signo, así que $f$ sube en unos tramos y baja en otros. Para demostrarlo hay que comparar valores de $f$, y la derivada sólo da signos: el TVM los conecta.</dd>
-    <dt>Qué uso</dt><dd><b>Prop. 2.4</b> (U p.98) y <b>TVM (U p.96)</b>: $f(b)-f(a)=f'(c)(b-a)$.</dd>
+    <dt>Qué uso</dt><dd>Prop. 2.4 y TVM — <a href="#mono">ver teoría</a> (U pp.96, 98).</dd>
     <dt>Por dónde empiezo</dt><dd>Estudio el signo de $f'$ (el factor exponencial es siempre positivo, queda $\operatorname{sen}(\pi x)$).</dd>
   </dl></div>
-  <figure class="graf" data-g='{"q":[[-1,0],[0,0],[1,0],[2,0]],"c":[{"e":"sin(PI*x)*exp(2*x*x-x)","n":"f′(x)"}],"x":[-1,2],"y":[-6,10]}' data-alt="Gráfica de la derivada sen(pi x) e^(2x^2-x)"><figcaption>La derivada $f'(x)=\operatorname{sen}(\pi x)\,e^{2x^2-x}$ cambia de signo en cada entero: $f$ crece y decrece alternativamente. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <div class="recipe"><b>Receta:</b> para probar que $f$ <b>no</b> es creciente en $I$, encuentra $a\lt b$ con $f(a)&gt;f(b)$; si solo conoces $f'$, obtén el signo de $f(b)-f(a)$ con el TVM en un intervalo donde $f'\lt0$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<figure class="graf" data-g='{"q":[[-1,0],[0,0],[1,0],[2,0]],"c":[{"e":"sin(PI*x)*exp(2*x*x-x)","n":"f′(x)"}],"x":[-1,2],"y":[-6,10]}' data-alt="Gráfica de la derivada sen(pi x) e^(2x^2-x)"><figcaption>La derivada $f'(x)=\operatorname{sen}(\pi x)\,e^{2x^2-x}$ cambia de signo en cada entero: $f$ crece y decrece alternativamente. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <p><b>Respuesta: d).</b></p>
   <ol class="steps">
     <li><b>Signo de $f'$.</b> $e^{2x^2-x}&gt;0$ siempre, así que $f'$ tiene el signo de $\operatorname{sen}(\pi x)$: positivo en $(0,1)$, negativo en $(1,2)$, etc.</li>
@@ -449,74 +924,44 @@ svg.fig .t25-o{fill:var(--S)}
     <li>La respuesta es d).</li>
   </ol>
   <p><b>Por qué este cuidado.</b> «Signo de $f'$ $\Rightarrow$ monotonía» (Prop. 2.4) no tiene recíproca. Para descartar la monotonía hay que dar dos puntos que incumplan la definición, y el TVM los proporciona.</p>
-  <div class="recipe"><b>Receta:</b> para probar que $f$ <b>no</b> es creciente en $I$, encuentra $a\lt b$ con $f(a)&gt;f(b)$; si solo conoces $f'$, obtén el signo de $f(b)-f(a)$ con el TVM en un intervalo donde $f'\lt0$.</div>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 2.47 ($f'=\ln(x^2+2)$) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.47, pp. 81-82">E pp.81-82</span></summary>
-<p class="enun">Sea $f:\mathbb R\to\mathbb R$ con $f'(x)=\ln(x^2+2)$. a) creciente pero no estrictamente; b) decreciente; c) estrictamente creciente; d) ninguna.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir si $f$ con $f'=\ln(x^2+2)$ es creciente, estrictamente creciente, etc.</dd>
-    <dt>Cómo lo pienso</dt><dd>Si la derivada es siempre positiva, la función siempre sube. Hay que ver que $\ln(x^2+2)>0$ para todo $x$.</dd>
-    <dt>Qué uso</dt><dd><b>Prop. 2.4</b> (U p.98): $f'>0$ en $I\Rightarrow f$ estrictamente creciente. $\ln$ es creciente y $\ln 1=0$.</dd>
-    <dt>Por dónde empiezo</dt><dd>Acoto $x^2+2\ge2>1$ para concluir $\ln(x^2+2)>0$.</dd>
+</article>
+<article class="ejer" id="ej-2-49" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 2.49 · Rolle y derivabilidad de una función a trozos</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.49, pp. 82-83">E pp.82-83</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f(x)=|\operatorname{sen}(x-1)|$ si $x\ge1$ y $f(x)=x-2$ si $x\lt1$. a) $f$ es derivable en $1$; b) $\lim_{x\to+\infty}f(x)=0$; c) $f$ verifica las hipótesis de Rolle en $[1+2\pi,1+3\pi]$; d) $f$ es derivable en $\mathbb R\setminus\{1\}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir cuál de cuatro afirmaciones sobre una función a trozos con valor absoluto es cierta.</dd>
+    <dt>Cómo lo pienso</dt><dd>Hay que ir afirmación por afirmación: ¿se rompe la curva en $1$? ¿se acerca a algún número en el infinito? ¿tiene picos en otros puntos? Sólo una resiste.</dd>
+    <dt>Qué uso</dt><dd>Derivable $\Rightarrow$ continua, derivadas laterales y Rolle — <a href="#rolle">ver teoría</a> (U pp.81, 95).</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo los límites laterales en $x=1$ para a) y d), y miro el signo de $\operatorname{sen}(x-1)$ en el intervalo de c).</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"log(x*x+2)","n":"f′(x)=ln(x²+2)"},{"e":"log(2)","n":"y=ln 2","d":1}],"x":[-4,4],"y":[0,3]}' data-alt="Gráfica de ln(x^2+2)"><figcaption>La derivada $f'(x)=\ln(x^2+2)$ nunca baja de $\ln2\approx0{,}693>0$: $f$ es estrictamente creciente. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
-  <p><b>Respuesta: c).</b></p>
+  <div class="recipe"><b>Receta</b> para funciones a trozos o con $|\cdot|$: (1) estudia la continuidad donde cambia la fórmula; (2) calcula las derivadas laterales por definición; (3) para Rolle, quita el valor absoluto estudiando el <b>signo</b> de lo de dentro en el intervalo; (4) para ver que un límite en $\infty$ no existe, busca dos sucesiones con límites distintos.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p><b>Respuesta: c).</b></p>
   <ol class="steps">
-    <li><b>Signo de $f'$.</b> $x^2\ge0$, luego $x^2+2\ge2&gt;1$. Como $\ln$ es estrictamente creciente y $\ln1=0$: $\ln(x^2+2)\ge\ln2\approx0{,}693&gt;0$.</li>
-    <li><b>Prop. 2.4</b> con $I=\mathbb R$: $f'&gt;0$ en todo $\mathbb R$ $\Rightarrow$ $f$ estrictamente creciente. c) es verdadera.</li>
-    <li>a) contradice c); b) es falsa ($f(0)\lt f(1)$); d) es falsa porque c) es cierta.</li>
+    <li><b>a) falsa.</b> $\lim_{x\to1^-}(x-2)=-1$ pero $f(1)=|\operatorname{sen}0|=0$: $f$ es discontinua en $1$; como derivable implica continua, no es derivable en $1$.</li>
+    <li><b>b) falsa: el límite en $+\infty$ no existe.</b> Si existiera $\lim_{x\to+\infty}f(x)=l$, entonces $f(x_n)\to l$ para <b>toda</b> sucesión $x_n\to+\infty$ (dado $\varepsilon$, hay $M$ con $|f(x)-l|\lt\varepsilon$ si $x&gt;M$, y $x_n&gt;M$ desde cierto índice). Pero con $a_n=1+\tfrac\pi2+2n\pi\to\infty$ es $f(a_n)=1$, y con $b_n=1+2n\pi\to\infty$ es $f(b_n)=0$. Dos límites distintos: no hay límite.</li>
+    <li><b>c) verdadera.</b> En $[1+2\pi,1+3\pi]$ se tiene $x\ge1$ y $x-1\in[2\pi,3\pi]$, donde el seno es $\ge0$; luego $f(x)=\operatorname{sen}(x-1)$ en <b>todo</b> el cerrado. Esta es continua y derivable en $\mathbb R$, así que $f$ es continua en el cerrado y derivable en el abierto. Y $f(1+2\pi)=\operatorname{sen}2\pi=0=\operatorname{sen}3\pi=f(1+3\pi)$. Las tres hipótesis se cumplen.</li>
+    <li><b>d) falsa.</b> Sea $p=1+3\pi$: $f(p)=0$ y $f(p+h)=|\operatorname{sen}(3\pi+h)|=|\operatorname{sen}h|$. Con la definición de derivada lateral (U p. 81) y $\lim_{h\to0}\operatorname{sen}h/h=1$: $f'(p^+)=\lim_{h\to0^+}\frac{|\operatorname{sen}h|}h=1$ y $f'(p^-)=\lim_{h\to0^-}\frac{|\operatorname{sen}h|}h=-1$. Distintas: no es derivable en $p\ne1$ (ni en ningún $1+k\pi$, $k\ge1$).</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> si $f'$ tiene signo constante, acótala por debajo con una constante $&gt;0$ (o por arriba con una $\lt0$).</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Pensar que el $\ln$ «puede ser negativo» sin mirar el argumento: solo lo es si el argumento está en $(0,1)$.</p></div>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 2.48 (monotonía de $e^{2x^2-x}$) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.48, p. 82">E p.82</span></summary>
-<p class="enun">Calcula los intervalos de crecimiento y decrecimiento de $f(x)=e^{2x^2-x}$ y discute si es correcta la afirmación: «$f$ es decreciente en $J=(-\infty,-\tfrac18)$».</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Hallar dónde crece y decrece $e^{2x^2-x}$ y decidir si es decreciente en $(-\infty,-\tfrac18)$.</dd>
-    <dt>Cómo lo pienso</dt><dd>La función sube donde $f'>0$ y baja donde $f'\lt0$. Si baja en un intervalo grande, también baja en cualquier trozo de él.</dd>
-    <dt>Qué uso</dt><dd><b>Regla de la cadena (U §2.2)</b>: $(e^{u})'=u'e^{u}$. <b>Prop. 2.4</b> (U p.98).</dd>
-    <dt>Por dónde empiezo</dt><dd>Derivo y saco factor común; como la exponencial es positiva, el signo lo da $4x-1$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"q":[[0.25,0.882497,"mínimo"]],"c":[{"e":"exp(2*x*x-x)","n":"f(x)=e^(2x²−x)"}],"x":[-1,1.2],"y":[0,5]}' data-alt="Gráfica de e^(2x^2-x)"><figcaption>$f(x)=e^{2x^2-x}$ decrece hasta $x=\frac14$ (mínimo) y crece después; en particular decrece en $(-\infty,-\frac18)$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
-  <p><b>La afirmación es correcta.</b></p>
-  <ol class="steps">
-    <li><b>Deriva</b> con la regla de la cadena: $f'(x)=e^{2x^2-x}(4x-1)$.</li>
-    <li><b>Signo.</b> $e^{2x^2-x}&gt;0$, así que $f'$ tiene el signo de $4x-1$: $f'\lt0$ si $x\lt\tfrac14$, $f'&gt;0$ si $x&gt;\tfrac14$, $f'(\tfrac14)=0$.</li>
-    <li><b>Prop. 2.4:</b> $f$ es estrictamente decreciente en $(-\infty,\tfrac14)$ y estrictamente creciente en $(\tfrac14,\infty)$. (En $x=\tfrac14$ hay un mínimo, U Prop. 3.5.)</li>
-    <li><b>La afirmación.</b> $J=(-\infty,-\tfrac18)\subset(-\infty,\tfrac14)$. Estrictamente decreciente implica decreciente, y la condición «$a\lt b\Rightarrow f(a)\ge f(b)$» se cumple en particular para $a,b\in J$.</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> la tabla de signos de $f'$ de la sección 5.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Pensar que es falsa «porque el intervalo de decrecimiento es $(-\infty,\tfrac14)$, no $(-\infty,-\tfrac18)$». La monotonía <b>se hereda a los subintervalos</b>.</p></div>
-</details>
-<h3>Bloque C: funciones hiperbólicas</h3>
-<details class="sol"><summary>Ejercicio 2.45 (senh y cosh) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.45, pp. 80-81">E pp.80-81</span></summary>
-<p class="enun">Sean $\cosh x=\dfrac{e^x+e^{-x}}2$ y $\operatorname{senh}x=\dfrac{e^x-e^{-x}}2$. a) $(\cosh x)'=-\operatorname{senh}x$; b) $\operatorname{senh}x+\cosh x$ es constante; c) $(\operatorname{senh}x)'=-\cosh x$; d) $\cosh^2x-\operatorname{senh}^2x$ es constante.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir cuál de cuatro afirmaciones sobre $\cosh$ y $\operatorname{senh}$ es verdadera.</dd>
-    <dt>Cómo lo pienso</dt><dd>Derivando se ve quién es quién (sin signos menos). Y si una expresión tiene derivada cero en todo un intervalo, es una constante: basta calcularla en un punto.</dd>
-    <dt>Qué uso</dt><dd>Derivada de la exponencial; <b>Teorema 2.4</b> (U p.97): $f'=0$ en un intervalo $\iff f$ constante.</dd>
-    <dt>Por dónde empiezo</dt><dd>Derivo $\cosh$ y $\operatorname{senh}$ a partir de su definición con exponenciales.</dd>
-  </dl></div>
-  <p><b>Respuesta: d).</b></p>
-  <ol class="steps">
-    <li><b>Deriva</b> ($(e^{-x})'=-e^{-x}$): $(\cosh x)'=\dfrac{e^x-e^{-x}}2=\operatorname{senh}x$ y $(\operatorname{senh}x)'=\dfrac{e^x+e^{-x}}2=\cosh x$. <b>No hay signo menos</b>: a) y c) son falsas.</li>
-    <li><b>b)</b> $\cosh x+\operatorname{senh}x=e^x$, que no es constante ($e^0=1\ne e$). Falsa.</li>
-    <li><b>d) con la derivada.</b> $g(x)=\cosh^2x-\operatorname{senh}^2x$ tiene $g'(x)=2\cosh x\operatorname{senh}x-2\operatorname{senh}x\cosh x=0$ en todo $\mathbb R$. Por el <b>Teorema 2.4</b> (U p. 97), $g$ es constante, y vale $g(0)=1^2-0^2=1$.</li>
-  </ol>
-  <p><b>A memorizar:</b> $\cosh^2x-\operatorname{senh}^2x=1$.</p>
-  <div class="recipe"><b>Receta:</b> para probar que una expresión es constante en un intervalo, derívala, comprueba que la derivada es $0$ (Teorema 2.4) y evalúala en un punto cómodo.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Copiar los signos de las trigonométricas: $(\cos)'=-\operatorname{sen}$, pero $(\cosh)'=+\operatorname{senh}$.</p></div>
-</details>
-<h3>Bloque D: identificar gráficas</h3>
-<details class="sol"><summary>Ejercicio 2.50 (gráfica de $\frac{x^3+1}{x}$) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.50, pp. 84-85">E pp.84-85</span></summary>
-<p class="enun">Deduce cuál de las cuatro figuras a), b), c), d) es la gráfica de $f(x)=\dfrac{x^3+1}{x}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-2-50" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 2.50 · gráfica de $\frac{x^3+1}{x}$ (usa §3.4-3.5)</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.50, pp. 84-85">E pp.84-85</span></header>
+<div class="ejer-enun"><p class="enun">Deduce cuál de las cuatro figuras a), b), c), d) es la gráfica de $f(x)=\dfrac{x^3+1}{x}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Elegir, entre cuatro figuras, la gráfica de $f(x)=\dfrac{x^3+1}{x}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Cada dato (asíntotas, límites en el infinito, cortes, subidas y bajadas) elimina figuras. Se va de lo más barato a lo más caro hasta que sólo queda una.</dd>
-    <dt>Qué uso</dt><dd>Límites en el infinito y asíntotas (U §1.4, pp.48-49); <b>Prop. 2.4</b> (U p.98) para la monotonía.</dd>
+    <dt>Qué uso</dt><dd>Límites en el infinito (U pp.48-49) y Prop. 2.4 — <a href="#graf">ver teoría</a> (U p.98).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo $f(x)=x^2+\dfrac1x$ y miro la asíntota vertical y los límites en $\pm\infty$.</dd>
   </dl></div>
-  <p>Las figuras no se reproducen aquí. En E las cuatro tienen asíntota vertical $x=0$ (rama derecha subiendo a $+\infty$, izquierda bajando a $-\infty$) y difieren en lo siguiente:</p>
+  <div class="recipe"><b>Receta:</b> la de la sección 8; aquí los límites en $\pm\infty$ descartan tres figuras y $f'$ confirma la cuarta.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p>Las figuras no se reproducen aquí. En E las cuatro tienen asíntota vertical $x=0$ (rama derecha subiendo a $+\infty$, izquierda bajando a $-\infty$) y difieren en lo siguiente:</p>
 <table><thead><tr><th>Figura</th><th>Rasgo que la caracteriza</th><th>¿Encaja?</th></tr></thead><tbody>
 <tr><td>a)</td><td>rama derecha en «U»; rama izquierda que baja desde arriba, corta el eje $x$ y cae a $-\infty$</td><td>Sí</td></tr>
 <tr><td>b)</td><td>rama izquierda en arco que tiende a $-\infty$ cuando $x\to-\infty$</td><td>No</td></tr>
@@ -531,18 +976,24 @@ svg.fig .t25-o{fill:var(--S)}
     <li><b>Detalles que encajan con a).</b> Corte: $x^3+1=0\iff x=-1$. Además $f''(x)=2+\dfrac2{x^3}$, positiva en $(0,\infty)$ (convexa, forma de U); en la rama izquierda es convexa en $(-\infty,-1)$, cóncava en $(-1,0)$, con inflexión en $x=-1$ (el propio corte con el eje, punto $(-1,0)$).</li>
   </ol>
   <figure><svg class="fig" role="img" aria-label="Gráfica de x^2+1/x" viewBox="0 0 380 270" width="380"><line class="ax" x1="10" y1="154" x2="375" y2="154"/><line class="th" x1="160" y1="262" x2="160" y2="8"/><path class="a" d="M171.4 16.9 L172.9 32 L174.3 44 L175.8 53.7 L177.2 61.7 L178.7 68.5 L180.1 74.1 L181.6 79 L183 83.2 L184.5 86.8 L185.9 89.9 L187.3 92.7 L188.8 95.1 L190.2 97.2 L191.7 99.1 L193.1 100.7 L194.6 102.1 L196 103.3 L197.5 104.4 L198.9 105.3 L200.4 106.1 L201.8 106.8 L203.2 107.3 L204.7 107.7 L206.1 108.1 L207.6 108.4 L209 108.5 L210.5 108.6 L211.9 108.6 L213.4 108.6 L214.8 108.5 L216.3 108.3 L217.7 108.1 L219.1 107.8 L220.6 107.4 L222 107 L223.5 106.5 L224.9 106 L226.4 105.5 L227.8 104.9 L229.3 104.2 L230.7 103.5 L232.2 102.8 L233.6 102 L235 101.2 L236.5 100.4 L237.9 99.5 L239.4 98.6 L240.8 97.6 L242.3 96.6 L243.7 95.6 L245.2 94.5 L246.6 93.4 L248.1 92.2 L249.5 91.1 L250.9 89.9 L252.4 88.6 L253.8 87.4 L255.3 86.1 L256.7 84.7 L258.2 83.4 L259.6 82 L261.1 80.5 L262.5 79.1 L264 77.6 L265.4 76.1 L266.8 74.5 L268.3 73 L269.7 71.4 L271.2 69.7 L272.6 68.1 L274.1 66.4 L275.5 64.7 L277 62.9 L278.4 61.2 L279.9 59.4 L281.3 57.6 L282.8 55.7 L284.2 53.8 L285.6 51.9 L287.1 50 L288.5 48 L290 46 L291.4 44 L292.9 42 L294.3 39.9 L295.8 37.8 L297.2 35.7 L298.7 33.5 L300.1 31.4 L301.5 29.2 L303 26.9 L304.4 24.7 L305.9 22.4 L307.3 20.1 L308.8 17.8 L310.2 15.4 L311.7 13.1 L313.1 10.6 L314.6 8.2 L316 5.8"/><path class="a" d="M10.5 37.5 L11.8 39.8 L13.2 42.2 L14.5 44.5 L15.8 46.8 L17.2 49 L18.5 51.3 L19.8 53.5 L21.2 55.7 L22.5 57.9 L23.8 60.1 L25.2 62.3 L26.5 64.4 L27.8 66.6 L29.2 68.7 L30.5 70.8 L31.8 72.8 L33.2 74.9 L34.5 76.9 L35.8 79 L37.2 81 L38.5 83 L39.8 84.9 L41.1 86.9 L42.5 88.8 L43.8 90.7 L45.1 92.6 L46.5 94.5 L47.8 96.4 L49.1 98.3 L50.5 100.1 L51.8 101.9 L53.1 103.7 L54.5 105.5 L55.8 107.3 L57.1 109.1 L58.5 110.8 L59.8 112.5 L61.1 114.3 L62.5 116 L63.8 117.6 L65.1 119.3 L66.5 121 L67.8 122.6 L69.1 124.3 L70.5 125.9 L71.8 127.5 L73.1 129.1 L74.5 130.7 L75.8 132.2 L77.1 133.8 L78.5 135.4 L79.8 136.9 L81.1 138.4 L82.5 140 L83.8 141.5 L85.1 143 L86.5 144.5 L87.8 146 L89.1 147.5 L90.5 149 L91.8 150.4 L93.1 151.9 L94.4 153.4 L95.8 154.9 L97.1 156.3 L98.4 157.8 L99.8 159.3 L101.1 160.8 L102.4 162.3 L103.8 163.8 L105.1 165.3 L106.4 166.8 L107.8 168.4 L109.1 169.9 L110.4 171.5 L111.8 173.1 L113.1 174.8 L114.4 176.4 L115.8 178.2 L117.1 179.9 L118.4 181.7 L119.8 183.6 L121.1 185.5 L122.4 187.5 L123.8 189.6 L125.1 191.8 L126.4 194.1 L127.8 196.5 L129.1 199 L130.4 201.8 L131.8 204.7 L133.1 207.9 L134.4 211.3 L135.8 215 L137.1 219.1 L138.4 223.6 L139.8 228.7 L141.1 234.4 L142.4 241 L143.8 248.5"/><circle class="t25-o" cx="211.6" cy="108.6" r="4.5"/><circle class="pt" cx="95" cy="154" r="4.5"/><text x="219.6" y="126.6" text-anchor="start" class="sm">m&#237;n.</text><text x="95" y="170" text-anchor="middle" class="sm">&#8722;1</text><text x="170" y="20" text-anchor="start" class="sm">x=0</text><text x="370" y="170" text-anchor="end" class="sm">x</text></svg><figcaption>Esbozo de $f(x)=x^2+1/x$: asíntota vertical $x=0$, mínimo relativo en $x_0\approx0{,}79$, corte en $(-1,0)$.</figcaption></figure>
-  <div class="recipe"><b>Receta:</b> la de la sección 8; aquí los límites en $\pm\infty$ descartan tres figuras y $f'$ confirma la cuarta.</div>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Quedarse en la asíntota vertical (aquí no distingue nada) o aplicar L'Hôpital sin necesidad: dividir antes ($x^2+\tfrac1x$) es más rápido y seguro.</p></div>
+  </details>
 </details>
-<details class="sol"><summary>Ejercicio 2.51 (gráfica de $\operatorname{sen}x+\tfrac12\operatorname{sen}2x$) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.51, pp. 85-86">E pp.85-86</span></summary>
-<p class="enun">Deduce cuál de las cuatro figuras es la gráfica de $f(x)=\operatorname{sen}x+\tfrac12\operatorname{sen}2x$ en $[0,2\pi]$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-2-51" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 2.51 · gráfica de $\operatorname{sen}x+\frac12\operatorname{sen}2x$ (usa §3.4-3.5)</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.51, pp. 85-86">E pp.85-86</span></header>
+<div class="ejer-enun"><p class="enun">Deduce cuál de las cuatro figuras es la gráfica de $f(x)=\operatorname{sen}x+\tfrac12\operatorname{sen}2x$ en $[0,2\pi]$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Elegir, entre cuatro figuras, la gráfica de $f(x)=\operatorname{sen}x+\tfrac12\operatorname{sen}2x$ en $[0,2\pi]$.</dd>
     <dt>Cómo lo pienso</dt><dd>Las figuras se distinguen por cuántas tangentes horizontales tienen y cómo empiezan. Eso lo dice la derivada, así que basta estudiar $f'$.</dd>
-    <dt>Qué uso</dt><dd>Derivada de funciones trigonométricas; $\cos2x=2\cos^2x-1$; <b>Prop. 2.4</b> (U p.98).</dd>
+    <dt>Qué uso</dt><dd>$\cos2x=2\cos^2x-1$ y Prop. 2.4 — <a href="#graf">ver teoría</a> (U p.98).</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $f'(x)=\cos x+\cos 2x$ y evalúo $f'(0)$; luego resuelvo $f'=0$.</dd>
   </dl></div>
-  <p>En E las cuatro pasan por $(0,0)$, $(\pi,0)$ y $(2\pi,0)$ y se distinguen por sus tangentes horizontales en el interior:</p>
+  <div class="recipe"><b>Receta (trigonométricas):</b> escribe $f'$ con una sola razón (aquí $\cos2x=2\cos^2x-1$), factoriza como polinomio en $\cos x$, cuenta los ceros en el intervalo y estudia si $f'$ cambia de signo en cada uno (un cero de $f'$ sin cambio de signo, como $\pi$ aquí, no es extremo).</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+<p>En E las cuatro pasan por $(0,0)$, $(\pi,0)$ y $(2\pi,0)$ y se distinguen por sus tangentes horizontales en el interior:</p>
 <table><thead><tr><th>Figura</th><th>Tangentes horizontales interiores</th><th>Rasgo</th><th>¿Encaja?</th></tr></thead><tbody>
 <tr><td>a)</td><td>3</td><td>máximo, mínimo y un tramo plano en $\pi$</td><td>Sí</td></tr>
 <tr><td>b)</td><td>2</td><td>sale de $0$ con tangente horizontal</td><td>No</td></tr>
@@ -560,43 +1011,80 @@ svg.fig .t25-o{fill:var(--S)}
       </ul></li>
   </ol>
   <figure><svg class="fig" role="img" aria-label="Gráfica de sen x + (1/2) sen 2x en [0, 2π]" viewBox="0 0 380 215" width="380"><line class="ax" x1="25" y1="110" x2="365" y2="110"/><line class="ax" x1="40" y1="205" x2="40" y2="15"/><path class="a" d="M40 110 L42.2 104.6 L44.5 99.3 L46.7 94 L49 88.7 L51.2 83.6 L53.5 78.7 L55.7 73.8 L58 69.2 L60.2 64.7 L62.4 60.5 L64.7 56.5 L66.9 52.8 L69.2 49.4 L71.4 46.2 L73.7 43.3 L75.9 40.8 L78.1 38.6 L80.4 36.7 L82.6 35.1 L84.9 33.8 L87.1 32.9 L89.4 32.3 L91.6 32.1 L93.9 32.1 L96.1 32.5 L98.3 33.1 L100.6 34.1 L102.8 35.3 L105.1 36.8 L107.3 38.5 L109.6 40.4 L111.8 42.6 L114.1 44.9 L116.3 47.4 L118.5 50 L120.8 52.7 L123 55.6 L125.3 58.5 L127.5 61.5 L129.8 64.5 L132 67.5 L134.2 70.6 L136.5 73.6 L138.7 76.5 L141 79.4 L143.2 82.2 L145.5 84.9 L147.7 87.5 L150 90 L152.2 92.3 L154.4 94.5 L156.7 96.6 L158.9 98.5 L161.2 100.3 L163.4 101.8 L165.7 103.3 L167.9 104.5 L170.2 105.6 L172.4 106.6 L174.6 107.4 L176.9 108.1 L179.1 108.7 L181.4 109.1 L183.6 109.4 L185.9 109.7 L188.1 109.8 L190.3 109.9 L192.6 110 L194.8 110 L197.1 110 L199.3 110 L201.6 110 L203.8 110.1 L206.1 110.2 L208.3 110.3 L210.5 110.6 L212.8 110.9 L215 111.3 L217.3 111.9 L219.5 112.6 L221.8 113.4 L224 114.4 L226.3 115.5 L228.5 116.7 L230.7 118.2 L233 119.7 L235.2 121.5 L237.5 123.4 L239.7 125.5 L242 127.7 L244.2 130 L246.4 132.5 L248.7 135.1 L250.9 137.8 L253.2 140.6 L255.4 143.5 L257.7 146.4 L259.9 149.4 L262.2 152.5 L264.4 155.5 L266.6 158.5 L268.9 161.5 L271.1 164.4 L273.4 167.3 L275.6 170 L277.9 172.6 L280.1 175.1 L282.4 177.4 L284.6 179.6 L286.8 181.5 L289.1 183.2 L291.3 184.7 L293.6 185.9 L295.8 186.9 L298.1 187.5 L300.3 187.9 L302.5 187.9 L304.8 187.7 L307 187.1 L309.3 186.2 L311.5 184.9 L313.8 183.3 L316 181.4 L318.3 179.2 L320.5 176.7 L322.7 173.8 L325 170.6 L327.2 167.2 L329.5 163.5 L331.7 159.5 L334 155.3 L336.2 150.8 L338.5 146.2 L340.7 141.3 L342.9 136.4 L345.2 131.3 L347.4 126 L349.7 120.7 L351.9 115.4 L354.2 110"/><circle class="t25-o" cx="92.4" cy="32.1" r="4.5"/><circle class="t25-o" cx="301.8" cy="187.9" r="4.5"/><circle class="t25-o" cx="197.1" cy="110" r="4.5"/><line class="t25-tan" x1="167.1" y1="110" x2="227.1" y2="110"/><text x="92.4" y="126" text-anchor="middle" class="sm">&#960;/3</text><text x="197.1" y="126" text-anchor="middle" class="sm">&#960;</text><text x="301.8" y="126" text-anchor="middle" class="sm">5&#960;/3</text><text x="354.2" y="126" text-anchor="middle" class="sm">2&#960;</text><text x="106.4" y="26.1" text-anchor="start" class="sm">m&#225;x.</text><text x="301.8" y="209.9" text-anchor="middle" class="sm">m&#237;n.</text></svg><figcaption>Gráfica de $f(x)=\operatorname{sen}x+\tfrac12\operatorname{sen}2x$ en $[0,2\pi]$: máximo en $\pi/3$, mínimo en $5\pi/3$ y tramo plano (silla) en $\pi$.</figcaption></figure>
-  <div class="recipe"><b>Receta (trigonométricas):</b> escribe $f'$ con una sola razón (aquí $\cos2x=2\cos^2x-1$), factoriza como polinomio en $\cos x$, cuenta los ceros en el intervalo y estudia si $f'$ cambia de signo en cada uno (un cero de $f'$ sin cambio de signo, como $\pi$ aquí, no es extremo).</div>
+  </details>
 </details>
-<h2 id="auto"><span class="n">10</span>Autoevaluación de U (algunas afirmaciones) <span class="src" data-l="U" data-ref="U Ejercicios de autoevaluación, pp. 100-101">U pp.100-101</span><span class="src" data-l="U" data-ref="U Soluciones ejercicios propuestos, Capítulo 2, pp. 284-285">U pp.284-285</span></h2>
-<p>Las 10 afirmaciones de U mezclan todo el Tema 2. Estas tres son de esta sección o se resuelven con ella; las respuestas son las de U (Soluciones, pp. 284-285).</p>
-<ul>
-  <li><b>1.</b> «La tangente a $f(x)=x^3-x^2+2$ es paralela al eje $x$ solamente en $(0,2)$ y $(\tfrac23,\tfrac{50}{27})$». <b>Verdadera</b> (U, p. 284). $f'(x)=3x^2-2x=0\iff x=0$ o $x=\tfrac23$, con $f(0)=2$ y $f(\tfrac23)=\tfrac8{27}-\tfrac49+2=\tfrac{50}{27}$.</li>
-  <li><b>9.</b> «Si $f''=g''$ en $I$, entonces $f=g+k$ para una constante $k$». <b>Falsa</b> (U, p. 285). Solo se deduce que $f'-g'$ es constante. Contraejemplo de U: $f(x)=x^2+x$ y $g(x)=x^2$, con $f-g=x$ no constante.</li>
-  <li><b>10.</b> «Una función creciente en $I$ verifica $f'(x)\ge0$ para todo $x\in I$». <b>Falsa</b> (U, p. 285): es la respuesta de U, porque una función creciente puede ser discontinua (y por lo tanto no derivable), como en el Ej. 2.21. Recuerda: el recíproco del tercer apartado de la Prop. 2.4 vale si $f$ es derivable; el del primero, nunca.</li>
-</ul>
-<h2 id="examenes"><span class="n">11</span>Así lo preguntan en el examen</h2>
-<p>Estos son los tipos reales que caen de este tema en los exámenes resueltos de la UNED (<span class="src" data-l="X" data-ref="X: Exámenes resueltos de Cálculo (UNED); se cita la página del PDF">X</span> = <i>Exámenes resueltos de Cálculo</i>; página del PDF). Son preguntas cortas de 1 punto: enunciar Rolle o el TVM, aplicar Rolle a una función, ver dónde crece o decrece con el signo de $f'$ y contar soluciones. Van de fácil a difícil.</p>
-<details class="sol"><summary>Problema 1. Enunciar el TVM e interpretarlo geométricamente <span class="src" data-l="X" data-ref="X p.137 (Febrero 2017, 1ª semana, I. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.137</span></summary>
-<p class="enun">Enuncie el Teorema del Valor Medio (para funciones de una variable) y explique la interpretación geométrica de este resultado.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<!-- ============================ exámenes ============================ -->
+<h2 id="examenes" data-vista="examen"><span class="n">13</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Examenes-resueltos-Calculo.pdf (exámenes resueltos de la UNED)">X</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>6 preguntas</b> de este tema (todas se resuelven aquí abajo con su redacción) y 13 ejercicios en el libro E. Se reparten en 3 tipos principales:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Enunciar y aplicar Rolle o el valor medio <small>(2 de 6)</small></td><td>Escribe las hipótesis una a una, compruébalas y concluye $f'(c)=0$ o $f'(c)=\frac{f(b)-f(a)}{b-a}$ con $c$ en el abierto.</td>
+      <td><a href="#ej-2-39">2.39</a> · <a href="#ej-2-40">2.40</a> · <a href="#ej-2-41">2.41</a> · <a href="#ej-2-42">2.42</a> · <a href="#ej-2-49">2.49</a></td>
+      <td><a href="#ex-1">Examen 1</a> · <a href="#ex-2">Examen 2</a></td></tr>
+    <tr><td>Intervalos de crecimiento y decrecimiento <small>(2 de 6)</small></td><td>Deriva y factoriza, quita los factores de signo fijo, tabla de signos con un valor de prueba por tramo y Prop. 2.4.</td>
+      <td><a href="#ej-2-43">2.43</a> · <a href="#ej-2-44">2.44</a> · <a href="#ej-2-46">2.46</a> · <a href="#ej-2-47">2.47</a> · <a href="#ej-2-48">2.48</a></td>
+      <td><a href="#ex-3">Examen 3</a> · <a href="#ex-4">Examen 4</a></td></tr>
+    <tr><td>Contar soluciones (Bolzano + monotonía) <small>(2 de 6)</small></td><td>Existencia con Bolzano (continuidad y cambio de signo); unicidad con $f'$ de signo fijo o con Rolle.</td>
+      <td>— (ejemplos del apartado 2)</td>
+      <td><a href="#ex-5">Examen 5</a> · <a href="#ex-6">Examen 6</a></td></tr>
+  </table>
+  <p><small>Recuento propio sobre las preguntas de X resueltas aquí. Probar que algo es constante (E <a href="#ej-2-45">2.45</a>) e identificar gráficas (E <a href="#ej-2-50">2.50</a>, <a href="#ej-2-51">2.51</a>, que requieren el Tema 3) no aparecen en estas 6 preguntas, pero sí en el libro de ejercicios.</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre las preguntas de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
+<p>Estos son los tipos reales que caen de este tema en los exámenes resueltos de la UNED (<span class="src" data-l="X" data-ref="X: Exámenes resueltos de Cálculo (UNED); se cita la página del PDF">X</span> = <i>Exámenes resueltos de Cálculo</i>; página del PDF). Son preguntas cortas de 1 punto: enunciar el valor medio, aplicar Rolle, hallar intervalos de monotonía y contar soluciones. Intenta cada uno antes de abrir la solución; van de fácil a difícil.</p>
+<article class="ejer" id="ex-1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 1 · Feb. 2017 (1ª sem.) · enunciar el TVM e interpretarlo</span> <span class="src" data-l="X" data-ref="X p.137 (Febrero 2017, 1ª semana, I. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.137</span></header>
+<div class="ejer-enun"><p class="enun">Enuncie el Teorema del Valor Medio (para funciones de una variable) y explique la interpretación geométrica de este resultado.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Enunciar el teorema del valor medio y explicar qué significa en el dibujo.</dd>
     <dt>Cómo lo pienso</dt><dd>Si unes dos puntos de una curva con una cuerda, en algún punto intermedio la tangente tiene la misma inclinación. Es como un viaje en coche: si la velocidad media fue 80 km/h, en algún instante el velocímetro marcó exactamente 80.</dd>
-    <dt>Qué uso</dt><dd><b>TVM (U p.96).</b> Pendiente de la cuerda $=\dfrac{f(b)-f(a)}{b-a}$; pendiente de la tangente $=f'(c)$.</dd>
+    <dt>Qué uso</dt><dd>TVM — <a href="#tvm">ver teoría</a> (U p.96).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo las hipótesis (continua en el cerrado, derivable en el abierto), luego la fórmula con $c$, y dibujo la curva con la cuerda.</dd>
   </dl></div>
-  <ol class="steps">
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Teorema del valor medio.</b> Sea $f:[a,b]\to\mathbb R$ continua en $[a,b]$ y derivable en $(a,b)$. Entonces existe $c\in(a,b)$ tal que
+  $$f'(c)=\frac{f(b)-f(a)}{b-a}.$$
+  <b>Interpretación geométrica.</b> El cociente es la pendiente de la cuerda que une $A=(a,f(a))$ con $B=(b,f(b))$, y $f'(c)$ es la pendiente de la recta tangente en $(c,f(c))$. El teorema dice que hay, al menos, un punto interior de la gráfica en el que la tangente es paralela a la cuerda $AB$. (Si $f(a)=f(b)$ la cuerda es horizontal y se obtiene Rolle: $f'(c)=0$.) Se acompaña de un dibujo: curva, cuerda $AB$ y una tangente paralela a ella.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> «enuncie y explique» = hipótesis + fórmula con $c$ en el abierto + «tangente paralela a la cuerda» + dibujo. (U p.96)</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.137 (Febrero 2017, 1ª semana, I. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.137</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
     <li><b>Hipótesis.</b> $f$ es continua en $[a,b]$ (cerrado) y derivable en $(a,b)$ (abierto).</li>
     <li><b>Conclusión.</b> Existe algún $c\in(a,b)$ con $f'(c)=\dfrac{f(b)-f(a)}{b-a}$.</li>
     <li><b>Qué es cada lado.</b> El cociente es la pendiente de la cuerda que une $(a,f(a))$ con $(b,f(b))$; $f'(c)$ es la pendiente de la tangente en $c$.</li>
     <li><b>Dibujo.</b> Traza una curva, la cuerda $AB$ y una tangente paralela a ella en un punto interior.</li>
   </ol>
-  <p><b>Lo que escribes en el examen:</b> las hipótesis del paso 1, la fórmula del paso 2 y la frase «hay al menos un punto interior de la gráfica cuya tangente es paralela a la cuerda $AB$», con el dibujo.</p>
-  <div class="recipe"><b>Receta:</b> «enuncie y explique» = hipótesis + fórmula con $c$ en el abierto + «tangente paralela a la cuerda» + dibujo. (U p.96)</div>
+  </details>
 </details>
-<details class="sol"><summary>Problema 2. Rolle para encontrar una tangente horizontal <span class="src" data-l="X" data-ref="X p.135 (Febrero 2017, 2ª semana, I. Electrónica Industrial y Automática, pregunta corta 4, 1 punto)">X p.135</span></summary>
-<p class="enun">Enuncie el Teorema de Rolle. Úselo para demostrar que, dada $f:[-2,0]\to\mathbb R$, $f(x)=e^{(x+1)^2}$, existe algún $c\in[-2,0]$ tal que la recta tangente a la gráfica de $f$ en $(c,f(c))$ es paralela al eje $x$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-2">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 2 · Feb. 2017 (2ª sem.) · Rolle: tangente horizontal de $e^{(x+1)^2}$</span> <span class="src" data-l="X" data-ref="X p.135 (Febrero 2017, 2ª semana, I. Electrónica Industrial y Automática, pregunta corta 4, 1 punto)">X p.135</span></header>
+<div class="ejer-enun"><p class="enun">Enuncie el Teorema de Rolle. Úselo para demostrar que, dada $f:[-2,0]\to\mathbb R$, $f(x)=e^{(x+1)^2}$, existe algún $c\in[-2,0]$ tal que la recta tangente a la gráfica de $f$ en $(c,f(c))$ es paralela al eje $x$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Enunciar Rolle y usarlo para probar que $e^{(x+1)^2}$ tiene una tangente horizontal en $[-2,0]$.</dd>
     <dt>Cómo lo pienso</dt><dd>«Tangente horizontal» significa pendiente $0$, es decir, $f'(c)=0$. Rolle garantiza ese punto si la curva sale y llega a la misma altura: en medio hay una cima o un valle y ahí la tangente es plana.</dd>
-    <dt>Qué uso</dt><dd><b>Rolle (U p.95)</b>; regla de la cadena para derivar $e^{(x+1)^2}$.</dd>
+    <dt>Qué uso</dt><dd>Rolle y regla de la cadena — <a href="#rolle">ver teoría</a> (U p.95).</dd>
     <dt>Por dónde empiezo</dt><dd>Compruebo las tres hipótesis una a una: continuidad, derivabilidad y $f(-2)=f(0)$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[-2,2.718282,"f(−2)=e"],[0,2.718282,"f(0)=e"]],"q":[[-1,1,"c=−1"]],"c":[{"e":"exp((x+1)**2)","n":"f(x)=e^((x+1)²)"}],"x":[-2.3,0.3],"y":[0,5]}' data-alt="Gráfica de e^((x+1)^2)"><figcaption>$f(-2)=f(0)=e$ y la tangente horizontal está en $c=-1$, donde $f(-1)=1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Teorema de Rolle.</b> Si $f$ es continua en $[a,b]$, derivable en $(a,b)$ y $f(a)=f(b)$, existe $c\in(a,b)$ con $f'(c)=0$.</p>
+  <p>Sea $f(x)=e^{(x+1)^2}$ en $[-2,0]$.</p>
+  <ul>
+    <li>Continua en $[-2,0]$: es la composición de un polinomio y de la exponencial.</li>
+    <li>Derivable en $(-2,0)$: por la cadena, $f'(x)=2(x+1)e^{(x+1)^2}$ existe para todo $x$.</li>
+    <li>Mismo valor en los extremos: $f(-2)=e^{1}=e$ y $f(0)=e^{1}=e$.</li>
+  </ul>
+  <p>Por Rolle existe $c\in(-2,0)$ con $f'(c)=0$: la tangente en $(c,f(c))$ tiene pendiente $0$, es decir, es paralela al eje $x$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> «tangente paralela al eje $x$» = $f'(c)=0$ → comprueba continuidad, derivabilidad y $f(a)=f(b)$. Mismo método que E 2.39.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.135 (Febrero 2017, 2ª semana, I. Electrónica Industrial y Automática, pregunta corta 4, 1 punto)">X p.135</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<figure class="graf" data-g='{"p":[[-2,2.718282,"f(−2)=e"],[0,2.718282,"f(0)=e"]],"q":[[-1,1,"c=−1"]],"c":[{"e":"exp((x+1)**2)","n":"f(x)=e^((x+1)²)"}],"x":[-2.3,0.3],"y":[0,5]}' data-alt="Gráfica de e^((x+1)^2)"><figcaption>$f(-2)=f(0)=e$ y la tangente horizontal está en $c=-1$, donde $f(-1)=1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Enunciado (U p.95).</b> Si $f$ es continua en $[a,b]$, derivable en $(a,b)$ y $f(a)=f(b)$, existe $c\in(a,b)$ con $f'(c)=0$.</li>
     <li><b>Continuidad.</b> $f(x)=e^{(x+1)^2}$ es una exponencial de un polinomio: continua en todo $\mathbb R$.</li>
@@ -604,20 +1092,38 @@ svg.fig .t25-o{fill:var(--S)}
     <li><b>Mismos valores en los extremos.</b> $f(-2)=e^{(-1)^2}=e$ y $f(0)=e^{1^2}=e$.</li>
     <li><b>Conclusión.</b> Existe $c\in(-2,0)$ con $f'(c)=0$: la tangente en ese punto es horizontal.</li>
   </ol>
-  <p><b>Lo que escribes en el examen:</b> el enunciado (paso 1), las tres comprobaciones (pasos 2 a 4) y la frase «por Rolle existe $c\in(-2,0)$ con $f'(c)=0$, es decir, tangente paralela al eje $x$».</p>
   <p><i>Comprobación (no se pide):</i> $f'(x)=0$ solo si $x=-1$, que está en $(-2,0)$; la tangente es $y=f(-1)=1$.</p>
-  <div class="recipe"><b>Receta:</b> «tangente paralela al eje $x$» = $f'(c)=0$ → comprueba continuidad, derivabilidad y $f(a)=f(b)$. Mismo método que E 2.39.</div>
+  
   <div class="box warn"><span class="h">Avisos</span><p>Rolle da $c$ en el abierto $(-2,0)$: escríbelo así. Error típico: decir «paralela al eje $y$» (sería tangente vertical).</p></div>
+  </details>
 </details>
-<details class="sol"><summary>Problema 3. Intervalos de crecimiento de $x^2e^{1-x}$ <span class="src" data-l="X" data-ref="X p.101 (sin fecha, I. Electrónica Industrial y Automática, examen «Electrónica 2» del índice, pregunta corta 2, 1 punto)">X p.101</span></summary>
-<p class="enun">Calcule los intervalos de crecimiento y decrecimiento de la función $f(x)=x^2e^{(1-x)}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-3">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 3 · «Electrónica 2» · crecimiento de $x^2e^{1-x}$</span> <span class="src" data-l="X" data-ref="X p.101 (sin fecha, I. Electrónica Industrial y Automática, examen «Electrónica 2» del índice, pregunta corta 2, 1 punto)">X p.101</span></header>
+<div class="ejer-enun"><p class="enun">Calcule los intervalos de crecimiento y decrecimiento de la función $f(x)=x^2e^{(1-x)}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar los intervalos donde $x^2e^{1-x}$ crece y donde decrece.</dd>
     <dt>Cómo lo pienso</dt><dd>Si $f'$ es positiva, la función sube; si es negativa, baja. Basta ver dónde $f'$ vale $0$ y mirar el signo en cada tramo entre ceros.</dd>
-    <dt>Qué uso</dt><dd><b>Prop. 2.4</b> (U p.98): $f'>0\Rightarrow$ crece, $f'\lt0\Rightarrow$ decrece. Derivada de un producto y regla de la cadena.</dd>
+    <dt>Qué uso</dt><dd>Prop. 2.4 — <a href="#mono">ver teoría</a> (U p.98).</dd>
     <dt>Por dónde empiezo</dt><dd>Derivo, saco factor común y descarto el factor $e^{1-x}$, que siempre es positivo.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"q":[[0,0,"mín."],[2,1.471518,"máx."]],"c":[{"e":"x*x*exp(1-x)","n":"f(x)=x²e^(1−x)"}],"x":[-1.5,6],"y":[-1,5]}' data-alt="Gráfica de x^2 e^(1-x)"><figcaption>$f(x)=x^2e^{1-x}$ decrece hasta $0$, crece en $[0,2]$ y decrece desde $2$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Por la regla del producto y la cadena, para todo $x\in\mathbb R$:
+  $$f'(x)=2x\,e^{1-x}-x^2e^{1-x}=x(2-x)\,e^{1-x}.$$
+  Como $e^{1-x}>0$, el signo de $f'$ es el de $x(2-x)$, que se anula en $x=0$ y $x=2$.</p>
+  <table>
+    <tr><th>Tramo</th><th>$(-\infty,0)$</th><th>$(0,2)$</th><th>$(2,+\infty)$</th></tr>
+    <tr><td>Punto de prueba</td><td>$x=-1$</td><td>$x=1$</td><td>$x=3$</td></tr>
+    <tr><td>Signo de $x(2-x)$</td><td>$-$</td><td>$+$</td><td>$-$</td></tr>
+    <tr><td>$f$</td><td>decrece</td><td>crece</td><td>decrece</td></tr>
+  </table>
+  <p>Por la Proposición 2.4: $f$ es estrictamente decreciente en $(-\infty,0)$ y en $(2,+\infty)$, y estrictamente creciente en $(0,2)$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> deriva y factoriza → quita las exponenciales (siempre positivas) → ceros de $f'$ → un número de prueba por tramo → crece/decrece en cada tramo. (Sección 5.)</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.101 (sin fecha, I. Electrónica Industrial y Automática, examen «Electrónica 2» del índice, pregunta corta 2, 1 punto)">X p.101</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<figure class="graf" data-g='{"q":[[0,0,"mín."],[2,1.471518,"máx."]],"c":[{"e":"x*x*exp(1-x)","n":"f(x)=x²e^(1−x)"}],"x":[-1.5,6],"y":[-1,5]}' data-alt="Gráfica de x^2 e^(1-x)"><figcaption>$f(x)=x^2e^{1-x}$ decrece hasta $0$, crece en $[0,2]$ y decrece desde $2$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Derivar</b> (producto y cadena; $(e^{1-x})'=-e^{1-x}$): $f'(x)=2x\,e^{1-x}-x^2e^{1-x}$.</li>
     <li><b>Sacar factor común:</b> $f'(x)=x(2-x)\,e^{1-x}$.</li>
@@ -626,20 +1132,38 @@ svg.fig .t25-o{fill:var(--S)}
     <li><b>Un número de prueba por tramo.</b> $x=-1$: $(-1)\cdot3\lt0$. $x=1$: $1\cdot1&gt;0$. $x=3$: $3\cdot(-1)\lt0$.</li>
     <li><b>Leer la conclusión</b> (Prop. 2.4, U p.98): $f$ baja en $(-\infty,0)$, sube en $(0,2)$ y baja en $(2,\infty)$.</li>
   </ol>
-  <p><b>Lo que escribes en el examen:</b> $f'(x)=x(2-x)e^{1-x}$, la tabla de signos con los tres tramos y la conclusión: <b>decreciente en $(-\infty,0)$ y en $(2,\infty)$; creciente en $(0,2)$</b> (con $f$ continua puedes cerrar los extremos: $(-\infty,0]$, $[0,2]$, $[2,\infty)$).</p>
   <p><i>Extra:</i> en $0$ hay un mínimo relativo ($f(0)=0$) y en $2$ un máximo relativo ($f(2)=4/e$).</p>
-  <div class="recipe"><b>Receta:</b> deriva y factoriza → quita las exponenciales (siempre positivas) → ceros de $f'$ → un número de prueba por tramo → crece/decrece en cada tramo. (Sección 5.)</div>
+  
   <div class="box warn"><span class="h">Avisos</span><p>No unas los tramos: «decreciente en $(-\infty,0)\cup(2,\infty)$» es falso (por ejemplo $f(-0{,}1)\approx0{,}03\lt f(3)\approx1{,}22$). Nombra cada intervalo por separado.</p></div>
+  </details>
 </details>
-<details class="sol"><summary>Problema 4. Monotonía de $x^3e^x$: un cero de $f'$ que no cambia de signo <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 2, 1 punto)">X p.13</span></summary>
-<p class="enun">Determine los intervalos de crecimiento y decrecimiento de $f(x)=x^3e^x$. (Versión más fácil, <span class="src" data-l="X" data-ref="X p.35 (Febrero 2013, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 1)">X p.35</span>: «¿dónde es creciente $f(x)=xe^x$?»; allí $f'(x)=(1+x)e^x$ y es creciente en $[-1,\infty)$.)</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-4" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Examen 4 · Feb. 2011 (2ª sem.) · monotonía de $x^3e^x$</span> <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 2, 1 punto)">X p.13</span></header>
+<div class="ejer-enun"><p class="enun">Determine los intervalos de crecimiento y decrecimiento de $f(x)=x^3e^x$. (Versión más fácil, <span class="src" data-l="X" data-ref="X p.35 (Febrero 2013, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 1)">X p.35</span>: «¿dónde es creciente $f(x)=xe^x$?»; allí $f'(x)=(1+x)e^x$ y es creciente en $[-1,\infty)$.)</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar los intervalos de crecimiento y decrecimiento de $x^3e^x$.</dd>
     <dt>Cómo lo pienso</dt><dd>Igual que siempre (signo de $f'$), pero aparece un factor al cuadrado, $x^2$, que nunca es negativo: $f'$ vale $0$ en $x=0$ y no cambia de signo, así que la función no se da la vuelta ahí.</dd>
-    <dt>Qué uso</dt><dd><b>Prop. 2.4</b> (U p.98). Un factor $x^2$ no cambia el signo; es el caso de $x^3$ en $0$ (U p.99).</dd>
+    <dt>Qué uso</dt><dd>Prop. 2.4 — <a href="#mono">ver teoría</a> (U p.98).</dd>
     <dt>Por dónde empiezo</dt><dd>Derivo y factorizo $f'(x)=x^2(x+3)e^x$; separo los factores de signo fijo ($x^2$, $e^x$) del que decide ($x+3$).</dd>
   </dl></div>
-  <figure class="graf" data-g='{"q":[[-3,-1.344251,"mín."],[0,0,"f′(0)=0"]],"c":[{"e":"x**3*exp(x)","n":"f(x)=x³eˣ"}],"x":[-6,1.5],"y":[-2,6]}' data-alt="Gráfica de x^3 e^x"><figcaption>$f'$ se anula en $-3$ (cambia de signo: mínimo) y en $0$ (no cambia de signo: la función sigue creciendo). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Por el producto y la cadena, para todo $x\in\mathbb R$:
+  $$f'(x)=3x^2e^x+x^3e^x=x^2(x+3)\,e^x.$$
+  Aquí $e^x>0$ y $x^2\ge0$ (solo vale $0$ en $x=0$), así que para $x\neq0$ el signo de $f'$ es el de $x+3$. Ceros de $f'$: $x=-3$ y $x=0$.</p>
+  <table>
+    <tr><th>Tramo</th><th>$(-\infty,-3)$</th><th>$(-3,0)$</th><th>$(0,+\infty)$</th></tr>
+    <tr><td>Punto de prueba</td><td>$x=-4$</td><td>$x=-1$</td><td>$x=1$</td></tr>
+    <tr><td>Signo de $f'$</td><td>$-$</td><td>$+$</td><td>$+$</td></tr>
+  </table>
+  <p>Por la Proposición 2.4, $f$ es estrictamente decreciente en $(-\infty,-3)$ y estrictamente creciente en $(-3,0)$ y en $(0,+\infty)$. Como $f$ es continua, crece en $[-3,0]$ y en $[0,+\infty)$ y por tanto en $[-3,+\infty)$ (en $x=0$, $f'$ se anula pero no cambia de signo).
+  <b>Conclusión:</b> decreciente en $(-\infty,-3]$ y creciente en $[-3,+\infty)$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> un factor al cuadrado ($x^2$, $(x-a)^2$) no cambia el signo: su cero no corta la monotonía. Si $f'$ tiene el mismo signo a ambos lados de un cero aislado, los dos tramos se unen.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 2, 1 punto)">X p.13</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<figure class="graf" data-g='{"q":[[-3,-1.344251,"mín."],[0,0,"f′(0)=0"]],"c":[{"e":"x**3*exp(x)","n":"f(x)=x³eˣ"}],"x":[-6,1.5],"y":[-2,6]}' data-alt="Gráfica de x^3 e^x"><figcaption>$f'$ se anula en $-3$ (cambia de signo: mínimo) y en $0$ (no cambia de signo: la función sigue creciendo). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Derivar y factorizar:</b> $f'(x)=3x^2e^x+x^3e^x=x^2(x+3)\,e^x$.</li>
     <li><b>Descartar lo que no cambia el signo.</b> $e^x&gt;0$ y $x^2\ge0$ (solo es $0$ en $x=0$). Para $x\ne0$, el signo de $f'$ es el de $x+3$.</li>
@@ -647,37 +1171,56 @@ svg.fig .t25-o{fill:var(--S)}
     <li><b>Un número de prueba por tramo.</b> $x=-4$: $16\cdot(-1)\cdot e^{-4}\lt0$. $x=-1$: $1\cdot2\cdot e^{-1}&gt;0$. $x=1$: $1\cdot4\cdot e&gt;0$.</li>
     <li><b>Leer la conclusión.</b> Baja en $(-\infty,-3)$ y sube en $(-3,0)$ y en $(0,\infty)$. Como en $x=0$ la función solo hace una pausa (como $x^3$ en $0$, U p.99), los dos tramos que suben se pegan: <b>sube en todo $[-3,\infty)$</b>.</li>
   </ol>
-  <p><b>Lo que escribes en el examen:</b> $f'(x)=x^2(x+3)e^x$, la tabla de signos y la conclusión: <b>decreciente en $(-\infty,-3]$ y creciente en $[-3,\infty)$</b>, con la frase «en $x=0$ $f'$ se anula pero no cambia de signo».</p>
   <p><i>Extra:</i> mínimo en $x=-3$, $f(-3)=-27e^{-3}\approx-1{,}344$. En $x=0$ la tangente es horizontal pero no hay extremo.</p>
-  <div class="recipe"><b>Receta:</b> un factor al cuadrado ($x^2$, $(x-a)^2$) no cambia el signo: su cero no corta la monotonía. Si $f'$ tiene el mismo signo a ambos lados de un cero aislado, los dos tramos se unen.</div>
+  </details>
 </details>
-<details class="sol"><summary>Problema 5. Bolzano: ni da unicidad, ni sirve sin continuidad (dos V/F) <span class="src" data-l="X" data-ref="X p.22 (a) (Febrero 2012, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.22</span> <span class="src" data-l="X" data-ref="X p.126 (b) (sin fecha, I. Electrónica Industrial y Automática, pregunta corta 2, 1 punto)">X p.126</span></summary>
-<p class="enun">(a) Sea $f:[-1,1]\to\mathbb R$ continua con $f(-1)=-3$ y $f(1)=3$. Razone si es cierto que $f(x)=0$ tiene una única solución en $[-1,1]$. Apóyese en una gráfica si lo considera necesario.<br>(b) Razone si es verdadera o falsa: «Si $f:\mathbb R\to\mathbb R$ es estrictamente creciente y $f(-1)\lt0\lt f(1)$, entonces existe al menos una solución de $f(x)=0$.»</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-5" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Examen 5 · Feb. 2012 (2ª sem.) · Bolzano: ¿única solución? ¿basta crecer?</span> <span class="src" data-l="X" data-ref="X p.22 (a) (Febrero 2012, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.22</span></header>
+<div class="ejer-enun"><p class="enun">(a) Sea $f:[-1,1]\to\mathbb R$ continua con $f(-1)=-3$ y $f(1)=3$. Razone si es cierto que $f(x)=0$ tiene una única solución en $[-1,1]$. Apóyese en una gráfica si lo considera necesario.<br>(b) Razone si es verdadera o falsa: «Si $f:\mathbb R\to\mathbb R$ es estrictamente creciente y $f(-1)\lt0\lt f(1)$, entonces existe al menos una solución de $f(x)=0$.»</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Razonar si son verdaderas dos afirmaciones sobre ceros de una función: (a) unicidad con $f(-1)=-3$, $f(1)=3$ continua; (b) existencia con $f$ estrictamente creciente.</dd>
     <dt>Cómo lo pienso</dt><dd>Para pasar de $-3$ a $3$ la curva tiene que cruzar el eje (Bolzano), pero puede cruzarlo varias veces. Y si da un salto, puede pasar de negativa a positiva sin cruzarlo.</dd>
-    <dt>Qué uso</dt><dd><b>Teorema de Bolzano (U p.52):</b> $f$ continua en $[a,b]$ con signos opuestos en los extremos $\Rightarrow$ hay un cero. <b>Prop. 2.4</b> (U p.98) para la unicidad.</dd>
+    <dt>Qué uso</dt><dd>Bolzano (U p.52) y Prop. 2.4 — <a href="#mono">ver teoría</a> (U p.98).</dd>
     <dt>Por dónde empiezo</dt><dd>En (a) pienso en una curva ondulada que corte el eje tres veces; en (b) busco una función creciente con un salto en $0$.</dd>
   </dl></div>
-  <ol class="steps">
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>(a) Falso.</b> Por el teorema de Bolzano ($f$ continua y $f(-1)=-3<0<3=f(1)$) hay <i>al menos</i> una solución en $(-1,1)$, pero no tiene por qué ser única. Contraejemplo: $p(x)=\tfrac32(5x^3-3x)=\tfrac32x(5x^2-3)$ es continua, $p(-1)=-3$, $p(1)=3$ y se anula en $x=0$ y en $x=\pm\sqrt{3/5}$: tres soluciones. (Con $f$ estrictamente creciente sí sería única.)</p>
+  <p><b>(b) Falso.</b> Basta una función estrictamente creciente que no sea continua: $f(x)=x$ si $x<0$ y $f(x)=x+1$ si $x\ge0$. Es estrictamente creciente en $\mathbb R$ y $f(-1)=-1<0<2=f(1)$, pero $f(x)<0$ si $x<0$ y $f(x)\ge1$ si $x\ge0$: nunca vale $0$. No se puede aplicar Bolzano porque $f$ no es continua en $0$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> «¿única solución?»: existencia con Bolzano (comprueba la continuidad) y unicidad con estricta monotonía ($f'&gt;0$ o $f'\lt0$) o con Rolle. Para refutar, dibuja una curva que oscile o que salte.</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.22 (a) (Febrero 2012, 2ª semana, Ingeniería Mecánica, Modelo B, pregunta corta 1, 1 punto)">X p.22</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
     <li><b>(a) Existe solución.</b> $f$ es continua y $f(-1)=-3\lt0\lt3=f(1)$: por Bolzano (U p.52) hay algún $c\in(-1,1)$ con $f(c)=0$.</li>
     <li><b>(a) Pero no tiene por qué ser única: FALSO.</b> Dibuja una curva que sube de $-3$ a $3$ ondulándose y corta el eje tres veces. Ejemplo concreto: $p(x)=\tfrac32(5x^3-3x)$ cumple $p(-1)=-3$, $p(1)=3$ y se anula en $0$ y en $\pm\sqrt{3/5}$.</li>
     <li><b>(a) Qué haría falta para la unicidad.</b> Que $f$ siempre suba (estrictamente creciente), por ejemplo $f'&gt;0$ (Prop. 2.4, U p.98).</li>
     <li><b>(b) FALSO: crecer no basta, hace falta continuidad.</b> Contraejemplo: $f(x)=x$ si $x\lt0$ y $f(x)=x+1$ si $x\ge0$. Siempre sube, $f(-1)=-1\lt0\lt2=f(1)$, pero da un salto en $0$ (de valores $\lt0$ a valores $\ge1$) y nunca vale $0$.</li>
   </ol>
-  <p><b>Lo que escribes en el examen:</b> (a) «Falso: Bolzano solo asegura al menos una solución», con el contraejemplo y un dibujo; (b) «Falso: $f$ no es continua en $0$, no se puede aplicar Bolzano», con el contraejemplo.</p>
   <p><b>Resumen:</b> continuidad + cambio de signo → <b>existe</b>; estricta monotonía → <b>como mucho una</b>; las dos juntas → <b>exactamente una</b>.</p>
-  <div class="recipe"><b>Receta:</b> «¿única solución?»: existencia con Bolzano (comprueba la continuidad) y unicidad con estricta monotonía ($f'&gt;0$ o $f'\lt0$) o con Rolle. Para refutar, dibuja una curva que oscile o que salte.</div>
+  </details>
 </details>
-<details class="sol"><summary>Problema 6. Bolzano + monotonía: ¿cuántas soluciones tiene $e^x-x=2$? <span class="src" data-l="X" data-ref="X p.147 (Febrero 2019, 2ª semana, I. Electrónica Industrial y Automática, pregunta corta 4, 1 punto); la ampliación es propia">X p.147</span></summary>
-<p class="enun"><b>Original:</b> enuncie el Teorema de Bolzano y aplíquelo para demostrar que $e^x-x=2$ tiene al menos una solución en $[1,2]$. <b>Ampliación propia</b> (así se pregunta el «número de raíces»): demuestre que esa solución es única en $[1,2]$ y que la ecuación tiene exactamente dos soluciones reales.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-6">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Examen 6 · Feb. 2019 (2ª sem.) · Bolzano y número de raíces de $e^x-x=2$</span> <span class="src" data-l="X" data-ref="X p.147 (Febrero 2019, 2ª semana, I. Electrónica Industrial y Automática, pregunta corta 4, 1 punto); la ampliación es propia">X p.147</span></header>
+<div class="ejer-enun"><p class="enun"><b>Original:</b> enuncie el Teorema de Bolzano y aplíquelo para demostrar que $e^x-x=2$ tiene al menos una solución en $[1,2]$. <b>Ampliación propia</b> (así se pregunta el «número de raíces»): demuestre que esa solución es única en $[1,2]$ y que la ecuación tiene exactamente dos soluciones reales.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Probar que $e^x-x=2$ tiene una solución en $[1,2]$ y, además, que es única y que hay exactamente dos soluciones reales.</dd>
     <dt>Cómo lo pienso</dt><dd>Bolzano dice que existe una raíz si la función cambia de signo; la monotonía dice que en cada tramo donde la función sólo sube (o sólo baja) hay como mucho una. Juntas dan el número exacto.</dd>
-    <dt>Qué uso</dt><dd><b>Bolzano (U p.52)</b> y <b>Prop. 2.4</b> (U p.98): estricta monotonía $\Rightarrow$ a lo sumo una raíz por tramo.</dd>
+    <dt>Qué uso</dt><dd>Bolzano (U p.52) y Prop. 2.4 — <a href="#mono">ver teoría</a> (U p.98).</dd>
     <dt>Por dónde empiezo</dt><dd>Paso todo a un lado, $f(x)=e^x-x-2$, y evalúo $f(1)$ y $f(2)$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"q":[[1.146193,2,"x≈1,146"],[-1.841406,2,"x≈−1,841"]],"c":[{"e":"exp(x)-x","n":"eˣ−x"},{"e":"2","n":"y=2","d":1}],"x":[-3,2],"y":[0,6]}' data-alt="e^x - x y la recta y=2"><figcaption>La curva $e^x-x$ (con mínimo $1$ en $x=0$) corta a $y=2$ exactamente dos veces: en $x\approx-1{,}841$ y $x\approx1{,}146$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p><b>Teorema de Bolzano.</b> Si $f$ es continua en $[a,b]$ y $f(a)f(b)<0$, existe $c\in(a,b)$ con $f(c)=0$.</p>
+  <p>Sea $f(x)=e^x-x-2$, continua en $\mathbb R$. Entonces $f(1)=e-3<0$ (pues $e<3$) y $f(2)=e^2-4>0$ (pues $e>2$). Por Bolzano existe $c\in(1,2)$ con $e^c-c=2$.</p>
+  <p><b>Unicidad y número de soluciones.</b> $f'(x)=e^x-1$ es negativa si $x<0$ y positiva si $x>0$: $f$ es estrictamente decreciente en $(-\infty,0]$ y estrictamente creciente en $[0,+\infty)$, así que tiene como mucho una raíz en cada tramo. En $[0,+\infty)\supset[1,2]$ la raíz de antes es la única. En el otro tramo, $f(-2)=e^{-2}>0$ y $f(0)=-1<0$: por Bolzano hay otra raíz en $(-2,0)$. En total, <b>exactamente dos</b> soluciones reales.</p>
+  </div>
+  <div class="recipe"><b>Receta (contar soluciones):</b> escribe $f(x)=0$ → signo de $f'$ para partir $\mathbb R$ en tramos de estricta monotonía (en cada uno, a lo sumo una raíz) → en cada tramo busca un cambio de signo (Bolzano da la existencia).</div>
+  <p>Teoría: <span class="src" data-l="X" data-ref="X p.147 (Febrero 2019, 2ª semana, I. Electrónica Industrial y Automática, pregunta corta 4, 1 punto); la ampliación es propia">X p.147</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<figure class="graf" data-g='{"q":[[1.146193,2,"x≈1,146"],[-1.841406,2,"x≈−1,841"]],"c":[{"e":"exp(x)-x","n":"eˣ−x"},{"e":"2","n":"y=2","d":1}],"x":[-3,2],"y":[0,6]}' data-alt="e^x - x y la recta y=2"><figcaption>La curva $e^x-x$ (con mínimo $1$ en $x=0$) corta a $y=2$ exactamente dos veces: en $x\approx-1{,}841$ y $x\approx1{,}146$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Pasar todo a un lado:</b> $f(x)=e^x-x-2$, y buscamos $f(x)=0$.</li>
     <li><b>Enunciar Bolzano</b> (U p.52): si $f$ es continua en $[a,b]$ y $f(a)f(b)\lt0$, existe $c\in(a,b)$ con $f(c)=0$.</li>
@@ -690,9 +1233,9 @@ svg.fig .t25-o{fill:var(--S)}
     <li><b>Buscar la raíz del tramo izquierdo:</b> $f(-2)=e^{-2}&gt;0$ y $f(0)=-1\lt0$; por Bolzano hay otra raíz en $(-2,0)$.</li>
     <li><b>Contar:</b> exactamente <b>dos</b> soluciones reales, una en $(-2,0)$ y otra en $(1,2)$.</li>
   </ol>
-  <p><b>Lo que escribes en el examen:</b> el enunciado de Bolzano, $f$ continua, $f(1)\lt0\lt f(2)$ y la conclusión «existe $c\in(1,2)$». Si piden unicidad o número de raíces, añade el signo de $f'=e^x-1$ y los dos tramos de monotonía.</p>
-  <div class="recipe"><b>Receta (contar soluciones):</b> escribe $f(x)=0$ → signo de $f'$ para partir $\mathbb R$ en tramos de estricta monotonía (en cada uno, a lo sumo una raíz) → en cada tramo busca un cambio de signo (Bolzano da la existencia).</div>
+  </details>
 </details>
+</article>
 <div class="box tip"><span class="h">Tipos que también caen y no están en el PDF</span>
   <p>Se practican con los ejemplos de las secciones 2-6 y con E 2.40-2.49:</p>
   <ul>
@@ -701,7 +1244,8 @@ svg.fig .t25-o{fill:var(--S)}
     <li>V/F sobre Rolle o el TVM con funciones a trozos o con $|\cdot|$ (E 2.42, 2.49); número exacto de raíces (sección 2).</li>
     <li>El TVM en varias variables sí aparece en X (p.86, Septiembre 2017, Modelo A, P4), pero es del Tema 5.</li>
   </ul></div>
-<h2 id="chuleta"><span class="n">12</span>Chuleta y lista de comprobación</h2>
+<!-- ============================ chuleta ============================ -->
+<h2 id="chuleta" data-vista="teoria"><span class="n">14</span>Chuleta y lista de comprobación</h2>
 <table>
   <thead><tr><th>Resultado</th><th>Hipótesis</th><th>Conclusión</th></tr></thead>
   <tbody>
