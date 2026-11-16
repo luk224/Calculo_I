@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_2_4/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 2.4 Método de Newton. Método de punto fijo</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -15,6 +16,8 @@
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 <style>
 /* Extras propios de este tema (prefijo t24-). El sistema visual base está en ../assets/resumen.css */
 svg.fig .t24-dash{stroke:var(--mut);stroke-width:1.2;fill:none;stroke-dasharray:4 4}
@@ -55,12 +58,73 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   </div>
 </header>
 
-<!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.4.1 Motivación, Orientaciones y Objetivos, p. 86">U p.86</span></h2>
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>Casi ninguna ecuación $f(x)=0$ se puede resolver de forma exacta. Este tema enseña dos <b>algoritmos</b> que fabrican una sucesión $x_0,x_1,x_2,\dots$ cuyos términos se acercan a la solución. <b>Newton</b> es muy rápido pero no tiene garantía; el <b>punto fijo</b> es más lento pero, si se comprueban unas hipótesis, sí la tiene (y además te dice cuántas iteraciones bastan).</p>
   <span class="src" data-l="U" data-ref="U §2.4.1 Introducción y Objetivos, p. 86">U p.86</span>
 </div>
+<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Lee qué te piden.</b> «Realiza $n$ iteraciones», «hasta que el error sea menor que…», «comprueba que converge» o «cuántas iteraciones garantizan error menor que $\varepsilon$»: cada frase es una cuenta distinta (apartado 3).</li>
+    <li><b>Ponlo en forma.</b> Newton: la ecuación como $f(x)=0$, raíz localizada con Bolzano y $x_0$ cercano. Punto fijo: la ecuación como $x=g(x)$.</li>
+    <li><b>Itera con tabla</b>, guardando todas las cifras (en Newton, simplifica antes $x-\frac{f}{f'}$).</li>
+    <li><b>Justifica si te lo piden:</b> (H0) $g$ continua, (H1) $g([a,b])\subset[a,b]$, (H2) $|g'|\le k&lt;1$; y la cota $\frac{k^n}{1-k}(b-a)$. Al despejar $n$, la desigualdad se invierte con $\ln k&lt;0$ y se toma el primer natural.</li>
+  </ol>
+  <p class="sub">Qué hago según el tipo</p>
+  <ul>
+    <li>¿«Realiza $n$ iteraciones»? $\to$ fórmula y tabla hasta $x_n$.</li>
+    <li>¿«Hasta que $\varepsilon_r&lt;$ tol»? $\to$ Newton con una columna $\varepsilon_r$; paro en la primera fila que cumple.</li>
+    <li>¿«Comprueba que converge en $[a,b]$»? $\to$ Teorema 2.2: tres hipótesis, una línea cada una.</li>
+    <li>¿«Cuántas iteraciones garantizan…»? $\to$ Teorema 2.3 (punto fijo) o $\frac{b-a}{2^n}$ (bisección).</li>
+    <li>¿Newton se atasca ($f'(x_n)=0$, ciclo, mal $x_0$)? $\to$ cambia $x_0$ tras localizar la raíz.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$</td><td>Newton para $f(x)=0$ con $f$ derivable y $f'(x_n)\neq0$.</td></tr>
+    <tr><td>$\varepsilon_r=\dfrac{|x_n-x_{n-1}|}{|x_n|}$</td><td>Criterio de parada práctico (no es el error verdadero).</td></tr>
+    <tr><td>$x_{n+1}=g(x_n)$</td><td>Punto fijo: resolver $x=g(x)$.</td></tr>
+    <tr><td>Teorema 2.2: $g:[a,b]\to[a,b]$ continua y $|g'|\le k&lt;1$</td><td>Punto fijo único y convergencia desde todo $x_0\in[a,b]$.</td></tr>
+    <tr><td>Teorema 2.3: $|x_n-\tilde x|&lt;\dfrac{k^n}{1-k}(b-a)$</td><td>Cota del error y número de iteraciones garantizadas.</td></tr>
+    <tr><td>$|x_n-\tilde x|&lt;\dfrac{b-a}{2^n}$</td><td>Bisección: iteraciones para un error dado.</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos suele ser <b>una pregunta corta de 1 punto</b> (dos iteraciones de Newton, cinco de punto fijo, nº de pasos de bisección) o un ejercicio largo que añade comprobar el Teorema 2.2 y acotar el error. En el libro de ejercicios son E 2.34-2.38. Tabla por tipo: <a href="#examenes" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §2.4.2-2.4.3, pp. 88-92 (Newton, errores aproximados, Teoremas 2.2 y 2.3); resumen propio">U pp.88-92</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U pp.88-92">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 1 h 30</b>
+      <ul>
+        <li>La <b>fórmula de Newton</b> (apartado 1), los <b>Teoremas 2.2 y 2.3</b> (apartado 2) y el <b>mapa de decisión</b> (apartado 3).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-2-34">E 2.34</a> (Newton, $n$ iteraciones), <a href="#ex-2">Examen 2</a> (Newton con $e^x$), <a href="#ej-2-36">E 2.36</a> (error relativo), <a href="#ex-3">Examen 3</a> (punto fijo, iterar), <a href="#ej-2-38">E 2.38</a> (hipótesis del Teorema 2.2), <a href="#ej-2-37">E 2.37</a> (nº de iteraciones), <a href="#ex-5">Examen 5</a> (completo).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 5 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»), con ampliaciones e interactivos.</li>
+        <li>E 2.34-2.38, los 6 propios, los 6 exámenes y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#ex-6">Examen 6</a> (elegir intervalo y $k$), <a href="#ej-2-35">E 2.35</a> (raíz doble), <a href="#ej-p3">Propio 3</a> (ciclo de Newton) y <a href="#ej-p6">Propio 6</a> (elegir bien $g$).</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §2.4.1 Motivación, Orientaciones y Objetivos, p. 86">U p.86</span></h2>
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li><b>Derivar</b> funciones elementales y saber que $f'(a)$ es la pendiente de la recta tangente en $(a,f(a))$. Si falla esto, repasa el Curso 0. <span class="src" data-l="U" data-ref="U §2.4.1 Orientaciones, p. 86">U p.86</span></li>
@@ -72,7 +136,8 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>Los cinco ejercicios de E son de este tipo: (a) hacer <b>$n$ iteraciones</b> de Newton para aproximar un número o una raíz (2.34, 2.35, 2.36); (b) <b>comprobar las hipótesis</b> del Teorema 2.2 y hacer iteraciones del punto fijo (2.38); (c) calcular con el Teorema 2.3 <b>cuántas iteraciones</b> garantizan un error dado (2.37). <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.34-2.38, pp. 72-76">E pp.72-76</span></p>
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>Método de Newton <span class="src" data-l="U" data-ref="U §2.4.2 Método de Newton, pp. 86-90">U pp.86-90</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Método de Newton <span class="src" data-l="U" data-ref="U §2.4.2 Método de Newton, pp. 86-90">U pp.86-90</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver $f(x)=0$ siguiendo tangentes: la fórmula de Newton, cómo decidir cuándo parar y cuándo el método falla.</p>
 <div class="box intu"><span class="h">La idea: sustituir la curva por su tangente</span>
   <p><b>Qué quieres.</b> Un $x$ con $f(x)=0$: el punto donde la gráfica <b>cruza el eje $x$</b>. Casi nunca se puede despejar.</p>
   <p><b>Qué haces.</b> Partes de una estimación $x_0$ (aunque sea mala). En $x_0$ conoces la <b>altura</b> $f(x_0)$ y la <b>pendiente</b> $f'(x_0)$, es decir, la <b>recta tangente</b>, que cerca de $x_0$ casi coincide con la curva. Una recta sí sabes dónde corta al eje: ese corte es $x_1$, normalmente más cerca de la raíz. Repites desde $x_1$. Es como bajar una cuesta siguiendo su inclinación hasta el nivel del suelo: si la cuesta es casi recta, llegas casi exacto.</p>
@@ -80,11 +145,11 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="S" data-ref="Stewart §4.8, geometría del método (Figuras 2 y 3), p. 339">S p.339</span>
   <span class="src" data-l="L" data-ref="Larson §3.8, Figura 3.60, p. 225">L p.225</span>
 </div>
-<figure class="interactivo" data-escena="newton" data-params='{"dim":2}' aria-label="Interactivo del método de Newton: tangentes sucesivas y sus cortes con el eje x">
+<figure class="interactivo" data-escena="newton" data-params='{"dim":2}' data-extra aria-label="Interactivo del método de Newton: tangentes sucesivas y sus cortes con el eje x">
   <img class="int-static" src="../assets/img/int_newton.png" alt="Interactivo del método de Newton: tangentes sucesivas y sus cortes con el eje x">
-  <figcaption>Interactivo propio. Por defecto es el ejemplo de $\sqrt5$ de abajo ($f(x)=x^2-5$, $x_0=3$): cada tangente (naranja) corta al eje $x$ en la siguiente aproximación; en la lectura «Fórmula» ves el último paso con números. Elige la función y $x_0$ y aumenta los pasos.  con $x_0=0$ (la sucesión salta entre $0$ y $1$ y nunca converge) y $\sqrt[3]{x}$ (cada paso duplica la distancia al origen). <span class="src" data-l="P" data-ref="Explicación propia; algoritmo: U §2.4.2 p. 88">P</span></figcaption>
+  <figcaption>Interactivo propio. Por defecto es el ejemplo de $\sqrt5$ de abajo ($f(x)=x^2-5$, $x_0=3$): cada tangente (naranja) corta al eje $x$ en la siguiente aproximación; en la lectura «Fórmula» ves el último paso con números. Elige la función y $x_0$ y aumenta los pasos. <span class="src" data-l="P" data-ref="Explicación propia; algoritmo: U §2.4.2 p. 88">P</span></figcaption>
 </figure>
-<h3>De la idea a la fórmula</h3>
+<h3 id="s1-formula">De la idea a la fórmula</h3>
 <div class="box def"><span class="h">Método de Newton (algoritmo)</span>
   <p><b>Hipótesis.</b> $f$ derivable en un intervalo que contiene a la raíz $\tilde x$ que se busca (y que, en cada paso, $f'(x_n)\neq0$).</p>
   <p><b>Datos.</b> Una aproximación inicial $x_0$ cercana a la raíz.</p>
@@ -95,6 +160,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="L" data-ref="Larson §3.8, cuadro «Método de Newton», pasos 1-3, p. 225">L p.225</span>
   <span class="src" data-l="S" data-ref="Stewart §4.8, fórmula (2), p. 339">S p.339</span>
 </div>
+<details class="amp" data-extra><summary>Ampliación: cómo se llega a la fórmula, paso a paso</summary>
 <div class="box thm"><span class="h">Cómo se llega a la fórmula, paso a paso</span>
   <ol class="steps">
     <li><b>Punto de partida.</b> Tienes $x_n$. Ahí la curva está a altura $f(x_n)$ y tiene pendiente $f'(x_n)$ (la derivada es la pendiente de la tangente).</li>
@@ -108,6 +174,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   </ol>
   <span class="src" data-l="U" data-ref="U Ejemplo 2.15, pp. 87-88">U pp.87-88</span>
 </div>
+</details>
 <div class="box intu"><span class="h">Cómo leer la fórmula: «estimación nueva = actual − altura / pendiente»</span>
   <p>El cociente $\dfrac{f(x_n)}{f'(x_n)}=\dfrac{\text{altura}}{\text{pendiente}}$ es <b>la distancia horizontal</b> que hay que andar por la tangente hasta llegar a altura $0$ (si subes $m$ por unidad y debes cubrir $h$, te mueves $h/m$). La fórmula es «donde estoy, menos lo que me falta para llegar al eje».</p>
   <ul>
@@ -146,7 +213,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="L" data-ref="Larson §3.8, p. 227: si el límite es c, c es un cero de f">L p.227</span>
   <span class="src" data-l="P" data-ref="Enunciado general con hipótesis explícitas: explicación propia">P</span>
 </div>
-<h3>Cuándo parar: los errores aproximados</h3>
+<h3 id="s1-parada">Cuándo parar: los errores aproximados</h3>
 <div class="box def"><span class="h">Error absoluto y relativo aproximados; criterios de parada</span>
   <p>No conocemos la solución exacta $\tilde x$ (por eso usamos un método numérico), así que medimos cuánto <b>cambia</b> la sucesión en el último paso:
   $$\varepsilon_a=|x_n-x_{n-1}|,\qquad \varepsilon_r=\frac{|x_n-x_{n-1}|}{|x_n|}.$$
@@ -157,7 +224,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="L" data-ref="Larson §3.8, paso 3 del cuadro (|xn - xn+1| dentro de la precisión), p. 225">L p.225</span>
   <span class="src" data-l="S" data-ref="Stewart §4.8, cuándo detenerse, p. 340">S p.340</span>
 </div>
-<h3>¿Es infalible? No</h3>
+<h3 id="s1-falla">¿Es infalible? No</h3>
 <div class="box warn"><span class="h">Cuándo falla Newton</span>
   <ul>
     <li><b>$f'(x_n)=0$</b> para algún $n$: no se puede dividir (tangente horizontal). Solución: elegir otro $x_0$.</li>
@@ -171,12 +238,14 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="L" data-ref="Larson §3.8, Figura 3.63 y Ejemplo 3, p. 227; Ejercicios 21-22, p. 229">L pp.227,229</span>
   <span class="src" data-l="S" data-ref="Stewart §4.8, Figura 4, p. 340; ejercicios 31-34, p. 343">S pp.340,343</span>
 </div>
+<details class="amp" data-extra><summary>Ampliación: una condición suficiente de convergencia</summary>
 <div class="box thm"><span class="h">Una condición suficiente de convergencia</span>
   <p><b>Hipótesis.</b> $f$ con derivada segunda y $f'\neq0$ en un intervalo abierto $I$ que contiene al cero $c$, y punto inicial $x_0\in I$ tal que las iteraciones permanecen en $I$ (por ejemplo, si $I$ es simétrico respecto de $c$).</p>
   <p><b>Conclusión (Larson).</b> Si $\left|\dfrac{f(x)\,f''(x)}{[f'(x)]^2}\right|&lt;1$ para todo $x\in I$, el método de Newton converge al cero. Para $f(x)=x^2-2$ el cociente es $\frac{x^2-2}{2x^2}=\frac12-\frac1{x^2}$, que en $(1,3)$ toma valores en $(-\frac12,\frac7{18})$: su valor absoluto es $&lt;1$ y converge. Para $f(x)=\sqrt[3]x$ el cociente vale $-2$ en todo punto ($|{\cdot}|=2$): no se cumple, y en efecto diverge.</p>
   <p>Es <i>solo suficiente</i>. Sirve como criterio de sentido común: Newton va bien si $f$ no se «curva» demasiado respecto a lo empinada que es.</p>
   <span class="src" data-l="L" data-ref="Larson §3.8, condición para convergencia, p. 228">L p.228</span>
 </div>
+</details>
 <h3>Velocidad: por qué Newton es tan rápido (a veces)</h3>
 <div class="box intu"><span class="h">Los decimales correctos se duplican</span>
   <p>Con una <b>raíz simple</b> ($f'(\tilde x)\ne0$), el error nuevo es aproximadamente el <i>cuadrado</i> del anterior: $10^{-2}\to10^{-4}\to10^{-8}\to10^{-16}$ (<b>convergencia cuadrática</b>). Con una <b>raíz doble</b> ($f'(\tilde x)=0$, la curva «toca» el eje sin cruzarlo) el error solo se reduce a la mitad en cada paso, y Newton no es más rápido que la bisección (Ejercicio 2.35). La razón se ve con álgebra en el paso 6 del Ejercicio 2.34.</p>
@@ -188,7 +257,8 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <span class="src" data-l="S" data-ref="Stewart §4.8, problema 29 (algoritmo babilonio), p. 342">S p.342</span>
 </div>
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>Método de punto fijo <span class="src" data-l="U" data-ref="U §2.4.3 Puntos fijos de funciones, pp. 90-94">U pp.90-94</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>Método de punto fijo <span class="src" data-l="U" data-ref="U §2.4.3 Puntos fijos de funciones, pp. 90-94">U pp.90-94</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a repetir $x_{n+1}=g(x_n)$ y, antes de fiarte, comprobar las tres hipótesis del Teorema 2.2; con la cota del Teorema 2.3 sabrás cuántas iteraciones bastan.</p>
 <div class="box intu"><span class="h">Idea intuitiva: la calculadora que pulsa «cos» sin parar</span>
   <p>Pon la calculadora en radianes, escribe cualquier número y pulsa la tecla <b>cos</b> una y otra vez. Los resultados se estabilizan en $0.7390\ldots$ ¿Por qué? Ese número $\tilde x$ cumple $\cos\tilde x=\tilde x$: la función lo deja <b>quieto</b>. Un punto que una función no mueve es un <b>punto fijo</b>. Si repetir la función te acerca cada vez más a un punto, ese punto es la solución de «$x=g(x)$».</p>
   <span class="src" data-l="P" data-ref="Analogía propia. Ejemplo análogo con cos x=x en S §4.8 Ej. 3, p. 341 y L ejercicio 23, p. 229">P</span>
@@ -206,7 +276,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p><b>Hipótesis.</b> $g$ continua y $x_n\to a$. <b>Conclusión.</b> $a=g(a)$, pues $\lim_{n\to\infty} x_n=\lim_{n\to\infty} g(x_{n-1})=g(\lim_{n\to\infty} x_{n-1})$ (la continuidad de $g$ permite meter el límite dentro). De nuevo: <i>si</i> converge. Falta una condición que lo garantice.</p>
   <span class="src" data-l="U" data-ref="U §2.4.3, p. 91">U p.91</span>
 </div>
-<h3>Cuándo funciona: los teoremas 2.2 y 2.3</h3>
+<h3 id="s2-teoremas">Cuándo funciona: los teoremas 2.2 y 2.3</h3>
 <div class="box thm"><span class="h">Teorema 2.2 (existencia, unicidad y convergencia)</span>
   <p><b>Hipótesis</b> (las tres, a la vez):</p>
   <ul class="t24-hyp">
@@ -227,6 +297,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p>Hacen falta <b>todas</b> las hipótesis. Si $g$ no lleva $[a,b]$ en sí mismo, una iteración puede <i>salir</i> del intervalo y ya no vale la cota de $g'$ para el paso siguiente. Además, $k$ debe ser un número que de verdad acote a $|g'|$ en <i>todo</i> $(a,b)$: se toma el <b>máximo</b> (o un número mayor), nunca el mínimo.</p>
   <p><b>Y (H0) no sobra.</b> Sea $g(0)=1$ y $g(x)=x/2$ para $x\in(0,1]$. Lleva $[0,1]$ en $[0,1]$ y $|g'(x)|=\frac12$ en $(0,1)$, pero <b>no tiene ningún punto fijo</b> ($g(0)=1\neq0$ y $x/2=x$ solo si $x=0$): (H1) y (H2) se cumplen y falla la continuidad en $0$. Casi siempre $g$ es una función elemental continua en su dominio y (H0) se comprueba diciéndolo.</p>
 </div>
+<details class="amp" data-extra><summary>Ampliación: por qué funciona el punto fijo («contracciones»)</summary>
 <div class="box intu"><span class="h">Por qué funciona (explicación propia: «contracciones»)</span>
   <p>Si $|g'|\le k&lt;1$, por el teorema del valor medio (U §2.5.3, p. 96, que viene <i>después</i> de este tema) $|g(x)-g(y)|\le k|x-y|$: la función <b>acerca</b> los puntos (es una <i>contracción</i>). Entonces:</p>
   <ul>
@@ -237,7 +308,8 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p>Cada paso <b>reduce el error como mucho a una fracción $k$</b>: es una convergencia <i>lineal</i> (comparada con la cuadrática de Newton). Cuanto más cerca de $1$ esté $k$, más lenta.</p>
   <span class="src" data-l="P" data-ref="Explicación propia: U enuncia los teoremas sin demostrarlos y no usa la palabra contracción. Pieza suelta: S Problemas adicionales del cap. 2, problema 8, p. 171 (existencia de un punto fijo con el teorema del valor intermedio)">P</span>
 </div>
-<figure class="interactivo" data-escena="telarana" data-params='{"dim":2}' aria-label="Interactivo de telaraña del método de punto fijo: iteraciones entre la curva y la recta y=x">
+</details>
+<figure class="interactivo" data-escena="telarana" data-params='{"dim":2}' data-extra aria-label="Interactivo de telaraña del método de punto fijo: iteraciones entre la curva y la recta y=x">
   <img class="int-static" src="../assets/img/int_telarana.png" alt="Interactivo de telaraña del método de punto fijo: iteraciones entre la curva y la recta y=x">
   <figcaption>Interactivo propio. Por defecto es $g(x)=e^{-x}$ con $x_0=1$ (Ejercicio 2.38). La escalera (naranja) va en vertical hasta la curva $y=g(x)$ y en horizontal hasta la recta $y=x$: cada escalón es una iteración. Con la tercera función, mueve $m=g'(x^*)$: si $|m|&lt;1$ la escalera se cierra sobre el punto fijo (monótona si $m&gt;0$, en espiral si $m&lt;0$); si $|m|&gt;1$ se aleja. <span class="src" data-l="P" data-ref="Explicación propia; teoremas 2.2 y 2.3: U pp. 91-92">P</span></figcaption>
 </figure>
@@ -254,18 +326,52 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <p>d) <b>Iteraciones para error $&lt;0.01$:</b> $\dfrac{(1/2)^n}{1/2}\cdot\dfrac\pi2&lt;0.01\iff\left(\tfrac12\right)^n&lt;\dfrac{0.01}{\pi}\iff n&gt;\dfrac{\ln(0.01/\pi)}{\ln(1/2)}\approx8.2953$ (se invierte la desigualdad al dividir entre $\ln\frac12&lt;0$). Hacen falta <b>9</b> iteraciones.</p>
   <span class="src" data-l="U" data-ref="U Ejemplo 2.17, pp. 92-93">U pp.92-93</span>
 </div>
-<h3>De $f(x)=0$ a $x=g(x)$: la $g$ no es única</h3>
+<h3 id="s2-elegir">De $f(x)=0$ a $x=g(x)$: la $g$ no es única</h3>
 <div class="box def"><span class="h">Cómo se elige $g$</span>
   <p>Para resolver $f(x)=0$ con punto fijo hay que <b>despejar</b> una ecuación equivalente $x=g(x)$; hay infinitas maneras. La más sencilla es $g(x)=f(x)+x$. Ejemplo 2.18 de U con $x^3-x=0$: sumando $x$ sale $g(x)=x^3$; con raíces cúbicas, $g(x)=\sqrt[3]x$; dividiendo por $x^2$ (buscando raíz no nula), $g(x)=\frac1x$. <b>No todas sirven:</b> hay que elegir una con $|g'|&lt;1$ cerca de la raíz (ver Ejemplo propio P6).</p>
   <span class="src" data-l="U" data-ref="U p. 93-94 y Ejemplo 2.18, p. 94">U pp.93-94</span>
 </div>
+<details class="amp" data-extra><summary>Ampliación: Newton es un punto fijo</summary>
 <div class="box intu"><span class="h">Newton es un punto fijo</span>
   <p>El método de Newton es el método de punto fijo con $g(x)=x-\dfrac{f(x)}{f'(x)}$: los puntos fijos de esa $g$ son exactamente los ceros de $f$ (donde $f'\ne0$). Además $g'(\tilde x)=\dfrac{f(\tilde x)f''(\tilde x)}{[f'(\tilde x)]^2}=0$ en una raíz simple, es decir, «$k=0$»; por eso Newton es tan rápido cerca de la raíz. Fíjate en que es justo el cociente de la condición de Larson.</p>
   <span class="src" data-l="P" data-ref="Explicación propia; conecta U p.88 (Newton) con U p.90 (punto fijo) y L p.228">P</span>
 </div>
+</details>
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>¿Cuántas iteraciones? Tabla para decidir <span class="src" data-l="P" data-ref="Tabla propia que reúne U pp.54, 89-92">P</span> <span class="src" data-l="U" data-ref="U p.54-55 (bisección, cota (b-a)/2^n); p.89-90 (criterios de parada de Newton); pp.91-92 (Teorema 2.3 y número de iteraciones)">U pp.54,89-92</span></h2>
-<p>Lo primero es <b>leer bien qué te piden</b>: casi todos los errores de este tema vienen de mezclar los casos. Esta tabla los separa.</p>
+<h2 id="s3" data-vista="tipos"><span class="n">3</span>Mapa de decisión: ¿Newton, punto fijo o bisección? ¿Cuántas iteraciones? <span class="src" data-l="P" data-ref="Tabla propia que reúne U pp.54, 89-92">P</span> <span class="src" data-l="U" data-ref="U p.54-55 (bisección, cota (b-a)/2^n); p.89-90 (criterios de parada de Newton); pp.91-92 (Teorema 2.3 y número de iteraciones)">U pp.54,89-92</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué método y qué cuenta corresponde a cada frase del enunciado («realiza $n$ iteraciones», «hasta que el error sea menor que…», «garantiza error menor que…», «comprueba que converge»).</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja y «sí» te lleva a la acción de la derecha. Lo primero es <b>leer bien qué te piden</b>: casi todos los errores de este tema vienen de mezclar los casos.</p>
+<svg class="flujo" viewBox="0 0 460 484" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión: Newton, punto fijo o bisección</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Según la frase del enunciado: realizar n iteraciones, parar por tolerancia con el error relativo, comprobar la convergencia con el Teorema 2.2, garantizar un error con el Teorema 2.3 o con la bisección, y qué hacer si Newton se atasca.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="200" height="44" rx="10"/><text x="110" y="28" text-anchor="middle">¿Pide «realiza n</text><text x="110" y="46" text-anchor="middle">iteraciones»?</text>
+<path class="lin" d="M210 32 H246" marker-end="url(#fl)"/><text class="si" x="215" y="27">sí</text>
+<rect class="nodo" x="250" y="10" width="200" height="44" rx="10"/><text x="350" y="28" text-anchor="middle">Itero exactamente n veces</text><text x="350" y="46" text-anchor="middle">y doy x_n (tabla)</text>
+<path class="lin" d="M110 54 V77" marker-end="url(#fl)"/><text class="no" x="118" y="70">no</text>
+<rect class="preg" x="10" y="80" width="200" height="44" rx="10"/><text x="110" y="98" text-anchor="middle">¿Dice «hasta que el error</text><text x="110" y="116" text-anchor="middle">sea menor que…»?</text>
+<path class="lin" d="M210 102 H246" marker-end="url(#fl)"/><text class="si" x="215" y="97">sí</text>
+<rect class="nodo" x="250" y="80" width="200" height="44" rx="10"/><text x="350" y="98" text-anchor="middle">Newton con columna ε_r;</text><text x="350" y="116" text-anchor="middle">paro en la 1.ª fila que cumple</text>
+<path class="lin" d="M110 124 V147" marker-end="url(#fl)"/><text class="no" x="118" y="140">no</text>
+<rect class="preg" x="10" y="150" width="200" height="44" rx="10"/><text x="110" y="168" text-anchor="middle">¿Pide comprobar que el</text><text x="110" y="186" text-anchor="middle">punto fijo converge?</text>
+<path class="lin" d="M210 172 H246" marker-end="url(#fl)"/><text class="si" x="215" y="167">sí</text>
+<rect class="nodo" x="250" y="150" width="200" height="44" rx="10"/><text x="350" y="168" text-anchor="middle">Teorema 2.2 en [a,b]:</text><text x="350" y="186" text-anchor="middle">(H0), (H1) y (H2)</text>
+<path class="lin" d="M110 194 V217" marker-end="url(#fl)"/><text class="no" x="118" y="210">no</text>
+<rect class="preg" x="10" y="220" width="200" height="44" rx="10"/><text x="110" y="238" text-anchor="middle">¿Pide nº de iteraciones y</text><text x="110" y="256" text-anchor="middle">dan g con |g'| ≤ k &lt; 1?</text>
+<path class="lin" d="M210 242 H246" marker-end="url(#fl)"/><text class="si" x="215" y="237">sí</text>
+<rect class="nodo" x="250" y="220" width="200" height="44" rx="10"/><text x="350" y="238" text-anchor="middle">Menor n con (Teor. 2.3):</text><text x="350" y="256" text-anchor="middle">k^n(b−a)/(1−k) &lt; ε</text>
+<path class="lin" d="M110 264 V287" marker-end="url(#fl)"/><text class="no" x="118" y="280">no</text>
+<rect class="preg" x="10" y="290" width="200" height="44" rx="10"/><text x="110" y="308" text-anchor="middle">¿Pide nº de iteraciones y</text><text x="110" y="326" text-anchor="middle">solo hay cambio de signo?</text>
+<path class="lin" d="M210 312 H246" marker-end="url(#fl)"/><text class="si" x="215" y="307">sí</text>
+<rect class="nodo" x="250" y="290" width="200" height="44" rx="10"/><text x="350" y="308" text-anchor="middle">Bisección, menor n con:</text><text x="350" y="326" text-anchor="middle">(b−a)/2^n &lt; ε</text>
+<path class="lin" d="M110 334 V357" marker-end="url(#fl)"/><text class="no" x="118" y="350">no</text>
+<rect class="preg" x="10" y="360" width="200" height="44" rx="10"/><text x="110" y="378" text-anchor="middle">¿Newton se atasca (f'(xₙ)=0</text><text x="110" y="396" text-anchor="middle">o salta entre dos puntos)?</text>
+<path class="lin" d="M210 382 H246" marker-end="url(#fl)"/><text class="si" x="215" y="377">sí</text>
+<rect class="nada" x="250" y="360" width="200" height="44" rx="10"/><text x="350" y="378" text-anchor="middle">Otro x₀ (Bolzano) o</text><text x="350" y="396" text-anchor="middle">despejar otra g</text>
+<path class="lin" d="M110 404 V427" marker-end="url(#fl)"/><text class="no" x="118" y="420">no</text>
+<rect class="fin" x="10" y="430" width="200" height="44" rx="10"/><text x="110" y="448" text-anchor="middle">Itero con todas las cifras</text><text x="110" y="466" text-anchor="middle">y compruebo f(xₙ) ≈ 0</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso</summary>
 <table class="t24-decide">
   <tr><th>Si el enunciado dice…</th><th>Método</th><th>Cuántas iteraciones</th><th>Fórmula / criterio</th><th>Ejemplo</th></tr>
   <tr><td>«realiza $n$ iteraciones»</td><td>Newton o punto fijo</td><td>exactamente $n$</td><td>tabla $x_0,x_1,\dots,x_n$; el resultado es $x_n$</td><td>E 2.34 (4), 2.35 (3), 2.36 (3), 2.38 (4)</td></tr>
@@ -281,11 +387,12 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <li>Toma el <b>primer natural estrictamente mayor</b> que el resultado (si sale $20.64$, $n=21$; si saliera exactamente $2$, $n=3$).</li>
   <li>Comprueba con $n-1$ (no basta) y $n$ (basta). Ejemplos resueltos: Ej. 2.37 (21 y 3 iteraciones), U Ej. 2.17 d (9), Ej. 2.38 (76) y P4 (11).</li>
 </ol>
+</details>
 <div class="box warn"><span class="h">Cota garantizada ≠ iteraciones necesarias</span>
   <p>El Teorema 2.3 da una <b>garantía</b>, no una estimación ajustada: con $k$ cerca de $1$ es muy pesimista (Ejercicio 2.38: garantiza $76$ iteraciones, la tabla real basta con $7$). Y en Newton, $\varepsilon_r$ es solo una estimación.</p>
 </div>
 <!-- ============================ 4 ============================ -->
-<h2 id="s4"><span class="n">4</span>Comparación de los tres métodos <span class="src" data-l="U" data-ref="U §2.4.1 Objetivos («distinguir ventajas y desventajas de cada método»), p. 86; U p.87 (Newton frente a bisección)">U pp.86-87</span> <span class="src" data-l="P" data-ref="Comparación de velocidades: propia (ver Ej. 2.34, 2.35, 2.38)">P</span></h2>
+<h2 id="s4" data-vista="teoria"><span class="n">4</span>Comparación de los tres métodos <span class="src" data-l="U" data-ref="U §2.4.1 Objetivos («distinguir ventajas y desventajas de cada método»), p. 86; U p.87 (Newton frente a bisección)">U pp.86-87</span> <span class="src" data-l="P" data-ref="Comparación de velocidades: propia (ver Ej. 2.34, 2.35, 2.38)">P</span></h2>
 <table>
   <tr><th></th><th>Bisección (U §1.4)</th><th>Punto fijo</th><th>Newton</th></tr>
   <tr><td><b>Qué necesita</b></td><td>$f$ continua y cambio de signo en $[a,b]$ (Bolzano)</td><td>$g$ continua, $g:[a,b]\to[a,b]$ y $|g'|\le k&lt;1$ en $(a,b)$</td><td>$f$ derivable, $f'(x_n)\ne0$ y un buen $x_0$</td></tr>
@@ -294,20 +401,205 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <tr><td><b>Punto débil</b></td><td>no sirve si $f$ no cambia de signo (p. ej. $x^2=0$)</td><td>elegir bien $g$ (no todas valen)</td><td>$f'=0$, ciclos, mal $x_0$</td></tr>
 </table>
 <p>Ventaja de Newton sobre bisección: no hace falta un intervalo con la solución y, cuando converge, es mucho más rápido (U p.87). La comparación de velocidades es explicación propia.</p>
-<!-- ============================ 5 ============================ -->
-<h2 id="ejercicios"><span class="n">5</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ejercicios 2.34-2.38, pp. 72-76">E pp.72-76</span></h2>
-<div class="box tip"><span class="h">Orden recomendado</span>
-  <p>Primero el bloque de Newton, <b>2.34 → 2.35 → 2.36</b>; luego punto fijo, <b>2.38 → 2.37</b>. El 2.38 enseña a comprobar las hipótesis del teorema y el 2.37 solo usa la cota del error, que viene justo después. Aquí aparecen en ese orden (la numeración no cambia). Abre cada solución con su desplegable o con el botón «Mostrar soluciones».</p>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">5</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub">Antes de iterar, <b>localiza</b> la raíz (Bolzano) y comprueba lo que la fórmula necesita: $f'(x_n)\neq0$ en Newton; $g([a,b])\subset[a,b]$ y $|g'|\le k&lt;1$ en punto fijo. Después, tabla y criterio de parada.</p>
+<h3>Newton a mano: de la ecuación a la tabla</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · dos iteraciones con fracciones <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Comprueba que $x^3+2x-5=0$ tiene una única raíz real, localízala entre dos enteros y haz dos iteraciones de Newton desde $x_0=1$ (con fracciones exactas).</p>
+  <details class="pista"><summary>Pista</summary><p>$f(x)=x^3+2x-5$ tiene $f'(x)=3x^2+2$, que nunca se anula: $f$ es estrictamente creciente (solo puede cortar una vez al eje). Mira el signo de $f(1)$ y $f(2)$ y aplica $x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Localizar:</b> $f(1)=-2&lt;0$ y $f(2)=7&gt;0$, y $f$ es continua: por Bolzano (U §1.4, p.52) hay una raíz en $(1,2)$.</li><li><b>Única:</b> $f'(x)=3x^2+2\ge2&gt;0$, luego $f$ es estrictamente creciente y no puede anularse dos veces. Además, $f'(x_n)\neq0$ siempre: la fórmula de Newton nunca divide entre $0$.</li><li><b>Primera iteración</b> (U §2.4.2, p.88): $f(1)=-2$, $f'(1)=5$, así que $x_1=1-\frac{-2}{5}=\frac75$.</li><li><b>Segunda iteración:</b> $f\!\left(\frac75\right)=\frac{343}{125}+\frac{14}5-5=\frac{68}{125}$ y $f'\!\left(\frac75\right)=\frac{147}{25}+2=\frac{197}{25}$. Entonces $$x_2=\frac75-\frac{68/125}{197/25}=\frac75-\frac{68}{985}=\frac{1311}{985}.$$</li><li><b>Comprobación:</b> la raíz es $1.328269\ldots$; $x_1=1.4$ se pasa en $0.07$ y $x_2\approx1.33096$ ya solo en $0.0027$.</li></ol>
+    <p class="res">Resultado: $x_1=\frac75=1.4$, $x_2=\frac{1311}{985}\approx1.33096$</p>
+  </details>
+</details>
+<details class="pr" id="pr-a2"><summary><span class="nv n2">★★ Medio</span> Práctica a2 · calcular $\frac17$ sin dividir <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Aplica Newton a $f(x)=\dfrac1x-7$ y simplifica la iteración: debe quedar sin ninguna división. Haz tres iteraciones desde $x_0=0.1$.</p>
+  <details class="pista"><summary>Pista</summary><p>La raíz de $f$ es $\frac17$. Con $f'(x)=-\frac1{x^2}$, el cociente $\frac{f(x)}{f'(x)}$ se convierte en un producto: multiplica arriba y abajo por $-x^2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Función y derivada:</b> $f(x)=\frac1x-7$ (definida para $x\neq0$), $f'(x)=-\frac1{x^2}\neq0$.</li><li><b>Simplificar</b> (U §2.4.2, p.88): $$x_{n+1}=x_n-\frac{\frac1{x_n}-7}{-\frac1{x_n^2}}=x_n+x_n^2\Big(\frac1{x_n}-7\Big)=x_n+x_n-7x_n^2=x_n(2-7x_n).$$ Solo hay productos y restas: así calculaban los primeros ordenadores los inversos.</li><li><b>Iterar:</b> $x_1=0.1(2-0.7)=0.13$; $x_2=0.13(2-0.91)=0.1417$; $x_3=0.1417(2-0.9919)=0.14284777$.</li><li><b>Comprobación:</b> $\frac17=0.142857\ldots$; los errores son $1.3\times10^{-2}$, $1.2\times10^{-3}$ y $9.4\times10^{-6}$.</li><li><b>Por qué va tan rápido</b> (álgebra pura): $\frac17-x_{n+1}=7x_n^2-2x_n+\frac17=7\big(x_n-\frac17\big)^2$. El error nuevo es $7$ veces el cuadrado del anterior: $7\cdot(0.0129)^2\approx0.0012$. Se ve también que hay que empezar con $0&lt;x_0&lt;\frac27$: si no, $|7x_0-1|\ge1$ y el error no disminuye.</li></ol>
+    <p class="res">Resultado: $x_{n+1}=x_n(2-7x_n)$; $x_1=0.13$, $x_2=0.1417$, $x_3=0.14284777$</p>
+  </details>
+</details>
+<h3>Cuándo parar: el error relativo aproximado</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · parar con $\varepsilon_r&lt;10^{-3}$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Resuelve $x^4-x-10=0$ en $[1,2]$ con Newton desde $x_0=2$, parando en la primera iteración con error relativo aproximado $\varepsilon_r&lt;10^{-3}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Tabla con columnas $n$, $x_n$ y $\varepsilon_r=\frac{|x_n-x_{n-1}|}{|x_n|}$. Se calcula $\varepsilon_r$ a partir de $n=1$ y se para en cuanto baja de $10^{-3}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hay raíz y se puede dividir:</b> $f(1)=-10&lt;0$, $f(2)=4&gt;0$ (Bolzano, U §1.4, p.52); $f'(x)=4x^3-1\ge3$ en $[1,2]$.</li><li><b>Iteración</b> (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{x_n^4-x_n-10}{4x_n^3-1}$. Desde $x_0=2$: $x_1=2-\frac4{31}=\frac{58}{31}\approx1.870968$.</li><li><b>Tabla con el criterio de parada</b> (U pp.89-90):
+      <table><tr><th>$n$</th><th>$x_n$</th><th>$\varepsilon_r$</th></tr><tr><td>0</td><td>2</td><td>—</td></tr><tr><td>1</td><td>1.870968</td><td>$6.9\times10^{-2}$</td></tr><tr><td>2</td><td>1.855781</td><td>$8.2\times10^{-3}$</td></tr><tr><td>3</td><td>1.855585</td><td>$1.06\times10^{-4}$</td></tr></table></li><li><b>Parar:</b> en $n=2$ todavía $\varepsilon_r=0.0082\ge10^{-3}$; en $n=3$, $\varepsilon_r=0.000106&lt;10^{-3}$.</li><li><b>Comprobación:</b> la raíz es $1.8555845\ldots$; $x_3$ ya acierta en $7$ cifras. $\varepsilon_r$ solo mide «cuánto me he movido» y aquí sobreestima mucho el error real (U pp.89-90).</li></ol>
+    <p class="res">Resultado: se para en $n=3$, $x_3\approx1.85558$</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2"><summary><span class="nv n2">★★ Medio</span> Práctica b2 · $x=2\operatorname{sen}x$: buen y mal punto de partida <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">La ecuación $x=2\operatorname{sen}x$ tiene una raíz en $(1.5,2)$. (a) Aplica Newton desde $x_0=2$ hasta $\varepsilon_r&lt;10^{-5}$. (b) ¿Qué pasa si se empieza en $x_0=1$? Explícalo con $f'(1)$.</p>
+  <details class="pista"><summary>Pista</summary><p>$f(x)=x-2\operatorname{sen}x$, $f'(x)=1-2\cos x$. En (b) calcula $f'(1)$: si es casi $0$, la tangente es casi horizontal y corta al eje muy lejos.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Localizar:</b> $f(1.5)\approx-0.495&lt;0$ y $f(2)\approx0.181&gt;0$ (Bolzano, U p.52). En $[1.5,2]$, $\cos x\le\cos1.5\approx0.071$, así que $f'(x)\ge0.85&gt;0$: se puede dividir.</li><li><b>(a) Iterar</b> (U §2.4.2, p.88) con $x_{n+1}=x_n-\dfrac{x_n-2\operatorname{sen}x_n}{1-2\cos x_n}$: $x_1\approx1.900996$ ($\varepsilon_r\approx5.2\times10^{-2}$), $x_2\approx1.895512$ ($2.9\times10^{-3}$), $x_3\approx1.895494$ ($9.2\times10^{-6}$).</li><li><b>Parar</b> (U pp.89-90): el primer $\varepsilon_r$ menor que $10^{-5}$ es el de $n=3$.</li><li><b>(b) Desde $x_0=1$:</b> $f(1)\approx-0.683$ y $f'(1)=1-2\cos1\approx-0.081$, casi $0$. Entonces $x_1=1-\frac{-0.683}{-0.081}\approx-7.47$: la tangente casi horizontal manda la iteración muy lejos, fuera del intervalo donde estaba la raíz.</li><li><b>Moraleja:</b> no basta con $f'(x_0)\neq0$; si $f'(x_0)$ es muy pequeña, el paso $\frac{f(x_0)}{f'(x_0)}$ es enorme (U p.89, fallos de Newton). Localiza la raíz y parte de un punto donde la tangente sea «empinada».</li></ol>
+    <p class="res">Resultado: $x_3\approx1.895494$ (se para en $n=3$); desde $x_0=1$ sale $x_1\approx-7.47$</p>
+  </details>
+</details>
+<h3>Cuando Newton falla: tangente horizontal, saltos y divergencia</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · una tangente horizontal <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Para $f(x)=x^2-4x+3$, explica por qué Newton no puede arrancar en $x_0=2$ y haz tres iteraciones desde $x_0=0$. ¿A qué raíz se acercan?</p>
+  <details class="pista"><summary>Pista</summary><p>Calcula $f'(2)$. Las raíces se ven factorizando: $x^2-4x+3=(x-1)(x-3)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Por qué no en $x_0=2$:</b> $f'(x)=2x-4$ y $f'(2)=0$. La fórmula $x_1=x_0-\frac{f(x_0)}{f'(x_0)}$ divide entre $0$ (U §2.4.2, p.88): la tangente en el vértice de la parábola es horizontal y nunca corta al eje.</li><li><b>Raíces:</b> $(x-1)(x-3)=0$, es decir $x=1$ y $x=3$.</li><li><b>Desde $x_0=0$:</b> $x_1=0-\frac{3}{-4}=\frac34$; $x_2=\frac34-\frac{9/16}{-5/2}=\frac34+\frac{9}{40}=\frac{39}{40}$; $x_3=\frac{39}{40}-\frac{1/1600}{-1/20}=\frac{3279}{3280}$.</li><li><b>Lectura:</b> los errores respecto a $1$ son $\frac14$, $\frac1{40}$, $\frac1{3280}$: cada uno es, más o menos, el cuadrado del anterior (raíz simple, $f'(1)=-2\neq0$). Se acerca a $1$, la raíz que está del mismo lado del vértice que $x_0$.</li></ol>
+    <p class="res">Resultado: $f'(2)=0$; $x_1=\frac34$, $x_2=\frac{39}{40}$, $x_3=\frac{3279}{3280}\to1$</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2"><summary><span class="nv n2">★★ Medio</span> Práctica c2 · arcotangente: converge o se dispara <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">La única raíz de $f(x)=\operatorname{arctg}x$ es $0$. Escribe la iteración de Newton y aplícala desde $x_0=0.5$ (tres iteraciones) y desde $x_0=1.5$ (tres iteraciones). ¿Qué ocurre en cada caso?</p>
+  <details class="pista"><summary>Pista</summary><p>$f'(x)=\frac1{1+x^2}$, nunca $0$, así que la división siempre se puede hacer. Pero la gráfica se aplana para $|x|$ grande: la tangente desde un punto lejano corta el eje muy al otro lado.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Iteración</b> (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{\operatorname{arctg}x_n}{1/(1+x_n^2)}=x_n-(1+x_n^2)\operatorname{arctg}x_n$.</li><li><b>Desde $0.5$:</b> $x_1\approx-0.0796$, $x_2\approx0.000335$, $x_3\approx-2.5\times10^{-11}$. Converge a $0$ alternando de lado, y muy deprisa.</li><li><b>Desde $1.5$:</b> $x_1\approx-1.69$, $x_2\approx2.32$, $x_3\approx-5.11$ (y $x_4\approx32.3$). Cada iterado cae al otro lado y más lejos: la sucesión no converge.</li><li><b>Por qué:</b> en $x=1.5$ la pendiente es $\frac1{3.25}\approx0.31$, pequeña, y la altura $\operatorname{arctg}1.5\approx0.98$ es grande: el paso $\frac{f}{f'}\approx3.19$ es mayor que el doble de $|x_0|$, así que se pasa de largo. Hay un valor frontera ($\approx1.39$) en el que la iteración salta entre dos puntos opuestos sin moverse (un ciclo, U p.89).</li><li><b>Lección:</b> aunque $f$ sea derivable, con $f'\neq0$ y una única raíz, Newton puede divergir si $x_0$ no está cerca (U p.89).</li></ol>
+    <p class="res">Resultado: desde $0.5$ converge a $0$ ($x_1\approx-0.0796$); desde $1.5$ diverge ($x_1\approx-1.69$, $x_2\approx2.32$, $x_3\approx-5.11$)</p>
+  </details>
+</details>
+<h3>Punto fijo: comprobar las hipótesis del Teorema 2.2</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · una parábola que no se sale de $[0,1]$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $g(x)=\dfrac{x^2+2}{5}$. (a) Comprueba que el método de punto fijo converge para todo $x_0\in[0,1]$. (b) Haz tres iteraciones desde $x_0=0$ y compáralas con el punto fijo exacto. (c) Da la cota del error de $x_3$.</p>
+  <details class="pista"><summary>Pista</summary><p>Teorema 2.2: $g$ continua, $g([0,1])\subset[0,1]$ y $|g'|\le k&lt;1$. Como $g$ es creciente en $[0,1]$, basta mirar $g(0)$ y $g(1)$. El punto fijo exacto sale de la ecuación de segundo grado $x=\frac{x^2+2}5$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>(H0)</b> $g$ es un polinomio: continua.</li><li><b>(H1)</b> $g'(x)=\frac{2x}5\ge0$ en $[0,1]$: $g$ es creciente, así que $g([0,1])=[g(0),g(1)]=\left[\frac25,\frac35\right]\subset[0,1]$.</li><li><b>(H2)</b> $|g'(x)|=\frac{2x}5\le\frac25$ en $(0,1)$: $k=\frac25&lt;1$. Por el Teorema 2.2 (U p.91), hay un único punto fijo en $[0,1]$ y la iteración converge desde cualquier $x_0\in[0,1]$.</li><li><b>(b) Iterar</b> (U (2.3), p.90): $x_1=\frac25=0.4$, $x_2=\frac{0.16+2}5=0.432$, $x_3=\frac{34166}{78125}\approx0.437325$. Exacto: $x=\frac{x^2+2}5\iff x^2-5x+2=0\iff x=\frac{5\pm\sqrt{17}}2$; en $[0,1]$ solo está $\tilde x=\frac{5-\sqrt{17}}2\approx0.438447$ (la otra, $\approx4.56$, queda fuera).</li><li><b>(c) Cota</b> (Teorema 2.3, U pp.91-92): $|x_3-\tilde x|&lt;\frac{(2/5)^3}{1-2/5}\cdot(1-0)=\frac{8/125}{3/5}=\frac8{75}\approx0.107$. El error real es $0.0011$: la cota es una garantía, no una estimación fina.</li></ol>
+    <p class="res">Resultado: $x_3=\frac{34166}{78125}\approx0.437325$; $\tilde x=\frac{5-\sqrt{17}}2\approx0.438447$; cota $\frac{8}{75}$</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2"><summary><span class="nv n2">★★ Medio</span> Práctica d2 · $x=\frac{e^x}3$: el intervalo importa <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $g(x)=\dfrac{e^x}{3}$. (a) Prueba con el Teorema 2.2 que $g$ tiene un único punto fijo en $[0,1]$ y que la iteración converge desde cualquier $x_0\in[0,1]$. (b) ¿Se puede aplicar el teorema en $[0,2]$? (c) ¿Qué ocurre si se empieza en $x_0=1.6$?</p>
+  <details class="pista"><summary>Pista</summary><p>$g$ y $g'=\frac{e^x}3$ son crecientes: los valores extremos están en los bordes del intervalo. En (b), mira $g(2)$ y $g'(2)$; en (c), itera un par de veces.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>(a) (H0)</b> $e^x$ es continua. <b>(H1)</b> $g$ es creciente: $g([0,1])=\left[\frac13,\frac e3\right]\approx[0.333,0.906]\subset[0,1]$. <b>(H2)</b> $|g'(x)|=\frac{e^x}3\le\frac e3\approx0.906&lt;1$ en $(0,1)$; $k=\frac e3$. Teorema 2.2 (U p.91): único punto fijo en $[0,1]$, $\tilde x\approx0.6191$, y convergencia desde todo $x_0\in[0,1]$ (desde $x_0=1$: $0.906,\ 0.825,\ 0.761,\dots$).</li><li><b>(b) En $[0,2]$ falla (H1):</b> $g(2)=\frac{e^2}3\approx2.46&gt;2$. También falla (H2): $g'(2)\approx2.46&gt;1$. El teorema no dice nada, y de hecho la conclusión es falsa: $g$ tiene un segundo punto fijo en $[0,2]$, $\approx1.5121$ (Bolzano con $h(x)=g(x)-x$: $h(1)&lt;0&lt;h(2)$, U p.52).</li><li><b>(c) Desde $x_0=1.6$:</b> $1.651,\ 1.737,\ 1.894,\ 2.216,\ 3.056,\dots$ se aleja. Cerca de $1.5121$ la pendiente vale $g'\approx1.51&gt;1$: la iteración agranda la distancia al punto fijo en vez de reducirla.</li><li><b>Lección:</b> el Teorema 2.2 depende del intervalo. Hay que elegir uno donde $g$ «no se salga» y sea contractiva (U p.91); un punto fijo con $|g'|&gt;1$ no se puede alcanzar iterando.</li></ol>
+    <p class="res">Resultado: en $[0,1]$ se cumple el Teorema 2.2 con $k=\frac e3$ (punto fijo $\approx0.6191$); en $[0,2]$ no ($g(2)\approx2.46$; hay otro punto fijo, $\approx1.5121$)</p>
+  </details>
+</details>
+<h3>¿Cuántas iteraciones? La cota del Teorema 2.3</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · solo con $k$ y el intervalo <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">$g:[2,4]\to[2,4]$ es derivable con $|g'(x)|\le0.6$ en $(2,4)$. ¿Cuántas iteraciones de punto fijo garantizan un error menor que $10^{-2}$?</p>
+  <details class="pista"><summary>Pista</summary><p>No hace falta conocer $g$. Sustituye $k=0.6$, $b-a=2$ y $\varepsilon=0.01$ en $\frac{k^n}{1-k}(b-a)&lt;\varepsilon$, toma logaritmos y recuerda que $\ln0.6&lt;0$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis:</b> $g$ lleva $[2,4]$ en sí mismo y $|g'|\le k=0.6&lt;1$: Teorema 2.2 (U p.91). Vale la cota del Teorema 2.3 (U pp.91-92).</li><li><b>Plantear:</b> $\dfrac{0.6^n}{0.4}\cdot2&lt;0.01\iff0.6^n&lt;0.002$.</li><li><b>Logaritmos:</b> $n\ln0.6&lt;\ln0.002$; al dividir entre $\ln0.6&lt;0$ la desigualdad se invierte: $n&gt;\dfrac{\ln0.002}{\ln0.6}\approx12.17$.</li><li><b>Primer natural</b> (U p.92): $n=13$. Comprobación: con $n=12$ la cota es $0.0109$ (no basta); con $n=13$, $0.0065&lt;0.01$.</li></ol>
+    <p class="res">Resultado: $n=13$</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2"><summary><span class="nv n2">★★ Medio</span> Práctica e2 · $\sqrt[3]{x+5}$ con error $&lt;10^{-6}$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Para resolver $x^3-x-5=0$ se usa $g(x)=\sqrt[3]{x+5}$ en $[1,2]$. Comprueba las hipótesis del Teorema 2.2, halla la mejor $k$, calcula cuántas iteraciones garantizan error $&lt;10^{-6}$ y haz tres iteraciones desde $x_0=1$.</p>
+  <details class="pista"><summary>Pista</summary><p>$x^3-x-5=0\iff x^3=x+5\iff x=\sqrt[3]{x+5}$. $g$ es creciente y $g'(x)=\frac1{3(x+5)^{2/3}}$ es positiva y decreciente: su máximo en $[1,2]$ está en $x=1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Equivalencia:</b> los puntos fijos de $g$ son las raíces de $x^3-x-5$ (Def. 2.4, U p.90; elección de $g$, U p.93).</li><li><b>(H0) y (H1):</b> $g$ es continua y creciente, así que $g([1,2])=[\sqrt[3]6,\sqrt[3]7]\approx[1.817,1.913]\subset[1,2]$.</li><li><b>(H2):</b> $g'(x)=\frac1{3(x+5)^{2/3}}$ decrece (el denominador crece), luego $|g'(x)|\le g'(1)=\frac1{3\cdot6^{2/3}}\approx0.10095=k$. Teorema 2.2 (U p.91): punto fijo único y convergencia.</li><li><b>Iteraciones</b> (Teorema 2.3, U pp.91-92): $\dfrac{k^n}{1-k}\cdot1&lt;10^{-6}\iff n&gt;\dfrac{\ln\big(10^{-6}(1-k)\big)}{\ln k}\approx6.07$, luego $n=7$ (cota con $6$: $1.18\times10^{-6}$; con $7$: $1.19\times10^{-7}$).</li><li><b>Iterar</b> desde $x_0=1$: $x_1=\sqrt[3]6\approx1.817121$, $x_2\approx1.896125$, $x_3\approx1.903422$. La raíz es $1.904161\ldots$: con una $k$ tan pequeña, cada paso gana aproximadamente una cifra.</li></ol>
+    <p class="res">Resultado: $n=7$; $x_3\approx1.903422$</p>
+  </details>
+</details>
+<h3>Antes de iterar: localizar las raíces (Bolzano y bisección)</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · tres pasos de bisección <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Para $x^3-2x-5=0$ en $[2,3]$: comprueba que se puede usar bisección, calcula los tres primeros puntos medios y di cuántas iteraciones garantizan un error menor que $10^{-3}$.</p>
+  <details class="pista"><summary>Pista</summary><p>En cada paso te quedas con la mitad donde $f$ cambia de signo. El error tras $n$ pasos es menor que $\frac{b-a}{2^n}$ (U p.54).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Bolzano</b> (U §1.4, p.52): $f(2)=-1&lt;0$ y $f(3)=16&gt;0$, y $f$ es continua.</li><li><b>Primer paso:</b> $c_1=2.5$, $f(2.5)=\frac{45}8&gt;0$: la raíz está en $[2,2.5]$ (donde está el cambio de signo).</li><li><b>Segundo:</b> $c_2=2.25$, $f(2.25)=\frac{121}{64}&gt;0$: queda $[2,2.25]$. <b>Tercero:</b> $c_3=2.125$, $f(2.125)=\frac{177}{512}&gt;0$: queda $[2,2.125]$, y $|c_3-\tilde x|&lt;\frac18$.</li><li><b>Número de iteraciones</b> (U p.54): $\frac{1}{2^n}&lt;10^{-3}\iff2^n&gt;1000$. Como $2^9=512$ y $2^{10}=1024$, hacen falta $n=10$.</li><li><b>Comprobación:</b> la raíz es $2.0946\ldots$, dentro de $[2,2.125]$.</li></ol>
+    <p class="res">Resultado: $c_1=2.5$, $c_2=2.25$, $c_3=2.125$; $n=10$ iteraciones</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2"><summary><span class="nv n2">★★ Medio</span> Práctica f2 · dos raíces y un $x_0$ prohibido <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f(x)=\ln x-x+2$, $x&gt;0$. (a) Demuestra que $f$ tiene exactamente dos raíces y localízalas. (b) Aproxima cada una con Newton (desde $x_0=0.2$, tres iteraciones; desde $x_0=3$, dos iteraciones). (c) ¿Por qué no sirven $x_0=1$ ni $x_0=0.5$?</p>
+  <details class="pista"><summary>Pista</summary><p>$f'(x)=\frac1x-1$ se anula en $x=1$: $f$ crece en $(0,1]$ y decrece en $[1,+\infty)$, con máximo $f(1)=1&gt;0$. Busca un cambio de signo a cada lado. Simplificada, la iteración es $x_{n+1}=\frac{x_n(1+\ln x_n)}{x_n-1}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Monotonía:</b> $f'(x)=\frac1x-1$ es positiva en $(0,1)$ y negativa en $(1,+\infty)$. En cada uno de los dos trozos $f$ es estrictamente monótona y se anula como mucho una vez.</li><li><b>Cambios de signo</b> (Bolzano, U p.52): $f(0.1)\approx-0.403&lt;0&lt;f(1)=1$ y $f(3)\approx0.099&gt;0&gt;f(4)\approx-0.614$. Hay exactamente dos raíces: una en $(0.1,1)$ y otra en $(3,4)$.</li><li><b>Iteración</b> (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{\ln x_n-x_n+2}{1/x_n-1}=\dfrac{x_n(1+\ln x_n)}{x_n-1}$.</li><li><b>Raíz pequeña</b>, desde $0.2$: $0.152359,\ 0.158448,\ 0.158594$. <b>Raíz grande</b>, desde $3$: $\frac{3(1+\ln3)}2\approx3.147918$, luego $3.146193$.</li><li><b>(c) $x_0=1$:</b> $f'(1)=0$, no se puede dividir (tangente horizontal en el máximo). <b>$x_0=0.5$:</b> $x_1=\frac{0.5(1+\ln0.5)}{-0.5}\approx-0.307$, un número negativo donde $\ln x$ no existe: la tangente saca la iteración del dominio (U p.89). Cerca del máximo, las tangentes son casi horizontales.</li></ol>
+    <p class="res">Resultado: dos raíces, $\approx0.1586$ y $\approx3.1462$; desde $x_0=0.5$ Newton se sale del dominio ($x_1\approx-0.307$)</p>
+  </details>
+</details>
+<h3>Newton visto como un punto fijo</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · la iteración de $\sqrt3$ cumple el Teorema 2.2 <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Newton para $x^2-3=0$ da $x_{n+1}=N(x_n)$ con $N(x)=\frac12\left(x+\frac3x\right)$. Comprueba que $N$ cumple las hipótesis del Teorema 2.2 en $[1.5,2]$ con $k=\frac16$, haz tres iteraciones desde $x_0=2$ y acota el error de $x_3$ con el Teorema 2.3.</p>
+  <details class="pista"><summary>Pista</summary><p>$N'(x)=\frac12\left(1-\frac3{x^2}\right)$ es creciente en $x&gt;0$ y se anula en $\sqrt3$: $N$ baja hasta $\sqrt3$ y luego sube. Calcula $N(1.5)$, $N(2)$, $N'(1.5)$ y $N'(2)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>De dónde sale $N$</b> (U §2.4.2, p.88): $x-\frac{x^2-3}{2x}=\frac{x^2+3}{2x}=\frac12\left(x+\frac3x\right)$. Un punto fijo de $N$ es una raíz de $x^2-3$ (Def. 2.4, U p.90).</li><li><b>(H0)</b> $N$ es continua en $[1.5,2]$ (no contiene el $0$). <b>(H1)</b> $N$ decrece en $[1.5,\sqrt3]$ y crece en $[\sqrt3,2]$; su mínimo es $N(\sqrt3)=\sqrt3\approx1.732$ y en los extremos $N(1.5)=N(2)=\frac74$. Así $N([1.5,2])=\left[\sqrt3,\frac74\right]\subset[1.5,2]$.</li><li><b>(H2)</b> $N'$ es creciente ($N''(x)=\frac3{x^3}&gt;0$), así que en $(1.5,2)$ está entre $N'(1.5)=-\frac16$ y $N'(2)=\frac18$: $|N'|\le\frac16=k$. Teorema 2.2 (U p.91).</li><li><b>Iterar:</b> $x_1=\frac74$, $x_2=\frac{97}{56}$, $x_3=\frac{18817}{10864}\approx1.7320508$.</li><li><b>Cota</b> (Teorema 2.3, U pp.91-92): $|x_3-\sqrt3|&lt;\dfrac{(1/6)^3}{5/6}\cdot\frac12=\dfrac1{360}\approx0.0028$. El error real es $2.4\times10^{-9}$: Newton es mucho mejor que lo que garantiza la cota, porque $N'(\sqrt3)=0$.</li></ol>
+    <p class="res">Resultado: $k=\frac16$; $x_3=\frac{18817}{10864}$, con error $&lt;\frac1{360}$</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2"><summary><span class="nv n2">★★ Medio</span> Práctica g2 · un intervalo más pequeño, una $k$ más pequeña <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Newton para $x^3-2=0$ es el punto fijo de $N(x)=\dfrac{2x^3+2}{3x^2}$. Usando el Teorema 2.3, ¿cuántas iteraciones garantizan error $&lt;10^{-3}$ si se trabaja en $[1,2]$? ¿Y en $[1.2,1.4]$? Comprueba en ambos casos las hipótesis del Teorema 2.2.</p>
+  <details class="pista"><summary>Pista</summary><p>$N'(x)=\frac{2(x^3-2)}{3x^3}=\frac23-\frac4{3x^3}$ es creciente en $x&gt;0$: los valores extremos de $N'$ están en los bordes. $N$ tiene su mínimo en $\sqrt[3]2\approx1.26$, donde vale $\sqrt[3]2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>De dónde sale $N$</b> (U §2.4.2, p.88): $x-\frac{x^3-2}{3x^2}=\frac{2x^3+2}{3x^2}$.</li><li><b>En $[1,2]$:</b> (H1) $N$ decrece hasta $\sqrt[3]2$ y luego crece: $N([1,2])=\left[\sqrt[3]2,\frac32\right]\subset[1,2]$ (pues $N(1)=\frac43$, $N(2)=\frac32$). (H2) $N'(1)=-\frac23$, $N'(2)=\frac12$, así que $k=\frac23$. Teorema 2.3 (U pp.91-92): $\dfrac{(2/3)^n}{1/3}\cdot1&lt;10^{-3}\iff n&gt;19.75$, es decir $n=20$.</li><li><b>En $[1.2,1.4]$</b> (contiene la raíz: $1.2^3-2&lt;0&lt;1.4^3-2$): $N(1.2)=\frac{341}{270}\approx1.263$, $N(1.4)=\frac{312}{245}\approx1.274$ y el mínimo es $\sqrt[3]2\approx1.260$, así que $N([1.2,1.4])\subset[1.2,1.4]$. $N'(1.2)=-\frac{17}{162}\approx-0.105$, $N'(1.4)=\frac{62}{343}\approx0.181$: $k=\frac{62}{343}$.</li><li><b>Iteraciones en el intervalo pequeño:</b> $\dfrac{k^n}{1-k}\cdot0.2&lt;10^{-3}\iff n&gt;3.21$, luego $n=4$ (cota con $3$: $1.4\times10^{-3}$; con $4$: $2.6\times10^{-4}$).</li><li><b>Lectura:</b> cerca de la raíz $N'$ es casi $0$, así que un intervalo más ajustado da una $k$ mucho menor y una garantía mucho mejor ($20\to4$). Desde $x_0=1$ los iterados reales son $1.3333,\ 1.2639,\ 1.25993,\ 1.2599210$: el cuarto ya tiene $10$ decimales exactos.</li></ol>
+    <p class="res">Resultado: en $[1,2]$, $k=\frac23$ y $n=20$; en $[1.2,1.4]$, $k=\frac{62}{343}$ y $n=4$</p>
+  </details>
+</details>
 </div>
+<!-- ============================ autoevaluación ============================ -->
+<h2 id="autoeval" data-vista="tipos"><span class="n">6</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="f">
+    <p><b>1.</b> (V/F) Si $f$ es derivable, $f'(x)\neq0$ en todo punto y $f$ tiene una única raíz, Newton converge desde cualquier $x_0$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Contraejemplo: $f(x)=\operatorname{arctg}x$ cumple todo eso y, desde $x_0=1.5$, salen $-1.69,\ 2.32,\ -5.11,\dots$, cada vez más lejos. Newton puede divergir o entrar en ciclos si $x_0$ no está cerca de la raíz (U p.89).</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>2.</b> (Elige) La iteración de Newton para $f(x)=x^2-7$ es:</p>
+    <div class="opts"><button data-v="a">(a) $x_{n+1}=\frac12\left(x_n+\frac7{x_n}\right)$</button><button data-v="b">(b) $x_{n+1}=x_n-\frac{x_n^2-7}{2}$</button><button data-v="c">(c) $x_{n+1}=\frac12\left(x_n-\frac7{x_n}\right)$</button><button data-v="d">(d) $x_{n+1}=x_n+\frac{x_n^2-7}{2x_n}$</button></div>
+    <div class="exp">$x_n-\frac{x_n^2-7}{2x_n}=\frac{2x_n^2-x_n^2+7}{2x_n}=\frac{x_n^2+7}{2x_n}$ (U p.88). La (b) olvida la $x_n$ de $f'(x_n)=2x_n$; la (c) se equivoca de signo al simplificar; la (d) suma en vez de restar (se aleja de la raíz).</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>3.</b> (V/F) Si $f'(x_0)=0$, Newton no puede calcular $x_1$ desde ese $x_0$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">La fórmula divide entre $f'(x_0)$ (U p.88): la tangente es horizontal y no corta al eje. Hay que elegir otro $x_0$; por ejemplo, para $x^2-4x+3$ no vale $x_0=2$, el vértice.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>4.</b> (Elige) Newton para $f(x)=(x-3)^2$ (raíz doble en $3$) desde $x_0=4$. ¿Cómo se comporta el error $|x_n-3|$?</p>
+    <div class="opts"><button data-v="a">(a) Se eleva al cuadrado en cada paso</button><button data-v="b">(b) Se divide entre $2$ en cada paso</button><button data-v="c">(c) No cambia: $x_n=4$ siempre</button><button data-v="d">(d) No se puede aplicar porque $f'(3)=0$</button></div>
+    <div class="exp">$x_{n+1}=x_n-\frac{(x_n-3)^2}{2(x_n-3)}=\frac{x_n+3}2$, así que $x_{n+1}-3=\frac{x_n-3}2$: $4,\ 3.5,\ 3.25,\dots$ En una raíz doble Newton pierde su rapidez (como en $x^2=0$, Ej. 2.35). La (d) confunde: la división se hace en $x_n\neq3$, no en la raíz.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>5.</b> (V/F) Si el error relativo aproximado cumple $\varepsilon_r=\frac{|x_n-x_{n-1}|}{|x_n|}&lt;10^{-6}$, entonces el error real de $x_n$ es menor que $10^{-6}$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$\varepsilon_r$ solo mide cuánto se ha movido el último paso; el error rigurosamente exigiría conocer $\tilde x$ (U pp.89-90). Si el método avanza muy despacio, dos iterados pueden estar muy juntos con la solución todavía lejos. Es un criterio de parada práctico, no una garantía.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>6.</b> (V/F) Si $g$ es continua y $|g'(x)|\le\frac12$ en $(0,1)$, el método de punto fijo converge a un punto de $[0,1]$ para cualquier $x_0\in[0,1]$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Falta la hipótesis $g([0,1])\subset[0,1]$ del Teorema 2.2 (U p.91). Con $g(x)=\frac x2+1$: $|g'|=\frac12$, pero desde $x_0=0$ salen $1,\ 1.5,\ 1.75,\dots\to2$, fuera de $[0,1]$ (allí no hay punto fijo).</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>7.</b> (Elige) Al resolver $\frac{k^n}{1-k}(b-a)&lt;\varepsilon$ se llega a $n\ln k&lt;\ln C$ con $0&lt;k&lt;1$ y $\frac{\ln C}{\ln k}\approx20.2$. ¿Cuántas iteraciones garantizan el error pedido?</p>
+    <div class="opts"><button data-v="a">(a) $20$</button><button data-v="b">(b) Cualquier $n&lt;20.2$</button><button data-v="c">(c) $21$</button><button data-v="d">(d) $19$</button></div>
+    <div class="exp">Como $\ln k&lt;0$, al dividir la desigualdad se invierte: $n&gt;20.2$. El menor natural que la cumple es $21$ (U p.92). La (b) no invierte la desigualdad; la (a) redondea hacia abajo.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>8.</b> (Elige) Para $x^3+x-1=0$ (raíz $\approx0.682$), ¿qué despeje $x=g(x)$ hace converger el punto fijo cerca de la raíz?</p>
+    <div class="opts"><button data-v="a">(a) $g(x)=1-x^3$</button><button data-v="b">(b) $g(x)=\dfrac1{1+x^2}$</button><button data-v="c">(c) $g(x)=x^3+2x-1$</button><button data-v="d">(d) Ninguno: los tres dan la misma iteración</button></div>
+    <div class="exp">Hay que mirar $|g'|$ cerca de la raíz (U pp.93-94). (a) $|g'|=3x^2\approx1.40&gt;1$; (b) $|g'|=\frac{2x}{(1+x^2)^2}\approx0.64&lt;1$; (c) $g'=3x^2+2\approx3.40&gt;1$. Los tres tienen los mismos puntos fijos, pero solo (b) acerca los iterados.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>9.</b> (Elige) En las condiciones del Teorema 2.2 en $[0,2]$ con $k=\frac12$, la cota del Teorema 2.3 para $|x_3-\tilde x|$ es:</p>
+    <div class="opts"><button data-v="a">(a) $\frac12$</button><button data-v="b">(b) $\frac18$</button><button data-v="c">(c) $\frac14$</button><button data-v="d">(d) $\frac1{16}$</button></div>
+    <div class="exp">$\frac{k^3}{1-k}(b-a)=\frac{1/8}{1/2}\cdot2=\frac12$ (U pp.91-92). La (b) es solo $k^3$; la (c) olvida el factor $b-a=2$; la (d) multiplica por $1-k$ en vez de dividir.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>10.</b> (V/F) Si $g$ es continua y la sucesión $x_{n+1}=g(x_n)$ converge a $a$, entonces $g(a)=a$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Tomando límites: $a=\lim_{n\to\infty}x_{n+1}=\lim_{n\to\infty}g(x_n)=g\big(\lim_{n\to\infty}x_n\big)=g(a)$; la continuidad permite meter el límite dentro (U p.91). Ojo: dice qué es el límite si existe, no que exista.</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<!-- ============================ ejercicios ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">7</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ejercicios 2.34-2.38, pp. 72-76">E pp.72-76</span></h2>
+<p>Todos los cálculos se han comprobado con cálculo simbólico; la numeración es la de E. Orden recomendado: Newton, <b>2.34 → 2.35 → 2.36</b>; punto fijo, <b>2.38 → 2.37</b> (el 2.38 enseña a comprobar las hipótesis y el 2.37 solo usa la cota del error). La numeración no cambia.</p>
 <h3>Bloque Newton</h3>
-<details class="sol"><summary>Ejercicio 2.34 — aproximar $\sqrt5$ con cuatro iteraciones de Newton <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.34, p. 72">E p.72</span></summary>
-<p class="enun">Usando el método de Newton, calcula un valor aproximado de $\sqrt5$, realizando cuatro iteraciones.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<article class="ejer" id="ej-2-34">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 2.34 · Newton para $\sqrt5$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.34, p. 72">E p.72</span></header>
+<div class="ejer-enun"><p class="enun">Usando el método de Newton, calcula un valor aproximado de $\sqrt5$, realizando cuatro iteraciones.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Aproximar $\sqrt5$ con cuatro iteraciones de Newton; hay que dar el valor $x_4$.</dd>
     <dt>Cómo lo pienso</dt><dd>Newton resuelve ecuaciones $f(x)=0$, y $\sqrt5$ no es una ecuación todavía: hay que escribirlo como el cero de una función sencilla ($x^2-5$). Después, cada paso traza la tangente en el punto actual y se queda con donde corta al eje; así el punto se acerca a la raíz.</dd>
-    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Teorema de Bolzano (U §1.4, p.52) para elegir $x_0$. <span class="src" data-l="U" data-ref="U §2.4.2, algoritmo p. 88; Ejemplo 2.15, pp. 87-88">U p.88</span></dd>
+    <dt>Qué uso</dt><dd>Newton: $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$, y Bolzano para elegir $x_0$ — <a href="#s1-formula">ver teoría</a> (U p.88).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo $f(x)=x^2-5$, $f'(x)=2x$, y busco con Bolzano dos enteros entre los que cambie de signo para tomar $x_0$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> para aproximar $\sqrt[m]a$, toma $f(x)=x^m-a$, localiza la raíz con Bolzano, parte de un entero cercano, simplifica $x_{n+1}=x_n-\frac{x_n^m-a}{m\,x_n^{m-1}}$ y rellena una tabla $n\,|\,x_n\,|\,f(x_n)\,|\,f'(x_n)$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"p":[[2,-1,"x₀=2"]],"q":[[2.236068,0,"√5"]],"c":[{"e":"x*x-5","n":"f(x)=x²−5"}],"x":[0,3.5],"y":[-6,8]}' data-alt="Parábola x²-5 y su cero"><figcaption>La parábola $f(x)=x^2-5$ corta al eje $x$ en $\sqrt5\approx2{,}236$, que es lo que buscamos; $x_0=2$ queda a su izquierda. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Convertir «calcular $\sqrt5$» en «resolver $f(x)=0$».</b> $\sqrt5$ es el número positivo cuyo cuadrado vale $5$: solución de $x^2-5=0$. Tomamos $f(x)=x^2-5$, derivable en todo $\mathbb R$, con $f'(x)=2x$.</li>
@@ -331,17 +623,25 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
       $$x_{n+1}-\sqrt5=\frac{x_n^2-2\sqrt5\,x_n+5}{2x_n}=\frac{(x_n-\sqrt5)^2}{2x_n}.$$
       Si $x_n&gt;0$: (i) $x_{n+1}\ge\sqrt5$ (desde $x_1$ todas son por exceso, como se ve); (ii) el error nuevo es aproximadamente el <b>cuadrado</b> del anterior dividido entre $2\sqrt5\approx4.47$. Los errores $10^{-2}\to10^{-5}\to10^{-10}\to10^{-20}$ duplican los decimales correctos: <b>convergencia cuadrática</b>.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> para aproximar $\sqrt[m]a$, toma $f(x)=x^m-a$, localiza la raíz con Bolzano, parte de un entero cercano, simplifica $x_{n+1}=x_n-\frac{x_n^m-a}{m\,x_n^{m-1}}$ y rellena una tabla $n\,|\,x_n\,|\,f(x_n)\,|\,f'(x_n)$.</div>
+  
   <p><b>Error típico:</b> redondear demasiado pronto (con 2 decimales la tabla «se estabiliza» en $2.24$, falso en el tercer decimal).</p>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.4.2, algoritmo p. 88; Ejemplo 2.15, pp. 87-88">U p.88</span></p>
 </details>
-<details class="sol"><summary>Ejercicio 2.35 — Newton para $x^2=0$ desde $x_0=0.4$; ¿se puede usar bisección? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.35, p. 73">E p.73</span></summary>
-<p class="enun">Utiliza el método de Newton para aproximar la solución de $x^2=0$, tomando como dato inicial $x_0=0.4$ y realizando tres iteraciones. ¿Es posible utilizar directamente el método de bisección para aproximar la solución de la ecuación $x^2=0$?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-2-35">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 2.35 · raíz doble: $x^2=0$ y ¿bisección?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.35, p. 73">E p.73</span></header>
+<div class="ejer-enun"><p class="enun">Utiliza el método de Newton para aproximar la solución de $x^2=0$, tomando como dato inicial $x_0=0.4$ y realizando tres iteraciones. ¿Es posible utilizar directamente el método de bisección para aproximar la solución de la ecuación $x^2=0$?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Aplicar tres iteraciones de Newton a $x^2=0$ desde $x_0=0.4$ y decidir si se puede usar bisección.</dd>
     <dt>Cómo lo pienso</dt><dd>Aquí la raíz es $0$ y la parábola solo toca el eje sin cruzarlo. Newton sí avanza (la tangente corta al eje), pero para bisección hace falta que $f$ cambie de signo, y $x^2$ nunca es negativa.</dd>
-    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Teorema de Bolzano y bisección (U §1.4, pp.52-55). <span class="src" data-l="U" data-ref="U p. 88 (algoritmo) y §1.4 pp. 52-55 (Bolzano y bisección)">U pp.52-55,88</span></dd>
+    <dt>Qué uso</dt><dd>Newton $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; bisección exige cambio de signo (Bolzano) — <a href="#s1-formula">ver teoría</a> (U pp.52-55, 88).</dd>
     <dt>Por dónde empiezo</dt><dd>Pongo $f(x)=x^2$, $f'(x)=2x$ y simplifico $x-f/f'$ antes de iterar.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> simplifica $x-\frac{f}{f'}$ antes de iterar. Para saber si puedes usar bisección, busca dos puntos donde $f$ tenga signos opuestos; si no cambia de signo, no se puede.</div>
+  <p class="mismo"><i>Mismo método que Ejercicio 2.34 (Newton con $f(x)=x^2$, ahora con raíz doble).</i></p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"p":[[0.4,0.16,"x₀"],[0.2,0.04,"x₁"],[0.1,0.01,"x₂"],[0.05,0.0025,"x₃"]],"c":[{"e":"x*x","n":"f(x)=x²"}],"x":[-0.3,0.6],"y":[-0.05,0.4]}' data-alt="Parábola x² y los iterados de Newton"><figcaption>La parábola $f(x)=x^2$ toca el eje $x$ en $0$ sin cruzarlo (no hay cambio de signo). Los puntos $(x_n,f(x_n))$ de Newton se acercan a $0$ dividiéndose por dos cada vez. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Función y derivada.</b> $f(x)=x^2$, $f'(x)=2x$, derivable en $\mathbb R$. La solución exacta es $\tilde x=0$; el ejercicio sirve para <i>ver cómo se comporta</i> el método.</li>
@@ -359,17 +659,25 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Observación (no está en E).</b> El error solo se <b>divide entre 2</b> en cada paso; no se eleva al cuadrado como en 2.34. Motivo: $0$ es una <b>raíz doble</b>, $f(0)=0$ y también $f'(0)=0$. La tangente se vuelve casi horizontal al acercarse y Newton pierde su rapidez.</li>
     <li><b>¿Bisección?</b> Necesita un intervalo $[a,b]$ con $f$ continua y $f(a)f(b)&lt;0$ (Teorema de Bolzano). Pero $x^2\ge0$ siempre, así que <b>nunca hay cambio de signo</b>. Respuesta: <b>no</b>, no se puede aplicar directamente. Bolzano da una condición <i>suficiente</i>, no necesaria: aquí hay raíz, pero la gráfica «toca» el eje sin cruzarlo.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> simplifica $x-\frac{f}{f'}$ antes de iterar. Para saber si puedes usar bisección, busca dos puntos donde $f$ tenga signos opuestos; si no cambia de signo, no se puede.</div>
+  
   <p><b>Error típico:</b> pensar que «si Bolzano no se cumple, no hay raíz»; o creer que Newton siempre converge cuadráticamente (falla si $f'(\tilde x)=0$).</p>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U p. 88 (algoritmo) y §1.4 pp. 52-55 (Bolzano y bisección)">U pp.52-55,88</span></p>
 </details>
-<details class="sol"><summary>Ejercicio 2.36 — Newton para $e^{-x}-x=0$ desde $x_0=0.5$ y $x_0=5$; error relativo <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.36, pp. 73-74">E pp.73-74</span></summary>
-<p class="enun">Utilizando el método de Newton, encuentra una solución aproximada de la ecuación $e^{-x}-x=0$ realizando tres iteraciones y partiendo de las condiciones iniciales $x_0=0.5$ y $x_0=5$. Estima el error relativo aproximado en cada caso.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ej-2-36">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 2.36 · $e^{-x}-x=0$ y error relativo</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.36, pp. 73-74">E pp.73-74</span></header>
+<div class="ejer-enun"><p class="enun">Utilizando el método de Newton, encuentra una solución aproximada de la ecuación $e^{-x}-x=0$ realizando tres iteraciones y partiendo de las condiciones iniciales $x_0=0.5$ y $x_0=5$. Estima el error relativo aproximado en cada caso.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Resolver $e^{-x}-x=0$ con tres iteraciones de Newton desde $x_0=0.5$ y desde $x_0=5$, estimando el error relativo en cada caso.</dd>
     <dt>Cómo lo pienso</dt><dd>Newton es el mismo, pero conviene comparar un punto de partida cercano a la raíz y otro lejano: el lejano empieza dando pasos poco útiles. El error relativo aproximado mide cuánto se movió el último paso respecto al valor actual.</dd>
-    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; error relativo aproximado y criterios de parada (U pp.89-90). <span class="src" data-l="U" data-ref="U pp. 88-90: algoritmo, error relativo aproximado, criterios de parada">U pp.88-90</span></dd>
+    <dt>Qué uso</dt><dd>Newton y $\varepsilon_r=\dfrac{|x_n-x_{n-1}|}{|x_n|}$ — <a href="#s1-parada">ver teoría</a> (U pp.88-90).</dd>
     <dt>Por dónde empiezo</dt><dd>Defino $f(x)=e^{-x}-x$, compruebo con Bolzano dónde está la raíz, calculo $f'(x)$ y simplifico la iteración.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> (1) Bolzano para localizar la raíz. (2) Comprobar $f'\ne0$. (3) Simplificar $x-f/f'$. (4) Tabla con $x_n$ y $\varepsilon_r=|x_n-x_{n-1}|/|x_n|$. (5) Parar cuando $\varepsilon_r$ sea menor que la tolerancia o se agoten las iteraciones pedidas.</div>
+  <p class="mismo"><i>Mismo método que Ejercicio 2.34, añadiendo la columna $\varepsilon_r$.</i></p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"p":[[0.5,0.106531,"x₀=0,5"],[5,-4.993262,"x₀=5"]],"q":[[0.567143,0,"raíz"]],"c":[{"e":"exp(-x)-x","n":"f(x)=e^(−x)−x"}],"x":[-0.5,5.5],"y":[-6,2]}' data-alt="Gráfica de e^-x - x"><figcaption>La función $f(x)=e^{-x}-x$ es decreciente y corta al eje $x$ en $x\approx0{,}5671$. El punto $x_0=0{,}5$ está junto a la raíz y $x_0=5$ muy lejos, donde la tangente es casi horizontal. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Hay una única solución y sabemos dónde.</b> $f(x)=e^{-x}-x$, continua y derivable en $\mathbb R$. $f(0)=1&gt;0$ y $f(1)=e^{-1}-1\approx-0.632&lt;0$: por Bolzano hay una raíz en $(0,1)$. Es única porque $e^{-x}$ y $-x$ son estrictamente decrecientes, luego $f$ también y no puede anularse dos veces. (Es la ecuación del Ejemplo 1.49 de U, p.55, resuelta allí por bisección.)</li>
@@ -402,18 +710,25 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Por qué el primer salto es tan grande.</b> En $x_0=5$ la función es casi la recta $y=-x$ ($e^{-5}\approx0.0067$), de pendiente casi $-1$; su tangente corta el eje cerca de $0$, al otro lado de la raíz. Desde ahí ya está cerca y converge deprisa. <b>El resultado tras un número fijo de pasos depende mucho de $x_0$</b>: conviene localizar antes la raíz.</li>
     <li><b>Cómo interpretar $\varepsilon_r$.</b> No es el error verdadero: mide cuánto ha cambiado la última iteración y se usa como estimación. Con $x_0=5$, $\varepsilon_r\approx0.1$ sobreestima el error relativo real ($\approx10^{-3}$): en Newton suele ocurrir, porque el error real ya es mucho menor que el último salto.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> (1) Bolzano para localizar la raíz. (2) Comprobar $f'\ne0$. (3) Simplificar $x-f/f'$. (4) Tabla con $x_n$ y $\varepsilon_r=|x_n-x_{n-1}|/|x_n|$. (5) Parar cuando $\varepsilon_r$ sea menor que la tolerancia o se agoten las iteraciones pedidas.</div>
+  
   <p><b>Error típico:</b> perder el signo de $f'$: el denominador es $-e^{-x_n}-1$. Si se usa $+e^{-x_n}+1$, el paso va en sentido contrario (desde $0.5$ saldría $0.434$, que se aleja). Otro: dividir $\varepsilon_r$ entre $|x_{n-1}|$ en vez de $|x_n|$.</p>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 88-90: algoritmo, error relativo aproximado, criterios de parada">U pp.88-90</span></p>
 </details>
+</article>
 <h3>Bloque punto fijo</h3>
-<details class="sol"><summary>Ejercicio 2.38 — convergencia del punto fijo para $e^{-x}=x$ en $[0.1,2]$ y cuatro iteraciones <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.38, pp. 75-76">E pp.75-76</span></summary>
-<p class="enun">Dada la ecuación $e^{-x}=x$: (1) Comprueba que el método de punto fijo converge para cualquier dato inicial $0.1\le x_0\le2$. (2) Utiliza el método de punto fijo para aproximar la solución de la ecuación partiendo del dato inicial $x_0=1$ y realizando cuatro iteraciones.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<article class="ejer" id="ej-2-38">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 2.38 · punto fijo para $e^{-x}=x$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.38, pp. 75-76">E pp.75-76</span></header>
+<div class="ejer-enun"><p class="enun">Dada la ecuación $e^{-x}=x$: (1) Comprueba que el método de punto fijo converge para cualquier dato inicial $0.1\le x_0\le2$. (2) Utiliza el método de punto fijo para aproximar la solución de la ecuación partiendo del dato inicial $x_0=1$ y realizando cuatro iteraciones.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>(1) Probar que el punto fijo de $e^{-x}=x$ converge para todo $x_0\in[0.1,2]$; (2) hacer cuatro iteraciones desde $x_0=1$.</dd>
     <dt>Cómo lo pienso</dt><dd>Un punto fijo se encuentra repitiendo $x\mapsto g(x)$. Funciona si $g$ no saca al punto del intervalo y además lo acerca (pendiente menor que 1 en valor absoluto); ese es el contenido del teorema, y hay que comprobar cada condición con números.</dd>
-    <dt>Qué uso</dt><dd>Definición de punto fijo (U Def. 2.4, p.90); Teorema 2.2 (U p.91): (H0) $g$ continua, (H1) $g([a,b])\subset[a,b]$, (H2) $|g'|\le k<1$. <span class="src" data-l="U" data-ref="U pp. 90-93: Definición 2.4, Teoremas 2.2 y 2.3, Ejemplo 2.17">U pp.90-93</span></dd>
+    <dt>Qué uso</dt><dd>Teorema 2.2: (H0) $g$ continua, (H1) $g([a,b])\subset[a,b]$, (H2) $|g'|\le k&lt;1$ — <a href="#s2-teoremas">ver teoría</a> (U p.91).</dd>
     <dt>Por dónde empiezo</dt><dd>Llamo $g(x)=e^{-x}$ y $[a,b]=[0.1,2]$; compruebo (H1) usando que $g$ es decreciente.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta (convergencia del punto fijo en $[a,b]$):</b> (1) pasa la ecuación a $x=g(x)$; (2) estudia la monotonía de $g$ y calcula $g(a)$, $g(b)$ para ver que $g([a,b])\subset[a,b]$; (3) acota $|g'|$ en $(a,b)$ por su valor mayor $k$ y comprueba $k&lt;1$; (4) cita el Teorema 2.2.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"q":[[0.567143,0.567143,"punto fijo"]],"c":[{"e":"exp(-x)","n":"g(x)=e^(−x)"},{"e":"x","n":"y=x","d":1}],"x":[0,2.2],"y":[0,2.2]}' data-alt="g(x)=e^-x y la recta y=x"><figcaption>El punto fijo es donde la curva $g(x)=e^{-x}$ corta a la recta $y=x$: $x\approx0{,}5671$. En $[0{,}1,2]$ la curva queda dentro del intervalo. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <p><b>Apartado 1.</b></p>
   <ol class="steps">
@@ -443,17 +758,24 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Lectura de la tabla (propio).</b> Las iteraciones <b>oscilan</b> alrededor de $\tilde x$ (una por defecto, otra por exceso), lo que ocurre cuando $g'&lt;0$. El error se multiplica más o menos por $|g'(\tilde x)|=\tilde x\approx0.567$ en cada paso: convergencia <b>lineal</b>. Newton sobre la misma ecuación (Ej. 2.36) lograba 15 decimales en 3 pasos.</li>
     <li><b>¿Qué garantiza la teoría con 4 pasos?</b> Teorema 2.3: $\frac{k^4}{1-k}(b-a)=\frac{0.9048^4}{0.0952}\cdot1.9\approx13.4$: <b>inútil</b> (el intervalo mide $1.9$). Para garantizar error $&lt;0.01$ harían falta $n&gt;\ln\!\big(0.01(1-k)/1.9\big)/\ln k\approx75.99$, o sea $76$ iteraciones; en la práctica bastan $7$ (según la tabla, $|x_6-\tilde x|=0.0125$ no basta y $|x_7-\tilde x|=0.0070$ sí).</li>
   </ol>
-  <div class="recipe"><b>Receta (convergencia del punto fijo en $[a,b]$):</b> (1) pasa la ecuación a $x=g(x)$; (2) estudia la monotonía de $g$ y calcula $g(a)$, $g(b)$ para ver que $g([a,b])\subset[a,b]$; (3) acota $|g'|$ en $(a,b)$ por su valor mayor $k$ y comprueba $k&lt;1$; (4) cita el Teorema 2.2.</div>
+  
   <p><b>Error típico:</b> ver «Comprobar solo $|g'|&lt;1$» en el apartado 2.</p>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 90-93: Definición 2.4, Teoremas 2.2 y 2.3, Ejemplo 2.17">U pp.90-93</span></p>
 </details>
-<details class="sol"><summary>Ejercicio 2.37 — número de iteraciones del punto fijo para error $&lt;0.1$ ($k=0.8$ y $k=0.2$) <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.37, pp. 74-75">E pp.74-75</span></summary>
-<p class="enun">Sea $f:[-1,1]\to[-1,1]$. Sabiendo que la única solución de la ecuación $f(x)=x$ en el intervalo $[-1,1]$ puede ser aproximada utilizando el método de punto fijo, ¿cuántas iteraciones necesitaremos para garantizar que el error cometido sea menor que $0.1$ si $|f'(x)|&lt;0.8$ en $[-1,1]$? ¿Y si $|f'(x)|&lt;0.2$ en $[-1,1]$?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Hallar cuántas iteraciones de punto fijo garantizan error menor que $0.1$ si $|f'|<0.8$ y si $|f'|<0.2$ en $[-1,1]$.</dd>
+</article>
+<article class="ejer" id="ej-2-37">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 2.37 · nº de iteraciones del punto fijo</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 2.37, pp. 74-75">E pp.74-75</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f:[-1,1]\to[-1,1]$. Sabiendo que la única solución de la ecuación $f(x)=x$ en el intervalo $[-1,1]$ puede ser aproximada utilizando el método de punto fijo, ¿cuántas iteraciones necesitaremos para garantizar que el error cometido sea menor que $0.1$ si $|f'(x)|&lt;0.8$ en $[-1,1]$? ¿Y si $|f'(x)|&lt;0.2$ en $[-1,1]$?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar cuántas iteraciones de punto fijo garantizan error menor que $0.1$ si $|f'|&lt;0.8$ y si $|f'|&lt;0.2$ en $[-1,1]$.</dd>
     <dt>Cómo lo pienso</dt><dd>No hay que iterar nada: el teorema da una cota del error que solo depende de $k$, de la longitud del intervalo y de $n$. Se busca el primer $n$ para el que esa cota baja de $0.1$; cuanto menor es $k$, antes ocurre.</dd>
-    <dt>Qué uso</dt><dd>Teorema 2.3 (U p.91) y receta del número de iteraciones (U p.92): $|x_n-\tilde x|<\dfrac{k^n}{1-k}(b-a)$. <span class="src" data-l="U" data-ref="U Teorema 2.3, p. 91; procedimiento p. 92; Ejemplo 2.17 d, p. 93">U pp.91-93</span></dd>
-    <dt>Por dónde empiezo</dt><dd>Sustituyo $b-a=2$ y cada valor de $k$, y planteo $\dfrac{2k^n}{1-k}<0.1$.</dd>
+    <dt>Qué uso</dt><dd>Teorema 2.3: $\dfrac{k^n}{1-k}(b-a)&lt;\varepsilon$ — <a href="#s2-teoremas">ver teoría</a> (U pp.91-92).</dd>
+    <dt>Por dónde empiezo</dt><dd>Sustituyo $b-a=2$ y cada valor de $k$, y planteo $\dfrac{2k^n}{1-k}&lt;0.1$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> resuelve $\frac{k^n}{1-k}(b-a)&lt;\varepsilon\Rightarrow n&gt;\dfrac{\ln\big(\varepsilon(1-k)/(b-a)\big)}{\ln k}$ y toma el <b>primer natural estrictamente mayor</b>. Recuerda que $\ln k&lt;0$ invierte la desigualdad.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <ol class="steps">
     <li><b>Datos del Teorema 2.3.</b> Aquí la función de iteración se llama $f$. $[a,b]=[-1,1]$, $f([-1,1])\subset[-1,1]$ y $|f'|&lt;k$ con $k=0.8$ o $k=0.2$, ambos en $[0,1)$. Se cumplen las hipótesis del Teorema 2.2, y por el Teorema 2.3
       $$|x_n-\tilde x|&lt;\frac{k^n}{1-k}(b-a)=\frac{2k^n}{1-k}.$$</li>
@@ -465,17 +787,26 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Moraleja.</b> Con el mismo intervalo, pasar de $k=0.8$ a $k=0.2$ reduce la garantía de $21$ a $3$ iteraciones: cuanto menor es $k$, más rápida es la convergencia.</li>
     <li><b>Por qué 3 y no 2.</b> Con $k=0.2$ y $n=2$ la cota vale exactamente $0.1$, no es $&lt;0.1$; la receta de U (p.92) pide el natural más pequeño con cota $&lt;\varepsilon$, así que la respuesta es <b>3</b>.</li>
   </ol>
-  <div class="recipe"><b>Receta:</b> resuelve $\frac{k^n}{1-k}(b-a)&lt;\varepsilon\Rightarrow n&gt;\dfrac{\ln\big(\varepsilon(1-k)/(b-a)\big)}{\ln k}$ y toma el <b>primer natural estrictamente mayor</b>. Recuerda que $\ln k&lt;0$ invierte la desigualdad.</div>
+  
   <p><b>Error típico:</b> no invertir la desigualdad al dividir entre $\ln k$ (sale $n&lt;20.6$, absurdo); redondear $20.64$ a $20$ en vez de a $21$; olvidar el factor $(b-a)=2$ o el $1/(1-k)$.</p>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Teorema 2.3, p. 91; procedimiento p. 92; Ejemplo 2.17 d, p. 93">U pp.91-93</span></p>
 </details>
-<h3>Ejemplos propios (de fácil a difícil)</h3>
-<details class="sol"><summary>P1 (fácil) — $\sqrt[3]{10}$ con tres iteraciones de Newton <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
+</article>
+<h3 data-extra>Ejemplos propios (de fácil a difícil)</h3>
+<article class="ejer" id="ej-p1" data-extra>
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Propio 1 · $\sqrt[3]{10}$ con Newton</span> <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></header>
+<div class="ejer-enun"><p class="enun">Aproxima $\sqrt[3]{10}$ con tres iteraciones del método de Newton.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Aproximar $\sqrt[3]{10}$ con tres iteraciones de Newton.</dd>
     <dt>Cómo lo pienso</dt><dd>Igual que con $\sqrt5$: la raíz cúbica de 10 es el cero de $x^3-10$, y Newton se acerca a ella con tangentes.</dd>
-    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Bolzano (U p.52).</dd>
+    <dt>Qué uso</dt><dd>Newton con $f(x)=x^3-10$ — <a href="#s1-formula">ver teoría</a> (U p.88).</dd>
     <dt>Por dónde empiezo</dt><dd>Tomo $f(x)=x^3-10$ y localizo la raíz entre dos enteros para elegir $x_0$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> la misma que en 2.34, con $m=3$.</div>
+  <p class="mismo"><i>Mismo método que Ejercicio 2.34, con $m=3$.</i></p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"q":[[2.154435,0,"∛10"]],"c":[{"e":"x**3-10","n":"f(x)=x³−10"}],"x":[0,3],"y":[-12,18]}' data-alt="Cúbica x^3-10 y su cero"><figcaption>La cúbica $f(x)=x^3-10$ corta al eje $x$ en $\sqrt[3]{10}\approx2{,}1544$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li>$f(x)=x^3-10$, $f'(x)=3x^2$. Como $f(2)=-2&lt;0&lt;f(3)=17$, por Bolzano la raíz está en $(2,3)$. Tomamos $x_0=2$.</li>
@@ -489,15 +820,23 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <tr><td>3</td><td>2.154434692237</td><td>$2.2\times10^{-9}$</td></tr>
   </table>
   <p>$\sqrt[3]{10}=2.154434690031\ldots$: $x_3$ tiene 8 decimales exactos.</p>
-  <div class="recipe"><b>Receta:</b> la misma que en 2.34, con $m=3$.</div>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.4.2, p. 88">U p.88</span></p>
 </details>
-<details class="sol"><summary>P2 (medio) — resolver $x^3-x-1=0$ con Newton hasta $\varepsilon_r&lt;10^{-6}$ <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
+</article>
+<article class="ejer" id="ej-p2" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 2 · parar con $\varepsilon_r$</span> <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></header>
+<div class="ejer-enun"><p class="enun">Resuelve $x^3-x-1=0$ con Newton hasta que el error relativo aproximado sea menor que $10^{-6}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Resolver $x^3-x-1=0$ con Newton hasta que $\varepsilon_r<10^{-6}$.</dd>
+    <dt>Qué me piden</dt><dd>Resolver $x^3-x-1=0$ con Newton hasta que $\varepsilon_r&lt;10^{-6}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Se itera Newton y, en cada paso, se mide cuánto cambió el valor respecto al anterior; se para cuando ese cambio relativo es ya diminuto.</dd>
-    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; criterio de parada con error relativo aproximado (U pp.89-90).</dd>
+    <dt>Qué uso</dt><dd>Newton y criterio de parada $\varepsilon_r&lt;\text{tol}$ — <a href="#s1-parada">ver teoría</a> (U pp.89-90).</dd>
     <dt>Por dónde empiezo</dt><dd>Localizo la raíz con Bolzano, compruebo que $f'$ no se anula y arranco con $x_0=1.5$.</dd>
   </dl></div>
+  <div class="recipe"><b>Receta:</b> criterio de parada por $\varepsilon_r$: itera y calcula $\varepsilon_r$ en cada fila hasta que baje de la tolerancia.</div>
+  <p class="mismo"><i>Mismo método que Ejercicio 2.36.</i></p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"q":[[1.324718,0,"raíz"]],"c":[{"e":"x**3-x-1","n":"f(x)=x³−x−1"}],"x":[-0.5,2],"y":[-3,6]}' data-alt="Cúbica x^3-x-1"><figcaption>La cúbica $f(x)=x^3-x-1$ tiene una única raíz real, $x\approx1{,}3247$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li>$f(1)=-1&lt;0$, $f(2)=5&gt;0$: hay raíz en $(1,2)$. $f'(x)=3x^2-1\ge2$ en $[1,2]$, luego no se anula.</li>
@@ -512,40 +851,63 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <tr><td>4</td><td>1.324717957245</td><td>$1.64\times10^{-7}$</td></tr>
   </table>
   <p>Paramos en $n=4$ porque $\varepsilon_r&lt;10^{-6}$: $\tilde x\approx1.3247180$ (exacto $1.32471795724\ldots$).</p>
-  <div class="recipe"><b>Receta:</b> criterio de parada por $\varepsilon_r$: itera y calcula $\varepsilon_r$ en cada fila hasta que baje de la tolerancia.</div>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 88-90">U pp.88-90</span></p>
 </details>
-<details class="sol"><summary>P3 (difícil) — Newton puede no converger: $x^3-2x+2$ desde $x_0=0$ <span class="src" data-l="P" data-ref="Ejemplo propio, basado en Larson §3.8, ejercicio 22, p. 229">P</span></summary>
+</article>
+<article class="ejer" id="ej-p3" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio 3 · cuando Newton no converge</span> <span class="src" data-l="P" data-ref="Ejemplo propio, basado en Larson §3.8, ejercicio 22, p. 229">P</span></header>
+<div class="ejer-enun"><p class="enun">Aplica Newton a $x^3-2x+2=0$ desde $x_0=0$. ¿Converge? Si no, encuentra la raíz real con otro punto inicial.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Ver que Newton puede no converger en $x^3-2x+2=0$ desde $x_0=0$, y hallar la raíz con otro punto inicial.</dd>
     <dt>Cómo lo pienso</dt><dd>La tangente en un mal punto puede mandar la iteración a otro punto cuya tangente la devuelve al primero: se queda dando vueltas en un ciclo. Por eso se localiza la raíz antes de elegir $x_0$.</dd>
-    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; Bolzano (U p.52).</dd>
+    <dt>Qué uso</dt><dd>Newton falla con ciclos y malos $x_0$ — <a href="#s1-falla">ver teoría</a> (U p.89).</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $x_1$ y $x_2$ desde $x_0=0$ con $f'(x)=3x^2-2$ para ver el ciclo.</dd>
   </dl></div>
+  <div class="recipe"><b>Moraleja:</b> localiza la raíz con Bolzano <i>antes</i> de elegir $x_0$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"p":[[0,2,"x₀=0"],[1,1,"x₁=1"],[-2,-2,"x₀=−2"]],"q":[[-1.769292,0,"raíz"]],"c":[{"e":"x**3-2*x+2","n":"f(x)=x³−2x+2"}],"x":[-2.5,2],"y":[-6,8]}' data-alt="Cúbica x^3-2x+2 y los puntos del ciclo"><figcaption>En $x=0$ y $x=1$ las tangentes cortan al eje en $1$ y en $0$ respectivamente: la iteración da vueltas. La única raíz real está en $x\approx-1{,}7693$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li>$f'(x)=3x^2-2$. Desde $x_0=0$: $x_1=0-\frac{2}{-2}=1$; desde $x_1=1$: $x_2=1-\frac11=0$. La sucesión es $0,1,0,1,\dots$: un <b>ciclo</b>, sin límite.</li>
     <li>¿Dónde está la raíz? $f(-2)=-2&lt;0$, $f(-1)=3&gt;0$: en $(-2,-1)$.</li>
     <li>Desde $x_0=-2$: $-1.8,\ -1.769948186529,\ -1.769292662906,\ -1.769292354239$, con errores $3\times10^{-2},\ 6.6\times10^{-4},\ 3.1\times10^{-7},\ 6.8\times10^{-14}$.</li>
   </ol>
-  <div class="recipe"><b>Moraleja:</b> localiza la raíz con Bolzano <i>antes</i> de elegir $x_0$.</div>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U p. 89, nota al margen «¿Es infalible el método de Newton?»">U p.89</span></p>
 </details>
-<details class="sol"><summary>P4 (fácil) — iteraciones de punto fijo con $k=0.5$ en $[0,1]$ <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></summary>
-<p class="enun">$g:[0,1]\to[0,1]$ con $|g'(x)|\le0.5$ en $(0,1)$. ¿Cuántas iteraciones garantizan error $&lt;10^{-3}$?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Número de iteraciones de punto fijo que garantizan error $<10^{-3}$ con $k=0.5$ en $[0,1]$.</dd>
+</article>
+<article class="ejer" id="ej-p4" data-extra>
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Propio 4 · nº de iteraciones con $k=0.5$</span> <span class="src" data-l="P" data-ref="Ejemplo propio">P</span></header>
+<div class="ejer-enun"><p class="enun">$g:[0,1]\to[0,1]$ con $|g'(x)|\le0.5$ en $(0,1)$. ¿Cuántas iteraciones garantizan error $&lt;10^{-3}$?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Número de iteraciones de punto fijo que garantizan error $&lt;10^{-3}$ con $k=0.5$ en $[0,1]$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es el mismo cálculo que en el Ejercicio 2.37: se busca el primer $n$ para el que la cota del teorema baja de la tolerancia.</dd>
-    <dt>Qué uso</dt><dd>Teorema 2.3 y número de iteraciones (U pp.91-92): $\dfrac{k^n}{1-k}(b-a)<\varepsilon$.</dd>
+    <dt>Qué uso</dt><dd>Teorema 2.3: $\dfrac{k^n}{1-k}(b-a)&lt;\varepsilon$ — <a href="#s2-teoremas">ver teoría</a> (U pp.91-92).</dd>
     <dt>Por dónde empiezo</dt><dd>Sustituyo $k=0.5$, $b-a=1$, $\varepsilon=10^{-3}$ y despejo $n$ con logaritmos.</dd>
   </dl></div>
+  
+  <p class="mismo"><i>Mismo método que Ejercicio 2.37.</i></p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <p>$\dfrac{0.5^n}{0.5}\cdot1&lt;10^{-3}\iff0.5^n&lt;5\cdot10^{-4}\iff n&gt;\dfrac{\ln(5\cdot10^{-4})}{\ln0.5}\approx10.97$, luego $n=11$. (Cotas: $n=10\to1.95\times10^{-3}$; $n=11\to9.8\times10^{-4}$.)</p>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 91-92">U pp.91-92</span></p>
 </details>
-<details class="sol"><summary>P5 (medio) — $x=\cos x$ en $[0,1]$: hipótesis, iteraciones y garantía <span class="src" data-l="P" data-ref="Ejemplo propio; compárese con S §4.8 Ej. 3, p. 341 y L ejercicio 23, p. 229">P</span></summary>
+</article>
+<article class="ejer" id="ej-p5" data-extra>
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 5 · $x=\cos x$ en $[0,1]$</span> <span class="src" data-l="P" data-ref="Ejemplo propio; compárese con S §4.8 Ej. 3, p. 341 y L ejercicio 23, p. 229">P</span></header>
+<div class="ejer-enun"><p class="enun">Para $x=\cos x$ en $[0,1]$: comprueba las hipótesis del Teorema 2.2, haz cuatro iteraciones desde $x_0=1$ y calcula cuántas iteraciones garantizan error $&lt;0.01$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Para $x=\cos x$ en $[0,1]$: comprobar las hipótesis, iterar y dar cuántas iteraciones garantizan error $<0.01$.</dd>
+    <dt>Qué me piden</dt><dd>Para $x=\cos x$ en $[0,1]$: comprobar las hipótesis, iterar y dar cuántas iteraciones garantizan error $&lt;0.01$.</dd>
     <dt>Cómo lo pienso</dt><dd>Se trata de pasar la lista de comprobaciones del teorema (no salir del intervalo, pendiente menor que 1) a una función conocida y luego usar la cota para saber cuánto iterar.</dd>
-    <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 (U p.91) y número de iteraciones (U p.92).</dd>
+    <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 — <a href="#s2-teoremas">ver teoría</a> (U pp.91-92).</dd>
     <dt>Por dónde empiezo</dt><dd>Con $g(x)=\cos x$ miro dónde es monótona para hallar $g([0,1])$ y acotar $|g'|=\operatorname{sen}x$.</dd>
   </dl></div>
+  
+  <p class="mismo"><i>Mismo método que Ejercicio 2.38.</i></p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"q":[[0.739085,0.739085,"punto fijo"]],"c":[{"e":"cos(x)","n":"g(x)=cos x"},{"e":"x","n":"y=x","d":1}],"x":[0,1.2],"y":[0,1.2]}' data-alt="cos x y la recta y=x"><figcaption>El punto fijo es el corte de $y=\cos x$ con $y=x$: $x\approx0{,}7391$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>(H1).</b> $g(x)=\cos x$ es decreciente en $[0,1]\subset[0,\frac\pi2]$, luego $g([0,1])=[\cos1,\cos0]=[0.5403,1]\subset[0,1]$.</li>
@@ -553,14 +915,22 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li>Con $x_0=1$: $x_1=0.540302305868$, $x_2=0.857553215846$, $x_3=0.654289790498$, $x_4=0.793480358743$. Valor exacto $\tilde x=0.739085133\ldots$; error de $x_4$: $0.054$ (oscila, $g'&lt;0$).</li>
     <li><b>Garantía para error $&lt;0.01$:</b> $\dfrac{k^n}{1-k}&lt;0.01\iff n&gt;\dfrac{\ln(0.01(1-k))}{\ln k}\approx37.35$, luego $n=38$ (cota con $37$: $0.0106$; con $38$: $0.0089$). Newton resuelve la misma ecuación con seis decimales en unos $4$ pasos (S Ej. 3, p.341).</li>
   </ol>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 91-92">U pp.91-92</span></p>
 </details>
-<details class="sol"><summary>P6 (difícil) — elegir bien $g$: $x^3-x-1=0$ en $[1,2]$ <span class="src" data-l="P" data-ref="Ejemplo propio, en la línea del Ejemplo 2.18 de U, p. 94">P</span></summary>
+</article>
+<article class="ejer" id="ej-p6" data-extra>
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio 6 · elegir bien $g$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, en la línea del Ejemplo 2.18 de U, p. 94">P</span></header>
+<div class="ejer-enun"><p class="enun">La ecuación $x^3-x-1=0$ se puede escribir como $x=g(x)$ de varias formas. Elige una $g$ que converja en $[1,2]$ y calcula cuántas iteraciones garantizan error $&lt;10^{-6}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
 <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Elegir una forma $x=g(x)$ de $x^3-x-1=0$ en $[1,2]$ que converja y calcular cuántas iteraciones dan error $<10^{-6}$.</dd>
-    <dt>Cómo lo pienso</dt><dd>La misma ecuación se puede despejar de muchas maneras; unas hacen que la iteración se aleje de la raíz y otras que se acerque. Hay que escoger la que cumple $|g'|<1$ cerca de la raíz.</dd>
-    <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 (U p.91), número de iteraciones (U p.92) y elección de $g$ (U pp.93-94).</dd>
+    <dt>Qué me piden</dt><dd>Elegir una forma $x=g(x)$ de $x^3-x-1=0$ en $[1,2]$ que converja y calcular cuántas iteraciones dan error $&lt;10^{-6}$.</dd>
+    <dt>Cómo lo pienso</dt><dd>La misma ecuación se puede despejar de muchas maneras; unas hacen que la iteración se aleje de la raíz y otras que se acerque. Hay que escoger la que cumple $|g'|&lt;1$ cerca de la raíz.</dd>
+    <dt>Qué uso</dt><dd>Elección de $g$ (Ejemplo 2.18) y Teoremas 2.2-2.3 — <a href="#s2-elegir">ver teoría</a> (U pp.93-94).</dd>
     <dt>Por dónde empiezo</dt><dd>Pruebo dos despejes ($x^3-1$ y $\sqrt[3]{x+1}$) y miro en cada uno el valor de $|g'|$ en $[1,2]$.</dd>
   </dl></div>
+  <div class="recipe"><b>Moraleja:</b> la misma ecuación admite muchas $g$ (U pp.93-94). Elige una con $|g'|&lt;1$ cerca de la raíz.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
   <figure class="graf" data-g='{"q":[[1.324718,1.324718,"raíz"]],"c":[{"e":"cbrt(x+1)","n":"g₂(x)=∛(x+1)"},{"e":"x","n":"y=x","d":1}],"x":[1,2],"y":[1,2]}' data-alt="Gráfica de la raíz cúbica de x+1 y la recta y=x"><figcaption>La buena elección $g_2(x)=\sqrt[3]{x+1}$ es casi plana y corta a $y=x$ en $x\approx1{,}3247$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Opción mala:</b> $x=x^3-1$, $g_1(x)=x^3-1$. Entonces $g_1'(x)=3x^2\ge3$ en $[1,2]$: (H2) falla, y $g_1([1,2])=[0,7]\not\subset[1,2]$: (H1) también. Desde $x_0=1.5$: $2.375,\ 12.40,\ 1904,\ 6.9\times10^{9}$. <b>Diverge.</b></li>
@@ -568,19 +938,57 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li>Desde $x_0=1$: $1.259921049895,\ 1.312293836683,\ 1.322353819139,\ 1.324268744552,\ 1.324632625251$ (errores $6.5\times10^{-2}\to8.5\times10^{-5}$).</li>
     <li>Error $&lt;10^{-6}$ garantizado si $\frac{k^n}{1-k}&lt;10^{-6}\iff n&gt;9.003$, o sea $n=10$ (con $n=9$ la cota es $1.005\times10^{-6}$, que por muy poco no basta).</li>
   </ol>
-  <div class="recipe"><b>Moraleja:</b> la misma ecuación admite muchas $g$ (U pp.93-94). Elige una con $|g'|&lt;1$ cerca de la raíz.</div>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 93-94, Ejemplo 2.18">U pp.93-94</span></p>
 </details>
-<!-- ============================ 6 ============================ -->
-<h2 id="examenes"><span class="n">6</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Examenes-resueltos-Calculo.pdf (exámenes reales resueltos); página = página PDF">X</span></h2>
+</article>
+<!-- ============================ exámenes ============================ -->
+<h2 id="examenes" data-vista="examen"><span class="n">8</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Examenes-resueltos-Calculo.pdf (exámenes reales resueltos); página = página PDF">X</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>15 preguntas</b> de este tema (6 de ellas se resuelven aquí abajo con su redacción) y 5 ejercicios en el libro E. Se reparten en 5 tipos:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Newton: $n$ iteraciones <small>(6 de 15)</small></td><td>Escribe $f$ y $f'$, comprueba $f'\neq0$, simplifica $x-\frac{f}{f'}$ y rellena la tabla.</td>
+      <td><a href="#ej-2-34">2.34</a> · <a href="#ej-2-35">2.35</a></td>
+      <td><a href="#ex-2">Examen 2</a></td></tr>
+    <tr><td>Newton con criterio de parada <small>(1 de 15)</small></td><td>Tabla con la columna $|x_{n+1}-x_n|$ o $\varepsilon_r$; para en la primera fila que cumple.</td>
+      <td><a href="#ej-2-36">2.36</a></td>
+      <td><a href="#ex-4">Examen 4</a></td></tr>
+    <tr><td>Punto fijo: iterar <small>(2 de 15)</small></td><td>Itera $x_{n+1}=g(x_n)$ guardando todas las cifras.</td>
+      <td><a href="#ej-2-38">2.38</a> (apartado 2)</td>
+      <td><a href="#ex-3">Examen 3</a></td></tr>
+    <tr><td>Punto fijo: hipótesis, cota y nº de iteraciones <small>(2 de 15)</small></td><td>(H0), (H1), (H2) en $[a,b]$; luego el menor $n$ con $\frac{k^n}{1-k}(b-a)&lt;\varepsilon$.</td>
+      <td><a href="#ej-2-37">2.37</a> · <a href="#ej-2-38">2.38</a></td>
+      <td><a href="#ex-5">Examen 5</a> · <a href="#ex-6">Examen 6</a></td></tr>
+    <tr><td>Teoría: describir Newton o las condiciones del punto fijo <small>(4 de 15)</small></td><td>Tangente y fórmula de Newton; Teoremas 2.2 y 2.3 (apartados <a href="#s1">1</a> y <a href="#s2">2</a>).</td>
+      <td>—</td>
+      <td>—</td></tr>
+    <tr><td>Bisección: nº de iteraciones <small>(tema 1.4)</small></td><td>Menor $n$ con $\frac{b-a}{2^n}&lt;\varepsilon$.</td>
+      <td>—</td>
+      <td><a href="#ex-1">Examen 1</a></td></tr>
+  </table>
+  <p><small>Recuento propio sobre el índice de los exámenes resueltos (X), clasificando cada pregunta por su dificultad principal. No aparece ninguna pregunta de número de iteraciones garantizado para Newton. Los ejercicios largos que además piden estudiar la función (extremos o concavidad) usan lo del tema 3.4-3.5, que esta sección no cubre.</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre el índice de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
 <p>Estos son los tipos reales que caen de este tema en los exámenes resueltos (X = <i>Examenes-resueltos-Calculo.pdf</i>), ordenados de fácil a difícil. Las preguntas cortas (1 punto) piden una cuenta concreta: iteraciones de Newton o de punto fijo, o el número de pasos de bisección. Los ejercicios largos (3 puntos) añaden justificar las hipótesis del Teorema 2.2 y acotar el error con el Teorema 2.3. La dificultad no está en la teoría, sino en no saltarse hipótesis y en el orden de las cuentas.</p>
-<details class="sol"><summary>X1 (fácil) — bisección: ¿cuántas iteraciones para error $&lt;0.15$? <span class="src" data-l="X" data-ref="X p.73 (Septiembre 2016, Ing. Mecánica, Modelo B, pregunta corta 2, 1 punto)">X p.73</span></summary>
-<p class="enun">Función continua $f:[-1,1]\to\mathbb R$ con $f(-1)=1$ y $f(1)=-2$. Se busca una solución aproximada de $f(x)=0$ por bisección. ¿Cuántas iteraciones aseguran un error menor que $0.15$?</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+<article class="ejer" id="ex-1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Examen 1 · Sept. 2016 · bisección: ¿cuántas iteraciones?</span> <span class="src" data-l="X" data-ref="X p.73 (Septiembre 2016, Ing. Mecánica, Modelo B, pregunta corta 2, 1 punto)">X p.73</span></header>
+<div class="ejer-enun"><p class="enun">Función continua $f:[-1,1]\to\mathbb R$ con $f(-1)=1$ y $f(1)=-2$. Se busca una solución aproximada de $f(x)=0$ por bisección. ¿Cuántas iteraciones aseguran un error menor que $0.15$?</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Cuántas iteraciones de bisección aseguran error menor que $0.15$ con $f(-1)=1$ y $f(1)=-2$.</dd>
     <dt>Cómo lo pienso</dt><dd>Cada paso de bisección parte el intervalo por la mitad, así que su longitud se divide entre 2 y el error es menor que esa longitud. Solo hay que contar cuántas mitades hacen falta para bajar de $0.15$; no importa cómo sea $f$.</dd>
-    <dt>Qué uso</dt><dd>Bolzano (U §1.4, p.52) y cota de error de la bisección $\dfrac{b-a}{2^n}$ (U p.54).</dd>
+    <dt>Qué uso</dt><dd>Bolzano y cota de la bisección $\dfrac{b-a}{2^n}$ — <a href="#s3">ver teoría</a> (U pp.52-54).</dd>
     <dt>Por dónde empiezo</dt><dd>Compruebo el cambio de signo y escribo la longitud inicial: $b-a=2$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Como $f$ es continua en $[-1,1]$ y $f(-1)f(1)=-2&lt;0$, por el teorema de Bolzano hay una raíz en $(-1,1)$ y se puede aplicar la bisección. Tras $n$ iteraciones el error es menor que $\dfrac{b-a}{2^n}=\dfrac{2}{2^n}$. Imponemos
+  $$\frac{2}{2^n}&lt;0.15\iff 2^n&gt;\frac{2}{0.15}=13.\overline3 .$$
+  Como $2^3=8&lt;13.\overline3&lt;16=2^4$, el menor natural es $n=4$ (cota $\frac2{16}=0.125$; con $n=3$ sería $0.25$). Hacen falta $n=4$ iteraciones.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> menor $n$ con $\frac{b-a}{2^n}&lt;\varepsilon$; se tantea con potencias de $2$. No hace falta conocer $f$, solo la longitud del intervalo.</div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §1.4, p.52 (Bolzano) y p.54 (cota de error de la bisección)">U pp.52-54</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <ol class="steps">
     <li><b>¿Se puede aplicar?</b> $f$ es continua y cambia de signo ($f(-1)=1&gt;0$, $f(1)=-2&lt;0$): por Bolzano hay una raíz entre $-1$ y $1$.</li>
     <li><b>Longitud de partida:</b> de $-1$ a $1$ hay $2$.</li>
@@ -588,19 +996,28 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Primera que baja de $0.15$:</b> la de $4$ pasos ($0.125&lt;0.15$; con $3$ pasos son $0.25$, no vale).</li>
   </ol>
   <p><b>Resultado:</b> $n=4$ iteraciones.</p>
-  <div class="box tip"><span class="h">Lo que escribes en el examen</span>
-    <p>«Por Bolzano hay raíz en $(-1,1)$. Tras $n$ pasos el error es $&lt;\frac{2}{2^n}$. Con $n=4$: $\frac{2}{16}=0.125&lt;0.15$; con $n=3$: $0.25$. Luego $n=4$.»</p></div>
-  <div class="recipe"><b>Receta:</b> menor $n$ con $\frac{b-a}{2^n}&lt;\varepsilon$; se tantea con potencias de $2$. No hace falta conocer $f$, solo la longitud del intervalo.</div>
-  <p><i>Parte del tema:</i> §3 (fila de bisección); U §1.4 p.54.</p>
+  </details>
 </details>
-<details class="sol"><summary>X2 (fácil) — Newton, dos iteraciones: $4-2x=e^x$ desde $x_0=0$ <span class="src" data-l="X" data-ref="X p.133 (Septiembre 2017, Ing. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.133</span></summary>
-<p class="enun">Aproxime una solución de $4-2x=e^x$ por el método de Newton con $x_0=0$ y dos iteraciones.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-2">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 2 · Sept. 2017 · Newton, dos iteraciones</span> <span class="src" data-l="X" data-ref="X p.133 (Septiembre 2017, Ing. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.133</span></header>
+<div class="ejer-enun"><p class="enun">Aproxime una solución de $4-2x=e^x$ por el método de Newton con $x_0=0$ y dos iteraciones.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular $x_2$ de Newton para $4-2x=e^x$ con $x_0=0$.</dd>
     <dt>Cómo lo pienso</dt><dd>Newton parte del punto actual, traza la tangente y toma donde corta al eje $x$. Basta pasar la ecuación a la forma $f(x)=0$ y aplicar la fórmula dos veces.</dd>
-    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$.</dd>
+    <dt>Qué uso</dt><dd>Newton: $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$ — <a href="#s1-formula">ver teoría</a> (U p.88).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribo todo en un lado: $f(x)=e^x+2x-4$, y calculo $f'(x)$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Escribo la ecuación como $f(x)=0$ con $f(x)=e^x+2x-4$; $f'(x)=e^x+2&gt;0$, así que nunca se divide entre $0$. Fórmula de Newton:
+  $$x_{n+1}=x_n-\frac{e^{x_n}+2x_n-4}{e^{x_n}+2}.$$
+  Con $x_0=0$: $x_1=0-\dfrac{-3}{3}=1$. Con $x_1=1$: $x_2=1-\dfrac{e-2}{e+2}=\dfrac{4}{e+2}\approx0.8477$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> escribe $f$ y $f'$, comprueba $f'\ne0$ y rellena una tabla $n\,|\,x_n\,|\,f(x_n)\,|\,f'(x_n)$ fila a fila.</div>
+  <p class="mismo"><i>Mismo método que Ejercicio 2.34.</i></p>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §2.4.2, p. 88">U p.88</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"p":[[0,1,"x₀=0"]],"q":[[0.840841,2.318317,"solución"]],"c":[{"e":"exp(x)","n":"eˣ"},{"e":"4-2*x","n":"4−2x"}],"x":[-1,2],"y":[-1,6]}' data-alt="Curvas e^x y 4-2x"><figcaption>La solución de $4-2x=e^x$ es el corte de la recta $4-2x$ con la exponencial: $x\approx0{,}8408$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Pasar a $f(x)=0$.</b> Todo a un lado: $f(x)=e^x+2x-4$.</li>
@@ -610,19 +1027,27 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Segunda iteración</b> ($x_1=1$): $f(1)=e-2$ y $f'(1)=e+2$. Así $x_2=1-\dfrac{e-2}{e+2}=\dfrac{4}{e+2}\approx0.8477$.</li>
   </ol>
   <p><b>Resultado:</b> $x_2=\dfrac{4}{e+2}\approx0.8477$ (comprobación: la raíz real es $0.8408\ldots$).</p>
-  <div class="box tip"><span class="h">Lo que escribes en el examen</span>
-    <p>«$f(x)=e^x+2x-4$, $f'(x)=e^x+2\ne0$. $x_{n+1}=x_n-f(x_n)/f'(x_n)$. $x_1=1$, $x_2=\frac{4}{e+2}\approx0.8477$.»</p></div>
-  <div class="recipe"><b>Receta:</b> escribe $f$ y $f'$, comprueba $f'\ne0$ y rellena una tabla $n\,|\,x_n\,|\,f(x_n)\,|\,f'(x_n)$ fila a fila.</div>
-  <p><i>Parte del tema:</i> §1 (U pp.86-90).</p>
+  </details>
 </details>
-<details class="sol"><summary>X3 (fácil) — punto fijo, cinco iteraciones: $f(x)=1-\frac1{x^2+2}$ desde $x_0=0$ <span class="src" data-l="X" data-ref="X p.1 (Febrero 2010, 1ª semana, Ing. Eléctrica, pregunta corta 2, 1 punto)">X p.1</span></summary>
-<p class="enun">Dada $f(x)=1-\dfrac1{x^2+2}$, encuentre un punto fijo con el método del punto fijo: 5 iteraciones, $x_0=0$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-3">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Examen 3 · Feb. 2010 · punto fijo, cinco iteraciones</span> <span class="src" data-l="X" data-ref="X p.1 (Febrero 2010, 1ª semana, Ing. Eléctrica, pregunta corta 2, 1 punto)">X p.1</span></header>
+<div class="ejer-enun"><p class="enun">Dada $f(x)=1-\dfrac1{x^2+2}$, encuentre un punto fijo con el método del punto fijo: 5 iteraciones, $x_0=0$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hacer cinco iteraciones de punto fijo con $f(x)=1-\frac1{x^2+2}$ desde $x_0=0$.</dd>
     <dt>Cómo lo pienso</dt><dd>Un punto fijo es un $x$ que la función deja igual: $f(x)=x$. Se encuentra metiendo un número en $f$, volviendo a meter el resultado, y repitiendo cinco veces.</dd>
-    <dt>Qué uso</dt><dd>Iteración de punto fijo $x_{n+1}=g(x_n)$ (U Def. 2.4, p.90); Teorema 2.2 (U p.91) solo si piden justificar la convergencia.</dd>
+    <dt>Qué uso</dt><dd>Iteración de punto fijo $x_{n+1}=g(x_n)$ — <a href="#s2-teoremas">ver teoría</a> (U p.90).</dd>
     <dt>Por dónde empiezo</dt><dd>Calculo $x_1=f(0)$ y sigo usando cada resultado como entrada del siguiente.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Tomo $g(x)=1-\dfrac1{x^2+2}$ y la iteración $x_{n+1}=g(x_n)$ con $x_0=0$:
+  $$x_1=\tfrac12=0.5,\quad x_2=\tfrac59\approx0.55556,\quad x_3\approx0.56684,\quad x_4\approx0.56921,\quad x_5\approx0.56971.$$
+  Un punto fijo aproximado es $x_5\approx0.5697$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> punto fijo con $g$ dada: itera $x_{n+1}=g(x_n)$ guardando todas las cifras; si piden justificar, comprueba H0-H2 en un intervalo que contenga a $x_0$.</div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Def. 2.4 y ecuación (2.3), p. 90">U p.90</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"q":[[0.56984,0.56984,"punto fijo"]],"c":[{"e":"1-1/(x*x+2)","n":"f(x)"},{"e":"x","n":"y=x","d":1}],"x":[0,1.2],"y":[0,1.2]}' data-alt="f y la recta y=x"><figcaption>El punto fijo de $f(x)=1-\frac{1}{x^2+2}$ es el corte con $y=x$: $x\approx0{,}5698$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Regla.</b> $x_{n+1}=f(x_n)=1-\dfrac1{x_n^2+2}$, empezando en $x_0=0$ (U p.90).</li>
@@ -633,21 +1058,31 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li>$x_5\approx0.56971$.</li>
   </ol>
   <p><b>Resultado:</b> $x_5\approx0.5697$ (el punto fijo real es $0.56984\ldots$).</p>
-  <div class="box tip"><span class="h">Lo que escribes en el examen</span>
-    <p>La lista $x_1,\dots,x_5$ con la regla $x_{n+1}=f(x_n)$ y el resultado final. Con 1 punto basta eso. Si piden justificar la convergencia, mira el recuadro de abajo.</p></div>
-  <details class="sol"><summary>Extra (solo si piden justificar): ¿por qué converge?</summary>
-    <p>En $[0,1]$: (H0) $f$ es continua; (H1) $f$ es creciente y $f(0)=\frac12$, $f(1)=\frac23$, así que $f$ lleva $[0,1]$ dentro de $[0,1]$; (H2) $|f'(x)|=\frac{2x}{(x^2+2)^2}\le\frac12=k&lt;1$ (numerador $\le2$, denominador $\ge4$). Teorema 2.2 (U p.91): hay un único punto fijo y la iteración converge. Cota del Teorema 2.3: $|x_5-\tilde x|&lt;\frac{(1/2)^5}{1/2}\cdot1=0.0625$ (pesimista: el error real es $\approx1.3\cdot10^{-4}$).</p></details>
-  <div class="recipe"><b>Receta:</b> punto fijo con $g$ dada: itera $x_{n+1}=g(x_n)$ guardando todas las cifras; si piden justificar, comprueba H0-H2 en un intervalo que contenga a $x_0$.</div>
-    <p><i>Parte del tema:</i> §2, Teoremas 2.2 y 2.3 (U pp.90-92).</p>
+  
+  <p><b>Extra (solo si piden justificar): ¿por qué converge?</b></p>
+    <p>En $[0,1]$: (H0) $f$ es continua; (H1) $f$ es creciente y $f(0)=\frac12$, $f(1)=\frac23$, así que $f$ lleva $[0,1]$ dentro de $[0,1]$; (H2) $|f'(x)|=\frac{2x}{(x^2+2)^2}\le\frac12=k&lt;1$ (numerador $\le2$, denominador $\ge4$). Teorema 2.2 (U p.91): hay un único punto fijo y la iteración converge. Cota del Teorema 2.3: $|x_5-\tilde x|&lt;\frac{(1/2)^5}{1/2}\cdot1=0.0625$ (pesimista: el error real es $\approx1.3\cdot10^{-4}$).</p>
+  </details>
 </details>
-<details class="sol"><summary>X4 (medio) — Newton con criterio de parada: $x-2^{-x}=0$ desde $x_0=0$ <span class="src" data-l="X" data-ref="X p.20 (Febrero 2012, 1ª semana, Ing. Mecánica, Modelo A, ejercicio 5, 3 puntos)">X p.20</span></summary>
-<p class="enun">Mediante el método de Newton, encontrar una raíz próxima a $x_0=0$ de $x-2^{-x}=0$. Utilizar tres decimales redondeados en cada iteración hasta que se cumpla $|x_{n-1}-x_n|&lt;10^{-3}$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Aplicar Newton a $x-2^{-x}=0$ desde $x_0=0$, con tres decimales, hasta que $|x_{n-1}-x_n|<10^{-3}$.</dd>
+</article>
+<article class="ejer" id="ex-4">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Examen 4 · Feb. 2012 · Newton con criterio de parada</span> <span class="src" data-l="X" data-ref="X p.20 (Febrero 2012, 1ª semana, Ing. Mecánica, Modelo A, ejercicio 5, 3 puntos)">X p.20</span></header>
+<div class="ejer-enun"><p class="enun">Mediante el método de Newton, encontrar una raíz próxima a $x_0=0$ de $x-2^{-x}=0$. Utilizar tres decimales redondeados en cada iteración hasta que se cumpla $|x_{n-1}-x_n|&lt;10^{-3}$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Aplicar Newton a $x-2^{-x}=0$ desde $x_0=0$, con tres decimales, hasta que $|x_{n-1}-x_n|&lt;10^{-3}$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es Newton de siempre; lo único nuevo es cuándo parar: cuando dos iterados seguidos se diferencian en menos de $10^{-3}$. Se hace una tabla y se mira la última columna.</dd>
-    <dt>Qué uso</dt><dd>Newton (U §2.4.2, p.88): $x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$; criterios de parada (U pp.89-90).</dd>
+    <dt>Qué uso</dt><dd>Newton y criterio de parada $|x_{n+1}-x_n|&lt;\text{tol}$ — <a href="#s1-parada">ver teoría</a> (U pp.88-90).</dd>
     <dt>Por dónde empiezo</dt><dd>Defino $f(x)=x-2^{-x}$, derivo ($f'(x)=1+\ln2\cdot2^{-x}$) y calculo $x_1$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>$f(x)=x-2^{-x}$ es continua y $f(0)=-1&lt;0&lt;f(1)=\frac12$: hay una raíz en $(0,1)$. $f'(x)=1+\ln2\cdot2^{-x}&gt;0$. Newton: $x_{n+1}=x_n-\dfrac{x_n-2^{-x_n}}{1+\ln2\cdot2^{-x_n}}$. Con tres decimales:
+  $$x_0=0\to x_1=0.591\ (|x_1-x_0|=0.591),\quad x_2=0.641\ (0.050),\quad x_3=0.641\ (0&lt;10^{-3}).$$
+  Como $|x_3-x_2|&lt;10^{-3}$, me detengo: la raíz es $0.641$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> Newton «hasta $|x_n-x_{n-1}|&lt;$ tol»: tabla con una columna para la diferencia entre iterados y parar en la primera fila que cumpla la tolerancia.</div>
+  <p class="mismo"><i>Mismo método que Ejercicio 2.36.</i></p>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 88-90: algoritmo y criterios de parada">U pp.88-90</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"p":[[0,-1,"x₀=0"]],"q":[[0.641186,0,"raíz"]],"c":[{"e":"x-pow(2,-x)","n":"f(x)=x−2^(−x)"}],"x":[-0.5,1.5],"y":[-2,2]}' data-alt="Gráfica de x - 2^-x"><figcaption>La función $f(x)=x-2^{-x}$ es creciente y corta al eje $x$ en $x\approx0{,}6412$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Función.</b> $f(x)=x-2^{-x}$. Como $f(0)=-1&lt;0$ y $f(1)=\frac12&gt;0$, hay raíz entre $0$ y $1$ (Bolzano).</li>
@@ -662,20 +1097,32 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <tr><td>2</td><td>0.641</td><td>0.641</td><td>$\approx-0.0001$</td><td>1.444</td><td>0.641</td><td>$0&lt;10^{-3}$</td></tr>
   </table>
   <p><b>Resultado:</b> raíz $\approx0.641$ (se cumple el criterio en la tercera fila). Sin redondear sale lo mismo: $x_3=0.64119$.</p>
-  <div class="box tip"><span class="h">Lo que escribes en el examen</span>
-    <p>«$f$ continua con cambio de signo en $[0,1]$; $f'\ne0$; fórmula de Newton; tabla; como $|x_2-x_1|=0.050$ y $|x_3-x_2|=0&lt;10^{-3}$, la raíz es $0.641$.»</p></div>
-  <div class="recipe"><b>Receta:</b> Newton «hasta $|x_n-x_{n-1}|&lt;$ tol»: tabla con una columna para la diferencia entre iterados y parar en la primera fila que cumpla la tolerancia.</div>
+  
+  
   <div class="box warn"><span class="h">Ojo</span><p>Este criterio de parada es práctico: <b>no garantiza</b> que el error real sea $&lt;10^{-3}$.</p></div>
-  <p><i>Parte del tema:</i> §1, «Cuándo parar» (U pp.89-90).</p>
+  </details>
 </details>
-<details class="sol"><summary>X5 (medio) — punto fijo completo: $\frac12\operatorname{sen}x-x+1=0$ (convergencia, 4 iteraciones, error) <span class="src" data-l="X" data-ref="X p.141 (Febrero 2018, 2ª semana, Ing. Electrónica Industrial y Automática, ejercicio 6, 3 puntos)">X p.141</span></summary>
-<p class="enun">Dada $\frac12\operatorname{sen}x-x+1=0$: (a) compruebe que el punto fijo converge para todo $0\le x_0\le\pi$ (1 p.); (b) aproxime la solución con $x_0=2$ y cuatro iteraciones (1 p.); (c) estime el error absoluto cometido (1 p.).</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-5">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Examen 5 · Feb. 2018 · punto fijo completo</span> <span class="src" data-l="X" data-ref="X p.141 (Febrero 2018, 2ª semana, Ing. Electrónica Industrial y Automática, ejercicio 6, 3 puntos)">X p.141</span></header>
+<div class="ejer-enun"><p class="enun">Dada $\frac12\operatorname{sen}x-x+1=0$: (a) compruebe que el punto fijo converge para todo $0\le x_0\le\pi$ (1 p.); (b) aproxime la solución con $x_0=2$ y cuatro iteraciones (1 p.); (c) estime el error absoluto cometido (1 p.).</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>(a) Probar que el punto fijo de $\frac12\operatorname{sen}x-x+1=0$ converge para $x_0\in[0,\pi]$; (b) cuatro iteraciones desde $x_0=2$; (c) cota del error.</dd>
     <dt>Cómo lo pienso</dt><dd>El Teorema 2.2 es una lista de tres comprobaciones sobre $g$ en un intervalo; si pasan, la iteración converge. Después se calcula (b) y se pone la cota del teorema para (c).</dd>
-    <dt>Qué uso</dt><dd>Teorema 2.2 (U p.91): (H0) $g$ continua, (H1) $g([a,b])\subset[a,b]$, (H2) $|g'|\le k<1$; Teorema 2.3 (U p.91): $|x_n-\tilde x|<\dfrac{k^n}{1-k}(b-a)$.</dd>
+    <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 con $g(x)=\frac12\operatorname{sen}x+1$ — <a href="#s2-teoremas">ver teoría</a> (U p.91).</dd>
     <dt>Por dónde empiezo</dt><dd>Despejo $x=g(x)$, es decir $g(x)=\frac12\operatorname{sen}x+1$, y tomo $[a,b]=[0,\pi]$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Despejo $x=g(x)$ con $g(x)=\frac12\operatorname{sen}x+1$ y tomo $[a,b]=[0,\pi]$.</p>
+  <p><b>(a)</b> (H0) $g$ es continua. (H1) Si $x\in[0,\pi]$, $0\le\operatorname{sen}x\le1$, luego $1\le g(x)\le\frac32$ y $[1,\frac32]\subset[0,\pi]$. (H2) $g'(x)=\frac12\cos x$, así que $|g'(x)|\le\frac12=k&lt;1$. Por el Teorema 2.2 hay un único punto fijo en $[0,\pi]$ y la iteración converge para todo $x_0\in[0,\pi]$.</p>
+  <p><b>(b)</b> Con $x_0=2$ (radianes): $x_1\approx1.454649$, $x_2\approx1.496631$, $x_3\approx1.498626$, $x_4\approx1.498698$.</p>
+  <p><b>(c)</b> Teorema 2.3: $|x_4-\tilde x|&lt;\dfrac{k^4}{1-k}(b-a)=\dfrac{(1/2)^4}{1/2}\,\pi=\dfrac\pi8\approx0.39$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> despeja $x=g(x)$, comprueba <b>las tres</b> hipótesis (continuidad, $g([a,b])\subset[a,b]$, $|g'|\le k&lt;1$) y cita el Teorema 2.2; para el error, sustituye en $\frac{k^n}{1-k}(b-a)$.</div>
+  <p class="mismo"><i>Mismo método que Ejercicio 2.38.</i></p>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Teoremas 2.2 y 2.3, p. 91; Ejemplo 2.17, pp. 92-93">U pp.91-93</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"p":[[2,1.454649,"x₀=2"]],"q":[[1.498701,1.498701,"punto fijo"]],"c":[{"e":"sin(x)/2+1","n":"g(x)=½ sen x+1"},{"e":"x","n":"y=x","d":1}],"x":[0,3.1416],"y":[0,3.2]}' data-alt="g(x)=sen(x)/2+1 y la recta y=x"><figcaption>La ecuación equivale a $x=g(x)=\frac12\operatorname{sen}x+1$: el punto fijo es el corte con $y=x$, en $x\approx1{,}4987$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Despejar $x=g(x)$.</b> $g(x)=\frac12\operatorname{sen}x+1$, intervalo $[a,b]=[0,\pi]$.</li>
@@ -687,19 +1134,28 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>(c) Error.</b> Teorema 2.3: $|x_4-\tilde x|&lt;\dfrac{k^4}{1-k}(b-a)=\dfrac{(1/2)^4}{1/2}\cdot\pi=\dfrac\pi8\approx0.3927$. (Es pesimista: el error real es $2.7\cdot10^{-6}$.)</li>
   </ol>
   <p><b>Resultado:</b> (a) converge; (b) $x_4\approx1.4987$; (c) error $&lt;\pi/8\approx0.39$.</p>
-  <div class="box tip"><span class="h">Lo que escribes en el examen</span>
-    <p>Las tres líneas (H0), (H1), (H2) con su cuenta, «Teorema 2.2», la lista de iterados y la cota $\frac{k^n}{1-k}(b-a)$ con los números sustituidos.</p></div>
-  <div class="recipe"><b>Receta:</b> despeja $x=g(x)$, comprueba <b>las tres</b> hipótesis (continuidad, $g([a,b])\subset[a,b]$, $|g'|\le k&lt;1$) y cita el Teorema 2.2; para el error, sustituye en $\frac{k^n}{1-k}(b-a)$.</div>
-    <p><i>Parte del tema:</i> §2, Teoremas 2.2 y 2.3; mismo esquema que el Ejemplo 2.17 de U (pp.92-93) y el Ej. 2.38 de E.</p>
+  </details>
 </details>
-<details class="sol"><summary>X6 (difícil) — punto fijo: número de iteraciones para error $\le0.1$ en $\cos(x^2)\operatorname{sen}(x+1)-2x=0$ <span class="src" data-l="X" data-ref="X pp.29-30 (Septiembre 2012, reserva, Ing. Mecánica, Modelo A, ejercicio 5, 3 puntos)">X pp.29-30</span></summary>
-<p class="enun">Aplíquese el método del punto fijo para encontrar una solución aproximada, con 5 cifras significativas y error $\le0.1$, de $\cos x^2\operatorname{sen}(x+1)-2x=0$ con $x_0=0$. ¿Cuántas iteraciones hay que hacer? (La función $f(x)=\frac12\cos x^2\operatorname{sen}(x+1)$ es contractiva en $[0,1]$.) Aquí $\cos x^2$ significa $\cos(x^2)$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
+</article>
+<article class="ejer" id="ex-6">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Examen 6 · Sept. 2012 · nº de iteraciones y punto fijo</span> <span class="src" data-l="X" data-ref="X pp.29-30 (Septiembre 2012, reserva, Ing. Mecánica, Modelo A, ejercicio 5, 3 puntos)">X pp.29-30</span></header>
+<div class="ejer-enun"><p class="enun">Aplíquese el método del punto fijo para encontrar una solución aproximada, con 5 cifras significativas y error $\le0.1$, de $\cos x^2\operatorname{sen}(x+1)-2x=0$ con $x_0=0$. ¿Cuántas iteraciones hay que hacer? (La función $f(x)=\frac12\cos x^2\operatorname{sen}(x+1)$ es contractiva en $[0,1]$.) Aquí $\cos x^2$ significa $\cos(x^2)$.</p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular cuántas iteraciones de punto fijo con $g(x)=\frac12\cos(x^2)\operatorname{sen}(x+1)$ y $x_0=0$ dan error $\le0.1$, y dar la aproximación.</dd>
     <dt>Cómo lo pienso</dt><dd>La cota del Teorema 2.3 es $\frac{k^n}{1-k}(b-a)$: cuanto más pequeño es el intervalo y menor la pendiente $k$, menos iteraciones hacen falta. Se busca un intervalo pequeño, que contenga a $x_0$ y que $g$ lleve en sí mismo, se saca $k$ y se despeja $n$.</dd>
-    <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 (U p.91) y número de iteraciones (U p.92).</dd>
+    <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3, nº de iteraciones — <a href="#s2-teoremas">ver teoría</a> (U pp.91-92).</dd>
     <dt>Por dónde empiezo</dt><dd>Identifico $g$, elijo el intervalo $[0,\frac12]$ y compruebo (H1) viendo entre qué valores se mueve $g$.</dd>
   </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Tomo $g(x)=\frac12\cos(x^2)\operatorname{sen}(x+1)$ y el intervalo $[a,b]=[0,\frac12]$, que contiene a $x_0=0$.</p>
+  <p>(H0) $g$ es continua. (H1) En $[0,\frac12]$, $0&lt;g(x)\le\frac12$, luego $g([0,\frac12])\subset[0,\frac12]$. (H2) $g'(x)=-x\operatorname{sen}(x^2)\operatorname{sen}(x+1)+\frac12\cos(x^2)\cos(x+1)$ y en $(0,\frac12)$: $|g'|\le\frac12\operatorname{sen}\frac14+\frac12\cos1\approx0.124+0.270=0.394&lt;\frac12=k$.</p>
+  <p>Teorema 2.3: $\dfrac{(1/2)^n}{1/2}\cdot\dfrac12=\dfrac1{2^n}\le0.1\iff2^n\ge10$. Como $2^3=8&lt;10\le16=2^4$, hacen falta $n=4$ iteraciones. Iterando desde $x_0=0$ con cinco cifras: $x_1=0.42074$, $x_2=0.48666$, $x_3=0.48432$, $x_4=0.48449$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> para «¿cuántas iteraciones garantizan error $&lt;\varepsilon$?», elige el intervalo $[a,b]$ más pequeño que contenga a $x_0$ y que $g$ lleve en sí mismo, acota $|g'|$ por $k&lt;1$ y toma el menor natural con $\frac{k^n}{1-k}(b-a)&lt;\varepsilon$.</div>
+  <p class="mismo"><i>Mismo método que Ejercicio 2.37, ahora hay que hallar antes $[a,b]$ y $k$.</i></p>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Teoremas 2.2 y 2.3, p. 91; número de iteraciones, p. 92">U pp.91-92</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <figure class="graf" data-g='{"p":[[0,0.420735,"x₀=0"]],"q":[[0.484479,0.484479,"punto fijo"]],"c":[{"e":"cos(x*x)*sin(x+1)/2","n":"g(x)"},{"e":"x","n":"y=x","d":1}],"x":[0,1],"y":[0,1]}' data-alt="g y la recta y=x en [0,1]"><figcaption>La función $g(x)=\frac12\cos(x^2)\operatorname{sen}(x+1)$ es muy plana y corta a $y=x$ en $x\approx0{,}4845$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
   <ol class="steps">
     <li><b>Despejar $x=g(x)$.</b> $g(x)=\frac12\cos(x^2)\operatorname{sen}(x+1)$.</li>
@@ -711,12 +1167,10 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li><b>Iterar</b> (5 cifras): $x_1=0.42074$, $x_2=0.48666$, $x_3=0.48432$, $x_4=0.48449$ ($x_5=0.48448$).</li>
   </ol>
   <p><b>Resultado:</b> $n=4$ iteraciones; solución aproximada $0.48449$ (punto fijo real $0.4844793\ldots$).</p>
-  <div class="box tip"><span class="h">Lo que escribes en el examen</span>
-    <p>$g$, el intervalo $[0,\frac12]$ con (H0), (H1), (H2) y $k=\frac12$; la desigualdad $\frac1{2^n}\le0.1$ con $n=4$; y la lista $x_1,\dots,x_4$.</p></div>
-  <div class="recipe"><b>Receta:</b> para «¿cuántas iteraciones garantizan error $&lt;\varepsilon$?», elige el intervalo $[a,b]$ más pequeño que contenga a $x_0$ y que $g$ lleve en sí mismo, acota $|g'|$ por $k&lt;1$ y toma el menor natural con $\frac{k^n}{1-k}(b-a)&lt;\varepsilon$.</div>
-    <p><i>Parte del tema:</i> §2 y §3, «Lista de pasos para garantizar error $&lt;\varepsilon$» (U pp.91-92).</p>
+  </details>
 </details>
-<div class="box intu"><span class="h">Tipos que también caen y no están en el PDF resuelto</span>
+</article>
+<div class="box intu" data-extra><span class="h">Tipos que también caen y no están en el PDF resuelto</span>
   <ul>
     <li><b>Teoría (pregunta corta):</b> «describa el método de Newton: para qué sirve y cómo se usa» (X p.129); «condiciones para que $g:[a,b]\to[a,b]$ tenga un único punto fijo» (Febrero 2014, Modelo B, P1); «describa el método del punto fijo y sus condiciones» e «importancia de la cota de error». Se responden con los Teoremas 2.2-2.3 y la deducción geométrica de Newton (recta tangente).</li>
     <li><b>Newton para raíces cúbicas:</b> $\sqrt[3]9$ con $x_0=1$ (Septiembre 2018, Modelo A, X pp.96-97; $x_1=3.6667$, $x_2=2.6676$) y $\sqrt[3]5$ con $x_0=2$ (Febrero 2013, X p.32): como X2 y el Ej. 2.34.</li>
@@ -726,8 +1180,8 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li>No aparece ninguna pregunta de número de iteraciones de Newton garantizado ni de elegir, entre varias $g$, la que converge (Ejemplo 2.18 de U); esta última podría caer como teoría.</li>
   </ul>
 </div>
-<!-- ============================ 7 ============================ -->
-<h2 id="chuleta"><span class="n">7</span>Chuleta y lista de comprobación</h2>
+<!-- ============================ chuleta ============================ -->
+<h2 id="chuleta" data-vista="teoria"><span class="n">9</span>Chuleta y lista de comprobación</h2>
 <div class="box def"><span class="h">Chuleta</span>
   <ul>
     <li><b>Newton</b> (para $f(x)=0$, $f$ derivable, $f'(x_n)\ne0$): $\;x_{n+1}=x_n-\dfrac{f(x_n)}{f'(x_n)}$. Raíz de $x^2-a$: $\tfrac12(x_n+a/x_n)$.</li>
@@ -752,7 +1206,7 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
   <li>Distinguir «$n$ iteraciones pedidas», «hasta $\varepsilon_r&lt;$ tol» y «garantizar error $&lt;\varepsilon$».</li>
   <li>Comparar bisección, punto fijo y Newton: qué exigen, qué garantizan y cómo de rápidos son.</li>
 </ul>
-<div class="box warn"><span class="h">Errores frecuentes</span>
+<div class="box warn" data-extra><span class="h">Errores frecuentes</span>
   <ul>
     <li>Olvidar que $g$ debe llevar $[a,b]$ en sí mismo (solo mirar $|g'|&lt;1$).</li>
     <li>Perder el signo de $f'$ (por ejemplo con $e^{-x}$).</li>
@@ -763,7 +1217,6 @@ svg.fig .t24-lab{font-size:13px;fill:var(--fg)}
     <li>Calcular en grados en vez de en radianes (ejemplos con $\cos x$).</li>
   </ul>
 </div>
-<!-- ============================ ★ ============================ -->
 <h2 id="fuentes"><span class="n">★</span>Fuentes de este tema</h2>
 <details class="fuentes-toggle">
 <summary>Mostrar lista de fuentes</summary>

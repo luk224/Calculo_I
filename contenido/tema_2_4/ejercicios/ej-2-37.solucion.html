@@ -1,0 +1,23 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar cuántas iteraciones de punto fijo garantizan error menor que $0.1$ si $|f'|&lt;0.8$ y si $|f'|&lt;0.2$ en $[-1,1]$.</dd>
+    <dt>Cómo lo pienso</dt><dd>No hay que iterar nada: el teorema da una cota del error que solo depende de $k$, de la longitud del intervalo y de $n$. Se busca el primer $n$ para el que esa cota baja de $0.1$; cuanto menor es $k$, antes ocurre.</dd>
+    <dt>Qué uso</dt><dd>Teorema 2.3: $\dfrac{k^n}{1-k}(b-a)&lt;\varepsilon$ — <a href="#s2-teoremas">ver teoría</a> (U pp.91-92).</dd>
+    <dt>Por dónde empiezo</dt><dd>Sustituyo $b-a=2$ y cada valor de $k$, y planteo $\dfrac{2k^n}{1-k}&lt;0.1$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> resuelve $\frac{k^n}{1-k}(b-a)&lt;\varepsilon\Rightarrow n&gt;\dfrac{\ln\big(\varepsilon(1-k)/(b-a)\big)}{\ln k}$ y toma el <b>primer natural estrictamente mayor</b>. Recuerda que $\ln k&lt;0$ invierte la desigualdad.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Datos del Teorema 2.3.</b> Aquí la función de iteración se llama $f$. $[a,b]=[-1,1]$, $f([-1,1])\subset[-1,1]$ y $|f'|&lt;k$ con $k=0.8$ o $k=0.2$, ambos en $[0,1)$. Se cumplen las hipótesis del Teorema 2.2, y por el Teorema 2.3
+      $$|x_n-\tilde x|&lt;\frac{k^n}{1-k}(b-a)=\frac{2k^n}{1-k}.$$</li>
+    <li><b>Planteamiento.</b> Buscamos el <b>menor</b> $n\in\mathbb N$ con $\dfrac{2k^n}{1-k}&lt;0.1$.</li>
+    <li><b>Caso $k=0.8$.</b> $\dfrac{2\cdot0.8^n}{0.2}&lt;0.1\iff10\cdot0.8^n&lt;0.1\iff0.8^n&lt;0.01$. Tomamos $\ln$ (creciente, conserva el sentido): $n\ln0.8&lt;\ln0.01$. Dividimos entre $\ln0.8&lt;0$, que <b>invierte</b> la desigualdad:
+      $$n&gt;\frac{\ln0.01}{\ln0.8}\approx20.6377.$$
+      El primer natural es $n=21$. Comprobación: $n=20$ da cota $0.1153$ (no basta); $n=21$ da $0.0922&lt;0.1$.</li>
+    <li><b>Caso $k=0.2$.</b> $\dfrac{2\cdot0.2^n}{0.8}&lt;0.1\iff0.2^n&lt;0.04$. Como $0.2^2=0.04$ <b>no</b> es $&lt;0.04$ y $0.2^3=0.008&lt;0.04$, sale $n=3$. (Cotas: $n=2\to0.1$, $n=3\to0.02$.)</li>
+    <li><b>Moraleja.</b> Con el mismo intervalo, pasar de $k=0.8$ a $k=0.2$ reduce la garantía de $21$ a $3$ iteraciones: cuanto menor es $k$, más rápida es la convergencia.</li>
+    <li><b>Por qué 3 y no 2.</b> Con $k=0.2$ y $n=2$ la cota vale exactamente $0.1$, no es $&lt;0.1$; la receta de U (p.92) pide el natural más pequeño con cota $&lt;\varepsilon$, así que la respuesta es <b>3</b>.</li>
+  </ol>
+  
+  <p><b>Error típico:</b> no invertir la desigualdad al dividir entre $\ln k$ (sale $n&lt;20.6$, absurdo); redondear $20.64$ a $20$ en vez de a $21$; olvidar el factor $(b-a)=2$ o el $1/(1-k)$.</p>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U Teorema 2.3, p. 91; procedimiento p. 92; Ejemplo 2.17 d, p. 93">U pp.91-93</span></p>

@@ -1,0 +1,41 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>(1) Probar que el punto fijo de $e^{-x}=x$ converge para todo $x_0\in[0.1,2]$; (2) hacer cuatro iteraciones desde $x_0=1$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Un punto fijo se encuentra repitiendo $x\mapsto g(x)$. Funciona si $g$ no saca al punto del intervalo y además lo acerca (pendiente menor que 1 en valor absoluto); ese es el contenido del teorema, y hay que comprobar cada condición con números.</dd>
+    <dt>Qué uso</dt><dd>Teorema 2.2: (H0) $g$ continua, (H1) $g([a,b])\subset[a,b]$, (H2) $|g'|\le k&lt;1$ — <a href="#s2-teoremas">ver teoría</a> (U p.91).</dd>
+    <dt>Por dónde empiezo</dt><dd>Llamo $g(x)=e^{-x}$ y $[a,b]=[0.1,2]$; compruebo (H1) usando que $g$ es decreciente.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta (convergencia del punto fijo en $[a,b]$):</b> (1) pasa la ecuación a $x=g(x)$; (2) estudia la monotonía de $g$ y calcula $g(a)$, $g(b)$ para ver que $g([a,b])\subset[a,b]$; (3) acota $|g'|$ en $(a,b)$ por su valor mayor $k$ y comprueba $k&lt;1$; (4) cita el Teorema 2.2.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"q":[[0.567143,0.567143,"punto fijo"]],"c":[{"e":"exp(-x)","n":"g(x)=e^(−x)"},{"e":"x","n":"y=x","d":1}],"x":[0,2.2],"y":[0,2.2]}' data-alt="g(x)=e^-x y la recta y=x"><figcaption>El punto fijo es donde la curva $g(x)=e^{-x}$ corta a la recta $y=x$: $x\approx0{,}5671$. En $[0{,}1,2]$ la curva queda dentro del intervalo. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <p><b>Apartado 1.</b></p>
+  <ol class="steps">
+    <li><b>Forma $x=g(x)$.</b> Ya lo está: $g(x)=e^{-x}$. Sus puntos fijos son exactamente las soluciones de la ecuación (Definición 2.4).</li>
+    <li><b>Qué hay que comprobar</b> (Teorema 2.2) en $[a,b]=[0.1,2]$: (H0) $g$ continua (inmediato: $e^{-x}$ es continua en $\mathbb R$); (H1) $g([a,b])\subset[a,b]$; (H2) existe $k\in[0,1)$ con $|g'(x)|\le k$ en $(a,b)$.</li>
+    <li><b>(H1).</b> $g'(x)=-e^{-x}&lt;0$: $g$ es estrictamente decreciente, e invierte las desigualdades. Para $0.1\le x\le2$:
+      $$g(2)\le g(x)\le g(0.1)\iff 0.1353\approx e^{-2}\le e^{-x}\le e^{-0.1}\approx0.9048.$$
+      Como $0.1&lt;0.1353$ y $0.9048&lt;2$, se cumple $g(x)\in[0.1,2]$. <i>Por qué importa:</i> si una iteración saliera de $[a,b]$, ya no podríamos usar la cota de $g'$ en el paso siguiente.</li>
+    <li><b>(H2).</b> $|g'(x)|=e^{-x}$ es decreciente, así que su mayor valor en $(0.1,2)$ está cerca de $x=0.1$: $|g'(x)|&lt;e^{-0.1}\approx0.9048&lt;1$. Tomamos $k=e^{-0.1}\approx0.905$.</li>
+    <li><b>Conclusión.</b> Por el Teorema 2.2, $g$ tiene un <b>único</b> punto fijo en $[0.1,2]$ y $x_{n+1}=e^{-x_n}$ converge a él para <b>cualquier</b> $x_0\in[0.1,2]$.</li>
+  </ol>
+  <p><b>Apartado 2.</b> Iteraciones con $x_0=1$ (y cuatro más para ver la tendencia; $\tilde x=0.567143\ldots$):</p>
+  <table class="t24-num">
+    <tr><th>$n$</th><th>$x_n=e^{-x_{n-1}}$</th><th>error real $|x_n-\tilde x|$</th><th>$\varepsilon_r$</th></tr>
+    <tr><td>0</td><td>1</td><td>0.4329</td><td>—</td></tr>
+    <tr><td>1</td><td>0.367879441171</td><td>0.1993</td><td>1.718</td></tr>
+    <tr><td>2</td><td>0.692200627555</td><td>0.1251</td><td>0.4685</td></tr>
+    <tr><td>3</td><td>0.500473500564</td><td>0.0667</td><td>0.3831</td></tr>
+    <tr><td><b>4</b></td><td><b>0.606243535086</b></td><td><b>0.0391</b></td><td>0.1745</td></tr>
+    <tr><td>5</td><td>0.545395785975</td><td>0.0217</td><td>0.1116</td></tr>
+    <tr><td>6</td><td>0.579612335503</td><td>0.0125</td><td>0.0590</td></tr>
+    <tr><td>7</td><td>0.560115461361</td><td>0.0070</td><td>0.0348</td></tr>
+    <tr><td>8</td><td>0.571143115080</td><td>0.0040</td><td>0.0193</td></tr>
+  </table>
+  <ol class="steps" style="counter-reset:s 5">
+    <li><b>Respuesta.</b> $x_4\approx0.6062$. Coincide con E aunque se redondee a 4 decimales en cada paso: $0.3679,\ 0.6922,\ 0.5005,\ 0.6062$.</li>
+    <li><b>Lectura de la tabla (propio).</b> Las iteraciones <b>oscilan</b> alrededor de $\tilde x$ (una por defecto, otra por exceso), lo que ocurre cuando $g'&lt;0$. El error se multiplica más o menos por $|g'(\tilde x)|=\tilde x\approx0.567$ en cada paso: convergencia <b>lineal</b>. Newton sobre la misma ecuación (Ej. 2.36) lograba 15 decimales en 3 pasos.</li>
+    <li><b>¿Qué garantiza la teoría con 4 pasos?</b> Teorema 2.3: $\frac{k^4}{1-k}(b-a)=\frac{0.9048^4}{0.0952}\cdot1.9\approx13.4$: <b>inútil</b> (el intervalo mide $1.9$). Para garantizar error $&lt;0.01$ harían falta $n&gt;\ln\!\big(0.01(1-k)/1.9\big)/\ln k\approx75.99$, o sea $76$ iteraciones; en la práctica bastan $7$ (según la tabla, $|x_6-\tilde x|=0.0125$ no basta y $|x_7-\tilde x|=0.0070$ sí).</li>
+  </ol>
+  
+  <p><b>Error típico:</b> ver «Comprobar solo $|g'|&lt;1$» en el apartado 2.</p>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 90-93: Definición 2.4, Teoremas 2.2 y 2.3, Ejemplo 2.17">U pp.90-93</span></p>

@@ -1,0 +1,18 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Para $x=\cos x$ en $[0,1]$: comprobar las hipótesis, iterar y dar cuántas iteraciones garantizan error $&lt;0.01$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Se trata de pasar la lista de comprobaciones del teorema (no salir del intervalo, pendiente menor que 1) a una función conocida y luego usar la cota para saber cuánto iterar.</dd>
+    <dt>Qué uso</dt><dd>Teoremas 2.2 y 2.3 — <a href="#s2-teoremas">ver teoría</a> (U pp.91-92).</dd>
+    <dt>Por dónde empiezo</dt><dd>Con $g(x)=\cos x$ miro dónde es monótona para hallar $g([0,1])$ y acotar $|g'|=\operatorname{sen}x$.</dd>
+  </dl></div>
+  
+  <p class="mismo"><i>Mismo método que Ejercicio 2.38.</i></p>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"q":[[0.739085,0.739085,"punto fijo"]],"c":[{"e":"cos(x)","n":"g(x)=cos x"},{"e":"x","n":"y=x","d":1}],"x":[0,1.2],"y":[0,1.2]}' data-alt="cos x y la recta y=x"><figcaption>El punto fijo es el corte de $y=\cos x$ con $y=x$: $x\approx0{,}7391$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>(H1).</b> $g(x)=\cos x$ es decreciente en $[0,1]\subset[0,\frac\pi2]$, luego $g([0,1])=[\cos1,\cos0]=[0.5403,1]\subset[0,1]$.</li>
+    <li><b>(H2).</b> $|g'(x)|=\operatorname{sen}x\le\operatorname{sen}1\approx0.8415&lt;1$ en $(0,1)$ (el seno crece en $[0,\frac\pi2]$). Tomamos $k=\operatorname{sen}1$. Por el Teorema 2.2: un único punto fijo y convergencia desde cualquier $x_0\in[0,1]$.</li>
+    <li>Con $x_0=1$: $x_1=0.540302305868$, $x_2=0.857553215846$, $x_3=0.654289790498$, $x_4=0.793480358743$. Valor exacto $\tilde x=0.739085133\ldots$; error de $x_4$: $0.054$ (oscila, $g'&lt;0$).</li>
+    <li><b>Garantía para error $&lt;0.01$:</b> $\dfrac{k^n}{1-k}&lt;0.01\iff n&gt;\dfrac{\ln(0.01(1-k))}{\ln k}\approx37.35$, luego $n=38$ (cota con $37$: $0.0106$; con $38$: $0.0089$). Newton resuelve la misma ecuación con seis decimales en unos $4$ pasos (S Ej. 3, p.341).</li>
+  </ol>
+  </details>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U pp. 91-92">U pp.91-92</span></p>

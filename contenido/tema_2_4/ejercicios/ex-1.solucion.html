@@ -1,0 +1,22 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Cuántas iteraciones de bisección aseguran error menor que $0.15$ con $f(-1)=1$ y $f(1)=-2$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Cada paso de bisección parte el intervalo por la mitad, así que su longitud se divide entre 2 y el error es menor que esa longitud. Solo hay que contar cuántas mitades hacen falta para bajar de $0.15$; no importa cómo sea $f$.</dd>
+    <dt>Qué uso</dt><dd>Bolzano y cota de la bisección $\dfrac{b-a}{2^n}$ — <a href="#s3">ver teoría</a> (U pp.52-54).</dd>
+    <dt>Por dónde empiezo</dt><dd>Compruebo el cambio de signo y escribo la longitud inicial: $b-a=2$.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Como $f$ es continua en $[-1,1]$ y $f(-1)f(1)=-2&lt;0$, por el teorema de Bolzano hay una raíz en $(-1,1)$ y se puede aplicar la bisección. Tras $n$ iteraciones el error es menor que $\dfrac{b-a}{2^n}=\dfrac{2}{2^n}$. Imponemos
+  $$\frac{2}{2^n}&lt;0.15\iff 2^n&gt;\frac{2}{0.15}=13.\overline3 .$$
+  Como $2^3=8&lt;13.\overline3&lt;16=2^4$, el menor natural es $n=4$ (cota $\frac2{16}=0.125$; con $n=3$ sería $0.25$). Hacen falta $n=4$ iteraciones.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> menor $n$ con $\frac{b-a}{2^n}&lt;\varepsilon$; se tantea con potencias de $2$. No hace falta conocer $f$, solo la longitud del intervalo.</div>
+  <p>Teoría: <span class="src" data-l="U" data-ref="U §1.4, p.52 (Bolzano) y p.54 (cota de error de la bisección)">U pp.52-54</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <ol class="steps">
+    <li><b>¿Se puede aplicar?</b> $f$ es continua y cambia de signo ($f(-1)=1&gt;0$, $f(1)=-2&lt;0$): por Bolzano hay una raíz entre $-1$ y $1$.</li>
+    <li><b>Longitud de partida:</b> de $-1$ a $1$ hay $2$.</li>
+    <li><b>Cuenta de mitades</b> (el error es menor que la longitud, U p.54): tras $1$ paso queda $1$; tras $2$, $0.5$; tras $3$, $0.25$; tras $4$, $0.125$.</li>
+    <li><b>Primera que baja de $0.15$:</b> la de $4$ pasos ($0.125&lt;0.15$; con $3$ pasos son $0.25$, no vale).</li>
+  </ol>
+  <p><b>Resultado:</b> $n=4$ iteraciones.</p>
+  </details>

@@ -1,0 +1,17 @@
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso</summary>
+<table class="t24-decide">
+  <tr><th>Si el enunciado dice…</th><th>Método</th><th>Cuántas iteraciones</th><th>Fórmula / criterio</th><th>Ejemplo</th></tr>
+  <tr><td>«realiza $n$ iteraciones»</td><td>Newton o punto fijo</td><td>exactamente $n$</td><td>tabla $x_0,x_1,\dots,x_n$; el resultado es $x_n$</td><td>E 2.34 (4), 2.35 (3), 2.36 (3), 2.38 (4)</td></tr>
+  <tr><td>«hasta que el error relativo aproximado sea menor que…»</td><td>Newton (o punto fijo)</td><td>no se sabe a priori: se para cuando se cumple</td><td>$\varepsilon_r=\dfrac{|x_n-x_{n-1}|}{|x_n|}&lt;\text{tol}$ (más un tope máximo)</td><td>P2 (4 pasos para $10^{-6}$)</td></tr>
+  <tr><td>«¿cuántas iteraciones garantizan error $&lt;\varepsilon$?» con $g:[a,b]\to[a,b]$ y $|g'|\le k$</td><td>punto fijo</td><td>el <b>menor natural</b> $n$ con $\dfrac{k^n}{1-k}(b-a)&lt;\varepsilon$</td><td>$n&gt;\dfrac{\ln\big(\varepsilon(1-k)/(b-a)\big)}{\ln k}$ (al dividir entre $\ln k&lt;0$ se <b>invierte</b> la desigualdad)</td><td>E 2.37: 21 con $k=0.8$; 3 con $k=0.2$. U 2.17 d: 9</td></tr>
+  <tr><td>«¿cuántas iteraciones para error $&lt;\varepsilon$?» con cambio de signo en $[a,b]$</td><td>bisección</td><td>el menor $n$ con $\dfrac{b-a}{2^n}&lt;\varepsilon$</td><td>$n&gt;\log_2\dfrac{b-a}{\varepsilon}$</td><td>U Ej. 1.49: $n&gt;3$, luego 4</td></tr>
+  <tr><td>«¿cuántas iteraciones de Newton garantizan…?»</td><td>Newton</td><td>U <b>no da</b> fórmula</td><td>usar $\varepsilon_r$ como criterio de parada práctico, no como garantía</td><td>—</td></tr>
+</table>
+<h3>Caso «garantizar error $&lt;\varepsilon$» (punto fijo), en cuatro pasos</h3>
+<ol class="steps">
+  <li>Identifica $g$, $[a,b]$ y $k$ y comprueba (H1) y (H2) <b>antes</b>; si no se cumplen, el Teorema 2.3 no dice nada.</li>
+  <li>Sustituye en $\dfrac{k^n}{1-k}(b-a)&lt;\varepsilon$, aísla $k^n$ y toma $\ln$; al dividir entre $\ln k&lt;0$ <b>la desigualdad se invierte</b>.</li>
+  <li>Toma el <b>primer natural estrictamente mayor</b> que el resultado (si sale $20.64$, $n=21$; si saliera exactamente $2$, $n=3$).</li>
+  <li>Comprueba con $n-1$ (no basta) y $n$ (basta). Ejemplos resueltos: Ej. 2.37 (21 y 3 iteraciones), U Ej. 2.17 d (9), Ej. 2.38 (76) y P4 (11).</li>
+</ol>
+</details>
