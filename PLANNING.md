@@ -97,7 +97,7 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 | [x] | 2.2 Reglas de derivación | E 2.3-2.5,2.10-2.13,2.15,2.16 + X | Mapa: qué regla uso (producto, cociente, cadena, inversa, logarítmica). Práctica de derivación rápida. |
 | [x] | 2.4 Newton y punto fijo | E 2.34-2.38 + X | Mapa: ¿Newton o punto fijo?, condiciones de convergencia, cota de error. |
 | [x] | 2.5 Rolle, valor medio, monotonía | E 2.39-2.51 + X | Mapa: ¿cuántas raíces? / ¿qué teorema aplico? (Rolle, TVM, Bolzano). 2.50-2.51 requieren 3.4-3.5: marcar. |
-| [ ] | 3.1 Taylor | E 3.1-3.14 + X | Mapa: orden y resto (Lagrange/Peano), desarrollos conocidos, estimación de error. |
+| [x] | 3.1 Taylor | E 3.1-3.14 + X | Mapa: orden y resto (Lagrange/Peano), desarrollos conocidos, estimación de error. |
 | [x] | 3.2 Series de Taylor | E 3.18-3.20 + X | Solo series de Taylor/analíticas son examen; el resto ya va en `details.fuera`. |
 | [ ] | 3.3 Interpolación | E 3.21-3.28 + X | Ya tiene `graf` y tabla `dd`. Mapa: ¿Newton/Lagrange/cota de error? |
 | [ ] | 3.4 Optimización y extremos | E 3.29-3.48 + X | Mapa: pasos para hallar extremos absolutos en intervalo cerrado / problema de optimización. |

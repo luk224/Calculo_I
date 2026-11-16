@@ -1,0 +1,20 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar valores de $x\ge0$ con error menor que $10^{-4}$ al aproximar $\ln(1+x)$ por $x-\frac{x^2}2+\frac{x^3}3$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Ese polinomio es el de Taylor de orden 3; lo que me piden es qué tan lejos de $0$ puedo ir con garantía. Acoto el error con Lagrange en el caso peor y despejo $x$.</dd>
+    <dt>Qué uso</dt><dd>$|R_3(x)|\le\frac{M}{4!}|x|^4<\varepsilon$, despejando $x$ — <a href="#s3">ver teoría</a> (U Prop. 3.2, p.111).</dd>
+    <dt>Por dónde empiezo</dt><dd>Compruebo que el polinomio es $p_3$ de $\ln(1+x)$ y escribo $R_3(x)$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> «¿para qué $x$ vale la aproximación con error $&lt;\varepsilon$?»: (1) comprueba que es $p_n$; (2) escribe $R_n$; (3) acota $|f^{(n+1}(c)|$ por una constante <b>independiente de $c$</b>; (4) resuelve $\frac{M}{(n+1)!}|x-x_0|^{n+1}&lt;\varepsilon$.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <figure class="graf" data-g='{"c":[{"e":"log(1+x)","n":"f(x)=ln(1+x)"},{"e":"x-x*x/2+x**3/3","n":"p₃(x)"}],"x":[0,2],"y":[0,3]}' data-alt="ln(1+x) y su polinomio de Maclaurin de orden 3"><figcaption>Cerca de $0$ las dos curvas son indistinguibles; $p_3$ se separa de $\ln(1+x)$ al crecer $x$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curvas de las expresiones del enunciado y valores calculados en la solución">P</span></figcaption></figure>
+  <ol class="steps">
+    <li><b>¿Es un polinomio de Taylor?</b> Para $f=\ln(1+x)$: $f^{(k}(x)=\frac{(-1)^{k-1}(k-1)!}{(1+x)^k}$ (ejemplo A2). En $0$: $f(0)=0$, $f'(0)=1$, $f''(0)=-1$, $f'''(0)=2$, luego $p_3(x)=x-\frac{x^2}2+\frac{x^3}3$. El error es $R_3$.</li>
+    <li><b>Resto de Lagrange</b> ($n=3$, $x_0=0$). Se cumplen las hipótesis: $f^{(4}(x)=-\frac6{(1+x)^4}$ es continua en $(-1,\infty)$. Entonces $R_3(x)=\dfrac{f^{(4}(c)}{4!}x^4=-\dfrac{x^4}{4(1+c)^4}$, con $c\in(0,x)$.</li>
+    <li><b>Caso peor en $c$.</b> Como $c&gt;0$, $(1+c)^4&gt;1$ y $\frac1{(1+c)^4}&lt;1$; así $|R_3(x)|&lt;\frac{x^4}4$. (Por eso el enunciado pide $x\ge0$: si $x&lt;0$, entonces $c\in(x,0)$, luego $1+c&lt;1$ y $\frac1{(1+c)^4}&gt;1$; habría que acotarlo por $\frac1{(1+x)^4}$, que crece sin límite cuando $x\to-1$.)</li>
+    <li><b>Despejar.</b> $\frac{x^4}4\le10^{-4}\iff x\le(4\cdot10^{-4})^{1/4}=\frac{\sqrt2}{10}$.</li>
+    <li><b>Conclusión:</b> para $x\in\big[0,\frac{\sqrt2}{10}\big]\approx[0;0{,}1414]$ el error es menor que $10^{-4}$. (En $x=\sqrt2/10$ el error real es $\approx8{,}99\cdot10^{-5}$.)</li>
+  </ol>
+  <p><b>Qué significa:</b> es un intervalo donde podemos <b>garantizarlo</b> con esta cota, no «el» intervalo exacto: numéricamente el error sigue siendo $&lt;10^{-4}$ hasta $x\approx0{,}1453$. La cota es conservadora porque cambiamos $\frac1{(1+c)^4}$ por $1$.</p>
+  
+<p><b>Teoría:</b> U pp.111-112.</p>
+  </details>

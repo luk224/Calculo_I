@@ -1,0 +1,18 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Obtener el polinomio de orden 3 en $-1$ de $x+e^x$ y de $(x+1)e^x$ a partir del de $e^x$.</dd>
+    <dt>Cómo lo pienso</dt><dd>No hace falta derivar de nuevo: el Taylor de una suma es la suma de Taylors, y el de un producto es el producto de Taylors cortado en el orden pedido.</dd>
+    <dt>Qué uso</dt><dd>Suma de Taylors y producto truncado — <a href="#s4">ver teoría</a> (U p.110; E 3.13).</dd>
+    <dt>Por dónde empiezo</dt><dd>Para $f$, escribo $x=-1+(x+1)$ y sumo; para $h$, multiplico $p(x)$ por $(x+1)$.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> con funciones construidas a partir de otras cuyo Taylor ya conocemos: sumar, multiplicar y <b>truncar</b>, o sustituir. Comprueba al menos un coeficiente derivando.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <p>Usamos dos propiedades: <b>(S)</b> el polinomio de una suma es la suma de polinomios; <b>(P)</b> el de un producto es el producto <b>truncado</b> en grado $n$.</p>
+  <ol class="steps">
+    <li><b>$f=x+e^x$.</b> El de $x$ es $x=-1+(x+1)$. Por (S): $\boxed{p_3^f(x)=(e^{-1}-1)+(1+e^{-1})(x+1)+\tfrac{e^{-1}}2(x+1)^2+\tfrac{e^{-1}}6(x+1)^3}$.</li>
+    <li><b>$h=(x+1)e^x$.</b> Multiplicamos $(x+1)\,p(x)=e^{-1}\big((x+1)+(x+1)^2+\frac{(x+1)^3}{2}+\frac{(x+1)^4}{6}\big)$ y quitamos el grado $4$: $\boxed{p_3^h(x)=e^{-1}\big((x+1)+(x+1)^2+\tfrac{(x+1)^3}{2}\big)}$.</li>
+    <li><b>Comprobación derivando</b> (solo con U). Para $f$: $f'=1+e^x$, $f''=f'''=e^x$; en $-1$: $-1+e^{-1},\ 1+e^{-1},\ e^{-1},\ e^{-1}$; dividiendo entre $k!$ se recuperan los coeficientes. Para $h$: $h^{(k}(x)=(x+1+k)e^x$ (ejemplo A1); en $-1$: $0,\ e^{-1},\ 2e^{-1},\ 3e^{-1}$; coeficientes $0,\ e^{-1},\ e^{-1},\ \frac{e^{-1}}2$. ✓</li>
+  </ol>
+  
+  <p><b>Error típico:</b> no truncar (dejar $(x+1)^4$), o truncar antes de multiplicar y perder términos.</p>
+<p><b>Teoría:</b> U pp.79, 108, 110.</p>
+  </details>
