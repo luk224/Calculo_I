@@ -105,7 +105,7 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 | [x] | 4.1 Espacio ℝⁿ | E 4.x + X | Menos ejercicios de cálculo: priorizar conceptos y práctica corta. Sin `graf` (3D/interactivos). |
 | [x] | 4.2 Funciones de varias variables | E 4.x + X | Mapa: ¿existe el límite? (trayectorias, polares, acotación). |
 | [x] | 4.3 Derivadas parciales | E 4.x + X | Mapa: ¿diferenciable? (parciales continuas ⇒ sí; definición). |
-| [ ] | 5.1 Diferencial | E 5.x + X | Menos gráficas 1D; mantener interactivos. |
+| [x] | 5.1 Diferencial | E 5.x + X | Menos gráficas 1D; mantener interactivos. |
 | [ ] | 5.2 Regla de la cadena y TVM | E 5.x + X | Mapa: árbol de dependencias de variables (dibujo). |
 | [ ] | 5.3 Función implícita | E 5.x + X | Mapa: ¿se puede despejar? (condición del Jacobiano/derivada). |
 | [ ] | 5.4-5.5 Extremos y Lagrange | E 5.x + X | Mapa: libre / con ligaduras / en compacto. |
