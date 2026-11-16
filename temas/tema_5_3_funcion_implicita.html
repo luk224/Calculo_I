@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_5_3/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 5.3 Teorema de la función implícita</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -15,6 +16,8 @@
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -40,12 +43,72 @@
   </div>
 </header>
 
-<!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §5.3.1 Introducción y objetivos, p. 204">U p.204</span></h2>
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>Una ecuación como $x^2+y^2=1$ dibuja una curva. A veces, mirando <b>un trozo</b> de esa curva, ese trozo es la gráfica de una función $y=g(x)$ (por ejemplo, la mitad de arriba de la circunferencia). Pero hay puntos donde no: en el extremo derecho de la circunferencia, por cada $x$ habría dos valores de $y$. El teorema de la función implícita da un <b>test</b> que se hace solo con una derivada parcial: si $\frac{\partial f}{\partial y}\ne0$ en el punto, la curva allí es una gráfica $y=g(x)$ (la tangente no es vertical). Y, además, regala la derivada de $g$ sin necesidad de conocer $g$: $\frac{dy}{dx}=-\frac{\partial f/\partial x}{\partial f/\partial y}$.</p>
   <span class="src" data-l="P" data-ref="Explicación propia de U §5.3.1 y §5.3.2, pp. 204-206">P</span>
 </div>
+<p class="ir-examen"><a href="#examenes" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Pasa todo a un lado:</b> $f(x,y)=0$ (o $f(x,y,z)=0$) y comprueba que $f$ tiene parciales continuas (con polinomios, exponenciales y trigonométricas basta una frase).</li>
+    <li><b>Comprueba el punto:</b> $f(a,b)=0$ (¿está en la curva?) y la parcial de <b>la variable que despejas</b> distinta de $0$: $f_y(a,b)\ne0$ si quieres $y=g(x)$; $f_x(a,b)\ne0$ si quieres $x=g(y)$.</li>
+    <li><b>Primera derivada:</b> $y'=-\dfrac{f_x}{f_y}$ en el punto (o deriva la ecuación con $y=y(x)$ dentro y despeja $y'$).</li>
+    <li><b>Segunda derivada:</b> deriva <b>otra vez</b> la ecuación ya derivada, <b>después</b> sustituye punto e $y'$, y despeja $y''$.</li>
+  </ol>
+  <p class="sub">Qué hago según lo que piden</p>
+  <ul>
+    <li>¿«¿Garantiza el teorema que se despeja $y$ cerca de $(a,b)$?» $\to$ tabla de dos «sí»: $f(a,b)=0$ y $f_y(a,b)\ne0$. Si falla, «no lo garantiza» (no «es imposible»).</li>
+    <li>¿«Pendiente, recta tangente o $y'$»? $\to$ $-f_x/f_y$ en el punto; tangente $y-b=y'(a)(x-a)$.</li>
+    <li>¿«$g''$»? $\to$ derivar dos veces la ecuación y evaluar al final.</li>
+    <li>¿«$z=g(x,y)$, $z_x$, $z_y$ o plano tangente»? $\to$ $z_x=-f_x/f_z$, $z_y=-f_y/f_z$, con $f_z\ne0$.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$f(a,b)=0$ y $f_y(a,b)\ne0\Rightarrow y=g(x)$ cerca de $a$, con $g(a)=b$</td><td>Decidir si se puede despejar $y$ (U p.206).</td></tr>
+    <tr><td>$g'(x)=-\dfrac{f_x(x,g(x))}{f_y(x,g(x))}$</td><td>Primera derivada o pendiente de la curva (U pp.206-207).</td></tr>
+    <tr><td>Derivar $f(x,g(x))=0$ dos veces y evaluar al final</td><td>$g''$ sin conocer $g$ (U pp.207-210).</td></tr>
+    <tr><td>$m=-\dfrac{f_x(a,b)}{f_y(a,b)}$ y $\nabla f\perp$ curva de nivel</td><td>Tangente a una curva de nivel (U p.210).</td></tr>
+    <tr><td>$\dfrac{\partial z}{\partial x_j}=-\dfrac{f_{x_j}}{f_z}$ si $f_z\ne0$</td><td>Superficies $z=g(x,y)$ definidas implícitamente (U p.211).</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos hay 2 problemas de este tema: un verdadero o falso sobre las hipótesis del teorema (1 punto) y un ejercicio largo de $g'$ y $g''$ (3 puntos). En el libro de ejercicios son E 5.23-5.27. Tabla por tipo: <a href="#examenes" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §5.3, pp. 204-212 (función implícita, derivación implícita, curva de nivel, varias variables); resumen propio">U pp.204-212</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §5.3">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 1,5 h</b>
+      <ul>
+        <li>Los apartados del <b>teorema</b> (2), la <b>derivación implícita</b> (3) y el <b>mapa de decisión</b> (apartado 6).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-5-23">E 5.23</a> (¿se garantiza el despeje?), <a href="#ej-5-25">E 5.25</a> (qué variable se despeja), <a href="#ej-5-26">E 5.26</a> (pendiente de una curva de nivel), <a href="#ej-5-27">E 5.27</a> (tres variables), <a href="#ej-5-24">E 5.24</a> (segunda derivada), <a href="#x1">Examen 1</a> (verdadero o falso) y <a href="#x2">Examen 2</a> ($g'$ y $g''$).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 3 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»), con el interactivo.</li>
+        <li>E 5.23-5.27, los 2 exámenes, los ejemplos propios y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#p4">P4</a> (folium: puntos sin despeje y $y''$), las prácticas ★★ y la segunda derivada de <a href="#ej-5-24">E 5.24</a> sin mirar.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §5.3.1 Introducción y objetivos, p. 204">U p.204</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué debes saber antes de empezar y qué se pide en los ejercicios y en el examen.</p>
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li><b>Derivadas parciales y gradiente</b> (<a href="tema_4_3_derivadas_parciales.html">tema 4.3</a>), y que el gradiente es perpendicular a las curvas de nivel.</li>
@@ -56,7 +119,13 @@
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>«¿Garantiza el teorema que la ecuación define $y$ como función de $x$ cerca de un punto?»</b>: comprobar $f(a,b)=0$ y la parcial adecuada $\ne0$ (E 5.23, 5.25; X p.150, verdadero/falso de 1 punto). (B) <b>Derivar implícitamente</b>, a veces dos veces ($g'(1)$ y $g''(1)$; E 5.24; X p.30, 3 puntos). (C) <b>Pendiente de una curva de nivel</b> (E 5.26). (D) <b>Superficie $z=g(x,y)$</b> y sus derivadas parciales (E 5.27). U recomienda «realizar numerosos ejercicios para interiorizar con mayor facilidad el contenido de este apartado».</p>
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>Ecuación implícita y ecuación explícita <span class="src" data-l="U" data-ref="U §5.3.2, pp. 204-205; Figura 5.7, p. 205; Ejemplo 5.10, p. 205">U pp.204-205</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Ecuación implícita y ecuación explícita <span class="src" data-l="U" data-ref="U §5.3.2, pp. 204-205; Figura 5.7, p. 205; Ejemplo 5.10, p. 205">U pp.204-205</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a distinguir una ecuación implícita de una explícita y a pasar de una a otra.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Despeja $y$ de $F(x,y)=0$», «la ecuación define $y$ como función de $x$».</li>
+  <li><b>Qué haces:</b> Pasas todo a un lado ($f=0$) y te preguntas si, cerca del punto, la curva es la gráfica de una función.</li>
+  <li><b>Ejemplo mínimo:</b> De $y-x^2=0$ sale $y=x^2$; de $x^2+y^2=1$, cerca de $(0,1)$, sale $y=\sqrt{1-x^2}$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · «despejar» y no poder despejar</span>
   <p>Despejar es escribir una variable como función de la otra: de $y-x^2=0$ sale $y=x^2$. Pero de $y^5+y+x=0$ no sabemos despejar $y$ con operaciones elementales, aunque para cada $x$ <i>hay</i> un único $y$. El teorema dirá <b>cuándo es posible</b> aunque no sepamos hacerlo, y nos dejará derivar igualmente.</p>
   <span class="src" data-l="U" data-ref="U §5.3.1 y §5.3.2, pp. 204-205">U pp.204-205</span>
@@ -81,7 +150,13 @@
 <figcaption>Circunferencia $x^2+y^2=1$ con $P_1$, $P_2$ y $P_3$; los círculos punteados son los entornos donde se mira la curva. <span class="src" data-l="U" data-ref="U Figura 5.7, p. 205">U p.205</span></figcaption>
 </figure>
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>El teorema de la función implícita (dos variables) <span class="src" data-l="U" data-ref="U §5.3.2, p. 206; Ejemplo 5.11, pp. 206-207">U pp.206-207</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>El teorema de la función implícita (dos variables) <span class="src" data-l="U" data-ref="U §5.3.2, p. 206; Ejemplo 5.11, pp. 206-207">U pp.206-207</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a decidir con el teorema de la función implícita si se puede despejar una variable cerca de un punto.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «¿Garantiza el teorema que define $y$ como función de $x$ cerca de $(a,b)$?».</li>
+  <li><b>Qué haces:</b> Compruebas $f(a,b)=0$ y que la parcial de la variable que despejas no se anula; si falla una, «no lo garantiza».</li>
+  <li><b>Ejemplo mínimo:</b> En $x^2+y^2=9$, el punto $(3,0)$ tiene $f_y=0$: no se garantiza $y=g(x)$ (sí $x=g(y)$).</li>
+</ul>
 <div class="box thm"><span class="h">Teorema de la función implícita (dos variables)</span>
   <p>Sea $f:D\subset\mathbb R^2\to\mathbb R$ una función continua con derivadas parciales continuas en un abierto $D$. Sea $(a,b)$ un punto de $D$ con
   $$\text{(1)}\ \ f(a,b)=0\qquad\text{y}\qquad\text{(2)}\ \ \frac{\partial f}{\partial y}(a,b)\ne0.$$
@@ -110,7 +185,13 @@
   <span class="src" data-l="U" data-ref="U Ejemplo 5.11, pp. 206-207">U pp.206-207</span>
 </div>
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Derivación implícita <span class="src" data-l="U" data-ref="U §5.3.2, p. 207; Ejemplo 5.12 (folium de Descartes), pp. 207-210; Figura 5.8, p. 208">U pp.207-210</span></h2>
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Derivación implícita <span class="src" data-l="U" data-ref="U §5.3.2, p. 207; Ejemplo 5.12 (folium de Descartes), pp. 207-210; Figura 5.8, p. 208">U pp.207-210</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a calcular $y'$ e $y''$ sin conocer la función, derivando la ecuación.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Calcula $g'(1)$ y $g''(1)$», «derivada de la función implícita», «recta tangente en el punto».</li>
+  <li><b>Qué haces:</b> Derivas la ecuación con $y=y(x)$ dentro (cadena), despejas $y'$ y, para $y''$, derivas otra vez antes de evaluar.</li>
+  <li><b>Ejemplo mínimo:</b> De $y^3+x=0$: $3y^2y'+1=0$, luego $y'=-\frac1{3y^2}$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · derivar una función que no conoces</span>
   <p>Supón que cerca de $(a,b)$ la ecuación $f(x,y)=0$ define $y=y(x)$. Entonces $f(x,y(x))$ vale $0$ para todo $x$ del entorno: es una función <b>constante</b>, y su derivada es $0$. Pero esa derivada la sabes calcular con la regla de la cadena del tema 5.2. Igualas a $0$, despejas $y'$, y ya está: no ha hecho falta conocer $y(x)$.</p>
   <span class="src" data-l="U" data-ref="U p. 207">U p.207</span>
@@ -143,7 +224,13 @@
   <span class="src" data-l="P" data-ref="Error típico propio sobre U pp. 207-210">P</span>
 </div>
 <!-- ============================ 4 ============================ -->
-<h2 id="s4"><span class="n">4</span>Pendiente de una curva de nivel <span class="src" data-l="U" data-ref="U p. 210; Ejemplo 5.13, p. 210">U p.210</span></h2>
+<h2 id="s4" data-vista="teoria"><span class="n">4</span>Pendiente de una curva de nivel <span class="src" data-l="U" data-ref="U p. 210; Ejemplo 5.13, p. 210">U p.210</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a obtener la pendiente de una curva de nivel con $-f_x/f_y$.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Pendiente de la curva de nivel de $F$ por $(a,b)$», «tangente a $F(x,y)=k$».</li>
+  <li><b>Qué haces:</b> La curva de nivel por $(a,b)$ es $F(x,y)=F(a,b)$; su pendiente es $-F_x/F_y$ y el gradiente es perpendicular a ella.</li>
+  <li><b>Ejemplo mínimo:</b> $F=x^2+y^2$ en $(1,1)$: $m=-\frac{2}{2}=-1$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>La curva de nivel $f(x,y)=k$ es una ecuación implícita. Si no es vertical en el punto, es la gráfica de $y=y(x)$ y la pendiente de su tangente es $y'=-f_x/f_y$. (Otra forma de verlo, con el gradiente perpendicular, en E 5.26.)</p>
   <span class="src" data-l="U" data-ref="U p. 210 y nota marginal">U p.210</span>
@@ -167,7 +254,13 @@
   <figcaption>Interactivo propio. Elige $F$ y mueve el punto $(a,b)$: la curva negra es la de nivel $F(x,y)=F(a,b)$, la recta naranja es su tangente (pendiente $-F_x/F_y$) y el segmento azul es el gradiente, siempre perpendicular a la tangente. Los puntos verdes son los de la curva con $F_y=0$: ahí la tangente es vertical y el teorema de la función implícita no permite despejar $y=y(x)$. Con la del Ejemplo 5.13 en $(1,0)$ sale $y'=-\frac23$. Usa la rueda para acercar. <span class="src" data-l="P" data-ref="Explicación propia; teorema de la función implícita y pendiente de una curva de nivel: U §5.3.2 pp. 206-210, Ej. 5.13">P</span></figcaption>
 </figure>
 <!-- ============================ 5 ============================ -->
-<h2 id="s5"><span class="n">5</span>El teorema en varias variables <span class="src" data-l="U" data-ref="U §5.3.2, p. 211; Ejemplo 5.14, pp. 211-212">U pp.211-212</span></h2>
+<h2 id="s5" data-vista="teoria"><span class="n">5</span>El teorema en varias variables <span class="src" data-l="U" data-ref="U §5.3.2, p. 211; Ejemplo 5.14, pp. 211-212">U pp.211-212</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a usar el teorema con tres o más variables: superficies $z=g(x,y)$.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «$f(x,y,z)=0$ define $z=g(x,y)$; calcula $g_x$, $g_y$ o el plano tangente».</li>
+  <li><b>Qué haces:</b> Compruebas $f_z\ne0$ y despejas cada parcial: $z_x=-f_x/f_z$, $z_y=-f_y/f_z$.</li>
+  <li><b>Ejemplo mínimo:</b> $x+y+z^3=3$ en $(1,1,1)$: $z_x=-\frac13$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · una superficie como gráfica</span>
   <p>Con tres variables, $f(x,y,z)=0$ es una <b>superficie</b> (como la esfera $x^2+y^2+z^2=1$). Cerca de un punto, esa superficie es la gráfica de una función $z=g(x,y)$ si el plano tangente no es «vertical», y eso lo mide $\frac{\partial f}{\partial z}\ne0$. Es lo mismo que antes, con una variable más a la derecha.</p>
   <span class="src" data-l="P" data-ref="Explicación propia de U p. 211">P</span>
@@ -188,24 +281,274 @@
   </ol>
   <span class="src" data-l="U" data-ref="U Ejemplo 5.14, pp. 211-212">U pp.211-212</span>
 </div>
-<!-- ============================ 6 ============================ -->
-<h2 id="recetas"><span class="n">6</span>Recetas del tema <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §5.3, pp. 204-212">P</span></h2>
+<!-- ============================ mapa ============================ -->
+<h2 id="mapa" data-vista="tipos"><span class="n">6</span>Recetas del tema <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §5.3, pp. 204-212">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué hacer según lo que te pidan (comprobar las hipótesis, derivar, pendiente de una curva de nivel o tres variables) con un mapa de decisión y las recetas del tema.</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja a la siguiente y «sí» te lleva a la acción de la derecha. Lo que más puntos se pierde: <b>no comprobar $f(a,b)=0$</b>, mirar la <b>parcial equivocada</b>, responder «imposible» en vez de «no lo garantiza» y <b>evaluar antes de derivar</b> la segunda vez.</p>
+<svg class="flujo" viewBox="0 0 600 504" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión del tema 5.3: qué hacer según lo que piden sobre la función implícita</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Si preguntan si el teorema garantiza que se despeja una variable cerca de un punto, se comprueba que el punto está en la curva y que la parcial de la variable que se despeja no se anula. Si piden la derivada, la pendiente o la recta tangente, se usa menos f_x entre f_y en el punto. Si piden la segunda derivada, se deriva dos veces la ecuación y se evalúa al final. Si hay tres variables, se usan z_x igual a menos f_x entre f_z y z_y igual a menos f_y entre f_z. Al final se comprueba la respuesta.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="210" height="76" rx="10"/>
+<text x="115" y="44" text-anchor="middle">¿Preguntan si el teorema garantiza</text>
+<text x="115" y="62" text-anchor="middle">despejar una variable cerca de (a,b)?</text>
+<path class="lin" d="M220 48 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="43">sí</text>
+<rect class="nodo" x="250" y="10" width="340" height="76" rx="10"/>
+<text x="420" y="36" text-anchor="middle">Compruebo f(a,b)=0 y que la parcial de la</text>
+<text x="420" y="54" text-anchor="middle">variable que despejo no se anula.</text>
+<text x="420" y="72" text-anchor="middle">Si falla alguna: «el teorema no lo garantiza».</text>
+<path class="lin" d="M115 86 V109" marker-end="url(#fl)"/>
+<text class="no" x="123" y="102">no</text>
+<rect class="preg" x="10" y="112" width="210" height="76" rx="10"/>
+<text x="115" y="146" text-anchor="middle">¿Piden y′, la pendiente o la recta</text>
+<text x="115" y="164" text-anchor="middle">tangente (también de una curva de nivel)?</text>
+<path class="lin" d="M220 150 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="145">sí</text>
+<rect class="nodo" x="250" y="112" width="340" height="76" rx="10"/>
+<text x="420" y="138" text-anchor="middle">y′ = −f_x/f_y en el punto (o derivo la ecuación</text>
+<text x="420" y="156" text-anchor="middle">con y(x) dentro y despejo y′).</text>
+<text x="420" y="174" text-anchor="middle">Tangente: y − b = y′(a)·(x − a).</text>
+<path class="lin" d="M115 188 V211" marker-end="url(#fl)"/>
+<text class="no" x="123" y="204">no</text>
+<rect class="preg" x="10" y="214" width="210" height="76" rx="10"/>
+<text x="115" y="248" text-anchor="middle">¿Piden la segunda derivada y″ (o g″)?</text>
+<text x="115" y="266" text-anchor="middle">¿Sin conocer la función?</text>
+<path class="lin" d="M220 252 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="247">sí</text>
+<rect class="nodo" x="250" y="214" width="340" height="76" rx="10"/>
+<text x="420" y="240" text-anchor="middle">Derivo la ecuación derivada otra vez,</text>
+<text x="420" y="258" text-anchor="middle">después sustituyo punto e y′,</text>
+<text x="420" y="276" text-anchor="middle">y despejo y″.</text>
+<path class="lin" d="M115 290 V313" marker-end="url(#fl)"/>
+<text class="no" x="123" y="306">no</text>
+<rect class="preg" x="10" y="316" width="210" height="76" rx="10"/>
+<text x="115" y="350" text-anchor="middle">¿Hay tres variables: z = g(x,y),</text>
+<text x="115" y="368" text-anchor="middle">sus parciales o el plano tangente?</text>
+<path class="lin" d="M220 354 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="349">sí</text>
+<rect class="nodo" x="250" y="316" width="340" height="76" rx="10"/>
+<text x="420" y="342" text-anchor="middle">Compruebo f_z ≠ 0: z_x = −f_x/f_z,</text>
+<text x="420" y="360" text-anchor="middle">z_y = −f_y/f_z. Plano: z − c = z_x(x−a)</text>
+<text x="420" y="378" text-anchor="middle">+ z_y(y−b).</text>
+<path class="lin" d="M115 392 V415" marker-end="url(#fl)"/>
+<text class="no" x="123" y="408">no</text>
+<rect class="fin" x="10" y="418" width="580" height="76" rx="10"/>
+<text x="300" y="444" text-anchor="middle">Respondo con el resultado y compruebo:</text>
+<text x="300" y="462" text-anchor="middle">¿el punto está en la curva?, ¿la parcial de la variable que despejo es ≠ 0?,</text>
+<text x="300" y="480" text-anchor="middle">¿signo menos y cociente en el orden correcto?, ¿derivé antes de evaluar?</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso</summary>
+<table>
+  <tr><th>Piden…</th><th>Herramienta</th><th>Ojo con…</th></tr>
+  <tr><td>¿Define $y=g(x)$ cerca de $(a,b)$?</td><td>$f(a,b)=0$ y $f_y(a,b)\ne0$</td><td>Mirar $f_y$ y no $f_x$; si falla, «no lo garantiza»</td></tr>
+  <tr><td>¿Define $x=g(y)$?</td><td>$f(a,b)=0$ y $f_x(a,b)\ne0$; $g'=-f_y/f_x$</td><td>Cociente invertido respecto de $y=g(x)$</td></tr>
+  <tr><td>$y'$, pendiente o tangente</td><td>$-f_x/f_y$ en el punto</td><td>El signo menos; evaluar en el punto</td></tr>
+  <tr><td>$y''$</td><td>Derivar dos veces la ecuación; evaluar al final</td><td>No tratar $y'$ como constante</td></tr>
+  <tr><td>Pendiente de una curva de nivel</td><td>$-F_x/F_y$ en $(a,b)$</td><td>La constante $k$ no interviene</td></tr>
+  <tr><td>$z=g(x,y)$, parciales y plano</td><td>$z_x=-f_x/f_z$, $z_y=-f_y/f_z$</td><td>Comprobar $f_z\ne0$; términos de producto como $xz$</td></tr>
+</table>
+</details>
 <div class="box tip"><span class="h">Recetas del tema</span>
   <p><b>¿Garantiza el teorema que se despeja una variable cerca de $(a,b)$?</b> (1) Pasar todo a un lado, $f=0$; (2) $f$ con parciales continuas (con polinomios, exponenciales, senos y cosenos basta una frase); (3) $f(a,b)=0$; (4) la parcial respecto de <b>la variable que se despeja</b> no se anula en el punto. Si falla (3), el punto no está en la curva; si falla (4), <b>el teorema no garantiza nada</b> (no se concluye que sea imposible).</p>
   <p><b>Derivar la función implícita.</b> Primera derivada: $y'=-f_x/f_y$ (o $z_x=-f_x/f_z$, $z_y=-f_y/f_z$) en el punto, o derivar la ecuación con $y=y(x)$ dentro y despejar $y'$ (más cómodo para $y''$). Segunda derivada: derivar <b>otra vez</b> la ecuación ya derivada, <b>después</b> sustituir punto y $y'$, y despejar $y''$. Pendiente de la curva de nivel por $(a,b)$: $m=-f_x(a,b)/f_y(a,b)$ (la constante $k$ no afecta).</p>
 </div>
-<!-- ============================ 7 ============================ -->
-<h2 id="ejercicios"><span class="n">7</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.23-5.27, pp. 186-191">E pp.186-191</span></h2>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">7</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub"><b>Función implícita</b>: (1) pasa todo a un lado, $f=0$, y comprueba que $f$ tiene parciales continuas; (2) comprueba que el punto está en la curva, $f(a,b)=0$; (3) la parcial de la variable que despejas debe ser $\ne0$; (4) derivada: $-\frac{\text{parcial de la otra}}{\text{parcial de la que despejas}}$, o deriva la ecuación con la variable despejada «dentro»; para $y''$, deriva antes de evaluar.</p>
+<h3>¿Garantiza el teorema despejar $y$? (las dos hipótesis)</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · ¿en qué punto de $y^3-3y+x^2=2$ se despeja $y$? <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">¿En cuáles de estos puntos garantiza el teorema de la función implícita que la ecuación $y^3-3y+x^2=2$ define a $y$ como función de $x$? a) $(2,1)$. b) $(0,-1)$. c) $(1,0)$. d) $(0,2)$.</p>
+  <details class="pista"><summary>Pista</summary><p>Escribe $f(x,y)=y^3-3y+x^2-2$. Para cada punto, dos preguntas: ¿$f=0$? ¿$\frac{\partial f}{\partial y}\ne0$? Fíjate en que $\frac{\partial f}{\partial y}=3(y^2-1)$ se anula si $y=\pm1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Escribir $f=0$:</b> $f(x,y)=y^3-3y+x^2-2$, un polinomio: continua con parciales continuas en $\mathbb R^2$ (abierto), como pide el teorema (U p.206).</li><li><b>Parcial de la variable que se despeja:</b> $\frac{\partial f}{\partial y}=3y^2-3=3(y^2-1)$.</li><li><b>a) $(2,1)$:</b> $f(2,1)=1-3+4-2=0$ ✓, pero $\frac{\partial f}{\partial y}(2,1)=0$ ✗.</li><li><b>b) $(0,-1)$:</b> $f(0,-1)=-1+3+0-2=0$ ✓, pero $\frac{\partial f}{\partial y}(0,-1)=0$ ✗.</li><li><b>c) $(1,0)$:</b> $f(1,0)=0-0+1-2=-1\ne0$ ✗: el punto no está en la curva; el teorema no se puede plantear.</li><li><b>d) $(0,2)$:</b> $f(0,2)=8-6+0-2=0$ ✓ y $\frac{\partial f}{\partial y}(0,2)=3\cdot3=9\ne0$ ✓. Las dos se cumplen.</li><li><b>De regalo:</b> cerca de $x=0$ hay $y=g(x)$ con $g(0)=2$ y $g'(0)=-\frac{f_x(0,2)}{f_y(0,2)}=-\frac{2\cdot0}{9}=0$, aunque despejar $y$ exigiría resolver una cúbica.</li></ol>
+    <p class="res">Resultado: solo en d) $(0,2)$ (allí $f=0$ y $f_y=9\ne0$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-a2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica a2 · un parámetro $a$ y un punto aislado <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Para cada número real $a$ se considera la ecuación $x^3+axy+y^3=a+2$. a) Comprueba que $(1,1)$ está en la curva para todo $a$. b) ¿Para qué valores de $a$ garantiza el teorema que define $y=g(x)$ cerca de $(1,1)$? Calcula $g'(1)$ en ese caso. c) Para $a=-3$, comprueba que $x^3-3xy+y^3+1=(x+y+1)\cdot\frac12\big[(x-y)^2+(x-1)^2+(y-1)^2\big]$ y deduce qué aspecto tiene la curva cerca de $(1,1)$.</p>
+  <details class="pista"><summary>Pista</summary><p>b) $\frac{\partial f}{\partial y}(1,1)$ depende de $a$. c) Una suma de cuadrados solo vale $0$ si cada cuadrado es $0$; y el punto $(1,1)$ no está en la recta $x+y+1=0$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a)</b> $f(x,y)=x^3+axy+y^3-a-2$ (polinomio). $f(1,1)=1+a+1-a-2=0$ para todo $a$ ✓.</li><li><b>b) Parciales:</b> $f_x=3x^2+ay$, $f_y=ax+3y^2$. En $(1,1)$: $f_x=3+a$, $f_y=a+3$. El teorema (U p.206) exige $a+3\ne0$, es decir, $a\ne-3$.</li><li><b>b) Derivada:</b> si $a\ne-3$, $g'(1)=-\dfrac{f_x(1,1)}{f_y(1,1)}=-\dfrac{a+3}{a+3}=-1$, el mismo valor para todo $a\ne-3$ (la ecuación es simétrica en $x$ e $y$, y la tangente en un punto de la diagonal tiene que ser simétrica respecto de $y=x$).</li><li><b>c) Con $a=-3$:</b> las dos parciales valen $0$ en $(1,1)$; el teorema no sirve ni para $y$ ni para $x$. Desarrollando el producto del enunciado se recupera $x^3+y^3-3xy+1$ (compruébalo multiplicando: $\frac12[\dots]=x^2+y^2+1-xy-x-y$).</li><li><b>c) La curva:</b> el producto es $0$ si $x+y+1=0$ (una recta) o si $(x-y)^2+(x-1)^2+(y-1)^2=0$, que solo ocurre en $(1,1)$. Como $1+1+1\ne0$, el punto $(1,1)$ está lejos de la recta: cerca de él, la curva es <b>solo el punto $(1,1)$</b>. No hay ninguna función $g$ definida en un intervalo alrededor de $x=1$.</li><li><b>Lectura:</b> cuando el teorema no se aplica pueden pasar cosas muy raras; aquí ni siquiera hay «trozo de curva».</li></ol>
+    <p class="res">Resultado: $a\ne-3$, con $g'(1)=-1$ para todo $a\ne-3$; con $a=-3$, cerca de $(1,1)$ la curva es solo el punto $(1,1)$</p>
+  </details>
+</details>
+<h3>¿Qué variable se puede despejar? (papeles cambiados)</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · $y^2-2y+x^3=x-1$ en $(1,1)$: $y$ no, $x$ sí <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea la ecuación $y^2-2y+x^3=x-1$. ¿Garantiza el teorema de la función implícita que define $y$ como función de $x$ cerca de $(1,1)$? ¿Y $x$ como función de $y$? En el caso afirmativo, calcula la derivada de la función en el punto.</p>
+  <details class="pista"><summary>Pista</summary><p>Pasa todo a la izquierda. Para $y=g(x)$ mira $\frac{\partial f}{\partial y}(1,1)$; para $x=h(y)$ mira $\frac{\partial f}{\partial x}(1,1)$ y usa $h'=-\frac{f_y}{f_x}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Escribir $f=0$:</b> $f(x,y)=y^2-2y+x^3-x+1$ (polinomio). $f(1,1)=1-2+1-1+1=0$ ✓.</li><li><b>Parciales:</b> $f_x=3x^2-1$, $f_y=2y-2$. En $(1,1)$: $f_x=2$, $f_y=0$.</li><li><b>¿$y=g(x)$?</b> $f_y(1,1)=0$: el teorema <b>no lo garantiza</b> (U p.206).</li><li><b>¿$x=h(y)$?</b> $f_x(1,1)=2\ne0$: <b>sí</b>, con los papeles cambiados (U p.206). Hay $x=h(y)$ cerca de $y=1$ con $h(1)=1$.</li><li><b>Derivada:</b> $h'(1)=\frac{dx}{dy}(1)=-\frac{f_y(1,1)}{f_x(1,1)}=-\frac02=0$: la tangente en $(1,1)$ es vertical (paralela al eje $y$).</li><li><b>Complemento</b> (no se pide): $(y-1)^2=x-x^3$; cerca de $x=1$, $x-x^3\approx-2(x-1)$: para $x$ algo menor que $1$ hay dos valores de $y$ y para $x>1$ ninguno. Aquí de hecho no se puede escribir $y=g(x)$.</li></ol>
+    <p class="res">Resultado: $y=g(x)$ no lo garantiza ($f_y(1,1)=0$); $x=h(y)$ sí ($f_x(1,1)=2\ne0$), con $h'(1)=0$</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica b2 · la cúbica $y^2=x^3+x^2$: dónde falla cada despeje <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea la curva $y^2=x^3+x^2$. Halla: a) los puntos de la curva en los que el teorema no garantiza $y=g(x)$; b) aquellos en los que no garantiza $x=h(y)$; c) los puntos en los que no se puede despejar ninguna de las dos variables. d) En el punto $(-1,0)$, ¿qué variable se despeja y cuánto vale su derivada?</p>
+  <details class="pista"><summary>Pista</summary><p>Con $f=y^2-x^3-x^2$: a) resuelve el sistema $f=0$, $f_y=0$; b) el sistema $f=0$, $f_x=0$. No olvides comprobar que cada solución está en la curva.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Datos:</b> $f(x,y)=y^2-x^3-x^2$ (polinomio), $f_x=-3x^2-2x=-x(3x+2)$, $f_y=2y$.</li><li><b>a) $f_y=0$:</b> $y=0$; en la curva, $x^3+x^2=x^2(x+1)=0$, así que $x=0$ o $x=-1$. Puntos: $(0,0)$ y $(-1,0)$.</li><li><b>b) $f_x=0$:</b> $x=0$ o $x=-\frac23$. Con $x=0$: $y^2=0$, punto $(0,0)$. Con $x=-\frac23$: $y^2=-\frac8{27}+\frac49=\frac4{27}$, $y=\pm\frac2{3\sqrt3}=\pm\frac{2\sqrt3}9$. Puntos: $(0,0)$ y $\left(-\frac23,\pm\frac{2\sqrt3}9\right)$.</li><li><b>c) Ninguna:</b> hace falta que fallen las dos a la vez: solo en $(0,0)$ (allí la curva se cruza consigo misma, como el folium de U pp.207-209).</li><li><b>d) En $(-1,0)$:</b> $f_y=0$ pero $f_x(-1,0)=-3+2=-1\ne0$: se despeja $x=h(y)$ (U p.206), con $h'(0)=-\frac{f_y(-1,0)}{f_x(-1,0)}=-\frac0{-1}=0$ (tangente vertical).</li><li><b>Lectura:</b> en $\left(-\frac23,\pm\frac{2\sqrt3}9\right)$ la tangente es horizontal ($f_x=0$, $f_y=\pm\frac{4\sqrt3}9\ne0$): allí $y$ sí se despeja, con $y'=0$; es $x$ la que no.</li></ol>
+    <p class="res">Resultado: a) $(0,0)$ y $(-1,0)$; b) $(0,0)$ y $\left(-\frac23,\pm\frac{2\sqrt3}9\right)$; c) solo $(0,0)$; d) $x=h(y)$ con $h'(0)=0$</p>
+  </details>
+</details>
+<h3>Primera derivada implícita y recta tangente</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · tangente a $x^2y+y^3=10$ en $(1,2)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Comprueba que la ecuación $x^2y+y^3=10$ define $y=y(x)$ cerca de $(1,2)$, calcula $y'(1)$ de dos formas (fórmula del teorema y derivando la ecuación) y escribe la recta tangente.</p>
+  <details class="pista"><summary>Pista</summary><p>Al derivar la ecuación respecto de $x$, $y$ es una función de $x$: $x^2y$ pide la regla del producto y $y^3$ la de la cadena ($3y^2y'$).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis:</b> $f=x^2y+y^3-10$ (polinomio); $f(1,2)=2+8-10=0$ ✓; $f_y=x^2+3y^2$, $f_y(1,2)=13\ne0$ ✓ (U p.206).</li><li><b>Fórmula:</b> $f_x=2xy$, $f_x(1,2)=4$. $y'(1)=-\frac{f_x}{f_y}=-\frac4{13}$.</li><li><b>Derivando la ecuación</b> (U p.207): $2xy+x^2y'+3y^2y'=0$. En $x=1$, $y=2$: $4+y'+12y'=0$, $y'=-\frac4{13}$ ✓.</li><li><b>Recta tangente:</b> pasa por $(1,2)$ con pendiente $-\frac4{13}$: $y=2-\frac4{13}(x-1)$.</li></ol>
+    <p class="res">Resultado: $y'(1)=-\frac4{13}$; tangente $y=2-\frac4{13}(x-1)$</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica c2 · tangente a la espiral $\ln(x^2+y^2)=\operatorname{arctg}\frac yx$ en $(1,0)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">La ecuación $\ln(x^2+y^2)=\operatorname{arctg}\dfrac yx$ (con $x>0$) describe un trozo de espiral. a) Comprueba que define $y=y(x)$ cerca de $(1,0)$. b) Halla $y'$ en un punto cualquiera de la curva con $x-2y\ne0$. c) Escribe la recta tangente en $(1,0)$.</p>
+  <details class="pista"><summary>Pista</summary><p>Con $f=\ln(x^2+y^2)-\operatorname{arctg}\frac yx$: $\frac{\partial}{\partial x}\operatorname{arctg}\frac yx=\frac{1}{1+y^2/x^2}\cdot\left(-\frac y{x^2}\right)=-\frac{y}{x^2+y^2}$ y $\frac{\partial}{\partial y}\operatorname{arctg}\frac yx=\frac{x}{x^2+y^2}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Dominio y regularidad:</b> en el abierto $D=\{x>0\}$, $x^2+y^2>0$ y $\frac yx$ está definido: $f$ es continua con parciales continuas (U p.192).</li><li><b>Parciales</b> (cadena de una variable): $f_x=\dfrac{2x}{x^2+y^2}+\dfrac{y}{x^2+y^2}=\dfrac{2x+y}{x^2+y^2}$, $f_y=\dfrac{2y}{x^2+y^2}-\dfrac{x}{x^2+y^2}=\dfrac{2y-x}{x^2+y^2}$.</li><li><b>a)</b> $f(1,0)=\ln1-\operatorname{arctg}0=0$ ✓ y $f_y(1,0)=\frac{-1}1=-1\ne0$ ✓: hay $y=y(x)$ cerca de $x=1$ con $y(1)=0$ (U p.206).</li><li><b>b)</b> $y'=-\dfrac{f_x}{f_y}=-\dfrac{2x+y}{2y-x}=\dfrac{2x+y}{x-2y}$ (el denominador $x^2+y^2$ se simplifica).</li><li><b>c)</b> En $(1,0)$: $y'(1)=\frac{2}{1}=2$. Tangente: $y=2(x-1)$, es decir, $y=2x-2$.</li></ol>
+    <p class="res">Resultado: $y'=\frac{2x+y}{x-2y}$; $y'(1)=2$; tangente $y=2x-2$</p>
+  </details>
+</details>
+<h3>Segunda derivada implícita</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · $y''$ en $x^3+y^3=9$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">La ecuación $x^3+y^3=9$ define $y=y(x)$ cerca de $(1,2)$. Calcula $y'(1)$ e $y''(1)$.</p>
+  <details class="pista"><summary>Pista</summary><p>Deriva y divide entre $3$: $x^2+y^2y'=0$. Vuelve a derivar <b>esta</b> igualdad (producto en $y^2y'$) antes de sustituir números.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis:</b> $f=x^3+y^3-9$; $f(1,2)=0$ ✓; $f_y=3y^2$, $f_y(1,2)=12\ne0$ ✓ (U p.206).</li><li><b>Primera derivación</b> (U p.207): $3x^2+3y^2y'=0$, es decir, $x^2+y^2y'=0.\quad(\ast)$</li><li><b>$y'(1)$:</b> $1+4y'=0$, $y'(1)=-\frac14$.</li><li><b>Derivar $(\ast)$</b> (no la igualdad ya evaluada): $2x+2y\,(y')^2+y^2y''=0$.</li><li><b>Evaluar</b> con $x=1$, $y=2$, $y'=-\frac14$: $2+4\cdot\frac1{16}+4y''=0$, es decir, $\frac94+4y''=0$, $y''(1)=-\frac9{16}$.</li></ol>
+    <p class="res">Resultado: $y'(1)=-\frac14$, $y''(1)=-\frac9{16}$</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica d2 · $y''$ y posición respecto de la tangente en $y^3+xy+x^2=3$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">La ecuación $y^3+xy+x^2=3$ define $y=y(x)$ cerca de $(1,1)$. a) Calcula $y'(1)$ e $y''(1)$. b) Cerca de $(1,1)$, ¿la curva queda por encima o por debajo de su recta tangente?</p>
+  <details class="pista"><summary>Pista</summary><p>Primera derivada: $3y^2y'+y+xy'+2x=0$. Al derivarla otra vez, $3y^2y'$ es un producto de dos funciones de $x$ y $xy'$ también. b) El signo de $y''$ dice si la función es cóncava o convexa (U §3.5).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis:</b> $f=y^3+xy+x^2-3$; $f(1,1)=1+1+1-3=0$ ✓; $f_y=3y^2+x$, $f_y(1,1)=4\ne0$ ✓ (U p.206).</li><li><b>Primera derivación</b> (U p.207): $3y^2y'+y+xy'+2x=0.\quad(\ast)$ En $(1,1)$: $3y'+1+y'+2=0$, $y'(1)=-\frac34$.</li><li><b>Derivar $(\ast)$ término a término:</b> $(3y^2y')'=6y(y')^2+3y^2y''$; $(y)'=y'$; $(xy')'=y'+xy''$; $(2x)'=2$. Suma: $6y(y')^2+3y^2y''+2y'+xy''+2=0$.</li><li><b>Evaluar</b> con $x=y=1$, $y'=-\frac34$: $6\cdot\frac9{16}+3y''-\frac32+y''+2=0$, es decir, $\frac{27}8+\frac12+4y''=0$, $4y''=-\frac{31}8$, $y''(1)=-\frac{31}{32}$.</li><li><b>b)</b> $y''(1)&lt;0$ y $y''$ es continua: cerca de $x=1$ la función es cóncava (U §3.5) y su gráfica queda <b>por debajo</b> de la tangente $y=1-\frac34(x-1)$.</li><li><b>Comprobación numérica:</b> en $x=1{,}1$ la ecuación da $y\approx0{,}9198$, y la tangente $0{,}925$; en $x=0{,}9$, $y\approx1{,}0705$ frente a $1{,}075$ ✓.</li></ol>
+    <p class="res">Resultado: $y'(1)=-\frac34$, $y''(1)=-\frac{31}{32}$; la curva queda por debajo de su tangente cerca de $(1,1)$</p>
+  </details>
+</details>
+<h3>Pendiente de una curva de nivel</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · curva de nivel de $x^2y-y^3+2x$ por $(1,1)$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f(x,y)=x^2y-y^3+2x$. Halla la pendiente de la recta tangente en $(1,1)$ a la curva de nivel de $f$ que pasa por ese punto, y escribe esa recta. Comprueba que es perpendicular a $\nabla f(1,1)$.</p>
+  <details class="pista"><summary>Pista</summary><p>Primero el nivel: $k=f(1,1)$. La curva es $F=f-k=0$ y su pendiente es $-\frac{F_x}{F_y}$ (las parciales de $F$ y de $f$ coinciden).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Nivel:</b> $f(1,1)=1-1+2=2$; la curva es $F(x,y)=x^2y-y^3+2x-2=0$ (U p.210).</li><li><b>Parciales:</b> $F_x=2xy+2$, $F_y=x^2-3y^2$. En $(1,1)$: $F_x=4$, $F_y=-2\ne0$ ✓: cerca del punto la curva es una gráfica $y=y(x)$ (U p.206).</li><li><b>Pendiente:</b> $m=-\frac{F_x}{F_y}=-\frac4{-2}=2$. Recta: $y=1+2(x-1)$, es decir, $y=2x-1$.</li><li><b>Perpendicular:</b> $\nabla f(1,1)=(4,-2)$ y un vector director de la recta es $(1,2)$: $(4,-2)\cdot(1,2)=4-4=0$ ✓ (U p.210).</li></ol>
+    <p class="res">Resultado: pendiente $2$; tangente $y=2x-1$</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica e2 · las curvas de nivel de $x^2-y^2$ y de $xy$ se cortan en ángulo recto <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sean $f(x,y)=x^2-y^2$ y $g(x,y)=xy$. Demuestra que, en cualquier punto $(a,b)$ con $a\ne0$, $b\ne0$, la curva de nivel de $f$ y la curva de nivel de $g$ que pasan por $(a,b)$ se cortan perpendicularmente. Compruébalo en $(2,1)$.</p>
+  <details class="pista"><summary>Pista</summary><p>Calcula las dos pendientes con $-\frac{f_x}{f_y}$ y $-\frac{g_x}{g_y}$. Dos rectas no verticales son perpendiculares si el producto de sus pendientes es $-1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Curva de $f$ por $(a,b)$:</b> $x^2-y^2=a^2-b^2$. $f_x=2x$, $f_y=-2y$; $f_y(a,b)=-2b\ne0$: es una gráfica $y=y(x)$ cerca del punto (U p.206), con pendiente $m_1=-\frac{2a}{-2b}=\frac ab$ (U p.210).</li><li><b>Curva de $g$ por $(a,b)$:</b> $xy=ab$. $g_x=y$, $g_y=x$; $g_y(a,b)=a\ne0$: pendiente $m_2=-\frac ba$.</li><li><b>Producto:</b> $m_1m_2=\frac ab\cdot\left(-\frac ba\right)=-1$: las tangentes son perpendiculares en todo punto con $a\ne0$, $b\ne0$.</li><li><b>Otra forma:</b> $\nabla f(a,b)\cdot\nabla g(a,b)=(2a,-2b)\cdot(b,a)=2ab-2ab=0$; cada gradiente es perpendicular a su curva, así que las curvas también lo son entre sí.</li><li><b>En $(2,1)$:</b> $m_1=2$ (hipérbola $x^2-y^2=3$) y $m_2=-\frac12$ (hipérbola $xy=2$); $2\cdot\left(-\frac12\right)=-1$ ✓.</li></ol>
+    <p class="res">Resultado: $m_1=\frac ab$, $m_2=-\frac ba$, $m_1m_2=-1$; en $(2,1)$: $2$ y $-\frac12$</p>
+  </details>
+</details>
+<h3>Tres variables: $z=g(x,y)$ y plano tangente</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · $z_x$, $z_y$ en $x^2+2y^2+z^3=4$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Comprueba que la ecuación $x^2+2y^2+z^3=4$ define $z=g(x,y)$ cerca de $(1,1,1)$ y calcula $\frac{\partial g}{\partial x}(1,1)$ y $\frac{\partial g}{\partial y}(1,1)$. Compruébalo despejando $z$.</p>
+  <details class="pista"><summary>Pista</summary><p>$f=x^2+2y^2+z^3-4$; la condición es $f_z\ne0$ y las fórmulas son $g_x=-\frac{f_x}{f_z}$, $g_y=-\frac{f_y}{f_z}$. Para comprobar: $z=\sqrt[3]{4-x^2-2y^2}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis</b> (U p.211): $f$ es un polinomio; $f(1,1,1)=1+2+1-4=0$ ✓; $f_z=3z^2$, $f_z(1,1,1)=3\ne0$ ✓.</li><li><b>Otras parciales:</b> $f_x=2x$, $f_y=4y$; en el punto, $2$ y $4$.</li><li><b>Fórmulas:</b> $g_x(1,1)=-\frac23$, $g_y(1,1)=-\frac43$.</li><li><b>Comprobación:</b> $g=(4-x^2-2y^2)^{1/3}$, $g_x=\frac13(4-x^2-2y^2)^{-2/3}(-2x)$, que en $(1,1)$ vale $\frac13\cdot1\cdot(-2)=-\frac23$ ✓; $g_y=\frac13(\dots)^{-2/3}(-4y)=-\frac43$ ✓.</li></ol>
+    <p class="res">Resultado: $\frac{\partial g}{\partial x}(1,1)=-\frac23$, $\frac{\partial g}{\partial y}(1,1)=-\frac43$</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica f2 · $e^{xz}+yz^2=2$: cualquier variable se despeja; plano tangente <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea la superficie $e^{xz}+yz^2=2$ y el punto $P=(0,1,1)$. a) Comprueba que cerca de $P$ se puede despejar cualquiera de las tres variables en función de las otras dos. b) Si $z=g(x,y)$, calcula $g_x(0,1)$ y $g_y(0,1)$. c) Si $x=h(y,z)$, calcula $\frac{\partial h}{\partial y}(1,1)$. d) Escribe el plano tangente a la superficie en $P$.</p>
+  <details class="pista"><summary>Pista</summary><p>Calcula el gradiente de $f=e^{xz}+yz^2-2$ en $P$: cada componente no nula permite despejar su variable (U p.211, «sin más que cambiar $z$ por $x_j$»). Para $h$: $h_y=-\frac{f_y}{f_x}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Regularidad y punto:</b> $f(x,y,z)=e^{xz}+yz^2-2$ tiene parciales continuas en $\mathbb R^3$; $f(0,1,1)=1+1-2=0$ ✓.</li><li><b>Gradiente:</b> $f_x=ze^{xz}$, $f_y=z^2$, $f_z=xe^{xz}+2yz$. En $P$: $\nabla f(P)=(1,1,2)$.</li><li><b>a)</b> Las tres componentes son $\ne0$: por el teorema (U p.211), aplicado a cada variable, cerca de $P$ se despeja $z$, $x$ o $y$.</li><li><b>b)</b> $g_x(0,1)=-\frac{f_x}{f_z}=-\frac12$, $g_y(0,1)=-\frac{f_y}{f_z}=-\frac12$.</li><li><b>c)</b> Ahora la despejada es $x$ y las independientes $y,z$: $h_y(1,1)=-\frac{f_y}{f_x}=-\frac11=-1$.</li><li><b>d) Plano</b> (5.2) (U p.189) con la gráfica $z=g(x,y)$: $z=1-\frac12x-\frac12(y-1)$; multiplicando por $2$ y ordenando, $x+y+2z=3$. Su vector normal $(1,1,2)$ es $\nabla f(P)$, como debe ser.</li></ol>
+    <p class="res">Resultado: $g_x(0,1)=g_y(0,1)=-\frac12$; $\frac{\partial h}{\partial y}(1,1)=-1$; plano $x+y+2z=3$</p>
+  </details>
+</details>
+<h3>Aplicaciones: aproximar y relacionar derivadas</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · la inversa de $y^5+y$ como función implícita <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea la ecuación $y^5+y=x$. a) Prueba que, cerca de $(2,1)$, define $y=g(x)$. b) Calcula $g'(2)$. c) Usa la recta tangente para aproximar $g(2{,}06)$.</p>
+  <details class="pista"><summary>Pista</summary><p>$f=y^5+y-x$ y $f_y=5y^4+1$, que nunca se anula. $g$ es la inversa de $t\mapsto t^5+t$, que no se sabe despejar con una fórmula.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a)</b> $f(x,y)=y^5+y-x$ (polinomio); $f(2,1)=1+1-2=0$ ✓; $f_y=5y^4+1\ge1>0$, en particular $f_y(2,1)=6\ne0$ ✓ (U p.206).</li><li><b>b)</b> $f_x=-1$: $g'(2)=-\frac{f_x}{f_y}=-\frac{-1}{6}=\frac16$.</li><li><b>c)</b> Recta tangente: $g(x)\approx1+\frac16(x-2)$; en $x=2{,}06$: $g(2{,}06)\approx1+\frac{0{,}06}6=1{,}01$.</li><li><b>Comprobación:</b> resolviendo numéricamente $y^5+y=2{,}06$ sale $y\approx1{,}00984$: el error es de unas dos diezmilésimas.</li><li><b>Lectura:</b> $g'(2)=\frac16=\frac1{(t^5+t)'|_{t=1}}$: la derivada de la inversa es el inverso de la derivada, y aquí sale del teorema de la función implícita.</li></ol>
+    <p class="res">Resultado: $g'(2)=\frac16$; $g(2{,}06)\approx1{,}01$ (valor real $\approx1{,}00984$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica g2 · la regla cíclica: el producto vale $-1$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $F(x,y,z)=0$ una ecuación con $F$ de parciales continuas y $F_x$, $F_y$, $F_z$ no nulas en un punto de la superficie, de modo que cerca de él cada variable es función de las otras dos. a) Demuestra que $\dfrac{\partial x}{\partial y}\cdot\dfrac{\partial y}{\partial z}\cdot\dfrac{\partial z}{\partial x}=-1$. b) Compruébalo con la ley de los gases ideales $pV=RT$ ($R>0$ constante; $p,V,T>0$).</p>
+  <details class="pista"><summary>Pista</summary><p>Cada factor es un cociente del teorema (U p.211): la despejada va en el denominador de $-\frac{F_{\text{otra}}}{F_{\text{despejada}}}$. Al multiplicar, las parciales se cancelan y quedan tres signos menos.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Cada factor</b> (U p.211, con la variable despejada en el papel de $z$): $\frac{\partial x}{\partial y}=-\frac{F_y}{F_x}$, $\frac{\partial y}{\partial z}=-\frac{F_z}{F_y}$, $\frac{\partial z}{\partial x}=-\frac{F_x}{F_z}$.</li><li><b>a) Producto:</b> $\left(-\frac{F_y}{F_x}\right)\left(-\frac{F_z}{F_y}\right)\left(-\frac{F_x}{F_z}\right)=(-1)^3\frac{F_yF_zF_x}{F_xF_yF_z}=-1$.</li><li><b>b) Despejes:</b> $p=\frac{RT}V$, $V=\frac{RT}p$, $T=\frac{pV}R$. Derivadas: $\frac{\partial p}{\partial V}=-\frac{RT}{V^2}$, $\frac{\partial V}{\partial T}=\frac Rp$, $\frac{\partial T}{\partial p}=\frac VR$.</li><li><b>b) Producto:</b> $-\frac{RT}{V^2}\cdot\frac Rp\cdot\frac VR=-\frac{RT}{pV}=-1$, porque $pV=RT$ ✓.</li><li><b>Error que evita:</b> «simplificar» $\partial x\,\partial y\,\partial z$ como si fueran fracciones daría $+1$; las parciales no son fracciones.</li></ol>
+    <p class="res">Resultado: $\frac{\partial x}{\partial y}\cdot\frac{\partial y}{\partial z}\cdot\frac{\partial z}{\partial x}=-1$ (no $1$); con $pV=RT$: $-\frac{RT}{pV}=-1$</p>
+  </details>
+</details>
+</div>
+<!-- ============================ autoevaluación ============================ -->
+<h2 id="autoeval" data-vista="tipos"><span class="n">8</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="f">
+    <p><b>1.</b> (V/F) Si $f(a,b)=0$ y $\frac{\partial f}{\partial y}(a,b)=0$, entonces la ecuación $f(x,y)=0$ no puede definir $y$ como función de $x$ cerca de $(a,b)$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">El teorema es una condición suficiente (U p.206): si falla, no concluye nada. Ejemplo: $x-y^3=0$ en $(0,0)$ tiene $f_y=0$ y, sin embargo, $y=\sqrt[3]x$ es función de $x$. Lo correcto es decir «el teorema no lo garantiza».</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>2.</b> (Elige) Si $x^2y+y^3=2$ define $y=y(x)$ cerca de $(1,1)$, entonces $y'(1)$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $-\frac12$</button><button data-v="b">(b) $-2$</button><button data-v="c">(c) $\frac12$</button><button data-v="d">(d) $-\frac14$</button></div>
+    <div class="exp">$f_x=2xy=2$, $f_y=x^2+3y^2=4$ en $(1,1)$; $y'=-\frac{f_x}{f_y}=-\frac12$ (U p.206). La (b) invierte el cociente; la (c) olvida el signo menos.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>3.</b> (V/F) Para garantizar que $f(x,y)=0$ define $x$ como función de $y$ cerca de $(a,b)$ hay que comprobar $f(a,b)=0$ y $\frac{\partial f}{\partial x}(a,b)\ne0$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Es el teorema con los papeles cambiados (U p.206): la parcial que no debe anularse es la de la variable que se despeja.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>4.</b> (Elige) Si $f(x,y)=0$ define $x=h(y)$, su derivada es:</p>
+    <div class="opts"><button data-v="a">(a) $h'=-\dfrac{f_y}{f_x}$</button><button data-v="b">(b) $h'=-\dfrac{f_x}{f_y}$</button><button data-v="c">(c) $h'=\dfrac{f_y}{f_x}$</button><button data-v="d">(d) $h'=-f_xf_y$</button></div>
+    <div class="exp">Derivando $f(h(y),y)=0$ respecto de $y$: $f_x\,h'+f_y=0$, así que $h'=-\frac{f_y}{f_x}$ (la parcial de la despejada va abajo; U pp.206-207).</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>5.</b> (V/F) Para aplicar el teorema en $(a,b)$ basta comprobar que $\frac{\partial f}{\partial y}(a,b)\ne0$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">También hace falta $f(a,b)=0$: el punto tiene que estar en la curva. En E 5.23 el punto $(2,1)$ tiene $f_y=-2\ne0$, pero $f(2,1)=2\ne0$.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>6.</b> (Elige) La esfera $x^2+y^2+z^2=3$ define $z=g(x,y)$ cerca de $(1,1,1)$. Entonces $g_x(1,1)$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $-1$</button><button data-v="b">(b) $1$</button><button data-v="c">(c) $-\frac12$</button><button data-v="d">(d) $2$</button></div>
+    <div class="exp">$f_x=2x=2$, $f_z=2z=2$ en el punto: $g_x=-\frac{f_x}{f_z}=-1$ (U p.211). Comprobación: $g=\sqrt{3-x^2-y^2}$, $g_x=-\frac{x}{g}=-1$.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>7.</b> (V/F) Si $\nabla f(a,b)\ne(0,0)$, el gradiente $\nabla f(a,b)$ es perpendicular a la recta tangente en $(a,b)$ a la curva de nivel de $f$ que pasa por ese punto.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Con $f_y\ne0$, la tangente tiene vector director $\left(1,-\frac{f_x}{f_y}\right)$ y su producto escalar con $(f_x,f_y)$ es $f_x-f_x=0$ (U p.210); si $f_y=0$, la tangente es vertical y el gradiente, horizontal.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>8.</b> (Elige) Para calcular $y''$ en un punto por derivación implícita, el procedimiento correcto es:</p>
+    <div class="opts"><button data-v="a">(a) derivar la ecuación, sustituir el punto y derivar la igualdad ya evaluada</button><button data-v="b">(b) derivar la ecuación, evaluar para obtener $y'$; derivar la ecuación derivada (sin evaluar) y sustituir el punto y el $y'$ hallado</button><button data-v="c">(c) $y''=-\dfrac{f_{xx}}{f_{yy}}$</button><button data-v="d">(d) derivar $-\dfrac{f_x}{f_y}$ respecto de $x$ tratando $y$ como constante</button></div>
+    <div class="exp">Una igualdad entre números no se puede derivar (daría $0=0$); hay que derivar antes de evaluar (U p.207; E 5.24). En (d), $y$ depende de $x$: no es constante.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>9.</b> (Elige) ¿En qué puntos del folium $x^3+y^3-3xy=0$ no se puede despejar ninguna de las dos variables con el teorema?</p>
+    <div class="opts"><button data-v="a">(a) solo en $(0,0)$</button><button data-v="b">(b) en $(0,0)$ y en $(1,1)$</button><button data-v="c">(c) en $(\sqrt[3]4,\sqrt[3]2)$ y en $(\sqrt[3]2,\sqrt[3]4)$</button><button data-v="d">(d) en ninguno</button></div>
+    <div class="exp">Las dos parciales se anulan en $(0,0)$ y en $(1,1)$, pero $(1,1)$ no está en la curva ($1+1-3\ne0$). En los puntos de (c) falla solo una de las dos (U pp.208-209).</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>10.</b> (V/F) Si $f(a,b)=0$ y $f_y(a,b)\ne0$, la función $y=g(x)$ que da el teorema está definida en toda la recta real.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">El teorema es local: da un intervalo abierto $U$ que contiene a $a$ (U p.206). En la circunferencia $x^2+y^2=1$, cerca de $\left(\frac{\sqrt2}2,\frac{\sqrt2}2\right)$, $y=\sqrt{1-x^2}$ solo tiene sentido para $|x|\le1$.</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<!-- ============================ ejercicios ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">9</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.23-5.27, pp. 186-191">E pp.186-191</span></h2>
 <p>Orden recomendado para aprender: <b>5.23 → 5.25</b> (comprobar las condiciones del teorema) <b>→ 5.26</b> (pendiente con $-f_x/f_y$) <b>→ 5.27</b> (tres variables) <b>→ 5.24</b> (derivada segunda implícita).</p>
-<details class="sol" id="ej-5-23"><summary>Ejercicio 5.23 · ¿en qué punto garantiza el teorema $y=g(x)$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.23, p. 186 · teoría: U p. 206">E p.186</span></summary>
-<p class="enun">El teorema de la función implícita garantiza que la ecuación $x^2-xy^2+y^2=1$ define a $y$ como función implícita de $x$ cerca de: a) $(0,1)$. b) $(2,1)$. c) $(-1,0)$. d) Ninguna de las anteriores.</p>
+<article class="ejer" id="ej-5-23">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 5.23 · ¿en qué punto garantiza el teorema $y=g(x)$?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.23, p. 186 · teoría: U p. 206">E p.186</span></header>
+<div class="ejer-enun"><p class="enun">El teorema de la función implícita garantiza que la ecuación $x^2-xy^2+y^2=1$ define a $y$ como función implícita de $x$ cerca de: a) $(0,1)$. b) $(2,1)$. c) $(-1,0)$. d) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir en cuál de los puntos a), b), c) la ecuación $x^2-xy^2+y^2=1$ define $y$ como función de $x$ según el teorema.</dd>
     <dt>Cómo lo pienso</dt><dd>Para poder despejar $y$ cerca de un punto hacen falta dos cosas: que el punto esté de verdad en la curva y que la curva no tenga tangente vertical allí (es decir, $\frac{\partial f}{\partial y}\ne0$). Se comprueban las dos en cada candidato.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita (U p. 206): $f$ con parciales continuas, $f(a,b)=0$ y $\frac{\partial f}{\partial y}(a,b)\ne0$.</dd>
     <dt>Por dónde empiezo</dt><dd>Pasar la ecuación a la forma $f(x,y)=0$ y calcular $\frac{\partial f}{\partial y}$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Escribir $f=0$:</b> $f(x,y)=x^2-xy^2+y^2-1$. Es un polinomio: continua con parciales continuas en $\mathbb R^2$.</li>
     <li><b>Parcial respecto de $y$</b> (la variable que se despeja): $\frac{\partial f}{\partial y}=-2xy+2y=2y(1-x)$.</li>
     <li><b>Punto $(0,1)$:</b> $f(0,1)=0-0+1-1=0$ ✓; $\frac{\partial f}{\partial y}(0,1)=2\cdot1\cdot1=2\ne0$ ✓. Se cumplen las dos.</li>
@@ -215,15 +558,18 @@
   <p><b>Respuesta: a).</b></p>
   <div class="recipe"><b>Receta:</b> tabla de dos columnas por punto: «¿$f(a,b)=0$?» y «¿$\frac{\partial f}{\partial(\text{variable a despejar})}(a,b)\ne0$?». Solo vale el punto con dos «sí».</div>
 </details>
-<details class="sol" id="ej-5-25"><summary>Ejercicio 5.25 · $y=g(x)$ y $x=g(y)$ cerca de $(1,1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.25, pp. 188-189 · teoría: U p. 206">E pp.188-189</span></summary>
-<p class="enun">Sea la ecuación $3xy-x^3+\cos(\pi y)=1$. Justifica si el teorema de la función implícita garantiza que esta ecuación define a $y$ como función implícita de $x$ cerca de $(1,1)$. ¿Lo garantiza para $x$ como función implícita de $y$?</p>
+</article>
+<article class="ejer" id="ej-5-25">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 5.25 · $y=g(x)$ y $x=g(y)$ cerca de $(1,1)$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.25, pp. 188-189 · teoría: U p. 206">E pp.188-189</span></header>
+<div class="ejer-enun"><p class="enun">Sea la ecuación $3xy-x^3+\cos(\pi y)=1$. Justifica si el teorema de la función implícita garantiza que esta ecuación define a $y$ como función implícita de $x$ cerca de $(1,1)$. ¿Lo garantiza para $x$ como función implícita de $y$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si, cerca de $(1,1)$, la ecuación define $y=g(x)$ y si define $x=g(y)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es el mismo punto con dos preguntas distintas: para despejar $y$ importa $\frac{\partial f}{\partial y}$ y para despejar $x$ importa $\frac{\partial f}{\partial x}$. Que la parcial valga $0$ no prueba que sea imposible, solo que el teorema no lo garantiza.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita (U p. 206) y su versión con los papeles de $x$ e $y$ cambiados (U p. 206).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $f=0$ y comprobar que $f(1,1)=0$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Escribir $f=0$</b> (pasar el $1$ a la izquierda): $f(x,y)=3xy-x^3+\cos(\pi y)-1$. Suma de un polinomio y un coseno: continua con parciales continuas en $\mathbb R^2$.</li>
     <li><b>El punto está en la curva:</b> $f(1,1)=3-1+\cos\pi-1=3-1-1-1=0$ ✓.</li>
     <li><b>¿$y$ en función de $x$?</b> $\frac{\partial f}{\partial y}=3x-\pi\operatorname{sen}(\pi y)$; en $(1,1)$: $3-\pi\operatorname{sen}\pi=3\ne0$ ✓. <b>Sí</b> lo garantiza el teorema: $y=g(x)$ cerca de $x=1$ con $g(1)=1$ (y de paso $g'(1)=-\frac{f_x}{f_y}=-\frac03=0$).</li>
@@ -232,15 +578,18 @@
   </ol>
   <div class="recipe"><b>Receta:</b> «¿puedo despejar la variable $v$?» $\iff$ «¿$\frac{\partial f}{\partial v}\ne0$ en el punto?» (además de $f=0$). Si la parcial es $0$, la respuesta correcta es «el teorema no lo garantiza», no «es imposible».</div>
 </details>
-<details class="sol" id="ej-5-26"><summary>Ejercicio 5.26 · pendiente de la curva de nivel de $ye^x-x^2$ por $(0,1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.26, pp. 189-190 · teoría: U p. 210, Ejemplo 5.13">E pp.189-190</span></summary>
-<p class="enun">Sea $f$ la función dada por $f(x,y)=ye^x-x^2$. ¿Cuál es la pendiente de la recta tangente a la curva de nivel que pasa por $(0,1)$ en ese mismo punto?</p>
+</article>
+<article class="ejer" id="ej-5-26">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 5.26 · pendiente de la curva de nivel de $ye^x-x^2$ por $(0,1)$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.26, pp. 189-190 · teoría: U p. 210, Ejemplo 5.13">E pp.189-190</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f$ la función dada por $f(x,y)=ye^x-x^2$. ¿Cuál es la pendiente de la recta tangente a la curva de nivel que pasa por $(0,1)$ en ese mismo punto?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La pendiente en $(0,1)$ de la recta tangente a la curva de nivel de $f(x,y)=ye^x-x^2$ que pasa por ese punto.</dd>
     <dt>Cómo lo pienso</dt><dd>Una curva de nivel es una curva implícita $f=c$. Si cerca del punto es una gráfica $y=y(x)$, su pendiente es $y'$, que se obtiene sin despejar. También se puede pensar que la tangente es perpendicular al gradiente.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita y $y'=-\frac{f_x}{f_y}$ (U p. 206-207); ejemplo de curva de nivel (U p. 210, Ejemplo 5.13).</dd>
     <dt>Por dónde empiezo</dt><dd>Calcular el nivel $f(0,1)$ y escribir la curva como $F(x,y)=ye^x-x^2-1=0$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"(1+x^2)*exp(-x)","n":"ye^x−x²=1"},{"e":"1-x","n":"tangente y=1−x","d":1}],"q":[[0,1,"(0, 1)"]],"x":[-2,3],"y":[-0.5,6],"ex":"x","ey":"y"}' data-alt="Curva de nivel ye^x-x^2=1 y su tangente en (0,1)"><figcaption>La curva de nivel $ye^x-x^2=1$ (aquí se puede despejar: $y=(1+x^2)e^{-x}$) y su tangente en $(0,1)$, de pendiente $-\frac{F_x}{F_y}=-1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"(1+x^2)*exp(-x)","n":"ye^x−x²=1"},{"e":"1-x","n":"tangente y=1−x","d":1}],"q":[[0,1,"(0, 1)"]],"x":[-2,3],"y":[-0.5,6],"ex":"x","ey":"y"}' data-alt="Curva de nivel ye^x-x^2=1 y su tangente en (0,1)"><figcaption>La curva de nivel $ye^x-x^2=1$ (aquí se puede despejar: $y=(1+x^2)e^{-x}$) y su tangente en $(0,1)$, de pendiente $-\frac{F_x}{F_y}=-1$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <p><b>Paso previo.</b> $f(0,1)=1\cdot e^0-0=1$: la curva es $ye^x-x^2=1$.</p>
   <p><b>Método 1: teorema de la función implícita.</b></p>
   <ol class="steps">
@@ -259,15 +608,18 @@
   <p><b>Respuesta: $-1$.</b></p>
   <div class="recipe"><b>Receta:</b> pendiente de la curva de nivel en $(a,b)$: $m=-\dfrac{\partial f/\partial x}{\partial f/\partial y}(a,b)$.</div>
 </details>
-<details class="sol" id="ej-5-27"><summary>Ejercicio 5.27 · $z=g(x,y)$ en $\mathbb R^3$: hallar $a$ y las parciales <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.27, pp. 190-191 · teoría: U p. 211, Ejemplo 5.14">E pp.190-191</span></summary>
-<p class="enun">Se considera la función $f:\mathbb R^3\to\mathbb R$ definida por $f(x,y,z)=1-e^{(x^7+y^2-xz-1)}$. 1) Encuentra el valor de $a$ tal que cerca del punto $(1,0,a)$ la ecuación $f(x,y,z)=0$ defina implícitamente una función $z=g(x,y)$. 2) Calcula $\frac{\partial g}{\partial x}(1,0)$ y $\frac{\partial g}{\partial y}(1,0)$.</p>
+</article>
+<article class="ejer" id="ej-5-27">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 5.27 · $z=g(x,y)$ en $\mathbb R^3$: hallar $a$ y las parciales</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.27, pp. 190-191 · teoría: U p. 211, Ejemplo 5.14">E pp.190-191</span></header>
+<div class="ejer-enun"><p class="enun">Se considera la función $f:\mathbb R^3\to\mathbb R$ definida por $f(x,y,z)=1-e^{(x^7+y^2-xz-1)}$. 1) Encuentra el valor de $a$ tal que cerca del punto $(1,0,a)$ la ecuación $f(x,y,z)=0$ defina implícitamente una función $z=g(x,y)$. 2) Calcula $\frac{\partial g}{\partial x}(1,0)$ y $\frac{\partial g}{\partial y}(1,0)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hallar el valor de $a$ para que $f(x,y,z)=0$ defina $z=g(x,y)$ cerca de $(1,0,a)$ y calcular $g_x(1,0)$ y $g_y(1,0)$.</dd>
     <dt>Cómo lo pienso</dt><dd>El punto debe estar en la superficie (eso fija $a$) y la superficie no debe ser «vertical» respecto de $z$ ($\frac{\partial f}{\partial z}\ne0$). Entonces las pendientes de $z=g(x,y)$ se obtienen de las parciales de $f$ sin despejar $z$.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita en tres variables: $g_x=-\frac{f_x}{f_z}$, $g_y=-\frac{f_y}{f_z}$ (U p. 211, Ejemplo 5.14).</dd>
     <dt>Por dónde empiezo</dt><dd>Imponer $f(1,0,a)=0$ para hallar $a$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Regularidad:</b> $f$ es una exponencial de un polinomio: continua con parciales continuas en $\mathbb R^3$, para cualquier $a$.</li>
     <li><b>Condición $f(1,0,a)=0$:</b> el exponente vale $1+0-a-1=-a$, así que $1-e^{-a}=0\iff e^{-a}=1\iff a=0$. Único candidato: $(1,0,0)$.</li>
     <li><b>Condición $\frac{\partial f}{\partial z}\ne0$:</b> por la regla de la cadena, $\frac{\partial f}{\partial z}=-e^{(\dots)}\cdot(-x)=x\,e^{(x^7+y^2-xz-1)}$. En $(1,0,0)$: $1\cdot e^0=1\ne0$ ✓. <b>Respuesta 1: $a=0$.</b></li>
@@ -279,15 +631,18 @@
   <p><b>Respuestas: $a=0$, $\frac{\partial g}{\partial x}(1,0)=7$, $\frac{\partial g}{\partial y}(1,0)=0$.</b></p>
   <div class="recipe"><b>Receta:</b> superficie $f(x,y,z)=0$: (1) imponer $f(\text{punto})=0$ para hallar el dato que falta; (2) comprobar $f_z\ne0$; (3) $z_x=-f_x/f_z$, $z_y=-f_y/f_z$ en el punto.</div>
 </details>
-<details class="sol" id="ej-5-24"><summary>Ejercicio 5.24 · $x=g(y)$ cerca de $(1,1)$; $g'(1)$ y $g''(1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.24, pp. 187-188 · teoría: U p. 206 (cambio de papeles) y p. 207">E pp.187-188</span></summary>
-<p class="enun">Dada la ecuación $x^4+x^2y^3-y^2=1$. 1) Muestra que define a $x$ como función implícita de $y$ cerca de $(1,1)$. 2) Calcula $g'(1)$ y $g''(1)$, en donde $x=g(y)$ cerca de $(1,1)$.</p>
+</article>
+<article class="ejer" id="ej-5-24">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 5.24 · $x=g(y)$ cerca de $(1,1)$; $g'(1)$ y $g''(1)$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 5.24, pp. 187-188 · teoría: U p. 206 (cambio de papeles) y p. 207">E pp.187-188</span></header>
+<div class="ejer-enun"><p class="enun">Dada la ecuación $x^4+x^2y^3-y^2=1$. 1) Muestra que define a $x$ como función implícita de $y$ cerca de $(1,1)$. 2) Calcula $g'(1)$ y $g''(1)$, en donde $x=g(y)$ cerca de $(1,1)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Probar que la ecuación define $x=g(y)$ cerca de $(1,1)$ y calcular $g'(1)$ y $g''(1)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Aquí se despeja $x$, así que la variable independiente es $y$ y la parcial que importa es $\frac{\partial f}{\partial x}$. Una vez garantizada $g$, no hace falta conocerla: se deriva la identidad $f(g(y),y)=0$ una vez para $g'$ y otra para $g''$.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita con papeles cambiados (U p. 206) y derivación implícita sucesiva (U p. 207).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $f=0$, comprobar $f(1,1)=0$ y $\frac{\partial f}{\partial x}(1,1)\ne0$.</dd>
-  </dl></div>
-  <p><b>Apartado 1.</b></p>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<p><b>Apartado 1.</b></p>
   <ol class="steps">
     <li>$f(x,y)=x^4+x^2y^3-y^2-1$ (polinomio: continua con parciales continuas en $\mathbb R^2$).</li>
     <li>$f(1,1)=1+1-1-1=0$ ✓.</li>
@@ -316,17 +671,19 @@
   <p><b>Respuestas: $g'(1)=-\frac16$, $g''(1)=-\frac{43}{108}$.</b></p>
   <div class="recipe"><b>Receta:</b> derivada segunda implícita: (1) derivar la ecuación con $x=g(y)$ dentro, obteniendo $(\ast)$; (2) evaluar y despejar $g'$; (3) derivar $(\ast)$ <b>antes</b> de evaluar; (4) evaluar con el $g'$ ya conocido y despejar $g''$.</div>
 </details>
-<!-- ============================ 8 ============================ -->
-<h2 id="propios"><span class="n">8</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, verificados con sympy">P</span></h2>
-<details class="sol" id="p1"><summary>Propio 1 · tangente a una elipse y tangentes horizontales <span class="src" data-l="P" data-ref="Ejemplo propio sobre U pp. 206-210">P</span></summary>
-<p class="enun">Para la elipse $x^2+xy+y^2=7$: (a) comprueba que define $y=y(x)$ cerca de $(1,2)$ y halla la recta tangente allí; (b) ¿en qué puntos es horizontal la tangente?</p>
+</article>
+<h3>Ejemplos propios (de fácil a difícil)</h3>
+<article class="ejer" id="p1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Propio 1 · tangente a una elipse y tangentes horizontales</span> <span class="src" data-l="P" data-ref="Ejemplo propio sobre U pp. 206-210">P</span></header>
+<div class="ejer-enun"><p class="enun">Para la elipse $x^2+xy+y^2=7$: (a) comprueba que define $y=y(x)$ cerca de $(1,2)$ y halla la recta tangente allí; (b) ¿en qué puntos es horizontal la tangente?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La recta tangente a la elipse $x^2+xy+y^2=7$ en $(1,2)$ y los puntos de tangente horizontal.</dd>
     <dt>Cómo lo pienso</dt><dd>La tangente es horizontal cuando $y'=0$, y como $y'=-\frac{F_x}{F_y}$, eso ocurre donde $F_x=0$. Donde $F_y=0$ la tangente es vertical y no se puede despejar $y$.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita y $y'=-\frac{F_x}{F_y}$ (U pp. 206-207).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $F=x^2+xy+y^2-7$ y comprobar $F(1,2)=0$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"(-x+sqrt(28-3*x^2))/2","n":"rama superior"},{"e":"(-x-sqrt(28-3*x^2))/2","n":"rama inferior"},{"e":"2-0.8*(x-1)","n":"tangente en (1,2)","d":1}],"q":[[1,2,"(1, 2)"],[-1.5275,3.0551],[1.5275,-3.0551]],"x":[-3.4,3.4],"y":[-3.6,3.6]}' data-alt="Elipse x^2+xy+y^2=7, tangente en (1,2) y tangentes horizontales"><figcaption>La elipse $x^2+xy+y^2=7$ (dos ramas $y=\frac{-x\pm\sqrt{28-3x^2}}2$), la tangente en $(1,2)$ y los dos puntos de tangente horizontal, $\pm\big(\frac{\sqrt{21}}3,-\frac{2\sqrt{21}}3\big)$ (arriba a la izquierda y abajo a la derecha). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<figure class="graf" data-g='{"c":[{"e":"(-x+sqrt(28-3*x^2))/2","n":"rama superior"},{"e":"(-x-sqrt(28-3*x^2))/2","n":"rama inferior"},{"e":"2-0.8*(x-1)","n":"tangente en (1,2)","d":1}],"q":[[1,2,"(1, 2)"],[-1.5275,3.0551],[1.5275,-3.0551]],"x":[-3.4,3.4],"y":[-3.6,3.6]}' data-alt="Elipse x^2+xy+y^2=7, tangente en (1,2) y tangentes horizontales"><figcaption>La elipse $x^2+xy+y^2=7$ (dos ramas $y=\frac{-x\pm\sqrt{28-3x^2}}2$), la tangente en $(1,2)$ y los dos puntos de tangente horizontal, $\pm\big(\frac{\sqrt{21}}3,-\frac{2\sqrt{21}}3\big)$ (arriba a la izquierda y abajo a la derecha). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
   <ol class="steps">
     <li>$F(x,y)=x^2+xy+y^2-7$; $F(1,2)=1+2+4-7=0$ ✓.</li>
     <li>$F_x=2x+y$, $F_y=x+2y$. En $(1,2)$: $F_x=4$, $F_y=5\ne0$ ✓.</li>
@@ -336,15 +693,18 @@
   </ol>
   <div class="recipe"><b>Receta:</b> tangente horizontal: $F_x=0$ (y $F_y\ne0$); tangente vertical: $F_y=0$ (y $F_x\ne0$). Cada condición se resuelve junto con la ecuación de la curva.</div>
 </details>
-<details class="sol" id="p2"><summary>Propio 2 · $z=z(x,y)$ implícita y plano tangente <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 211; plano tangente, U (5.2), p. 189">P</span></summary>
-<p class="enun">La ecuación $z^3+xz-y=0$ define $z=z(x,y)$ cerca de $(0,1,1)$. (a) Compruébalo. (b) Calcula $z_x(0,1)$ y $z_y(0,1)$. (c) Usa el plano tangente para aproximar $z(0{,}1;\,0{,}9)$.</p>
+</article>
+<article class="ejer" id="p2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 2 · $z=z(x,y)$ implícita y plano tangente</span> <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 211; plano tangente, U (5.2), p. 189">P</span></header>
+<div class="ejer-enun"><p class="enun">La ecuación $z^3+xz-y=0$ define $z=z(x,y)$ cerca de $(0,1,1)$. (a) Compruébalo. (b) Calcula $z_x(0,1)$ y $z_y(0,1)$. (c) Usa el plano tangente para aproximar $z(0{,}1;\,0{,}9)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Comprobar que $z^3+xz-y=0$ define $z=z(x,y)$ cerca de $(0,1,1)$, hallar $z_x$, $z_y$ y aproximar $z(0{,}1;0{,}9)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Despejar $z$ exigiría resolver una cúbica, pero las parciales de $z$ salen de las de $f$. Con ellas se construye el plano tangente, que sirve de aproximación cerca del punto.</dd>
     <dt>Qué uso</dt><dd>Teorema en tres variables (U p. 211) y plano tangente (U p. 189).</dd>
     <dt>Por dónde empiezo</dt><dd>Comprobar $f(0,1,1)=0$ y $f_z(0,1,1)\ne0$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>(a)</b> $f(x,y,z)=z^3+xz-y$ (polinomio). $f(0,1,1)=1+0-1=0$ ✓; $f_z=3z^2+x$, $f_z(0,1,1)=3\ne0$ ✓. Hay $z=z(x,y)$ con $z(0,1)=1$.</li>
     <li><b>(b)</b> $f_x=z$, $f_y=-1$; en el punto, $f_x=1$, $f_y=-1$. Entonces $z_x(0,1)=-\frac13$ y $z_y(0,1)=-\frac{-1}3=\frac13$.</li>
     <li><b>(c)</b> Plano tangente: $z\approx1-\frac13x+\frac13(y-1)$. En $(0{,}1;\,0{,}9)$: $z\approx1-\frac{0{,}1}3-\frac{0{,}1}3=0{,}9333$.</li>
@@ -352,15 +712,18 @@
   </ol>
   <div class="recipe"><b>Receta:</b> superficie implícita: $z_x=-f_x/f_z$, $z_y=-f_y/f_z$ y con ellas el plano tangente, sin despejar $z$ (aquí despejar exigiría resolver una cúbica).</div>
 </details>
-<details class="sol" id="p3"><summary>Propio 3 · $y'(0)$ e $y''(0)$ de $e^y+xy=e$ <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 207">P</span></summary>
-<p class="enun">La ecuación $e^y+xy=e$ define $y=y(x)$ cerca de $(0,1)$. Calcula $y'(0)$ e $y''(0)$.</p>
+</article>
+<article class="ejer" id="p3">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 3 · $y'(0)$ e $y''(0)$ de $e^y+xy=e$</span> <span class="src" data-l="P" data-ref="Ejemplo propio sobre U p. 207">P</span></header>
+<div class="ejer-enun"><p class="enun">La ecuación $e^y+xy=e$ define $y=y(x)$ cerca de $(0,1)$. Calcula $y'(0)$ e $y''(0)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Calcular $y'(0)$ e $y''(0)$ para la función $y(x)$ definida por $e^y+xy=e$ cerca de $(0,1)$.</dd>
     <dt>Cómo lo pienso</dt><dd>No se despeja $y$: se deriva la ecuación suponiendo que $y$ depende de $x$, se evalúa para obtener $y'$ y se vuelve a derivar la ecuación derivada para obtener $y''$.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita (U p. 206) y derivación implícita (U p. 207).</dd>
     <dt>Por dónde empiezo</dt><dd>Comprobar $F(0,1)=0$ y $F_y(0,1)\ne0$, y derivar la ecuación una vez.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Hipótesis:</b> $F=e^y+xy-e$; $F(0,1)=e+0-e=0$ ✓; $F_y=e^y+x$, $F_y(0,1)=e\ne0$ ✓.</li>
     <li><b>Derivar la ecuación</b> con $y=y(x)$ (cadena en $e^y$, producto en $xy$): $e^yy'+y+xy'=0.\quad(\ast)$</li>
     <li><b>En $x=0$, $y=1$:</b> $e\,y'+1=0$, luego $y'(0)=-\frac1e$.</li>
@@ -370,15 +733,18 @@
   </ol>
   <div class="recipe"><b>Receta:</b> la misma que E 5.24: derivar, evaluar, despejar $y'$; derivar la ecuación derivada (no la evaluada), evaluar con $y'$ y despejar $y''$.</div>
 </details>
-<details class="sol" id="p4"><summary>Propio 4 · folium: puntos sin despeje posible y $y''$ en $\left(\frac32,\frac32\right)$ <span class="src" data-l="P" data-ref="Ejemplo propio sobre U Ejemplo 5.12, pp. 207-210">P</span></summary>
-<p class="enun">Sea $F(x,y)=x^3+y^3-3xy$. (a) ¿En qué puntos de la curva $F=0$ no se puede despejar ninguna de las dos variables con el teorema? (b) En $\left(\frac32,\frac32\right)$ halla $y'$, $y''$ y la recta tangente.</p>
+</article>
+<article class="ejer" id="p4">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio 4 · folium: puntos sin despeje posible y $y''$ en $\left(\frac32,\frac32\right)$</span> <span class="src" data-l="P" data-ref="Ejemplo propio sobre U Ejemplo 5.12, pp. 207-210">P</span></header>
+<div class="ejer-enun"><p class="enun">Sea $F(x,y)=x^3+y^3-3xy$. (a) ¿En qué puntos de la curva $F=0$ no se puede despejar ninguna de las dos variables con el teorema? (b) En $\left(\frac32,\frac32\right)$ halla $y'$, $y''$ y la recta tangente.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Puntos del folium $x^3+y^3-3xy=0$ donde el teorema no permite despejar ninguna variable, y $y'$, $y''$ y tangente en $\left(\frac32,\frac32\right)$.</dd>
     <dt>Cómo lo pienso</dt><dd>No se puede despejar ninguna de las dos variables solo donde ambas parciales se anulan a la vez (y el punto está en la curva). En un punto bueno, $y'$ sale de la fórmula y $y''$ de derivar otra vez.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita y folium de Descartes (U Ejemplo 5.12, pp. 207-210).</dd>
     <dt>Por dónde empiezo</dt><dd>Plantear el sistema $F=0$, $F_x=0$, $F_y=0$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>(a)</b> Hay que resolver $F=0$, $F_x=3x^2-3y=0$ y $F_y=3y^2-3x=0$. De $F_x=0$: $y=x^2$; en $F_y=0$: $x^4=x$, luego $x=0$ o $x=1$. $(0,0)$: $F=0$ ✓. $(1,1)$: $F=1+1-3=-1\ne0$, no está en la curva. Solo <b>$(0,0)$</b>.</li>
     <li><b>(b) Comprobar el punto:</b> $F\left(\frac32,\frac32\right)=\frac{27}8+\frac{27}8-\frac{27}4=0$ ✓. $F_y=3\cdot\frac94-\frac92=\frac94\ne0$ ✓.</li>
     <li><b>$y'$:</b> $y'=\frac{y-x^2}{y^2-x}=\frac{\frac32-\frac94}{\frac94-\frac32}=\frac{-3/4}{3/4}=-1$. Tangente: $y=\frac32-\left(x-\frac32\right)$, es decir, $x+y=3$.</li>
@@ -386,38 +752,59 @@
     <li><b>Lectura:</b> $\left(\frac32,\frac32\right)$ es la «punta» del lazo, sobre la recta $y=x$; $y''\lt0$ (cóncava, en el sentido de U §3.5): la curva se curva hacia abajo respecto de su tangente $x+y=3$.</li>
   </ol>
 </details>
-<!-- ============================ 9 ============================ -->
-<h2 id="examen"><span class="n">9</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+</article>
+<!-- ============================ exámenes ============================ -->
+<h2 id="examenes" data-vista="examen"><span class="n">10</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>2 preguntas</b> de este tema (las dos se resuelven aquí abajo con su redacción) y 5 ejercicios en el libro E. Se reparten en 2 tipos:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Verdadero o falso sobre las hipótesis del teorema <small>(1 de 2)</small></td><td>Escribir $f=0$; comprobar $f(a,b)=0$ y la parcial de la variable que se despeja; si se anula, «falso: no lo garantiza».</td>
+      <td><a href="#ej-5-23">5.23</a> · <a href="#ej-5-25">5.25</a> · <a href="#p1">P1</a> (propio)</td>
+      <td><a href="#x1">Examen 1</a></td></tr>
+    <tr><td>$g'$ y $g''$ de una función implícita <small>(1 de 2)</small></td><td>Garantizar $g$ con el teorema; derivar la ecuación dos veces y evaluar al final.</td>
+      <td><a href="#ej-5-24">5.24</a> · <a href="#ej-5-26">5.26</a> · <a href="#ej-5-27">5.27</a> · <a href="#p2">P2</a> · <a href="#p3">P3</a> · <a href="#p4">P4</a> (propios)</td>
+      <td><a href="#x2">Examen 2</a></td></tr>
+  </table>
+  <p><small>Recuento propio sobre las preguntas de X resueltas aquí. Las pendientes de curvas de nivel y las superficies $z=g(x,y)$ (E 5.26, 5.27) no aparecen en estos exámenes, pero son el mismo teorema.</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre las preguntas de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
 <p>En los exámenes recopilados en X, este tema aparece de dos maneras: (1) una pregunta corta de <b>verdadero o falso sobre las hipótesis del teorema</b> (1 punto) y (2) un <b>ejercicio largo</b> de «demuestre que define $x$ como función de $y$ y calcule $g'$ y $g''$» (3 puntos), igual que E 5.24. Las pendientes de curvas de nivel y las superficies $z=g(x,y)$ (E 5.26, 5.27) no aparecen en X, pero son el mismo teorema.</p>
-<details class="sol" id="x1"><summary>X1 · ¿garantiza el teorema $y=g(x)$ para $x^2+y^2=9$ cerca de $(3,0)$? <span class="src" data-l="X" data-ref="X pp.150-151 (Febrero 2019, 1.ª semana, Ing. Electrónica Industrial y Automática, P4, 1 punto)">X pp.150-151 (feb. 2019)</span></summary>
-<p class="enun">Razone si la siguiente afirmación es verdadera o falsa: el teorema de la función implícita para funciones de dos variables garantiza que la ecuación $x^2+y^2=9$ define a $y$ como función implícita de $x$ cerca de $(3,0)$.</p>
+<article class="ejer" id="x1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">X1 · ¿garantiza el teorema $y=g(x)$ para $x^2+y^2=9$ cerca de $(3,0)$?</span> <span class="src" data-l="X" data-ref="X pp.150-151 (Febrero 2019, 1.ª semana, Ing. Electrónica Industrial y Automática, P4, 1 punto)">X pp.150-151 (feb. 2019)</span></header>
+<div class="ejer-enun"><p class="enun">Razone si la siguiente afirmación es verdadera o falsa: el teorema de la función implícita para funciones de dos variables garantiza que la ecuación $x^2+y^2=9$ define a $y$ como función implícita de $x$ cerca de $(3,0)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si es verdadero o falso que la ecuación $x^2+y^2=9$ define $y$ como función de $x$ cerca de $(3,0)$ según el teorema.</dd>
     <dt>Cómo lo pienso</dt><dd>$(3,0)$ es el punto más a la derecha de la circunferencia: allí la tangente es vertical y no se puede escribir $y$ como función de $x$. En el examen basta ver que se rompe la hipótesis $\frac{\partial f}{\partial y}\ne0$.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita (U p. 206): hace falta $f(a,b)=0$ y $\frac{\partial f}{\partial y}(a,b)\ne0$.</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $f=x^2+y^2-9$ y calcular $\frac{\partial f}{\partial y}(3,0)$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"sqrt(9-x^2)","n":"y=+√(9−x²)"},{"e":"-sqrt(9-x^2)","n":"y=−√(9−x²)"}],"q":[[3,0,"(3, 0)"]],"x":[-3.6,3.6],"y":[-3.6,3.6]}' data-alt="Circunferencia x^2+y^2=9 con tangente vertical en (3,0)"><figcaption>La circunferencia $x^2+y^2=9$ como dos gráficas $y=\pm\sqrt{9-x^2}$: en $(3,0)$ la tangente es vertical ($F_y=0$) y ninguna de las dos ramas por sí sola describe un entorno del punto. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Sea $f(x,y)=x^2+y^2-9$, polinomio: continua con parciales continuas en $\mathbb R^2$.</li>
     <li>$f(3,0)=9+0-9=0$: el punto está en la curva.</li>
     <li>$\frac{\partial f}{\partial y}(x,y)=2y$ y $\frac{\partial f}{\partial y}(3,0)=0$: no se cumple la hipótesis $\frac{\partial f}{\partial y}(a,b)\ne0$ del teorema.</li>
     <li><b>Falso:</b> el teorema no garantiza que $y$ sea función implícita de $x$ cerca de $(3,0)$.</li>
   </ol></div>
-  <p><b>Para entenderlo (no hace falta escribirlo):</b> de hecho es imposible: para $x$ un poco menor que $3$ hay dos valores $y=\pm\sqrt{9-x^2}$, y para $x\gt3$ ninguno. En cambio, $\frac{\partial f}{\partial x}(3,0)=6\ne0$: cerca de $(3,0)$ sí se despeja $x=\sqrt{9-y^2}$.</p>
   <div class="recipe"><b>Receta:</b> V/F de función implícita: escribir $f$, comprobar $f(a,b)=0$ y la parcial de la variable que se despeja; si se anula, «falso: el teorema no lo garantiza».</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>  <figure class="graf" data-g='{"c":[{"e":"sqrt(9-x^2)","n":"y=+√(9−x²)"},{"e":"-sqrt(9-x^2)","n":"y=−√(9−x²)"}],"q":[[3,0,"(3, 0)"]],"x":[-3.6,3.6],"y":[-3.6,3.6]}' data-alt="Circunferencia x^2+y^2=9 con tangente vertical en (3,0)"><figcaption>La circunferencia $x^2+y^2=9$ como dos gráficas $y=\pm\sqrt{9-x^2}$: en $(3,0)$ la tangente es vertical ($F_y=0$) y ninguna de las dos ramas por sí sola describe un entorno del punto. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
+  <p><b>Para entenderlo (no hace falta escribirlo):</b> de hecho es imposible: para $x$ un poco menor que $3$ hay dos valores $y=\pm\sqrt{9-x^2}$, y para $x\gt3$ ninguno. En cambio, $\frac{\partial f}{\partial x}(3,0)=6\ne0$: cerca de $(3,0)$ sí se despeja $x=\sqrt{9-y^2}$.</p>
   <div class="box warn"><span class="h">Error típico</span><p>Contestar «verdadero» porque el punto está en la curva (solo se comprobó la condición 1).</p></div>
+  </details>
 </details>
-<details class="sol" id="x2"><summary>X2 · $x^4+x^2y^3-y^2=1$: $x=g(y)$ cerca de $(1,1)$, $g'(1)$ y $g''(1)$ <span class="src" data-l="X" data-ref="X pp.30-31 (Septiembre 2012, reserva, Ing. Mecánica, Modelo A, Ej. 6, 3 puntos)">X pp.30-31 (sept. 2012)</span></summary>
-<p class="enun"><b>Mismo problema que E Ej. 5.24</b> (desarrollo término a término allí). Dada la ecuación $x^4+x^2y^3-y^2=1$, (a) demuestre que define a $x$ como función implícita de $y$ en un entorno de $(1,1)$; (b) si $x=g(y)$, calcule $g'(1)$ y $g''(1)$.</p>
+</article>
+<article class="ejer" id="x2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X2 · $x^4+x^2y^3-y^2=1$: $x=g(y)$ cerca de $(1,1)$, $g'(1)$ y $g''(1)$</span> <span class="src" data-l="X" data-ref="X pp.30-31 (Septiembre 2012, reserva, Ing. Mecánica, Modelo A, Ej. 6, 3 puntos)">X pp.30-31 (sept. 2012)</span></header>
+<div class="ejer-enun"><p class="enun"><b>Mismo problema que E Ej. 5.24</b> (desarrollo término a término allí). Dada la ecuación $x^4+x^2y^3-y^2=1$, (a) demuestre que define a $x$ como función implícita de $y$ en un entorno de $(1,1)$; (b) si $x=g(y)$, calcule $g'(1)$ y $g''(1)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Demostrar que la ecuación define $x=g(y)$ cerca de $(1,1)$ y calcular $g'(1)$ y $g''(1)$.</dd>
     <dt>Cómo lo pienso</dt><dd>Es el Ejercicio 5.24: se despeja $x$, así que la condición es $\frac{\partial f}{\partial x}(1,1)\ne0$; después se deriva dos veces la identidad $f(g(y),y)=0$, evaluando solo al final de cada derivación.</dd>
     <dt>Qué uso</dt><dd>Teorema de la función implícita con papeles cambiados (U p. 206) y derivación implícita (U p. 207).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $f=0$ y comprobar $f(1,1)=0$ y $f_x(1,1)=6\ne0$.</dd>
-  </dl></div>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <p><b>(a)</b></p>
   <ol class="steps">
     <li>$f(x,y)=x^4+x^2y^3-y^2-1$: polinomio, continua con parciales continuas en $\mathbb R^2$.</li>
@@ -433,10 +820,13 @@
     <li>En $y=1$, $g=1$, $g'=-\frac16$: $\frac13+4g''+\frac1{18}+2g''-2+6-2=0\Rightarrow6g''(1)=-\frac{43}{18}\Rightarrow g''(1)=-\frac{43}{108}$.</li>
   </ol></div>
   <div class="recipe"><b>Receta:</b> ver E 5.24: derivar antes de evaluar; evaluar con el $g'$ ya hallado; despejar $g''$.</div>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <div class="box warn"><span class="h">Error típico</span><p>Usar la fórmula $g'=-f_x/f_y$ (la de $y=g(x)$) cuando lo que se despeja es $x$: daría $-6$ en lugar de $-\frac16$.</p></div>
+  </details>
 </details>
-<!-- ============================ 10 ============================ -->
-<h2 id="chuleta"><span class="n">10</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+</article>
+<!-- ============================ chuleta ============================ -->
+<h2 id="chuleta" data-vista="teoria"><span class="n">11</span>Errores frecuentes, chuleta y lista de comprobación</h2>
 <h3>Errores frecuentes</h3>
 <ul>
   <li>No comprobar $f(a,b)=0$ (el punto debe estar en la curva).</li>
