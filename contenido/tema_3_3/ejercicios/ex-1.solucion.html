@@ -1,0 +1,22 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Polinomio de grado 3 por diferencias divididas con nodos $-2,0,1,3$ y valores $0,2,3,5$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Antes de calcular, miro los valores: si las pendientes entre puntos vecinos son todas iguales, los puntos están en una recta y el «grado 3» se queda en grado 1. Lo confirma la tabla.</dd>
+    <dt>Qué uso</dt><dd>Newton con la diagonal superior (U pp.123-124); si una columna es de ceros, el grado baja — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo las tres diferencias de orden 1 (entre nodos vecinos).</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Diferencias divididas (nodos $-2,0,1,3$; valores $0,2,3,5$). Orden 1: $\frac{2-0}{0-(-2)}=1$, $\frac{3-2}{1-0}=1$, $\frac{5-3}{3-1}=1$. Orden 2: $\frac{1-1}{1-(-2)}=0$, $\frac{1-1}{3-0}=0$. Orden 3: $\frac{0-0}{3-(-2)}=0$.</p>
+  <p>Diagonal superior: $0,\ 1,\ 0,\ 0$. Por la forma de Newton,</p>
+  <p>$$p_3(x)=0+1\cdot(x+2)+0\cdot(x+2)\,x+0\cdot(x+2)\,x(x-1)=x+2 .$$</p>
+  <p>Comprobación: $x+2$ vale $0,2,3,5$ en $-2,0,1,3$. El interpolador tiene grado $\le3$, y aquí es de grado $1$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> si una columna de diferencias es toda ceros, las siguientes también y el grado es menor que el esperado (es E 3.21 en la práctica). No dudes de tu resultado solo porque pedían «grado 3».</div>
+  <p>Teoría: <a href="#s3">ver teoría</a>. <span class="src" data-l="X" data-ref="X p.5 (Febrero 2010, 2.ª semana, I. Eléctrica, Ej. 5, 3 puntos)">X p.5</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
+    <li><b>Tabla de diferencias divididas</b> (cada casilla es «la de abajo menos la de arriba» de la columna anterior, entre la diferencia de los nodos extremos; las flechas muestran de dónde sale; en azul, la diagonal superior):<div class="dd" data-x="-2,0,1,3" data-y="0,2,3,5"></div></li>
+    <li><b>Newton:</b> con la diagonal $0,\ 1,\ 0,\ 0$: $p_3(x)=0+1\cdot(x+2)+0+0=x+2$. Las columnas de orden 2 y 3 son todo ceros, por eso el «grado 3» se queda en grado 1.</li>
+    <li><b>Comprobación:</b> $x+2$ vale $0,2,3,5$ en $-2,0,1,3$ ✓.</li>
+  </ol>
+    <figure class="graf" data-g='{"p":[[-2,0],[0,2],[1,3],[3,5]],"c":[{"interp":true,"n":"p₃(x)=x+2"}],"x":[-3,4]}' data-alt="Los cuatro puntos están en la recta $y=x+2$"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  </details>

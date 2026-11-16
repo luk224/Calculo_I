@@ -1,0 +1,38 @@
+<svg class="flujo" viewBox="0 0 600 608" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión: qué hago según lo que me piden en interpolación polinómica</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Si es una pregunta de grado o unicidad, se cuentan los datos y se busca un candidato sencillo: por unicidad es el interpolador. Si piden el polinomio o su valor, se usa la tabla de diferencias divididas y la forma de Newton evaluada sin desarrollar. Si llega un dato nuevo, se pone al final y solo se calculan las diferencias que lo contienen. Si piden el error, una cota o el paso de los nodos, se usa la forma de Lagrange con el caso peor de la derivada siguiente y el producto de distancias a los nodos. Si hay una integral con trapecio o Simpson, Simpson con tres nodos es la integral de la parábola interpoladora. Al final se comprueba el resultado en los nodos.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="210" height="76" rx="10"/><text x="115" y="44.5" text-anchor="middle">¿Es una pregunta de grado,</text><text x="115" y="61.5" text-anchor="middle">unicidad o «¿es el nulo?»?</text>
+<path class="lin" d="M220 48 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="43">sí</text>
+<rect class="nodo" x="250" y="10" width="340" height="76" rx="10"/><text x="420" y="27.5" text-anchor="middle">$m$ datos ⇒ grado ≤ m−1 y único.</text><text x="420" y="44.5" text-anchor="middle">Busco un candidato sencillo (recta,</text><text x="420" y="61.5" text-anchor="middle">constante) que pase por los datos:</text><text x="420" y="78.5" text-anchor="middle">por unicidad, ese es el interpolador</text>
+<path class="lin" d="M115 86 V109" marker-end="url(#fl)"/>
+<text class="no" x="123" y="102">no</text>
+<rect class="preg" x="10" y="112" width="210" height="76" rx="10"/><text x="115" y="138" text-anchor="middle">¿Piden el polinomio, o</text><text x="115" y="155" text-anchor="middle">su valor p(a), con las</text><text x="115" y="172" text-anchor="middle">diferencias divididas?</text>
+<path class="lin" d="M220 150 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="145">sí</text>
+<rect class="nodo" x="250" y="112" width="340" height="76" rx="10"/><text x="420" y="129.5" text-anchor="middle">Tabla en escalera: (abajo − arriba) entre</text><text x="420" y="146.5" text-anchor="middle">(nodo final − nodo inicial). Newton con</text><text x="420" y="163.5" text-anchor="middle">la diagonal y p(a) sin desarrollar.</text><text x="420" y="180.5" text-anchor="middle">Con 2-3 datos vale también el sistema</text>
+<path class="lin" d="M115 188 V211" marker-end="url(#fl)"/>
+<text class="no" x="123" y="204">no</text>
+<rect class="preg" x="10" y="214" width="210" height="76" rx="10"/><text x="115" y="240" text-anchor="middle">¿Llega un dato nuevo o</text><text x="115" y="257" text-anchor="middle">piden contar diferencias</text><text x="115" y="274" text-anchor="middle">nuevas?</text>
+<path class="lin" d="M220 252 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="247">sí</text>
+<rect class="nodo" x="250" y="214" width="340" height="76" rx="10"/><text x="420" y="231.5" text-anchor="middle">Pongo el nodo nuevo al final. Solo calculo</text><text x="420" y="248.5" text-anchor="middle">las diferencias que lo contienen (tantas</text><text x="420" y="265.5" text-anchor="middle">como nodos había) y sumo el término</text><text x="420" y="282.5" text-anchor="middle">f[x₀,…,xₙ](x−x₀)…(x−xₙ₋₁)</text>
+<path class="lin" d="M115 290 V313" marker-end="url(#fl)"/>
+<text class="no" x="123" y="306">no</text>
+<rect class="preg" x="10" y="316" width="210" height="76" rx="10"/><text x="115" y="350.5" text-anchor="middle">¿Piden el error, una cota</text><text x="115" y="367.5" text-anchor="middle">o el paso de los nodos?</text>
+<path class="lin" d="M220 354 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="349">sí</text>
+<rect class="nodo" x="250" y="316" width="340" height="76" rx="10"/><text x="420" y="333.5" text-anchor="middle">Lagrange: |f−p| ≤ M/(n+1)!·∏|x−xᵢ|, con</text><text x="420" y="350.5" text-anchor="middle">M = máx|f⁽ⁿ⁺¹⁾| (caso peor). Entre dos</text><text x="420" y="367.5" text-anchor="middle">nodos a paso h con n=1: ∏ ≤ h²/4.</text><text x="420" y="384.5" text-anchor="middle">Si piden h, despejo en la cota</text>
+<path class="lin" d="M115 392 V415" marker-end="url(#fl)"/>
+<text class="no" x="123" y="408">no</text>
+<rect class="preg" x="10" y="418" width="210" height="76" rx="10"/><text x="115" y="452.5" text-anchor="middle">¿Hay una integral (trapecio</text><text x="115" y="469.5" text-anchor="middle">o Simpson) con los datos?</text>
+<path class="lin" d="M220 456 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="451">sí</text>
+<rect class="nodo" x="250" y="418" width="340" height="76" rx="10"/><text x="420" y="435.5" text-anchor="middle">Simpson con 3 nodos es la integral de la</text><text x="420" y="452.5" text-anchor="middle">parábola interpoladora:</text><text x="420" y="469.5" text-anchor="middle">(b−a)/6·(f(a)+4f(m)+f(b)). El trapecio</text><text x="420" y="486.5" text-anchor="middle">integra la poligonal que une los datos</text>
+<path class="lin" d="M115 494 V517" marker-end="url(#fl)"/>
+<text class="no" x="123" y="510">no</text>
+<rect class="fin" x="10" y="520" width="580" height="76" rx="10"/><text x="300" y="546" text-anchor="middle">Compruebo siempre: p(xₖ)=fₖ en dos o tres nodos;</text>
+<text x="300" y="563" text-anchor="middle">último factor del término de orden m: (x−xₘ₋₁);</text>
+<text x="300" y="580" text-anchor="middle">denominadores con los nodos extremos; si extrapolo, desconfío</text>
+</svg>

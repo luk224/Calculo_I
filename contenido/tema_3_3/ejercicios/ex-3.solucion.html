@@ -1,0 +1,29 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Con $f(0)=1,f(2)=3,f(4)=2$: aproximar $f(8)$ y $f(1)$ con el interpolador, $\int_0^4f$ con Simpson, y comprobar que integrar el interpolador da lo mismo.</dd>
+    <dt>Cómo lo pienso</dt><dd>Tres datos, una parábola. Evalúo esa parábola donde me pidan; y Simpson no es más que la integral exacta de esa misma parábola, por eso los dos resultados coinciden.</dd>
+    <dt>Qué uso</dt><dd>Newton (U pp.123-124) y Simpson con 3 nodos $=\int$ de la parábola interpoladora (U pp.267-268) — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo las dos diferencias de orden 1 y la de orden 2, y escribo $p_2$ en forma de Newton.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Nodos $0,2,4$; valores $1,3,2$. Orden 1: $\frac{3-1}{2-0}=1$, $\frac{2-3}{4-2}=-\frac12$. Orden 2: $\frac{-\frac12-1}{4-0}=-\frac38$. Por Newton,</p>
+  <p>$$p(x)=1+1\cdot x-\tfrac38\,x(x-2)=-\tfrac38x^2+\tfrac74x+1 .$$</p>
+  <p>(p.101) $f(8)\approx p(8)=1+8-\frac38\cdot8\cdot6=-9$. &nbsp; (p.107 a) $f(1)\approx p(1)=1+1-\frac38\cdot1\cdot(-1)=\frac{19}8$.</p>
+  <p>(p.107 b) Simpson: $\int_0^4f\approx\frac{4-0}6\big(f(0)+4f(2)+f(4)\big)=\frac46\,(1+12+2)=10$.</p>
+  <p>(p.107 c) $\int_0^4p=\left[-\frac18x^3+\frac78x^2+x\right]_0^4=-8+14+4=10$. Coincide con Simpson porque Simpson integra exactamente la parábola que pasa por los tres puntos.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> interpolar y evaluar. Para Simpson con 3 nodos equiespaciados: o la fórmula, o integrar la parábola (salen iguales).</div>
+  <p>Teoría: <a href="#s3">ver teoría</a>. <span class="src" data-l="X" data-ref="X p.101 (I. Electrónica Industrial y Automática, «Electrónica 2», pregunta corta 3, 1 punto) y X p.107 («Electrónica 4», Ej. 5, 3 puntos)">X pp.101, 107</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
+    <li><b>Tabla de diferencias divididas</b> (cada casilla es «la de abajo menos la de arriba» de la columna anterior, entre la diferencia de los nodos extremos; las flechas muestran de dónde sale; en azul, la diagonal superior):<div class="dd" data-x="0,2,4" data-y="1,3,2"></div></li>
+    <li><b>Newton</b> (grado 2): $p_2(x)=f[x_0]+f[x_0,x_1](x-x_0)+f[x_0,x_1,x_2](x-x_0)(x-x_1)$; con la diagonal $1,\ 1,\ -\frac38$: $p(x)=1+x-\frac38x(x-2)$.</li>
+    <li><b>Desarrollo:</b> $-\frac38x(x-2)=-\frac38x^2+\frac34x$. Sumando: $p(x)=-\frac38x^2+\frac74x+1$.</li>
+    <li><b>(p.101)</b> $f(8)\approx p(8)=1+8-\frac38\cdot8\cdot6=9-18=-9$.</li>
+    <li><b>(p.107 a)</b> $f(1)\approx p(1)=1+1-\frac38\cdot1\cdot(-1)=\frac{19}8=2{,}375$.</li>
+    <li><b>(p.107 b) Simpson:</b> $\frac{4-0}6\left(f(0)+4f(2)+f(4)\right)=\frac46(1+12+2)=10$.</li>
+    <li><b>(p.107 c)</b> $\int_0^4\left(-\frac38x^2+\frac74x+1\right)dx=-\frac38\cdot\frac{64}3+\frac74\cdot8+4=-8+14+4=10$. Iguales: Simpson integra esa misma parábola.</li>
+  </ol>
+    <div class="box warn"><span class="h">Cuidado · extrapolar</span>
+    <p>$p(8)=-9$ es una <b>extrapolación</b> (8 está lejos de $[0,4]$). La forma de Lagrange (apartado 4, P) lo explica: el producto $|8-0||8-2||8-4|=192$ es enorme, frente a $|1-0||1-2||1-4|=3$ en $x=1$. Que salga negativo con datos entre 1 y 3 es una señal de alarma.</p></div>
+  <figure class="graf" data-g='{"p":[[0,1],[2,3],[4,2]],"q":[[1,2.375,"f(1)≈2,375"],[8,-9,"f(8)≈−9"]],"c":[{"interp":true,"n":"p(x)"}],"x":[-1,9]}' data-alt="Interpolar dentro de $[0,4]$ (en $x=1$) es razonable; extrapolar hasta $x=8$ da un valor absurdo"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  </details>

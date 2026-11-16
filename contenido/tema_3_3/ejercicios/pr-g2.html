@@ -1,0 +1,6 @@
+<p class="enun">Sea $f(x)=x^3$ y los nodos $1,2,4,5$. Sin hacer la tabla, calcula $f[1,2,4,5]$ y $f[1,2,4]$. Comprueba después con la tabla.</p>
+  <details class="pista"><summary>Pista</summary><p>Orden 3: el interpolador de $x^3$ con $4$ nodos es $x^3$. Orden 2: el interpolador de $x^3$ en $a,b,c$ es $x^3-(x-a)(x-b)(x-c)$ (¿por qué?); mira su coeficiente de $x^2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Orden 3:</b> con $4$ nodos, $x^3$ es su propio interpolador (U p.121), y el coeficiente de $x^3$ en la forma de Newton (U p.124) es $f[1,2,4,5]$: vale $1$.</li><li><b>Orden 2, candidato:</b> $q(x)=x^3-(x-1)(x-2)(x-4)$. El producto se anula en $1,2,4$, así que $q$ toma los mismos valores que $x^3$ en esos nodos; y los $x^3$ se cancelan, luego $q$ tiene grado $\le2$.</li><li><b>Por unicidad</b> $q$ es el interpolador de $x^3$ en $1,2,4$. Como $(x-1)(x-2)(x-4)=x^3-7x^2+\dots$, $q(x)=7x^2+\dots$, y el coeficiente de $x^2$ es $f[1,2,4]=1+2+4=7$.</li><li><b>Tabla:</b> valores $1,8,64,125$; orden 1: $7,28,61$; orden 2: $\frac{28-7}{3}=7$, $\frac{61-28}{3}=11$; orden 3: $\frac{11-7}{4}=1$ ✓.</li></ol>
+    <p class="res">Resultado: $f[1,2,4,5]=1$; $f[1,2,4]=1+2+4=7$</p>
+  </details>

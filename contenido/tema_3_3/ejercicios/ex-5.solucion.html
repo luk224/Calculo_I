@@ -1,0 +1,20 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Aproximar $\int_0^2f$ con Simpson sabiendo $f(0)=1,f(1)=-2,f(2)=0$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Simpson integra la parábola que pasa por los tres puntos dados, sin necesidad de calcularla.</dd>
+    <dt>Qué uso</dt><dd>Simpson con 3 nodos $=\int$ de la parábola interpoladora (U pp.267-268) — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Identifico $a=0$, el punto medio $1$ y $b=2$, y sustituyo en la fórmula.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Simpson con $a=0$, punto medio $1$ y $b=2$:</p>
+  <p>$$I\approx\frac{2-0}6\Big(f(0)+4f(1)+f(2)\Big)=\frac13\,\big(1-8+0\big)=-\frac73 .$$</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> Simpson = $\frac{b-a}6\,(f(a)+4f(\frac{a+b}2)+f(b))$, es decir, integrar la parábola por los tres datos.</div>
+  <p>Teoría: <a href="#s3">ver teoría</a>. <span class="src" data-l="X" data-ref="X p.85 (Septiembre 2017, Modelo A, Grado en Ing. Mecánica, pregunta corta 3, 1 punto)">X p.85</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
+    <li><b>Simpson</b> con $a=0$, $\frac{a+b}2=1$, $b=2$: $I\approx(2-0)\frac{1+4(-2)+0}6=\frac{2\cdot(-7)}6=-\frac73$.</li>
+    <li><b>Comprobación vía interpolación.</b> Tabla (diagonal $1,\ -3,\ \frac52$):<div class="dd" data-x="0,1,2" data-y="1,-2,0"></div></li>
+    <li><b>Newton</b> (grado 2): $p_2(x)=1-3x+\frac52x(x-1)$. Desarrollo: $\frac52x(x-1)=\frac52x^2-\frac52x$. Sumando: $p_2(x)=\frac52x^2-\frac{11}2x+1$, y $\int_0^2p_2=-\frac73$ ✓.</li>
+  </ol>
+    <figure class="graf" data-g='{"p":[[0,1],[1,-2],[2,0]],"c":[{"interp":true,"n":"p(x)"}],"x":[-0.5,2.5]}' data-alt="La parábola cuya integral en $[0,2]$ es el resultado de Simpson"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  </details>

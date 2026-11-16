@@ -1,0 +1,30 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Con $f(1)=2,f(3)=3,f(4)=2,f(8)=10$: aproximar $f(2)$ con el interpolador y $\int_1^4f$ con Simpson compuesta en 2 subintervalos.</dd>
+    <dt>Cómo lo pienso</dt><dd>Los nodos no están equiespaciados, así que cada división usa su propio denominador. Una vez tengo el polinomio, conozco $f$ (aproximada) en cualquier punto y puedo aplicar Simpson donde haga falta.</dd>
+    <dt>Qué uso</dt><dd>Newton con nodos no equiespaciados (U pp.123-124) y Simpson compuesta (U pp.267-268) — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Calculo la columna de orden 1 con los denominadores $3-1$, $4-3$, $8-4$.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>(a) Nodos $1,3,4,8$; valores $2,3,2,10$. Orden 1: $\frac{3-2}{3-1}=\frac12$, $\frac{2-3}{4-3}=-1$, $\frac{10-2}{8-4}=2$. Orden 2: $\frac{-1-\frac12}{4-1}=-\frac12$, $\frac{2-(-1)}{8-3}=\frac35$. Orden 3: $\frac{\frac35+\frac12}{8-1}=\frac{11}{70}$.</p>
+  <p>$$p(x)=2+\tfrac12(x-1)-\tfrac12(x-1)(x-3)+\tfrac{11}{70}(x-1)(x-3)(x-4).$$</p>
+  <p>En $x=2$ (factores $1,-1,-2$): $f(2)\approx2+\frac12+\frac12+\frac{11}{70}\cdot2=\frac{116}{35}\approx3{,}3143$.</p>
+  <p>(b) Simpson compuesta en $[1,4]$ con 2 subintervalos ($h=\frac32$; puntos $1,\frac74,\frac52,\frac{13}4,4$):</p>
+  <p>$$\int_1^4f\approx\frac h6\Big(p(1)+4p(\tfrac74)+2p(\tfrac52)+4p(\tfrac{13}4)+p(4)\Big)=\frac{2409}{280}\approx8{,}6036 .$$</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> nodos no equiespaciados: el denominador es siempre $x_{\text{último}}-x_{\text{primero}}$ del grupo. Si un apartado necesita valores de $f$ que no se tienen, se sacan del interpolador.</div>
+  <p>Teoría: <a href="#s3">ver teoría</a>. <span class="src" data-l="X" data-ref="X p.151 (Febrero 2019, 1.ª semana, Ej. 5, 3 puntos)">X p.151</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>(a)</b></p>
+  <ol class="steps">
+    <li><b>Tabla de diferencias divididas</b> (cada casilla es «la de abajo menos la de arriba» de la columna anterior, entre la diferencia de los nodos extremos; las flechas muestran de dónde sale; en azul, la diagonal superior):<div class="dd" data-x="1,3,4,8" data-y="2,3,2,10"></div></li>
+    <li><b>Newton:</b> con la diagonal $2,\ \frac12,\ -\frac12,\ \frac{11}{70}$: $p(x)=2+\frac12(x-1)-\frac12(x-1)(x-3)+\frac{11}{70}(x-1)(x-3)(x-4)$.</li>
+    <li><b>En $x=2$</b> (factores $1,-1,-2$): $2+\frac12+\frac12+\frac{11}{70}\cdot2=3+\frac{11}{35}=\frac{116}{35}\approx\mathbf{3{,}3143}$.</li>
+  </ol>
+  <p><b>(b)</b></p>
+  <ol class="steps" style="counter-reset:s 5">
+    <li><b>Simpson compuesta, 2 subintervalos</b> de $[1,4]$: $h=\frac{4-1}2=\frac32$; nodos $1,\ \frac74,\ \frac52,\ \frac{13}4,\ 4$ (extremos y puntos medios de cada subintervalo).</li>
+    <li><b>Fórmula:</b> $\frac h6\left(p(1)+4p(\tfrac74)+2p(\tfrac52)+4p(\tfrac{13}4)+p(4)\right)=\frac{2409}{280}\approx\mathbf{8{,}6036}$.</li>
+    <li><b>Observación propia:</b> es exactamente $\int_1^4p(x)\,dx=\frac{2409}{280}$, porque Simpson es exacto para cúbicas (propiedad del Tema 6, P). Otra lectura que X admite: Simpson simple en $1,2,3$ (con $p(2)$) más trapecio en $[3,4]$, que da $\frac{601}{70}\approx8{,}5857$.</li>
+  </ol>
+    <figure class="graf" data-g='{"p":[[1,2],[3,3],[4,2],[8,10]],"q":[[2,3.3142857142857145,"f(2)≈3,3143"]],"c":[{"interp":true,"n":"p(x)"}],"x":[0,9]}' data-alt="Nodos no equiespaciados; el valor pedido $f(2)$ queda entre los dos primeros"><figcaption>Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: el polinomio se calcula con diferencias divididas a partir de los datos del ejercicio">P</span></figcaption></figure>
+  </details>

@@ -1,0 +1,19 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Contar cuántas diferencias divididas de orden $\ge1$ hay que calcular al añadir un nodo (2003 o 2005,5) a la tabla de 2004-2008.</dd>
+    <dt>Cómo lo pienso</dt><dd>Una diferencia dividida depende solo de los nodos que contiene. Si el nodo nuevo no entra, la diferencia ya está en la tabla y se reutiliza; solo hay que calcular las que lo incluyen.</dd>
+    <dt>Qué uso</dt><dd>Solo hay que calcular las diferencias que contienen el nodo nuevo — <a href="#s3">ver teoría</a> (U p.124).</dd>
+    <dt>Por dónde empiezo</dt><dd>Cuento el total de diferencias con 6 nodos y resto las que no contienen el nodo nuevo.</dd>
+  </dl></div>
+  <div class="recipe"><b>Receta:</b> nuevas = las que contienen el nodo nuevo. Si se puede elegir, poner el nodo nuevo al final: son tantas como nodos había.</div>
+  <details class="ver"><summary>Ver resolución completa paso a paso</summary>
+  <ol class="steps">
+    <li><b>Total.</b> Con 6 nodos ordenados hay $5+4+3+2+1=15$ diferencias de orden $\ge1$ (una por cada grupo de nodos consecutivos de tamaño $\ge2$).</li>
+    <li><b>Nodo 2003 (un extremo).</b> Los grupos que no lo contienen son los de la tabla vieja: $4+3+2+1=10$ reutilizables. Nuevas: $15-10=$ <b>5</b>.</li>
+    <li><b>Nodo 2005,5 (en medio).</b> Va entre 2005 y 2006 y «parte» la tabla. Solo se reutilizan los grupos dentro de $\{2004,2005\}$ (1) y dentro de $\{2006,2007,2008\}$ (3): <b>4</b>. Nuevas: $15-4=$ <b>11</b>.</li>
+  </ol>
+  <div class="box warn"><span class="h">Matiz (propio, verificado con sympy)</span>
+    <p>Como las diferencias divididas no dependen del orden de los nodos (apartado 3), <b>no hace falta</b> meter 2005,5 en su sitio: se añade <b>al final</b> de la lista ($x_5=2005{,}5$) y solo hay que calcular $f[x_4,x_5]$, $f[x_3,x_4,x_5]$, $f[x_2,\dots,x_5]$, $f[x_1,\dots,x_5]$ y $f[x_0,\dots,x_5]$: <b>5 nuevas</b>, igual que con 2003 o 2009, y $p_5=p_4+f[x_0,\dots,x_5](x-2004)\cdots(x-2008)$. Con la tabla ordenada son 11; el mínimo es 5. En el examen, responde 5 y 11 y añade el matiz.</p></div>
+  
+  <div class="box warn"><span class="h">Error típico</span><p>Recalcular la tabla entera.</p></div>
+<p><b>Teoría:</b> U p.124.</p>
+  </details>

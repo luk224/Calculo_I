@@ -1,0 +1,21 @@
+<div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Hallar una función por $(0,15),(1,18),(2,20),(4,23)$ y aproximar $\int_0^2f$ por trapecio y por Simpson.</dd>
+    <dt>Cómo lo pienso</dt><dd>«Una función que pase por estos puntos» = el polinomio interpolador de grado 3. Para las integrales solo se usan los datos que caen en $[0,2]$.</dd>
+    <dt>Qué uso</dt><dd>Newton (U pp.123-124); trapecio y Simpson (U pp.267-268) — <a href="#s3">ver teoría</a>.</dd>
+    <dt>Por dónde empiezo</dt><dd>Construyo la tabla de diferencias con los cuatro nodos y escribo $p_3$.</dd>
+  </dl></div>
+  <div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
+  <p>Nodos $0,1,2,4$; valores $15,18,20,23$. Orden 1: $3,\ 2,\ \frac32$. Orden 2: $\frac{2-3}{2-0}=-\frac12$, $\frac{\frac32-2}{4-1}=-\frac16$. Orden 3: $\frac{-\frac16+\frac12}{4-0}=\frac1{12}$. Una función que pasa por los puntos es</p>
+  <p>$$p_3(x)=15+3x-\tfrac12x(x-1)+\tfrac1{12}x(x-1)(x-2).$$</p>
+  <p>Para $\int_0^2f$ solo hacen falta los datos de $[0,2]$. Trapecio con $h=1$: $\frac12\big(15+2\cdot18+20\big)=\frac{71}2$. Simpson: $\frac{2-0}6\big(15+4\cdot18+20\big)=\frac{107}3$.</p>
+  </div>
+  <div class="recipe"><b>Receta:</b> «encuentre una función por estos puntos» = interpolador de Newton; luego, trapecio y Simpson con los datos que caen en el intervalo.</div>
+  <p>Teoría: <a href="#s3">ver teoría</a>. <span class="src" data-l="X" data-ref="X p.100 (I. Electrónica Industrial y Automática, «Electrónica 1», Ej. 5, 3 puntos)">X p.100</span></p>
+  <details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<ol class="steps">
+    <li><b>Función</b> (U Ej. 3.18): $p_3(x)=15+3x-\frac12x(x-1)+\frac1{12}x(x-1)(x-2)=\frac1{12}x^3-\frac34x^2+\frac{11}3x+15$.</li>
+    <li><b>Trapecio simple:</b> $\frac{2-0}2(15+20)=35$. <b>Compuesto</b> con $h=1$: $\frac12(15+2\cdot18+20)=\frac{71}2=35{,}5$.</li>
+    <li><b>Simpson</b> en $0,1,2$: $\frac26(15+4\cdot18+20)=\frac{107}3\approx35{,}667$.</li>
+    <li><b>Comparación:</b> $\int_0^2p_3=\frac{107}3$, igual que Simpson (Simpson solo usa $f(0),f(1),f(2)$, que $p_3$ reproduce; que dé justo $\int_0^2p_3$ se debe a que Simpson es exacto para polinomios de grado $\le3$, propiedad del Tema 6 no demostrada aquí: <span class="src" data-l="P" data-ref="Propiedad del Tema 6 (U Teor. 6.4, p. 270, según el dossier), no verificada en este tema">P</span>).</li>
+  </ol>
+  </details>
