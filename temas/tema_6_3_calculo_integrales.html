@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_6_3/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 6.3 Cálculo de integrales</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -13,6 +14,8 @@
 <script defer src="../assets/resumen.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -40,12 +43,75 @@
   </div>
 </header>
 
-<!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.3.1 Motivación y orientaciones, p. 246">U p.246</span></h2>
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>Ya sabes que $\int_a^bf=F(b)-F(a)$ si $F$ es una primitiva (tema 6.2). Lo difícil es <b>encontrar $F$</b>. Es como abrir una cerradura: derivar te dice cómo es cada llave, e integrar es reconocer, a partir del integrando, qué regla de derivación lo produjo. Cada técnica es una regla de derivación leída al revés: la <b>regla de la cadena</b> da el cambio de variable, la <b>regla del producto</b> da las partes, y <b>sumar fracciones</b> da las fracciones simples. U avisa de que hay que practicar mucho (U p.246).</p>
   <span class="src" data-l="U" data-ref="U §6.3.2 Algunas técnicas de integración, p. 246">U p.246</span>
 </div>
+<p class="ir-examen"><a href="#examen" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Mira la forma del integrando</b> y simplifícalo: separa sumas, mira el dominio y busca «una función y su derivada».</li>
+    <li><b>Elige la técnica</b> de la más barata a la más cara: inmediata $\to$ cambio de variable $\to$ partes $\to$ fracciones simples (Hermite si hay factores repetidos) $\to$ trigonométricas.</li>
+    <li><b>Hazla completa:</b> cambia también $dx$ y, en una definida, los límites; escribe $+C$ y los valores absolutos del $\ln$; aplica Barrow si hay límites.</li>
+    <li><b>Comprueba derivando</b> la primitiva: es la única forma de saber que está bien.</li>
+  </ol>
+  <p class="sub">Qué hago según lo que veo</p>
+  <ul>
+    <li>¿«Función por su derivada» ($f^af'$, $\frac{f'}f$, $e^ff'$, …)? $\to$ inmediata de la tabla, ajustando la constante.</li>
+    <li>¿Algo estorba dentro ($\operatorname{sen}\sqrt x$, $e^{2x}$, $\sqrt{1+x^3}$)? $\to$ cambio $t=$ lo que estorba.</li>
+    <li>¿Producto de tipos distintos (polinomio por $e^x$, $\operatorname{sen}$, $\cos$; $\ln x$; $\operatorname{arctg}x$)? $\to$ partes con $u$ = lo que se simplifica al derivar.</li>
+    <li>¿Cociente de polinomios? $\to$ dividir si el grado del numerador es $\ge$; fracciones simples; irreducible: $\ln$ + $\operatorname{arctg}$; repetido: Hermite.</li>
+    <li>¿Potencias de $\operatorname{sen}$ y $\cos$? $\to$ exponente impar: separar un factor; pares: ángulo doble; si no, $t=\operatorname{tg}\frac x2$.</li>
+    <li>¿Raíces de $x$ con índices distintos? $\to$ $x=t^r$ con $r$ = m.c.m. de los índices.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$\int f^af'=\frac{f^{a+1}}{a+1}$; $\int\frac{f'}f=\ln\lvert f\rvert$</td><td>Función por su derivada (tabla, U p.248).</td></tr>
+    <tr><td>$\int f(x)\,dx=\int f(g(t))\,g'(t)\,dt$, $x=g(t)$</td><td>Cambio de variable; en la definida se cambian los límites (U pp.250-251).</td></tr>
+    <tr><td>$\int uv'=uv-\int u'v$</td><td>Producto de tipos distintos (U p.252; definida, p.254).</td></tr>
+    <tr><td>$\frac A{x-a}\to A\ln\lvert x-a\rvert$; $\frac{Bx+C}{x^2+bx+c}\to\ln+\operatorname{arctg}$</td><td>Racionales con el denominador factorizado (U pp.255-258).</td></tr>
+    <tr><td>$\frac pq=\frac{d}{dx}\frac fg+\frac{p_1}{q_1}$</td><td>Factores repetidos en el denominador: Hermite (U p.259).</td></tr>
+    <tr><td>$t=\operatorname{tg}\frac x2$: $\operatorname{sen}x=\frac{2t}{1+t^2}$, $\cos x=\frac{1-t^2}{1+t^2}$</td><td>Racional en $\operatorname{sen}$ y $\cos$ sin otra salida (U p.261).</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos hay 7 problemas de este tema: cambio de variable (3), partes (2), fracciones simples con $\ln$ y $\operatorname{arctg}$ (2) y trigonométricas (2); casi siempre «calcule la integral» o una definida con una primitiva. En el libro de ejercicios son E 6.17-6.35. Tabla por tipo: <a href="#examen" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §6.3.2, pp. 246-263 (técnicas de integración); resumen propio">U pp.246-263</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §6.3">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 3 h</b>
+      <ul>
+        <li>La <b>tabla de inmediatas</b> (1), el <b>cambio de variable</b> (2), las <b>partes</b> (3), las <b>fracciones simples</b> (4) y el <b>mapa de decisión</b> (8).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-6-17">E 6.17</a> (inmediatas), <a href="#ej-6-30">E 6.30</a> (cambio en una definida), <a href="#ej-6-19">E 6.19</a> (partes), <a href="#ej-6-21">E 6.21</a> (fracciones simples), <a href="#ej-6-28">E 6.28</a> (raíces), <a href="#ej-6-32">E 6.32</a> (trigonométrica) y los exámenes <a href="#x2">X2</a> ($\ln$ + $\operatorname{arctg}$) y <a href="#x3">X3</a> (partes en una definida).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 8 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»).</li>
+        <li>E 6.17-6.35, los 7 exámenes, los ejemplos propios y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +2 h</b>
+      <ul>
+        <li>Hermite (<a href="#ej-6-24">E 6.24</a>, <a href="#ej-6-25">E 6.25</a>), <a href="#ej-6-26">E 6.26</a> ($\frac1{\operatorname{sen}x+\cos x}$), <a href="#ej-6-29">E 6.29</a> (raíz de un cociente), <a href="#x4">X4</a> (cambio y partes), <a href="#x7">X7</a> ($t=\operatorname{tg}\frac x2$) y las prácticas ★★.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.3.1 Motivación y orientaciones, p. 246">U p.246</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué debes saber antes de empezar (Barrow y derivadas) y qué se pide en los ejercicios y en el examen.</p>
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li><b>Primitiva y regla de Barrow</b> (<a href="tema_6_2_teoremas_fundamentales.html">tema 6.2</a>): $F'=f$; $\int_a^bf=F(b)-F(a)$ si $f$ es continua en $[a,b]$.</li>
@@ -56,7 +122,13 @@
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>Hallar una primitiva</b> con la técnica adecuada: inmediatas con constante ajustada, cambio de variable, partes, fracciones simples (con división previa), Hermite, trigonométricas y raíces (E 6.17-6.29; X pp.38, 137, 143, 148). (B) <b>Reconocer qué método conviene</b> en un test de opciones (E 6.18, 6.22, 6.23, 6.26). (C) <b>Calcular una integral definida</b>: la misma técnica más Barrow, cambiando los límites si se cambia la variable (E 6.30-6.32; X pp.19-20, 128, 141). (D) <b>Áreas</b> bajo una curva o entre curvas que se cruzan (E 6.33-6.35). La obligación que nunca falla: <b>comprobar derivando</b> el resultado.</p>
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>Propiedades y tabla de integrales inmediatas <span class="src" data-l="U" data-ref="U §6.3.2, Propiedades de la integral indefinida y Tabla de integrales inmediatas, pp. 247-249">U pp.247-249</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Propiedades y tabla de integrales inmediatas <span class="src" data-l="U" data-ref="U §6.3.2, Propiedades de la integral indefinida y Tabla de integrales inmediatas, pp. 247-249">U pp.247-249</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a reconocer una integral inmediata de la tabla y a ajustar la constante cuando la derivada de «lo de dentro» aparece multiplicada por un número.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «una función y, muy cerca, su derivada»: $f^af'$, $\frac{f'}f$, $e^ff'$, $\cos f\cdot f'$…</li>
+  <li><b>Qué haces:</b> Derivas lo de dentro, comparas con lo que sobra, multiplicas y divides por la constante que falte y aplicas la fila de la tabla.</li>
+  <li><b>Ejemplo mínimo:</b> $\int x\cos(x^2)\,dx=\frac12\operatorname{sen}(x^2)+C$, porque $(x^2)'=2x$ y falta un $\frac12$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · leer la tabla de derivadas al revés</span>
   <p>Si sabes que la derivada de $\operatorname{sen}x$ es $\cos x$, entonces una primitiva de $\cos x$ es $\operatorname{sen}x$. La «tabla de inmediatas» es exactamente la tabla de derivadas leída de derecha a izquierda, ya con la regla de la cadena incluida: <b>una función compuesta multiplicada por la derivada de lo que hay dentro</b>. Un integrando es «casi inmediato» si le falta solo una constante $c$: se multiplica y se divide por ella. Procedimiento: (1) derivar la función de dentro, $f'$; (2) comparar con lo que hay; (3) si solo difiere en una constante, ajustarla. Ejemplo: $(5x)'=5$, luego $\int\cos(5x)\,dx=\frac15\int\cos(5x)\cdot5\,dx=\frac15\operatorname{sen}5x+k$. <b>Solo se pueden ajustar constantes</b>: si faltara una $x$, hay que usar otra técnica.</p>
   <span class="src" data-l="U" data-ref="U p. 248: «Para resolver integrales, un primer paso es detectar las integrales inmediatas o que se transforman en inmediatas con manipulaciones sencillas del integrando»">U p.248</span>
@@ -112,7 +184,13 @@
   <span class="src" data-l="P" data-ref="Errores típicos propios">P</span>
 </div>
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>Cambio de variable <span class="src" data-l="U" data-ref="U §6.3.2, Cambio de variable y Ejemplos 6.15-6.17, pp. 249-251">U pp.249-251</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>Cambio de variable <span class="src" data-l="U" data-ref="U §6.3.2, Cambio de variable y Ejemplos 6.15-6.17, pp. 249-251">U pp.249-251</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> el cambio de variable: la regla de la cadena leída al revés, con sus tres cambios ($t$, $dt$ y, en una definida, los límites).</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> algo estorba dentro de otra función (un argumento, una raíz, $e^{kx}$) y su derivada aparece fuera, salvo constante.</li>
+  <li><b>Qué haces:</b> Pones $t=$ lo que estorba, calculas $dt$, sustituyes <b>todo</b> (también la $x$ que sobre), integras en $t$ y deshaces el cambio; en una definida, cambias los límites y no deshaces.</li>
+  <li><b>Ejemplo mínimo:</b> $\int_0^12x\,e^{x^2}dx$ con $t=x^2$: $\int_0^1e^t\,dt=e-1$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · cambiar de unidades para que la integral sea fácil</span>
   <p>Cuando integras $\int\operatorname{sen}(3x)\,dx$, algo dentro de la función te estorba: el $3x$. Es como un problema escrito en unidades incómodas: se traduce a otras (llamo $t=3x$), se resuelve en ellas y se traduce de vuelta. Matemáticamente, el cambio de variable es <b>la regla de la cadena leída al revés</b>: si $F'=f$, entonces $(F(g(t)))'=f(g(t))\,g'(t)$. Consejo clave: <i>observa el integrando: si se puede descomponer en dos partes y una es la derivada de la otra, ahí tenemos el cambio de variable</i> (U p.250).</p>
   <span class="src" data-l="U" data-ref="U p. 249, «La regla de la cadena de la derivación nos da un importante método de cálculo de integrales»">U p.249</span>
@@ -167,7 +245,13 @@
   <span class="src" data-l="P" data-ref="Errores típicos propios">P</span>
 </div>
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Integración por partes <span class="src" data-l="U" data-ref="U §6.3.2, Integración por partes y Ejemplos 6.18-6.22, pp. 251-254">U pp.251-254</span></h2>
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Integración por partes <span class="src" data-l="U" data-ref="U §6.3.2, Integración por partes y Ejemplos 6.18-6.22, pp. 251-254">U pp.251-254</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> la integración por partes: la regla del producto leída al revés, y cómo elegir $u$ y $v'$ para que la integral nueva sea más fácil.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> producto de funciones de tipo distinto (polinomio por $e^x$, $\operatorname{sen}$ o $\cos$) o una función que no sabes integrar pero sí derivar ($\ln x$, $\operatorname{arctg}x$).</li>
+  <li><b>Qué haces:</b> Eliges $u$ = lo que se simplifica al derivar y $v'$ = lo que sabes integrar, y aplicas $\int uv'=uv-\int u'v$.</li>
+  <li><b>Ejemplo mínimo:</b> $\int xe^x\,dx=(x-1)e^x+C$ con $u=x$, $v'=e^x$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · repartir el trabajo entre dos factores</span>
   <p>Cuando el integrando es un <b>producto de dos funciones de tipos distintos</b> (un polinomio por una exponencial, un logaritmo por una potencia…), no hay una «derivada de lo de dentro». La regla del producto, $(uv)'=u'v+uv'$, dice cómo se reparte la derivada entre los dos factores. Leída al revés: «la integral de $uv'$ es $uv$ menos la integral de $u'v$». Es como una permuta: <b>derivo un factor</b> ($u\to u'$, que ojalá se simplifique) y <b>integro el otro</b> ($v'\to v$). Todo consiste en elegir bien quién hace cada papel, de modo que la integral que queda sea más fácil que la de partida.</p>
   <span class="src" data-l="U" data-ref="U p. 251, deducción desde la derivada de un producto">U p.251</span>
@@ -237,7 +321,13 @@
   <span class="src" data-l="P" data-ref="Errores típicos propios">P</span>
 </div>
 <!-- ============================ 4 ============================ -->
-<h2 id="s4"><span class="n">4</span>Integración de funciones racionales <span class="src" data-l="U" data-ref="U §6.3.2, Integración de funciones racionales y Ejemplos 6.23-6.24, pp. 255-259">U pp.255-259</span></h2>
+<h2 id="s4" data-vista="teoria"><span class="n">4</span>Integración de funciones racionales <span class="src" data-l="U" data-ref="U §6.3.2, Integración de funciones racionales y Ejemplos 6.23-6.24, pp. 255-259">U pp.255-259</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a integrar un cociente de polinomios: dividir, factorizar el denominador, descomponer en fracciones simples e integrar cada una ($\ln$, potencias o $\ln$ + $\operatorname{arctg}$).</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> cociente de polinomios $\frac{p(x)}{q(x)}$.</li>
+  <li><b>Qué haces:</b> Si $\operatorname{grado}p\ge\operatorname{grado}q$, divides; factorizas $q$; planteas una fracción por cada raíz (y por cada potencia de una raíz múltiple), hallas los coeficientes e integras cada una.</li>
+  <li><b>Ejemplo mínimo:</b> $\int\frac{dx}{x^2-1}=\frac12\ln\left\lvert\frac{x-1}{x+1}\right\rvert+C$, pues $\frac1{x^2-1}=\frac12\left(\frac1{x-1}-\frac1{x+1}\right)$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · sumar fracciones al revés</span>
   <p>Sumar $\frac1x+\frac1{x+1}$ da $\frac{2x+1}{x(x+1)}$: un denominador común y un numerador feo. Integrar ese cociente directamente es difícil, pero integrar cada sumando es inmediato (dos logaritmos). La técnica consiste en <b>deshacer la suma</b>: dado $\frac{p}{q}$, encontrar las fracciones «simples» de las que sale. Como al sumar fracciones, el denominador común es el producto de los factores de $q$, y el punto de partida es <b>factorizar $q$</b>.</p>
   <span class="src" data-l="U" data-ref="U p. 255, descomposición en fracciones simples">U p.255</span>
@@ -297,7 +387,13 @@
   <span class="src" data-l="P" data-ref="Errores típicos propios">P</span>
 </div>
 <!-- ============================ 5 ============================ -->
-<h2 id="s5"><span class="n">5</span>Método de Hermite <span class="src" data-l="U" data-ref="U §6.3.2, Método de Hermite y Ejemplo 6.25, pp. 258-261">U pp.258-261</span></h2>
+<h2 id="s5" data-vista="teoria"><span class="n">5</span>Método de Hermite <span class="src" data-l="U" data-ref="U §6.3.2, Método de Hermite y Ejemplo 6.25, pp. 258-261">U pp.258-261</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> el método de Hermite para racionales con factores repetidos: se separa una parte que ya es una derivada y otra de fracciones simples.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> el denominador tiene un factor repetido, sobre todo un irreducible al cuadrado como $(x^2+1)^2$.</li>
+  <li><b>Qué haces:</b> Escribes $\frac pq=\frac d{dx}\frac fg+\frac{p_1}{q_1}$, derivas, quitas denominadores, igualas coeficientes e integras: $\int\frac pq=\frac fg+\int\frac{p_1}{q_1}$.</li>
+  <li><b>Ejemplo mínimo:</b> $\int\frac{dx}{(x^2+1)^2}=\frac{x}{2(x^2+1)}+\frac12\operatorname{arctg}x+C$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · el denominador al cuadrado viene de derivar un cociente</span>
   <p>Al derivar un cociente $\frac{f}{g}$ aparece $g^2$ abajo: por eso un factor repetido en el denominador de $\frac pq$ «huele» a derivada de un cociente. El método de Hermite lo aprovecha: se <b>separa</b> $\frac pq$ en una parte que es la derivada de un cociente $\frac fg$ (que se integra sola, devolviendo $\frac fg$) y una parte con todos los factores <b>simples</b>, que se integra con logaritmos y arcotangentes. Se evita así resolver varios sistemas y las integrales de potencias del irreducible, que son molestas. U lo recomienda en cuanto el denominador contiene una potencia de un irreducible de grado 2: «es mejor aplicar el método de Hermite» (U p.258); sirve en general con raíces múltiples, reales o complejas (U p.259).</p>
   <span class="src" data-l="U" data-ref="U p. 258, recomendación sobre potencias de irreducibles">U p.258</span>
@@ -335,7 +431,13 @@
   <span class="src" data-l="P" data-ref="Errores típicos propios">P</span>
 </div>
 <!-- ============================ 6 ============================ -->
-<h2 id="s6"><span class="n">6</span>Integrales trigonométricas <span class="src" data-l="U" data-ref="U §6.3.2, Expresiones trigonométricas y Ejemplos 6.26-6.28, pp. 261-263">U pp.261-263</span></h2>
+<h2 id="s6" data-vista="teoria"><span class="n">6</span>Integrales trigonométricas <span class="src" data-l="U" data-ref="U §6.3.2, Expresiones trigonométricas y Ejemplos 6.26-6.28, pp. 261-263">U pp.261-263</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a integrar potencias de $\operatorname{sen}$ y $\cos$ y expresiones racionales en ellas, con las tres salidas: exponente impar, ángulo doble y $t=\operatorname{tg}\frac x2$.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> productos de potencias de $\operatorname{sen}x$ y $\cos x$, o un cociente con $\operatorname{sen}x$ y $\cos x$ en el denominador.</li>
+  <li><b>Qué haces:</b> Con algún exponente impar separas un factor y usas $\operatorname{sen}^2+\cos^2=1$; con todos pares, ángulo doble; en un cociente, $t=\operatorname{tg}\frac x2$.</li>
+  <li><b>Ejemplo mínimo:</b> $\int\operatorname{sen}^3x\,dx=-\cos x+\frac{\cos^3x}3+C$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · convertir senos y cosenos en algo que ya sabes integrar</span>
   <p>Hay tres situaciones. <b>(1)</b> Una expresión racional en $\operatorname{sen}x$ y $\cos x$ cualquiera: hay un cambio «universal» que la vuelve una fracción de polinomios, $t=\operatorname{tg}\frac x2$. Siempre funciona, pero deja cuentas largas: es la última carta. <b>(2)</b> Un producto $\operatorname{sen}^nx\cos^mx$: si alguno de los exponentes es <b>impar</b>, se «roba» un factor que hace de derivada del otro; si <b>ambos son pares</b>, se baja el grado con las fórmulas del ángulo doble. <b>(3)</b> Si solo aparece la tangente de un argumento: $t=\operatorname{tg}(\text{argumento})$ (E 6.27).</p>
   <span class="src" data-l="U" data-ref="U pp. 261-263, expresiones trigonométricas">U pp.261-263</span>
@@ -389,7 +491,13 @@
   <span class="src" data-l="P" data-ref="Errores típicos propios">P</span>
 </div>
 <!-- ============================ 7 ============================ -->
-<h2 id="s7"><span class="n">7</span>Integrales con raíces: cambios que racionalizan <span class="src" data-l="E" data-ref="E Ej. 6.28-6.29, pp. 234-237 (nota al margen, p. 235)">E pp.234-237</span></h2>
+<h2 id="s7" data-vista="teoria"><span class="n">7</span>Integrales con raíces: cambios que racionalizan <span class="src" data-l="E" data-ref="E Ej. 6.28-6.29, pp. 234-237 (nota al margen, p. 235)">E pp.234-237</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a quitar raíces con un cambio que racionaliza: $x=t^r$ cuando hay raíces de $x$, o $t$ igual a la raíz de un cociente lineal.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> raíces de $x$ con índices distintos ($\sqrt x$, $\sqrt[3]x$…) o la raíz de $\frac{ax+b}{cx+d}$.</li>
+  <li><b>Qué haces:</b> Pones $x=t^r$ con $r$ = m.c.m. de los índices (o despejas $x$ en función de $t$), calculas $dx$, integras la racional que sale y deshaces el cambio.</li>
+  <li><b>Ejemplo mínimo:</b> $\int\frac{dx}{1+\sqrt x}$ con $x=t^2$: $\int\frac{2t}{1+t}dt=2\sqrt x-2\ln(1+\sqrt x)+C$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · hacer desaparecer la raíz</span>
   <p>Una raíz estorba porque no es un polinomio. El remedio es un cambio de variable que la convierta en algo entero: si $x=t^2$, entonces $\sqrt x=t$. Si hay <b>varias raíces</b> de $x$ (cuadrada y cúbica, por ejemplo), se toma el exponente que las absorbe todas: el mínimo común múltiplo de los índices. Después queda una integral racional (con división previa si hace falta), que ya sabes resolver.</p>
   <span class="src" data-l="E" data-ref="E Ej. 6.28-6.29, pp. 234-237 (nota al margen, p. 235)">E pp.234-237</span>
@@ -406,8 +514,93 @@
 </div>
 <p>Se ve con números en <a href="#ej-6-28">E 6.28</a> ($x=t^6$, varios índices), <a href="#x6">X6</a> ($x=t^2$, una sola raíz) y <a href="#ej-6-29">E 6.29</a> (raíz de un cociente).</p>
 <!-- ============================ 8 ============================ -->
-<h2 id="s8"><span class="n">8</span>Cómo elegir la técnica <span class="src" data-l="P" data-ref="Síntesis propia basada en U §6.3, pp. 246-263">P</span></h2>
-<p>No se prueba al azar: se mira la <b>forma</b> del integrando, de más sencillo a más costoso, y siempre se acaba <b>comprobando derivando</b> <span class="src" data-l="S" data-ref="Stewart §7.5 Estrategias para la integración, p. 494 (idea de elegir la técnica según la forma del integrando)">S p.494</span>.</p>
+<!-- ============================ 9 ============================ -->
+<!-- ============================ mapa ============================ -->
+<h2 id="mapa" data-vista="tipos"><span class="n">8</span>Cómo elegir la técnica: recetas del tema <span class="src" data-l="P" data-ref="Síntesis propia basada en U §6.3, pp. 246-263">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a decidir qué técnica usar según la forma del integrando, con un mapa de decisión de la más barata a la más cara.</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja a la siguiente y «sí» te lleva a la acción de la derecha. No se prueba al azar: se mira la <b>forma</b> del integrando, de más sencillo a más costoso, y siempre se acaba <b>comprobando derivando</b> <span class="src" data-l="S" data-ref="Stewart §7.5 Estrategias para la integración, p. 494 (idea de elegir la técnica según la forma del integrando)">S p.494</span>. Lo que más puntos se pierde: <b>olvidar el $+C$ y el valor absoluto del $\ln$</b>, <b>cambiar la variable y no $dx$ ni los límites</b>, <b>no dividir antes de descomponer</b> y <b>perder un signo menos</b> al encadenar pasadas.</p>
+<svg class="flujo" viewBox="0 0 600 712" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión del tema 6.3: qué técnica de integración usar según la forma del integrando</title>
+<desc id="flujo-d">Diagrama de flujo vertical, de la técnica más barata a la más cara. Si el integrando es una función y su derivada, es una integral inmediata de la tabla ajustando una constante. Si algo estorba dentro y su derivada está fuera, se hace un cambio de variable cambiando dx y los límites. Si hay raíces de x o la raíz de un cociente lineal, se usa x igual a t elevado al mínimo común múltiplo de los índices. Si es un producto de tipos distintos, se integra por partes. Si es un cociente de polinomios, se divide y se descompone en fracciones simples, con Hermite si hay factores repetidos. Si solo hay senos y cosenos, se usa el exponente impar, el ángulo doble o la tangente del ángulo mitad. Al final, si es definida se usa Barrow y siempre se comprueba derivando.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="210" height="76" rx="10"/>
+<text x="115" y="40" text-anchor="middle">¿Es «una función y su derivada»?</text>
+<text x="115" y="58" text-anchor="middle">(ajustando una constante)</text>
+<path class="lin" d="M220 48 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="43">sí</text>
+<rect class="nodo" x="250" y="10" width="340" height="76" rx="10"/>
+<text x="420" y="44" text-anchor="middle">Inmediata de la tabla (U p.248):</text>
+<text x="420" y="64" text-anchor="middle">multiplico y divido por la constante.</text>
+<path class="lin" d="M115 86 V109" marker-end="url(#fl)"/>
+<text class="no" x="123" y="102">no</text>
+<rect class="preg" x="10" y="112" width="210" height="76" rx="10"/>
+<text x="115" y="142" text-anchor="middle">¿Algo estorba dentro y su</text>
+<text x="115" y="160" text-anchor="middle">derivada está fuera?</text>
+<path class="lin" d="M220 150 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="145">sí</text>
+<rect class="nodo" x="250" y="112" width="340" height="76" rx="10"/>
+<text x="420" y="146" text-anchor="middle">Cambio $t=$ lo que estorba: cambio $dx$</text>
+<text x="420" y="166" text-anchor="middle">y, en definida, los límites.</text>
+<path class="lin" d="M115 188 V211" marker-end="url(#fl)"/>
+<text class="no" x="123" y="204">no</text>
+<rect class="preg" x="10" y="214" width="210" height="76" rx="10"/>
+<text x="115" y="244" text-anchor="middle">¿Hay raíces de $x$ o la raíz</text>
+<text x="115" y="262" text-anchor="middle">de un cociente lineal?</text>
+<path class="lin" d="M220 252 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="247">sí</text>
+<rect class="nodo" x="250" y="214" width="340" height="76" rx="10"/>
+<text x="420" y="248" text-anchor="middle">$x=t^r$ ($r$ = m.c.m. de índices) o</text>
+<text x="420" y="268" text-anchor="middle">$t$ = la raíz; despejo $x$ y hallo $dx$.</text>
+<path class="lin" d="M115 290 V313" marker-end="url(#fl)"/>
+<text class="no" x="123" y="306">no</text>
+<rect class="preg" x="10" y="316" width="210" height="76" rx="10"/>
+<text x="115" y="346" text-anchor="middle">¿Producto de tipos distintos,</text>
+<text x="115" y="364" text-anchor="middle">o $\ln x$, $\operatorname{arctg}x$ solos?</text>
+<path class="lin" d="M220 354 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="349">sí</text>
+<rect class="nodo" x="250" y="316" width="340" height="76" rx="10"/>
+<text x="420" y="350" text-anchor="middle">Partes: $u$ = lo que se simplifica;</text>
+<text x="420" y="370" text-anchor="middle">reiterada o cíclica (despejo $I$).</text>
+<path class="lin" d="M115 392 V415" marker-end="url(#fl)"/>
+<text class="no" x="123" y="408">no</text>
+<rect class="preg" x="10" y="418" width="210" height="76" rx="10"/>
+<text x="115" y="460" text-anchor="middle">¿Cociente de polinomios?</text>
+<path class="lin" d="M220 456 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="451">sí</text>
+<rect class="nodo" x="250" y="418" width="340" height="76" rx="10"/>
+<text x="420" y="452" text-anchor="middle">Dividir; fracciones simples; irreducible:</text>
+<text x="420" y="472" text-anchor="middle">$\ln$+$\operatorname{arctg}$; repetido: Hermite.</text>
+<path class="lin" d="M115 494 V517" marker-end="url(#fl)"/>
+<text class="no" x="123" y="510">no</text>
+<rect class="preg" x="10" y="520" width="210" height="76" rx="10"/>
+<text x="115" y="562" text-anchor="middle">¿Solo $\operatorname{sen}$ y $\cos$?</text>
+<path class="lin" d="M220 558 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="553">sí</text>
+<rect class="nodo" x="250" y="520" width="340" height="76" rx="10"/>
+<text x="420" y="554" text-anchor="middle">Impar: separo un factor; pares: ángulo</text>
+<text x="420" y="574" text-anchor="middle">doble; si no, $t=\operatorname{tg}\frac x2$.</text>
+<path class="lin" d="M115 596 V619" marker-end="url(#fl)"/>
+<text class="no" x="123" y="612">no</text>
+<rect class="fin" x="10" y="622" width="580" height="86" rx="10"/>
+<text x="300" y="648" text-anchor="middle">Antes de dar el resultado:</text>
+<text x="300" y="668" text-anchor="middle">¿$+C$ y valor absoluto en el $\ln$?, ¿cambié $dx$ y los límites?, ¿dividí antes</text>
+<text x="300" y="686" text-anchor="middle">de descomponer?, ¿Barrow si es definida?, ¿derivé la primitiva para comprobar?</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso y la receta completa</summary>
+<table>
+  <tr><th>Veo…</th><th>Hago…</th><th>Ojo con…</th></tr>
+  <tr><td>$f^af'$, $\frac{f'}f$, $e^ff'$, $\cos f\cdot f'$</td><td>Tabla de inmediatas (U p.248)</td><td>La constante que falta; $\ln\lvert f\rvert$ con valor absoluto</td></tr>
+  <tr><td>Función de función con la derivada de «lo de dentro» fuera</td><td>$t=$ lo de dentro (U pp.249-251)</td><td>Cambiar $dx$; en definida, los límites</td></tr>
+  <tr><td>Raíces de $x$ de índices distintos</td><td>$x=t^r$, $r$ = m.c.m. (E 6.28)</td><td>$dx=r\,t^{r-1}dt$ y deshacer con $t=x^{1/r}$</td></tr>
+  <tr><td>Polinomio por $e^x$, $\operatorname{sen}$, $\cos$; $\ln x$; $\operatorname{arctg}x$</td><td>Partes (U pp.252-254)</td><td>Elegir $u$ que se simplifique; signo menos al repetir</td></tr>
+  <tr><td>$\frac pq$ con grado $p\ge$ grado $q$</td><td>Dividir primero (U p.255)</td><td>No descomponer sin dividir</td></tr>
+  <tr><td>$\frac pq$ con raíces reales</td><td>Fracciones simples (U pp.255-257)</td><td>Una fracción por cada potencia de una raíz múltiple</td></tr>
+  <tr><td>Irreducible $x^2+bx+c$</td><td>$\ln$ + $\operatorname{arctg}$, completando cuadrados (U p.258)</td><td>El factor que sale al completar cuadrados</td></tr>
+  <tr><td>Irreducible repetido o raíces múltiples</td><td>Hermite (U pp.259-261)</td><td>Grados de $f$ y $g$; el sistema de coeficientes</td></tr>
+  <tr><td>$\operatorname{sen}^n\cos^m$</td><td>Impar: separar factor; par: ángulo doble (U pp.262-263)</td><td>$d(\cos x)=-\operatorname{sen}x\,dx$</td></tr>
+  <tr><td>Racional en $\operatorname{sen}$, $\cos$</td><td>$t=\operatorname{tg}\frac x2$ (U p.261)</td><td>Es el último recurso: cuentas largas</td></tr>
+  <tr><td>Integral definida o área</td><td>Primitiva + Barrow (U p.244); partir en los cortes</td><td>Continuidad en $[a,b]$; área $\ne$ integral con signo</td></tr>
+</table>
 <div class="recipe"><b>Receta general del tema (cómo elegir la técnica):</b>
   <ol>
     <li><b>Preparar.</b> Simplificar el integrando y separar sumas (linealidad). Mirar el dominio.</li>
@@ -421,8 +614,190 @@
     <li><b>Comprobar SIEMPRE derivando</b> la primitiva y escribir $+C$.</li>
   </ol>
 </div>
-<!-- ============================ 9 ============================ -->
-<h2 id="ejercicios"><span class="n">9</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.17-6.35, pp. 223-242">E pp.223-242</span></h2>
+</details>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">9</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada técnica. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub"><b>Cálculo de integrales</b>: (1) busca «función + su derivada» (tabla, ajustando constantes); (2) si algo estorba dentro (un argumento, una raíz, $e^x$), cambia de variable, cambiando también $dx$ y, en una definida, los límites; (3) producto de tipos distintos (polinomio × exp/trig, $\ln$, $\operatorname{arctg}$): partes; (4) racional: compara grados (divide), factoriza y descompón; factor irreducible repetido: Hermite; (5) trigonométricas: potencia impar → separa un factor; pares → ángulo doble; si no, $t=\operatorname{tg}\frac x2$; (6) comprueba derivando.</p>
+<h3>Inmediatas ajustando constantes</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · tres inmediatas: logaritmo, potencia y exponencial <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula: a) $\displaystyle\int\frac{2x+3}{x^2+3x+5}\,dx$; b) $\displaystyle\int x^2(x^3+1)^4\,dx$; c) $\displaystyle\int\frac{e^{\operatorname{tg}x}}{\cos^2x}\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>En cada una, deriva la «función de dentro» ($x^2+3x+5$, $x^3+1$, $\operatorname{tg}x$) y compárala con lo que multiplica. Si solo falta una constante, multiplica y divide por ella.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Numerador = derivada del denominador:</b> $(x^2+3x+5)'=2x+3$, justo el numerador. Tabla, fila 3 (U p.248): $\ln\lvert x^2+3x+5\rvert+C$.</li><li><b>a) ¿Hace falta el valor absoluto?</b> El discriminante es $9-20=-11&lt;0$ y el coeficiente de $x^2$ es positivo: $x^2+3x+5&gt;0$ siempre. Queda $\ln(x^2+3x+5)+C$.</li><li><b>b) Potencia por derivada:</b> con $f=x^3+1$, $f'=3x^2$. Sobra $x^2=\frac13\cdot3x^2$, así que $\int x^2(x^3+1)^4dx=\frac13\int(x^3+1)^4\,3x^2\,dx$.</li><li><b>b) Fila 2 con $a=4$:</b> $\frac13\cdot\frac{(x^3+1)^5}5=\frac{(x^3+1)^5}{15}+C$. Comprobación: $\left(\frac{(x^3+1)^5}{15}\right)'=\frac{5(x^3+1)^4\cdot3x^2}{15}=x^2(x^3+1)^4$ ✓.</li><li><b>c) Exponencial por la derivada del exponente:</b> con $f=\operatorname{tg}x$, $f'=\frac1{\cos^2x}$ (U §2.2), el integrando es $e^ff'$. Fila 4: $e^{\operatorname{tg}x}+C$.</li></ol>
+    <p class="res">Resultado: a) $\ln(x^2+3x+5)+C$; b) $\frac{(x^3+1)^5}{15}+C$; c) $e^{\operatorname{tg}x}+C$</p>
+  </details>
+</details>
+<details class="pr" id="pr-a2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica a2 · $\frac1{x\ln x}$, $\frac1{\sqrt{9-4x^2}}$ y $\operatorname{tg}x$: preparar antes de mirar la tabla <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula: a) $\displaystyle\int\frac{dx}{x\ln x}$ para $x&gt;1$; b) $\displaystyle\int\frac{dx}{\sqrt{9-4x^2}}$; c) $\displaystyle\int\operatorname{tg}x\,dx$ y $\displaystyle\int_0^{\pi/4}\operatorname{tg}x\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>a) Escribe $\frac1{x\ln x}=\frac{1/x}{\ln x}$. b) Saca el $9$ de la raíz para ver $\sqrt{1-(\cdot)^2}$. c) $\operatorname{tg}x=\frac{\operatorname{sen}x}{\cos x}$, y $\operatorname{sen}x=-(\cos x)'$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Reescribir:</b> $\frac1{x\ln x}=\frac{1/x}{\ln x}$ y $(\ln x)'=\frac1x$: es $\frac{f'}f$ con $f=\ln x$. Fila 3 (U p.248): $\ln\lvert\ln x\rvert+C$ (para $x&gt;1$, $\ln x&gt;0$).</li><li><b>b) Sacar el 9 de la raíz:</b> $\sqrt{9-4x^2}=3\sqrt{1-\left(\frac{2x}3\right)^2}$. Con $f=\frac{2x}3$, $f'=\frac23$: $\frac1{\sqrt{9-4x^2}}=\frac{1/3}{\sqrt{1-f^2}}=\frac12\cdot\frac{f'}{\sqrt{1-f^2}}$, porque $\frac13=\frac12\cdot\frac23$.</li><li><b>b) Fila 10:</b> $\int\frac{dx}{\sqrt{9-4x^2}}=\frac12\operatorname{arcsen}\frac{2x}3+C$ (para $\lvert x\rvert&lt;\frac32$). Comprobación: $\left(\frac12\operatorname{arcsen}\frac{2x}3\right)'=\frac12\cdot\frac{2/3}{\sqrt{1-4x^2/9}}=\frac1{\sqrt{9-4x^2}}$ ✓.</li><li><b>c) Tangente:</b> $\operatorname{tg}x=\frac{\operatorname{sen}x}{\cos x}=-\frac{(\cos x)'}{\cos x}$. Fila 3 con signo menos: $\int\operatorname{tg}x\,dx=-\ln\lvert\cos x\rvert+C$.</li><li><b>c) Definida</b> (Barrow, U Teor. 6.2, p.244; en $[0,\frac\pi4]$, $\cos x&gt;0$): $\big[-\ln\cos x\big]_0^{\pi/4}=-\ln\frac{\sqrt2}2+\ln1=\ln\sqrt2=\frac12\ln2\approx0{,}347$.</li></ol>
+    <p class="res">Resultado: a) $\ln\lvert\ln x\rvert+C$; b) $\frac12\operatorname{arcsen}\frac{2x}3+C$; c) $-\ln\lvert\cos x\rvert+C$ y $\int_0^{\pi/4}\operatorname{tg}x\,dx=\frac12\ln2\approx0{,}347$</p>
+  </details>
+</details>
+<h3>Cambio de variable (y límites nuevos)</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · $\int_0^1x(1+x^2)^3dx$ cambiando los límites y $\int\frac{e^x}{1+e^{2x}}dx$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">a) Calcula $\displaystyle\int_0^1x(1+x^2)^3\,dx$ con el cambio $t=1+x^2$, cambiando los límites de integración. b) Calcula $\displaystyle\int\frac{e^x}{1+e^{2x}}\,dx$ con el cambio $t=e^x$.</p>
+  <details class="pista"><summary>Pista</summary><p>a) $dt=2x\,dx$, así que $x\,dx=\frac{dt}2$; si $x=0$, $t=1$; si $x=1$, $t=2$. b) $e^{2x}=(e^x)^2=t^2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Cambio:</b> $t=1+x^2\Rightarrow dt=2x\,dx\Rightarrow x\,dx=\frac{dt}2$ (U p.250).</li><li><b>a) Límites nuevos</b> (U p.251): $x=0\Rightarrow t=1$; $x=1\Rightarrow t=2$. Queda $\int_1^2t^3\,\frac{dt}2$.</li><li><b>a) Barrow en $t$:</b> $\frac12\left[\frac{t^4}4\right]_1^2=\frac12\left(4-\frac14\right)=\frac{15}8$. Como los límites ya están en $t$, no hace falta volver a $x$.</li><li><b>a) Comprobación sin cambiar límites:</b> primitiva $\frac{(1+x^2)^4}8$; $\left[\frac{(1+x^2)^4}8\right]_0^1=\frac{16}8-\frac18=\frac{15}8$ ✓.</li><li><b>b) Cambio $t=e^x$:</b> $dt=e^x\,dx$ y $e^{2x}=t^2$: $\int\frac{e^x\,dx}{1+e^{2x}}=\int\frac{dt}{1+t^2}=\operatorname{arctg}t+C$ (fila 9, U p.248).</li><li><b>b) Deshacer el cambio:</b> $\operatorname{arctg}e^x+C$. Comprobación: $(\operatorname{arctg}e^x)'=\frac{e^x}{1+e^{2x}}$ ✓.</li></ol>
+    <p class="res">Resultado: a) $\frac{15}8$; b) $\operatorname{arctg}e^x+C$</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica b2 · $\int_0^{\ln2}\sqrt{e^x-1}\,dx$: despejar $x$ y dividir <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\int_0^{\ln2}\sqrt{e^x-1}\,dx$ con el cambio $t=\sqrt{e^x-1}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Despeja $x$: $e^x=1+t^2$, luego $x=\ln(1+t^2)$; deriva para obtener $dx$. Queda una racional con el mismo grado arriba y abajo: divide.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Continuidad:</b> en $[0,\ln2]$, $e^x-1\ge0$ y el integrando es continuo.</li><li><b>Despejar $x$:</b> $t^2=e^x-1\Rightarrow x=\ln(1+t^2)\Rightarrow dx=\frac{2t}{1+t^2}\,dt$ (U p.250).</li><li><b>Límites nuevos</b> (U p.251): $x=0\Rightarrow t=0$; $x=\ln2\Rightarrow t=\sqrt{2-1}=1$.</li><li><b>Sustituir:</b> $\int_0^1t\cdot\frac{2t}{1+t^2}\,dt=\int_0^1\frac{2t^2}{1+t^2}\,dt$.</li><li><b>Grados iguales: dividir</b> (U p.255): $2t^2=2(1+t^2)-2$, así que $\frac{2t^2}{1+t^2}=2-\frac2{1+t^2}$.</li><li><b>Barrow en $t$:</b> $\big[2t-2\operatorname{arctg}t\big]_0^1=2-2\cdot\frac\pi4=2-\frac\pi2\approx0{,}429$.</li><li><b>Sentido común:</b> en $[0,\ln2]$ el integrando va de $0$ a $1$ y el intervalo mide $\ln2\approx0{,}693$: el resultado debe estar entre $0$ y $0{,}693$ ✓.</li></ol>
+    <p class="res">Resultado: $\int_0^{\ln2}\sqrt{e^x-1}\,dx=2-\frac\pi2\approx0{,}429$</p>
+  </details>
+</details>
+<h3>Integración por partes</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · $\int x\ln x\,dx$ y $\int_0^\pi x\cos x\,dx$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula por partes: a) $\displaystyle\int x\ln x\,dx$ ($x&gt;0$); b) $\displaystyle\int_0^\pi x\cos x\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>a) $\ln x$ no tiene primitiva inmediata pero se simplifica al derivar: hazla $u$. b) El polinomio es $u$ y el coseno es $v'$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Elegir</b> (U p.252): $u=\ln x\Rightarrow u'=\frac1x$; $v'=x\Rightarrow v=\frac{x^2}2$.</li><li><b>a) Fórmula:</b> $\int x\ln x\,dx=\frac{x^2}2\ln x-\int\frac{x^2}2\cdot\frac1x\,dx=\frac{x^2}2\ln x-\int\frac x2\,dx=\frac{x^2}2\ln x-\frac{x^2}4+C$.</li><li><b>a) Comprobación:</b> $\left(\frac{x^2}2\ln x-\frac{x^2}4\right)'=x\ln x+\frac x2-\frac x2=x\ln x$ ✓.</li><li><b>b) Elegir:</b> $u=x\Rightarrow u'=1$; $v'=\cos x\Rightarrow v=\operatorname{sen}x$.</li><li><b>b) Partes en la definida</b> (U p.254): $\big[x\operatorname{sen}x\big]_0^\pi-\int_0^\pi\operatorname{sen}x\,dx=0-\big[-\cos x\big]_0^\pi=-(1+1)=-2$.</li><li><b>Sentido común:</b> $x\cos x$ es negativa en $(\frac\pi2,\pi)$, donde $x$ es mayor; el área negativa pesa más y el resultado negativo es razonable.</li></ol>
+    <p class="res">Resultado: a) $\frac{x^2}2\ln x-\frac{x^2}4+C$; b) $\int_0^\pi x\cos x\,dx=-2$</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica c2 · $\operatorname{arctg}x$ por partes y una integral cíclica <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula: a) $\displaystyle\int\operatorname{arctg}x\,dx$; b) $\displaystyle\int_0^1\operatorname{arctg}x\,dx$; c) $\displaystyle\int e^{2x}\operatorname{sen}x\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>a) Como en $\int\ln x\,dx$ (U Ej. 6.18): $u=\operatorname{arctg}x$, $v'=1$. c) Aplica partes dos veces: vuelve a aparecer la integral de partida y se despeja, como en $\int e^x\cos x\,dx$ (U Ej. 6.20).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Elegir</b> (U p.252): $u=\operatorname{arctg}x\Rightarrow u'=\frac1{1+x^2}$; $v'=1\Rightarrow v=x$.</li><li><b>a) Fórmula:</b> $x\operatorname{arctg}x-\int\frac{x}{1+x^2}dx=x\operatorname{arctg}x-\frac12\ln(1+x^2)+C$ (fila 3 ajustando el $2$; $1+x^2&gt;0$).</li><li><b>b) Barrow:</b> $\left(\frac\pi4-\frac12\ln2\right)-(0-0)=\frac\pi4-\frac12\ln2\approx0{,}439$.</li><li><b>c) 1.ª pasada:</b> $I=\int e^{2x}\operatorname{sen}x\,dx$; $u=\operatorname{sen}x$, $v'=e^{2x}$ ⇒ $u'=\cos x$, $v=\frac{e^{2x}}2$: $I=\frac12e^{2x}\operatorname{sen}x-\frac12\int e^{2x}\cos x\,dx$.</li><li><b>c) 2.ª pasada</b> (mismo papel para la exponencial): $u=\cos x$, $v'=e^{2x}$: $\int e^{2x}\cos x\,dx=\frac12e^{2x}\cos x+\frac12I$.</li><li><b>c) Despejar:</b> $I=\frac12e^{2x}\operatorname{sen}x-\frac14e^{2x}\cos x-\frac14I$, es decir, $\frac54I=\frac{e^{2x}(2\operatorname{sen}x-\cos x)}4$, y $I=\frac{e^{2x}(2\operatorname{sen}x-\cos x)}5+C$.</li><li><b>c) Comprobación:</b> $\left(\frac{e^{2x}(2\operatorname{sen}x-\cos x)}5\right)'=\frac{2e^{2x}(2\operatorname{sen}x-\cos x)+e^{2x}(2\cos x+\operatorname{sen}x)}5=e^{2x}\operatorname{sen}x$ ✓.</li></ol>
+    <p class="res">Resultado: a) $x\operatorname{arctg}x-\frac12\ln(1+x^2)+C$; b) $\frac\pi4-\frac12\ln2\approx0{,}439$; c) $\frac{e^{2x}(2\operatorname{sen}x-\cos x)}5+C$</p>
+  </details>
+</details>
+<h3>Racionales con raíces reales</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · $\int\frac{5x-1}{x^2-x-2}dx$: dos logaritmos <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\int\frac{5x-1}{x^2-x-2}\,dx$ y $\displaystyle\int_3^4\frac{5x-1}{x^2-x-2}\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>Grado $1&lt;2$: no se divide. Factoriza el denominador y da a $x$ el valor de cada raíz en la igualdad sin denominadores.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Factorizar:</b> $x^2-x-2=0\iff x=2$ o $x=-1$, así que $x^2-x-2=(x-2)(x+1)$.</li><li><b>Planteamiento</b> (U p.255): $\frac{5x-1}{(x-2)(x+1)}=\frac A{x-2}+\frac B{x+1}$, es decir, $5x-1=A(x+1)+B(x-2)$.</li><li><b>Coeficientes:</b> $x=2$: $9=3A\Rightarrow A=3$. $x=-1$: $-6=-3B\Rightarrow B=2$.</li><li><b>Integrar</b> (U p.257): $\int\frac{5x-1}{x^2-x-2}dx=3\ln\lvert x-2\rvert+2\ln\lvert x+1\rvert+C$.</li><li><b>Definida:</b> $[3,4]$ no contiene $2$ ni $-1$ (integrando continuo). $F(4)-F(3)=(3\ln2+2\ln5)-(3\ln1+2\ln4)=2\ln5-\ln2=\ln\frac{25}2\approx2{,}526$.</li></ol>
+    <p class="res">Resultado: $3\ln\lvert x-2\rvert+2\ln\lvert x+1\rvert+C$; $\int_3^4\frac{5x-1}{x^2-x-2}dx=\ln\frac{25}2\approx2{,}526$</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica d2 · $\frac{x^3+x+2}{x(x-1)^2}$: dividir, raíz doble y un coeficiente nulo <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\int\frac{x^3+x+2}{x(x-1)^2}\,dx$ y $\displaystyle\int_2^3\frac{x^3+x+2}{x(x-1)^2}\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>Grado $3=3$: primero divide (el denominador desarrollado es $x^3-2x^2+x$). Después, $0$ es raíz simple y $1$ es doble: tres fracciones.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Dividir</b> (U p.255): $x(x-1)^2=x^3-2x^2+x$; cociente $1$ y resto $(x^3+x+2)-(x^3-2x^2+x)=2x^2+2$. Así $\frac{x^3+x+2}{x(x-1)^2}=1+\frac{2x^2+2}{x(x-1)^2}$.</li><li><b>Planteamiento:</b> $\frac{2x^2+2}{x(x-1)^2}=\frac Ax+\frac B{x-1}+\frac C{(x-1)^2}$ (una fracción por cada potencia de $x-1$), es decir, $2x^2+2=A(x-1)^2+Bx(x-1)+Cx$.</li><li><b>Coeficientes:</b> $x=0$: $2=A$. $x=1$: $4=C$. Coeficiente de $x^2$: $2=A+B\Rightarrow B=0$. Que salga $B=0$ no significa que se pudiera omitir: había que plantearla.</li><li><b>Integrar:</b> $\int\left(1+\frac2x+\frac4{(x-1)^2}\right)dx=x+2\ln\lvert x\rvert-\frac4{x-1}+C$ (fila 2 con $a=-2$: $\int(x-1)^{-2}dx=-(x-1)^{-1}$).</li><li><b>Definida</b> ($[2,3]$ no contiene $0$ ni $1$): $F(3)-F(2)=(3+2\ln3-2)-(2+2\ln2-4)=3+2\ln\frac32\approx3{,}811$.</li></ol>
+    <p class="res">Resultado: $x+2\ln\lvert x\rvert-\frac4{x-1}+C$; $\int_2^3\frac{x^3+x+2}{x(x-1)^2}dx=3+2\ln\frac32\approx3{,}811$</p>
+  </details>
+</details>
+<h3>Factor irreducible: logaritmo, arcotangente y Hermite</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · $\int\frac{2x+5}{x^2+4x+8}dx$: logaritmo más arcotangente <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\int\frac{2x+5}{x^2+4x+8}\,dx$ y $\displaystyle\int_{-2}^0\frac{2x+5}{x^2+4x+8}\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>El denominador no tiene raíces reales. Escribe el numerador como «derivada del denominador + número» y, para el número, completa cuadrados: $x^2+4x+8=(x+2)^2+4$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Irreducible:</b> discriminante $16-32=-16&lt;0$; además $x^2+4x+8&gt;0$ siempre.</li><li><b>Separar el numerador:</b> la derivada del denominador es $2x+4$ y $2x+5=(2x+4)+1$: $\int\frac{2x+4}{x^2+4x+8}dx+\int\frac{dx}{x^2+4x+8}$.</li><li><b>Primera:</b> tipo $\frac{f'}f$ (fila 3, U p.248): $\ln(x^2+4x+8)$.</li><li><b>Segunda, completando cuadrados</b> (U p.258): $x^2+4x+8=(x+2)^2+4=4\left[\left(\frac{x+2}2\right)^2+1\right]$. Con $f=\frac{x+2}2$, $f'=\frac12$: $\int\frac{dx}{x^2+4x+8}=\frac14\cdot2\int\frac{f'}{1+f^2}dx=\frac12\operatorname{arctg}\frac{x+2}2$.</li><li><b>Primitiva:</b> $\ln(x^2+4x+8)+\frac12\operatorname{arctg}\frac{x+2}2+C$.</li><li><b>Definida</b> (Barrow, U p.244): $F(0)=\ln8+\frac12\operatorname{arctg}1=\ln8+\frac\pi8$; $F(-2)=\ln4+0$. Diferencia: $\ln2+\frac\pi8\approx1{,}086$.</li></ol>
+    <p class="res">Resultado: $\ln(x^2+4x+8)+\frac12\operatorname{arctg}\frac{x+2}2+C$; $\int_{-2}^0\frac{2x+5}{x^2+4x+8}dx=\ln2+\frac\pi8\approx1{,}086$</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica e2 · $\int\frac{x^3+2}{(x^2+1)^2}dx$ por Hermite <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula por el método de Hermite $\displaystyle\int\frac{x^3+2}{(x^2+1)^2}\,dx$ y, con ella, $\displaystyle\int_0^1\frac{x^3+2}{(x^2+1)^2}\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>Raíces $\pm i$ dobles. Forma: $\frac{x^3+2}{(x^2+1)^2}=\frac{d}{dx}\left(\frac{ax+b}{x^2+1}\right)+\frac{cx+d}{x^2+1}$. Deriva, quita denominadores e iguala coeficientes.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Forma de Hermite</b> (U pp.258-261): $q=(x^2+1)^2$; $g=x^2+1$ (exponente rebajado en uno); $q_1=x^2+1$. Se plantea $\frac{x^3+2}{(x^2+1)^2}=\frac{d}{dx}\left(\frac{ax+b}{x^2+1}\right)+\frac{cx+d}{x^2+1}$.</li><li><b>Derivar el cociente:</b> $\frac{d}{dx}\frac{ax+b}{x^2+1}=\frac{a(x^2+1)-(ax+b)2x}{(x^2+1)^2}=\frac{-ax^2-2bx+a}{(x^2+1)^2}$.</li><li><b>Quitar denominadores:</b> $x^3+2=-ax^2-2bx+a+(cx+d)(x^2+1)=cx^3+(d-a)x^2+(c-2b)x+(a+d)$.</li><li><b>Igualar coeficientes:</b> $x^3$: $c=1$; $x^2$: $d=a$; $x$: $c-2b=0\Rightarrow b=\frac12$; $x^0$: $a+d=2\Rightarrow a=d=1$.</li><li><b>Integrar cada trozo:</b> la parte derivada da $\frac{x+\frac12}{x^2+1}=\frac{2x+1}{2(x^2+1)}$; y $\int\frac{x+1}{x^2+1}dx=\frac12\ln(x^2+1)+\operatorname{arctg}x$ (filas 3 y 9).</li><li><b>Primitiva:</b> $\frac{2x+1}{2(x^2+1)}+\frac12\ln(x^2+1)+\operatorname{arctg}x+C$. Al derivarla se recupera el integrando.</li><li><b>Definida:</b> $F(1)=\frac34+\frac12\ln2+\frac\pi4$, $F(0)=\frac12$. Diferencia: $\frac14+\frac12\ln2+\frac\pi4\approx1{,}382$.</li></ol>
+    <p class="res">Resultado: $\frac{2x+1}{2(x^2+1)}+\frac12\ln(x^2+1)+\operatorname{arctg}x+C$; $\int_0^1\frac{x^3+2}{(x^2+1)^2}dx=\frac14+\frac12\ln2+\frac\pi4\approx1{,}382$</p>
+  </details>
+</details>
+<h3>Integrales trigonométricas</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · $\cos^3x$ (exponente impar) y $\operatorname{tg}^2x$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula: a) $\displaystyle\int\cos^3x\,dx$ y $\displaystyle\int_0^{\pi/2}\cos^3x\,dx$; b) $\displaystyle\int\operatorname{tg}^2x\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>a) Exponente impar: separa un $\cos x$ y escribe $\cos^2x=1-\operatorname{sen}^2x$. b) Suma y resta $1$: $\operatorname{tg}^2x=(1+\operatorname{tg}^2x)-1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Separar un coseno</b> (U pp.262-263): $\cos^3x=(1-\operatorname{sen}^2x)\cos x=\cos x-\operatorname{sen}^2x\cos x$.</li><li><b>a) Cada trozo:</b> $\int\cos x\,dx=\operatorname{sen}x$; $\int\operatorname{sen}^2x\cos x\,dx=\frac{\operatorname{sen}^3x}3$ (fila 2 con $f=\operatorname{sen}x$, U p.248). Primitiva: $\operatorname{sen}x-\frac{\operatorname{sen}^3x}3+C$.</li><li><b>a) Barrow:</b> $\left(1-\frac13\right)-(0-0)=\frac23$.</li><li><b>b) Sumar y restar 1:</b> $\operatorname{tg}^2x=(1+\operatorname{tg}^2x)-1$, y $\int(1+\operatorname{tg}^2x)\,dx=\operatorname{tg}x$ (fila 8). Primitiva: $\operatorname{tg}x-x+C$.</li><li><b>b) Comprobación:</b> $(\operatorname{tg}x-x)'=1+\operatorname{tg}^2x-1=\operatorname{tg}^2x$ ✓.</li></ol>
+    <p class="res">Resultado: a) $\operatorname{sen}x-\frac{\operatorname{sen}^3x}3+C$ y $\int_0^{\pi/2}\cos^3x\,dx=\frac23$; b) $\operatorname{tg}x-x+C$</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica f2 · $\int\frac{dx}{2+\cos x}$ con $t=\operatorname{tg}\frac x2$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\int\frac{dx}{2+\cos x}$ en $(-\pi,\pi)$ con el cambio $t=\operatorname{tg}\frac x2$, y después $\displaystyle\int_0^{\pi/2}\frac{dx}{2+\cos x}$.</p>
+  <details class="pista"><summary>Pista</summary><p>$\cos x=\frac{1-t^2}{1+t^2}$, $dx=\frac{2\,dt}{1+t^2}$. Queda $\int\frac{2}{t^2+3}dt$: saca el $3$ para tener un arcotangente. En la definida, $x=\frac\pi2$ da $t=\operatorname{tg}\frac\pi4=1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Cambio</b> (U p.261): en $(-\pi,\pi)$, $x=2\operatorname{arctg}t$, $dx=\frac{2\,dt}{1+t^2}$ y $\cos x=\frac{1-t^2}{1+t^2}$.</li><li><b>Denominador:</b> $2+\cos x=\frac{2(1+t^2)+1-t^2}{1+t^2}=\frac{3+t^2}{1+t^2}$.</li><li><b>Sustituir:</b> $\int\frac{1+t^2}{3+t^2}\cdot\frac{2\,dt}{1+t^2}=\int\frac{2\,dt}{t^2+3}$ (los $1+t^2$ se cancelan).</li><li><b>Arcotangente:</b> $t^2+3=3\left[\left(\frac t{\sqrt3}\right)^2+1\right]$; con $f=\frac t{\sqrt3}$, $f'=\frac1{\sqrt3}$: $\frac2{t^2+3}=\frac23\cdot\frac1{1+f^2}=\frac2{\sqrt3}\cdot\frac{f'}{1+f^2}$. Fila 9: $\frac2{\sqrt3}\operatorname{arctg}\frac t{\sqrt3}$.</li><li><b>Deshacer el cambio:</b> $\int\frac{dx}{2+\cos x}=\frac2{\sqrt3}\operatorname{arctg}\frac{\operatorname{tg}(x/2)}{\sqrt3}+C$ en $(-\pi,\pi)$.</li><li><b>Definida con límites en $t$</b> (U p.251): $x=0\Rightarrow t=0$; $x=\frac\pi2\Rightarrow t=1$. $\frac2{\sqrt3}\left(\operatorname{arctg}\frac1{\sqrt3}-0\right)=\frac2{\sqrt3}\cdot\frac\pi6=\frac\pi{3\sqrt3}\approx0{,}605$.</li><li><b>Sentido común:</b> en $[0,\frac\pi2]$ el integrando va de $\frac13$ a $\frac12$; por la longitud $\frac\pi2$, la integral está entre $0{,}524$ y $0{,}785$ ✓.</li></ol>
+    <p class="res">Resultado: $\frac2{\sqrt3}\operatorname{arctg}\frac{\operatorname{tg}(x/2)}{\sqrt3}+C$ en $(-\pi,\pi)$; $\int_0^{\pi/2}\frac{dx}{2+\cos x}=\frac\pi{3\sqrt3}\approx0{,}605$</p>
+  </details>
+</details>
+<h3>Raíces: cambios que racionalizan</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · $\int_0^4\frac{dx}{1+\sqrt x}$ con $x=t^2$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\int_0^4\frac{dx}{1+\sqrt x}$ con el cambio $x=t^2$ ($t\ge0$).</p>
+  <details class="pista"><summary>Pista</summary><p>$dx=2t\,dt$; $x=0\Rightarrow t=0$, $x=4\Rightarrow t=2$. Queda $\int\frac{2t}{1+t}dt$: grados iguales, divide.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Cambio</b> (U p.250; E p.235): $x=t^2$, $t=\sqrt x\ge0$, $dx=2t\,dt$, y $\sqrt x=t$.</li><li><b>Límites nuevos</b> (U p.251): $x=0\Rightarrow t=0$; $x=4\Rightarrow t=2$. Queda $\int_0^2\frac{2t}{1+t}\,dt$.</li><li><b>Dividir:</b> $2t=2(1+t)-2$, así que $\frac{2t}{1+t}=2-\frac2{1+t}$.</li><li><b>Barrow en $t$:</b> $\big[2t-2\ln(1+t)\big]_0^2=4-2\ln3\approx1{,}803$ (aquí $1+t&gt;0$).</li><li><b>Primitiva en $x$</b> (por si la piden): $2\sqrt x-2\ln(1+\sqrt x)+C$.</li><li><b>Sentido común:</b> el integrando va de $1$ (en $x=0$) a $\frac13$ (en $x=4$); la integral debe estar entre $\frac43$ y $4$ ✓.</li></ol>
+    <p class="res">Resultado: $\int_0^4\frac{dx}{1+\sqrt x}=4-2\ln3\approx1{,}803$ (primitiva $2\sqrt x-2\ln(1+\sqrt x)+C$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica g2 · $\int\frac{dx}{\sqrt x+\sqrt[3]x}$ con $x=t^6$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\int\frac{dx}{\sqrt x+\sqrt[3]x}$ ($x&gt;0$) y $\displaystyle\int_1^{64}\frac{dx}{\sqrt x+\sqrt[3]x}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Índices $2$ y $3$: $x=t^6$, con $\sqrt x=t^3$, $\sqrt[3]x=t^2$, $dx=6t^5dt$. Simplifica $t^2$ y divide entre $t+1$. Límites: $1=1^6$ y $64=2^6$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Cambio</b> (m.c.m. de los índices, E p.235): $x=t^6$, $t=\sqrt[6]x&gt;0$, $dx=6t^5\,dt$, $\sqrt x=t^3$, $\sqrt[3]x=t^2$.</li><li><b>Sustituir y simplificar:</b> $\int\frac{6t^5\,dt}{t^3+t^2}=\int\frac{6t^5}{t^2(t+1)}dt=\int\frac{6t^3}{t+1}dt$.</li><li><b>Dividir</b> (U p.255): $t^3=(t+1)(t^2-t+1)-1$, luego $\frac{6t^3}{t+1}=6t^2-6t+6-\frac6{t+1}$.</li><li><b>Integrar:</b> $2t^3-3t^2+6t-6\ln(1+t)+C$.</li><li><b>Deshacer el cambio</b> ($t^3=\sqrt x$, $t^2=\sqrt[3]x$): $2\sqrt x-3\sqrt[3]x+6\sqrt[6]x-6\ln\left(1+\sqrt[6]x\right)+C$.</li><li><b>Definida con límites en $t$</b> (U p.251): $x=1\Rightarrow t=1$; $x=64\Rightarrow t=2$. $F(2)=16-12+12-6\ln3=16-6\ln3$; $F(1)=2-3+6-6\ln2=5-6\ln2$. Diferencia: $11-6\ln3+6\ln2=11-6\ln\frac32\approx8{,}567$.</li></ol>
+    <p class="res">Resultado: $2\sqrt x-3\sqrt[3]x+6\sqrt[6]x-6\ln\left(1+\sqrt[6]x\right)+C$; $\int_1^{64}\frac{dx}{\sqrt x+\sqrt[3]x}=11-6\ln\frac32\approx8{,}567$</p>
+  </details>
+</details>
+</div>
+<h2 id="autoeval" data-vista="tipos"><span class="n">10</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="a">
+    <p><b>1.</b> (Elige) Una primitiva de $x\cos(x^2)$ es:</p>
+    <div class="opts"><button data-v="a">(a) $\frac12\operatorname{sen}(x^2)$</button><button data-v="b">(b) $\operatorname{sen}(x^2)$</button><button data-v="c">(c) $2\operatorname{sen}(x^2)$</button><button data-v="d">(d) $\frac{x^2}2\operatorname{sen}x$</button></div>
+    <div class="exp">Con $f=x^2$, $f'=2x$: $x\cos(x^2)=\frac12\cos(f)f'$ y la fila 6 (U p.248) da $\frac12\operatorname{sen}(x^2)$. Derivando (b) sale $2x\cos(x^2)$; (d) integra cada factor por separado, lo que no vale.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>2.</b> (V/F) $\displaystyle\int\frac{dx}{x^2+9}=\frac13\operatorname{arctg}\frac x3+C$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$x^2+9=9\left[\left(\frac x3\right)^2+1\right]$; con $f=\frac x3$, $f'=\frac13$: $\frac1{x^2+9}=\frac13\cdot\frac{f'}{1+f^2}$ (fila 9, U p.248). Se comprueba derivando: $\left(\frac13\operatorname{arctg}\frac x3\right)'=\frac13\cdot\frac{1/3}{1+x^2/9}=\frac1{x^2+9}$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>3.</b> (V/F) Para integrar una función racional con grado del numerador mayor o igual que el del denominador, basta descomponerla en fracciones simples sin hacer nada antes.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Primero hay que dividir: la parte entera se integra como polinomio y solo el resto (de grado menor) se descompone (U p.255; E 6.22).</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>4.</b> (Elige) Para calcular $\int x^2\ln x\,dx$ por partes conviene tomar:</p>
+    <div class="opts"><button data-v="a">(a) $u=\ln x$, $v'=x^2$</button><button data-v="b">(b) $u=x^2$, $v'=\ln x$</button><button data-v="c">(c) las dos sirven igual</button><button data-v="d">(d) partes no sirve aquí</button></div>
+    <div class="exp">Con (a), $u'=\frac1x$ y $v=\frac{x^3}3$: queda $\int\frac{x^2}3dx$, inmediata. Con (b) habría que conocer ya una primitiva de $\ln x$ y la integral nueva tendría $x\ln x$: más difícil (U p.252).</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>5.</b> (Elige) $\displaystyle\int_0^1xe^x\,dx$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $1$</button><button data-v="b">(b) $e$</button><button data-v="c">(c) $e-1$</button><button data-v="d">(d) $2e-1$</button></div>
+    <div class="exp">Primitiva $(x-1)e^x$ (E 6.18); Barrow: $0-(-1)=1$. (b) olvida restar el valor en $0$; (c) usa solo $\int_0^1e^x$.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>6.</b> (V/F) En una integral definida con un cambio de variable en el que ya se han cambiado los límites, hay que deshacer el cambio antes de aplicar Barrow.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Si los límites ya están en $t$, se aplica Barrow en $t$ y se termina (U p.251). Lo que no se puede es mezclar: primitiva en $t$ con límites en $x$.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>7.</b> (Elige) Para $\int\operatorname{sen}^2x\cos^3x\,dx$, lo más rápido es:</p>
+    <div class="opts"><button data-v="a">(a) separar un $\cos x$ y usar $t=\operatorname{sen}x$</button><button data-v="b">(b) separar un $\operatorname{sen}x$ y usar $t=\cos x$</button><button data-v="c">(c) bajar el grado con el ángulo doble</button><button data-v="d">(d) el cambio $t=\operatorname{tg}\frac x2$</button></div>
+    <div class="exp">El exponente impar es el del coseno: $\operatorname{sen}^2x\cos^3x=\operatorname{sen}^2x(1-\operatorname{sen}^2x)\cos x$, un polinomio en $\operatorname{sen}x$ por su derivada (U pp.262-263). (c) es para exponentes pares; (d) funciona, pero da una racional mucho más larga.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>8.</b> (Elige) El planteamiento correcto de $\dfrac1{x^2(x+1)}$ en fracciones simples es:</p>
+    <div class="opts"><button data-v="a">(a) $\frac Ax+\frac B{x^2}+\frac C{x+1}$</button><button data-v="b">(b) $\frac A{x^2}+\frac B{x+1}$</button><button data-v="c">(c) $\frac Ax+\frac B{x+1}$</button><button data-v="d">(d) $\frac Ax+\frac B{x^2}+\frac{Cx+D}{x+1}$</button></div>
+    <div class="exp">$0$ es raíz doble: una fracción por cada potencia, $\frac Ax+\frac B{x^2}$ (U p.255). Sale $\frac1{x^2(x+1)}=-\frac1x+\frac1{x^2}+\frac1{x+1}$. (d) pone un numerador de grado 1 sobre un factor lineal.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>9.</b> (Elige) $\displaystyle\int\frac{dx}{x^2+2x+5}$ es:</p>
+    <div class="opts"><button data-v="a">(a) $\ln\lvert x^2+2x+5\rvert+C$</button><button data-v="b">(b) $\frac12\operatorname{arctg}\frac{x+1}2+C$</button><button data-v="c">(c) $\operatorname{arctg}(x+1)+C$</button><button data-v="d">(d) $\frac14\operatorname{arctg}\frac{x+1}2+C$</button></div>
+    <div class="exp">Sin raíces reales: se completa el cuadrado, $(x+1)^2+4=4\left[\left(\frac{x+1}2\right)^2+1\right]$, y sale $\frac14\cdot2\operatorname{arctg}\frac{x+1}2$ (U p.258). (a) exigiría que el numerador fuera $2x+2$; (d) olvida el $2$ que aparece al ajustar $f'=\frac12$.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>10.</b> (Elige) $\displaystyle\int_0^{\pi/2}\operatorname{sen}^2x\,dx$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $\frac\pi2$</button><button data-v="b">(b) $\frac\pi4$</button><button data-v="c">(c) $\frac12$</button><button data-v="d">(d) $1$</button></div>
+    <div class="exp">$\operatorname{sen}^2x=\frac{1-\cos2x}2$, primitiva $\frac x2-\frac{\operatorname{sen}2x}4$; en $[0,\frac\pi2]$ da $\frac\pi4$ (U p.262). (a) olvida el $\frac12$; (d) confunde con $\int_0^{\pi/2}\operatorname{sen}x\,dx$.</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<!-- ============================ 7 ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">11</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.17-6.35, pp. 223-242">E pp.223-242</span></h2>
 <p>Los ejercicios 6.17-6.35 de E corresponden a esta sección (el 6.36 ya es de §6.4). Se resuelven agrupados por técnica y de fácil a difícil, conservando su numeración: <b>A</b> inmediatas y cambio sencillo (6.17, 6.30, 6.31) → <b>B</b> partes (6.18, 6.19) → <b>C</b> racionales (6.20-6.25) → <b>D</b> cambios que racionalizan (6.28, 6.29, 6.27) → <b>E</b> trigonométricas (6.32, 6.26) → <b>F</b> áreas (6.33-6.35).</p>
 <p><b>Índice rápido:</b> <a href="#ej-6-17">6.17</a> · <a href="#ej-6-30">6.30</a> · <a href="#ej-6-31">6.31</a> · <a href="#ej-6-18">6.18</a> · <a href="#ej-6-19">6.19</a> · <a href="#ej-6-20">6.20</a> · <a href="#ej-6-21">6.21</a> · <a href="#ej-6-22">6.22</a> · <a href="#ej-6-23">6.23</a> · <a href="#ej-6-24">6.24</a> · <a href="#ej-6-25">6.25</a> · <a href="#ej-6-28">6.28</a> · <a href="#ej-6-29">6.29</a> · <a href="#ej-6-27">6.27</a> · <a href="#ej-6-32">6.32</a> · <a href="#ej-6-26">6.26</a> · <a href="#ej-6-33">6.33</a> · <a href="#ej-6-34">6.34</a> · <a href="#ej-6-35">6.35</a>.</p>
 <div class="box tip"><span class="h">Antes de empezar los ejercicios</span>
@@ -430,15 +805,17 @@
   <span class="src" data-l="P" data-ref="Síntesis propia">P</span>
 </div>
 <h3>A. Inmediatas y cambio de variable sencillo</h3>
-<details class="sol" id="ej-6-17"><summary>Ejercicio 6.17 · tres primitivas «función por su derivada» <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.17, pp. 223-224 · teoría: tabla de inmediatas, U p. 248">E pp.223-224</span></summary>
-<p class="enun">Calcula las integrales indefinidas: 1. $\displaystyle\int\frac{\ln x}{x}\,dx$. 2. $\displaystyle\int\frac{x^2-1}{x^3-3x+7}\,dx$. 3. $\displaystyle\int\frac{\operatorname{sen}\sqrt{x^3}}{\sqrt{x^3}}\cdot x^2\,dx$.</p>
+<article class="ejer" id="ej-6-17">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.17 · tres primitivas «función por su derivada»</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.17, pp. 223-224 · teoría: tabla de inmediatas, U p. 248">E pp.223-224</span></header>
+<div class="ejer-enun"><p class="enun">Calcula las integrales indefinidas: 1. $\displaystyle\int\frac{\ln x}{x}\,dx$. 2. $\displaystyle\int\frac{x^2-1}{x^3-3x+7}\,dx$. 3. $\displaystyle\int\frac{\operatorname{sen}\sqrt{x^3}}{\sqrt{x^3}}\cdot x^2\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Tres primitivas (familias $F(x)+C$).</dd>
     <dt>Cómo lo pienso</dt><dd>En las tres hay una función y, muy cerca, su derivada: $\ln x$ y $\frac1x$; $x^3-3x+7$ y $3x^2-3$; $x^{3/2}$ y $\frac32x^{1/2}$. Son inmediatas, ajustando constantes.</dd>
     <dt>Qué uso</dt><dd>Tabla de inmediatas (U p.248): filas 2 ($\int f^af'$), 3 ($\int\frac{f'}f$) y 7 ($\int\operatorname{sen}f\cdot f'$).</dd>
     <dt>Por dónde empiezo</dt><dd>En cada una, derivar la «función de dentro» y comparar con lo que sobra.</dd>
-  </dl></div>
-  <p><b>1.</b></p>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<p><b>1.</b></p>
   <ol class="steps">
     <li><b>Dominio:</b> $\ln x$ exige $x\gt0$.</li>
     <li><b>Detectar $f$ y $f'$:</b> con $f=\ln x$, $f'=\frac1x$, el integrando es $f\cdot f'=f^1f'$.</li>
@@ -460,16 +837,19 @@
   <div class="recipe"><b>Receta:</b> antes de cualquier técnica, buscar «función + su derivada»; si la derivada aparece multiplicada por otra constante, multiplicar y dividir por ella.</div>
   <div class="box warn"><span class="h">Error típico</span><p>En 2., lanzarse a fracciones simples o escribir $\ln(x^3-3x+7)$ sin valor absoluto. En 3., olvidar el factor $\frac23$.</p></div>
 </details>
-<details class="sol" id="ej-6-30"><summary>Ejercicio 6.30 · $\int_0^1\frac{\operatorname{arcsen}(x/2)}{\sqrt{4-x^2}}dx$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.30, p. 237 · teoría: U p. 248 y Teor. 6.2, p. 244">E p.237</span></summary>
-<p class="enun">Señala el valor de $\displaystyle\int_0^1\frac{\operatorname{arcsen}\frac x2}{\sqrt{4-x^2}}\,dx$: a) $-\frac{\pi^2}9$. b) $\frac{\pi^2}{72}$. c) $-\frac{\pi}{\sqrt3}$. d) $\frac{\pi}{\sqrt3}$.</p>
+</article>
+<article class="ejer" id="ej-6-30">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.30 · $\int_0^1\frac{\operatorname{arcsen}(x/2)}{\sqrt{4-x^2}}dx$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.30, p. 237 · teoría: U p. 248 y Teor. 6.2, p. 244">E p.237</span></header>
+<div class="ejer-enun"><p class="enun">Señala el valor de $\displaystyle\int_0^1\frac{\operatorname{arcsen}\frac x2}{\sqrt{4-x^2}}\,dx$: a) $-\frac{\pi^2}9$. b) $\frac{\pi^2}{72}$. c) $-\frac{\pi}{\sqrt3}$. d) $\frac{\pi}{\sqrt3}$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El valor de una integral definida.</dd>
     <dt>Cómo lo pienso</dt><dd>El integrando es positivo en $[0,1]$ (descarto a) y c)). Además $\frac1{\sqrt{4-x^2}}$ «huele» a la derivada de $\operatorname{arcsen}\frac x2$: el integrando sería $f\cdot f'$.</dd>
     <dt>Qué uso</dt><dd>Derivada de $\operatorname{arcsen}$ y regla de la cadena (U §2.2, pp.79-80); tabla, fila 2 (U p.248); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>Derivar $\operatorname{arcsen}\frac x2$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"asin(x/2)/sqrt(4-x^2)","n":"arcsen(x/2)/√(4−x²)"},{"e":"0.5*asin(x/2)^2","n":"F(x)=½ arcsen²(x/2)","d":1}],"x":[-0.1,1.15],"y":[-0.05,0.4],"q":[[1,0.1371,"F(1)=π²/72"]]}' data-alt="Integrando y primitiva del ejercicio 6.30"><figcaption>El integrando (positivo en $[0,1]$) y su primitiva $F(x)=\frac12\operatorname{arcsen}^2\frac x2$ (punteada), que sale de $0$ en $x=0$ y llega a $\frac{\pi^2}{72}\approx0{,}137$ en $x=1$: esa es el área. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"c":[{"e":"asin(x/2)/sqrt(4-x^2)","n":"arcsen(x/2)/√(4−x²)"},{"e":"0.5*asin(x/2)^2","n":"F(x)=½ arcsen²(x/2)","d":1}],"x":[-0.1,1.15],"y":[-0.05,0.4],"q":[[1,0.1371,"F(1)=π²/72"]]}' data-alt="Integrando y primitiva del ejercicio 6.30"><figcaption>El integrando (positivo en $[0,1]$) y su primitiva $F(x)=\frac12\operatorname{arcsen}^2\frac x2$ (punteada), que sale de $0$ en $x=0$ y llega a $\frac{\pi^2}{72}\approx0{,}137$ en $x=1$: esa es el área. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Continuidad.</b> En $[0,1]$: $4-x^2\ge3\gt0$ y $\frac x2\in[0,\frac12]$: el integrando es continuo y se puede usar Barrow.</li>
     <li><b>Derivar $f(x)=\operatorname{arcsen}\frac x2$:</b> $f'(x)=\dfrac1{\sqrt{1-\frac{x^2}4}}\cdot\dfrac12=\dfrac{2}{\sqrt{4-x^2}}\cdot\dfrac12=\dfrac1{\sqrt{4-x^2}}$.</li>
     <li><b>El integrando es $f\cdot f'$</b>, de primitiva $\frac{f^2}2$ (fila 2, $a=1$): $F(x)=\frac12\operatorname{arcsen}^2\frac x2$.</li>
@@ -479,16 +859,19 @@
   <div class="recipe"><b>Receta:</b> si aparece una función inversa ($\operatorname{arcsen}$, $\operatorname{arctg}$, $\ln$) junto con algo que parece su derivada, probar «$f\cdot f'$» o «$f'\cdot g(f)$».</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el factor $\frac12$ de la regla de la cadena en la derivada de $\operatorname{arcsen}\frac x2$.</p></div>
 </details>
-<details class="sol" id="ej-6-31"><summary>Ejercicio 6.31 · $\int_{1/2}^{5/4}\frac{dx}{\sqrt{3-(2x-1)^2}}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.31, p. 238 · teoría: U pp. 248, 251">E p.238</span></summary>
-<p class="enun">Señala el valor de $\displaystyle\int_{1/2}^{5/4}\frac{dx}{\sqrt{3-(2x-1)^2}}$: a) $0$. b) $\frac\pi4$. c) $\frac\pi{\sqrt3}$. d) $\frac\pi6$.</p>
+</article>
+<article class="ejer" id="ej-6-31">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 6.31 · $\int_{1/2}^{5/4}\frac{dx}{\sqrt{3-(2x-1)^2}}$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.31, p. 238 · teoría: U pp. 248, 251">E p.238</span></header>
+<div class="ejer-enun"><p class="enun">Señala el valor de $\displaystyle\int_{1/2}^{5/4}\frac{dx}{\sqrt{3-(2x-1)^2}}$: a) $0$. b) $\frac\pi4$. c) $\frac\pi{\sqrt3}$. d) $\frac\pi6$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El valor de una integral definida.</dd>
     <dt>Cómo lo pienso</dt><dd>«$\frac1{\sqrt{\text{número}-(\dots)^2}}$» es de tipo arcoseno. Molesta el $2x-1$: lo llamo $t$ y cambio también los límites. Luego saco el $3$ de la raíz para tener $\sqrt{1-(\cdot)^2}$.</dd>
     <dt>Qué uso</dt><dd>Cambio de variable en la definida (U p.251); tabla, fila 10 (U p.248).</dd>
     <dt>Por dónde empiezo</dt><dd>$t=2x-1$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"1/sqrt(3-(2*x-1)^2)","n":"1/√(3−(2x−1)²)"}],"x":[0.3,1.45],"y":[0,1.5],"q":[[0.5,0.5774],[1.25,1.1547]]}' data-alt="Integrando del ejercicio 6.31 en [1/2,5/4]"><figcaption>El integrando en $[\frac12,\frac54]$ (rombos: valores en los extremos). El área bajo la curva en ese tramo vale $\frac\pi6\approx0{,}524$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"c":[{"e":"1/sqrt(3-(2*x-1)^2)","n":"1/√(3−(2x−1)²)"}],"x":[0.3,1.45],"y":[0,1.5],"q":[[0.5,0.5774],[1.25,1.1547]]}' data-alt="Integrando del ejercicio 6.31 en [1/2,5/4]"><figcaption>El integrando en $[\frac12,\frac54]$ (rombos: valores en los extremos). El área bajo la curva en ese tramo vale $\frac\pi6\approx0{,}524$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Continuidad.</b> En $[\frac12,\frac54]$, $2x-1\in[0,\frac32]$ y $(2x-1)^2\le\frac94\lt3$: la raíz es positiva.</li>
     <li><b>Cambio $t=2x-1$:</b> $dx=\frac{dt}2$. <b>Límites nuevos:</b> $x=\frac12\Rightarrow t=0$; $x=\frac54\Rightarrow t=\frac32$. Queda $I=\frac12\int_0^{3/2}\frac{dt}{\sqrt{3-t^2}}$.</li>
     <li><b>Preparar el arcoseno:</b> $\sqrt{3-t^2}=\sqrt3\sqrt{1-\big(\frac t{\sqrt3}\big)^2}$, así que $\frac1{\sqrt{3-t^2}}=\dfrac{\frac1{\sqrt3}}{\sqrt{1-(t/\sqrt3)^2}}$: con $f=\frac t{\sqrt3}$, $f'=\frac1{\sqrt3}$, es $\frac{f'}{\sqrt{1-f^2}}$.</li>
@@ -498,16 +881,19 @@
   <div class="recipe"><b>Receta:</b> $\int\frac{dx}{\sqrt{a^2-(\text{lineal})^2}}$: cambio $t$ = lineal y sacar $a$ de la raíz para tener $\operatorname{arcsen}\frac ta$. En una definida, al cambiar de variable se cambian los límites.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Cambiar la variable pero dejar los límites $\frac12$ y $\frac54$, u olvidar el $\frac12$ de $dx=\frac{dt}2$.</p></div>
 </details>
+</article>
 <h3>B. Integración por partes</h3>
-<details class="sol" id="ej-6-18"><summary>Ejercicio 6.18 · ¿qué $u$ y $v'$ conviene en $\int xe^x\,dx$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.18, pp. 224-225 · teoría: U p. 252">E pp.224-225</span></summary>
-<p class="enun">Queremos resolver $I=\int xe^x\,dx$ por partes: a) Interesa $u=x$ y $v'=e^x$. b) Interesa $u=e^x$ y $v'=x$. c) Las dos son válidas. d) Ninguna de las anteriores.</p>
+<article class="ejer" id="ej-6-18">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 6.18 · ¿qué $u$ y $v'$ conviene en $\int xe^x\,dx$?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.18, pp. 224-225 · teoría: U p. 252">E pp.224-225</span></header>
+<div class="ejer-enun"><p class="enun">Queremos resolver $I=\int xe^x\,dx$ por partes: a) Interesa $u=x$ y $v'=e^x$. b) Interesa $u=e^x$ y $v'=x$. c) Las dos son válidas. d) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir qué elección de $u$ y $v'$ conviene.</dd>
     <dt>Cómo lo pienso</dt><dd>La fórmula cambia $\int uv'$ por $\int u'v$. Conviene que $u'$ sea más simple que $u$ y que $v$ no se complique: $x$ al derivar se convierte en $1$; $e^x$ no cambia ni al derivar ni al integrar.</dd>
     <dt>Qué uso</dt><dd>Integración por partes (U p.252), con el criterio «la nueva integral debe ser más sencilla».</dd>
     <dt>Por dónde empiezo</dt><dd>Probar la opción a).</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Opción a):</b> $u=x\Rightarrow u'=1$; $v'=e^x\Rightarrow v=e^x$.</li>
     <li><b>Fórmula</b> $\int uv'=uv-\int u'v$: $I=xe^x-\int e^x\,dx=xe^x-e^x+C=(x-1)e^x+C$. La nueva integral es inmediata: <b>a) funciona</b>.</li>
     <li><b>Opción b):</b> $u=e^x\Rightarrow u'=e^x$; $v'=x\Rightarrow v=\frac{x^2}2$: $I=\frac{x^2}2e^x-\int\frac{x^2}2e^x\,dx$. Ahora aparece $x^2$ en vez de $x$: es <b>más difícil</b>. b) no interesa y, por tanto, c) tampoco.</li>
@@ -516,15 +902,18 @@
   <div class="recipe"><b>Receta:</b> polinomio × $e^x$ (o × $\operatorname{sen}$, $\cos$): $u$ = polinomio (baja de grado al derivar), $v'$ = la exponencial o trigonométrica.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Elegir $u$ al revés: la integral crece de grado en vez de simplificarse.</p></div>
 </details>
-<details class="sol" id="ej-6-19"><summary>Ejercicio 6.19 · $\int\frac{xe^x}{(x+1)^2}dx$ por partes <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.19, p. 225 · teoría: U p. 252">E p.225</span></summary>
-<p class="enun">Utilizando integración por partes, calcula $\displaystyle I=\int\frac{xe^x}{(x+1)^2}\,dx$.</p>
+</article>
+<article class="ejer" id="ej-6-19">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.19 · $\int\frac{xe^x}{(x+1)^2}dx$ por partes</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.19, p. 225 · teoría: U p. 252">E p.225</span></header>
+<div class="ejer-enun"><p class="enun">Utilizando integración por partes, calcula $\displaystyle I=\int\frac{xe^x}{(x+1)^2}\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva, por partes.</dd>
     <dt>Cómo lo pienso</dt><dd>$\frac1{(x+1)^2}$ se integra fácil ($-\frac1{x+1}$), así que es buen $v'$. Y al derivar $u=xe^x$ sale $e^x(x+1)$, con un $(x+1)$ que se simplificará con el $\frac1{x+1}$ de $v$.</dd>
     <dt>Qué uso</dt><dd>Integración por partes (U p.252); tabla, fila 2 con $a=-2$ (U p.248).</dd>
     <dt>Por dónde empiezo</dt><dd>$u=xe^x$, $v'=\frac1{(x+1)^2}$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Dominio:</b> $x\ne-1$.</li>
     <li><b>Elección:</b> $u=xe^x\Rightarrow u'=e^x+xe^x=e^x(x+1)$. $v'=(x+1)^{-2}\Rightarrow v=-\frac1{x+1}$.</li>
     <li><b>Fórmula:</b> $I=xe^x\Big(-\dfrac1{x+1}\Big)-\displaystyle\int e^x(x+1)\Big(-\dfrac1{x+1}\Big)dx=-\dfrac{xe^x}{x+1}+\int e^x\,dx$.</li>
@@ -535,16 +924,19 @@
   <div class="recipe"><b>Receta:</b> en partes, a veces la clave es que $u'$ «traiga» un factor que cancela con $v$. Si $v'=\frac1{(x+a)^2}$, $v=-\frac1{x+a}$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Tomar $u=x$, $v'=\frac{e^x}{(x+1)^2}$: esa $v'$ no tiene primitiva elemental sencilla y el método se atasca.</p></div>
 </details>
+</article>
 <h3>C. Integrales racionales</h3>
-<details class="sol" id="ej-6-20"><summary>Ejercicio 6.20 · descomponer $\frac{x^2+7x+3}{(x+1)^3}$ en fracciones simples <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.20, pp. 225-226 · teoría: U p. 255">E pp.225-226</span></summary>
-<p class="enun">Descompón la expresión racional $f(x)=\dfrac{x^2+7x+3}{(x+1)^3}$ en fracciones simples.</p>
+<article class="ejer" id="ej-6-20">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 6.20 · descomponer $\frac{x^2+7x+3}{(x+1)^3}$ en fracciones simples</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.20, pp. 225-226 · teoría: U p. 255">E pp.225-226</span></header>
+<div class="ejer-enun"><p class="enun">Descompón la expresión racional $f(x)=\dfrac{x^2+7x+3}{(x+1)^3}$ en fracciones simples.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Escribir $f$ como suma de fracciones del tipo $\frac{A}{(x+1)^k}$.</dd>
     <dt>Cómo lo pienso</dt><dd>El denominador tiene una sola raíz, $x=-1$, triple; el grado del numerador (2) es menor que el del denominador (3): no hay que dividir. Por cada potencia de $(x+1)$ hasta la 3.ª va una fracción.</dd>
     <dt>Qué uso</dt><dd>Descomposición en fracciones simples (U p.255); igualdad de polinomios por coeficientes.</dd>
     <dt>Por dónde empiezo</dt><dd>Plantear $\frac a{x+1}+\frac b{(x+1)^2}+\frac c{(x+1)^3}$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Comprobaciones previas:</b> grado $2\lt3$ (no se divide); el numerador no se anula en $-1$ ($1-7+3=-3\ne0$): no se simplifica nada.</li>
     <li><b>Planteamiento</b> (raíz real de multiplicidad 3 ⇒ tres fracciones): $\dfrac{x^2+7x+3}{(x+1)^3}=\dfrac a{x+1}+\dfrac b{(x+1)^2}+\dfrac c{(x+1)^3}$.</li>
     <li><b>Quitar denominadores</b> (multiplicar por $(x+1)^3$): $x^2+7x+3=a(x+1)^2+b(x+1)+c=ax^2+(2a+b)x+(a+b+c)$.</li>
@@ -556,15 +948,18 @@
   <div class="recipe"><b>Receta:</b> raíz real $a$ de multiplicidad $n$ ⇒ $\frac{A_1}{x-a}+\dots+\frac{A_n}{(x-a)^n}$. Con una única raíz, el cambio $u=x-a$ da la descomposición directamente.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Poner solo $\frac{c}{(x+1)^3}$ (falta una fracción por cada potencia) o fracciones del tipo $\frac{bx+c}{(x+1)^2}$.</p></div>
 </details>
-<details class="sol" id="ej-6-21"><summary>Ejercicio 6.21 · $\int\frac{x+2}{x^2-1}dx$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.21, pp. 226-227 · teoría: U pp. 255, 257">E pp.226-227</span></summary>
-<p class="enun">Calcula $\displaystyle\int\frac{x+2}{x^2-1}\,dx$.</p>
+</article>
+<article class="ejer" id="ej-6-21">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.21 · $\int\frac{x+2}{x^2-1}dx$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.21, pp. 226-227 · teoría: U pp. 255, 257">E pp.226-227</span></header>
+<div class="ejer-enun"><p class="enun">Calcula $\displaystyle\int\frac{x+2}{x^2-1}\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva de una función racional.</dd>
     <dt>Cómo lo pienso</dt><dd>Grado $1\lt2$; $x^2-1=(x-1)(x+1)$, dos raíces reales simples: dos fracciones $\frac A{x-1}+\frac B{x+1}$, cada una da un logaritmo.</dd>
     <dt>Qué uso</dt><dd>Fracciones simples (U p.255) e $\int\frac A{x-a}=A\ln\lvert x-a\rvert$ (U p.257).</dd>
     <dt>Por dónde empiezo</dt><dd>Factorizar el denominador.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Factorizar:</b> $x^2-1=(x-1)(x+1)$; dominio $x\ne\pm1$.</li>
     <li><b>Planteamiento:</b> $\frac{x+2}{x^2-1}=\frac A{x-1}+\frac B{x+1}$. Multiplicando: $x+2=A(x+1)+B(x-1)$.</li>
     <li><b>Dar a $x$ las raíces</b> (se anula un sumando cada vez): $x=1$: $3=2A\Rightarrow A=\frac32$. $x=-1$: $1=-2B\Rightarrow B=-\frac12$.</li>
@@ -574,15 +969,18 @@
   <div class="recipe"><b>Receta:</b> denominador con raíces reales simples: $\frac{A}{x-a}+\frac{B}{x-b}$; los coeficientes salen al sustituir $x=a$ y $x=b$ en la igualdad sin denominadores.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el valor absoluto ($\ln(x-1)$ no existe para $x\lt1$) o el coeficiente al integrar ($\int\frac{3/2}{x-1}=\frac32\ln\lvert x-1\rvert$).</p></div>
 </details>
-<details class="sol" id="ej-6-22"><summary>Ejercicio 6.22 · racional con grado del numerador mayor: hay que dividir <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.22, pp. 227-229 · teoría: U pp. 255, 257">E pp.227-229</span></summary>
-<p class="enun">Señala la afirmación correcta relativa a $f(x)=\dfrac{x^3+3x^2-28x-33}{x^2-x-20}$: a) $f(x)=\frac3{x-5}+\frac7{x+4}$. b) $\displaystyle\int f(x)\,dx=\frac{x^2}2+4x+3\ln\lvert x-5\rvert-7\ln\lvert x+4\rvert+C$. c) Ninguna de las anteriores.</p>
+</article>
+<article class="ejer" id="ej-6-22">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 6.22 · racional con grado del numerador mayor: hay que dividir</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.22, pp. 227-229 · teoría: U pp. 255, 257">E pp.227-229</span></header>
+<div class="ejer-enun"><p class="enun">Señala la afirmación correcta relativa a $f(x)=\dfrac{x^3+3x^2-28x-33}{x^2-x-20}$: a) $f(x)=\frac3{x-5}+\frac7{x+4}$. b) $\displaystyle\int f(x)\,dx=\frac{x^2}2+4x+3\ln\lvert x-5\rvert-7\ln\lvert x+4\rvert+C$. c) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Comprobar una descomposición y una primitiva.</dd>
     <dt>Cómo lo pienso</dt><dd>Numerador de grado 3, denominador de grado 2: <b>antes de descomponer hay que dividir</b>. Sin parte entera, a) no puede ser (para $x$ grande, $f$ crece como $x$, y $\frac3{x-5}+\frac7{x+4}\to0$).</dd>
     <dt>Qué uso</dt><dd>División de polinomios y fracciones simples (U p.255); integrales de las fracciones simples (U p.257).</dd>
     <dt>Por dónde empiezo</dt><dd>Dividir $x^3+3x^2-28x-33$ entre $x^2-x-20$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>División.</b> $x^3:x^2=x$; $x(x^2-x-20)=x^3-x^2-20x$; resto parcial $4x^2-8x-33$. Luego $4x^2:x^2=4$; $4(x^2-x-20)=4x^2-4x-80$; resto $-4x+47$. Es decir, $f(x)=x+4+\dfrac{-4x+47}{x^2-x-20}$.</li>
     <li><b>a) es falsa:</b> falta la parte entera $x+4$.</li>
     <li><b>Factorizar el divisor:</b> $x^2-x-20=0\iff x=5,\ x=-4$, así que $=(x-5)(x+4)$.</li>
@@ -593,15 +991,18 @@
   <div class="recipe"><b>Receta:</b> integral racional: lo primero, comparar grados. Si grado num ≥ grado den, dividir; la parte entera se integra como polinomio y el resto se descompone.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Descomponer en fracciones simples sin dividir antes: los coeficientes «salen» pero la igualdad es falsa.</p></div>
 </details>
-<details class="sol" id="ej-6-23"><summary>Ejercicio 6.23 · ¿cuándo usar Hermite? $f=\frac{8x^3}{(x^2+1)^2}$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.23, p. 229 · teoría: U pp. 258-259">E p.229</span></summary>
-<p class="enun">Señala la afirmación correcta sobre $f(x)=\dfrac{8x^3}{(x^2+1)^2}$: a) Como el denominador no admite raíces complejas, no es adecuado el método de Hermite. b) El denominador tiene raíces complejas múltiples y es conveniente usar Hermite. c) $f(x)=\dfrac{4x}{x^2+1}+\dfrac{d}{dx}\Big(\dfrac4{x^2+1}\Big)$. d) Ninguna de las anteriores.</p>
+</article>
+<article class="ejer" id="ej-6-23">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 6.23 · ¿cuándo usar Hermite? $f=\frac{8x^3}{(x^2+1)^2}$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.23, p. 229 · teoría: U pp. 258-259">E p.229</span></header>
+<div class="ejer-enun"><p class="enun">Señala la afirmación correcta sobre $f(x)=\dfrac{8x^3}{(x^2+1)^2}$: a) Como el denominador no admite raíces complejas, no es adecuado el método de Hermite. b) El denominador tiene raíces complejas múltiples y es conveniente usar Hermite. c) $f(x)=\dfrac{4x}{x^2+1}+\dfrac{d}{dx}\Big(\dfrac4{x^2+1}\Big)$. d) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Reconocer cuándo usar Hermite y comprobar una descomposición.</dd>
     <dt>Cómo lo pienso</dt><dd>$x^2+1=0$ tiene las raíces complejas $\pm i$; al estar al cuadrado, son dobles. Ese es el caso en el que se recomienda Hermite. Para c), basta derivar y sumar.</dd>
     <dt>Qué uso</dt><dd>Método de Hermite (U pp.258-259).</dd>
     <dt>Por dónde empiezo</dt><dd>Resolver $(x^2+1)^2=0$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Raíces del denominador:</b> $(x^2+1)^2=0\iff x=\pm i$, cada una de multiplicidad 2. <b>a) es falsa.</b></li>
     <li><b>Planteamiento de Hermite:</b> $q=(x^2+1)^2$; $g=x^2+1$; numerador $cx+e$; $q_1=x^2+1$: $\dfrac{8x^3}{(x^2+1)^2}=\dfrac{ax+b}{x^2+1}+\dfrac{d}{dx}\Big(\dfrac{cx+e}{x^2+1}\Big)$.</li>
     <li><b>Derivar:</b> $\frac{d}{dx}\frac{cx+e}{x^2+1}=\frac{-cx^2-2ex+c}{(x^2+1)^2}$.</li>
@@ -614,15 +1015,18 @@
   <div class="recipe"><b>Receta:</b> denominador con factores irreducibles de grado 2 <b>repetidos</b> ⇒ Hermite: $\frac pq=\frac{d}{dx}\frac fg+\frac{p_1}{q_1}$, con $g$ = denominador con exponentes rebajados en uno.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Pensar que «no tiene raíces» porque no tiene raíces <b>reales</b>: sí las tiene complejas.</p></div>
 </details>
-<details class="sol" id="ej-6-24"><summary>Ejercicio 6.24 · $\int\frac{3x^4+4x^2+2x+1}{x(x^2+1)^2}dx$ por Hermite <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.24, p. 230 · teoría: U pp. 259-261">E p.230</span></summary>
-<p class="enun">Calcula $\displaystyle I=\int\frac{3x^4+4x^2+2x+1}{x(x^2+1)^2}\,dx$.</p>
+</article>
+<article class="ejer" id="ej-6-24">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 6.24 · $\int\frac{3x^4+4x^2+2x+1}{x(x^2+1)^2}dx$ por Hermite</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.24, p. 230 · teoría: U pp. 259-261">E p.230</span></header>
+<div class="ejer-enun"><p class="enun">Calcula $\displaystyle I=\int\frac{3x^4+4x^2+2x+1}{x(x^2+1)^2}\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva de una racional con grado num (4) &lt; grado den (5).</dd>
     <dt>Cómo lo pienso</dt><dd>Raíces del denominador: $0$ (simple) y $\pm i$ (dobles). Raíces complejas múltiples ⇒ Hermite. La parte «derivada» se integra sola; quedan un $\ln$ y un $\ln$+$\operatorname{arctg}$.</dd>
     <dt>Qué uso</dt><dd>Método de Hermite (U pp.259-261); integrales de fracciones simples (U pp.257-258).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir la forma de Hermite.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Forma de Hermite.</b> $q=x(x^2+1)^2$; $g=x^2+1$ (la $x$ simple desaparece; el factor doble pasa a simple); numerador $mx+e$ (grado 1); $q_1=x(x^2+1)$:
     $$\frac{3x^4+4x^2+2x+1}{x(x^2+1)^2}=\frac ax+\frac{bx+c}{x^2+1}+\frac{d}{dx}\Big(\frac{mx+e}{x^2+1}\Big).$$</li>
     <li><b>Derivada:</b> $\frac{d}{dx}\frac{mx+e}{x^2+1}=\frac{-mx^2-2ex+m}{(x^2+1)^2}$.</li>
@@ -635,15 +1039,18 @@
   <div class="recipe"><b>Receta (Hermite):</b> (1) $g$ = denominador con exponentes $-1$; (2) numerador genérico de grado $\operatorname{gr}(g)-1$; (3) derivar, quitar denominadores, igualar coeficientes; (4) la parte $\frac{d}{dx}\frac fg$ se integra sola.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar la constante $e$ del numerador de $\frac{mx+e}{x^2+1}$ (aunque aquí salga $0$) o derivar mal el cociente.</p></div>
 </details>
-<details class="sol" id="ej-6-25"><summary>Ejercicio 6.25 · Hermite con un irreducible repetido y una raíz real <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.25, pp. 231-232 · teoría: U pp. 258-261">E pp.231-232</span></summary>
-<p class="enun">Calcular, usando el método de Hermite, $\displaystyle\int\frac{2x^2-x+1}{(x^2+x+1)^2(x+1)}\,dx$.</p>
+</article>
+<article class="ejer" id="ej-6-25">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 6.25 · Hermite con un irreducible repetido y una raíz real</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.25, pp. 231-232 · teoría: U pp. 258-261">E pp.231-232</span></header>
+<div class="ejer-enun"><p class="enun">Calcular, usando el método de Hermite, $\displaystyle\int\frac{2x^2-x+1}{(x^2+x+1)^2(x+1)}\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva por Hermite.</dd>
     <dt>Cómo lo pienso</dt><dd>$x+1$ da la raíz real simple $-1$; $x^2+x+1$ no tiene raíces reales (discriminante $1-4\lt0$) y está al cuadrado. Igual que 6.24, pero el último trozo necesita <b>completar cuadrados</b> para el arcotangente.</dd>
     <dt>Qué uso</dt><dd>Hermite (U pp.259-261); $\ln$ + $\operatorname{arctg}$ para el factor irreducible (U p.258).</dd>
     <dt>Por dónde empiezo</dt><dd>Forma de Hermite con $g=x^2+x+1$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Forma de Hermite:</b> $\dfrac{2x^2-x+1}{(x^2+x+1)^2(x+1)}=\dfrac{d}{dx}\Big(\dfrac{Ax+B}{x^2+x+1}\Big)+\dfrac C{x+1}+\dfrac{Dx+E}{x^2+x+1}$.</li>
     <li><b>Derivada:</b> $\frac{d}{dx}\frac{Ax+B}{x^2+x+1}=\frac{-Ax^2-2Bx+A-B}{(x^2+x+1)^2}$.</li>
     <li><b>Quitar denominadores:</b> $2x^2-x+1=(-Ax^2-2Bx+A-B)(x+1)+C(x^2+x+1)^2+(Dx+E)(x^2+x+1)(x+1)$.</li>
@@ -665,16 +1072,19 @@
   <div class="recipe"><b>Receta:</b> $\int\frac{Mx+N}{x^2+bx+c}$ (sin raíces reales): (1) escribir $Mx+N=\frac M2(2x+b)+\text{resto}$; (2) la parte $\frac{2x+b}{x^2+bx+c}$ da $\ln$; (3) completar cuadrados $x^2+bx+c=(x+\frac b2)^2+r^2$ y el resto da $\frac1r\operatorname{arctg}\frac{x+b/2}r$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Perderse con los signos del sistema: sacar primero los coeficientes «fáciles» dando a $x$ el valor de la raíz real ($x=-1\Rightarrow C=4$) reduce el trabajo.</p></div>
 </details>
+</article>
 <h3>D. Cambios de variable que racionalizan</h3>
-<details class="sol" id="ej-6-28"><summary>Ejercicio 6.28 · $\int\frac{1+\sqrt x-\sqrt[3]{x^2}}{1+\sqrt[3]x}dx$ con $x=t^6$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.28, pp. 234-235 · teoría: U pp. 249-250, 255">E pp.234-235</span></summary>
-<p class="enun">Calcula $\displaystyle I=\int\frac{1+\sqrt x-\sqrt[3]{x^2}}{1+\sqrt[3]x}\,dx$ mediante un cambio de variable.</p>
+<article class="ejer" id="ej-6-28">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.28 · $\int\frac{1+\sqrt x-\sqrt[3]{x^2}}{1+\sqrt[3]x}dx$ con $x=t^6$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.28, pp. 234-235 · teoría: U pp. 249-250, 255">E pp.234-235</span></header>
+<div class="ejer-enun"><p class="enun">Calcula $\displaystyle I=\int\frac{1+\sqrt x-\sqrt[3]{x^2}}{1+\sqrt[3]x}\,dx$ mediante un cambio de variable.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva con raíces de índices 2 y 3.</dd>
     <dt>Cómo lo pienso</dt><dd>Si $x=t^6$: $\sqrt x=t^3$, $\sqrt[3]x=t^2$, $\sqrt[3]{x^2}=t^4$. Todas las raíces son potencias enteras y queda una racional en $t$. Se elige 6 por ser el m.c.m. de 2 y 3.</dd>
     <dt>Qué uso</dt><dd>Cambio de variable (U pp.249-250); división de polinomios (U p.255); tabla, fila 9 (U p.248). Cambio $x=t^r$, $r$ = m.c.m. de los índices (E p.235).</dd>
     <dt>Por dónde empiezo</dt><dd>$x=t^6$, $dx=6t^5dt$ ($x\gt0$, $t=x^{1/6}\gt0$).</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Exponentes:</b> $\sqrt x=x^{1/2}$, $\sqrt[3]{x^2}=x^{2/3}$, $\sqrt[3]x=x^{1/3}$; m.c.m.$(2,3)=6$.</li>
     <li><b>Cambio $x=t^6$:</b> $x^{1/2}=t^3$, $x^{2/3}=t^4$, $x^{1/3}=t^2$, $dx=6t^5dt$: $I=\int\dfrac{1+t^3-t^4}{1+t^2}\,6t^5\,dt=6\displaystyle\int\frac{-t^9+t^8+t^5}{t^2+1}dt$.</li>
     <li><b>Grado $9\ge2$: dividir.</b> $-t^9+t^8+t^5=(t^2+1)(-t^7+t^6+t^5-t^4+t^2-1)+1$, luego $\dfrac{-t^9+t^8+t^5}{t^2+1}=-t^7+t^6+t^5-t^4+t^2-1+\dfrac1{1+t^2}$.</li>
@@ -684,16 +1094,19 @@
   <div class="recipe"><b>Receta:</b> varias raíces de $x$ ⇒ $x=t^r$ con $r$ = m.c.m. de los índices; queda una racional en $t$ (dividir si hace falta) y al final se deshace el cambio.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el $dx=6t^5dt$ (cambiar solo el integrando) o no dividir antes de integrar.</p></div>
 </details>
-<details class="sol" id="ej-6-29"><summary>Ejercicio 6.29 · $\int\sqrt{\frac{x+1}{x-1}}dx$ con $\frac{x+1}{x-1}=t^2$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.29, pp. 235-237 · teoría: U pp. 250, 255, 257">E pp.235-237</span></summary>
-<p class="enun">Transforma la integral $\displaystyle I=\int\sqrt{\frac{x+1}{x-1}}\,dx$ mediante el cambio de variable $\dfrac{x+1}{x-1}=t^2$.</p>
+</article>
+<article class="ejer" id="ej-6-29">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 6.29 · $\int\sqrt{\frac{x+1}{x-1}}dx$ con $\frac{x+1}{x-1}=t^2$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.29, pp. 235-237 · teoría: U pp. 250, 255, 257">E pp.235-237</span></header>
+<div class="ejer-enun"><p class="enun">Transforma la integral $\displaystyle I=\int\sqrt{\frac{x+1}{x-1}}\,dx$ mediante el cambio de variable $\dfrac{x+1}{x-1}=t^2$.</p>
   <p>Aquí llegamos hasta la primitiva: se hace el cambio, se resuelve la integral racional resultante y se vuelve a $x$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Hacer el cambio indicado, resolver la integral racional que resulta y volver a $x$.</dd>
     <dt>Cómo lo pienso</dt><dd>Si llamo $t$ a la raíz, la raíz desaparece; para cambiar $dx$ hay que despejar $x$ en función de $t$ y derivar.</dd>
     <dt>Qué uso</dt><dd>Cambio de variable $x=g(t)$, $dx=g'(t)dt$ (U p.250); fracciones simples con raíces dobles (U pp.255, 257).</dd>
     <dt>Por dónde empiezo</dt><dd>Despejar $x$ de $\frac{x+1}{x-1}=t^2$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Dominio y signo de $t$.</b> La raíz exige $\frac{x+1}{x-1}\ge0$: $x\gt1$ o $x\le-1$. Se toma $t=\sqrt{\frac{x+1}{x-1}}\ge0$ y se trabaja en $x\gt1$ (ahí $t\gt1$).</li>
     <li><b>Despejar $x$:</b> $x+1=t^2(x-1)\Rightarrow x(1-t^2)=-(1+t^2)\Rightarrow x=\dfrac{t^2+1}{t^2-1}$.</li>
     <li><b>Derivar:</b> $\dfrac{dx}{dt}=\dfrac{2t(t^2-1)-2t(t^2+1)}{(t^2-1)^2}=\dfrac{-4t}{(t^2-1)^2}$.</li>
@@ -706,15 +1119,18 @@
   <div class="recipe"><b>Receta:</b> cambio $x=g(t)$ dado implícitamente: (1) despejar $x$; (2) derivar para obtener $dx$; (3) sustituir todo; (4) resolver la racional; (5) deshacer el cambio y simplificar.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Sustituir $dx$ por $dt$ (olvidar $g'(t)$) o equivocarse en el signo de $\frac{dx}{dt}$.</p></div>
 </details>
-<details class="sol" id="ej-6-27"><summary>Ejercicio 6.27 · $\int\frac{\operatorname{tg}(2x+1)}{1+2\operatorname{tg}^2(2x+1)}dx$ con $t=\operatorname{tg}(2x+1)$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.27, pp. 233-234 · teoría: U pp. 248, 250, 255">E pp.233-234</span></summary>
-<p class="enun">Calcula $\displaystyle I=\int\frac{\operatorname{tg}(2x+1)}{1+2\operatorname{tg}^2(2x+1)}\,dx$ utilizando un cambio de variable.</p>
+</article>
+<article class="ejer" id="ej-6-27">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 6.27 · $\int\frac{\operatorname{tg}(2x+1)}{1+2\operatorname{tg}^2(2x+1)}dx$ con $t=\operatorname{tg}(2x+1)$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.27, pp. 233-234 · teoría: U pp. 248, 250, 255">E pp.233-234</span></header>
+<div class="ejer-enun"><p class="enun">Calcula $\displaystyle I=\int\frac{\operatorname{tg}(2x+1)}{1+2\operatorname{tg}^2(2x+1)}\,dx$ utilizando un cambio de variable.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva con un cambio de variable.</dd>
     <dt>Cómo lo pienso</dt><dd>Solo aparece $\operatorname{tg}(2x+1)$, siempre con el mismo argumento: llamo $t$ a la tangente. Su derivada es $2(1+t^2)$, así que $dx$ se expresa en $t$ y queda una racional.</dd>
     <dt>Qué uso</dt><dd>Cambio de variable (U pp.249-250); derivada de la tangente $(\operatorname{tg}u)'=(1+\operatorname{tg}^2u)u'$ (U §2.2, pp.79-80; tabla, fila 8, U p.248); fracciones simples (U p.255).</dd>
     <dt>Por dónde empiezo</dt><dd>$t=\operatorname{tg}(2x+1)$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Cambio:</b> $t=\operatorname{tg}(2x+1)\Rightarrow dt=2(1+t^2)\,dx\Rightarrow dx=\dfrac{dt}{2(1+t^2)}$.</li>
     <li><b>Sustituir:</b> $I=\displaystyle\int\frac{t}{1+2t^2}\cdot\frac{dt}{2(1+t^2)}=\frac12\int\frac{t}{(1+2t^2)(1+t^2)}dt$.</li>
     <li><b>Fracciones simples</b> (dos irreducibles distintos): $\frac{t}{(1+2t^2)(1+t^2)}=\frac{at+b}{1+2t^2}+\frac{ct+d}{1+t^2}$. Quitando denominadores: $t=(at+b)(1+t^2)+(ct+d)(1+2t^2)$. Coeficientes: $t^3$: $a+2c=0$; $t^2$: $b+2d=0$; $t$: $a+c=1$; $t^0$: $b+d=0$. Sale $a=2$, $c=-1$, $b=d=0$:
@@ -727,17 +1143,20 @@
   <div class="recipe"><b>Receta:</b> integrando que solo depende de $\operatorname{tg}(u)$: cambio $t=\operatorname{tg}(u)$, $dx=\frac{dt}{u'(1+t^2)}$; queda racional en $t$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Usar $dt=dx$ (olvidar la derivada de la tangente) o la derivada $\frac1{\cos^2}$ sin la regla de la cadena (falta el $2$).</p></div>
 </details>
+</article>
 <h3>E. Trigonométricas</h3>
-<details class="sol" id="ej-6-32"><summary>Ejercicio 6.32 · $\int_0^{\pi/2}\cos^2(2x)\,dx$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.32, pp. 238-239 · teoría: U p. 262">E pp.238-239</span></summary>
-<p class="enun">Calcula el valor de la integral $\displaystyle\int_0^{\pi/2}\cos^2(2x)\,dx$.</p>
+<article class="ejer" id="ej-6-32">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.32 · $\int_0^{\pi/2}\cos^2(2x)\,dx$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.32, pp. 238-239 · teoría: U p. 262">E pp.238-239</span></header>
+<div class="ejer-enun"><p class="enun">Calcula el valor de la integral $\displaystyle\int_0^{\pi/2}\cos^2(2x)\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una integral definida de un coseno al cuadrado.</dd>
     <dt>Cómo lo pienso</dt><dd>$\cos^2$ no está en la tabla, pero con la fórmula del ángulo doble se convierte en $\frac12+\frac12\cos(\text{algo})$, que sí.</dd>
     <dt>Qué uso</dt><dd>$\cos^2\alpha=\frac{1+\cos2\alpha}2$ (U p.262); tabla, fila 6 (U p.248); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>Aplicar la fórmula con $\alpha=2x$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"cos(2*x)^2","n":"cos²(2x)"},{"e":"0.5","n":"valor medio ½","d":1}],"x":[-0.2,1.8],"y":[-0.1,1.15]}' data-alt="cos^2(2x) oscila alrededor de 1/2"><figcaption>$\cos^2(2x)=\frac{1+\cos4x}2$ oscila entre $0$ y $1$ alrededor de $\frac12$ (punteada). En $[0,\frac\pi2]$ la altura media es $\frac12$, de ahí el área $\frac12\cdot\frac\pi2=\frac\pi4$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"c":[{"e":"cos(2*x)^2","n":"cos²(2x)"},{"e":"0.5","n":"valor medio ½","d":1}],"x":[-0.2,1.8],"y":[-0.1,1.15]}' data-alt="cos^2(2x) oscila alrededor de 1/2"><figcaption>$\cos^2(2x)=\frac{1+\cos4x}2$ oscila entre $0$ y $1$ alrededor de $\frac12$ (punteada). En $[0,\frac\pi2]$ la altura media es $\frac12$, de ahí el área $\frac12\cdot\frac\pi2=\frac\pi4$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Ángulo doble</b> con $\alpha=2x$: $\cos^2(2x)=\dfrac{1+\cos4x}2$.</li>
     <li><b>Primitiva:</b> $\int\frac{1+\cos4x}2dx=\frac x2+\frac{\operatorname{sen}4x}8$ (en $\int\cos4x\,dx$ falta la derivada de $4x$: se divide por $4$).</li>
     <li><b>Barrow:</b> $\Big[\frac x2+\frac{\operatorname{sen}4x}8\Big]_0^{\pi/2}=\frac\pi4+\frac{\operatorname{sen}2\pi}8-0=\dfrac\pi4$.</li>
@@ -746,15 +1165,18 @@
   <div class="recipe"><b>Receta:</b> potencias <b>pares</b> de $\operatorname{sen}$ y $\cos$: bajar el grado con $\operatorname{sen}^2\alpha=\frac{1-\cos2\alpha}2$, $\cos^2\alpha=\frac{1+\cos2\alpha}2$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Escribir $\cos^2(2x)=\frac{1+\cos2x}2$ (el ángulo se duplica: $\cos4x$) u olvidar dividir por $4$ al integrar $\cos4x$.</p></div>
 </details>
-<details class="sol" id="ej-6-26"><summary>Ejercicio 6.26 · $\int\frac{dx}{\operatorname{sen}x+\cos x}$: ¿qué cambio? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.26, pp. 232-233 · teoría: U pp. 261-262">E pp.232-233</span></summary>
-<p class="enun">Siendo $\displaystyle I=\int\frac{dx}{\operatorname{sen}x+\cos x}$, señala la afirmación o afirmaciones correctas: a) El cambio más adecuado es $\operatorname{sen}x=t$. b) El cambio más adecuado es $\operatorname{tg}\frac x2=t$. c) $I=-\frac1{\sqrt2}\ln\big\lvert\operatorname{tg}\frac x2-1-\sqrt2\big\rvert+\frac1{\sqrt2}\ln\big\lvert\operatorname{tg}\frac x2-1+\sqrt2\big\rvert+C$. d) Ninguna de las anteriores.</p>
+</article>
+<article class="ejer" id="ej-6-26">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 6.26 · $\int\frac{dx}{\operatorname{sen}x+\cos x}$: ¿qué cambio?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.26, pp. 232-233 · teoría: U pp. 261-262">E pp.232-233</span></header>
+<div class="ejer-enun"><p class="enun">Siendo $\displaystyle I=\int\frac{dx}{\operatorname{sen}x+\cos x}$, señala la afirmación o afirmaciones correctas: a) El cambio más adecuado es $\operatorname{sen}x=t$. b) El cambio más adecuado es $\operatorname{tg}\frac x2=t$. c) $I=-\frac1{\sqrt2}\ln\big\lvert\operatorname{tg}\frac x2-1-\sqrt2\big\rvert+\frac1{\sqrt2}\ln\big\lvert\operatorname{tg}\frac x2-1+\sqrt2\big\rvert+C$. d) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Elegir el cambio y comprobar una primitiva.</dd>
     <dt>Cómo lo pienso</dt><dd>Es una expresión racional en $\operatorname{sen}x$ y $\cos x$ sin potencias impares que separar: el cambio general $t=\operatorname{tg}\frac x2$ la convierte en racional. Con $\operatorname{sen}x=t$ aparece $\sqrt{1-t^2}$ y se complica.</dd>
     <dt>Qué uso</dt><dd>Cambio $t=\operatorname{tg}\frac x2$ (U p.261); fracciones simples (U p.255).</dd>
     <dt>Por dónde empiezo</dt><dd>Sustituir $\operatorname{sen}x=\frac{2t}{1+t^2}$, $\cos x=\frac{1-t^2}{1+t^2}$, $dx=\frac{2dt}{1+t^2}$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>a) no es adecuado.</b> Con $\operatorname{sen}x=t$: $\cos x=\sqrt{1-t^2}$ (donde $\cos x\ge0$) y $dx=\frac{dt}{\sqrt{1-t^2}}$; queda $\int\frac{dt}{t\sqrt{1-t^2}+1-t^2}$, con raíces: no es racional.</li>
     <li><b>b) Cambio $t=\operatorname{tg}\frac x2$:</b> $\operatorname{sen}x+\cos x=\frac{2t+1-t^2}{1+t^2}$ y $I=\int\frac{1+t^2}{-t^2+2t+1}\cdot\frac{2\,dt}{1+t^2}=\int\frac{-2}{t^2-2t-1}dt$. Es racional: <b>b) es correcta</b>.</li>
     <li><b>Raíces del denominador:</b> $t^2-2t-1=0\iff t=1\pm\sqrt2$.</li>
@@ -765,17 +1187,20 @@
   <div class="recipe"><b>Receta:</b> expresión racional en $\operatorname{sen}x$ y $\cos x$: cambio $t=\operatorname{tg}\frac x2$ con $\operatorname{sen}x=\frac{2t}{1+t^2}$, $\cos x=\frac{1-t^2}{1+t^2}$, $dx=\frac{2dt}{1+t^2}$; simplificar los $1+t^2$ y resolver la racional.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el $dx=\frac{2dt}{1+t^2}$ (y con él el $2$ del numerador), o simplificar mal $\frac{2t}{1+t^2}+\frac{1-t^2}{1+t^2}$.</p></div>
 </details>
+</article>
 <h3>F. Integrales definidas y áreas</h3>
-<details class="sol" id="ej-6-33"><summary>Ejercicio 6.33 · área bajo $e^{2x}$ entre $x=1$ y $x=2$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.33, pp. 239-240 · teoría: U §6.1 p. 238, tabla p. 248">E pp.239-240</span></summary>
-<p class="enun">Calcula el área comprendida entre la gráfica de $e^{2x}$; las rectas $x=1$, $x=2$; y el eje $x$.</p>
+<article class="ejer" id="ej-6-33">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 6.33 · área bajo $e^{2x}$ entre $x=1$ y $x=2$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.33, pp. 239-240 · teoría: U §6.1 p. 238, tabla p. 248">E pp.239-240</span></header>
+<div class="ejer-enun"><p class="enun">Calcula el área comprendida entre la gráfica de $e^{2x}$; las rectas $x=1$, $x=2$; y el eje $x$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El área bajo $e^{2x}$ en $[1,2]$.</dd>
     <dt>Cómo lo pienso</dt><dd>$e^{2x}\gt0$ siempre, así que el área es directamente la integral.</dd>
     <dt>Qué uso</dt><dd>Área = integral si $f\ge0$ (U §6.1, p.238); tabla, fila 4 (U p.248); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>Primitiva de $e^{2x}$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"exp(2*x)","n":"e^(2x)"}],"x":[0.4,2.4],"y":[0,60],"q":[[1,7.3891],[2,54.5982]]}' data-alt="e^(2x) entre x=1 y x=2"><figcaption>La curva $e^{2x}$ con sus alturas en los extremos $x=1$ ($e^2\approx7{,}39$) y $x=2$ ($e^4\approx54{,}6$): el área entre ambos vale $\frac{e^4-e^2}2\approx23{,}6$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"c":[{"e":"exp(2*x)","n":"e^(2x)"}],"x":[0.4,2.4],"y":[0,60],"q":[[1,7.3891],[2,54.5982]]}' data-alt="e^(2x) entre x=1 y x=2"><figcaption>La curva $e^{2x}$ con sus alturas en los extremos $x=1$ ($e^2\approx7{,}39$) y $x=2$ ($e^4\approx54{,}6$): el área entre ambos vale $\frac{e^4-e^2}2\approx23{,}6$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Signo:</b> $e^{2x}\gt0$ ⇒ área $=\int_1^2e^{2x}dx$.</li>
     <li><b>Primitiva:</b> $\int e^{2x}dx=\frac12\int e^{2x}\cdot2\,dx=\frac{e^{2x}}2$ (fila 4 ajustando el $2$).</li>
     <li><b>Barrow:</b> $\Big[\dfrac{e^{2x}}2\Big]_1^2=\dfrac{e^4-e^2}2\approx23{,}6$.</li>
@@ -783,8 +1208,10 @@
   <div class="recipe"><b>Receta:</b> área bajo $f\ge0$: $\int_a^bf$. Para $e^{kx}$, primitiva $\frac{e^{kx}}k$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Escribir $e^{2x}$ como primitiva (olvidar dividir por $2$).</p></div>
 </details>
-<details class="sol" id="ej-6-34"><summary>Ejercicio 6.34 · áreas entre $x^2$, $x^3$ y $\sqrt x$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.34, pp. 240-241 · teoría: S §6.1 pp. 422-423 (área entre curvas); Barrow, U p. 244">E pp.240-241</span></summary>
-<p class="enun">Sean $f(x)=x^2$, $g(x)=x^3$ y $h(x)=\sqrt x$. a) El área encerrada por $f$ y $g$ es mayor que la encerrada por $f$ y $h$. b) El área encerrada por $h$ y $g$ es mayor que la encerrada por $f$ y $h$. c) El área por $f$ y $g$ es igual que la de $f$ y $h$. d) Ninguna de las anteriores.</p>
+</article>
+<article class="ejer" id="ej-6-34">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 6.34 · áreas entre $x^2$, $x^3$ y $\sqrt x$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.34, pp. 240-241 · teoría: S §6.1 pp. 422-423 (área entre curvas); Barrow, U p. 244">E pp.240-241</span></header>
+<div class="ejer-enun"><p class="enun">Sean $f(x)=x^2$, $g(x)=x^3$ y $h(x)=\sqrt x$. a) El área encerrada por $f$ y $g$ es mayor que la encerrada por $f$ y $h$. b) El área encerrada por $h$ y $g$ es mayor que la encerrada por $f$ y $h$. c) El área por $f$ y $g$ es igual que la de $f$ y $h$. d) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Comparar tres áreas entre pares de curvas.</dd>
     <dt>Cómo lo pienso</dt><dd>Primero dónde se cortan (eso da los límites), luego cuál está encima (eso da el orden de la resta). Las tres pasan por $(0,0)$ y $(1,1)$.</dd>
@@ -794,8 +1221,9 @@
     <figure class="bookfig">
   <img src="../assets/img/fig_e_6_34.png" alt="Gráficas de x al cuadrado (f), x al cubo (g) y raíz de x (h, discontinua) entre 0 y 1" loading="lazy">
   <figcaption>Las tres gráficas se cortan en $(0,0)$ y $(1,1)$; en $[0,1]$ se cumple $g\le f\le h$. <span class="src" data-l="E" data-ref="Libro de ejercicios, figura de la solución del Ej. 6.34, p. 240">E p.240</span></figcaption>
-  </figure>
-  <ol class="steps">
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Cortes</b> (dominio de $h$: $x\ge0$): $x^2=x^3\iff x=0,1$; $x^2=\sqrt x\iff x^4=x\iff x=0,1$; $x^3=\sqrt x\iff x^6=x\iff x=0,1$. Cada par encierra una región sobre $[0,1]$.</li>
     <li><b>Orden en $[0,1]$</b> (probar $x=\frac14$): $g=\frac1{64}$, $f=\frac1{16}$, $h=\frac12$. Así $g\le f\le h$.</li>
     <li><b>Áreas:</b> $f$ y $g$: $\int_0^1(x^2-x^3)dx=\frac13-\frac14=\frac1{12}$. $f$ y $h$: $\int_0^1(\sqrt x-x^2)dx=\frac23-\frac13=\frac13$. $h$ y $g$: $\int_0^1(\sqrt x-x^3)dx=\frac23-\frac14=\frac5{12}$ (usando $\sqrt x=x^{1/2}\to\frac23x^{3/2}$).</li>
@@ -804,8 +1232,10 @@
   <div class="recipe"><b>Receta:</b> área entre curvas: (1) cortes; (2) cuál va arriba (probar un punto); (3) $\int(\text{arriba}-\text{abajo})$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Restar al revés y obtener un área negativa, o creer que $x^2\ge x^3$ «siempre» (solo en $[0,1]$; para $x\gt1$ es al revés).</p></div>
 </details>
-<details class="sol" id="ej-6-35"><summary>Ejercicio 6.35 · área entre $\cos\pi x$ y $\operatorname{sen}\pi x$ en $[-1,1]$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.35, pp. 241-242 · teoría: S §6.1 pp. 422-423 (área entre curvas); aditividad, U p. 240">E pp.241-242</span></summary>
-<p class="enun">¿Qué área encierran las gráficas de $f(x)=\cos(\pi x)$ y $g(x)=\operatorname{sen}(\pi x)$ entre $x=-1$ y $x=1$? a) $4\frac{\sqrt2}\pi$. b) $3\frac{\sqrt2}\pi$. c) $2\frac{\sqrt2}\pi$. d) $0$.</p>
+</article>
+<article class="ejer" id="ej-6-35">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 6.35 · área entre $\cos\pi x$ y $\operatorname{sen}\pi x$ en $[-1,1]$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.35, pp. 241-242 · teoría: S §6.1 pp. 422-423 (área entre curvas); aditividad, U p. 240">E pp.241-242</span></header>
+<div class="ejer-enun"><p class="enun">¿Qué área encierran las gráficas de $f(x)=\cos(\pi x)$ y $g(x)=\operatorname{sen}(\pi x)$ entre $x=-1$ y $x=1$? a) $4\frac{\sqrt2}\pi$. b) $3\frac{\sqrt2}\pi$. c) $2\frac{\sqrt2}\pi$. d) $0$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El área total entre dos curvas que se cruzan dentro del intervalo.</dd>
     <dt>Cómo lo pienso</dt><dd>Donde se cruzan cambia cuál está arriba. Hay que partir $[-1,1]$ en los cruces, integrar $f-g$ en cada trozo y sumar los <b>valores absolutos</b> (si no, las áreas se cancelan, como sugiere la opción d)).</dd>
@@ -815,8 +1245,9 @@
     <figure class="bookfig">
   <img src="../assets/img/fig_e_6_35.png" alt="Gráficas de cos(pi x) (negro) y sen(pi x) (azul discontinuo) entre -1 y 1" loading="lazy">
   <figcaption>Gráficas de $f=\cos\pi x$ (trazo negro) y $g=\operatorname{sen}\pi x$ (discontinuo) en $[-1,1]$; se cruzan en $x=-\frac34$ y $x=\frac14$. <span class="src" data-l="E" data-ref="Libro de ejercicios, figura de la solución del Ej. 6.35, p. 242">E p.242</span></figcaption>
-  </figure>
-  <ol class="steps">
+  </figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Cortes.</b> Si $\cos\pi x=0$, entonces $\operatorname{sen}\pi x=\pm1\ne0$: no hay corte. Si no, se divide: $\operatorname{tg}\pi x=1\iff x=\frac14+k$. En $[-1,1]$: $x=-\frac34$ y $x=\frac14$.</li>
     <li><b>Primitiva de $f-g$:</b> $F(x)=\dfrac{\operatorname{sen}\pi x+\cos\pi x}\pi$ (filas 6 y 7, dividiendo por $\pi$).</li>
     <li><b>Valores:</b> $F(-1)=-\frac1\pi$; $F(-\frac34)=-\frac{\sqrt2}\pi$; $F(\frac14)=\frac{\sqrt2}\pi$; $F(1)=-\frac1\pi$.</li>
@@ -827,19 +1258,22 @@
   <div class="recipe"><b>Receta:</b> área entre curvas que se cruzan: partir en los cortes, integrar $f-g$ en cada trozo y sumar valores absolutos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Integrar $f-g$ en todo $[-1,1]$ sin partir (sale $0$).</p></div>
 </details>
+</article>
 <!-- ============================ 10 ============================ -->
-<h2 id="propios"><span class="n">10</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, resueltos y comprobados derivando la primitiva (y con sympy)">propio</span></h2>
+<h2 id="propios" data-vista="ejercicios"><span class="n">12</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, resueltos y comprobados derivando la primitiva (y con sympy)">propio</span></h2>
 <p><b>Índice rápido:</b> <a href="#p1">Propio 1</a> (partes reiterada) · <a href="#p2">Propio 2</a> (fracciones simples con irreducible) · <a href="#p3">Propio 3</a> (cambio en una definida) · <a href="#p4">Propio 4</a> ($\operatorname{sen}^n\cos^m$).</p>
-<details class="sol" id="p1"><summary>Propio 1 · partes reiterada: $\int x^2\cos x\,dx$ y $\int_0^{\pi/2}x^2\cos x\,dx$ <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Ej. 6.19, p. 252">P</span></summary>
-<p class="enun">Calcula $\displaystyle\int x^2\cos x\,dx$ y, con ella, $\displaystyle\int_0^{\pi/2}x^2\cos x\,dx$.</p>
+<article class="ejer" id="p1">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 1 · partes reiterada: $\int x^2\cos x\,dx$ y $\int_0^{\pi/2}x^2\cos x\,dx$</span> <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Ej. 6.19, p. 252">P</span></header>
+<div class="ejer-enun"><p class="enun">Calcula $\displaystyle\int x^2\cos x\,dx$ y, con ella, $\displaystyle\int_0^{\pi/2}x^2\cos x\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva y una integral definida.</dd>
     <dt>Cómo lo pienso</dt><dd>Polinomio de grado 2 × coseno: cada vez que se aplica partes con $u$ = polinomio, el grado baja en 1. Hacen falta dos pasadas.</dd>
     <dt>Qué uso</dt><dd>Partes reiterada (U p.252, Ej. 6.19); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>$u=x^2$, $v'=\cos x$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x^2*cos(x)","n":"x² cos x"}],"x":[-0.2,1.8],"y":[-0.1,0.9],"q":[[1.5708,0,"x=π/2"]]}' data-alt="x^2 cos x en [0,pi/2]"><figcaption>La función $x^2\cos x$ en $[0,\frac\pi2]$: sube desde $0$, alcanza su máximo hacia $x\approx1{,}08$ y cae a $0$ en $\frac\pi2$. El área vale $\frac{\pi^2}4-2\approx0{,}467$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"c":[{"e":"x^2*cos(x)","n":"x² cos x"}],"x":[-0.2,1.8],"y":[-0.1,0.9],"q":[[1.5708,0,"x=π/2"]]}' data-alt="x^2 cos x en [0,pi/2]"><figcaption>La función $x^2\cos x$ en $[0,\frac\pi2]$: sube desde $0$, alcanza su máximo hacia $x\approx1{,}08$ y cae a $0$ en $\frac\pi2$. El área vale $\frac{\pi^2}4-2\approx0{,}467$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>1.ª pasada:</b> $u=x^2$, $u'=2x$; $v'=\cos x$, $v=\operatorname{sen}x$: $\int x^2\cos x\,dx=x^2\operatorname{sen}x-\int2x\operatorname{sen}x\,dx$.</li>
     <li><b>2.ª pasada</b> en $\int2x\operatorname{sen}x\,dx$: $u=2x$, $u'=2$; $v'=\operatorname{sen}x$, $v=-\cos x$: $=-2x\cos x+\int2\cos x\,dx=-2x\cos x+2\operatorname{sen}x$.</li>
     <li><b>Juntar</b> (¡el signo menos delante afecta a todo!): $\int x^2\cos x\,dx=x^2\operatorname{sen}x+2x\cos x-2\operatorname{sen}x+C$.</li>
@@ -849,15 +1283,18 @@
   <div class="recipe"><b>Receta:</b> polinomio de grado $n$ × $\operatorname{sen}$/$\cos$/$e^x$: $n$ pasadas de partes con $u$ = polinomio. Cuidado con los signos al encadenar.</div>
   <div class="box warn"><span class="h">Error típico</span><p>No distribuir el signo menos de la 1.ª pasada sobre el resultado de la 2.ª.</p></div>
 </details>
-<details class="sol" id="p2"><summary>Propio 2 · fracciones simples con un irreducible: $\int\frac{3x+5}{(x-1)(x^2+2x+5)}dx$ <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Ej. 6.23-6.24, pp. 256-259">P</span></summary>
-<p class="enun">Calcula $\displaystyle\int\frac{3x+5}{(x-1)(x^2+2x+5)}\,dx$.</p>
+</article>
+<article class="ejer" id="p2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 2 · fracciones simples con un irreducible: $\int\frac{3x+5}{(x-1)(x^2+2x+5)}dx$</span> <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Ej. 6.23-6.24, pp. 256-259">P</span></header>
+<div class="ejer-enun"><p class="enun">Calcula $\displaystyle\int\frac{3x+5}{(x-1)(x^2+2x+5)}\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva de una racional (grado $1\lt3$).</dd>
     <dt>Cómo lo pienso</dt><dd>$x^2+2x+5$ tiene discriminante $4-20\lt0$: es irreducible. Fracciones: $\frac{A}{x-1}+\frac{Bx+C}{x^2+2x+5}$. El trozo irreducible dará $\ln$ + $\operatorname{arctg}$.</dd>
     <dt>Qué uso</dt><dd>Fracciones simples (U p.255); $\ln$+$\operatorname{arctg}$ (U p.258, Ej. 6.24); completar cuadrados.</dd>
     <dt>Por dónde empiezo</dt><dd>Quitar denominadores y dar $x=1$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Planteamiento:</b> $3x+5=A(x^2+2x+5)+(Bx+C)(x-1)$.</li>
     <li><b>$x=1$:</b> $8=8A\Rightarrow A=1$.</li>
     <li><b>Coeficientes:</b> $x^2$: $0=A+B\Rightarrow B=-1$; término independiente: $5=5A-C\Rightarrow C=0$. Así $\dfrac{3x+5}{(x-1)(x^2+2x+5)}=\dfrac1{x-1}-\dfrac{x}{x^2+2x+5}$.</li>
@@ -868,16 +1305,19 @@
   <div class="recipe"><b>Receta:</b> factor irreducible $x^2+bx+c$: numerador $Bx+C$; separar la parte proporcional a $2x+b$ ($\ln$) y completar cuadrados en el resto ($\operatorname{arctg}$).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Poner solo una constante $\frac{C}{x^2+2x+5}$ (falta el $Bx$) o perder el signo del $-1$ al ajustar el numerador.</p></div>
 </details>
-<details class="sol" id="p3"><summary>Propio 3 · cambio en una definida, cambiando los límites: $\int_0^3\frac{x}{\sqrt{x+1}}dx$ <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Ej. 6.17, p. 251">P</span></summary>
-<p class="enun">Calcula $\displaystyle\int_0^3\frac{x}{\sqrt{x+1}}\,dx$ con el cambio $t=\sqrt{x+1}$.</p>
+</article>
+<article class="ejer" id="p3">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 3 · cambio en una definida, cambiando los límites: $\int_0^3\frac{x}{\sqrt{x+1}}dx$</span> <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Ej. 6.17, p. 251">P</span></header>
+<div class="ejer-enun"><p class="enun">Calcula $\displaystyle\int_0^3\frac{x}{\sqrt{x+1}}\,dx$ con el cambio $t=\sqrt{x+1}$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una definida con un cambio que quita la raíz.</dd>
     <dt>Cómo lo pienso</dt><dd>$t=\sqrt{x+1}$ ⇒ $x=t^2-1$, $dx=2t\,dt$; la $t$ del denominador se va con la de $dx$ y queda un polinomio. Los límites $x=0,3$ pasan a $t=1,2$.</dd>
     <dt>Qué uso</dt><dd>Cambio de variable en la definida (U p.251); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>Despejar $x$ y calcular $dx$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x/sqrt(x+1)","n":"x/√(x+1)"}],"x":[-0.3,3.3],"y":[-0.1,1.7],"q":[[3,1.5]]}' data-alt="x/raiz(x+1) en [0,3]"><figcaption>La función $\frac x{\sqrt{x+1}}$ en $[0,3]$ (creciente, llega a $f(3)=\frac32$). El área bajo la curva vale $\frac83\approx2{,}67$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"c":[{"e":"x/sqrt(x+1)","n":"x/√(x+1)"}],"x":[-0.3,3.3],"y":[-0.1,1.7],"q":[[3,1.5]]}' data-alt="x/raiz(x+1) en [0,3]"><figcaption>La función $\frac x{\sqrt{x+1}}$ en $[0,3]$ (creciente, llega a $f(3)=\frac32$). El área bajo la curva vale $\frac83\approx2{,}67$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Continuidad:</b> en $[0,3]$, $x+1\ge1\gt0$: integrando continuo.</li>
     <li><b>Cambio:</b> $x=t^2-1$, $dx=2t\,dt$; $x=0\Rightarrow t=1$, $x=3\Rightarrow t=2$. ($g(t)=t^2-1$ tiene derivada $2t\ne0$ en $[1,2]$.)</li>
     <li><b>Sustituir:</b> $\int_1^2\frac{t^2-1}{t}\,2t\,dt=2\int_1^2(t^2-1)\,dt$.</li>
@@ -887,15 +1327,18 @@
   <div class="recipe"><b>Receta:</b> en una definida, o se cambian los límites (y no se vuelve a $x$), o se deshace el cambio y se usan los límites originales. Nunca mezclar.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Integrar en $t$ y sustituir los límites de $x$ ($0$ y $3$): daría $2[\,9-3\,]=12$, falso.</p></div>
 </details>
-<details class="sol" id="p4"><summary>Propio 4 · $\operatorname{sen}^n\cos^m$: exponente impar y exponentes pares <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Ej. 6.27-6.28, pp. 262-263">P</span></summary>
-<p class="enun">a) Calcula $\displaystyle\int\operatorname{sen}^5x\cos^2x\,dx$. b) Calcula $\displaystyle\int\operatorname{sen}^2x\,dx$ y $\displaystyle\int_0^\pi\operatorname{sen}^2x\,dx$.</p>
+</article>
+<article class="ejer" id="p4">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 4 · $\operatorname{sen}^n\cos^m$: exponente impar y exponentes pares</span> <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Ej. 6.27-6.28, pp. 262-263">P</span></header>
+<div class="ejer-enun"><p class="enun">a) Calcula $\displaystyle\int\operatorname{sen}^5x\cos^2x\,dx$. b) Calcula $\displaystyle\int\operatorname{sen}^2x\,dx$ y $\displaystyle\int_0^\pi\operatorname{sen}^2x\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Primitivas de productos de potencias de seno y coseno.</dd>
     <dt>Cómo lo pienso</dt><dd>a) El seno tiene exponente impar: separo un $\operatorname{sen}x$ (derivada de $-\cos x$), paso $\operatorname{sen}^4x=(1-\cos^2x)^2$ y cambio $u=\cos x$. b) Exponente par: ángulo doble.</dd>
     <dt>Qué uso</dt><dd>$\operatorname{sen}^nx\cos^mx$ (U pp.262-263, Ej. 6.27-6.28); cambio de variable (U p.250); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>a) $\operatorname{sen}^5x=(1-\cos^2x)^2\operatorname{sen}x$.</dd>
-  </dl></div>
-  <p><b>a)</b></p>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<p><b>a)</b></p>
   <ol class="steps">
     <li><b>Reescribir:</b> $\operatorname{sen}^5x\cos^2x=(1-\cos^2x)^2\cos^2x\operatorname{sen}x$.</li>
     <li><b>Cambio $u=\cos x$</b>, $du=-\operatorname{sen}x\,dx$ (el signo menos importa): $\int(1-u^2)^2u^2(-du)=-\int(u^2-2u^4+u^6)\,du=-\frac{u^3}3+\frac{2u^5}5-\frac{u^7}7+C$.</li>
@@ -909,38 +1352,65 @@
   <div class="recipe"><b>Receta:</b> $\operatorname{sen}^nx\cos^mx$: algún exponente impar ⇒ separar un factor y cambio $u$ = la otra función; ambos pares ⇒ bajar grado con el ángulo doble.</div>
   <div class="box warn"><span class="h">Error típico</span><p>En a), olvidar el signo de $du=-\operatorname{sen}x\,dx$; en b), escribir $\int\operatorname{sen}^2x=\frac{\operatorname{sen}^3x}3$.</p></div>
 </details>
+</article>
 <!-- ============================ 11 ============================ -->
-<h2 id="examen"><span class="n">11</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<h2 id="examen" data-vista="examen"><span class="n">13</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>7 preguntas</b> de este tema (todas se resuelven aquí abajo con su redacción) y 19 ejercicios en el libro E. Se reparten en 4 tipos, más lo que no aparece pero es la base:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Cambio de variable (también para quitar raíces) <small>(3 de 7)</small></td><td>$t=$ lo que estorba o $x=t^r$; cambiar $dx$ y, en una definida, los límites; deshacer el cambio si es indefinida.</td>
+      <td><a href="#ej-6-28">6.28</a> · <a href="#ej-6-29">6.29</a> · <a href="#ej-6-30">6.30</a> · <a href="#ej-6-31">6.31</a> · <a href="#p3">P3</a></td><td><a href="#x1">X1</a> · <a href="#x4">X4</a> · <a href="#x6">X6</a></td></tr>
+    <tr><td>Integración por partes, también en una definida <small>(2 de 7)</small></td><td>$u$ = lo que se simplifica al derivar; $\int uv'=uv-\int u'v$; en la definida, $[uv]_a^b-\int_a^bu'v$.</td>
+      <td><a href="#ej-6-18">6.18</a> · <a href="#ej-6-19">6.19</a> · <a href="#p1">P1</a></td><td><a href="#x3">X3</a> · <a href="#x4">X4</a></td></tr>
+    <tr><td>Racionales: fracciones simples, $\ln$ + $\operatorname{arctg}$ <small>(2 de 7)</small></td><td>Dividir si hace falta; descomponer; irreducible: parte $\frac{f'}f$ + completar cuadrados.</td>
+      <td><a href="#ej-6-20">6.20</a> · <a href="#ej-6-21">6.21</a> · <a href="#ej-6-22">6.22</a> · <a href="#p2">P2</a></td><td><a href="#x2">X2</a> · <a href="#x7">X7</a></td></tr>
+    <tr><td>Trigonométricas <small>(2 de 7)</small></td><td>Exponente impar: separar un factor; pares: ángulo doble; racional en $\operatorname{sen}$, $\cos$: $t=\operatorname{tg}\frac x2$.</td>
+      <td><a href="#ej-6-26">6.26</a> · <a href="#ej-6-27">6.27</a> · <a href="#ej-6-32">6.32</a> · <a href="#p4">P4</a></td><td><a href="#x5">X5</a> · <a href="#x7">X7</a></td></tr>
+    <tr><td>Hermite, inmediatas y áreas <small>(0 de 7)</small></td><td>No aparecen en X; son la base (inmediatas) o se piden en el libro (Hermite, áreas).</td>
+      <td><a href="#ej-6-17">6.17</a> · <a href="#ej-6-23">6.23</a> · <a href="#ej-6-24">6.24</a> · <a href="#ej-6-25">6.25</a> · <a href="#ej-6-33">6.33</a> · <a href="#ej-6-34">6.34</a> · <a href="#ej-6-35">6.35</a></td><td>—</td></tr>
+  </table>
+  <p><small>Recuento propio sobre las preguntas de X resueltas aquí (X4 y X7 cuentan en dos tipos). Los apartados de trapecio, Simpson o impropias de estos mismos problemas son de §6.4 y §6.5.</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre las preguntas de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
 <p>En X, las integrales aparecen casi siempre como <b>«calcule la integral»</b> (primitiva) o como <b>integral definida</b>, a veces con una sugerencia del cambio. Los siete problemas siguientes cubren cada técnica del tema, de la más sencilla a la más larga: cambio de variable (p.38) → $\ln$ + $\operatorname{arctg}$ de un irreducible (p.137) → partes en definida (pp.19-20) → cambio en definida más partes (p.128) → $\operatorname{sen}^n\cos^m$ (p.141) → raíz con $x=t^2$ y división (p.143) → $\operatorname{tg}\frac x2$ y fracciones simples (p.148). Los apartados de trapecio, Simpson o integrales impropias de las mismas preguntas son de §6.4 y <a href="tema_6_5_integrales_impropias.html">§6.5</a>. Entre estos problemas no aparece el método de Hermite (sí en E 6.23-6.25).</p>
-<details class="sol" id="x1"><summary>X1 · $\int x^5\sqrt[3]{(1+x^3)^2}\,dx$: cambio $u=1+x^3$ <span class="src" data-l="X" data-ref="X p.38 (Septiembre 2013, Grados en Ing. Mecánica y Electrónica y Automática, Modelo A, Problema 5)">X p.38 (sept. 2013)</span></summary>
-<p class="enun">Calcúlese la siguiente integral $\displaystyle I=\int x^5\sqrt[3]{(1+x^3)^2}\,dx$.</p>
+<article class="ejer" id="x1">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X1 · $\int x^5\sqrt[3]{(1+x^3)^2}\,dx$: cambio $u=1+x^3$</span> <span class="src" data-l="X" data-ref="X p.38 (Septiembre 2013, Grados en Ing. Mecánica y Electrónica y Automática, Modelo A, Problema 5)">X p.38 (sept. 2013)</span></header>
+<div class="ejer-enun"><p class="enun">Calcúlese la siguiente integral $\displaystyle I=\int x^5\sqrt[3]{(1+x^3)^2}\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva.</dd>
     <dt>Cómo lo pienso</dt><dd>Lo molesto es $1+x^3$, y su derivada $3x^2$ está «dentro» de $x^5=x^3\cdot x^2$. Con $u=1+x^3$, el $x^2dx$ es $\frac{du}3$ y el $x^3$ sobrante es $u-1$.</dd>
     <dt>Qué uso</dt><dd>Cambio de variable (U pp.249-250, consejo de p.250); potencias (tabla, fila 2, U p.248).</dd>
     <dt>Por dónde empiezo</dt><dd>$u=1+x^3$.</dd>
-  </dl></div>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Cambio $u=1+x^3$: $du=3x^2dx$, $x^2dx=\frac{du}3$ y $x^3=u-1$.</li>
     <li>$x^5\sqrt[3]{(1+x^3)^2}\,dx=x^3\cdot u^{2/3}\cdot x^2dx=(u-1)\,u^{2/3}\frac{du}3$.</li>
     <li>$I=\frac13\int\big(u^{5/3}-u^{2/3}\big)du=\frac13\Big(\frac38u^{8/3}-\frac35u^{5/3}\Big)+K=\dfrac{u^{8/3}}8-\dfrac{u^{5/3}}5+K$.</li>
     <li>Deshacer el cambio: $I=\dfrac18(1+x^3)^{8/3}-\dfrac15(1+x^3)^{5/3}+K$.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> el cambio $1+x^3=t^3$ también funciona y da lo mismo. Comprobación: derivando se recupera el integrando.</p>
-  <div class="recipe"><b>Receta:</b> si aparece $g(x)$ dentro de una raíz y fuera hay $g'(x)$ por una potencia de $x$, cambio $u=g(x)$ y escribir la $x$ que sobra en función de $u$.</div>
+<div class="recipe"><b>Receta:</b> si aparece $g(x)$ dentro de una raíz y fuera hay $g'(x)$ por una potencia de $x$, cambio $u=g(x)$ y escribir la $x$ que sobra en función de $u$.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> el cambio $1+x^3=t^3$ también funciona y da lo mismo. Comprobación: derivando se recupera el integrando.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Quedarse con $x^3$ en la integral en $u$ (mezclar variables): todo debe quedar en $u$.</p></div>
 </details>
-<details class="sol" id="x2"><summary>X2 · $\int_3^5\frac{5x+3}{x^2+2x+3}dx$: logaritmo más arcotangente <span class="src" data-l="X" data-ref="X p.137 (Febrero 2017, 1.ª semana, Ing. Electrónica Industrial y Automática, Ejercicio 5, primer apartado; solución en p.138)">X pp.137-138 (feb. 2017)</span></summary>
-<p class="enun">Dada la integral $\displaystyle\int_3^5\frac{5x+3}{x^2+2x+3}\,dx$: calcule el valor exacto encontrando una primitiva del integrando. (El segundo apartado, con el método del trapecio, es de §6.4.)</p>
+</details>
+</article>
+<article class="ejer" id="x2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X2 · $\int_3^5\frac{5x+3}{x^2+2x+3}dx$: logaritmo más arcotangente</span> <span class="src" data-l="X" data-ref="X p.137 (Febrero 2017, 1.ª semana, Ing. Electrónica Industrial y Automática, Ejercicio 5, primer apartado; solución en p.138)">X pp.137-138 (feb. 2017)</span></header>
+<div class="ejer-enun"><p class="enun">Dada la integral $\displaystyle\int_3^5\frac{5x+3}{x^2+2x+3}\,dx$: calcule el valor exacto encontrando una primitiva del integrando. (El segundo apartado, con el método del trapecio, es de §6.4.)</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El valor exacto de una integral definida, hallando una primitiva.</dd>
     <dt>Cómo lo pienso</dt><dd>Racional con denominador irreducible (discriminante $4-12\lt0$; $x^2+2x+3=(x+1)^2+2$). El numerador no es exactamente la derivada del denominador ($2x+2$): lo parto en «derivada» más una constante. La primera parte da un $\ln$ y la constante, un $\operatorname{arctg}$.</dd>
     <dt>Qué uso</dt><dd>$\ln$ + $\operatorname{arctg}$ para el factor irreducible (U p.258); tabla, filas 3 y 9 (U p.248); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $5x+3=\frac52(2x+2)-2$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"(5*x+3)/(x^2+2*x+3)","n":"(5x+3)/(x²+2x+3)"}],"x":[2,6],"y":[0,1.4],"q":[[3,1.0],[5,0.7368]]}' data-alt="(5x+3)/(x^2+2x+3) en [3,5]"><figcaption>El integrando en $[3,5]$ (rombos: $f(3)=1$ y $f(5)=\frac{14}{19}\approx0{,}74$); el área bajo la curva es $\approx1{,}715$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"(5*x+3)/(x^2+2*x+3)","n":"(5x+3)/(x²+2x+3)"}],"x":[2,6],"y":[0,1.4],"q":[[3,1.0],[5,0.7368]]}' data-alt="(5x+3)/(x^2+2x+3) en [3,5]"><figcaption>El integrando en $[3,5]$ (rombos: $f(3)=1$ y $f(5)=\frac{14}{19}\approx0{,}74$); el área bajo la curva es $\approx1{,}715$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>El denominador no se anula (es $(x+1)^2+2\gt0$): el integrando es continuo en $[3,5]$. Se escribe $5x+3=\frac52(2x+2)-2$, luego
     $$\frac{5x+3}{x^2+2x+3}=\frac52\cdot\frac{2x+2}{x^2+2x+3}-\frac{2}{(x+1)^2+2}.$$</li>
@@ -949,96 +1419,126 @@
     <li>Primitiva: $F(x)=\frac52\ln(x^2+2x+3)-\sqrt2\operatorname{arctg}\dfrac{x+1}{\sqrt2}$.</li>
     <li>Barrow: $F(5)-F(3)=\frac52\ln\frac{38}{18}-\sqrt2\big(\operatorname{arctg}3\sqrt2-\operatorname{arctg}2\sqrt2\big)\approx1{,}7148$.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> comprobación derivando $F$: $\frac{5(x+1)}{x^2+2x+3}-\frac{1}{1+\frac{(x+1)^2}2}\cdot1=\frac{5x+5-2}{x^2+2x+3}=\frac{5x+3}{x^2+2x+3}$ ✓.</p>
-  <div class="recipe"><b>Receta:</b> $\int\frac{Mx+N}{x^2+bx+c}$ sin raíces reales: parte proporcional a $2x+b$ (logaritmo) y completar cuadrados en el resto (arcotangente).</div>
+<div class="recipe"><b>Receta:</b> $\int\frac{Mx+N}{x^2+bx+c}$ sin raíces reales: parte proporcional a $2x+b$ (logaritmo) y completar cuadrados en el resto (arcotangente).</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> comprobación derivando $F$: $\frac{5(x+1)}{x^2+2x+3}-\frac{1}{1+\frac{(x+1)^2}2}\cdot1=\frac{5x+5-2}{x^2+2x+3}=\frac{5x+3}{x^2+2x+3}$ ✓.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el $\sqrt2$ al integrar el arcotangente (sale $\frac{1}{\sqrt2}\cdot2=\sqrt2$) o dejar $\ln$ del numerador en vez de $\ln$ del denominador.</p></div>
 </details>
-<details class="sol" id="x3"><summary>X3 · $\int_{-2}^0(3+4x)e^{-x}dx$: partes en una definida <span class="src" data-l="X" data-ref="X pp.19-20 (Febrero 2012, 1.ª semana, Ing. Mecánica, Modelo A, Pregunta corta 3)">X pp.19-20 (feb. 2012)</span></summary>
-<p class="enun">Calcule $\displaystyle\int_{-2}^0(3+4x)\,e^{-x}\,dx$.</p>
+</details>
+</article>
+<article class="ejer" id="x3">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X3 · $\int_{-2}^0(3+4x)e^{-x}dx$: partes en una definida</span> <span class="src" data-l="X" data-ref="X pp.19-20 (Febrero 2012, 1.ª semana, Ing. Mecánica, Modelo A, Pregunta corta 3)">X pp.19-20 (feb. 2012)</span></header>
+<div class="ejer-enun"><p class="enun">Calcule $\displaystyle\int_{-2}^0(3+4x)\,e^{-x}\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El valor de una integral definida.</dd>
     <dt>Cómo lo pienso</dt><dd>Polinomio × exponencial: partes con $u=3+4x$. Se puede aplicar la fórmula de partes directamente con límites.</dd>
     <dt>Qué uso</dt><dd>Partes en la definida (U p.254); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>$u=3+4x$, $v'=e^{-x}$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"(3+4*x)*exp(-x)","n":"(3+4x)e^(−x)"}],"x":[-2.3,0.5],"y":[-42,6],"q":[[-2,-36.9453],[0,3]]}' data-alt="(3+4x)e^(-x) en [-2,0]"><figcaption>El integrando $(3+4x)e^{-x}$ en $[-2,0]$: es negativo hasta $x=-\frac34$ y positivo después (rombos: $f(-2)\approx-36{,}9$ y $f(0)=3$). Casi toda el área cuenta negativa, de ahí $-7-e^2\approx-14{,}39$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"(3+4*x)*exp(-x)","n":"(3+4x)e^(−x)"}],"x":[-2.3,0.5],"y":[-42,6],"q":[[-2,-36.9453],[0,3]]}' data-alt="(3+4x)e^(-x) en [-2,0]"><figcaption>El integrando $(3+4x)e^{-x}$ en $[-2,0]$: es negativo hasta $x=-\frac34$ y positivo después (rombos: $f(-2)\approx-36{,}9$ y $f(0)=3$). Casi toda el área cuenta negativa, de ahí $-7-e^2\approx-14{,}39$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>El integrando es continuo en $[-2,0]$.</li>
     <li>$u=3+4x\Rightarrow u'=4$; $v'=e^{-x}\Rightarrow v=-e^{-x}$.</li>
     <li>$\int_{-2}^0(3+4x)e^{-x}dx=\Big[-(3+4x)e^{-x}\Big]_{-2}^0+\int_{-2}^04e^{-x}dx=\Big[-(3+4x)e^{-x}-4e^{-x}\Big]_{-2}^0=\Big[-(7+4x)e^{-x}\Big]_{-2}^0$.</li>
     <li>En $0$: $-7$. En $-2$: $-(7-8)e^{2}=e^2$. Resultado: $-7-e^2\approx-14{,}39$.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> el signo es razonable: para $x\lt-\frac34$ el factor $3+4x$ es negativo y ahí $e^{-x}$ es grande.</p>
-  <div class="recipe"><b>Receta:</b> partes en definida: $\int_a^buv'=[uv]_a^b-\int_a^bu'v$; conviene juntar todo en una primitiva y evaluar una sola vez.</div>
+<div class="recipe"><b>Receta:</b> partes en definida: $\int_a^buv'=[uv]_a^b-\int_a^bu'v$; conviene juntar todo en una primitiva y evaluar una sola vez.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> el signo es razonable: para $x\lt-\frac34$ el factor $3+4x$ es negativo y ahí $e^{-x}$ es grande.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Primitiva de $e^{-x}$ escrita como $e^{-x}$ (falta el signo menos), o errores de signo al evaluar $e^{-(-2)}=e^2$.</p></div>
 </details>
-<details class="sol" id="x4"><summary>X4 · $\int_0^{\pi^2}\operatorname{sen}\sqrt x\,dx$: cambio $t=\sqrt x$ y partes <span class="src" data-l="X" data-ref="X p.128 (Ing. Electrónica Industrial y Automática, examen A, sin fecha, Ejercicio 6)">X p.128 (sin fecha)</span></summary>
-<p class="enun">Muestre que el cambio $t=\sqrt x$ transforma la integral $\displaystyle\int_0^{\pi^2}\operatorname{sen}\sqrt x\,dx$ en $\displaystyle\int_0^\pi2t\operatorname{sen}t\,dt$. Calcule $\displaystyle\int_0^\pi2t\operatorname{sen}t\,dt$.</p>
+</details>
+</article>
+<article class="ejer" id="x4">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">X4 · $\int_0^{\pi^2}\operatorname{sen}\sqrt x\,dx$: cambio $t=\sqrt x$ y partes</span> <span class="src" data-l="X" data-ref="X p.128 (Ing. Electrónica Industrial y Automática, examen A, sin fecha, Ejercicio 6)">X p.128 (sin fecha)</span></header>
+<div class="ejer-enun"><p class="enun">Muestre que el cambio $t=\sqrt x$ transforma la integral $\displaystyle\int_0^{\pi^2}\operatorname{sen}\sqrt x\,dx$ en $\displaystyle\int_0^\pi2t\operatorname{sen}t\,dt$. Calcule $\displaystyle\int_0^\pi2t\operatorname{sen}t\,dt$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Justificar un cambio de variable en una definida (incluidos los límites) y calcular la nueva integral.</dd>
     <dt>Cómo lo pienso</dt><dd>Con $t=\sqrt x$ es $x=t^2$, $dx=2t\,dt$, y los límites $0$, $\pi^2$ pasan a $0$, $\pi$. La nueva integral es polinomio × seno: partes.</dd>
     <dt>Qué uso</dt><dd>Cambio de variable en la definida (U p.251, Ej. 6.17); partes en la definida (U p.254, Ej. 6.22).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $x=g(t)=t^2$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"2*x*sin(x)","n":"2t sen t"}],"x":[-0.2,3.4],"y":[-0.5,6.5],"q":[[3.1416,0,"t=π"]]}' data-alt="2t sen t en [0,pi]"><figcaption>El integrando transformado $2t\operatorname{sen}t$ en $[0,\pi]$ (positivo, sale de $0$ y vuelve a $0$ en $t=\pi$): el área es $2\pi\approx6{,}28$, igual que la de $\operatorname{sen}\sqrt x$ en $[0,\pi^2]$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"2*x*sin(x)","n":"2t sen t"}],"x":[-0.2,3.4],"y":[-0.5,6.5],"q":[[3.1416,0,"t=π"]]}' data-alt="2t sen t en [0,pi]"><figcaption>El integrando transformado $2t\operatorname{sen}t$ en $[0,\pi]$ (positivo, sale de $0$ y vuelve a $0$ en $t=\pi$): el área es $2\pi\approx6{,}28$, igual que la de $\operatorname{sen}\sqrt x$ en $[0,\pi^2]$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>$x=g(t)=t^2$ es continua con derivada $g'(t)=2t$ continua en $[0,\pi]$ y $g'(t)\gt0$ para $t\gt0$ (solo se anula en el extremo $t=0$): $g$ es estrictamente creciente, luego biyectiva de $[0,\pi]$ en $[0,\pi^2]$, con $g(0)=0$, $g(\pi)=\pi^2$. Además $\operatorname{sen}\sqrt x$ es continua en $[0,\pi^2]$.</li>
     <li>$\operatorname{sen}\sqrt x=\operatorname{sen}t$, $dx=2t\,dt$; límites $x=0\Rightarrow t=0$, $x=\pi^2\Rightarrow t=\pi$: $\int_0^{\pi^2}\operatorname{sen}\sqrt x\,dx=\int_0^\pi2t\operatorname{sen}t\,dt$.</li>
     <li>Partes: $u=t$, $u'=1$; $v'=\operatorname{sen}t$, $v=-\cos t$. $\int_0^\pi2t\operatorname{sen}t\,dt=2\Big([-t\cos t]_0^\pi+\int_0^\pi\cos t\,dt\Big)=2(\pi+[\operatorname{sen}t]_0^\pi)=2\pi$.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> es el Ejemplo 6.17 + 6.22 de U. Como $g'(0)=0$ solo en el extremo, el cambio es válido (la monotonía estricta es lo que hace falta).</p>
-  <div class="recipe"><b>Receta:</b> cambio en definida: (1) $x=g(t)$ y $dx=g'(t)dt$; (2) <b>límites nuevos</b> $t=g^{-1}(a)$, $t=g^{-1}(b)$; (3) integrar en $t$ y evaluar en los límites nuevos, sin volver a $x$.</div>
+<div class="recipe"><b>Receta:</b> cambio en definida: (1) $x=g(t)$ y $dx=g'(t)dt$; (2) <b>límites nuevos</b> $t=g^{-1}(a)$, $t=g^{-1}(b)$; (3) integrar en $t$ y evaluar en los límites nuevos, sin volver a $x$.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> es el Ejemplo 6.17 + 6.22 de U. Como $g'(0)=0$ solo en el extremo, el cambio es válido (la monotonía estricta es lo que hace falta).</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Dejar los límites $0$ y $\pi^2$ en la integral en $t$ (daría un valor distinto).</p></div>
 </details>
-<details class="sol" id="x5"><summary>X5 · $\int_0^{\pi/2}\operatorname{sen}^4x\cos^3x\,dx$ <span class="src" data-l="X" data-ref="X p.141 (Febrero 2018, 2.ª semana, Ing. Electrónica Industrial y Automática, Ejercicio 5, primer apartado)">X p.141 (feb. 2018)</span></summary>
-<p class="enun">Dada la integral $\displaystyle\int_0^{\pi/2}\operatorname{sen}^4x\cos^3x\,dx$: calcule el valor exacto encontrando una primitiva del integrando. (El segundo apartado, con la regla de Simpson, es de §6.4.)</p>
+</details>
+</article>
+<article class="ejer" id="x5">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X5 · $\int_0^{\pi/2}\operatorname{sen}^4x\cos^3x\,dx$</span> <span class="src" data-l="X" data-ref="X p.141 (Febrero 2018, 2.ª semana, Ing. Electrónica Industrial y Automática, Ejercicio 5, primer apartado)">X p.141 (feb. 2018)</span></header>
+<div class="ejer-enun"><p class="enun">Dada la integral $\displaystyle\int_0^{\pi/2}\operatorname{sen}^4x\cos^3x\,dx$: calcule el valor exacto encontrando una primitiva del integrando. (El segundo apartado, con la regla de Simpson, es de §6.4.)</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El valor exacto con Barrow.</dd>
     <dt>Cómo lo pienso</dt><dd>El exponente del coseno es <b>impar</b>: separo un $\cos x$ (que será la derivada de $\operatorname{sen}x$) y el $\cos^2x$ restante lo paso a senos. Queda un polinomio en $\operatorname{sen}x$ por $\cos x$: inmediata.</dd>
     <dt>Qué uso</dt><dd>$\operatorname{sen}^nx\cos^mx$ con exponente impar (U p.263); tabla, fila 2 (U p.248); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>$\cos^3x=\cos^2x\cdot\cos x=(1-\operatorname{sen}^2x)\cos x$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"pow(sin(x),4)*pow(cos(x),3)","n":"sen⁴x cos³x"}],"x":[-0.1,1.7],"y":[-0.02,0.3]}' data-alt="sen^4 x cos^3 x en [0,pi/2]"><figcaption>La función $\operatorname{sen}^4x\cos^3x$ en $[0,\frac\pi2]$: vale $0$ en los extremos y tiene un único máximo intermedio. El área es $\frac2{35}\approx0{,}057$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"pow(sin(x),4)*pow(cos(x),3)","n":"sen⁴x cos³x"}],"x":[-0.1,1.7],"y":[-0.02,0.3]}' data-alt="sen^4 x cos^3 x en [0,pi/2]"><figcaption>La función $\operatorname{sen}^4x\cos^3x$ en $[0,\frac\pi2]$: vale $0$ en los extremos y tiene un único máximo intermedio. El área es $\frac2{35}\approx0{,}057$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>$\operatorname{sen}^4x\cos^3x=\operatorname{sen}^4x(1-\operatorname{sen}^2x)\cos x=\operatorname{sen}^4x\cos x-\operatorname{sen}^6x\cos x$.</li>
     <li>Primitiva: $F(x)=\dfrac{\operatorname{sen}^5x}5-\dfrac{\operatorname{sen}^7x}7$.</li>
     <li>Barrow: $F(\frac\pi2)-F(0)=\frac15-\frac17-0=\dfrac2{35}$.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> equivale al cambio $t=\operatorname{sen}x$: $\int_0^1(t^4-t^6)dt$.</p>
-  <div class="recipe"><b>Receta:</b> $\operatorname{sen}^nx\cos^mx$ con $m$ impar: separar un $\cos x$, $\cos^2x=1-\operatorname{sen}^2x$; queda polinomio en $\operatorname{sen}x$ por $\cos x$ (si el impar es $n$, lo mismo intercambiando papeles, con un signo menos).</div>
+<div class="recipe"><b>Receta:</b> $\operatorname{sen}^nx\cos^mx$ con $m$ impar: separar un $\cos x$, $\cos^2x=1-\operatorname{sen}^2x$; queda polinomio en $\operatorname{sen}x$ por $\cos x$ (si el impar es $n$, lo mismo intercambiando papeles, con un signo menos).</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> equivale al cambio $t=\operatorname{sen}x$: $\int_0^1(t^4-t^6)dt$.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Intentar el ángulo doble (útil solo si los dos exponentes son pares) o perder el factor $\cos x$ al pasar a senos.</p></div>
 </details>
-<details class="sol" id="x6"><summary>X6 · $\int\frac{x}{1+\sqrt x}dx$: cambio $x=t^2$ <span class="src" data-l="X" data-ref="X p.143 (Septiembre 2018, Ing. Electrónica Industrial y Automática, Ejercicio 5, primer apartado)">X p.143 (sept. 2018)</span></summary>
-<p class="enun">Calcule la integral $\displaystyle\int\frac{x}{1+\sqrt x}\,dx$. (El segundo apartado, con la fórmula del trapecio, es de §6.4.)</p>
+</details>
+</article>
+<article class="ejer" id="x6">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X6 · $\int\frac{x}{1+\sqrt x}dx$: cambio $x=t^2$</span> <span class="src" data-l="X" data-ref="X p.143 (Septiembre 2018, Ing. Electrónica Industrial y Automática, Ejercicio 5, primer apartado)">X p.143 (sept. 2018)</span></header>
+<div class="ejer-enun"><p class="enun">Calcule la integral $\displaystyle\int\frac{x}{1+\sqrt x}\,dx$. (El segundo apartado, con la fórmula del trapecio, es de §6.4.)</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva.</dd>
     <dt>Cómo lo pienso</dt><dd>La raíz estorba: con $x=t^2$ ($t=\sqrt x$) desaparece y queda una racional en $t$, que se divide.</dd>
     <dt>Qué uso</dt><dd>Cambio de variable (U pp.249-250); división en racionales (U p.255).</dd>
     <dt>Por dónde empiezo</dt><dd>$x=t^2$, $dx=2t\,dt$, con $t=\sqrt x\ge0$.</dd>
-  </dl></div>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>$\int\frac{x}{1+\sqrt x}dx=\int\frac{t^2}{1+t}\,2t\,dt=2\int\frac{t^3}{1+t}dt$.</li>
     <li>Dividir: $t^3=(t+1)(t^2-t+1)-1$, luego $\frac{t^3}{1+t}=t^2-t+1-\frac1{1+t}$.</li>
     <li>Integrar: $2\Big(\frac{t^3}3-\frac{t^2}2+t-\ln(1+t)\Big)+C$ (aquí $1+t\gt0$).</li>
     <li>Deshacer: $\displaystyle\int\frac{x}{1+\sqrt x}dx=2\Big(\frac{x^{3/2}}3-\frac x2+\sqrt x-\ln(1+\sqrt x)\Big)+C$.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> comprobación derivando: se recupera $\frac{x}{1+\sqrt x}$.</p>
-  <div class="recipe"><b>Receta:</b> una sola raíz $\sqrt x$: cambio $x=t^2$; si sale racional con grado num ≥ grado den, dividir.</div>
+<div class="recipe"><b>Receta:</b> una sola raíz $\sqrt x$: cambio $x=t^2$; si sale racional con grado num ≥ grado den, dividir.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> comprobación derivando: se recupera $\frac{x}{1+\sqrt x}$.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el $2t$ de $dx$ (saldría $\int\frac{t^2}{1+t}dt$).</p></div>
 </details>
-<details class="sol" id="x7"><summary>X7 · $\int\frac{dx}{4+5\cos x}$ con $t=\operatorname{tg}\frac x2$ <span class="src" data-l="X" data-ref="X p.148 (Febrero 2019, 2.ª semana, Ing. Electrónica Industrial y Automática, Ejercicio 5)">X p.148 (feb. 2019)</span></summary>
-<p class="enun">Calcule la integral $\displaystyle\int\frac{dx}{4+5\cos x}$. <i>Pista:</i> use el cambio de variable $t=\tan\big(\frac x2\big)$, $\operatorname{sen}x=\frac{2t}{1+t^2}$, $\cos x=\frac{1-t^2}{1+t^2}$.</p>
+</details>
+</article>
+<article class="ejer" id="x7">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">X7 · $\int\frac{dx}{4+5\cos x}$ con $t=\operatorname{tg}\frac x2$</span> <span class="src" data-l="X" data-ref="X p.148 (Febrero 2019, 2.ª semana, Ing. Electrónica Industrial y Automática, Ejercicio 5)">X p.148 (feb. 2019)</span></header>
+<div class="ejer-enun"><p class="enun">Calcule la integral $\displaystyle\int\frac{dx}{4+5\cos x}$. <i>Pista:</i> use el cambio de variable $t=\tan\big(\frac x2\big)$, $\operatorname{sen}x=\frac{2t}{1+t^2}$, $\cos x=\frac{1-t^2}{1+t^2}$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una primitiva con el cambio $t=\operatorname{tg}\frac x2$.</dd>
     <dt>Cómo lo pienso</dt><dd>Sustituir $\cos x$ y $dx$; los $1+t^2$ se simplifican y queda $\frac{2}{9-t^2}$, racional con dos raíces reales ($\pm3$).</dd>
     <dt>Qué uso</dt><dd>Cambio $t=\operatorname{tg}\frac x2$, $dx=\frac{2dt}{1+t^2}$ (U p.261); fracciones simples (U p.255).</dd>
     <dt>Por dónde empiezo</dt><dd>Calcular $4+5\cos x$ en función de $t$.</dd>
-  </dl></div>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>$dx=\frac{2\,dt}{1+t^2}$ y $4+5\cos x=4+5\frac{1-t^2}{1+t^2}=\frac{9-t^2}{1+t^2}$.</li>
     <li>$\int\frac{dx}{4+5\cos x}=\int\frac{1+t^2}{9-t^2}\cdot\frac{2\,dt}{1+t^2}=\int\frac{2}{9-t^2}dt$.</li>
@@ -1046,11 +1546,15 @@
     <li>$\int\frac{2\,dt}{9-t^2}=\frac13\ln\lvert3+t\rvert-\frac13\ln\lvert3-t\rvert+C$ (ojo: $\int\frac{dt}{3-t}=-\ln\lvert3-t\rvert$).</li>
     <li>Deshacer: $\displaystyle\int\frac{dx}{4+5\cos x}=\frac13\ln\left\lvert\frac{3+\operatorname{tg}\frac x2}{3-\operatorname{tg}\frac x2}\right\rvert+C$.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> la receta es la de E 6.26. El signo menos del segundo logaritmo viene de la derivada de $3-t$, que es $-1$.</p>
-  <div class="recipe"><b>Receta:</b> $t=\operatorname{tg}\frac x2$, simplificar los $1+t^2$, fracciones simples y deshacer el cambio.</div>
+<div class="recipe"><b>Receta:</b> $t=\operatorname{tg}\frac x2$, simplificar los $1+t^2$, fracciones simples y deshacer el cambio.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> la receta es la de E 6.26. El signo menos del segundo logaritmo viene de la derivada de $3-t$, que es $-1$.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>$\int\frac{dt}{3-t}=+\ln\lvert3-t\rvert$ (falta el signo menos).</p></div>
 </details>
-<h2 id="chuleta"><span class="n">12</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+</details>
+</article>
+<h2 id="chuleta" data-vista="teoria"><span class="n">14</span>Errores frecuentes, chuleta y lista de comprobación</h2>
 <h3>Errores frecuentes</h3>
 <ul>
   <li>Olvidar el $+C$ (indefinida) y el valor absoluto en el $\ln$.</li>
