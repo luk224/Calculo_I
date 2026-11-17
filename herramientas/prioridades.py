@@ -246,3 +246,4 @@ print(f'filas={total_filas} excluidas={len(excl)} contadas={TOT} exámenes(nombr
 print('cod\tej\t%\th\tratio\tnivel\therr')
 for r in filas: print(f"{r['cod']}\t{r['ex']}\t{r['pct']:.1f}\t{fh(r['h'])}\t{r['ratio']:.1f}\t{NIVEL[r['nivel']][1]}\t{r['herr']}")
 for x in rutas: print(x['t'], fh(x['h']), 'h', x['n'], 'temas', x['ex'], 'preg', pc(x['pct']), '%', ' '.join(x['cods']))
+(RAIZ / 'datos' / 'temas_prioridad.json').write_text(json.dumps(filas, ensure_ascii=False, indent=1), encoding='utf8')
