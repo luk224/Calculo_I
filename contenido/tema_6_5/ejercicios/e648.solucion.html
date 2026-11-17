@@ -1,0 +1,24 @@
+<p><b>(a) Convergencia.</b></p>
+<ol class="steps">
+    <li><b>Signo:</b> $f(x)=e^{-x}x^{p-1}&gt;0$ y continua en $(0,\infty)$: se pueden usar los criterios.</li>
+    <li><b>Trozo $[0,1]$.</b> Si $p\ge1$, $x^{p-1}$ es continua en $[0,1]$: integral ordinaria. Si $0&lt;p&lt;1$, $f\to\infty$ cuando $x\to0^+$: segunda especie.</li>
+    <li><b>Comparación en $(0,1]$ ($0&lt;p&lt;1$):</b> como $0&lt;e^{-x}\le1$, $0&lt;f(x)\le\frac1{x^{1-p}}$, y $\int_0^1\frac{dx}{x^{1-p}}$ converge porque $1-p&lt;1$ (Ej. 6.41; aquí se usa $p&gt;0$). Así $\int_0^1f$ <b>converge</b>.</li>
+    <li><b>Trozo $[1,\infty)$.</b> $f$ es continua y acotada. Con $g=\frac1{x^2}$: $\lim_{x\to\infty}\frac fg=\lim_{x\to\infty}\frac{x^{p+1}}{e^x}=0$ (L'Hôpital repetido hasta que el exponente de $x$ sea $\le0$).</li>
+    <li><b>Caso (ii):</b> $l=0$ y $\int_1^\infty\frac{dx}{x^2}$ converge $\Rightarrow$ $\int_1^\infty f$ <b>converge</b>.</li>
+    <li><b>Conclusión:</b> los dos trozos convergen: $\Gamma(p)$ converge para todo $p&gt;0$.</li>
+  </ol>
+<p><b>(b) $\Gamma(p+1)=p\,\Gamma(p)$.</b></p>
+<ol class="steps">
+    <li><b>Planteamiento:</b> $\Gamma(p+1)=\int_0^\infty e^{-x}x^p\,dx$. Se trabaja en $[c,M]$ con $0&lt;c&lt;M$ (allí todo es continuo) y al final $c\to0^+$, $M\to\infty$.</li>
+    <li><b>Partes</b> con $u=x^p$, $v'=e^{-x}$: $$\begin{aligned}\int_c^Me^{-x}x^p\,dx&=\Big[-x^pe^{-x}\Big]_c^M+p\int_c^Me^{-x}x^{p-1}dx\\&=-M^pe^{-M}+c^pe^{-c}+p\int_c^Me^{-x}x^{p-1}dx.\end{aligned}$$</li>
+    <li><b>Límites:</b> $M^pe^{-M}\to0$ (L'Hôpital); $c^pe^{-c}\to0\cdot1=0$ porque $p&gt;0$; y $\int_c^Me^{-x}x^{p-1}dx\to\Gamma(p)$ por (a).</li>
+    <li><b>Resultado:</b> $\Gamma(p+1)=0+0+p\,\Gamma(p)$.</li>
+  </ol>
+<p><b>(c) $\Gamma(1)$ y factoriales.</b></p>
+<ol class="steps">
+    <li>$\Gamma(1)=\int_0^\infty e^{-x}dx=1$ (Ej. 6.39 con $k=1$).</li>
+    <li><b>Bajando de uno en uno con (b):</b> $\Gamma(n+1)=n\Gamma(n)=n(n-1)\Gamma(n-1)=\dots=n(n-1)\cdots2\cdot1\cdot\Gamma(1)=n!$. Ejemplos: $\Gamma(2)=1$, $\Gamma(3)=2$, $\Gamma(5)=24=4!$.</li>
+    <li>(Cultura.) $\Gamma$ extiende el factorial a cualquier $p&gt;0$; por ejemplo $\Gamma(\frac12)=\sqrt\pi$.</li>
+  </ol>
+<div class="recipe"><b>Receta:</b> integral con dos problemas: partir en un punto intermedio y comparar en cada trozo con la referencia adecuada ($\frac1{x^q}$ cerca de $0$; $\frac1{x^2}$ en el infinito si hay una exponencial que decrece).</div>
+<div class="box warn"><span class="h">Error típico</span><p>Estudiar solo el infinito y olvidar el $0$ cuando $p&lt;1$; o hacer partes en $[0,M]$ directamente cuando $\int_0^Me^{-x}x^{p-1}dx$ todavía es impropia.</p></div>

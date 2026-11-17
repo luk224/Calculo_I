@@ -113,7 +113,7 @@ Orden = orden del cronograma de estudio (CLAUDE.md §2). `[x]` hecho · `[ ]` pe
 | [x] | 6.2 Teoremas fundamentales | E 6.x + X | Mapa: ¿derivada de una integral con límites variables? (regla de Leibniz/TFC). |
 | [x] | 6.3 Cálculo de integrales | E 6.x + X | **Mapa clave:** qué técnica (inmediata, partes, sustitución, racionales, trigonométricas). |
 | [x] | 6.4 Integración numérica | E 6.x + X | Mapa: trapecio vs. Simpson, nº de subintervalos para un error dado. |
-| [ ] | 6.5 Integrales impropias | E 6.x + X | Mapa: tipo (infinito/discontinuidad), comparación, convergencia absoluta. |
+| [x] | 6.5 Integrales impropias | E 6.x + X | Mapa: tipo (infinito/discontinuidad), comparación, convergencia absoluta. |
 
 **Progreso:** 1 de 25 temas.
 
