@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_6_4/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 6.4 Integración numérica</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -15,6 +16,8 @@
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -42,12 +45,73 @@
   </div>
 </header>
 
-<!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.4.1 Motivación, p. 263">U p.263</span></h2>
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>Imagina que debes medir el área de una finca con un lado curvo. No sabes una fórmula para la curva, pero sí medir su altura en varios puntos. Lo natural es <b>sustituir la parte curva por piezas sencillas</b> (rectángulos, trapecios o arcos de parábola), calcular el área de las piezas y sumarla. Eso es integrar numéricamente: cuantas más piezas y mejor ajustadas, menos error.</p>
   <span class="src" data-l="U" data-ref="U §6.4.1-6.4.2, pp. 263-264">U pp.263-264</span>
 </div>
+<p class="ir-examen"><a href="#examen" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Mira qué te dan y qué te piden:</b> ¿una función o una tabla de valores?, ¿trapecio, Simpson o rectángulos?, ¿simple o compuesta?, ¿hay que comparar con el valor exacto o dar una cota?</li>
+    <li><b>Cuenta antes de calcular:</b> $n$ subintervalos son $n+1$ nodos (rectángulos y trapecio) o $2n+1$ (Simpson compuesta, siempre impar); $h=\frac{b-a}n$. Con una tabla de $N$ datos: trapecio en $N-1$ subintervalos; Simpson solo si $N$ es impar.</li>
+    <li><b>Haz la tabla $x_k\mid f_k$</b> y marca cada valor: extremo, central (o par) o impar. Sustituye en la fórmula.</li>
+    <li><b>Comprueba el orden de magnitud</b> (longitud $\times$ valor medio) y, si se puede, compara con Barrow.</li>
+  </ol>
+  <p class="sub">Qué hago según lo que veo</p>
+  <ul>
+    <li>¿Tabla de datos igualmente espaciados? $\to$ trapecio compuesto con todos los datos; Simpson compuesta si el número de datos es impar.</li>
+    <li>¿Datos con separaciones distintas? $\to$ trapecio simple en cada tramo, con su anchura, y sumar.</li>
+    <li>¿Simpson y faltan valores en los nodos? $\to$ se completan con el polinomio interpolador.</li>
+    <li>¿«Cuántos subintervalos garantizan…» o «cota del error»? $\to$ $M_2$ o $M_4$ (máximo del valor absoluto de la derivada), cota $\le$ tolerancia, despejar $m$ y redondear hacia arriba.</li>
+    <li>¿Solo dos datos? $\to$ el trapecio sí; Simpson no (le falta el punto medio).</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$\frac h2\,(E+2C)$, con $h=\frac{b-a}n$</td><td>Trapecio compuesto con $n+1$ nodos (U p.267).</td></tr>
+    <tr><td>$\frac h6\,(E+2P+4I)$, nodos cada $\frac h2$</td><td>Simpson compuesta con $2n+1$ nodos; $h$ = longitud de cada subintervalo (U p.268).</td></tr>
+    <tr><td>$\frac{b-a}6\big(f(a)+4f(\tfrac{a+b}2)+f(b)\big)$</td><td>Simpson simple con tres datos equiespaciados (U p.268).</td></tr>
+    <tr><td>$\varepsilon\le\frac{(b-a)^3}{12m^2}M_2$; $\varepsilon\le\frac{(b-a)^5}{2880m^4}M_4$</td><td>Cota del error y número de subintervalos (U pp.269-270).</td></tr>
+    <tr><td>Trapecio exacto en rectas; Simpson exacto hasta grado $3$</td><td>Decidir si una fórmula acierta (E 6.38; propio 2).</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos hay 10 problemas de este tema: trapecio o Simpson con una función y comparación con el valor exacto (5), trapecio y Simpson con una tabla de datos (3) y polinomio interpolador más Simpson (2). En el libro de ejercicios son E 6.36-6.41. Cotas del error y rectángulos no aparecen en X, pero sí en el libro. Tabla por tipo: <a href="#examen" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §6.4.2, pp. 264-270 (fórmulas y cotas); resumen propio">U pp.264-270</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §6.4">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 2 h</b>
+      <ul>
+        <li>Las <b>fórmulas del trapecio</b> (3) y de <b>Simpson</b> (4), la <b>cota del error</b> (6) y el <b>mapa de decisión</b> (7).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#e637">E 6.37</a> (qué fórmula admiten los datos), <a href="#e639">E 6.39</a> (área con una tabla), <a href="#e640">E 6.40</a> (función con $n=4$), <a href="#e641">E 6.41</a> (las seis fórmulas), <a href="#p3">propio 3</a> (cuántos subintervalos) y los exámenes <a href="#x1">X1</a> (tabla), <a href="#x2">X2</a> (trapecio y Simpson) y <a href="#x4">X4</a> (tres datos y parábola).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 4 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»).</li>
+        <li>E 6.36-6.41, los 10 exámenes, los ejemplos propios y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#e638">E 6.38</a> (¿cuándo es exacto el trapecio?), <a href="#p4">propio 4</a> (buscar $M_4$), <a href="#x7">X7</a> (Simpson compuesta con $n=3$), <a href="#x9">X9</a> (interpolador y Simpson compuesta) y las prácticas ★★.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
+<!-- ============================ 0 ============================ -->
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.4.1 Motivación, p. 263">U p.263</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué debes saber antes de empezar (la integral como área, Barrow, extremos absolutos e interpolación) y qué se pide en los ejercicios y en el examen.</p>
 <h3>Qué necesitas saber ya</h3>
 <ul>
   <li><b>La integral como área</b> y la aditividad $\int_a^bf=\int_a^cf+\int_c^bf$ (<a href="tema_6_1_integral_riemann.html">tema 6.1</a>).</li>
@@ -63,7 +127,13 @@
   <li><b>Cotas de error</b> y «¿cuántos subintervalos hacen falta?» (U Ej. 6.34 y 6.35). En X no hay preguntas de cota, pero es materia del libro oficial.</li>
 </ul>
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>Para qué sirve y cómo se piensa <span class="src" data-l="U" data-ref="U §6.4.1 Motivación y §6.4.2, pp. 263-264">U pp.263-264</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Para qué sirve y cómo se piensa <span class="src" data-l="U" data-ref="U §6.4.1 Motivación y §6.4.2, pp. 263-264">U pp.263-264</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> cuándo conviene aproximar una integral y el plan común de todas las fórmulas: cambiar la curva por piezas sencillas cuya área sabemos calcular.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> no hay primitiva a mano, es muy larga de obtener, o solo tienes una tabla de valores medidos.</li>
+  <li><b>Qué haces:</b> sustituyes $f$ por escalones, rectas o parábolas que pasan por los nodos, calculas esa área y, si hace falta, troceas $[a,b]$ en subintervalos.</li>
+  <li><b>Ejemplo mínimo:</b> $\int_0^3f$ con $f(0)=42$, $f(3)=41$: trapecio $\frac{42+41}2\cdot3=124{,}5$.</li>
+</ul>
 <div class="box intu"><span class="h">Cuándo se usa y cuál es la idea común</span>
   <p>La regla de Barrow necesita una primitiva de $f$. Pero a veces <b>no se puede calcular</b> (por ejemplo $\int e^{-x^2}dx$ no se expresa con funciones elementales), es larguísima, o <b>solo conocemos los valores de $f$ en ciertos puntos</b> de $[a,b]$ (mediciones). Entonces se aproxima la integral (E 6.36, más abajo). Todas las fórmulas siguen el mismo plan, apoyado en que la integral es un <b>área</b> y se puede <b>trocear</b>: $\int_a^bf=\int_a^cf+\int_c^bf$.</p>
   <ol class="steps">
@@ -76,7 +146,13 @@
   <span class="src" data-l="S" data-ref="Stewart §7.7 Integración aproximada, p. 507">S p.507</span>
 </div>
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>Fórmulas de los rectángulos <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.3 y 6.4 y Ejemplos 6.29-6.30, pp. 264-266">U pp.264-266</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>Fórmulas de los rectángulos <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.3 y 6.4 y Ejemplos 6.29-6.30, pp. 264-266">U pp.264-266</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> los rectángulos izquierdo, derecho y central, simples y compuestos, y a contar bien los nodos.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> piden «rectángulo izquierdo», «derecho» o «central» (punto medio).</li>
+  <li><b>Qué haces:</b> calculas $h=\frac{b-a}n$, sumas los valores en $x_0,\dots,x_{n-1}$ (izquierdo), en $x_1,\dots,x_n$ (derecho) o en los puntos medios (central) y multiplicas por $h$.</li>
+  <li><b>Ejemplo mínimo:</b> $\int_0^1x^2\,dx$ con $n=2$, izquierdo: $\frac12\big(0+\frac14\big)=\frac18$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>La aproximación más burda: sustituir la curva por un <b>escalón</b>, un rectángulo de base $b-a$. ¿A qué altura? Se puede tomar la altura del extremo izquierdo, la del derecho o la del punto medio.</p>
 </div>
@@ -114,7 +190,13 @@
   <p>En el rectángulo derecho compuesto, empezar la suma en $f(x_0)$ (eso es el izquierdo): el derecho suma $f(x_1),\dots,f(x_n)$.</p>
 </div>
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Fórmula del trapecio <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.5 y 6.6 y Ejemplos 6.31-6.32, pp. 266-267">U pp.266-267</span></h2>
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Fórmula del trapecio <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.5 y 6.6 y Ejemplos 6.31-6.32, pp. 266-267">U pp.266-267</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> la fórmula del trapecio, simple y compuesta, y a aplicarla a una función o a una tabla de datos.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> piden la «regla del trapecio», o te dan una tabla de datos igualmente espaciados.</li>
+  <li><b>Qué haces:</b> haces la tabla de valores, separas extremos y centrales y calculas $\frac h2\,(E+2C)$.</li>
+  <li><b>Ejemplo mínimo:</b> $\int_0^1x^2\,dx$ con $n=2$: $\frac{1/2}2\big(0+2\cdot\frac14+1\big)=\frac38$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>En lugar de un escalón, tendemos una <b>cuerda recta</b> entre los puntos $(a,f(a))$ y $(b,f(b))$ de la gráfica, como una valla recta en el lado curvo de la finca. La región bajo esa cuerda es un trapecio «acostado» de altura $b-a$ y bases $f(a)$, $f(b)$. Su área es la <b>media de las dos bases por la altura</b>.</p>
   <span class="src" data-l="S" data-ref="Stewart §7.7, Regla del trapecio, p. 508">S p.508</span>
@@ -154,7 +236,13 @@
   <p>Si el enunciado da una <b>tabla</b> de $N$ valores igualmente espaciados, el trapecio compuesto usa todos: son $N-1$ subintervalos y $h$ es la separación entre datos (solo con datos igualmente espaciados; si no, trapecio simple en cada tramo: X10).</p>
 </div>
 <!-- ============================ 4 ============================ -->
-<h2 id="s4"><span class="n">4</span>Fórmula de Simpson <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.7 y 6.8 y Ejemplo 6.33, pp. 267-269">U pp.267-269</span></h2>
+<h2 id="s4" data-vista="teoria"><span class="n">4</span>Fórmula de Simpson <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.7 y 6.8 y Ejemplo 6.33, pp. 267-269">U pp.267-269</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> la fórmula de Simpson, simple y compuesta, los pesos $1,2,4$ y cuándo es exacta.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> piden «Simpson», o hay $3$ (o $2n+1$) datos igualmente espaciados.</li>
+  <li><b>Qué haces:</b> marcas cada valor como extremo (peso $1$), par (peso $2$) o impar (peso $4$) y multiplicas por $\frac h6$, con $h$ la longitud de cada subintervalo.</li>
+  <li><b>Ejemplo mínimo:</b> $\int_0^1x^2\,dx$ con Simpson simple: $\frac{0+4\cdot\frac14+1}6=\frac13$, exacto.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>Una recta solo puede imitar una curva sin curvatura. Una <b>parábola</b> sí puede «doblarse». Simpson toma <b>tres puntos</b> de la gráfica (los dos extremos y el punto medio), pasa por ellos la parábola (única) y calcula su área. Un arco se pega mucho mejor a una orilla curva que una valla recta.</p>
   <span class="src" data-l="S" data-ref="Stewart §7.7, Regla de Simpson, p. 512">S p.512</span>
@@ -196,7 +284,13 @@
   <span class="src" data-l="P" data-ref="Consecuencia de los Teoremas 6.3 y 6.4 de U (pp. 269-270), comprobada con sympy">propio</span>
 </div>
 <!-- ============================ 5 ============================ -->
-<h2 id="s5"><span class="n">5</span>Los tres métodos a la vez <span class="src" data-l="P" data-ref="Interactivo y tabla propios, verificados con sympy">propio</span></h2>
+<h2 id="s5" data-vista="teoria"><span class="n">5</span>Los tres métodos a la vez <span class="src" data-l="P" data-ref="Interactivo y tabla propios, verificados con sympy">propio</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a ver, con el interactivo, cómo baja el error al subir $n$ y cómo se comparan los tres métodos entre sí.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> quieres comparar métodos o decidir cuál conviene para una precisión dada.</li>
+  <li><b>Qué haces:</b> eliges función y método, subes $n$ y miras el error real frente a la cota de U.</li>
+  <li><b>Ejemplo mínimo:</b> $\operatorname{sen}x$ en $[0,\pi]$, trapecio con $n=4$: $1{,}896119$ (error $-0{,}104$); Simpson con $n=2$: $2{,}004560$.</li>
+</ul>
 <p>Prueba con el interactivo: elige una función y un método, y sube $n$. Observa (i) cómo la <b>zona de error</b> (color distinto) se estrecha, (ii) cómo el error baja mucho más deprisa con Simpson que con el trapecio, y (iii) que el trapecio y el punto medio se equivocan <b>en sentidos opuestos</b>.</p>
 <figure class="interactivo" data-escena="integracion-numerica" data-params='{"dim":2}' aria-label="Interactivo: trapecio compuesto, Simpson compuesta y punto medio con n subintervalos para cuatro integrales, con el valor aproximado, el exacto, el error y la cota de U">
   <img class="int-static" src="../assets/img/int_integracion-numerica.png" alt="Interactivo: trapecio compuesto, Simpson compuesta y punto medio con n subintervalos para cuatro integrales, con el valor aproximado, el exacto, el error y la cota de U">
@@ -219,7 +313,13 @@
   <span class="src" data-l="P" data-ref="Valores calculados con sympy (15 cifras) con las fórmulas de U Def. 6.4, 6.6 y 6.8">propio</span>
   <span class="src" data-l="S" data-ref="Stewart §7.7, cotas del error de los puntos medios y del trapecio, p. 510">S p.510</span></p>
 <!-- ============================ 6 ============================ -->
-<h2 id="s6"><span class="n">6</span>¿Cuánto nos equivocamos? Cotas del error <span class="src" data-l="U" data-ref="U §6.4 Estimaciones del error, Teoremas 6.3 y 6.4 y Ejemplos 6.34-6.35, pp. 269-270">U pp.269-270</span></h2>
+<h2 id="s6" data-vista="teoria"><span class="n">6</span>¿Cuánto nos equivocamos? Cotas del error <span class="src" data-l="U" data-ref="U §6.4 Estimaciones del error, Teoremas 6.3 y 6.4 y Ejemplos 6.34-6.35, pp. 269-270">U pp.269-270</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a acotar el error de las fórmulas compuestas y a calcular cuántos subintervalos garantizan una precisión.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> piden una «cota del error» o «cuántos subintervalos garantizan…».</li>
+  <li><b>Qué haces:</b> derivas, tomas $M$ = máximo de $\lvert f''\rvert$ (trapecio) o $\lvert f^{(4)}\rvert$ (Simpson) en $[a,b]$, impones cota $\le$ tolerancia, despejas $m$ y redondeas hacia arriba.</li>
+  <li><b>Ejemplo mínimo:</b> $\int_1^2\frac{dx}x$ con el trapecio y error $\lt10^{-4}$: $M_2=2$, $m\ge40{,}82$, luego $m=41$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva</span>
   <p>El error de una recta contra una curva depende de <b>cuánto se curva</b> la función: la mide $f''$. Si $f''$ es pequeña, el trapecio acierta; para Simpson, que ya copia parábolas, cuenta la cuarta derivada. Y cuanto más pequeño $h$, menos error. Las cotas ponen todo eso en una fórmula.</p>
 </div>
@@ -264,18 +364,302 @@
   <div class="box warn"><span class="h">Error típico</span><p>Redondear $8{,}63$ a $8$ (no garantiza la precisión) o contestar «9 nodos»: son $9$ subintervalos y $19$ nodos.</p></div>
   <span class="src" data-l="U" data-ref="U Ejemplo 6.35, p. 270">U p.270</span>
 </div>
+<!-- ============================ mapa ============================ -->
+<h2 id="mapa" data-vista="tipos"><span class="n">7</span>Cómo decidir qué hacer: mapa del tema <span class="src" data-l="P" data-ref="Síntesis propia basada en U §6.4, pp. 263-270">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a decidir qué hacer según lo que te dan y lo que te piden, con un mapa de decisión paso a paso.</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja a la siguiente y «sí» te lleva a la acción de la derecha. Lo que más puntos se pierde: <b>confundir nodos con subintervalos</b>, <b>olvidar el $2$ de los centrales o los pesos $2$ y $4$ de Simpson</b>, <b>poner mal la $h$</b> (en Simpson compuesta es la longitud de cada subintervalo) y <b>redondear hacia abajo</b> el número de subintervalos. Al final, comprueba siempre el orden de magnitud: longitud $\times$ valor medio <span class="src" data-l="U" data-ref="U §6.4.2, Definiciones 6.5-6.8, pp. 267-268">U pp.267-268</span>.</p>
+<svg class="flujo" viewBox="0 0 600 712" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión del tema 6.4: qué hacer según lo que piden en integración numérica</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Si piden una cota del error o cuántos subintervalos, se acota el valor absoluto de la derivada segunda o cuarta, se impone la cota menor o igual que la tolerancia, se despeja m y se redondea hacia arriba. Si los datos no están igualmente espaciados, se aplica el trapecio simple en cada tramo con su anchura y se suma. Si piden Simpson, se usan 2n+1 nodos con pesos 1, 2 y 4 y factor h entre 6, completando valores con el polinomio interpolador si faltan. Si piden el trapecio, se usa h entre 2 por extremos más dos veces los centrales. Si piden rectángulos, se suman los valores izquierdos, derechos o centrales y se multiplica por h. Si piden comparar, se calcula el valor exacto con Barrow y el error. Al final se comprueba el orden de magnitud.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="210" height="76" rx="10"/>
+<text x="115" y="40" text-anchor="middle">¿Piden una cota del error o</text>
+<text x="115" y="58" text-anchor="middle">cuántos subintervalos?</text>
+<path class="lin" d="M220 48 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="43">sí</text>
+<rect class="nodo" x="250" y="10" width="340" height="76" rx="10"/>
+<text x="420" y="44" text-anchor="middle">Cota ≤ tolerancia; M = máx. de |f″| o |f⁗|;</text>
+<text x="420" y="64" text-anchor="middle">despejo m y redondeo hacia arriba.</text>
+<path class="lin" d="M115 86 V109" marker-end="url(#fl)"/>
+<text class="no" x="123" y="102">no</text>
+<rect class="preg" x="10" y="112" width="210" height="76" rx="10"/>
+<text x="115" y="142" text-anchor="middle">¿Los datos NO están igualmente</text>
+<text x="115" y="160" text-anchor="middle">espaciados?</text>
+<path class="lin" d="M220 150 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="145">sí</text>
+<rect class="nodo" x="250" y="112" width="340" height="76" rx="10"/>
+<text x="420" y="146" text-anchor="middle">Trapecio simple en cada tramo, con su</text>
+<text x="420" y="166" text-anchor="middle">propia anchura, y sumo (X10).</text>
+<path class="lin" d="M115 188 V211" marker-end="url(#fl)"/>
+<text class="no" x="123" y="204">no</text>
+<rect class="preg" x="10" y="214" width="210" height="76" rx="10"/>
+<text x="115" y="258" text-anchor="middle">¿Piden Simpson?</text>
+<path class="lin" d="M220 252 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="247">sí</text>
+<rect class="nodo" x="250" y="214" width="340" height="76" rx="10"/>
+<text x="420" y="248" text-anchor="middle">Nodos 2n+1 (impar); h/6·(E+2P+4I);</text>
+<text x="420" y="268" text-anchor="middle">faltan valores: polinomio interpolador.</text>
+<path class="lin" d="M115 290 V313" marker-end="url(#fl)"/>
+<text class="no" x="123" y="306">no</text>
+<rect class="preg" x="10" y="316" width="210" height="76" rx="10"/>
+<text x="115" y="360" text-anchor="middle">¿Piden el trapecio?</text>
+<path class="lin" d="M220 354 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="349">sí</text>
+<rect class="nodo" x="250" y="316" width="340" height="76" rx="10"/>
+<text x="420" y="350" text-anchor="middle">h/2·(E+2C), n+1 nodos; con N datos,</text>
+<text x="420" y="370" text-anchor="middle">N−1 subintervalos y h = el paso.</text>
+<path class="lin" d="M115 392 V415" marker-end="url(#fl)"/>
+<text class="no" x="123" y="408">no</text>
+<rect class="preg" x="10" y="418" width="210" height="76" rx="10"/>
+<text x="115" y="462" text-anchor="middle">¿Piden rectángulos?</text>
+<path class="lin" d="M220 456 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="451">sí</text>
+<rect class="nodo" x="250" y="418" width="340" height="76" rx="10"/>
+<text x="420" y="452" text-anchor="middle">Izq.: f₀…f₍ₙ₋₁₎; der.: f₁…fₙ; central:</text>
+<text x="420" y="472" text-anchor="middle">valores en los puntos medios; × h.</text>
+<path class="lin" d="M115 494 V517" marker-end="url(#fl)"/>
+<text class="no" x="123" y="510">no</text>
+<rect class="preg" x="10" y="520" width="210" height="76" rx="10"/>
+<text x="115" y="550" text-anchor="middle">¿Piden comparar con el</text>
+<text x="115" y="568" text-anchor="middle">valor real?</text>
+<path class="lin" d="M220 558 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="553">sí</text>
+<rect class="nodo" x="250" y="520" width="340" height="76" rx="10"/>
+<text x="420" y="554" text-anchor="middle">Barrow (primitiva) y error absoluto;</text>
+<text x="420" y="574" text-anchor="middle">explico: recta frente a parábola.</text>
+<path class="lin" d="M115 596 V619" marker-end="url(#fl)"/>
+<text class="no" x="123" y="612">no</text>
+<rect class="fin" x="10" y="622" width="580" height="86" rx="10"/>
+<text x="300" y="648" text-anchor="middle">Antes de dar el resultado:</text>
+<text x="300" y="668" text-anchor="middle">¿contados bien nodos y subintervalos?, ¿h correcta?, ¿pesos 1-2-1 o 1-2-4?,</text>
+<text x="300" y="686" text-anchor="middle">¿orden de magnitud (longitud × valor medio)?, ¿m redondeado hacia arriba?</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso y la receta completa</summary>
+<table>
+  <tr><th>Veo…</th><th>Hago…</th><th>Ojo con…</th></tr>
+  <tr><td>«Aproxime con rectángulos»</td><td>Izquierdo, derecho o central, simples o compuestos (U pp.264-266)</td><td>El derecho empieza en $f(x_1)$; el central usa puntos medios</td></tr>
+  <tr><td>«Regla del trapecio» con una función</td><td>$\frac h2(E+2C)$ con $n+1$ nodos (U p.267)</td><td>El $2$ de los centrales; $h=\frac{b-a}n$</td></tr>
+  <tr><td>Tabla de $N$ datos igualmente espaciados</td><td>Trapecio compuesto con todos ($N-1$ subintervalos)</td><td>Usarlos todos; comprobar el espaciado</td></tr>
+  <tr><td>Datos con separaciones distintas</td><td>Trapecio simple en cada tramo y sumar (X10)</td><td>No existe una $h$ común</td></tr>
+  <tr><td>«Regla de Simpson» con tres datos</td><td>$\frac{b-a}6(f(a)+4f(\frac{a+b}2)+f(b))$ (U p.268)</td><td>Falta el punto medio: no se puede (E 6.37)</td></tr>
+  <tr><td>Simpson compuesta en $n$ subintervalos</td><td>$\frac h6(E+2P+4I)$ con $2n+1$ nodos</td><td>$h$ es la longitud del subintervalo, no el paso entre nodos</td></tr>
+  <tr><td>Faltan valores en los nodos</td><td>Polinomio interpolador (U §3.3) y evaluarlo (X5, X9)</td><td>Simpson es exacto si el polinomio es de grado $\le3$</td></tr>
+  <tr><td>«Compare con el valor real»</td><td>Barrow y error absoluto; explicar recta frente a parábola (X2, X3, X4)</td><td>Signo del error: convexa $\Rightarrow$ trapecio por exceso</td></tr>
+  <tr><td>«Cota del error» o «cuántos subintervalos»</td><td>Teor. 6.3 y 6.4 (U pp.269-270); despejar $m$</td><td>$M$ = máximo del valor absoluto en todo $[a,b]$; redondear hacia arriba</td></tr>
+</table>
+<div class="recipe"><b>Receta general del tema:</b>
+  <ol>
+    <li><b>¿Qué fórmula y si es simple o compuesta?</b> Con una tabla de $N$ nodos: trapecio en $N-1$ subintervalos; Simpson solo si $N$ es impar, en $\frac{N-1}2$ subintervalos.</li>
+    <li><b>Tabla $x_k\mid f_k$</b> y marcar cada valor como extremo, central/par o impar.</li>
+    <li><b>Sustituir</b> en $\frac h2(E+2C)$ o $\frac h6(E+2P+4I)$ y comprobar el orden de magnitud.</li>
+    <li><b>Si piden comparar:</b> exacto con Barrow y error absoluto.</li>
+    <li><b>Si piden $m$ o una cota:</b> derivar, hallar $M_2$ o $M_4$ (extremos absolutos), imponer cota $\le$ tolerancia, despejar y redondear hacia arriba.</li>
+  </ol>
+</div>
+</details>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">8</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo de pregunta de integración numérica. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub"><b>Integración numérica</b>: (1) cuenta antes de calcular: $n$ subintervalos son $n+1$ nodos en rectángulos y trapecio y $2n+1$ en Simpson compuesta (siempre impar); (2) trapecio $\frac h2(E+2C)$, Simpson $\frac h6(E+2P+4I)$ con $h$ la longitud del subintervalo; (3) con una tabla, usa todos los datos y comprueba que están igualmente espaciados; (4) para la cota, $M_2$ o $M_4$ es el máximo del <b>valor absoluto</b> de la derivada en todo el intervalo; (5) para el número de subintervalos, despeja $m$ y redondea <b>hacia arriba</b>.</p>
+<h3>Rectángulos simples y compuestos</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · los tres rectángulos compuestos en $\int_0^2(x^2+1)\,dx$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Aproxima $\displaystyle\int_0^2(x^2+1)\,dx$ con los rectángulos izquierdo, derecho y central compuestos en $n=4$ subintervalos. Calcula el valor exacto con Barrow y di cuál se acerca más. ¿Por qué el izquierdo se queda corto y el derecho se pasa?</p>
+  <details class="pista"><summary>Pista</summary><p>$h=\frac{2-0}4=\frac12$ y los nodos son $0,\frac12,1,\frac32,2$. El izquierdo usa los cuatro primeros, el derecho los cuatro últimos y el central los puntos medios $\frac14,\frac34,\frac54,\frac74$. $f$ es creciente en $[0,2]$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Contar</b> (U Def. 6.4, p.266): $n=4$, $h=\frac12$, nodos $x_k=\frac k2$. Valores: $f(0)=1$, $f(\frac12)=\frac54$, $f(1)=2$, $f(\frac32)=\frac{13}4$, $f(2)=5$.</li><li><b>Izquierdo</b> ($x_0,\dots,x_3$): $\frac12\left(1+\frac54+2+\frac{13}4\right)=\frac12\cdot\frac{15}2=\frac{15}4=3{,}75$.</li><li><b>Derecho</b> ($x_1,\dots,x_4$): $\frac12\left(\frac54+2+\frac{13}4+5\right)=\frac12\cdot\frac{23}2=\frac{23}4=5{,}75$.</li><li><b>Central:</b> $f(\frac14)=\frac{17}{16}$, $f(\frac34)=\frac{25}{16}$, $f(\frac54)=\frac{41}{16}$, $f(\frac74)=\frac{65}{16}$, que suman $\frac{148}{16}=\frac{37}4$; por $h$: $\frac{37}8=4{,}625$.</li><li><b>Exacto</b> (Barrow, U Teor. 6.2, p.244): $\left[\frac{x^3}3+x\right]_0^2=\frac83+2=\frac{14}3\approx4{,}667$. Errores: izquierdo $-\frac{11}{12}$, derecho $+\frac{13}{12}$, central $-\frac1{24}$: el central es con mucho el mejor.</li><li><b>Por qué:</b> $f'(x)=2x\ge0$, así que $f$ crece en $[0,2]$ (U Prop. 2.4, p.98). En cada subintervalo el extremo izquierdo da la altura <b>más baja</b> (rectángulo por debajo de la curva) y el derecho la <b>más alta</b> (por encima).</li></ol>
+    <p class="res">Resultado: izquierdo $\frac{15}4$, derecho $\frac{23}4$, central $\frac{37}8$; exacto $\frac{14}3$ (el central es el más cercano)</p>
+  </details>
+</details>
+<details class="pr" id="pr-a2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica a2 · encerrar $\pi=\int_0^1\frac{4}{1+x^2}\,dx$ entre dos rectángulos <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $I=\displaystyle\int_0^1\frac4{1+x^2}\,dx$. a) Comprueba con Barrow que $I=\pi$. b) Calcula los rectángulos izquierdo y derecho compuestos con $n=4$ y deduce, sin usar el valor de $\pi$, entre qué dos números está $I$. c) Demuestra que la media de los rectángulos izquierdo y derecho compuestos (con el mismo $n$) es siempre el trapecio compuesto, y úsalo aquí. d) Calcula también el rectángulo central compuesto con $n=4$ y compara los errores.</p>
+  <details class="pista"><summary>Pista</summary><p>a) $(\operatorname{arctg}x)'=\frac1{1+x^2}$. b) $f$ es decreciente en $[0,1]$: el izquierdo se pasa y el derecho se queda corto. c) Escribe las dos sumas y súmalas: los nodos interiores aparecen dos veces.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a)</b> $\frac4{1+x^2}$ es continua en $[0,1]$; Barrow (U Teor. 6.2, p.244): $4\operatorname{arctg}1-4\operatorname{arctg}0=4\cdot\frac\pi4=\pi$.</li><li><b>b) Valores</b> ($h=\frac14$): $f(0)=4$, $f(\frac14)=\frac{64}{17}$, $f(\frac12)=\frac{16}5$, $f(\frac34)=\frac{64}{25}$, $f(1)=2$.</li><li><b>b) Rectángulos</b> (U Def. 6.4, p.266): izquierdo $\frac14\left(4+\frac{64}{17}+\frac{16}5+\frac{64}{25}\right)\approx3{,}3812$; derecho $\frac14\left(\frac{64}{17}+\frac{16}5+\frac{64}{25}+2\right)\approx2{,}8812$.</li><li><b>b) Acotar:</b> $f'(x)=-\frac{8x}{(1+x^2)^2}\le0$, así que $f$ decrece (U Prop. 2.4, p.98). En cada subintervalo $f$ está entre su valor en el extremo derecho (el menor) y en el izquierdo (el mayor); integrando (monotonía de la integral, U p.240) y sumando: $2{,}8812&lt;I&lt;3{,}3812$.</li><li><b>c) Demostración:</b> $I_{\text{izq}}=h(f_0+f_1+\dots+f_{n-1})$ e $I_{\text{der}}=h(f_1+\dots+f_{n-1}+f_n)$. Sumando, $I_{\text{izq}}+I_{\text{der}}=h\big(f_0+2f_1+\dots+2f_{n-1}+f_n\big)$, y la mitad es $\frac h2(E+2C)=T_n$ (U Def. 6.6, p.267).</li><li><b>c) Aquí:</b> $T_4=\frac{3{,}3812+2{,}8812}2\approx3{,}1312$ (error $\approx-0{,}0104$).</li><li><b>d) Central:</b> puntos medios $\frac18,\frac38,\frac58,\frac78$: $\frac14\left(\frac{256}{65}+\frac{256}{73}+\frac{256}{89}+\frac{256}{113}\right)\approx3{,}1468$ (error $\approx+0{,}0052$): la mitad que el del trapecio y de signo contrario, como en la sección 5.</li></ol>
+    <p class="res">Resultado: $I=\pi$; $I_{\text{izq}}\approx3{,}3812$, $I_{\text{der}}\approx2{,}8812$, luego $2{,}8812&lt;I&lt;3{,}3812$; $T_4=\frac{I_{\text{izq}}+I_{\text{der}}}2\approx3{,}1312$; $I_{\text{cen}}\approx3{,}1468$</p>
+  </details>
+</details>
+<h3>Trapecio compuesto con una función</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · $\ln3$ con el trapecio en 4 subintervalos <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Aproxima $\displaystyle\int_1^3\frac{dx}x$ con el trapecio compuesto en $4$ subintervalos. Compara con el valor exacto y explica si la aproximación es por exceso o por defecto.</p>
+  <details class="pista"><summary>Pista</summary><p>$h=\frac12$, nodos $1,\frac32,2,\frac52,3$. Para el signo del error: ¿$\frac1x$ es convexa o cóncava? ¿La cuerda queda por encima o por debajo?</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Contar</b> (U Def. 6.6, p.267): $n=4$, $h=\frac{3-1}4=\frac12$; $5$ nodos.</li><li><b>Tabla:</b> $f(1)=1$, $f(\frac32)=\frac23$, $f(2)=\frac12$, $f(\frac52)=\frac25$, $f(3)=\frac13$.</li><li><b>Clasificar:</b> extremos $1+\frac13=\frac43$; centrales $\frac23+\frac12+\frac25=\frac{47}{30}$.</li><li><b>Sustituir:</b> $\frac{1/2}2\left(\frac43+2\cdot\frac{47}{30}\right)=\frac14\cdot\frac{67}{15}=\frac{67}{60}\approx1{,}1167$.</li><li><b>Exacto</b> (Barrow, U Teor. 6.2, p.244): $\ln3-\ln1=\ln3\approx1{,}0986$. Error $\approx0{,}0181$.</li><li><b>Signo:</b> $f''(x)=\frac2{x^3}&gt;0$ en $[1,3]$: $f$ es convexa (U Prop. 3.10, p.136) y cada cuerda queda por encima de la curva. Cada trapecio tiene más área que la región: aproximación <b>por exceso</b>, como sale.</li></ol>
+    <p class="res">Resultado: $T_4=\frac{67}{60}\approx1{,}1167$; exacto $\ln3\approx1{,}0986$; error $\approx0{,}0181$ (por exceso)</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica b2 · $\int_0^1e^x\,dx$: doblar $n$ divide el error entre 4 <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $I=\displaystyle\int_0^1e^x\,dx$. a) Calcula $T_2$ y $T_4$ (trapecio compuesto con $2$ y $4$ subintervalos) y sus errores. ¿Cuántas veces menor es el segundo? b) Calcula $\frac{4T_4-T_2}3$ y compáralo con Simpson compuesta en $n=2$ subintervalos. c) Demuestra que en general $S_n=\frac{4T_{2n}-T_n}3$, usando $S_n=\frac{T_n+2M_n}3$ (sección 5).</p>
+  <details class="pista"><summary>Pista</summary><p>Valores: $e^{1/4}\approx1{,}284025$, $e^{1/2}\approx1{,}648721$, $e^{3/4}\approx2{,}117000$, $e\approx2{,}718282$. c) Los nodos de $T_{2n}$ son los de $T_n$ más los puntos medios: $T_{2n}=\frac{T_n+M_n}2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Exacto</b> (Barrow, U Teor. 6.2, p.244): $I=e-1\approx1{,}718282$.</li><li><b>a) $T_2$</b> ($h=\frac12$, U Def. 6.6, p.267): $\frac14\big(1+e+2e^{1/2}\big)\approx\frac14\cdot7{,}015725\approx1{,}7539$; error $\approx0{,}0356$.</li><li><b>a) $T_4$</b> ($h=\frac14$): $\frac18\big(1+e+2(e^{1/4}+e^{1/2}+e^{3/4})\big)\approx\frac18\cdot13{,}817774\approx1{,}7272$; error $\approx0{,}0089$.</li><li><b>a) Cociente:</b> $\frac{0{,}0356}{0{,}0089}\approx4$. Coincide con la cota del Teor. 6.3 (U p.269), proporcional a $\frac1{m^2}$: al doblar $m$ se divide entre $4$.</li><li><b>b) Combinación:</b> $\frac{4\cdot1{,}727222-1{,}753931}3\approx1{,}718319$, error $\approx3{,}7\cdot10^{-5}$.</li><li><b>b) Simpson compuesta, $n=2$</b> (U Def. 6.8, p.268): $h=\frac12$, nodos cada $\frac14$, $\frac{1/2}6\big(1+e+2e^{1/2}+4(e^{1/4}+e^{3/4})\big)\approx\frac1{12}\cdot20{,}619825\approx1{,}718319$. Es el mismo número.</li><li><b>c) Demostración:</b> los subintervalos de $T_{2n}$ son las mitades de los de $T_n$; sus nodos interiores son los de $T_n$ más los puntos medios, y su paso es $\frac h2$. Entonces $T_{2n}=\frac h4\big(E+2C+2\sum\text{medios}\big)=\frac{T_n+M_n}2$, de donde $M_n=2T_{2n}-T_n$. Sustituyendo en $S_n=\frac{T_n+2M_n}3$: $S_n=\frac{T_n+4T_{2n}-2T_n}3=\frac{4T_{2n}-T_n}3$.</li></ol>
+    <p class="res">Resultado: $T_2\approx1{,}7539$, $T_4\approx1{,}7272$; errores $\approx0{,}0356$ y $\approx0{,}0089$ (cociente $\approx4$); $\frac{4T_4-T_2}3\approx1{,}718319=S_2$; exacto $e-1\approx1{,}718282$</p>
+  </details>
+</details>
+<h3>Simpson simple y compuesta</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · $\frac\pi4=\int_0^1\frac{dx}{1+x^2}$ con Simpson <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Aproxima $\displaystyle\int_0^1\frac{dx}{1+x^2}$ con Simpson simple y con Simpson compuesta en $n=2$ subintervalos. Sabiendo que el valor exacto es $\frac\pi4$, ¿qué aproximación de $\pi$ da cada una?</p>
+  <details class="pista"><summary>Pista</summary><p>Simple: nodos $0,\frac12,1$. Compuesta con $n=2$: $h=\frac12$, nodos cada $\frac14$ ($5$ nodos), factor $\frac h6=\frac1{12}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Exacto</b> (Barrow, U Teor. 6.2, p.244): $\operatorname{arctg}1-\operatorname{arctg}0=\frac\pi4\approx0{,}785398$.</li><li><b>Simpson simple</b> (U Def. 6.7, p.268): $f(0)=1$, $f(\frac12)=\frac45$, $f(1)=\frac12$: $\frac{1+4\cdot\frac45+\frac12}6\cdot1=\frac{47/10}6=\frac{47}{60}\approx0{,}78333$. Por $4$: $\pi\approx3{,}1333$.</li><li><b>Compuesta, contar</b> (U Def. 6.8, p.268): subintervalos $[0,\frac12]$ y $[\frac12,1]$, puntos medios $\frac14$ y $\frac34$. Valores: $f(\frac14)=\frac{16}{17}$, $f(\frac34)=\frac{16}{25}$.</li><li><b>Clasificar:</b> extremos $1+\frac12=\frac32$; par $f(\frac12)=\frac45$; impares $\frac{16}{17}+\frac{16}{25}=\frac{672}{425}$.</li><li><b>Sustituir:</b> $\frac1{12}\left(\frac32+2\cdot\frac45+4\cdot\frac{672}{425}\right)=\frac1{12}\cdot\frac{8011}{850}=\frac{8011}{10200}\approx0{,}785392$. Por $4$: $\pi\approx3{,}14157$ (error $\approx6\cdot10^{-6}$ en la integral).</li></ol>
+    <p class="res">Resultado: $S_1=\frac{47}{60}\approx0{,}78333$; $S_2=\frac{8011}{10200}\approx0{,}785392$; exacto $\frac\pi4\approx0{,}785398$</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica c2 · $\int_0^\pi x\operatorname{sen}x\,dx$: exacto, Simpson simple y compuesta <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $I=\displaystyle\int_0^\pi x\operatorname{sen}x\,dx$. a) Calcula el valor exacto por partes. b) Aproxímalo con Simpson simple. c) Aproxímalo con Simpson compuesta en $2$ subintervalos. d) ¿Cuántas veces menor es el error en c) que en b)?</p>
+  <details class="pista"><summary>Pista</summary><p>a) $u=x$, $v'=\operatorname{sen}x$. c) $h=\frac\pi2$, nodos $0,\frac\pi4,\frac\pi2,\frac{3\pi}4,\pi$, con $\operatorname{sen}\frac\pi4=\operatorname{sen}\frac{3\pi}4=\frac{\sqrt2}2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Partes</b> (U pp.251-253): $\int x\operatorname{sen}x\,dx=-x\cos x+\int\cos x\,dx=-x\cos x+\operatorname{sen}x$. Barrow: $(-\pi\cos\pi+0)-0=\pi$.</li><li><b>b) Simpson simple</b> (U Def. 6.7, p.268): $f(0)=0$, $f(\frac\pi2)=\frac\pi2$, $f(\pi)=0$: $\frac{0+4\cdot\frac\pi2+0}6\cdot\pi=\frac{\pi^2}3\approx3{,}2899$; error $\approx0{,}148$.</li><li><b>c) Tabla</b> (U Def. 6.8, p.268): $f(0)=0$, $f(\frac\pi4)=\frac{\pi\sqrt2}8$, $f(\frac\pi2)=\frac\pi2$, $f(\frac{3\pi}4)=\frac{3\pi\sqrt2}8$, $f(\pi)=0$.</li><li><b>c) Clasificar:</b> extremos $0$; par $\frac\pi2$; impares $\frac{\pi\sqrt2}8+\frac{3\pi\sqrt2}8=\frac{\pi\sqrt2}2$.</li><li><b>c) Sustituir:</b> $\frac{\pi/2}6\left(2\cdot\frac\pi2+4\cdot\frac{\pi\sqrt2}2\right)=\frac\pi{12}\big(\pi+2\sqrt2\,\pi\big)=\frac{\pi^2(1+2\sqrt2)}{12}\approx3{,}1488$; error $\approx0{,}0072$.</li><li><b>d)</b> $\frac{0{,}148}{0{,}0072}\approx21$. La cota del Teor. 6.4 (U p.270) es proporcional a $\frac1{m^4}$: al pasar de $m=1$ a $m=2$ se divide entre $16$; el error real baja algo más.</li></ol>
+    <p class="res">Resultado: exacto $\pi$; $S_1=\frac{\pi^2}3\approx3{,}2899$; $S_2=\frac{\pi^2(1+2\sqrt2)}{12}\approx3{,}1488$; el error se divide entre $\approx21$</p>
+  </details>
+</details>
+<h3>Tablas de datos: qué fórmula y con qué nodos</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · distancia recorrida a partir de una tabla de velocidades <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">La velocidad de un coche (en m/s) se mide cada $10$ s:</p>
+  <table><caption>Velocidad medida</caption>
+  <tr><th scope="row">$t$ (s)</th><td>0</td><td>10</td><td>20</td><td>30</td><td>40</td><td>50</td><td>60</td></tr>
+  <tr><th scope="row">$v$ (m/s)</th><td>0</td><td>12</td><td>20</td><td>25</td><td>28</td><td>30</td><td>31</td></tr></table>
+  <p class="enun">Aproxima la distancia recorrida en el minuto con el trapecio compuesto y con Simpson compuesta, usando todos los datos.</p>
+  <details class="pista"><summary>Pista</summary><p>La distancia es $\int_0^{60}v(t)\,dt$ (área bajo la velocidad, que es $\ge0$). Hay $7$ nodos: el trapecio usa $6$ subintervalos; Simpson, $7=2n+1\Rightarrow n=3$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Qué integral:</b> la distancia es el área bajo la gráfica de la velocidad, $\int_0^{60}v(t)\,dt$.</li><li><b>Trapecio</b> (U Def. 6.6, p.267): $7$ nodos, $n=6$, $h=10$. Extremos $0+31=31$; centrales $12+20+25+28+30=115$. $\frac{10}2(31+2\cdot115)=5\cdot261=1305$ m.</li><li><b>Simpson, contar</b> (U Def. 6.8, p.268): $2n+1=7\Rightarrow n=3$ subintervalos $[0,20]$, $[20,40]$, $[40,60]$, $h=20$; los puntos medios son $10,30,50$.</li><li><b>Simpson, clasificar:</b> extremos $31$; pares ($t=20,40$) $20+28=48$; impares ($t=10,30,50$) $12+25+30=67$.</li><li><b>Simpson, sustituir:</b> $\frac{20}6\big(31+2\cdot48+4\cdot67\big)=\frac{20}6\cdot395=\frac{3950}3\approx1316{,}7$ m.</li></ol>
+    <p class="res">Resultado: trapecio $1305$ m; Simpson compuesta ($n=3$) $\frac{3950}3\approx1316{,}7$ m</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica d2 · seis datos: ¿se puede usar Simpson con todos? <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">De una función $f$ se conocen:</p>
+  <table><caption>Datos de $f$</caption>
+  <tr><th scope="row">$x$</th><td>0</td><td>0,5</td><td>1</td><td>1,5</td><td>2</td><td>2,5</td></tr>
+  <tr><th scope="row">$f(x)$</th><td>1</td><td>1,4</td><td>1,6</td><td>1,5</td><td>1,2</td><td>0,8</td></tr></table>
+  <p class="enun">a) Aproxima $\displaystyle\int_0^{2{,}5}f(x)\,dx$ con el trapecio compuesto. b) ¿Se puede aplicar Simpson compuesta en $[0;2{,}5]$ con estos seis datos? c) Aproxima la integral con Simpson compuesta en $[0,2]$ y el trapecio en $[2;2{,}5]$.</p>
+  <details class="pista"><summary>Pista</summary><p>b) Simpson compuesta necesita $2n+1$ nodos: un número impar. c) Aditividad: $\int_0^{2{,}5}=\int_0^2+\int_2^{2{,}5}$; en $[0,2]$ hay $5$ nodos.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Trapecio</b> (U Def. 6.6, p.267): $6$ nodos, $n=5$, $h=0{,}5$. Extremos $1+0{,}8=1{,}8$; centrales $1{,}4+1{,}6+1{,}5+1{,}2=5{,}7$. $\frac{0{,}5}2(1{,}8+2\cdot5{,}7)=0{,}25\cdot13{,}2=3{,}3$.</li><li><b>b)</b> Simpson compuesta (U Def. 6.8, p.268) usa $2n+1$ nodos equiespaciados, siempre un número impar. Con $6$ nodos no hay ningún $n$ entero: <b>no</b> se puede con todos los datos (y Simpson simple en $[0;2{,}5]$ pediría $f(1{,}25)$, que no se conoce).</li><li><b>c) Simpson en $[0,2]$:</b> $5$ nodos $\Rightarrow n=2$, subintervalos $[0,1]$ y $[1,2]$, $h=1$, puntos medios $0{,}5$ y $1{,}5$. Extremos $1+1{,}2=2{,}2$; par $1{,}6$; impares $1{,}4+1{,}5=2{,}9$: $\frac16\big(2{,}2+2\cdot1{,}6+4\cdot2{,}9\big)=\frac{17}6\approx2{,}8333$.</li><li><b>c) Trapecio en $[2;2{,}5]$</b> (U Def. 6.5, p.267): $\frac{1{,}2+0{,}8}2\cdot0{,}5=0{,}5$.</li><li><b>c) Sumar</b> (aditividad, U p.240): $\frac{17}6+\frac12=\frac{10}3\approx3{,}3333$.</li></ol>
+    <p class="res">Resultado: a) $3{,}3$; b) no: hay $6$ nodos (número par); c) $\frac{17}6+\frac12=\frac{10}3\approx3{,}3333$</p>
+  </details>
+</details>
+<h3>Cota del error con $n$ dado</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · cotas para $\int_0^\pi\operatorname{sen}x\,dx$ con $n=4$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Acota el error que se comete al aproximar $\displaystyle\int_0^\pi\operatorname{sen}x\,dx$ con el trapecio compuesto y con Simpson compuesta, ambos en $4$ subintervalos. Compara con los errores reales de la tabla de la sección 5 ($1{,}04\cdot10^{-1}$ y $2{,}69\cdot10^{-4}$).</p>
+  <details class="pista"><summary>Pista</summary><p>Las derivadas del seno son $\pm\operatorname{sen}x$ o $\pm\cos x$, y todas tienen valor absoluto $\le1$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>$M_2$:</b> $f''(x)=-\operatorname{sen}x$, y $\lvert-\operatorname{sen}x\rvert\le1$, con igualdad en $x=\frac\pi2$: $M_2=1$.</li><li><b>$M_4$:</b> $f^{(4)}(x)=\operatorname{sen}x$: $M_4=1$.</li><li><b>Trapecio</b> (U Teor. 6.3, p.269), $b-a=\pi$, $m=4$: $\varepsilon\le\frac{\pi^3}{12\cdot16}\cdot1=\frac{\pi^3}{192}\approx0{,}1615$.</li><li><b>Simpson</b> (U Teor. 6.4, p.270): $\varepsilon\le\frac{\pi^5}{2880\cdot256}\cdot1=\frac{\pi^5}{737280}\approx4{,}15\cdot10^{-4}$.</li><li><b>Comparación:</b> los errores reales $0{,}104$ y $2{,}69\cdot10^{-4}$ son menores que sus cotas, como debe ser: la cota es una garantía (el peor caso posible), no el error.</li></ol>
+    <p class="res">Resultado: trapecio $\varepsilon\le\frac{\pi^3}{192}\approx0{,}1615$; Simpson $\varepsilon\le\frac{\pi^5}{737280}\approx4{,}15\cdot10^{-4}$</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica e2 · $\int_0^1e^{x^2}dx$: buscar $M_2$ y $M_4$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $I=\displaystyle\int_0^1e^{x^2}dx$ (no tiene primitiva elemental). a) Halla $M_2$ y $M_4$ en $[0,1]$. b) Acota el error del trapecio compuesto con $n=10$ y el de Simpson compuesta con $n=5$. c) ¿Cuántos nodos usa cada uno?</p>
+  <details class="pista"><summary>Pista</summary><p>$f''(x)=2(2x^2+1)e^{x^2}$ y $f^{(4)}(x)=4(4x^4+12x^2+3)e^{x^2}$. En $[0,1]$ son productos de factores positivos y crecientes.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivadas:</b> $f'(x)=2xe^{x^2}$, $f''(x)=(2+4x^2)e^{x^2}=2(2x^2+1)e^{x^2}$; derivando dos veces más, $f^{(4)}(x)=4(4x^4+12x^2+3)e^{x^2}$.</li><li><b>$M_2$:</b> en $[0,1]$, $2x^2+1$ y $e^{x^2}$ son positivos y crecientes, así que su producto también. El máximo de $\lvert f''\rvert$ está en $x=1$: $M_2=f''(1)=6e$. (Comprobación: $f'''(x)=4x(2x^2+3)e^{x^2}\ge0$ en $[0,1]$, U Prop. 2.4, p.98.)</li><li><b>$M_4$:</b> igual, $4x^4+12x^2+3$ y $e^{x^2}$ son positivos y crecientes en $[0,1]$: $M_4=f^{(4)}(1)=4\cdot19\,e=76e$.</li><li><b>Trapecio</b> (U Teor. 6.3, p.269), $m=10$: $\varepsilon\le\frac{1^3}{12\cdot100}\cdot6e=\frac e{200}\approx0{,}0136$.</li><li><b>Simpson</b> (U Teor. 6.4, p.270), $m=5$: $\varepsilon\le\frac{1^5}{2880\cdot625}\cdot76e=\frac{19e}{450000}\approx1{,}15\cdot10^{-4}$.</li><li><b>c) Nodos:</b> trapecio con $10$ subintervalos, $11$ nodos; Simpson con $5$ subintervalos, $2\cdot5+1=11$ nodos. Con los <b>mismos</b> $11$ valores de $f$, la cota de Simpson es unas $118$ veces menor. (Errores reales: $\approx4{,}5\cdot10^{-3}$ y $\approx3{,}0\cdot10^{-5}$, con $I\approx1{,}462652$.)</li></ol>
+    <p class="res">Resultado: $M_2=6e$, $M_4=76e$; trapecio ($n=10$) $\varepsilon\le\frac e{200}\approx0{,}0136$; Simpson ($n=5$) $\varepsilon\le\frac{19e}{450000}\approx1{,}15\cdot10^{-4}$; los dos usan $11$ nodos</p>
+  </details>
+</details>
+<h3>Cuántos subintervalos para una precisión</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · $\int_0^1\cos x\,dx$: cuántos subintervalos <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">¿Cuántos subintervalos garantizan un error menor que $10^{-3}$ al aproximar $\displaystyle\int_0^1\cos x\,dx$ con el trapecio compuesto? ¿Y un error menor que $10^{-6}$ con Simpson compuesta? ¿Cuántos nodos usa cada uno?</p>
+  <details class="pista"><summary>Pista</summary><p>$\lvert f''\rvert=\lvert\cos x\rvert\le1$ y $\lvert f^{(4)}\rvert=\lvert\cos x\rvert\le1$. Despeja $m$ de «cota $\le$ tolerancia» y redondea hacia arriba (U Ej. 6.35).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Cotas de las derivadas:</b> $f''(x)=-\cos x$ y $f^{(4)}(x)=\cos x$; en $[0,1]$, $\lvert\cos x\rvert\le\cos0=1$: $M_2=M_4=1$.</li><li><b>Trapecio</b> (U Teor. 6.3, p.269): $\frac{1}{12m^2}\le10^{-3}\iff m^2\ge\frac{1000}{12}\approx83{,}33\iff m\ge9{,}13$. Redondeando hacia arriba: <b>$m=10$</b> ($11$ nodos).</li><li><b>Simpson</b> (U Teor. 6.4, p.270): $\frac1{2880m^4}\le10^{-6}\iff m^4\ge\frac{10^6}{2880}\approx347{,}2\iff m\ge4{,}32$: <b>$m=5$</b> ($2\cdot5+1=11$ nodos).</li><li><b>Lectura:</b> con los mismos $11$ nodos, Simpson garantiza una precisión mil veces mayor. (Errores reales: $7{,}0\cdot10^{-4}$ y $4{,}7\cdot10^{-7}$; exacto $\operatorname{sen}1\approx0{,}841471$.)</li></ol>
+    <p class="res">Resultado: trapecio $m=10$ ($11$ nodos); Simpson $m=5$ ($11$ nodos)</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica f2 · $\int_1^3\ln x\,dx$ con error $\lt10^{-4}$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Determina el número de subintervalos que garantiza un error menor que $10^{-4}$ al aproximar $\displaystyle\int_1^3\ln x\,dx$ con el trapecio compuesto y con Simpson compuesta. Comprueba que con un subintervalo menos la cota ya no lo asegura.</p>
+  <details class="pista"><summary>Pista</summary><p>$f''(x)=-\frac1{x^2}$ es negativa: trabaja con su valor absoluto. $b-a=2$, así que $(b-a)^3=8$ y $(b-a)^5=32$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivadas:</b> $f'=\frac1x$, $f''=-\frac1{x^2}$, $f'''=\frac2{x^3}$, $f^{(4)}=-\frac6{x^4}$.</li><li><b>$M_2$ y $M_4$:</b> $\lvert f''(x)\rvert=\frac1{x^2}$ y $\lvert f^{(4)}(x)\rvert=\frac6{x^4}$ son decrecientes en $[1,3]$; el máximo está en $x=1$: $M_2=1$, $M_4=6$. (Sin valor absoluto se tomaría el máximo de $-\frac1{x^2}$, que es $-\frac19$: sin sentido como cota.)</li><li><b>Trapecio</b> (U Teor. 6.3, p.269): $\frac{8\cdot1}{12m^2}\le10^{-4}\iff m^2\ge\frac{8}{12\cdot10^{-4}}\approx6666{,}7\iff m\ge81{,}65$: <b>$m=82$</b>. Con $m=81$ la cota es $\frac8{12\cdot81^2}\approx1{,}016\cdot10^{-4}&gt;10^{-4}$: no lo asegura.</li><li><b>Simpson</b> (U Teor. 6.4, p.270): $\frac{32\cdot6}{2880m^4}\le10^{-4}\iff m^4\ge\frac{192}{0{,}288}\approx666{,}7\iff m\ge5{,}08$: <b>$m=6$</b> ($13$ nodos). Con $m=5$ la cota es $\frac{192}{2880\cdot625}\approx1{,}07\cdot10^{-4}&gt;10^{-4}$.</li><li><b>Control</b> (Barrow con la primitiva $x\ln x-x$): $\int_1^3\ln x\,dx=3\ln3-2\approx1{,}2958$; errores reales con $m=82$ y $m=6$: $3{,}3\cdot10^{-5}$ y $7{,}9\cdot10^{-6}$.</li></ol>
+    <p class="res">Resultado: $M_2=1$, $M_4=6$; trapecio $m=82$ subintervalos; Simpson $m=6$ subintervalos</p>
+  </details>
+</details>
+<h3>Exactitud y relaciones entre fórmulas</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · una cúbica: quién es exacto y por qué <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f(x)=2x^3-x^2+1$. Calcula $\displaystyle\int_{-1}^1f(x)\,dx$ exactamente y con el trapecio simple, el rectángulo central simple y Simpson simple. ¿Cuál es exacto y por qué? Comprueba que $S=\frac{T+2M}3$.</p>
+  <details class="pista"><summary>Pista</summary><p>$f(-1)=-2$, $f(0)=1$, $f(1)=2$. Mira $f''$ y $f^{(4)}$ y las cotas de los Teor. 6.3 y 6.4.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Exacto</b> (Barrow, U Teor. 6.2, p.244): $\left[\frac{x^4}2-\frac{x^3}3+x\right]_{-1}^1=\left(\frac12-\frac13+1\right)-\left(\frac12+\frac13-1\right)=\frac43$.</li><li><b>Trapecio</b> (U Def. 6.5, p.267): $\frac{f(-1)+f(1)}2\cdot2=\frac{-2+2}2\cdot2=0$.</li><li><b>Punto medio</b> (U Def. 6.3, p.264): $f(0)\cdot2=2$.</li><li><b>Simpson</b> (U Def. 6.7, p.268): $\frac{-2+4\cdot1+2}6\cdot2=\frac43$. <b>Exacto.</b></li><li><b>Por qué:</b> $f^{(4)}\equiv0$, así que en el Teor. 6.4 (U p.270) vale $M_4=0$ y el error es $0$. En cambio $f''(x)=12x-2$ no es nula: el trapecio y el punto medio no tienen por qué acertar (solo son exactos con rectas).</li><li><b>Relación:</b> $\frac{T+2M}3=\frac{0+4}3=\frac43=S$ ✓: los errores del trapecio ($-\frac43$) y del punto medio ($+\frac23$) son de signo contrario y Simpson los combina para cancelarlos.</li></ol>
+    <p class="res">Resultado: exacto $\frac43$; trapecio $0$; punto medio $2$; Simpson $\frac43$ (exacto, porque $f^{(4)}=0$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica g2 · de dónde salen los pesos $1,4,1$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Busca los números $A$, $B$, $C$ tales que la fórmula $\displaystyle\int_0^2f(x)\,dx\approx A\,f(0)+B\,f(1)+C\,f(2)$ sea exacta para $f(x)=1$, $f(x)=x$ y $f(x)=x^2$. a) ¿Qué fórmula conocida es? b) ¿Es exacta también para $x^3$? c) ¿Y para $x^4$? Compara el error con la cota del Teor. 6.4.</p>
+  <details class="pista"><summary>Pista</summary><p>Cada función da una ecuación lineal en $A,B,C$: $\int_0^21\,dx=2$, $\int_0^2x\,dx=2$, $\int_0^2x^2\,dx=\frac83$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Ecuaciones:</b> con $f=1$: $A+B+C=2$. Con $f=x$: $0\cdot A+1\cdot B+2C=2$. Con $f=x^2$: $B+4C=\frac83$.</li><li><b>Resolver:</b> restando las dos últimas, $2C=\frac23$, $C=\frac13$; entonces $B=2-\frac23=\frac43$ y $A=2-\frac43-\frac13=\frac13$.</li><li><b>a)</b> $\frac13f(0)+\frac43f(1)+\frac13f(2)=\frac{2}6\big(f(0)+4f(1)+f(2)\big)$: es la fórmula de Simpson (U Def. 6.7, p.268) con $b-a=2$.</li><li><b>b) $x^3$:</b> $\frac13\cdot0+\frac43\cdot1+\frac13\cdot8=4$ y $\int_0^2x^3\,dx=\frac{16}4=4$: exacta, sin haberlo impuesto (lo garantiza el Teor. 6.4 con $M_4=0$, U p.270).</li><li><b>c) $x^4$:</b> $\frac43+\frac{16}3=\frac{20}3$, pero $\int_0^2x^4\,dx=\frac{32}5$. Error $\frac{20}3-\frac{32}5=\frac4{15}$. La cota del Teor. 6.4 con $m=1$, $M_4=24$: $\frac{2^5}{2880}\cdot24=\frac4{15}$; la cota se alcanza.</li></ol>
+    <p class="res">Resultado: $A=C=\frac13$, $B=\frac43$ (Simpson); exacta para $x^3$ ($4=4$); para $x^4$ da $\frac{20}3\ne\frac{32}5$ (error $\frac4{15}$, igual a la cota)</p>
+  </details>
+</details>
+</div>
+<h2 id="autoeval" data-vista="tipos"><span class="n">9</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico (nodos y subintervalos, pesos, $h$, cotas), con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="b">
+    <p><b>1.</b> (Elige) El trapecio compuesto en $4$ subintervalos de $[0,2]$ necesita los valores de $f$ en:</p>
+    <div class="opts"><button data-v="a">(a) $4$ nodos</button><button data-v="b">(b) $5$ nodos</button><button data-v="c">(c) $8$ nodos</button><button data-v="d">(d) $9$ nodos</button></div>
+    <div class="exp">$n$ subintervalos son $n+1$ nodos: $0,\frac12,1,\frac32,2$ (U Def. 6.6, p.267). (d) serían los de Simpson compuesta con $4$ subintervalos.</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>2.</b> (Elige) Simpson compuesta en $3$ subintervalos (Def. 6.8 de U) usa:</p>
+    <div class="opts"><button data-v="a">(a) $3$ nodos</button><button data-v="b">(b) $4$ nodos</button><button data-v="c">(c) $7$ nodos</button><button data-v="d">(d) $6$ nodos</button></div>
+    <div class="exp">Cada subintervalo aporta su punto medio: $2n+1=7$ nodos (U Def. 6.8, p.268). (b) son los extremos de los subintervalos sin los puntos medios.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>3.</b> (V/F) Simpson simple da el valor exacto de $\int_a^bx^3\,dx$ en cualquier intervalo $[a,b]$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$(x^3)^{(4)}=0$, así que $M_4=0$ y la cota del Teor. 6.4 (U p.270) es $0$. Simpson es exacto en polinomios de grado $\le3$, no solo $\le2$.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>4.</b> (V/F) Si $f''&gt;0$ en $[a,b]$, el trapecio compuesto da una aproximación por exceso de $\int_a^bf$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Con $f''&gt;0$, $f$ es convexa (U Prop. 3.10, p.136) y cada cuerda queda por encima de la curva: cada trapecio tiene más área que la región bajo $f$.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>5.</b> (Elige) El trapecio simple aplicado a $\int_0^2x^2\,dx$ da:</p>
+    <div class="opts"><button data-v="a">(a) $4$</button><button data-v="b">(b) $\frac83$</button><button data-v="c">(c) $2$</button><button data-v="d">(d) $8$</button></div>
+    <div class="exp">$\frac{f(0)+f(2)}2\cdot2=\frac{0+4}2\cdot2=4$ (U Def. 6.5, p.267). (b) es el valor exacto; (d) olvida dividir entre $2$.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>6.</b> (Elige) Simpson simple aplicado a $\int_0^2x^2\,dx$ da:</p>
+    <div class="opts"><button data-v="a">(a) $4$</button><button data-v="b">(b) $\frac83$</button><button data-v="c">(c) $\frac43$</button><button data-v="d">(d) $8$</button></div>
+    <div class="exp">$\frac{0+4\cdot1+4}6\cdot2=\frac83$, el valor exacto (U Def. 6.7, p.268): Simpson es exacto en parábolas.</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>7.</b> (V/F) Con $6$ datos igualmente espaciados se puede aplicar Simpson compuesta usándolos todos.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Simpson compuesta usa $2n+1$ nodos, siempre un número impar (U Def. 6.8, p.268). Con $6$ datos se puede hacer Simpson con $5$ y el trapecio en el último tramo.</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>8.</b> (Elige) Si se dobla el número de subintervalos del trapecio compuesto, la cota del error del Teor. 6.3 se divide entre:</p>
+    <div class="opts"><button data-v="a">(a) $2$</button><button data-v="b">(b) $3$</button><button data-v="c">(c) $4$</button><button data-v="d">(d) $16$</button></div>
+    <div class="exp">La cota es $\frac{(b-a)^3M_2}{12m^2}$: con $2m$ aparece $(2m)^2=4m^2$ (U Teor. 6.3, p.269). (d) es lo que pasa con la de Simpson, que lleva $m^4$.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>9.</b> (Elige) Para $f(x)=\ln x$ en $[1,3]$, el valor de $M_2$ que hay que usar en la cota del trapecio es:</p>
+    <div class="opts"><button data-v="a">(a) $1$</button><button data-v="b">(b) $\frac19$</button><button data-v="c">(c) $-1$</button><button data-v="d">(d) $-\frac19$</button></div>
+    <div class="exp">$\lvert f''(x)\rvert=\frac1{x^2}$, decreciente en $[1,3]$, con máximo $1$ en $x=1$ (U Teor. 6.3, p.269). (b) toma el extremo equivocado; (c) y (d) olvidan el valor absoluto.</div>
+  </div>
+  <div class="q" data-ok="d">
+    <p><b>10.</b> (Elige) Al despejar la cota de Simpson sale $m\ge8{,}2$. El número de subintervalos que garantiza la precisión es:</p>
+    <div class="opts"><button data-v="a">(a) $8$</button><button data-v="b">(b) $8{,}2$</button><button data-v="c">(c) $17$</button><button data-v="d">(d) $9$</button></div>
+    <div class="exp">$m$ es entero y debe cumplir $m\ge8{,}2$: el primero es $9$ (U Ej. 6.35, p.270). Con $8$ la cota no lo asegura; $19$ serían los nodos ($2\cdot9+1$), no los subintervalos.</div>
+  </div>
+  <p class="nota"></p>
+</div>
 <!-- ============================ 7 ============================ -->
-<h2 id="ejercicios"><span class="n">7</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.36-6.41, pp. 242-246">E pp.242-246</span></h2>
-<p>Los seis ejercicios de E de esta sección, con su numeración. Haz clic en cada uno (o en «Mostrar soluciones») para ver la solución.</p>
-<details class="sol" id="e636"><summary>Ejercicio 6.36 · ¿Solo es útil si no se conoce $f$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.36, p. 242">E p.242</span></summary>
-<p class="enun">¿La integración numérica solamente es útil si no conocemos la expresión explícita de la función a integrar?</p>
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">10</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.36-6.41, pp. 242-246">E pp.242-246</span></h2>
+<p>Los seis ejercicios de E de esta sección, con su numeración. Haz clic en «Ver solución paso a paso» de cada uno. <b>Índice rápido:</b> <a href="#e636">6.36</a> · <a href="#e637">6.37</a> · <a href="#e638">6.38</a> · <a href="#e639">6.39</a> · <a href="#e640">6.40</a> · <a href="#e641">6.41</a>.</p>
+<article class="ejer" id="e636">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 6.36 · ¿Solo es útil si no se conoce $f$?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.36, p. 242">E p.242</span></header>
+<div class="ejer-enun"><p class="enun">¿La integración numérica solamente es útil si no conocemos la expresión explícita de la función a integrar?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una respuesta razonada (sí o no).</dd>
     <dt>Cómo lo pienso</dt><dd>Barrow necesita una primitiva; conocer $f$ no garantiza tenerla.</dd>
     <dt>Qué uso</dt><dd>Motivación de U §6.4.1 (p.263).</dd>
     <dt>Por dónde empiezo</dt><dd>Buscar una función conocida sin primitiva elemental.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>No.</b> Hay funciones con fórmula sencilla cuya primitiva no se escribe con funciones elementales, como $e^{-x^2}$ (U Ej. 6.34), $\frac{\operatorname{sen}x}{x}$ o $e^{x^3}$: Barrow no sirve en la práctica.</li>
     <li>Otras veces la primitiva existe pero es larguísima de obtener (racionales con muchos factores) y una aproximación basta.</li>
     <li>Y, por supuesto, también es útil cuando solo se conoce una tabla de valores (mediciones).</li>
@@ -283,15 +667,18 @@
   <div class="recipe"><b>Receta:</b> integración numérica = cuando Barrow no es posible o no compensa, o cuando solo hay datos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Creer que «tener la fórmula» equivale a «saber integrarla».</p></div>
 </details>
-<details class="sol" id="e637"><summary>Ejercicio 6.37 · ¿Trapecio o Simpson con dos datos? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.37, pp. 242-243">E pp.242-243</span></summary>
-<p class="enun">De una función $f$ se conocen los valores $f(0)=42$, $f(3)=41$. ¿Es posible utilizar la fórmula del trapecio para aproximar $\int_0^3f(x)\,dx$? Si la respuesta es afirmativa, calcula tal aproximación. ¿Puede utilizar la fórmula de Simpson para aproximar el valor de tal integral?</p>
+</article>
+<article class="ejer" id="e637">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.37 · ¿Trapecio o Simpson con dos datos?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.37, pp. 242-243">E pp.242-243</span></header>
+<div class="ejer-enun"><p class="enun">De una función $f$ se conocen los valores $f(0)=42$, $f(3)=41$. ¿Es posible utilizar la fórmula del trapecio para aproximar $\int_0^3f(x)\,dx$? Si la respuesta es afirmativa, calcula tal aproximación. ¿Puede utilizar la fórmula de Simpson para aproximar el valor de tal integral?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir qué fórmulas se pueden aplicar con solo dos datos y, si se puede, aproximar.</dd>
     <dt>Cómo lo pienso</dt><dd>Cada fórmula necesita unos valores concretos: el trapecio, los dos extremos; Simpson, además el punto medio.</dd>
     <dt>Qué uso</dt><dd>Def. 6.5 y 6.7 (U pp.267-268).</dd>
     <dt>Por dónde empiezo</dt><dd>Listar los nodos que pide cada fórmula.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Trapecio:</b> necesita $f(0)$ y $f(3)$, que se conocen:
     $$\int_0^3f(x)\,dx\approx\frac{f(0)+f(3)}2\,(3-0)=\frac{42+41}2\cdot3=41{,}5\cdot3=124{,}5.$$</li>
     <li><b>Simpson:</b> necesita además $f\!\big(\frac{0+3}2\big)=f(1{,}5)$, que <b>no</b> se conoce. Con estos datos no se puede aplicar.</li>
@@ -299,8 +686,10 @@
   <div class="recipe"><b>Receta:</b> antes de aplicar una fórmula, comprobar que se tienen <b>todos</b> sus nodos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>«Inventarse» $f(1{,}5)$ como media de $f(0)$ y $f(3)$: eso supone que $f$ es una recta, y Simpson daría lo mismo que el trapecio.</p></div>
 </details>
-<details class="sol" id="e638"><summary>Ejercicio 6.38 · ¿Es exacto el trapecio con un número par de subintervalos? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.38, p. 243">E p.243</span></summary>
-<p class="enun">Dada $f(x)=\begin{cases}3+x,&x\le1,\\4x,&x\gt1,\end{cases}$ el valor de $\int_{-1}^3f(x)\,dx$ ¿se obtiene de forma exacta por la fórmula compuesta del trapecio con un número par de subintervalos, todos de la misma longitud?</p>
+</article>
+<article class="ejer" id="e638">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Ejercicio 6.38 · ¿Es exacto el trapecio con un número par de subintervalos?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.38, p. 243">E p.243</span></header>
+<div class="ejer-enun"><p class="enun">Dada $f(x)=\begin{cases}3+x,&x\le1,\\4x,&x\gt1,\end{cases}$ el valor de $\int_{-1}^3f(x)\,dx$ ¿se obtiene de forma exacta por la fórmula compuesta del trapecio con un número par de subintervalos, todos de la misma longitud?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si el trapecio compuesto da el valor exacto cuando $n$ es par.</dd>
     <dt>Cómo lo pienso</dt><dd>La gráfica es una recta en $[-1,1]$ y otra en $[1,3]$, con un «codo» en $x=1$. El trapecio es exacto en un subintervalo donde $f$ es una recta; el único problema es un subintervalo que contenga el codo en su interior.</dd>
@@ -308,8 +697,9 @@
     <dt>Por dónde empiezo</dt><dd>¿Cuándo es $x=1$ un nodo?</dd>
   </dl></div>
   <figure class="bookfig"><img src="../assets/img/fig_e_6_38.png" alt="Dos gráficas de f en [−1,3]: a la izquierda un trapecio compuesto con un subintervalo que contiene el codo en x=1 (el trapecio recorta la región); a la derecha con x=1 como nodo, donde el trapecio coincide con la región" loading="lazy">
-    <figcaption>Ej. 6.38: con $x=1$ dentro de un subintervalo (izquierda) el trapecio no coincide con la región; con $x=1$ como nodo (derecha) sí. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.38, figuras, p. 243">E p.243</span></figcaption></figure>
-  <ol class="steps">
+    <figcaption>Ej. 6.38: con $x=1$ dentro de un subintervalo (izquierda) el trapecio no coincide con la región; con $x=1$ como nodo (derecha) sí. <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.38, figuras, p. 243">E p.243</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Nodos:</b> con $n$ subintervalos, $h=\frac4n$ y $x_k=-1+\frac{4k}n$. Es $x_k=1\iff\frac{4k}n=2\iff k=\frac n2$, entero <b>si y solo si $n$ es par</b>.</li>
     <li><b>Si $n$ es par</b>, cada subintervalo está entero en $[-1,1]$ o entero en $[1,3]$, donde $f$ es una recta (en $[1,3]$ es la recta $y=4x$ <b>incluido el extremo</b> $x=1$, donde $f(1)=4=4\cdot1$ coincide con $3+1$). En cada uno, la recta que usa el trapecio es la propia $f$: da su integral exacta. Sumando (aditividad), el trapecio compuesto da $\int_{-1}^3f$ exacta. <b>Respuesta: sí.</b></li>
     <li><b>Valor exacto:</b> $\int_{-1}^1(3+x)dx=\big[3x+\frac{x^2}2\big]_{-1}^1=6$; $\int_1^34x\,dx=[2x^2]_1^3=16$; total $22$.</li>
@@ -319,8 +709,10 @@
   <div class="recipe"><b>Receta:</b> el trapecio compuesto es exacto cuando $f$ es una recta en cada subintervalo: los puntos donde cambia la fórmula deben ser nodos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Pensar que «$f$ lineal a trozos» basta sin comprobar dónde caen los nodos.</p></div>
 </details>
-<details class="sol" id="e639"><summary>Ejercicio 6.39 · Área de una finca con el trapecio compuesto <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.39, p. 244">E p.244</span></summary>
-<p class="enun">Aproxima utilizando la fórmula del trapecio compuesta el área de una finca comprendida entre tres caminos (de longitud 130, 500 y 150 metros respectivamente) y un río que pasa por los siguientes puntos ($x$ e $y$ se miden en metros):</p>
+</article>
+<article class="ejer" id="e639">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.39 · Área de una finca con el trapecio compuesto</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.39, p. 244">E p.244</span></header>
+<div class="ejer-enun"><p class="enun">Aproxima utilizando la fórmula del trapecio compuesta el área de una finca comprendida entre tres caminos (de longitud 130, 500 y 150 metros respectivamente) y un río que pasa por los siguientes puntos ($x$ e $y$ se miden en metros):</p>
   <table>
     <caption>Puntos del río</caption>
     <tr><th scope="row">$x$</th><td>0</td><td>100</td><td>200</td><td>300</td><td>400</td><td>500</td></tr>
@@ -334,8 +726,9 @@
     <dt>Cómo lo pienso</dt><dd>Seis nodos con paso $100$ son $5$ subintervalos: trapecio compuesto con todos los datos.</dd>
     <dt>Qué uso</dt><dd>Área = integral (U p.264); Def. 6.6 (U p.267).</dd>
     <dt>Por dónde empiezo</dt><dd>$h=\frac{500-0}5=100$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Clasificar:</b> extremos $130+150=280$; centrales $120+125+140+140=525$.</li>
     <li><b>Sustituir:</b> $\displaystyle\int_0^{500}f\approx\frac{100}2\big(280+2\cdot525\big)=50\cdot1330=66\,500\ \text{m}^2.$</li>
     <li><b>Sentido:</b> la altura media ronda $133$ m y el ancho es $500$ m: $500\cdot133=66\,500$. Cuadra.</li>
@@ -343,16 +736,19 @@
   <div class="recipe"><b>Receta:</b> área bajo una curva conocida por puntos = trapecio compuesto con todos los puntos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Poner unidades de longitud (m) en lugar de superficie (m²), o tomar $h=500$.</p></div>
 </details>
-<details class="sol" id="e640"><summary>Ejercicio 6.40 · $\int_0^\pi\cos x\,dx$ con el trapecio en 4 intervalos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.40, pp. 244-245">E pp.244-245</span></summary>
-<p class="enun">Aproxima el valor de $I=\int_0^\pi\cos x\,dx$ aplicando la fórmula compuesta del trapecio en 4 intervalos. Compara el valor obtenido con el real.</p>
+</article>
+<article class="ejer" id="e640">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.40 · $\int_0^\pi\cos x\,dx$ con el trapecio en 4 intervalos</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.40, pp. 244-245">E pp.244-245</span></header>
+<div class="ejer-enun"><p class="enun">Aproxima el valor de $I=\int_0^\pi\cos x\,dx$ aplicando la fórmula compuesta del trapecio en 4 intervalos. Compara el valor obtenido con el real.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El trapecio compuesto con $n=4$ y compararlo con el valor exacto.</dd>
     <dt>Cómo lo pienso</dt><dd>$h=\frac\pi4$, nodos $0,\frac\pi4,\frac\pi2,\frac{3\pi}4,\pi$. El coseno es «antisimétrico» respecto de $\frac\pi2$: lo que sube a un lado baja al otro.</dd>
     <dt>Qué uso</dt><dd>Def. 6.6 (U p.267); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>Tabla de valores.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[0.0,1.0],[0.7853981633974483,0.7071067811865476],[1.5707963267948966,6.123233995736766e-17],[2.356194490192345,-0.7071067811865475],[3.141592653589793,-1.0]],"c":[{"e":"cos(x)","n":"cos x"},{"e":"x<=0.785398?(1.0+(-0.292893)/(0.785398)*(x-(0.0))):x<=1.570796?(0.707107+(-0.707107)/(0.785398)*(x-(0.785398))):x<=2.356194?(0.0+(-0.707107)/(0.785398)*(x-(1.570796))):(-0.707107+(-0.292893)/(0.785398)*(x-(2.356194)))","n":"trapecio, n=4","d":1}],"x":[0,3.141593],"y":[-1.1,1.1]}' data-alt="cos x en [0, pi] con los cinco nodos y la poligonal del trapecio"><figcaption>La curva $\cos x$, los cinco nodos $0,\frac\pi4,\dots,\pi$ y la poligonal del trapecio con $n=4$: lo que sobra por encima en una mitad se compensa con lo que falta en la otra. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"p":[[0.0,1.0],[0.7853981633974483,0.7071067811865476],[1.5707963267948966,6.123233995736766e-17],[2.356194490192345,-0.7071067811865475],[3.141592653589793,-1.0]],"c":[{"e":"cos(x)","n":"cos x"},{"e":"x<=0.785398?(1.0+(-0.292893)/(0.785398)*(x-(0.0))):x<=1.570796?(0.707107+(-0.707107)/(0.785398)*(x-(0.785398))):x<=2.356194?(0.0+(-0.707107)/(0.785398)*(x-(1.570796))):(-0.707107+(-0.292893)/(0.785398)*(x-(2.356194)))","n":"trapecio, n=4","d":1}],"x":[0,3.141593],"y":[-1.1,1.1]}' data-alt="cos x en [0, pi] con los cinco nodos y la poligonal del trapecio"><figcaption>La curva $\cos x$, los cinco nodos $0,\frac\pi4,\dots,\pi$ y la poligonal del trapecio con $n=4$: lo que sobra por encima en una mitad se compensa con lo que falta en la otra. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Tabla:</b> $f(0)=1$, $f(\frac\pi4)=\frac{\sqrt2}2$, $f(\frac\pi2)=0$, $f(\frac{3\pi}4)=-\frac{\sqrt2}2$, $f(\pi)=-1$.</li>
     <li><b>Extremos:</b> $1+(-1)=0$. <b>Centrales:</b> $\frac{\sqrt2}2+0-\frac{\sqrt2}2=0$.</li>
     <li><b>Trapecio:</b> $I\approx\dfrac{\pi/4}2\,(0+2\cdot0)=0$.</li>
@@ -362,16 +758,19 @@
   <div class="recipe"><b>Receta:</b> trapecio de una función: tabla de $f$ en los nodos y después $\frac h2(E+2C)$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Tomar $h=\pi$ (un solo intervalo) o $h=\frac\pi5$ (confundir 4 intervalos con 4 nodos).</p></div>
 </details>
-<details class="sol" id="e641"><summary>Ejercicio 6.41 · Las seis fórmulas con cinco datos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.41, pp. 245-246">E pp.245-246</span></summary>
-<p class="enun">De una función $f$ se conocen $f(-1)=40$, $f(0)=42$, $f(1)=41$, $f(2)=42$, $f(3)=41$. Aproxima $\int_{-1}^3f(x)\,dx$ con: (1) el rectángulo derecho y el rectángulo derecho compuesto; (2) el trapecio y el trapecio compuesto; (3) Simpson y Simpson compuesta.</p>
+</article>
+<article class="ejer" id="e641">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.41 · Las seis fórmulas con cinco datos</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.41, pp. 245-246">E pp.245-246</span></header>
+<div class="ejer-enun"><p class="enun">De una función $f$ se conocen $f(-1)=40$, $f(0)=42$, $f(1)=41$, $f(2)=42$, $f(3)=41$. Aproxima $\int_{-1}^3f(x)\,dx$ con: (1) el rectángulo derecho y el rectángulo derecho compuesto; (2) el trapecio y el trapecio compuesto; (3) Simpson y Simpson compuesta.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Seis aproximaciones de la misma integral.</dd>
     <dt>Cómo lo pienso</dt><dd>Hay $5$ nodos con paso $1$ en $[-1,3]$. Las compuestas deben usar los 5: rectángulos y trapecio en $4$ subintervalos (h=1); Simpson compuesta en $2$ subintervalos ($h=2$), porque $5=2\cdot2+1$.</dd>
     <dt>Qué uso</dt><dd>Def. 6.3 a 6.8 (U pp.264-268).</dd>
     <dt>Por dónde empiezo</dt><dd>$b-a=3-(-1)=4$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[-1,40],[0,42],[1,41],[2,42],[3,41]],"c":[{"e":"x<=0.0?(40.0+(2.0)/(1.0)*(x-(-1.0))):x<=1.0?(42.0+(-1.0)/(1.0)*(x-(0.0))):x<=2.0?(41.0+(1.0)/(1.0)*(x-(1.0))):(42.0+(-1.0)/(1.0)*(x-(2.0)))","n":"trapecio compuesto (h=1)","d":1}],"x":[-1,3],"y":[38,44]}' data-alt="Cinco datos y poligonal del trapecio compuesto"><figcaption>Los cinco datos y la poligonal que los une: el trapecio compuesto suma las áreas bajo ella, $\frac{331}2=165{,}5$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"p":[[-1,40],[0,42],[1,41],[2,42],[3,41]],"c":[{"e":"x<=0.0?(40.0+(2.0)/(1.0)*(x-(-1.0))):x<=1.0?(42.0+(-1.0)/(1.0)*(x-(0.0))):x<=2.0?(41.0+(1.0)/(1.0)*(x-(1.0))):(42.0+(-1.0)/(1.0)*(x-(2.0)))","n":"trapecio compuesto (h=1)","d":1}],"x":[-1,3],"y":[38,44]}' data-alt="Cinco datos y poligonal del trapecio compuesto"><figcaption>Los cinco datos y la poligonal que los une: el trapecio compuesto suma las áreas bajo ella, $\frac{331}2=165{,}5$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Rectángulo derecho simple:</b> $f(3)(b-a)=41\cdot4=164$.</li>
     <li><b>Rectángulo derecho compuesto</b> ($n=4$, $h=1$): $h\sum_{k=1}^4f(x_k)=42+41+42+41=166$.</li>
     <li><b>Trapecio simple:</b> $\frac{f(-1)+f(3)}2\cdot4=\frac{81}2\cdot4=162$.</li>
@@ -383,18 +782,22 @@
   <div class="recipe"><b>Receta:</b> con $N$ nodos equiespaciados, rectángulos y trapecio compuestos en $N-1$ subintervalos; Simpson compuesta en $\frac{N-1}2$ subintervalos (solo si $N$ es impar).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Usar $h=1$ en Simpson compuesta (o dividir en 3 subintervalos); en el rectángulo derecho compuesto, incluir $f(-1)$ (eso es el izquierdo).</p></div>
 </details>
+</article>
 <!-- ============================ 8 ============================ -->
-<h2 id="propios"><span class="n">8</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, resueltos y comprobados con sympy y con fracciones exactas">propio</span></h2>
-<details class="sol" id="p1"><summary>Propio 1 · Las tres fórmulas sobre $\int_0^1x^2\,dx$ <span class="src" data-l="P" data-ref="Ejemplo propio comprobado con sympy">propio</span></summary>
-<p class="enun">Aproxima $\int_0^1x^2\,dx=\frac13$ con el rectángulo central, el trapecio y Simpson, simples y con $n=2$ subintervalos. ¿Qué relación hay entre ellas?</p>
+<h2 id="propios" data-vista="ejercicios"><span class="n">11</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, resueltos y comprobados con sympy y con fracciones exactas">propio</span></h2>
+<p><b>Índice rápido:</b> <a href="#p1">Propio 1</a> (las tres fórmulas sobre $x^2$) · <a href="#p2">Propio 2</a> (Simpson exacto en cúbicas) · <a href="#p3">Propio 3</a> (cuántos subintervalos) · <a href="#p4">Propio 4</a> (buscar $M_4$).</p>
+<article class="ejer" id="p1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Propio 1 · Las tres fórmulas sobre $\int_0^1x^2\,dx$</span> <span class="src" data-l="P" data-ref="Ejemplo propio comprobado con sympy">propio</span></header>
+<div class="ejer-enun"><p class="enun">Aproxima $\int_0^1x^2\,dx=\frac13$ con el rectángulo central, el trapecio y Simpson, simples y con $n=2$ subintervalos. ¿Qué relación hay entre ellas?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Seis números y una observación.</dd>
     <dt>Cómo lo pienso</dt><dd>$x^2$ es convexa: la cuerda queda por encima (el trapecio se pasa) y la tangente en el punto medio por debajo (el punto medio se queda corto).</dd>
     <dt>Qué uso</dt><dd>Def. 6.3 a 6.8 (U pp.264-268).</dd>
     <dt>Por dónde empiezo</dt><dd>$f(0)=0$, $f(\frac14)=\frac1{16}$, $f(\frac12)=\frac14$, $f(\frac34)=\frac9{16}$, $f(1)=1$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.5,0.25],[1.0,1.0]],"c":[{"e":"x^2","n":"x²"},{"e":"x<=0.5?(0.0+(0.25)/(0.5)*(x-(0.0))):(0.25+(0.75)/(0.5)*(x-(0.5)))","n":"trapecio, n=2","d":1}],"x":[0,1],"y":[0,1.05]}' data-alt="x^2 con la poligonal del trapecio n=2"><figcaption>La parábola $y=x^2$ y la poligonal del trapecio con $n=2$: como $x^2$ es convexa, la cuerda queda por encima y el trapecio se pasa ($\frac38>\frac13$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.5,0.25],[1.0,1.0]],"c":[{"e":"x^2","n":"x²"},{"e":"x<=0.5?(0.0+(0.25)/(0.5)*(x-(0.0))):(0.25+(0.75)/(0.5)*(x-(0.5)))","n":"trapecio, n=2","d":1}],"x":[0,1],"y":[0,1.05]}' data-alt="x^2 con la poligonal del trapecio n=2"><figcaption>La parábola $y=x^2$ y la poligonal del trapecio con $n=2$: como $x^2$ es convexa, la cuerda queda por encima y el trapecio se pasa ($\frac38>\frac13$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Simples:</b> punto medio $f(\frac12)\cdot1=\frac14$; trapecio $\frac{0+1}2=\frac12$; Simpson $\frac{0+4\cdot\frac14+1}6=\frac26=\frac13$ (exacto).</li>
     <li><b>Con $n=2$:</b> punto medio $\frac12\big(f(\frac14)+f(\frac34)\big)=\frac12\cdot\frac{10}{16}=\frac5{16}$; trapecio $\frac14\big(0+2\cdot\frac14+1\big)=\frac38$; Simpson ($h=\frac12$, nodos cada $\frac14$) $\frac{1/2}6\big(0+1+2\cdot\frac14+4(\frac1{16}+\frac9{16})\big)=\frac1{12}\cdot4=\frac13$.</li>
     <li><b>Errores:</b> trapecio $+\frac16$ ($n=1$) y $+\frac1{24}$ ($n=2$); punto medio $-\frac1{12}$ y $-\frac1{48}$: el del punto medio es la mitad y de signo contrario (apartado 5), y al doblar $n$ ambos se dividen entre $4$.</li>
@@ -403,15 +806,18 @@
   <div class="recipe"><b>Receta:</b> para una parábola, Simpson es exacto; trapecio y punto medio fallan en sentidos opuestos.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Pensar que el trapecio siempre mejora al punto medio: aquí es al revés (el error del punto medio es la mitad).</p></div>
 </details>
-<details class="sol" id="p2"><summary>Propio 2 · ¿Por qué Simpson es exacto en las cúbicas? <span class="src" data-l="P" data-ref="Ejemplo propio; usa el Teor. 6.4 de U, p. 270; comprobado con sympy">propio</span></summary>
-<p class="enun">(a) Comprueba que Simpson simple da exactamente $\int_0^2x^3dx$. (b) Justifica que Simpson (simple o compuesta) es exacta para todo polinomio de grado $\le3$. (c) ¿Lo es para $x^4$ en $[0,1]$?</p>
+</article>
+<article class="ejer" id="p2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 2 · ¿Por qué Simpson es exacto en las cúbicas?</span> <span class="src" data-l="P" data-ref="Ejemplo propio; usa el Teor. 6.4 de U, p. 270; comprobado con sympy">propio</span></header>
+<div class="ejer-enun"><p class="enun">(a) Comprueba que Simpson simple da exactamente $\int_0^2x^3dx$. (b) Justifica que Simpson (simple o compuesta) es exacta para todo polinomio de grado $\le3$. (c) ¿Lo es para $x^4$ en $[0,1]$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Un ejemplo, una justificación general y un contraejemplo.</dd>
     <dt>Cómo lo pienso</dt><dd>La cota del Teor. 6.4 depende de $f^{(4)}$, que en una cúbica es cero.</dd>
     <dt>Qué uso</dt><dd>Def. 6.7 y Teor. 6.4 (U pp.268-270).</dd>
     <dt>Por dónde empiezo</dt><dd>Derivar cuatro veces una cúbica.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>(a)</b> $\frac{0+4\cdot1^3+2^3}6\cdot2=\frac{12}6\cdot2=4$ y $\int_0^2x^3dx=\big[\frac{x^4}4\big]_0^2=4$ ✓.</li>
     <li><b>(b)</b> Si $p(x)=c_3x^3+c_2x^2+c_1x+c_0$, entonces $p^{(4)}(x)=0$ para todo $x$: se puede tomar $M_4=0$ y el Teor. 6.4 da $\varepsilon\le\frac{(b-a)^5}{2880m^4}\cdot0=0$ para cualquier $m$, incluido $m=1$ (Simpson simple).</li>
     <li><b>(c)</b> $\frac{0+4\cdot(\frac12)^4+1}6=\frac{\frac14+1}6=\frac5{24}\ne\frac15=\int_0^1x^4dx$. El error es $\frac1{120}$; como $f^{(4)}=24$, la cota del Teor. 6.4 es $\frac{24}{2880}=\frac1{120}$: aquí la cota se alcanza.</li>
@@ -419,15 +825,18 @@
   <div class="recipe"><b>Receta:</b> Simpson es exacto si $f^{(4)}\equiv0$ (polinomios de grado $\le3$); el trapecio, si $f''\equiv0$ (rectas).</div>
   <div class="box warn"><span class="h">Error típico</span><p>Decir «Simpson es exacto en parábolas porque usa parábolas» y olvidar que también lo es en cúbicas.</p></div>
 </details>
-<details class="sol" id="p3"><summary>Propio 3 · ¿Cuántos subintervalos para $\ln2=\int_1^2\frac{dx}x$ con error $\lt10^{-4}$? <span class="src" data-l="P" data-ref="Ejemplo propio con los Teor. 6.3 y 6.4 de U, pp. 269-270; comprobado con sympy">propio</span></summary>
-<p class="enun">Determina el número de subintervalos que garantiza un error menor que $10^{-4}$ al aproximar $\int_1^2\frac{dx}x$ (a) con el trapecio compuesto y (b) con Simpson compuesta.</p>
+</article>
+<article class="ejer" id="p3">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Propio 3 · ¿Cuántos subintervalos para $\ln2=\int_1^2\frac{dx}x$ con error $\lt10^{-4}$?</span> <span class="src" data-l="P" data-ref="Ejemplo propio con los Teor. 6.3 y 6.4 de U, pp. 269-270; comprobado con sympy">propio</span></header>
+<div class="ejer-enun"><p class="enun">Determina el número de subintervalos que garantiza un error menor que $10^{-4}$ al aproximar $\int_1^2\frac{dx}x$ (a) con el trapecio compuesto y (b) con Simpson compuesta.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Dos valores de $m$: el mínimo que <b>garantiza</b> la precisión según los Teor. 6.3 y 6.4.</dd>
     <dt>Cómo lo pienso</dt><dd>Derivo, acoto la derivada por su valor más grande en $[1,2]$ y despejo $m$ de la cota.</dd>
     <dt>Qué uso</dt><dd>Teor. 6.3 y 6.4 (U pp.269-270).</dd>
     <dt>Por dónde empiezo</dt><dd>$f(x)=x^{-1}$, $f''(x)=\frac2{x^3}$, $f^{(4)}(x)=\frac{24}{x^5}$.</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>$M_2$:</b> $\frac2{x^3}$ es positiva y decreciente en $[1,2]$; su máximo está en $x=1$: $M_2=2$. <b>$M_4$:</b> $\frac{24}{x^5}$ también decrece: $M_4=24$.</li>
     <li><b>(a) Trapecio:</b> $\frac{1^3\cdot2}{12m^2}\le10^{-4}\iff m^2\ge\frac{2}{12\cdot10^{-4}}=1666{,}7\iff m\ge40{,}82$: <b>$m=41$</b> subintervalos ($42$ nodos).</li>
     <li><b>(b) Simpson:</b> $\frac{1^5\cdot24}{2880m^4}\le10^{-4}\iff m^4\ge\frac{24}{0{,}288}=83{,}33\iff m\ge3{,}02$: <b>$m=4$</b> subintervalos ($9$ nodos).</li>
@@ -437,16 +846,19 @@
   <div class="recipe"><b>Receta:</b> la del Ej. 6.35 (derivar, acotar, despejar $m$ y redondear hacia arriba), una vez por método.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Tomar $M_2$ en el extremo equivocado ($f''(2)=\frac14$ daría $m=15$, que no garantiza nada) o redondear hacia abajo.</p></div>
 </details>
-<details class="sol" id="p4"><summary>Propio 4 · $\int_0^1e^{-x^2}dx$ con error $\lt10^{-6}$: hay que buscar $M_4$ <span class="src" data-l="P" data-ref="Ejemplo propio, continuación del Ej. 6.34 de U (pp. 269-270); comprobado con sympy">propio</span></summary>
-<p class="enun">Continuando el Ej. 6.34 de U, ¿cuántos subintervalos garantizan un error menor que $10^{-6}$ con el trapecio y con Simpson?</p>
+</article>
+<article class="ejer" id="p4">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio 4 · $\int_0^1e^{-x^2}dx$ con error $\lt10^{-6}$: hay que buscar $M_4$</span> <span class="src" data-l="P" data-ref="Ejemplo propio, continuación del Ej. 6.34 de U (pp. 269-270); comprobado con sympy">propio</span></header>
+<div class="ejer-enun"><p class="enun">Continuando el Ej. 6.34 de U, ¿cuántos subintervalos garantizan un error menor que $10^{-6}$ con el trapecio y con Simpson?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>$m$ para cada método con tolerancia $10^{-6}$.</dd>
     <dt>Cómo lo pienso</dt><dd>$M_2=2$ ya se conoce. $M_4$ exige derivar cuatro veces y buscar el máximo de $\lvert f^{(4)}\rvert$ en $[0,1]$: extremos y ceros de $f^{(5)}$.</dd>
     <dt>Qué uso</dt><dd>Teor. 6.3 y 6.4 (U pp.269-270); extremos absolutos (U §3.4).</dd>
     <dt>Por dónde empiezo</dt><dd>$f^{(4)}(x)=4(4x^4-12x^2+3)e^{-x^2}$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"4*(4*x^4-12*x^2+3)*exp(-x^2)","n":"f⁽⁴⁾(x)"}],"q":[[0,12.0,"M₄=12"],[0.9586,-7.4195],[1,-7.3576]],"x":[0,1],"y":[-4,13]}' data-alt="Cuarta derivada de e^{-x^2} en [0,1]"><figcaption>La cuarta derivada $f^{(4)}(x)=4(4x^4-12x^2+3)e^{-x^2}$ en $[0,1]$ y los tres candidatos a máximo de $\lvert f^{(4)}\rvert$: el mayor es $12$, en $x=0$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"c":[{"e":"4*(4*x^4-12*x^2+3)*exp(-x^2)","n":"f⁽⁴⁾(x)"}],"q":[[0,12.0,"M₄=12"],[0.9586,-7.4195],[1,-7.3576]],"x":[0,1],"y":[-4,13]}' data-alt="Cuarta derivada de e^{-x^2} en [0,1]"><figcaption>La cuarta derivada $f^{(4)}(x)=4(4x^4-12x^2+3)e^{-x^2}$ en $[0,1]$ y los tres candidatos a máximo de $\lvert f^{(4)}\rvert$: el mayor es $12$, en $x=0$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Derivadas:</b> $f^{(4)}(x)=4(4x^4-12x^2+3)e^{-x^2}$ y $f^{(5)}(x)=-8x(4x^4-20x^2+15)e^{-x^2}$.</li>
     <li><b>Candidatos en $[0,1]$:</b> $x=0$, $x=1$ y los ceros de $4x^4-20x^2+15$: $x^2=\frac{5\pm\sqrt{10}}2$, es decir $x\approx0{,}9586$ (el otro, $\approx1{,}65$, queda fuera).</li>
     <li><b>Valores:</b> $\lvert f^{(4)}(0)\rvert=12$; $\lvert f^{(4)}(0{,}9586)\rvert\approx7{,}42$; $\lvert f^{(4)}(1)\rvert=20/e\approx7{,}36$. Luego <b>$M_4=12$</b>.</li>
@@ -457,55 +869,84 @@
   <div class="recipe"><b>Receta:</b> para $M_4$, derivar con cuidado (sacando factor común la exponencial), evaluar $\lvert f^{(4)}\rvert$ en los extremos y en los ceros de $f^{(5)}$ dentro del intervalo, y quedarse con el mayor.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Tomar $M_4$ de un extremo sin mirar los puntos interiores, o el máximo de $f^{(4)}$ sin valor absoluto.</p></div>
 </details>
+</article>
 <!-- ============================ 9 ============================ -->
-<h2 id="examen"><span class="n">9</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<h2 id="examen" data-vista="examen"><span class="n">12</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>10 preguntas</b> de este tema (todas se resuelven aquí abajo con su redacción) y 6 ejercicios en el libro E. Se reparten en 3 tipos, más lo que no aparece pero conviene saber:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Trapecio o Simpson con una función, comparado con el valor exacto <small>(5 de 10)</small></td><td>Tabla de valores en los nodos; $\frac h2(E+2C)$ o $\frac h6(E+2P+4I)$; exacto con Barrow y error.</td>
+      <td><a href="#e640">6.40</a> · <a href="#p1">P1</a> · <a href="#p2">P2</a></td><td><a href="#x2">X2</a> · <a href="#x3">X3</a> · <a href="#x6">X6</a> · <a href="#x7">X7</a> · <a href="#x8">X8</a></td></tr>
+    <tr><td>Trapecio o Simpson con una tabla de datos <small>(3 de 10)</small></td><td>Usar todos los datos: trapecio en $N-1$ subintervalos; si no hay espaciado común, trapecio simple por tramos.</td>
+      <td><a href="#e637">6.37</a> · <a href="#e638">6.38</a> · <a href="#e639">6.39</a> · <a href="#e641">6.41</a></td><td><a href="#x1">X1</a> · <a href="#x4">X4</a> · <a href="#x10">X10</a></td></tr>
+    <tr><td>Polinomio interpolador y Simpson <small>(2 de 10; X4 también)</small></td><td>Diferencias divididas; Simpson con tres datos equiespaciados es la integral de la parábola por ellos.</td>
+      <td><a href="#p2">P2</a></td><td><a href="#x5">X5</a> · <a href="#x9">X9</a></td></tr>
+    <tr><td>Cota del error y número de subintervalos, rectángulos <small>(0 de 10)</small></td><td>No aparecen en X; son materia del libro (cotas) o base de las demás fórmulas (rectángulos).</td>
+      <td><a href="#e636">6.36</a> · <a href="#e641">6.41</a> · <a href="#p3">P3</a> · <a href="#p4">P4</a></td><td>—</td></tr>
+  </table>
+  <p><small>Recuento propio sobre las preguntas de X resueltas aquí (X4 cuenta en dos tipos).</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre las preguntas de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
 <p>En X, la integración numérica suele aparecer como «aproxime por la regla del trapecio / de Simpson» con una función o una tabla de datos, a veces junto con el valor exacto o con un polinomio interpolador. Los diez problemas siguientes van de lo más sencillo a lo más completo.</p>
-<details class="sol" id="x1"><summary>X1 · Trapecio compuesto con cinco datos <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2.ª semana, Ing. Mecánica, Modelo B, Pregunta corta 3)">X p.13 (feb. 2011)</span></summary>
-<p class="enun">De una función $f$ se conocen $f(-1)=1$, $f(0)=2$, $f(1)=-1$, $f(2)=-3$, $f(3)=0$. Aproxime el valor de $\int_{-1}^3f(x)\,dx$ utilizando la fórmula del trapecio compuesta.</p>
+<article class="ejer" id="x1">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">X1 · Trapecio compuesto con cinco datos</span> <span class="src" data-l="X" data-ref="X p.13 (Febrero 2011, 2.ª semana, Ing. Mecánica, Modelo B, Pregunta corta 3)">X p.13 (feb. 2011)</span></header>
+<div class="ejer-enun"><p class="enun">De una función $f$ se conocen $f(-1)=1$, $f(0)=2$, $f(1)=-1$, $f(2)=-3$, $f(3)=0$. Aproxime el valor de $\int_{-1}^3f(x)\,dx$ utilizando la fórmula del trapecio compuesta.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Un número: el trapecio compuesto con todos los datos.</dd>
     <dt>Cómo lo pienso</dt><dd>$5$ nodos de paso $1$ son $4$ subintervalos, $h=1$. Hay valores negativos: el resultado puede salir negativo (área con signo).</dd>
     <dt>Qué uso</dt><dd>Def. 6.6 (U p.267).</dd>
     <dt>Por dónde empiezo</dt><dd>Separar extremos y centrales.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[-1,1],[0,2],[1,-1],[2,-3],[3,0]],"c":[{"e":"x<=0.0?(1.0+(1.0)/(1.0)*(x-(-1.0))):x<=1.0?(2.0+(-3.0)/(1.0)*(x-(0.0))):x<=2.0?(-1.0+(-2.0)/(1.0)*(x-(1.0))):(-3.0+(3.0)/(1.0)*(x-(2.0)))","n":"poligonal","d":1}],"x":[-1,3],"y":[-4,3]}' data-alt="Cinco datos y poligonal con área con signo"><figcaption>Los cinco datos y la poligonal del trapecio: la parte bajo el eje $x$ resta, y por eso la integral sale negativa ($-\frac32$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[-1,1],[0,2],[1,-1],[2,-3],[3,0]],"c":[{"e":"x<=0.0?(1.0+(1.0)/(1.0)*(x-(-1.0))):x<=1.0?(2.0+(-3.0)/(1.0)*(x-(0.0))):x<=2.0?(-1.0+(-2.0)/(1.0)*(x-(1.0))):(-3.0+(3.0)/(1.0)*(x-(2.0)))","n":"poligonal","d":1}],"x":[-1,3],"y":[-4,3]}' data-alt="Cinco datos y poligonal con área con signo"><figcaption>Los cinco datos y la poligonal del trapecio: la parte bajo el eje $x$ resta, y por eso la integral sale negativa ($-\frac32$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Extremos: $f(-1)+f(3)=1+0=1$. Centrales: $f(0)+f(1)+f(2)=2-1-3=-2$.</li>
     <li>$\displaystyle\int_{-1}^3f\approx\frac12\big(1+2\cdot(-2)\big)=\frac12(-3)=-\frac32.$</li>
   </ol></div>
   <div class="recipe"><b>Receta:</b> $\frac h2(E+2C)$ con $h$ la separación entre datos (solo si los datos están igualmente espaciados; si no, ver X10).</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <div class="box warn"><span class="h">Error típico</span><p>Pensar que un resultado negativo es un error: la integral cuenta con signo.</p></div>
 </details>
-<details class="sol" id="x2"><summary>X2 · $\int_0^{\pi/2}\cos x\,dx$: trapecio, Simpson y comparación <span class="src" data-l="X" data-ref="X pp.36-37 (Febrero 2013, 2.ª semana, Ing. Mecánica, Modelo B, Problema 6)">X pp.36-37 (feb. 2013)</span></summary>
-<p class="enun">Dada $I=\int_0^{\pi/2}\cos x\,dx$: (a) determínese su valor aproximado con la regla del trapecio en 2 intervalos; (b) con la regla de Simpson; (c) compárense los resultados con el valor real.</p>
+</details>
+</article>
+<article class="ejer" id="x2">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">X2 · $\int_0^{\pi/2}\cos x\,dx$: trapecio, Simpson y comparación</span> <span class="src" data-l="X" data-ref="X pp.36-37 (Febrero 2013, 2.ª semana, Ing. Mecánica, Modelo B, Problema 6)">X pp.36-37 (feb. 2013)</span></header>
+<div class="ejer-enun"><p class="enun">Dada $I=\int_0^{\pi/2}\cos x\,dx$: (a) determínese su valor aproximado con la regla del trapecio en 2 intervalos; (b) con la regla de Simpson; (c) compárense los resultados con el valor real.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Trapecio con $n=2$, Simpson (simple, 3 nodos) y compararlos con el exacto.</dd>
     <dt>Cómo lo pienso</dt><dd>Ambas fórmulas usan los <b>mismos 3 nodos</b> $0,\frac\pi4,\frac\pi2$; solo cambian los pesos. El coseno es cóncavo en $[0,\frac\pi2]$: las cuerdas quedan por debajo y el trapecio se quedará corto.</dd>
     <dt>Qué uso</dt><dd>Def. 6.6 y 6.7 (U pp.267-268); Barrow (U Teor. 6.2, p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>$f(0)=1$, $f(\frac\pi4)=\frac{\sqrt2}2$, $f(\frac\pi2)=0$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[0.0,1.0],[0.7853981633974483,0.7071067811865476],[1.5707963267948966,6.123233995736766e-17]],"c":[{"e":"cos(x)","n":"cos x"},{"e":"x<=0.785398?(1.0+(-0.292893)/(0.785398)*(x-(0.0))):(0.707107+(-0.707107)/(0.785398)*(x-(0.785398)))","n":"trapecio, n=2","d":1},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,1.570796],"y":[0,1.1]}' data-alt="cos x en [0, pi/2] con trapecio y parábola de Simpson"><figcaption>Mismos tres nodos para los dos métodos: la poligonal del trapecio queda por debajo de $\cos x$ (cóncava) y la parábola de Simpson casi se confunde con ella. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[0.0,1.0],[0.7853981633974483,0.7071067811865476],[1.5707963267948966,6.123233995736766e-17]],"c":[{"e":"cos(x)","n":"cos x"},{"e":"x<=0.785398?(1.0+(-0.292893)/(0.785398)*(x-(0.0))):(0.707107+(-0.707107)/(0.785398)*(x-(0.785398)))","n":"trapecio, n=2","d":1},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,1.570796],"y":[0,1.1]}' data-alt="cos x en [0, pi/2] con trapecio y parábola de Simpson"><figcaption>Mismos tres nodos para los dos métodos: la poligonal del trapecio queda por debajo de $\cos x$ (cóncava) y la parábola de Simpson casi se confunde con ella. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li><b>(a)</b> $h=\frac\pi4$: $I\approx\dfrac{\pi/4}2\Big(1+2\cdot\dfrac{\sqrt2}2+0\Big)=\dfrac\pi8\big(1+\sqrt2\big)\approx0{,}9481$.</li>
     <li><b>(b)</b> $b-a=\frac\pi2$: $I\approx\dfrac{1+4\cdot\frac{\sqrt2}2+0}6\cdot\dfrac\pi2=\dfrac\pi{12}\big(1+2\sqrt2\big)\approx1{,}0023$.</li>
     <li><b>(c)</b> Exacto: $\int_0^{\pi/2}\cos x\,dx=[\operatorname{sen}x]_0^{\pi/2}=1$. Errores: trapecio $\approx0{,}0519$; Simpson $\approx0{,}0023$ (unas $23$ veces menor).</li>
   </ol></div>
-  <p><b>Explicación (no hace falta escribirla):</b> el trapecio sustituye la curva por dos segmentos (por debajo de una curva cóncava: aproximación por defecto); Simpson, por una parábola por los tres puntos, que se ajusta mucho mejor.</p>
   <div class="recipe"><b>Receta:</b> mismos nodos, distintos pesos: trapecio $\frac h2(1,2,1)$; Simpson $\frac{b-a}6(1,4,1)$.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <p><b>Explicación (no hace falta escribirla):</b> el trapecio sustituye la curva por dos segmentos (por debajo de una curva cóncava: aproximación por defecto); Simpson, por una parábola por los tres puntos, que se ajusta mucho mejor.</p>
   <div class="box warn"><span class="h">Error típico</span><p>En el trapecio con 2 intervalos, olvidar el $2$ del nodo central ($\frac\pi8(1+\frac{\sqrt2}2)\approx0{,}67$).</p></div>
 </details>
-<details class="sol" id="x3"><summary>X3 · $\int_0^1\frac{x}{(x^2+1)^2}dx$: exacto, trapecio y Simpson <span class="src" data-l="X" data-ref="X pp.78-79 (Febrero 2017, Modelo A, Ejercicio 5)">X pp.78-79 (feb. 2017)</span></summary>
-<p class="enun">Tenemos $I=\int_0^1\frac{x}{(x^2+1)^2}dx$. a) Calcule el valor real. b) Aproxímelo por la regla del trapecio con dos subintervalos iguales. c) Aproxímelo por la regla de Simpson con 3 nodos igualmente espaciados. d) Compare los valores y explique a qué se deben las diferencias.</p>
+</details>
+</article>
+<article class="ejer" id="x3">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X3 · $\int_0^1\frac{x}{(x^2+1)^2}dx$: exacto, trapecio y Simpson</span> <span class="src" data-l="X" data-ref="X pp.78-79 (Febrero 2017, Modelo A, Ejercicio 5)">X pp.78-79 (feb. 2017)</span></header>
+<div class="ejer-enun"><p class="enun">Tenemos $I=\int_0^1\frac{x}{(x^2+1)^2}dx$. a) Calcule el valor real. b) Aproxímelo por la regla del trapecio con dos subintervalos iguales. c) Aproxímelo por la regla de Simpson con 3 nodos igualmente espaciados. d) Compare los valores y explique a qué se deben las diferencias.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El exacto, el trapecio con $n=2$, Simpson simple y una comparación razonada.</dd>
     <dt>Cómo lo pienso</dt><dd>El numerador es, salvo un factor $\frac12$, la derivada de $x^2+1$: integral inmediata. Los dos métodos usan los nodos $0,\frac12,1$.</dd>
     <dt>Qué uso</dt><dd>Inmediata $\int f^af'$ (U p.248); Barrow (U p.244); Def. 6.6-6.7 (U pp.267-268).</dd>
     <dt>Por dónde empiezo</dt><dd>$\int\frac{x}{(x^2+1)^2}dx=\frac12\int(x^2+1)^{-2}\,2x\,dx$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.5,0.32],[1.0,0.25]],"c":[{"e":"x/(x^2+1)^2","n":"f(x)"},{"e":"x<=0.5?(0.0+(0.32)/(0.5)*(x-(0.0))):(0.32+(-0.07)/(0.5)*(x-(0.5)))","n":"trapecio, n=2","d":1},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,1],"y":[0,0.4]}' data-alt="x/(x^2+1)^2 con trapecio y parábola"><figcaption>La función, los nodos $0,\frac12,1$, la poligonal del trapecio (por debajo) y la parábola de Simpson (más cercana a $f$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.5,0.32],[1.0,0.25]],"c":[{"e":"x/(x^2+1)^2","n":"f(x)"},{"e":"x<=0.5?(0.0+(0.32)/(0.5)*(x-(0.0))):(0.32+(-0.07)/(0.5)*(x-(0.5)))","n":"trapecio, n=2","d":1},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,1],"y":[0,0.4]}' data-alt="x/(x^2+1)^2 con trapecio y parábola"><figcaption>La función, los nodos $0,\frac12,1$, la poligonal del trapecio (por debajo) y la parábola de Simpson (más cercana a $f$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li><b>a)</b> Primitiva $-\frac1{2(x^2+1)}$. Barrow: $I=-\frac14-\big(-\frac12\big)=\frac14=0{,}25$.</li>
     <li>Tabla: $f(0)=0$; $f(\frac12)=\frac{1/2}{(5/4)^2}=\frac8{25}$; $f(1)=\frac14$.</li>
@@ -514,38 +955,48 @@
     <li><b>d)</b> Errores: $0{,}0275$ (trapecio) y $0{,}005$ (Simpson). El trapecio sustituye $f$ por segmentos (grado 1); Simpson, por una parábola (grado 2), que se adapta a la curvatura. Ninguno es exacto porque $f$ no es un polinomio.</li>
   </ol></div>
   <div class="recipe"><b>Receta:</b> tabla común de valores con fracciones exactas, trapecio y Simpson, errores absolutos y explicación «recta frente a parábola».</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <div class="box warn"><span class="h">Error típico</span><p>Calcular mal $f(\frac12)$ por no elevar al cuadrado $\frac54$.</p></div>
 </details>
-<details class="sol" id="x4"><summary>X4 · Tres datos: trapecio, Simpson y la parábola que los une <span class="src" data-l="X" data-ref="X pp.65-66 (Febrero 2016, Modelo B, Ejercicio 5)">X pp.65-66 (feb. 2016)</span></summary>
-<p class="enun">Se consideran los valores $f(1)=31$, $f(2)=26$, $f(3)=43$. (a) Calcule $\int_1^3f$ por la regla del trapecio. (b) Calcúlela por Simpson con 3 nodos igualmente espaciados. (c) La función $g(x)=11x^2-38x+58$ verifica $f(1)=g(1)$, $f(2)=g(2)$, $f(3)=g(3)$. Calcule $\int_1^3g$ y compárelo con lo obtenido en los apartados anteriores. Justifique a qué se debe la diferencia.</p>
+</details>
+</article>
+<article class="ejer" id="x4">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X4 · Tres datos: trapecio, Simpson y la parábola que los une</span> <span class="src" data-l="X" data-ref="X pp.65-66 (Febrero 2016, Modelo B, Ejercicio 5)">X pp.65-66 (feb. 2016)</span></header>
+<div class="ejer-enun"><p class="enun">Se consideran los valores $f(1)=31$, $f(2)=26$, $f(3)=43$. (a) Calcule $\int_1^3f$ por la regla del trapecio. (b) Calcúlela por Simpson con 3 nodos igualmente espaciados. (c) La función $g(x)=11x^2-38x+58$ verifica $f(1)=g(1)$, $f(2)=g(2)$, $f(3)=g(3)$. Calcule $\int_1^3g$ y compárelo con lo obtenido en los apartados anteriores. Justifique a qué se debe la diferencia.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Trapecio y Simpson con los 3 datos, y la integral exacta de la parábola $g$ que pasa por ellos.</dd>
     <dt>Cómo lo pienso</dt><dd>Con tres datos el trapecio es compuesto en 2 subintervalos (h=1). Simpson integra <i>precisamente</i> la parábola por los tres puntos, que es $g$: debe coincidir con $\int g$.</dd>
     <dt>Qué uso</dt><dd>Def. 6.6-6.7 (U pp.267-268); Barrow; unicidad del polinomio interpolador (U §3.3).</dd>
     <dt>Por dónde empiezo</dt><dd>Extremos $31+43=74$, central $26$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[1,31],[2,26],[3,43]],"c":[{"e":"11*x^2-38*x+58","n":"g(x)"},{"e":"x<=2.0?(31.0+(-5.0)/(1.0)*(x-(1.0))):(26.0+(17.0)/(1.0)*(x-(2.0)))","n":"trapecio","d":1}],"x":[1,3],"y":[20,48]}' data-alt="Parábola g por los tres datos y poligonal"><figcaption>Los tres datos, la parábola $g$ que pasa por ellos (la que integra Simpson) y la poligonal del trapecio, que queda por encima de $g$ por ser $g$ convexa. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[1,31],[2,26],[3,43]],"c":[{"e":"11*x^2-38*x+58","n":"g(x)"},{"e":"x<=2.0?(31.0+(-5.0)/(1.0)*(x-(1.0))):(26.0+(17.0)/(1.0)*(x-(2.0)))","n":"trapecio","d":1}],"x":[1,3],"y":[20,48]}' data-alt="Parábola g por los tres datos y poligonal"><figcaption>Los tres datos, la parábola $g$ que pasa por ellos (la que integra Simpson) y la poligonal del trapecio, que queda por encima de $g$ por ser $g$ convexa. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li><b>(a)</b> $\displaystyle\int_1^3f\approx\frac12\big(31+43+2\cdot26\big)=\frac{126}2=63$.</li>
     <li><b>(b)</b> $\displaystyle\int_1^3f\approx\frac{31+4\cdot26+43}6\cdot2=\frac{178}6\cdot2=\frac{178}3\approx59{,}33$.</li>
     <li><b>(c)</b> Se comprueba $g(1)=31$, $g(2)=26$, $g(3)=43$. Barrow: $\displaystyle\int_1^3g=\Big[\frac{11x^3}3-19x^2+58x\Big]_1^3=102-\frac{128}3=\frac{178}3$.</li>
     <li>$\int g$ coincide <b>exactamente</b> con Simpson y difiere del trapecio en $\frac{11}3\approx3{,}67$.</li>
   </ol></div>
-  <p><b>Explicación (no hace falta escribirla):</b> Simpson integra la única parábola que pasa por los tres puntos, y esa es $g$. El trapecio integra la poligonal que une los puntos; como $g$ es convexa ($g''=22\gt0$), la poligonal queda por encima de $g$ y el trapecio da más.</p>
   <div class="recipe"><b>Receta:</b> Simpson simple = integral exacta de la parábola que interpola los 3 datos. Si te dan esa parábola, $\int g$ y Simpson deben coincidir (sirve de comprobación).</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <p><b>Explicación (no hace falta escribirla):</b> Simpson integra la única parábola que pasa por los tres puntos, y esa es $g$. El trapecio integra la poligonal que une los puntos; como $g$ es convexa ($g''=22\gt0$), la poligonal queda por encima de $g$ y el trapecio da más.</p>
   <div class="box warn"><span class="h">Error típico</span><p>Usar el trapecio <i>simple</i> ignorando el dato central ($\frac{31+43}2\cdot2=74$): con datos hay que usarlos todos.</p></div>
 </details>
-<details class="sol" id="x5"><summary>X5 · Interpolación y Simpson con tres datos <span class="src" data-l="X" data-ref="X p.107 (Ing. Electrónica, examen 4, Ejercicio 5)">X p.107 (Electrónica)</span></summary>
-<p class="enun">De una función $f$ se sabe que $f(0)=1$, $f(2)=3$ y $f(4)=2$. Aproxime $f(1)$ utilizando el polinomio interpolador. Aproxime $\int_0^4f(x)\,dx$ mediante la fórmula de Simpson. Compruebe que obtiene el mismo resultado si integra el polinomio interpolador entre $0$ y $4$.</p>
+</details>
+</article>
+<article class="ejer" id="x5">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X5 · Interpolación y Simpson con tres datos</span> <span class="src" data-l="X" data-ref="X p.107 (Ing. Electrónica, examen 4, Ejercicio 5)">X p.107 (Electrónica)</span></header>
+<div class="ejer-enun"><p class="enun">De una función $f$ se sabe que $f(0)=1$, $f(2)=3$ y $f(4)=2$. Aproxime $f(1)$ utilizando el polinomio interpolador. Aproxime $\int_0^4f(x)\,dx$ mediante la fórmula de Simpson. Compruebe que obtiene el mismo resultado si integra el polinomio interpolador entre $0$ y $4$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El polinomio interpolador (grado $\le2$) y su valor en $1$; Simpson simple; comprobar que Simpson $=\int p$.</dd>
     <dt>Cómo lo pienso</dt><dd>Igual que X4: tres datos equiespaciados, la parábola que los une es la que integra Simpson.</dd>
     <dt>Qué uso</dt><dd>Diferencias divididas de Newton (U §3.3, pp.119-124); Def. 6.7 (U p.268).</dd>
     <dt>Por dónde empiezo</dt><dd>Diferencias divididas.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[0,1],[2,3],[4,2]],"q":[[1,2.375,"p(1)"]],"c":[{"interp":true,"n":"p(x)"}],"x":[0,4],"y":[0,3.6]}' data-alt="Parábola interpoladora por tres datos"><figcaption>Los tres datos, la parábola interpoladora $p(x)=-\frac38x^2+\frac74x+1$ y el valor pedido $p(1)=\frac{19}8$; Simpson integra exactamente esta parábola. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[0,1],[2,3],[4,2]],"q":[[1,2.375,"p(1)"]],"c":[{"interp":true,"n":"p(x)"}],"x":[0,4],"y":[0,3.6]}' data-alt="Parábola interpoladora por tres datos"><figcaption>Los tres datos, la parábola interpoladora $p(x)=-\frac38x^2+\frac74x+1$ y el valor pedido $p(1)=\frac{19}8$; Simpson integra exactamente esta parábola. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Orden 1: $f[0,2]=\frac{3-1}2=1$; $f[2,4]=\frac{2-3}2=-\frac12$. Orden 2: $f[0,2,4]=\frac{-\frac12-1}{4-0}=-\frac38$.</li>
     <li>$p(x)=1+x-\frac38\,x(x-2)=-\frac38x^2+\frac74x+1$, y $f(1)\approx p(1)=2+\frac38=\frac{19}8=2{,}375$.</li>
@@ -553,37 +1004,47 @@
     <li>$\displaystyle\int_0^4p=\Big[-\frac{x^3}8+\frac78x^2+x\Big]_0^4=-8+14+4=10$ ✓.</li>
   </ol></div>
   <div class="recipe"><b>Receta:</b> tres datos equiespaciados: Simpson $=\int$ del polinomio interpolador de grado 2.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el factor $(x-2)$ en el término de orden 2 de Newton.</p></div>
 </details>
-<details class="sol" id="x6"><summary>X6 · $\int_0^\pi x^2\operatorname{sen}x\,dx$: exacto y Simpson <span class="src" data-l="X" data-ref="X p.136 (Febrero 2017, 2.ª semana, Ejercicio 5)">X p.136 (feb. 2017)</span></summary>
-<p class="enun">Dada la integral $\int_0^\pi x^2\operatorname{sen}x\,dx$: calcule el valor exacto encontrando una primitiva; aproxime su valor utilizando la regla de Simpson.</p>
+</details>
+</article>
+<article class="ejer" id="x6">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X6 · $\int_0^\pi x^2\operatorname{sen}x\,dx$: exacto y Simpson</span> <span class="src" data-l="X" data-ref="X p.136 (Febrero 2017, 2.ª semana, Ejercicio 5)">X p.136 (feb. 2017)</span></header>
+<div class="ejer-enun"><p class="enun">Dada la integral $\int_0^\pi x^2\operatorname{sen}x\,dx$: calcule el valor exacto encontrando una primitiva; aproxime su valor utilizando la regla de Simpson.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El exacto (por partes dos veces) y Simpson simple.</dd>
     <dt>Cómo lo pienso</dt><dd>Polinomio por seno: partes con $u=x^2$ y otra vez. Para Simpson, nodos $0,\frac\pi2,\pi$, y el seno se anula en los extremos.</dd>
     <dt>Qué uso</dt><dd>Partes reiterada (U pp.251-253); Def. 6.7 (U p.268).</dd>
     <dt>Por dónde empiezo</dt><dd>$u=x^2$, $v'=\operatorname{sen}x$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[0,0],[1.5707963267948966,2.4674011002723395],[3.141592653589793,0]],"c":[{"e":"x^2*sin(x)","n":"x² sen x"},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,3.141593],"y":[-0.3,5.5]}' data-alt="x^2 sen x en [0, pi] y parábola de Simpson"><figcaption>La función y la parábola por $(0,0),(\frac\pi2,\frac{\pi^2}4),(\pi,0)$: una sola parábola en un intervalo largo no sigue bien el "hombro" derecho, de ahí el error de $0{,}70$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[0,0],[1.5707963267948966,2.4674011002723395],[3.141592653589793,0]],"c":[{"e":"x^2*sin(x)","n":"x² sen x"},{"interp":true,"n":"parábola (Simpson)"}],"x":[0,3.141593],"y":[-0.3,5.5]}' data-alt="x^2 sen x en [0, pi] y parábola de Simpson"><figcaption>La función y la parábola por $(0,0),(\frac\pi2,\frac{\pi^2}4),(\pi,0)$: una sola parábola en un intervalo largo no sigue bien el "hombro" derecho, de ahí el error de $0{,}70$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Partes 1: $\int x^2\operatorname{sen}x\,dx=-x^2\cos x+\int2x\cos x\,dx$. Partes 2: $\int2x\cos x\,dx=2x\operatorname{sen}x+2\cos x$.</li>
     <li>Primitiva $F(x)=-x^2\cos x+2x\operatorname{sen}x+2\cos x$. Barrow: $F(\pi)-F(0)=(\pi^2-2)-2=\pi^2-4\approx5{,}8696$.</li>
     <li>Simpson: $f(0)=0$, $f(\frac\pi2)=\frac{\pi^2}4$, $f(\pi)=0$: $\dfrac{0+4\cdot\frac{\pi^2}4+0}6\cdot\pi=\dfrac{\pi^3}6\approx5{,}1677$.</li>
   </ol></div>
-  <p><b>Comentario:</b> el error es $\approx0{,}70$; una sola parábola en un intervalo de longitud $\pi$ es poco, con Simpson compuesta mejoraría mucho.</p>
   <div class="recipe"><b>Receta:</b> exacto: partes con $u$ = polinomio, tantas veces como su grado. Simpson simple: tres valores, pesos $1,4,1$, por $\frac{b-a}6$.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <p><b>Comentario:</b> el error es $\approx0{,}70$; una sola parábola en un intervalo de longitud $\pi$ es poco, con Simpson compuesta mejoraría mucho.</p>
   <div class="box warn"><span class="h">Error típico</span><p>Equivocarse de signo al integrar el seno, o tratar la integral de un producto como producto de integrales.</p></div>
 </details>
-<details class="sol" id="x7"><summary>X7 · Simpson compuesta en tres subintervalos de $\int_0^{\pi/2}\operatorname{sen}^4x\cos^3x\,dx$ <span class="src" data-l="X" data-ref="X p.141 (Febrero 2018, 2.ª semana, Ing. Electrónica Industrial y Automática, Ejercicio 5, segundo apartado)">X p.141 (feb. 2018)</span></summary>
-<p class="enun">Dada $\int_0^{\pi/2}(\operatorname{sen}^4x)(\cos^3x)\,dx$: calcule el valor exacto encontrando una primitiva del integrando y aproxime su valor utilizando la regla de Simpson compuesta en tres subintervalos. (El valor exacto, $\frac15-\frac17=\frac2{35}\approx0{,}05714$, está resuelto en el <a href="tema_6_3_calculo_integrales.html#x5">tema 6.3</a>.)</p>
+</details>
+</article>
+<article class="ejer" id="x7">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">X7 · Simpson compuesta en tres subintervalos de $\int_0^{\pi/2}\operatorname{sen}^4x\cos^3x\,dx$</span> <span class="src" data-l="X" data-ref="X p.141 (Febrero 2018, 2.ª semana, Ing. Electrónica Industrial y Automática, Ejercicio 5, segundo apartado)">X p.141 (feb. 2018)</span></header>
+<div class="ejer-enun"><p class="enun">Dada $\int_0^{\pi/2}(\operatorname{sen}^4x)(\cos^3x)\,dx$: calcule el valor exacto encontrando una primitiva del integrando y aproxime su valor utilizando la regla de Simpson compuesta en tres subintervalos. (El valor exacto, $\frac15-\frac17=\frac2{35}\approx0{,}05714$, está resuelto en el <a href="tema_6_3_calculo_integrales.html#x5">tema 6.3</a>.)</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Simpson compuesta con $n=3$ subintervalos.</dd>
     <dt>Cómo lo pienso</dt><dd>$h=\frac{\pi/2}3=\frac\pi6$; cada subintervalo tiene su punto medio, así que los nodos van de $\frac\pi{12}$ en $\frac\pi{12}$: $7$ nodos.</dd>
     <dt>Qué uso</dt><dd>Def. 6.8 (U p.268).</dd>
     <dt>Por dónde empiezo</dt><dd>Subintervalos $[0,\frac\pi6]$, $[\frac\pi6,\frac\pi3]$, $[\frac\pi3,\frac\pi2]$ y puntos medios $\frac\pi{12},\frac\pi4,\frac{5\pi}{12}$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.2617993877991494,0.004044047579726886],[0.5235987755982988,0.04059494080239555],[0.7853981633974483,0.08838834764831843],[1.0471975511965976,0.07031250000000003],[1.3089969389957472,0.015092591035766689],[1.5707963267948966,2.2958450216584675e-49]],"c":[{"e":"sin(x)^4*cos(x)^3","n":"sen⁴x·cos³x"}],"x":[0,1.570796],"y":[-0.01,0.1]}' data-alt="sen^4 x cos^3 x con los siete nodos"><figcaption>El integrando y los siete nodos de la Simpson compuesta con $n=3$ (paso $\frac\pi{12}$, factor $\frac h6$ con $h=\frac\pi6$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[0.0,0.0],[0.2617993877991494,0.004044047579726886],[0.5235987755982988,0.04059494080239555],[0.7853981633974483,0.08838834764831843],[1.0471975511965976,0.07031250000000003],[1.3089969389957472,0.015092591035766689],[1.5707963267948966,2.2958450216584675e-49]],"c":[{"e":"sin(x)^4*cos(x)^3","n":"sen⁴x·cos³x"}],"x":[0,1.570796],"y":[-0.01,0.1]}' data-alt="sen^4 x cos^3 x con los siete nodos"><figcaption>El integrando y los siete nodos de la Simpson compuesta con $n=3$ (paso $\frac\pi{12}$, factor $\frac h6$ con $h=\frac\pi6$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Tabla ($f=\operatorname{sen}^4x\cos^3x$): $x_k=0,\frac\pi{12},\frac\pi6,\frac\pi4,\frac\pi3,\frac{5\pi}{12},\frac\pi2$ con $f(x_k)=0;\ 0{,}00404;\ \frac{3\sqrt3}{128}\approx0{,}04059;\ \frac{\sqrt2}{16}\approx0{,}08839;\ \frac9{128}\approx0{,}07031;\ 0{,}01509;\ 0$.</li>
     <li>Extremos $0$; pares $f_2+f_4\approx0{,}11091$; impares $f_1+f_3+f_5\approx0{,}10752$.</li>
@@ -591,18 +1052,23 @@
     <li>Comparación: exacto $0{,}05714$; error $\approx0{,}00025$.</li>
   </ol></div>
   <div class="recipe"><b>Receta:</b> Simpson compuesta en $n$ subintervalos: $h=\frac{b-a}n$, nodos cada $\frac h2$, factor $\frac h6$.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <div class="box warn"><span class="h">Error típico</span><p>Usar solo los $4$ nodos $0,\frac\pi6,\frac\pi3,\frac\pi2$ (número par: no vale para Simpson), o poner $\frac{\pi/12}6$ como factor.</p></div>
 </details>
-<details class="sol" id="x8"><summary>X8 · Trapecio de $\int_3^5\frac{dx}{\sqrt{-x^2+8x-7}}$ <span class="src" data-l="X" data-ref="X pp.109-111 (Examen 1 elaborado con exámenes de asignaturas similares, Ejercicio 6)">X pp.109-111</span></summary>
-<p class="enun">Calcular, mediante la regla del trapecio, la integral $\displaystyle\int_3^5\frac{1}{\sqrt{-x^2+8x-7}}\,dx$.</p>
+</details>
+</article>
+<article class="ejer" id="x8">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X8 · Trapecio de $\int_3^5\frac{dx}{\sqrt{-x^2+8x-7}}$</span> <span class="src" data-l="X" data-ref="X pp.109-111 (Examen 1 elaborado con exámenes de asignaturas similares, Ejercicio 6)">X pp.109-111</span></header>
+<div class="ejer-enun"><p class="enun">Calcular, mediante la regla del trapecio, la integral $\displaystyle\int_3^5\frac{1}{\sqrt{-x^2+8x-7}}\,dx$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una aproximación con el trapecio; el número de subintervalos lo elijo yo.</dd>
     <dt>Cómo lo pienso</dt><dd>Con un solo trapecio sería pobre; tomo $n=5$ ($h=0{,}4$). Como $-x^2+8x-7=9-(x-4)^2$, el integrando es simétrico respecto de $x=4$ y la tabla se repite.</dd>
     <dt>Qué uso</dt><dd>Def. 6.6 (U p.267).</dd>
     <dt>Por dónde empiezo</dt><dd>Completar el cuadrado para ver el dominio y la simetría.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[3.0,0.35355339059327373],[3.4,0.34020690871988585],[3.8,0.3340765523905305],[4.2,0.3340765523905305],[4.6,0.34020690871988585],[5.0,0.35355339059327373]],"c":[{"e":"1/sqrt(9-(x-4)^2)","n":"f(x)"},{"e":"x<=3.4?(0.353553+(-0.013346)/(0.4)*(x-(3.0))):x<=3.8?(0.340207+(-0.00613)/(0.4)*(x-(3.4))):x<=4.2?(0.334077+(0.0)/(0.4)*(x-(3.8))):x<=4.6?(0.334077+(0.00613)/(0.4)*(x-(4.2))):(0.340207+(0.013346)/(0.4)*(x-(4.6)))","n":"trapecio, n=5","d":1}],"x":[3,5],"y":[0.32,0.37]}' data-alt="Integrando simétrico respecto de x=4 con la poligonal del trapecio"><figcaption>El integrando (simétrico respecto de $x=4$, con mínimo ahí) y la poligonal del trapecio con $n=5$; el eje $y$ está recortado a $[0{,}32;0{,}37]$ para que se aprecie la diferencia. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[3.0,0.35355339059327373],[3.4,0.34020690871988585],[3.8,0.3340765523905305],[4.2,0.3340765523905305],[4.6,0.34020690871988585],[5.0,0.35355339059327373]],"c":[{"e":"1/sqrt(9-(x-4)^2)","n":"f(x)"},{"e":"x<=3.4?(0.353553+(-0.013346)/(0.4)*(x-(3.0))):x<=3.8?(0.340207+(-0.00613)/(0.4)*(x-(3.4))):x<=4.2?(0.334077+(0.0)/(0.4)*(x-(3.8))):x<=4.6?(0.334077+(0.00613)/(0.4)*(x-(4.2))):(0.340207+(0.013346)/(0.4)*(x-(4.6)))","n":"trapecio, n=5","d":1}],"x":[3,5],"y":[0.32,0.37]}' data-alt="Integrando simétrico respecto de x=4 con la poligonal del trapecio"><figcaption>El integrando (simétrico respecto de $x=4$, con mínimo ahí) y la poligonal del trapecio con $n=5$; el eje $y$ está recortado a $[0{,}32;0{,}37]$ para que se aprecie la diferencia. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>$-x^2+8x-7=9-(x-4)^2\gt0\iff1\lt x\lt7$: en $[3,5]$ el integrando es continuo.</li>
     <li>Tomo $n=5$, $h=0{,}4$. Tabla (por simetría $f(3)=f(5)$, $f(3{,}4)=f(4{,}6)$, $f(3{,}8)=f(4{,}2)$):
@@ -613,20 +1079,25 @@
     <li>Extremos $0{,}70711$; centrales $2(0{,}34021+0{,}33408)=1{,}34858$:
     $$I\approx\frac{0{,}4}2\big(0{,}70711+2\cdot1{,}34858\big)=0{,}2\cdot3{,}40427\approx0{,}6808.$$</li>
   </ol></div>
-  <p><b>Comprobación (no pedida):</b> con $\int\frac{dx}{\sqrt{9-(x-4)^2}}=\operatorname{arcsen}\frac{x-4}3$, el exacto es $2\operatorname{arcsen}\frac13\approx0{,}6797$; el error del trapecio es $\approx0{,}0012$.</p>
   <div class="recipe"><b>Receta:</b> si el enunciado no fija $n$, elegir uno razonable ($4$-$6$ subintervalos) y decirlo; aprovechar simetrías para ahorrar cuentas.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <p><b>Comprobación (no pedida):</b> con $\int\frac{dx}{\sqrt{9-(x-4)^2}}=\operatorname{arcsen}\frac{x-4}3$, el exacto es $2\operatorname{arcsen}\frac13\approx0{,}6797$; el error del trapecio es $\approx0{,}0012$.</p>
   <div class="box warn"><span class="h">Error típico</span><p>Evaluar mal la raíz o no comprobar el dominio.</p></div>
 </details>
-<details class="sol" id="x9"><summary>X9 · Interpolación con cuatro datos y Simpson compuesta en dos subintervalos <span class="src" data-l="X" data-ref="X p.151 (Febrero 2019, 1.ª semana, Ejercicio 5)">X p.151 (feb. 2019)</span></summary>
-<p class="enun">De una función $f$ se sabe que $f(1)=2$, $f(3)=3$, $f(4)=2$ y $f(8)=10$. Aproxime $f(2)$ utilizando el polinomio interpolador. Usando el polinomio interpolador obtenido, aproxime $\int_1^4f(x)\,dx$ mediante la fórmula compuesta de Simpson en dos subintervalos.</p>
+</details>
+</article>
+<article class="ejer" id="x9">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">X9 · Interpolación con cuatro datos y Simpson compuesta en dos subintervalos</span> <span class="src" data-l="X" data-ref="X p.151 (Febrero 2019, 1.ª semana, Ejercicio 5)">X p.151 (feb. 2019)</span></header>
+<div class="ejer-enun"><p class="enun">De una función $f$ se sabe que $f(1)=2$, $f(3)=3$, $f(4)=2$ y $f(8)=10$. Aproxime $f(2)$ utilizando el polinomio interpolador. Usando el polinomio interpolador obtenido, aproxime $\int_1^4f(x)\,dx$ mediante la fórmula compuesta de Simpson en dos subintervalos.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El polinomio interpolador por 4 puntos (grado $\le3$), su valor en $2$ y Simpson compuesta en $[1,4]$ con $n=2$.</dd>
     <dt>Cómo lo pienso</dt><dd>Simpson compuesta con $n=2$ en $[1,4]$ necesita $5$ nodos equiespaciados $1,\frac74,\frac52,\frac{13}4,4$ y solo conozco $f(1)$ y $f(4)$. Los demás los aproximo con el polinomio interpolador $p$. Como $p$ es de grado $3$, Simpson sobre $p$ es exacto: el resultado es $\int_1^4p$.</dd>
     <dt>Qué uso</dt><dd>Diferencias divididas (U §3.3, pp.119-124); Def. 6.8 (U p.268); Simpson exacto en cúbicas (Teor. 6.4 con $M_4=0$, U p.270).</dd>
     <dt>Por dónde empiezo</dt><dd>Tabla de diferencias divididas con nodos $1,3,4,8$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[1,2],[3,3],[4,2],[8,10]],"q":[[2,3.3142857142857145,"p(2)"]],"c":[{"interp":true,"n":"p(x)"}],"x":[0,8.5],"y":[0,11]}' data-alt="Polinomio interpolador cúbico por cuatro datos"><figcaption>Los cuatro datos y el polinomio interpolador $p$ (grado $\le3$); el punto marcado es $p(2)=\frac{116}{35}\approx3{,}314$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[1,2],[3,3],[4,2],[8,10]],"q":[[2,3.3142857142857145,"p(2)"]],"c":[{"interp":true,"n":"p(x)"}],"x":[0,8.5],"y":[0,11]}' data-alt="Polinomio interpolador cúbico por cuatro datos"><figcaption>Los cuatro datos y el polinomio interpolador $p$ (grado $\le3$); el punto marcado es $p(2)=\frac{116}{35}\approx3{,}314$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Orden 1: $f[1,3]=\frac12$, $f[3,4]=-1$, $f[4,8]=2$. Orden 2: $f[1,3,4]=-\frac12$, $f[3,4,8]=\frac35$. Orden 3: $f[1,3,4,8]=\frac{11}{70}$.</li>
     <li>$p(x)=2+\frac12(x-1)-\frac12(x-1)(x-3)+\frac{11}{70}(x-1)(x-3)(x-4)$, con $p(2)=3+\frac{22}{70}=\frac{116}{35}\approx3{,}3143$.</li>
@@ -634,33 +1105,40 @@
     <li>Extremos $4$; par $p(\frac52)$; impares $p(\frac74)+p(\frac{13}4)$:
     $$\int_1^4f\approx\frac{3/2}6\Big(4+2\cdot3{,}30179+4\cdot(3{,}17522+2{,}77746)\Big)=\frac{2409}{280}\approx8{,}6036.$$</li>
   </ol></div>
-  <p><b>Comprobación (no hace falta escribirla):</b> $\int_1^4p(x)\,dx=\frac{2409}{280}$ exactamente, como se esperaba (Simpson es exacto en polinomios de grado $3$).</p>
   <div class="recipe"><b>Receta:</b> si faltan valores en los nodos que pide la fórmula, se obtienen con el polinomio interpolador de los datos; y si ese polinomio es de grado $\le3$, Simpson da su integral exacta.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+  <p><b>Comprobación (no hace falta escribirla):</b> $\int_1^4p(x)\,dx=\frac{2409}{280}$ exactamente, como se esperaba (Simpson es exacto en polinomios de grado $3$).</p>
   <div class="box warn"><span class="h">Error típico</span><p>Aplicar Simpson compuesta con nodos no equiespaciados ($1,2,3,4$ son $4$ nodos: número par, no sirve).</p></div>
 </details>
-<details class="sol" id="x10"><summary>X10 · Trapecio con nodos no equiespaciados <span class="src" data-l="X" data-ref="X p.38 (Septiembre 2013, Grados en Ing. Mecánica y Electrónica y Automática, Modelo A, Pregunta 3)">X p.38 (sept. 2013)</span></summary>
-<p class="enun">Sea $f$ una función que cumple $f(0)=2$, $f(1)=0$, $f(3)=-1$ y $f(7)=4$. Aproximemos la integral de $f(x)$ en el intervalo $[0,7]$ utilizando la regla del trapecio.</p>
+</details>
+</article>
+<article class="ejer" id="x10">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X10 · Trapecio con nodos no equiespaciados</span> <span class="src" data-l="X" data-ref="X p.38 (Septiembre 2013, Grados en Ing. Mecánica y Electrónica y Automática, Modelo A, Pregunta 3)">X p.38 (sept. 2013)</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f$ una función que cumple $f(0)=2$, $f(1)=0$, $f(3)=-1$ y $f(7)=4$. Aproximemos la integral de $f(x)$ en el intervalo $[0,7]$ utilizando la regla del trapecio.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Un número: $\int_0^7f$ con el trapecio.</dd>
     <dt>Cómo lo pienso</dt><dd>Los nodos $0,1,3,7$ <b>no están igualmente espaciados</b> (anchuras $1,2,4$): la fórmula compuesta $\frac h2(E+2C)$ no vale, porque supone una $h$ común. Cada tramo es un trapecio con su propia altura (su anchura).</dd>
     <dt>Qué uso</dt><dd>Trapecio simple, Def. 6.5 (U p.267), en cada tramo; aditividad (U p.264).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir los tres tramos $[0,1]$, $[1,3]$, $[3,7]$ con su anchura.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"p":[[0,2],[1,0],[3,-1],[7,4]],"c":[{"e":"x<=1.0?(2.0+(-2.0)/(1.0)*(x-(0.0))):x<=3.0?(0.0+(-1.0)/(2.0)*(x-(1.0))):(-1.0+(5.0)/(4.0)*(x-(3.0)))","n":"poligonal","d":1}],"x":[0,7],"y":[-2,5]}' data-alt="Datos no equiespaciados y poligonal"><figcaption>Los cuatro datos y la poligonal: tres trapecios de anchuras distintas $1,2,4$ (áreas $1,-1,6$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"p":[[0,2],[1,0],[3,-1],[7,4]],"c":[{"e":"x<=1.0?(2.0+(-2.0)/(1.0)*(x-(0.0))):x<=3.0?(0.0+(-1.0)/(2.0)*(x-(1.0))):(-1.0+(5.0)/(4.0)*(x-(3.0)))","n":"poligonal","d":1}],"x":[0,7],"y":[-2,5]}' data-alt="Datos no equiespaciados y poligonal"><figcaption>Los cuatro datos y la poligonal: tres trapecios de anchuras distintas $1,2,4$ (áreas $1,-1,6$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: curva y puntos calculados con sympy a partir de los datos del ejercicio">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Como no se fija la longitud de los subintervalos, se aplica el trapecio simple a cada tramo y se suma:
     $$\int_0^7f\approx\frac{f(1)+f(0)}2(1-0)+\frac{f(3)+f(1)}2(3-1)+\frac{f(7)+f(3)}2(7-3).$$</li>
     <li>$=\frac{0+2}2\cdot1+\frac{-1+0}2\cdot2+\frac{4+(-1)}2\cdot4=1-1+6=6.$</li>
   </ol></div>
   <div class="recipe"><b>Receta:</b> datos no equiespaciados: trapecio simple en cada tramo, con su propia anchura, y sumar.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
   <div class="box warn"><span class="h">Error típico</span><p>Aplicar $\frac h2(E+2C)$ con una $h$ inventada: esa fórmula solo vale con nodos equiespaciados.</p></div>
 </details>
+</details>
+</article>
 <div class="box tip"><span class="h">Qué tipo de pregunta no cubre esta sección</span>
   <p>En X, las preguntas de «cuántos subintervalos» o «cota del error» no aparecen en estos exámenes; si te las piden, aplica la receta del apartado 6. Y si un enunciado de examen da el valor de una función en nodos que no encajan con la fórmula pedida (p. ej. Simpson con $f(0)$ no definida, como en X p.93 de febrero de 2018 con $\frac2{x(x+2)}$), la respuesta es que <b>no se puede aplicar</b> con esos nodos.</p>
 </div>
-<!-- ============================ 10 ============================ -->
-<h2 id="chuleta"><span class="n">10</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+<h2 id="chuleta" data-vista="teoria"><span class="n">13</span>Errores frecuentes, chuleta y lista de comprobación</h2>
 <h3>Errores frecuentes</h3>
 <p>Cada uno está explicado en su apartado; aquí solo el recordatorio:</p>
 <ul>
@@ -681,15 +1159,6 @@
   <tr><td>$m$ para tolerancia «tol»</td><td colspan="2">trapecio $m\ge\sqrt{\frac{(b-a)^3M_2}{12\,\text{tol}}}$; Simpson $m\ge\sqrt[4]{\frac{(b-a)^5M_4}{2880\,\text{tol}}}$; redondear hacia arriba</td><td>U Ej. 6.35</td></tr>
   <tr><td>Exactitud</td><td colspan="2">trapecio: exacto en rectas; Simpson: exacto en polinomios de grado $\le3$; $S_n=\frac{T_n+2M_n}3$</td><td>propio</td></tr>
 </table>
-<div class="box tip"><span class="h">Receta general</span>
-  <ol class="steps">
-    <li><b>¿Qué fórmula y si es simple o compuesta?</b> Con una tabla de $N$ nodos: trapecio en $N-1$ subintervalos; Simpson solo si $N$ es impar, en $\frac{N-1}2$ subintervalos.</li>
-    <li><b>Tabla $x_k\mid f_k$</b> y marcar cada valor como extremo, central/par o impar.</li>
-    <li><b>Sustituir</b> en $\frac h2(E+2C)$ o $\frac h6(E+2P+4I)$ y comprobar el orden de magnitud (longitud $\times$ valor medio).</li>
-    <li><b>Si piden comparar:</b> exacto con Barrow y error absoluto.</li>
-    <li><b>Si piden $m$ o una cota:</b> derivar, hallar $M_2$ o $M_4$ (extremos absolutos), imponer cota $\le$ tolerancia, despejar y redondear hacia arriba.</li>
-  </ol>
-</div>
 <h3>Lista de comprobación</h3>
 <ul class="checklist">
   <li>Sé cuándo se usa la integración numérica y por qué conocer $f$ no basta (E 6.36).</li>
