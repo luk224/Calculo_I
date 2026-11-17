@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <!-- GENERADO desde contenido/tema_6_2/ con herramientas/tema_datos.py; no editar a mano -->
-<html lang="es">
+<html lang="es" class="pilot">
 <head>
 <meta charset="utf-8">
 <script>try{var t=localStorage.getItem('tema');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('fuentes')==='true')document.documentElement.classList.add('con-fuentes')}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cálculo · 6.2 Teoremas fundamentales del Cálculo</title>
 <link rel="stylesheet" href="../assets/katex/katex.min.css">
@@ -15,6 +16,8 @@
 <script defer src="../assets/interactivos.js"></script>
 <link rel="stylesheet" href="../assets/grafica.css">
 <script defer src="../assets/grafica.js"></script>
+<link rel="stylesheet" href="../assets/estudio.css">
+<script defer src="../assets/estudio.js"></script>
 </head>
 <body>
 <div class="topbar"><div class="in">
@@ -30,7 +33,7 @@
   <div class="kick">Módulo VI · Integral de Riemann · Tema 6.2</div>
   <h1>Teoremas fundamentales del Cálculo</h1>
   <p>El puente entre derivar e integrar. El primer teorema dice que la derivada del área acumulada es la función de la que se acumula; el segundo (regla de Barrow) convierte las integrales definidas en una resta de valores de una primitiva. Con ellos se deja de calcular integrales con sumas de rectángulos.</p>
-  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §6.2 (pp. 242-246)</span><span>Ejercicios: E Ej. 6.11–6.16</span><span>Examen: 6 problemas de X</span><span>⏱ ~3 h (estimación propia)</span></div>
+  <div class="chips"><span>Libro oficial: Cálculo para Ingenieros, §6.2 (pp. 242-246)</span><span>Ejercicios: E Ej. 6.11–6.16</span><span>Examen: 6 problemas de X</span><span>⏱ ~3 h de estudio</span></div>
   <div class="legend">
     <span class="src" data-l="U" data-ref="Cálculo para Ingenieros (UNED) — libro oficial">U</span> oficial
     <span class="src" data-l="S" data-ref="Stewart, Cálculo de una variable. Trascendentes tempranas">S</span> Stewart
@@ -42,8 +45,72 @@
   </div>
 </header>
 
+<div class="box intu"><span class="h">La idea del tema en una frase</span>
+  <p>Derivar e integrar son <b>operaciones inversas</b>. El <b>primer teorema</b> dice que, si $F(x)=\int_a^xf$ es el área acumulada hasta $x$, entonces $F'(x)=f(x)$: la rapidez con la que crece el área es la altura de la gráfica. El <b>segundo</b> (regla de Barrow) dice que $\int_a^bf=F(b)-F(a)$ para cualquier primitiva $F$: en vez de sumar rectángulos, se restan dos valores de una primitiva. En el examen casi nunca hay que calcular $\int_0^xf$: se usa que su derivada es $f$ para estudiar crecimiento y extremos, y Barrow para calcular integrales definidas.</p>
+  <span class="src" data-l="P" data-ref="Explicación propia de U §6.2, pp. 242-246">P</span>
+</div>
+<p class="ir-examen"><a href="#examen" data-ir-vista="examen">🎯 Ir directamente a los exámenes ↓</a></p>
+<div class="box esencial"><span class="h">Lo esencial en 5 minutos</span>
+  <p>Si solo tienes un rato, llévate esto. El resto de la página lo desarrolla con ejemplos y ejercicios.</p>
+  <p class="sub">Método en 4 pasos</p>
+  <ol>
+    <li><b>Mira dónde está la $x$:</b> ¿es el límite de una integral que te piden derivar, o una integral con números que te piden calcular?</li>
+    <li><b>Comprueba que el integrando es continuo</b> en el intervalo (extremos incluidos): sin eso ninguno de los dos teoremas es válido.</li>
+    <li><b>Aplica el teorema:</b> $\frac{d}{dx}\int_a^xf=f(x)$ (con cadena si el límite es $g(x)$, con signo menos si la $x$ está abajo); o Barrow $F(b)-F(a)$ con una primitiva comprobada derivando.</li>
+    <li><b>Comprueba:</b> ¿el factor de la cadena?, ¿el signo?, ¿no calculaste la integral cuando solo pedían su derivada?</li>
+  </ol>
+  <p class="sub">Qué hago según lo que piden</p>
+  <ul>
+    <li>¿«Deriva $\int_a^{g(x)}f$»? $\to$ $f(g(x))\,g'(x)$; con dos límites, arriba menos abajo.</li>
+    <li>¿«Crecimiento, extremos o inflexión de $F(x)=\int_0^xf$»? $\to$ $F'=f$, $F''=f'$; no se calcula la integral.</li>
+    <li>¿«Límite $\frac00$ con una integral»? $\to$ L'Hôpital y el primer teorema.</li>
+    <li>¿«Calcula $\int_a^bf$»? $\to$ continuidad, primitiva comprobada, $F(b)-F(a)$.</li>
+    <li>¿«¿Es cierto que $f$ decreciente $\Rightarrow$ $F$ decreciente?»? $\to$ la monotonía de $F$ depende del <b>signo</b> de $f$; contraejemplo.</li>
+  </ul>
+  <p class="sub">Fórmulas y enunciados, con su «cuándo se usa»</p>
+  <table class="cuando">
+    <tr><th>Fórmula o enunciado</th><th>Cuándo se usa</th></tr>
+    <tr><td>$F(x)=\int_a^xf\Rightarrow F'(x)=f(x)$</td><td>Derivar una integral o estudiar $F$ (U Teor. 6.1, p.243).</td></tr>
+    <tr><td>$\frac{d}{dx}\int_{a(x)}^{b(x)}f=f(b)\,b'-f(a)\,a'$</td><td>Límites variables (E 6.15).</td></tr>
+    <tr><td>$\int_a^bf=F(b)-F(a)$, con $F'=f$</td><td>Calcular una integral definida (U Teor. 6.2, p.244).</td></tr>
+    <tr><td>$\int_a^bf=f(c)(b-a)$, algún $c\in[a,b]$</td><td>Valor medio (U p.244).</td></tr>
+  </table>
+  <p class="sub">Qué cae</p>
+  <p>En los exámenes resueltos hay 6 problemas de este tema: tres sobre la monotonía y los extremos de $F(x)=\int_0^xf$ y tres de calcular una integral definida con Barrow. En el libro de ejercicios son E 6.11-6.16. Tabla por tipo: <a href="#examen" data-ir-vista="examen">pestaña Examen</a>.</p>
+  <span class="src" data-l="U" data-ref="U §6.2, pp. 242-246 (primer y segundo teorema fundamental); resumen propio">U pp.242-246</span>
+  <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §6.2">P</span>
+</div>
+<div class="camino"><span class="h">Camino de estudio: elige tu nivel</span>
+  <p>Empieza por «Mínimo»; luego «Completo» y, para nota alta, «Reto». Marca cada ejercicio al terminarlo.</p>
+  <p><a href="../prioridades.html">Mira las prioridades</a>: qué temas caen más y cuánto cuesta cada uno.</p>
+  <div class="niv">
+    <div><b>🔴 Mínimo para aprobar · ≈ 2 h</b>
+      <ul>
+        <li>Los apartados del <b>primer teorema</b> (2), <b>Barrow</b> (3) y el <b>mapa de decisión</b> (4).</li>
+        <li>Un ejercicio de cada tipo:
+          <a href="#ej-6-14">E 6.14</a> (límite inferior variable), <a href="#ej-6-15">E 6.15</a> (dos límites), <a href="#ej-6-13">E 6.13</a> (monotonía y extremos de $F$), <a href="#ej-6-16">E 6.16</a> (hipótesis de Barrow), <a href="#p2">P2</a> (Barrow) y los exámenes <a href="#x1">X1</a>, <a href="#x2">X2</a> (sobre $F(x)=\int_0^xf$) y <a href="#x4">X4</a> (Barrow).</li>
+        <li>Las <a href="#practica">prácticas</a> ★.</li>
+      </ul></div>
+    <div><b>🔵 Completo · ≈ 3 h</b>
+      <ul>
+        <li>Todo el tema (desmarca «Solo lo esencial»), con el interactivo del área acumulada.</li>
+        <li>E 6.11-6.16, los 6 exámenes, los ejemplos propios y todas las prácticas.</li>
+      </ul></div>
+    <div><b>🟣 Reto · ≈ +1 h</b>
+      <ul>
+        <li><a href="#ej-6-12">E 6.12</a> (composición, cadena e inflexión), <a href="#p4">P4</a> (valor absoluto y trozos), <a href="#x6">X6</a> (integrando no acotado) y las prácticas ★★.</li>
+      </ul></div>
+  </div>
+  <div class="tools">
+    <label><input type="checkbox" class="esencial"> Solo lo esencial</label>
+    <span class="prog"></span>
+    <div class="bar"><i></i></div>
+    <p class="esencial-nota">Verás solo lo esencial; desmarca para ver todo.</p>
+  </div>
+</div>
 <!-- ============================ 0 ============================ -->
-<h2 id="prereq"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.2.1 Motivación, p. 242">U p.242</span></h2>
+<h2 id="prereq" data-vista="teoria"><span class="n">0</span>Antes de empezar <span class="src" data-l="U" data-ref="U §6.2.1 Motivación, p. 242">U p.242</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué debes saber antes de empezar y qué se pide en los ejercicios y en el examen.</p>
 <div class="box intu"><span class="h">La idea del tema en una frase</span>
   <p>La integral (acumular área) y la derivada (medir cómo cambia algo) son <b>operaciones inversas</b>, como el cuentakilómetros y el velocímetro de un coche: el primer teorema (§2) dice que la rapidez con que sube el cuentakilómetros es la velocidad, y el segundo (§3) que los kilómetros recorridos son una resta de dos lecturas. Newton y Leibniz lo establecieron de forma independiente en el siglo XVII (U p.242).</p>
   <span class="src" data-l="U" data-ref="U §6.2.1, p. 242 y §6.2.2 interpretación intuitiva, p. 245">U pp.242, 245</span>
@@ -59,7 +126,13 @@
 <h3>Mapa del tema: qué se pide en los ejercicios y en el examen</h3>
 <p>(A) <b>Derivar una integral</b> con el límite superior (o el inferior, o los dos) variable: es el primer teorema con la regla de la cadena (E 6.12, 6.14, 6.15). (B) <b>Estudiar la monotonía, los extremos y la inflexión</b> de $F(x)=\int_a^xf$ sin calcular la integral, mirando $F'=f$ (E 6.12, 6.13; X, el tipo de pregunta más frecuente). (C) <b>Calcular una integral definida</b> con la regla de Barrow, comprobando antes que el integrando es continuo en todo el intervalo (E 6.16; X). (D) Teoría: qué es una primitiva (E 6.11) y cuándo se puede aplicar cada teorema. La búsqueda de primitivas difíciles (partes, sustitución, fracciones simples) llega en §6.3.</p>
 <!-- ============================ 1 ============================ -->
-<h2 id="s1"><span class="n">1</span>Funciones definidas por una integral <span class="src" data-l="U" data-ref="U §6.2.2 y Ejemplo 6.5, pp. 242-243">U pp.242-243</span></h2>
+<h2 id="s1" data-vista="teoria"><span class="n">1</span>Funciones definidas por una integral <span class="src" data-l="U" data-ref="U §6.2.2 y Ejemplo 6.5, pp. 242-243">U pp.242-243</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> la integral con extremo superior variable como una función de $x$: el área acumulada $F(x)=\int_a^xf$.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Sea $F(x)=\int_a^xf(t)\,dt$», «función definida por una integral».</li>
+  <li><b>Qué haces:</b> Distingues el número $\int_a^bf$ de la función $F(x)$, y entiendes que $F(x)$ es el área hasta $x$.</li>
+  <li><b>Ejemplo mínimo:</b> $F(x)=\int_0^xe^{-t^2}dt$ no tiene primitiva elemental, pero sí es una función bien definida.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · el área que va creciendo</span>
   <p>Imagina que una cortina se va desplegando de izquierda a derecha por debajo de una gráfica. En cada momento, el área que ha cubierto depende de <b>hasta dónde</b> ha llegado, es decir, del extremo derecho $x$. Eso es una función: a cada $x$ le asigna un número, el área acumulada $F(x)$.</p>
   <p>U se hace una pregunta: ¿tienen primitiva todas las funciones integrables? Por ejemplo, $f(t)=e^{-t^2}$ es integrable en $[0,x]$ para cualquier $x$, pero su primitiva no se puede escribir con funciones elementales. Entonces se <b>define</b> una función con la propia integral (U p.242):
@@ -83,7 +156,13 @@
   <span class="src" data-l="U" data-ref="U Ejemplo 6.5, p. 243">U p.243</span>
 </div>
 <!-- ============================ 2 ============================ -->
-<h2 id="s2"><span class="n">2</span>Primer teorema fundamental del Cálculo <span class="src" data-l="U" data-ref="U Teorema 6.1, p. 243; demostración pp. 243-244; Ejemplos 6.6 y 6.7, p. 244">U pp.243-244</span></h2>
+<h2 id="s2" data-vista="teoria"><span class="n">2</span>Primer teorema fundamental del Cálculo <span class="src" data-l="U" data-ref="U Teorema 6.1, p. 243; demostración pp. 243-244; Ejemplos 6.6 y 6.7, p. 244">U pp.243-244</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> que la derivada del área acumulada es la función: $F'(x)=f(x)$, y cómo se aplica con límites variables y regla de la cadena.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Calcula $F'(x)$», «$\frac{d}{dx}\int_a^{g(x)}f$», «estudia el crecimiento de $F(x)=\int_0^xf$».</li>
+  <li><b>Qué haces:</b> Compruebas que $f$ es continua, «quitas el signo integral» y sustituyes $t$ por el límite variable, multiplicando por su derivada; con $x$ abajo, cambias de signo.</li>
+  <li><b>Ejemplo mínimo:</b> $\frac{d}{dx}\int_0^{x^2}\cos t\,dt=\cos(x^2)\cdot2x$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · ¿cómo crece el área?</span>
   <p>Si desplazas el extremo derecho un poco, el área gana una tira muy estrecha; cuanto más alta es la gráfica en $x$, más deprisa crece el área. La rapidez con que crece el área es, pues, la <b>altura</b> $f(x)$ (detalle en la demostración, bajo la figura).</p>
   <span class="src" data-l="U" data-ref="U demostración geométrica del Teor. 6.1, pp. 243-244">U pp.243-244</span>
@@ -148,7 +227,13 @@
   <span class="src" data-l="P" data-ref="Errores típicos propios sobre U Teor. 6.1, p. 243">P</span>
 </div>
 <!-- ============================ 3 ============================ -->
-<h2 id="s3"><span class="n">3</span>Segundo teorema fundamental: regla de Barrow <span class="src" data-l="U" data-ref="U Teorema 6.2, p. 244; demostración pp. 244-245; Ejemplo 6.8 e interpretación, p. 245">U pp.244-245</span></h2>
+<h2 id="s3" data-vista="teoria"><span class="n">3</span>Segundo teorema fundamental: regla de Barrow <span class="src" data-l="U" data-ref="U Teorema 6.2, p. 244; demostración pp. 244-245; Ejemplo 6.8 e interpretación, p. 245">U pp.244-245</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> la regla de Barrow: calcular una integral definida restando los valores de una primitiva en los extremos.</p>
+<ul class="trio">
+  <li><b>Cómo lo reconoces:</b> «Calcula $\int_a^bf$» con $f$ continua y una primitiva sencilla; «¿se puede aplicar Barrow?».</li>
+  <li><b>Qué haces:</b> Compruebas la continuidad en $[a,b]$, encuentras una primitiva comprobándola derivando y calculas $F(b)-F(a)$.</li>
+  <li><b>Ejemplo mínimo:</b> $\int_0^1e^x\,dx=e-1$.</li>
+</ul>
 <div class="box intu"><span class="h">Idea intuitiva · restar dos lecturas del cuentakilómetros</span>
   <p>Para saber cuántos kilómetros has hecho entre las 10:00 y las 12:00 no hace falta sumar velocidades instante a instante: basta mirar el cuentakilómetros a las 12:00 y a las 10:00 y restar. Aquí la «velocidad» es $f$ y el «cuentakilómetros» es una primitiva $F$. Por eso, en lugar de sumas de Riemann, para calcular $\int_a^bf$ basta <b>encontrar una primitiva y restar sus valores en los extremos</b>.</p>
   <span class="src" data-l="U" data-ref="U interpretación intuitiva, eq. (6.2), p. 245">U p.245</span>
@@ -201,21 +286,280 @@
   <span class="src" data-l="L" data-ref="Larson §4.4, Teorema 4.10, p. 280 y valor medio, p. 281">L pp.280-281</span>
 </div>
 <!-- ============================ 4 ============================ -->
-<h2 id="ejercicios"><span class="n">4</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.11-6.16, pp. 218-223">E pp.218-223</span></h2>
-<p>Orden recomendado para aprender: <b>qué es una primitiva</b> (6.11) → <b>límite inferior variable</b> (6.14) → <b>cuándo se puede usar Barrow</b> (6.16) → <b>monotonía y extremos de $\int_0^x$</b> (6.13) → <b>primer teorema con regla de la cadena e inflexión</b> (6.12) → <b>fórmula con los dos límites variables</b> (6.15).</p>
+<h2 id="mapa" data-vista="tipos"><span class="n">4</span>Recetas del tema <span class="src" data-l="P" data-ref="Síntesis propia a partir de U §6.2, pp. 242-246">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> qué hacer según lo que te pidan (derivar una integral, estudiar $F(x)=\int_a^xf$, límites con integrales, Barrow) con un mapa de decisión.</p>
+<p>Léelo de arriba abajo: en cada pregunta, «no» baja a la siguiente y «sí» te lleva a la acción de la derecha. Lo que más puntos se pierde: <b>olvidar el factor de la cadena</b>, <b>el signo menos con la $x$ abajo</b>, <b>calcular la integral cuando solo piden su derivada</b>, <b>aplicar Barrow con un integrando discontinuo</b> y <b>confundir «$f$ decreciente» con «$f$ negativa»</b>.</p>
+<svg class="flujo" viewBox="0 0 600 608" role="img" aria-labelledby="flujo-t flujo-d">
+<title id="flujo-t">Mapa de decisión del tema 6.2: qué hacer según lo que piden sobre los teoremas fundamentales</title>
+<desc id="flujo-d">Diagrama de flujo vertical. Si piden derivar una integral con límites variables, se usa el primer teorema con la regla de la cadena. Si piden crecimiento o extremos de una integral con límite variable, se estudia el signo de su derivada, que es el integrando. Si es un límite con una integral, se usa L'Hôpital y el primer teorema. Si piden calcular una integral definida, se usa la regla de Barrow. Si es un verdadero o falso sobre monotonía, se compara el signo de f y se busca un contraejemplo. Al final se comprueba la respuesta.</desc>
+<defs><marker id="fl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="preg" x="10" y="10" width="210" height="76" rx="10"/>
+<text x="115" y="40" text-anchor="middle">¿Piden la derivada de una integral</text>
+<text x="115" y="58" text-anchor="middle">con límite(s) variable(s)?</text>
+<path class="lin" d="M220 48 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="43">sí</text>
+<rect class="nodo" x="250" y="10" width="340" height="76" rx="10"/>
+<text x="420" y="44" text-anchor="middle">$\frac{d}{dx}\int_{a(x)}^{b(x)}f=f(b)\,b'-f(a)\,a'$;</text>
+<text x="420" y="64" text-anchor="middle">$x$ abajo: signo menos. No calculo la integral.</text>
+<path class="lin" d="M115 86 V109" marker-end="url(#fl)"/>
+<text class="no" x="123" y="102">no</text>
+<rect class="preg" x="10" y="112" width="210" height="76" rx="10"/>
+<text x="115" y="142" text-anchor="middle">¿Piden crecimiento, extremos o</text>
+<text x="115" y="160" text-anchor="middle">inflexión de $F(x)=\int_a^xf$?</text>
+<path class="lin" d="M220 150 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="145">sí</text>
+<rect class="nodo" x="250" y="112" width="340" height="76" rx="10"/>
+<text x="420" y="146" text-anchor="middle">$F'=f$, $F''=f'$: signo de $f$ y ceros de $f$;</text>
+<text x="420" y="166" text-anchor="middle">clasifico con el signo o con $f'$.</text>
+<path class="lin" d="M115 188 V211" marker-end="url(#fl)"/>
+<text class="no" x="123" y="204">no</text>
+<rect class="preg" x="10" y="214" width="210" height="76" rx="10"/>
+<text x="115" y="244" text-anchor="middle">¿Es un límite $\frac00$ con una</text>
+<text x="115" y="262" text-anchor="middle">integral en el numerador?</text>
+<path class="lin" d="M220 252 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="247">sí</text>
+<rect class="nodo" x="250" y="214" width="340" height="76" rx="10"/>
+<text x="420" y="248" text-anchor="middle">L'Hôpital: la derivada del numerador</text>
+<text x="420" y="268" text-anchor="middle">es el integrando (primer teorema).</text>
+<path class="lin" d="M115 290 V313" marker-end="url(#fl)"/>
+<text class="no" x="123" y="306">no</text>
+<rect class="preg" x="10" y="316" width="210" height="76" rx="10"/>
+<text x="115" y="346" text-anchor="middle">¿Piden calcular $\int_a^bf$</text>
+<text x="115" y="364" text-anchor="middle">con $f$ continua en $[a,b]$?</text>
+<path class="lin" d="M220 354 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="349">sí</text>
+<rect class="nodo" x="250" y="316" width="340" height="76" rx="10"/>
+<text x="420" y="350" text-anchor="middle">Primitiva (comprobada derivando)</text>
+<text x="420" y="370" text-anchor="middle">y $F(b)-F(a)$; con trozos, parto el intervalo.</text>
+<path class="lin" d="M115 392 V415" marker-end="url(#fl)"/>
+<text class="no" x="123" y="408">no</text>
+<rect class="preg" x="10" y="418" width="210" height="76" rx="10"/>
+<text x="115" y="448" text-anchor="middle">¿Es un V/F sobre «$f$ monótona</text>
+<text x="115" y="466" text-anchor="middle">$\Rightarrow$ $F$ monótona»?</text>
+<path class="lin" d="M220 456 H246" marker-end="url(#fl)"/>
+<text class="si" x="225" y="451">sí</text>
+<rect class="nodo" x="250" y="418" width="340" height="76" rx="10"/>
+<text x="420" y="452" text-anchor="middle">Monotonía de $F$ = signo de $f$; busco</text>
+<text x="420" y="472" text-anchor="middle">contraejemplo con $e^{-x}$ o $-e^{-x}$.</text>
+<path class="lin" d="M115 494 V517" marker-end="url(#fl)"/>
+<text class="no" x="123" y="510">no</text>
+<rect class="fin" x="10" y="520" width="580" height="76" rx="10"/>
+<text x="300" y="546" text-anchor="middle">Respondo y compruebo:</text>
+<text x="300" y="564" text-anchor="middle">¿integrando continuo?, ¿factor de la cadena?, ¿signo con la $x$ abajo?,</text>
+<text x="300" y="582" text-anchor="middle">¿primitiva comprobada derivando?, ¿$F(b)-F(a)$ y no al revés?</text>
+</svg>
+<details class="ver"><summary>Ver la tabla con el detalle de cada caso</summary>
+<table>
+  <tr><th>Piden…</th><th>Herramienta</th><th>Ojo con…</th></tr>
+  <tr><td>Derivar $\int_a^{g(x)}f$</td><td>$f(g(x))\,g'(x)$ (U Teor. 6.1, p.243)</td><td>El factor $g'(x)$; evaluar $f$ en $g(x)$, no en $x$</td></tr>
+  <tr><td>$x$ en el límite inferior</td><td>Cambiar el orden: signo menos (U Ej. 6.7, p.244)</td><td>Olvidar el signo</td></tr>
+  <tr><td>Dos límites variables</td><td>$f(b)\,b'-f(a)\,a'$ (E 6.15)</td><td>Restar, no sumar</td></tr>
+  <tr><td>Monotonía y extremos de $F(x)=\int_a^xf$</td><td>$F'=f$, $F''=f'$ (U p.98, p.131)</td><td>Importa el signo de $f$, no que $f$ crezca</td></tr>
+  <tr><td>Límite $\frac00$ con una integral</td><td>L'Hôpital + primer teorema (U p.82)</td><td>Comprobar que es $\frac00$ antes</td></tr>
+  <tr><td>Calcular $\int_a^bf$</td><td>$F(b)-F(a)$ (U Teor. 6.2, p.244)</td><td>Continuidad en todo $[a,b]$; área $\ne$ integral</td></tr>
+  <tr><td>Valor absoluto o trozos</td><td>Partir el intervalo y aplicar Barrow en cada trozo</td><td>Ver dónde cambia el signo o la fórmula</td></tr>
+</table>
+</details>
+<!-- ============================ practica ============================ -->
+<h2 id="practica" data-vista="tipos"><span class="n">5</span>Practica <span class="src" data-l="P" data-ref="Ejercicios de práctica propios (verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a resolver tú solo un ejemplo de cada tipo. Intenta cada uno antes de abrir la pista; empieza por los ★ (los ★★ son ampliación).</p>
+<div class="pract">
+<span class="h">Ahora hazlo tú</span>
+<p class="sub"><b>Teoremas fundamentales</b>: (1) ¿te piden la derivada de una integral? No la calcules: $\frac{d}{dx}\int_a^xf=f(x)$; con límites variables, $f(\text{arriba})(\text{arriba})'-f(\text{abajo})(\text{abajo})'$; (2) para monotonía y extremos de $F$, estudia el signo de $f$; (3) límite $\frac00$ con una integral: L'Hôpital + primer teorema; (4) para calcular $\int_a^bf$: comprueba que $f$ es continua en $[a,b]$, busca una primitiva (compruébala derivando) y resta $F(b)-F(a)$; (5) con valor absoluto o trozos, parte el intervalo.</p>
+<h3>Derivar $\int_a^xf$ (primer teorema)</h3>
+<details class="pr" id="pr-a1"><summary><span class="nv n1">★ Básico</span> Práctica a1 · derivar $\int_2^x\sqrt{1+t^4}\,dt$ y $\int_x^3(t^3-4t)\,dt$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">a) Sea $F(x)=\displaystyle\int_2^x\sqrt{1+t^4}\,dt$. Calcula $F'(x)$, $F'(0)$ y $F(2)$. b) Sea $G(x)=\displaystyle\int_x^3(t^3-4t)\,dt$. Calcula $G'(x)$ y $G'(1)$, y comprueba el resultado con Barrow.</p>
+  <details class="pista"><summary>Pista</summary><p>a) No hace falta (ni se puede, con funciones elementales) calcular la integral: el primer teorema da la derivada. b) La $x$ está abajo: da la vuelta a los límites (cambia el signo).</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Hipótesis:</b> $\sqrt{1+t^4}$ es continua en $\mathbb R$ (lo de dentro es $\ge1$).</li><li><b>a) Primer teorema</b> (U Teor. 6.1, p.243): $F'(x)=\sqrt{1+x^4}$; se cambia $t$ por $x$ en el integrando, como en U Ej. 6.6. Entonces $F'(0)=\sqrt1=1$.</li><li><b>a) $F(2)$:</b> $F(2)=\int_2^2\sqrt{1+t^4}\,dt=0$ (P0, U p.240: los dos límites iguales).</li><li><b>b) Cambiar el orden</b> (P6, U p.240): $G(x)=-\int_3^x(t^3-4t)\,dt$. Ahora la $x$ está arriba.</li><li><b>b) Derivar</b> (U Teor. 6.1 y Ej. 6.7, pp.243-244): $G'(x)=-(x^3-4x)=4x-x^3$; $G'(1)=4-1=3$.</li><li><b>b) Comprobación con Barrow</b> (U Teor. 6.2, p.244): una primitiva de $t^3-4t$ es $\frac{t^4}4-2t^2$, así que $G(x)=\left(\frac{81}4-18\right)-\left(\frac{x^4}4-2x^2\right)$, y derivando, $G'(x)=-x^3+4x$ ✓.</li></ol>
+    <p class="res">Resultado: $F'(x)=\sqrt{1+x^4}$, $F'(0)=1$, $F(2)=0$; $G'(x)=4x-x^3$, $G'(1)=3$</p>
+  </details>
+</details>
+<details class="pr" id="pr-a2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica a2 · integrando con salto: dónde falla $F'=f$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $f(t)=0$ si $t\le0$ y $f(t)=1$ si $t&gt;0$, y $F(x)=\displaystyle\int_{-1}^xf(t)\,dt$ para $x\ge-1$. a) Calcula $F(x)$ con áreas. b) ¿Es $F$ continua en $0$? ¿Es derivable en $0$? ¿Dónde se cumple $F'(x)=f(x)$? c) Haz lo mismo con $g(t)=|t|$ y $G(x)=\displaystyle\int_{-1}^x|t|\,dt$: ¿cuánto vale $G'(0)$?</p>
+  <details class="pista"><summary>Pista</summary><p>a) Para $x&gt;0$, parte en $0$ (aditividad): en $[-1,0]$ la altura es $0$ y en $[0,x]$ es un rectángulo de altura $1$ (el valor en el punto $t=0$ no cambia el área). b) Calcula las derivadas laterales en $0$ con la definición. c) $|t|$ sí es continua.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Para $-1\le x\le0$:</b> $f=0$ en $[-1,x]$, así que $F(x)=0$.</li><li><b>a) Para $x&gt;0$</b> (P5, U p.240): $F(x)=\int_{-1}^0f+\int_0^xf=0+1\cdot x=x$ (rectángulo de base $x$ y altura $1$; cambiar el valor en un único punto no cambia ninguna suma de Riemann en el límite, porque ese sumando es $f(c_i)\Delta x_i\to0$).</li><li><b>b) Continuidad:</b> por la izquierda $F\to0$, por la derecha $F(x)=x\to0$ y $F(0)=0$: $F$ es continua.</li><li><b>b) Derivadas laterales en $0$:</b> por la izquierda $\frac{F(h)-F(0)}h=\frac0h=0$; por la derecha $\frac{h-0}h=1$. No coinciden: $F$ <b>no</b> es derivable en $0$ (tiene un pico).</li><li><b>b) Dónde vale $F'=f$:</b> en $(-1,0)$, $F'=0=f$; en $(0,\infty)$, $F'=1=f$. Falla solo en $t=0$, donde $f$ no es continua: el primer teorema (U Teor. 6.1, p.243) pide continuidad y aquí se ve por qué.</li><li><b>c) $G$:</b> $|t|$ es continua en $\mathbb R$, así que el primer teorema da $G'(x)=|x|$ para todo $x$, también en $0$: $G'(0)=0$. Explícitamente, $G(x)=\frac{1-x^2}2$ si $x\le0$ y $G(x)=\frac{1+x^2}2$ si $x&gt;0$; las dos derivadas laterales en $0$ valen $0$ ✓.</li></ol>
+    <p class="res">Resultado: $F(x)=0$ si $x\le0$ y $F(x)=x$ si $x&gt;0$; $F$ es continua pero no derivable en $0$ y $F'=f$ en todo $x\ne0$; $G'(x)=|x|$ para todo $x$, $G'(0)=0$</p>
+  </details>
+</details>
+<h3>Límites variables y regla de la cadena</h3>
+<details class="pr" id="pr-b1"><summary><span class="nv n1">★ Básico</span> Práctica b1 · $\int_0^{x^2}\frac{dt}{1+t^3}$ y una comprobación con $\ln$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">a) Calcula $H'(x)$ y $H'(1)$ para $H(x)=\displaystyle\int_0^{x^2}\frac{dt}{1+t^3}$. b) Para $x&gt;0$, sea $K(x)=\displaystyle\int_1^{x^3}\frac{dt}t$. Calcula $K'(x)$ con la regla de la cadena y compruébalo calculando $K(x)$ con Barrow.</p>
+  <details class="pista"><summary>Pista</summary><p>Si $\Phi(u)=\int_a^uf(t)\,dt$, entonces $H(x)=\Phi(x^2)$ y $H'(x)=\Phi'(x^2)\cdot2x$. En b), $\ln(x^3)=3\ln x$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Hipótesis:</b> $\frac1{1+t^3}$ es continua en $[0,\infty)$ (el denominador es $\ge1$ ahí), y $x^2\ge0$, así que el límite superior siempre cae en esa zona.</li><li><b>a) Función auxiliar:</b> $\Phi(u)=\int_0^u\frac{dt}{1+t^3}$ tiene $\Phi'(u)=\frac1{1+u^3}$ (U Teor. 6.1, p.243), y $H(x)=\Phi(x^2)$.</li><li><b>a) Regla de la cadena</b> (U p.79): $H'(x)=\frac1{1+(x^2)^3}\cdot2x=\frac{2x}{1+x^6}$. En $x=1$: $H'(1)=\frac22=1$.</li><li><b>b) Fórmula:</b> $\frac1t$ es continua en $(0,\infty)$ y $x^3&gt;0$: $K'(x)=\frac1{x^3}\cdot3x^2=\frac3x$.</li><li><b>b) Con Barrow</b> (U Teor. 6.2, p.244): $K(x)=[\ln t]_1^{x^3}=\ln(x^3)-\ln1=3\ln x$, cuya derivada es $\frac3x$ ✓.</li></ol>
+    <p class="res">Resultado: $H'(x)=\frac{2x}{1+x^6}$, $H'(1)=1$; $K'(x)=\frac3x$ (y $K(x)=3\ln x$)</p>
+  </details>
+</details>
+<details class="pr" id="pr-b2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica b2 · una integral constante y la ventana de área mínima <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">a) Demuestra, sin calcular la integral, que $G(x)=\displaystyle\int_x^{3x}\frac{dt}t$ es constante en $(0,\infty)$ y halla esa constante. b) Sea $J(x)=\displaystyle\int_x^{x+2}(t^2-2t)\,dt$. Halla el $x$ en el que $J$ es mínima y el valor mínimo.</p>
+  <details class="pista"><summary>Pista</summary><p>Usa la fórmula de E 6.15: $\frac{d}{dx}\int_{a(x)}^{b(x)}f=f(b(x))\,b'(x)-f(a(x))\,a'(x)$. a) Si $G'=0$ en un intervalo, $G$ es constante: evalúa en un punto cómodo. b) $J'(x)=f(x+2)-f(x)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Derivada</b> (E 6.15; U Teor. 6.1, p.243): $\frac1t$ es continua en $(0,\infty)$ y, para $x&gt;0$, $x$ y $3x$ están ahí. $G'(x)=\frac1{3x}\cdot3-\frac1x\cdot1=\frac1x-\frac1x=0$.</li><li><b>a) Constante:</b> derivada nula en el intervalo $(0,\infty)$ ⇒ $G$ constante (U §2.5). Con $x=1$: $G(1)=\int_1^3\frac{dt}t=\ln3-\ln1=\ln3$ (Barrow). Idea: la integral de $\frac1t$ solo depende del cociente $\frac{3x}x=3$.</li><li><b>b) Derivada:</b> $f(t)=t^2-2t$ es continua en $\mathbb R$; con $b(x)=x+2$, $a(x)=x$: $J'(x)=f(x+2)-f(x)=(x+2)^2-2(x+2)-x^2+2x=4x$.</li><li><b>b) Punto crítico y tipo:</b> $J'(x)=0\iff x=0$; $J'&lt;0$ para $x&lt;0$ y $J'&gt;0$ para $x&gt;0$: $J$ decrece y luego crece, mínimo (absoluto) en $x=0$ (U Prop. 2.4, p.98).</li><li><b>b) Valor:</b> $J(0)=\int_0^2(t^2-2t)\,dt=\left[\frac{t^3}3-t^2\right]_0^2=\frac83-4=-\frac43$. Tiene sentido: la ventana $[0,2]$ es justo la zona donde la parábola está bajo el eje.</li></ol>
+    <p class="res">Resultado: $G'(x)=0$ y $G(x)=\ln3$ para todo $x&gt;0$; $J'(x)=4x$, mínimo en $x=0$ con $J(0)=-\frac43$</p>
+  </details>
+</details>
+<h3>Monotonía, extremos y concavidad de $F(x)=\int_a^xf$</h3>
+<details class="pr" id="pr-c1"><summary><span class="nv n1">★ Básico</span> Práctica c1 · $\int_0^x\frac{t-2}{1+t^2}\,dt$: dónde crece y su mínimo <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $F(x)=\displaystyle\int_0^x\frac{t-2}{1+t^2}\,dt$, $x\in\mathbb R$. a) Estudia dónde crece y dónde decrece. b) ¿Tiene máximo o mínimo absoluto? ¿Es negativo ese valor extremo?</p>
+  <details class="pista"><summary>Pista</summary><p>$F'$ es el integrando; el denominador $1+x^2$ es siempre positivo, así que el signo lo da $x-2$. Para el signo del valor extremo compáralo con $F(0)$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivada</b> (U Teor. 6.1, p.243; el integrando es continuo en $\mathbb R$): $F'(x)=\frac{x-2}{1+x^2}$.</li><li><b>Signo:</b> como $1+x^2&gt;0$, $F'(x)&lt;0$ si $x&lt;2$ y $F'(x)&gt;0$ si $x&gt;2$.</li><li><b>Monotonía</b> (U Prop. 2.4, p.98): $F$ decrece en $(-\infty,2]$ y crece en $[2,\infty)$.</li><li><b>Extremo:</b> como baja hasta $x=2$ y sube después, $F(2)\le F(x)$ para todo $x$: mínimo <b>absoluto</b> en $x=2$. No hay máximo absoluto (crece sin parar a la derecha, pues $F'(x)\approx\frac1x$ para $x$ grande y la primitiva $\frac12\ln(1+x^2)$ no está acotada).</li><li><b>Signo de $F(2)$:</b> $F(0)=0$ (P0) y $F$ decrece en $[0,2]$, así que $F(2)&lt;F(0)=0$. Comprobación con Barrow: una primitiva es $\frac12\ln(1+x^2)-2\operatorname{arctg}x$ (derívala), y $F(2)=\frac12\ln5-2\operatorname{arctg}2\approx-1{,}410$.</li></ol>
+    <p class="res">Resultado: $F$ decrece en $(-\infty,2]$ y crece en $[2,\infty)$; mínimo absoluto en $x=2$, $F(2)=\frac12\ln5-2\operatorname{arctg}2\approx-1{,}410$; no tiene máximo absoluto</p>
+  </details>
+</details>
+<details class="pr" id="pr-c2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica c2 · $\int_1^x\frac{\ln t}t\,dt$: extremos, concavidad e inflexión <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Sea $F(x)=\displaystyle\int_1^x\frac{\ln t}t\,dt$ para $x&gt;0$. Sin calcular la integral, estudia: a) crecimiento y extremos; b) concavidad y puntos de inflexión. c) Comprueba con Barrow, usando que $\frac{(\ln x)^2}2$ es una primitiva del integrando.</p>
+  <details class="pista"><summary>Pista</summary><p>$F'=f$ y $F''=f'$. El signo de $\ln x$ cambia en $x=1$; el de $1-\ln x$, en $x=e$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Primera derivada</b> (U Teor. 6.1, p.243; $\frac{\ln t}t$ es continua en $(0,\infty)$): $F'(x)=\frac{\ln x}x$.</li><li><b>a) Signo de $F'$:</b> $x&gt;0$, así que manda $\ln x$: $F'&lt;0$ en $(0,1)$ y $F'&gt;0$ en $(1,\infty)$. $F$ decrece en $(0,1]$ y crece en $[1,\infty)$ (U Prop. 2.4, p.98): mínimo absoluto en $x=1$, con $F(1)=\int_1^1=0$.</li><li><b>Segunda derivada</b> (derivada de un cociente): $F''(x)=\frac{\frac1x\cdot x-\ln x}{x^2}=\frac{1-\ln x}{x^2}$.</li><li><b>b) Signo de $F''$:</b> $1-\ln x&gt;0\iff x&lt;e$. $F''&gt;0$ en $(0,e)$: convexa; $F''&lt;0$ en $(e,\infty)$: cóncava (U Prop. 3.10, p.136).</li><li><b>b) Inflexión:</b> en $x=e$, $F''$ cambia de signo: punto de inflexión (U Prop. 3.11-3.12, p.137), con $F(e)=\frac12$.</li><li><b>c) Barrow:</b> $\left(\frac{(\ln x)^2}2\right)'=\ln x\cdot\frac1x$ ✓, así que $F(x)=\frac{(\ln x)^2}2-\frac{(\ln1)^2}2=\frac{(\ln x)^2}2$: una parábola en $\ln x$, $\ge0$ y nula solo en $x=1$, y $F(e)=\frac12$ ✓.</li></ol>
+    <p class="res">Resultado: decrece en $(0,1]$, crece en $[1,\infty)$, mínimo absoluto en $x=1$ con $F(1)=0$; convexa en $(0,e]$, cóncava en $[e,\infty)$, inflexión en $x=e$; $F(x)=\frac{(\ln x)^2}2$</p>
+  </details>
+</details>
+<h3>Límites con una integral (L'Hôpital)</h3>
+<details class="pr" id="pr-d1"><summary><span class="nv n1">★ Básico</span> Práctica d1 · dos límites $\frac00$ con una integral <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula: a) $\displaystyle\lim_{x\to0}\frac1x\int_0^x\cos(t^2)\,dt$; b) $\displaystyle\lim_{x\to0}\frac{\int_0^x(e^t-1)\,dt}{x^2}$.</p>
+  <details class="pista"><summary>Pista</summary><p>Comprueba que son $\frac00$ (la integral entre $0$ y $0$ vale $0$) y aplica L'Hôpital: la derivada del numerador la da el primer teorema.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Tipo:</b> $N(x)=\int_0^x\cos(t^2)\,dt$ es derivable, luego continua, y $N(0)=0$ (P0); el denominador $x\to0$: es $\frac00$.</li><li><b>a) L'Hôpital</b> (U §2.3, p.82) con $N'(x)=\cos(x^2)$ (U Teor. 6.1, p.243): $\lim_{x\to0}\frac{\cos(x^2)}1=\cos0=1$. (Es el valor medio de $\cos(t^2)$ en $[0,x]$, que tiende al valor en $0$.)</li><li><b>b) Tipo:</b> numerador $\to\int_0^0=0$ y $x^2\to0$: $\frac00$.</li><li><b>b) L'Hôpital:</b> $\lim_{x\to0}\frac{e^x-1}{2x}$, otra vez $\frac00$.</li><li><b>b) Segunda vez</b> (o el límite fundamental $\frac{e^x-1}x\to1$): $\lim_{x\to0}\frac{e^x}2=\frac12$.</li><li><b>Comprobación de b) con Barrow:</b> $\int_0^x(e^t-1)\,dt=e^x-1-x$, y $\frac{e^x-1-x}{x^2}\to\frac12$ (Taylor: $e^x=1+x+\frac{x^2}2+\dots$).</li></ol>
+    <p class="res">Resultado: a) $1$; b) $\frac12$</p>
+  </details>
+</details>
+<details class="pr" id="pr-d2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica d2 · $\int_0^{x^2}\operatorname{arctg}t\,dt$ y un límite en el infinito <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula: a) $\displaystyle\lim_{x\to0}\frac1{x^4}\int_0^{x^2}\operatorname{arctg}t\,dt$; b) $\displaystyle\lim_{x\to\infty}x\,e^{-x^2}\int_0^xe^{t^2}\,dt$ (la integral no se puede calcular con funciones elementales).</p>
+  <details class="pista"><summary>Pista</summary><p>a) La derivada del numerador lleva regla de la cadena. b) Escríbelo como cociente $\dfrac{\int_0^xe^{t^2}dt}{e^{x^2}/x}$; comprueba que es $\frac\infty\infty$ (usa $e^{t^2}\ge1$) y aplica L'Hôpital.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Tipo:</b> numerador $\to\int_0^0=0$, $x^4\to0$: $\frac00$.</li><li><b>a) Derivadas:</b> con $\Phi(u)=\int_0^u\operatorname{arctg}t\,dt$, el numerador es $\Phi(x^2)$ y su derivada $\operatorname{arctg}(x^2)\cdot2x$ (U Teor. 6.1, p.243, y regla de la cadena, U p.79). La del denominador, $4x^3$.</li><li><b>a) L'Hôpital</b> (U §2.3, p.82): $\lim_{x\to0}\frac{2x\operatorname{arctg}(x^2)}{4x^3}=\lim_{x\to0}\frac{\operatorname{arctg}(x^2)}{2x^2}=\frac12$, porque $\frac{\operatorname{arctg}u}u\to1$ cuando $u=x^2\to0$ (L'Hôpital otra vez: $\frac{1/(1+u^2)}1\to1$).</li><li><b>b) Cociente y tipo:</b> $N(x)=\int_0^xe^{t^2}dt\ge\int_0^x1\,dt=x\to\infty$ (monotonía, P3, U p.240); $D(x)=\frac{e^{x^2}}x\to\infty$ (la exponencial gana a $x$). Es $\frac\infty\infty$.</li><li><b>b) Derivadas:</b> $N'(x)=e^{x^2}$; $D'(x)=\frac{2x\cdot x\,e^{x^2}-e^{x^2}}{x^2}=\frac{e^{x^2}(2x^2-1)}{x^2}$.</li><li><b>b) L'Hôpital:</b> $\frac{N'}{D'}=\frac{x^2}{2x^2-1}\to\frac12$. El límite vale $\frac12$.</li></ol>
+    <p class="res">Resultado: a) $\frac12$; b) $\frac12$</p>
+  </details>
+</details>
+<h3>Regla de Barrow</h3>
+<details class="pr" id="pr-e1"><summary><span class="nv n1">★ Básico</span> Práctica e1 · tres integrales directas con Barrow <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula con la regla de Barrow: a) $\displaystyle\int_{-1}^2\left(3x^2-4x+1\right)dx$; b) $\displaystyle\int_0^{\pi/3}\operatorname{sen}x\,dx$; c) $\displaystyle\int_0^1e^{2x}\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>Para cada una: ¿es continua en el intervalo? Primitiva (compruébala derivando) y $F(b)-F(a)$. En c), $\left(\frac12e^{2x}\right)'=e^{2x}$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Hipótesis:</b> los tres integrandos son continuos en $\mathbb R$; se puede usar Barrow (U Teor. 6.2, p.244) con cualquier primitiva (U p.245).</li><li><b>a)</b> $F(x)=x^3-2x^2+x$ ($F'=3x^2-4x+1$ ✓). $F(2)=8-8+2=2$, $F(-1)=-1-2-1=-4$. Resultado $2-(-4)=6$ (cuidado con los signos al evaluar en $-1$).</li><li><b>b)</b> $F(x)=-\cos x$ ($F'=\operatorname{sen}x$ ✓). $-\cos\frac\pi3-(-\cos0)=-\frac12+1=\frac12$.</li><li><b>c)</b> $F(x)=\frac12e^{2x}$ ($F'=\frac12\cdot2e^{2x}$ ✓). $\frac12e^2-\frac12e^0=\frac{e^2-1}2\approx3{,}195$.</li></ol>
+    <p class="res">Resultado: a) $6$; b) $\frac12$; c) $\frac{e^2-1}2$</p>
+  </details>
+</details>
+<details class="pr" id="pr-e2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica e2 · primitivas con la regla de la cadena y $\cos^2x$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula: a) $\displaystyle\int_0^1\frac x{1+x^2}\,dx$; b) $\displaystyle\int_0^1x\,e^{-x^2}\,dx$; c) $\displaystyle\int_0^\pi\cos^2x\,dx$.</p>
+  <details class="pista"><summary>Pista</summary><p>a) y b): busca «la derivada de lo de dentro» ($\frac{u'}u$ y $u'e^u$), ajustando la constante. c) $\cos^2x=\frac{1+\cos2x}2$.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Primitiva:</b> con $u=1+x^2$, $u'=2x$: $\frac x{1+x^2}=\frac12\cdot\frac{u'}u$, primitiva $\frac12\ln(1+x^2)$ (derivando: $\frac12\cdot\frac{2x}{1+x^2}$ ✓; $1+x^2&gt;0$, no hace falta valor absoluto).</li><li><b>a) Barrow</b> (U Teor. 6.2, p.244): $\frac12\ln2-\frac12\ln1=\frac{\ln2}2$.</li><li><b>b) Primitiva:</b> $\left(e^{-x^2}\right)'=-2x\,e^{-x^2}$, así que $F(x)=-\frac12e^{-x^2}$. Barrow: $-\frac12e^{-1}+\frac12=\frac{1-e^{-1}}2\approx0{,}316$.</li><li><b>c) Fórmula del ángulo doble:</b> $\cos^2x=\frac{1+\cos2x}2$, con primitiva $\frac x2+\frac{\operatorname{sen}2x}4$ (derivando: $\frac12+\frac{\cos2x}2$ ✓).</li><li><b>c) Barrow:</b> $\left(\frac\pi2+\frac{\operatorname{sen}2\pi}4\right)-0=\frac\pi2$. Comprobación: el valor medio de $\cos^2x$ en $[0,\pi]$ es $\frac12$ (oscila entre $0$ y $1$ simétricamente), y $\frac12\cdot\pi=\frac\pi2$.</li></ol>
+    <p class="res">Resultado: a) $\frac{\ln2}2$; b) $\frac{1-e^{-1}}2$; c) $\frac\pi2$</p>
+  </details>
+</details>
+<h3>Hipótesis de Barrow, áreas y trozos</h3>
+<details class="pr" id="pr-f1"><summary><span class="nv n1">★ Básico</span> Práctica f1 · $\int_0^2(x^2-1)\,dx$: integral frente a área <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Calcula $\displaystyle\int_0^2(x^2-1)\,dx$ y el área de la región limitada por $y=x^2-1$, el eje $x$ y las rectas $x=0$, $x=2$.</p>
+  <details class="pista"><summary>Pista</summary><p>$x^2-1$ es negativa en $[0,1)$ y positiva en $(1,2]$. Para el área, parte en $x=1$ y cambia el signo del trozo negativo.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Primitiva:</b> $F(x)=\frac{x^3}3-x$ ($F'=x^2-1$ ✓); el integrando es continuo, se aplica Barrow (U Teor. 6.2, p.244).</li><li><b>Integral:</b> $F(2)-F(0)=\frac83-2=\frac23$.</li><li><b>Signo:</b> $x^2-1=(x-1)(x+1)$ es $&lt;0$ en $[0,1)$ y $&gt;0$ en $(1,2]$.</li><li><b>Trozo de $[0,1]$:</b> $\int_0^1(x^2-1)\,dx=F(1)-F(0)=-\frac23$: está bajo el eje, aporta $\frac23$ de área.</li><li><b>Trozo de $[1,2]$:</b> $F(2)-F(1)=\frac23+\frac23=\frac43$.</li><li><b>Área</b> (P5, U p.240): $\frac23+\frac43=2$. La integral es $-\frac23+\frac43=\frac23$: el trozo de abajo resta.</li></ol>
+    <p class="res">Resultado: $\int_0^2(x^2-1)\,dx=\frac23$; área $=2$</p>
+  </details>
+</details>
+<details class="pr" id="pr-f2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica f2 · ¿se puede aplicar Barrow? tres casos <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">a) ¿Es correcto escribir $\displaystyle\int_0^\pi\frac{dx}{\cos^2x}=\big[\operatorname{tg}x\big]_0^\pi=0$? b) Calcula $\displaystyle\int_{-2}^2\frac{dx}{4+x^2}$. c) Calcula $\displaystyle\int_{-1}^2f(x)\,dx$ con $f(x)=e^x$ si $x\le0$ y $f(x)=1-x$ si $x&gt;0$.</p>
+  <details class="pista"><summary>Pista</summary><p>a) ¿Dónde se anula $\cos x$? ¿Qué signo tiene el integrando? b) $\left(\frac12\operatorname{arctg}\frac x2\right)'=\frac1{4+x^2}$. c) Comprueba la continuidad en $x=0$ y parte ahí.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Hipótesis:</b> $\cos\frac\pi2=0$ y $\frac\pi2\in[0,\pi]$: el integrando no está definido (ni acotado) ahí, no es continuo en $[0,\pi]$ y Barrow (U Teor. 6.2, p.244) no se puede aplicar. <b>No es correcto.</b></li><li><b>a) Señal de alarma:</b> $\frac1{\cos^2x}&gt;0$, y una integral de una función positiva no puede ser $0$ (monotonía, U p.240). Además $\operatorname{tg}x$ no es primitiva en todo $[0,\pi]$: no está definida en $\frac\pi2$.</li><li><b>b) Primitiva:</b> $F(x)=\frac12\operatorname{arctg}\frac x2$; por la regla de la cadena, $F'(x)=\frac12\cdot\frac{1/2}{1+x^2/4}=\frac1{4+x^2}$ ✓. El integrando es continuo en $\mathbb R$.</li><li><b>b) Barrow:</b> $\frac12\operatorname{arctg}1-\frac12\operatorname{arctg}(-1)=\frac\pi8+\frac\pi8=\frac\pi4$.</li><li><b>c) Continuidad en $0$:</b> por la izquierda $e^0=1$, por la derecha $1-0=1$, y $f(0)=1$: $f$ es continua en $[-1,2]$.</li><li><b>c) Partir en $0$</b> (P5, U p.240): $\int_{-1}^0e^x\,dx=1-e^{-1}$; $\int_0^2(1-x)\,dx=\left[x-\frac{x^2}2\right]_0^2=0$ (dos triángulos iguales, uno arriba y otro abajo). Total: $1-e^{-1}\approx0{,}632$.</li></ol>
+    <p class="res">Resultado: a) no es correcto ($x=\frac\pi2$ está en $[0,\pi]$); b) $\frac\pi4$; c) $1-e^{-1}$</p>
+  </details>
+</details>
+<h3>Ecuaciones con integrales</h3>
+<details class="pr" id="pr-g1"><summary><span class="nv n1">★ Básico</span> Práctica g1 · hallar $f$ y $a$ con $\int_a^xf=x^2-2x-3$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">Halla una función continua $f$ y todos los valores de la constante $a$ tales que $\displaystyle\int_a^xf(t)\,dt=x^2-2x-3$ para todo $x\in\mathbb R$.</p>
+  <details class="pista"><summary>Pista</summary><p>Deriva los dos miembros (primer teorema). Para $a$, haz $x=a$ en la igualdad: ¿cuánto vale $\int_a^a$?</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>Derivar</b> (U Teor. 6.1, p.243): el primer miembro tiene derivada $f(x)$; el segundo, $2x-2$. Luego $f(x)=2x-2$.</li><li><b>Hallar $a$:</b> con $x=a$, el primer miembro es $\int_a^a=0$ (P0, U p.240): $a^2-2a-3=0$, es decir, $(a-3)(a+1)=0$: $a=3$ o $a=-1$.</li><li><b>Comprobación con Barrow:</b> $\int_3^x(2t-2)\,dt=x^2-2x-(9-6)=x^2-2x-3$ ✓ y $\int_{-1}^x(2t-2)\,dt=x^2-2x-(1+2)=x^2-2x-3$ ✓.</li></ol>
+    <p class="res">Resultado: $f(x)=2x-2$; $a=3$ o $a=-1$</p>
+  </details>
+</details>
+<details class="pr" id="pr-g2" data-extra><summary><span class="nv n2">★★ Medio</span> Práctica g2 · $f=1+2\int_0^xf$ y $\int_0^xt\,f(t)\,dt=x^2\operatorname{sen}x$ <span class="src" data-l="P" data-ref="Ejercicio de práctica propio (verificado con cálculo simbólico)">P</span></summary>
+<p class="enun">a) Halla todas las funciones $f$ continuas en $\mathbb R$ tales que $f(x)=1+2\displaystyle\int_0^xf(t)\,dt$ para todo $x$. b) Halla la función continua $f$ tal que $\displaystyle\int_0^xt\,f(t)\,dt=x^2\operatorname{sen}x$ para todo $x$.</p>
+  <details class="pista"><summary>Pista</summary><p>a) El segundo miembro es derivable (primer teorema), así que $f$ también: deriva y obtén $f'=2f$ con $f(0)=1$. Para ver que la solución es única, deriva $f(x)e^{-2x}$. b) Deriva: sale $x\,f(x)$; para $x=0$ usa la continuidad.</p></details>
+  <details class="respuesta"><summary>Ver solución</summary>
+    <ol class="steps"><li><b>a) Valor en $0$:</b> con $x=0$, $f(0)=1+2\int_0^0f=1$.</li><li><b>a) Derivar:</b> como $f$ es continua, $\int_0^xf$ es derivable (U Teor. 6.1, p.243); por tanto $f$ es derivable y $f'(x)=2f(x)$.</li><li><b>a) Unicidad:</b> sea $g(x)=f(x)e^{-2x}$. Entonces $g'(x)=f'(x)e^{-2x}-2f(x)e^{-2x}=(f'-2f)e^{-2x}=0$, así que $g$ es constante en $\mathbb R$ (U §2.5): $g(x)=g(0)=1$. Luego $f(x)=e^{2x}$, y es la única.</li><li><b>a) Comprobación:</b> $1+2\int_0^xe^{2t}\,dt=1+2\cdot\frac{e^{2x}-1}2=e^{2x}$ ✓.</li><li><b>b) Derivar</b> (primer teorema con integrando $t\,f(t)$, continuo): $x\,f(x)=2x\operatorname{sen}x+x^2\cos x$ (regla del producto).</li><li><b>b) Despejar:</b> para $x\ne0$, $f(x)=2\operatorname{sen}x+x\cos x$. En $x=0$ no se puede dividir, pero $f$ es continua: $f(0)=\lim_{x\to0}(2\operatorname{sen}x+x\cos x)=0$, que coincide con la misma fórmula.</li><li><b>b) Comprobación:</b> $\frac{d}{dx}\left(x^2\operatorname{sen}x\right)=x\left(2\operatorname{sen}x+x\cos x\right)$ y los dos miembros valen $0$ en $x=0$, así que son iguales ✓.</li></ol>
+    <p class="res">Resultado: a) $f(x)=e^{2x}$ (la única); b) $f(x)=2\operatorname{sen}x+x\cos x$</p>
+  </details>
+</details>
+</div>
+<h2 id="autoeval" data-vista="tipos"><span class="n">6</span>Errores típicos y autoevaluación <span class="src" data-l="P" data-ref="Preguntas propias (resultados verificados con cálculo simbólico)">P</span></h2>
+<p class="aprender"><b>Lo que vas a aprender.</b> a detectar tus fallos antes del examen: 10 preguntas rápidas; cada una es un error típico, con su explicación al responder.</p>
+<div class="quiz">
+  <div class="q" data-ok="v">
+    <p><b>1.</b> (V/F) Si $f$ es continua en $[a,b]$, la función $F(x)=\int_a^xf(t)\,dt$ es derivable y $F'(x)=f(x)$ para todo $x\in(a,b)$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">Es el primer teorema fundamental (U Teor. 6.1, p.243). La hipótesis de continuidad importa: con un salto, $F$ puede tener un pico.</div>
+  </div>
+  <div class="q" data-ok="a">
+    <p><b>2.</b> (Elige) $\dfrac{d}{dx}\displaystyle\int_0^x\operatorname{sen}(t^3)\,dt$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $\operatorname{sen}(x^3)$</button><button data-v="b">(b) $3x^2\cos(x^3)$</button><button data-v="c">(c) $-\cos(x^3)$</button><button data-v="d">(d) $0$</button></div>
+    <div class="exp">Se cambia $t$ por $x$ en el integrando (U Ej. 6.6, p.244). (b) deriva el integrando; (c) intenta integrarlo; (d) confunde con la derivada de un número.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>3.</b> (Elige) $\dfrac{d}{dx}\displaystyle\int_x^2e^{t^2}\,dt$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $e^{x^2}$</button><button data-v="b">(b) $-e^{x^2}$</button><button data-v="c">(c) $e^4-e^{x^2}$</button><button data-v="d">(d) $2x\,e^{x^2}$</button></div>
+    <div class="exp">Con la $x$ abajo: $\int_x^2=-\int_2^x$, y la derivada es $-e^{x^2}$ (P6, U p.240; U Ej. 6.7, p.244). (a) olvida el signo.</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>4.</b> (Elige) $\dfrac{d}{dx}\displaystyle\int_0^{x^3}\cos t\,dt$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $\cos(x^3)$</button><button data-v="b">(b) $3x^2\operatorname{sen}(x^3)$</button><button data-v="c">(c) $3x^2\cos(x^3)$</button><button data-v="d">(d) $\operatorname{sen}(x^3)$</button></div>
+    <div class="exp">Primer teorema + regla de la cadena: $\cos(x^3)\cdot(x^3)'=3x^2\cos(x^3)$ (E 6.15). (a) olvida la derivada del límite; (d) es la integral, no su derivada.</div>
+  </div>
+  <div class="q" data-ok="v">
+    <p><b>5.</b> (V/F) Si $F$ y $G$ son dos primitivas de $f$, continua en $[a,b]$, entonces $F(b)-F(a)=G(b)-G(a)$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">En un intervalo, $G=F+k$ y la constante se cancela al restar. Por eso Barrow vale con cualquier primitiva (U p.245).</div>
+  </div>
+  <div class="q" data-ok="d">
+    <p><b>6.</b> (Elige) $\displaystyle\int_0^{\pi/2}\cos x\,dx$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $0$</button><button data-v="b">(b) $-1$</button><button data-v="c">(c) $\frac\pi2$</button><button data-v="d">(d) $1$</button></div>
+    <div class="exp">Primitiva $\operatorname{sen}x$: $\operatorname{sen}\frac\pi2-\operatorname{sen}0=1$ (U Teor. 6.2, p.244). (b) usa $-\operatorname{sen}x$ como primitiva (es la de $-\cos x$).</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>7.</b> (V/F) Si $f$ es continua en $\mathbb R$ y $F(x)=\int_0^xf(t)\,dt$, entonces $F(0)=f(0)$.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">$F(0)=\int_0^0f=0$ siempre (P0, U p.240). Lo que vale $f(0)$ es la derivada: $F'(0)=f(0)$. Ejemplo: $f=1$, $F(x)=x$, $F(0)=0\ne1$.</div>
+  </div>
+  <div class="q" data-ok="b">
+    <p><b>8.</b> (Elige) La función $F(x)=\displaystyle\int_0^x(t-1)(t-3)\,dt$ tiene:</p>
+    <div class="opts"><button data-v="a">(a) un mínimo relativo en $x=1$ y un máximo relativo en $x=3$</button><button data-v="b">(b) un máximo relativo en $x=1$ y un mínimo relativo en $x=3$</button><button data-v="c">(c) un único extremo, en $x=2$</button><button data-v="d">(d) ningún extremo relativo</button></div>
+    <div class="exp">$F'(x)=(x-1)(x-3)$: positiva antes de $1$, negativa entre $1$ y $3$, positiva después. $F$ sube, baja y sube: máximo en $1$ y mínimo en $3$ (U Prop. 2.4, p.98). (c) es donde $F'$ es mínima: un punto de inflexión de $F$.</div>
+  </div>
+  <div class="q" data-ok="c">
+    <p><b>9.</b> (Elige) $\displaystyle\lim_{x\to0}\frac1x\int_0^xe^{t^2}\,dt$ vale:</p>
+    <div class="opts"><button data-v="a">(a) $0$</button><button data-v="b">(b) $e$</button><button data-v="c">(c) $1$</button><button data-v="d">(d) $\infty$</button></div>
+    <div class="exp">Es $\frac00$; L'Hôpital y primer teorema: $\lim_{x\to0}\frac{e^{x^2}}1=e^0=1$ (U §2.3, p.82; U Teor. 6.1, p.243).</div>
+  </div>
+  <div class="q" data-ok="f">
+    <p><b>10.</b> (V/F) Si $f$ es continua en $[a,b]$, el punto $c\in[a,b]$ con $\int_a^bf=f(c)(b-a)$ es único.</p>
+    <div class="opts"><button data-v="v">Verdadero</button><button data-v="f">Falso</button></div>
+    <div class="exp">El teorema del valor medio integral (U p.244, margen) asegura que existe, no que sea único: para $\operatorname{sen}x$ en $[0,\pi]$ hay dos, $\arcsin\frac2\pi$ y $\pi-\arcsin\frac2\pi$; para una constante, todos.</div>
+  </div>
+  <p class="nota"></p>
+</div>
+<!-- ============================ 7 ============================ -->
+<h2 id="ejercicios" data-vista="ejercicios"><span class="n">7</span>Ejercicios del libro, resueltos <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.11-6.16, pp. 218-223">E pp.218-223</span></h2>
+<p>Orden recomendado para aprender: <b>qué es una primitiva</b> (6.11) → <b>límite inferior variable</b> (6.14) → <b>los dos límites variables</b> (6.15) → <b>cadena, monotonía e inflexión de $F$</b> (6.12, 6.13) → <b>cuándo se puede usar Barrow</b> (6.16).</p>
 <p><b>Índice rápido:</b> <a href="#ej-6-11">6.11</a> · <a href="#ej-6-12">6.12</a> · <a href="#ej-6-13">6.13</a> · <a href="#ej-6-14">6.14</a> · <a href="#ej-6-15">6.15</a> · <a href="#ej-6-16">6.16</a>.</p>
 <div class="box tip"><span class="h">Receta general del tema</span>
   <p><b>Derivar $G(x)=\int_{a(x)}^{b(x)}f$:</b> $G'=f(b(x))\,b'(x)-f(a(x))\,a'(x)$. <b>Calcular $\int_a^bf$:</b> comprobar continuidad, primitiva comprobada, $F(b)-F(a)$. <b>Estudiar $F(x)=\int_a^xf$:</b> $F'=f$, así que $F$ crece donde $f\gt0$ y decrece donde $f\lt0$; los puntos críticos son los ceros de $f$ y $F''=f'$ (si $f$ es derivable).</p>
 </div>
-<details class="sol" id="ej-6-11"><summary>Ejercicio 6.11 · primitivas: ¿cuál de las igualdades es siempre cierta? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.11, pp. 218-219 · teoría: U Def. 6.2, p. 241">E pp.218-219</span></summary>
-<p class="enun">Sea $F:\mathbb R\to\mathbb R$ una primitiva de una función continua $f:\mathbb R\to\mathbb R$ y $C\in\mathbb R$ una constante. Señale la opción correcta: a) $\frac{d}{dx}\big(F(x)+C\big)=f(x)$, $\forall x\in\mathbb R$. b) $\frac{d}{dx}\big(f(x)+C\big)=F(x)$, $\forall x\in\mathbb R$. c) $\int F(x)\,dx=f(x)+C$, $\forall x\in\mathbb R$. d) Ninguna de las anteriores.</p>
+<h3>A · Primitivas y límites variables</h3>
+<article class="ejer" id="ej-6-11">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">Ejercicio 6.11 · primitivas: ¿cuál de las igualdades es siempre cierta?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.11, pp. 218-219 · teoría: U Def. 6.2, p. 241">E pp.218-219</span></header>
+<div class="ejer-enun"><p class="enun">Sea $F:\mathbb R\to\mathbb R$ una primitiva de una función continua $f:\mathbb R\to\mathbb R$ y $C\in\mathbb R$ una constante. Señale la opción correcta: a) $\frac{d}{dx}\big(F(x)+C\big)=f(x)$, $\forall x\in\mathbb R$. b) $\frac{d}{dx}\big(f(x)+C\big)=F(x)$, $\forall x\in\mathbb R$. c) $\int F(x)\,dx=f(x)+C$, $\forall x\in\mathbb R$. d) Ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir cuál de tres igualdades sobre $f$, su primitiva $F$ y una constante $C$ es siempre cierta.</dd>
     <dt>Cómo lo pienso</dt><dd>«$F$ es primitiva de $f$» quiere decir una sola cosa: derivando $F$ sale $f$. Cada opción se traduce a «¿qué se deriva y qué sale?» y se comprueba.</dd>
     <dt>Qué uso</dt><dd>Def. 6.2 de primitiva (U p.241): $F'=f$; la derivada de una constante es $0$.</dd>
     <dt>Por dónde empiezo</dt><dd>Derivar $F(x)+C$ en a).</dd>
-  </dl></div>
-  <ol class="steps">
+  </dl></div></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Traducir la hipótesis.</b> $F'(x)=f(x)$ para todo $x$.</li>
     <li><b>a) Verdadera.</b> La derivada de una suma es la suma de derivadas y la de una constante es $0$: $\frac{d}{dx}(F(x)+C)=F'(x)+0=f(x)$. Es decir, $F+C$ es <b>otra</b> primitiva de $f$; por eso se escribe $\int f=F+C$.</li>
     <li><b>Ejemplo para probar las demás:</b> $f(x)=1$ (continua), $F(x)=x$ (su derivada es $1$), $C=1$.</li>
@@ -226,90 +570,33 @@
   <div class="recipe"><b>Receta:</b> traducir cada afirmación sobre primitivas a «derivada de la primitiva = integrando» y probar con $f=1$, $F=x$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Invertir los papeles (creer que $f$ es la «primitiva» de $F$) o pensar que la constante cambia la derivada: $F+C$ y $F$ tienen la misma derivada.</p></div>
 </details>
-<details class="sol" id="ej-6-14"><summary>Ejercicio 6.14 · $\frac{d}{dx}\int_x^1t^2\,dt$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.14, pp. 220-221 · teoría: U Teor. 6.1 y Ej. 6.7, pp. 243-244">E pp.220-221</span></summary>
-<p class="enun">Calcula el valor de $\displaystyle\frac{d}{dx}\left(\int_x^1t^2\,dt\right)$.</p>
+</article>
+<h3>B · Límites variables y regla de la cadena</h3>
+<article class="ejer" id="ej-6-14">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.14 · $\frac{d}{dx}\int_x^1t^2\,dt$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.14, pp. 220-221 · teoría: U Teor. 6.1 y Ej. 6.7, pp. 243-244">E pp.220-221</span></header>
+<div class="ejer-enun"><p class="enun">Calcula el valor de $\displaystyle\frac{d}{dx}\left(\int_x^1t^2\,dt\right)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La derivada respecto de $x$ de una integral cuyo <b>límite inferior</b> es $x$.</dd>
     <dt>Cómo lo pienso</dt><dd>El primer teorema solo dice cómo derivar si la $x$ está <b>arriba</b>. Le doy la vuelta a la integral (cambia el signo) y la $x$ queda arriba.</dd>
     <dt>Qué uso</dt><dd>Cambio de orden de los límites (P6, U p.240), primer teorema (U Teor. 6.1, p.243) y U Ej. 6.7 (p.244).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $\int_x^1=-\int_1^x$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"(1-x^3)/3","n":"G(x)=∫ₓ¹ t² dt=(1−x³)/3"},{"e":"-(x^2)","n":"G′(x)=−x²"}],"x":[-1.5,1.5],"y":[-2,2.2],"q":[[1,0.0]]}' data-alt="G(x)=(1-x^3)/3 y su derivada -x^2"><figcaption>La integral $G(x)=\int_x^1t^2\,dt=\frac{1-x^3}3$ (decrece, vale $0$ en $x=1$) y su derivada $G'(x)=-x^2$: la pendiente de $G$ en cada punto es el valor negativo del integrando $t^2$ en $x$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
+  <figure class="graf" data-g='{"c":[{"e":"(1-x^3)/3","n":"G(x)=∫ₓ¹ t² dt=(1−x³)/3"},{"e":"-(x^2)","n":"G′(x)=−x²"}],"x":[-1.5,1.5],"y":[-2,2.2],"q":[[1,0.0]]}' data-alt="G(x)=(1-x^3)/3 y su derivada -x^2"><figcaption>La integral $G(x)=\int_x^1t^2\,dt=\frac{1-x^3}3$ (decrece, vale $0$ en $x=1$) y su derivada $G'(x)=-x^2$: la pendiente de $G$ en cada punto es el valor negativo del integrando $t^2$ en $x$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Comprobar la hipótesis.</b> $f(t)=t^2$ es continua en todo $\mathbb R$.</li>
     <li><b>Intercambiar los límites</b> (P6): $\int_x^1t^2\,dt=-\int_1^xt^2\,dt$.</li>
     <li><b>Derivar con el primer teorema.</b> Ahora $x$ está arriba y el límite de abajo ($1$) es fijo: $\frac{d}{dx}\left(-\int_1^xt^2\,dt\right)=-x^2$.</li>
-    <li><b>Resultado: $-x^2$.</b></li>
+    <li><b>Resultado: $G'(x)=-x^2$.</b></li>
     <li><b>Comprobación con Barrow.</b> $\int_x^1t^2\,dt=\left[\frac{t^3}3\right]_x^1=\frac13-\frac{x^3}3$, cuya derivada es $-x^2$. Coincide.</li>
   </ol>
   <div class="recipe"><b>Receta:</b> si la $x$ está en el límite <b>inferior</b>, intercambiar los límites (sale un signo menos) y aplicar el primer teorema: $\frac{d}{dx}\int_x^cf(t)\,dt=-f(x)$.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Contestar $\frac13-\frac{x^3}3$ (calcular la integral y no derivarla).</p></div>
 </details>
-<details class="sol" id="ej-6-16"><summary>Ejercicio 6.16 · ¿cuándo se puede aplicar Barrow a $\frac1{x-1}$? <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.16, pp. 222-223 · teoría: U Teor. 6.2, p. 244">E pp.222-223</span></summary>
-<p class="enun">Se sabe que $\displaystyle\int\frac1{x-1}\,dx=\ln|x-1|+C$ en $\mathbb R\setminus\{1\}$. ¿Qué opción es verdadera? a) No hay relación entre la integral definida y la indefinida. b) Utilizando Barrow resulta $\int_0^2\frac1{x-1}\,dx=0$. c) Utilizando Barrow resulta $\int_2^3\frac1{x-1}\,dx=\ln2$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Decidir en qué casos se puede usar la regla de Barrow con la primitiva $\ln|x-1|$.</dd>
-    <dt>Cómo lo pienso</dt><dd>Barrow tiene una hipótesis: integrando continuo en <b>todo</b> el intervalo $[a,b]$. Si el intervalo contiene el punto donde $\frac1{x-1}$ «explota» ($x=1$), no se puede usar, aunque la cuenta «salga».</dd>
-    <dt>Qué uso</dt><dd>Regla de Barrow (U Teor. 6.2, p.244), con su hipótesis de continuidad.</dd>
-    <dt>Por dónde empiezo</dt><dd>Mirar si $x=1$ está en $[0,2]$ y en $[2,3]$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"abs(x-1)<0.03?NaN:1/(x-1)","n":"1/(x−1)"}],"x":[-0.5,3.5],"y":[-6,6],"q":[[2,1],[3,0.5]]}' data-alt="1/(x-1) con asíntota vertical en x=1"><figcaption>La función $\frac1{x-1}$ tiene una asíntota vertical en $x=1$: dentro de $[0,2]$ no es continua ni acotada (Barrow no vale), mientras que en $[2,3]$ es continua (rombos: valores $f(2)=1$ y $f(3)=\frac12$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
-    <li><b>a) Falsa.</b> La regla de Barrow es precisamente la relación entre ambas: la integral definida se calcula con una primitiva (integral indefinida).</li>
-    <li><b>Hipótesis en b).</b> $f(x)=\frac1{x-1}$ no está definida en $x=1\in[0,2]$: no es continua en $[0,2]$ y <b>no se puede aplicar Barrow</b>.</li>
-    <li><b>Por qué la cuenta engaña.</b> A ciegas saldría $\ln|2-1|-\ln|0-1|=0-0=0$. Pero cerca de $x=1$ la función no está acotada ($f(1{,}001)=1000$, $f(0{,}999)=-1000$), así que no es integrable en $[0,2]$ y esa integral no tiene sentido como integral de Riemann. Un resultado numérico no prueba nada si falla la hipótesis.</li>
-    <li><b>Hipótesis en c).</b> En $[2,3]$, $x-1\in[1,2]$ nunca vale $0$: $f$ es continua y Barrow se puede aplicar.</li>
-    <li><b>Cálculo de c).</b> Con $F(x)=\ln|x-1|$ (se toma $C=0$: vale cualquier primitiva, U p.245): $\int_2^3\frac{dx}{x-1}=\ln2-\ln1=\ln2$.</li>
-    <li><b>Respuesta: c).</b></li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> antes de aplicar Barrow, buscar los puntos donde el integrando no está definido (denominador $0$, logaritmo de $0$, raíz de un negativo…) y comprobar que <b>ninguno</b> está en $[a,b]$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Aplicar Barrow «porque se conoce la primitiva» sin mirar el intervalo (ver Propio 2).</p></div>
-</details>
-<details class="sol" id="ej-6-13"><summary>Ejercicio 6.13 · monotonía y extremos de $F(x)=\int_0^xt\operatorname{sen}t\,dt$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.13, p. 220 · teoría: U Teor. 6.1, p. 243">E p.220</span></summary>
-<p class="enun">Dada la función $F(x)=\displaystyle\int_0^xt\operatorname{sen}t\,dt$ definida en $I=[0,\infty)$, señala la opción correcta. a) $F$ alcanza un máximo en $x=7\pi$. b) $F$ es creciente en $I$. c) $F$ alcanza un mínimo en $x=7\pi$. d) $F$ es decreciente en $I$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Estudiar la monotonía de $F$ y qué pasa en $x=7\pi$.</dd>
-    <dt>Cómo lo pienso</dt><dd>No hace falta calcular la integral: el primer teorema da $F'$ directamente, y con $F'$ y $F''$ se estudian crecimiento y extremos como en el tema 3.</dd>
-    <dt>Qué uso</dt><dd>Primer teorema (U Teor. 6.1, p.243); monotonía por el signo de $F'$ (U Prop. 2.4, p.98); criterio de la 2.ª derivada (U Prop. 3.7, p.131).</dd>
-    <dt>Por dónde empiezo</dt><dd>$F'(x)=x\operatorname{sen}x$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x*sin(x)","n":"F′(x)=x sen x"},{"e":"sin(x)-x*cos(x)","n":"F(x)"}],"x":[0,26],"y":[-30,30],"q":[[21.9911,21.9911,"máx. F(7π)=7π"]]}' data-alt="F(x) y su derivada x sen x: máximo relativo en 7π"><figcaption>El integrando $x\operatorname{sen}x$ (es $F'$) y $F(x)=\operatorname{sen}x-x\cos x$. $F$ sube cuando $F'>0$ y baja cuando $F'<0$; en $x=7\pi$ pasa de subir a bajar: máximo relativo con $F(7\pi)=7\pi\approx21{,}99$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
-    <li><b>Derivar con el primer teorema.</b> $f(t)=t\operatorname{sen}t$ es continua en $\mathbb R$, luego $F'(x)=x\operatorname{sen}x$.</li>
-    <li><b>Descartar b) y d).</b> Para $x\gt0$ el signo de $F'$ es el de $\operatorname{sen}x$, que cambia: $F'\gt0$ en $(0,\pi)$ y $F'\lt0$ en $(\pi,2\pi)$. $F$ crece en $(0,\pi)$ y decrece en $(\pi,2\pi)$: ni creciente ni decreciente en $I$.</li>
-    <li><b>Puntos críticos.</b> $F'(x)=0\iff x=0$ o $\operatorname{sen}x=0\iff x=k\pi$, $k=0,1,2,\dots$ En particular $7\pi$ es crítico.</li>
-    <li><b>Segunda derivada</b> (derivada de un producto): $F''(x)=\operatorname{sen}x+x\cos x$.</li>
-    <li><b>Evaluar en $7\pi$.</b> $\operatorname{sen}7\pi=0$ y $\cos7\pi=\cos\pi=-1$ (7 es impar): $F''(7\pi)=-7\pi\lt0$.</li>
-    <li><b>Concluir.</b> $F'(7\pi)=0$ y $F''(7\pi)\lt0$: $F$ tiene un <b>máximo relativo</b> en $7\pi$. Comprobación con el signo: justo antes de $7\pi$, $\operatorname{sen}x\gt0$ ($F$ sube); justo después, $\operatorname{sen}x\lt0$ ($F$ baja).</li>
-    <li><b>Respuesta: a).</b> (Es relativo, no absoluto: con Barrow, $F(x)=\operatorname{sen}x-x\cos x$, y $F(7\pi)=7\pi\lt F(9\pi)=9\pi$.)</li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> para $F(x)=\int_a^xf(t)\,dt$: $F'=f$ y, si $f$ es derivable, $F''=f'$. Puntos críticos = ceros de $f$; se clasifican con el signo de $f$ alrededor o con $f'$.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Intentar calcular la integral (aquí requiere integración por partes, §6.3) cuando solo se necesita su derivada; o equivocarse con $\cos7\pi$ (vale $-1$, no $1$).</p></div>
-</details>
-<details class="sol" id="ej-6-12"><summary>Ejercicio 6.12 · $H=F\circ G$ con $F(x)=\int_0^x\operatorname{sen}(\ln t)\,dt$ y $G(x)=e^x$ <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.12, pp. 219-220 · teoría: U Teor. 6.1 y regla de la cadena, pp. 243, 79">E pp.219-220</span></summary>
-<p class="enun">Sea $H=F\circ G$ con $F(x)=\displaystyle\int_0^x\operatorname{sen}(\ln t)\,dt$ y $G(x)=e^x$. Señala la opción correcta: a) $H$ es creciente en $\mathbb R$. b) $H$ tiene un punto de inflexión en $x=\frac{3\pi}4$. c) $H$ es cóncava en $\mathbb R$. d) $H$ alcanza un mínimo en $\pi$.</p>
-  <div class="plan"><span class="h">Antes de calcular</span><dl>
-    <dt>Qué me piden</dt><dd>Estudiar crecimiento, concavidad, inflexión y extremos de $H(x)=F(e^x)$.</dd>
-    <dt>Cómo lo pienso</dt><dd>$H$ es una composición: su derivada sale con la regla de la cadena y la derivada de $F$ la da el primer teorema. Con $H'$, $H''$ y $H'''$ se revisan las cuatro opciones.</dd>
-    <dt>Qué uso</dt><dd>Regla de la cadena (U p.79); primer teorema (U Teor. 6.1, p.243); U Prop. 2.4 (p.98), Prop. 3.7 (p.131), Prop. 3.10-3.12 (pp.136-137).</dd>
-    <dt>Por dónde empiezo</dt><dd>$H'(x)=F'(e^x)\cdot e^x$.</dd>
-  </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"exp(x)*(sin(x)-cos(x))/2","n":"H(x)=eˣ(sen x−cos x)/2"},{"e":"exp(x)*sin(x)","n":"H′(x)=eˣ sen x"}],"x":[-1,4],"y":[-6,14],"q":[[3.1416,11.5703,"máx. en π"],[2.3562,7.4605,"inflexión en 3π/4"]]}' data-alt="H(x)=F(e^x) con máximo en pi e inflexión en 3pi/4"><figcaption>$H(x)=F(e^x)=\frac{e^x}2(\operatorname{sen}x-\cos x)$ y su derivada $H'(x)=e^x\operatorname{sen}x$. Rombos: el máximo relativo en $x=\pi$ (donde $H'$ corta el eje bajando) y el punto de inflexión en $x=\frac{3\pi}4$ (donde $H'$ alcanza su máximo, es decir $H''=0$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <ol class="steps">
-    <li><b>Derivada de $F$.</b> El integrando $\operatorname{sen}(\ln t)$ es continuo para $t\gt0$ (en $t=0$ no está definido, pero está acotado entre $-1$ y $1$). Para $u\gt0$, $F(u)=\int_0^1\operatorname{sen}(\ln t)\,dt+\int_1^u\operatorname{sen}(\ln t)\,dt$. El primer sumando es un número fijo (vale $-\frac12$; es una integral impropia convergente, <a href="tema_6_5_integrales_impropias.html">§6.5</a>; su valor no importa porque al derivar da $0$). Al segundo se le aplica el primer teorema: $F'(u)=\operatorname{sen}(\ln u)$ para todo $u\gt0$.</li>
-    <li><b>Regla de la cadena.</b> Como $G(x)=e^x\gt0$ siempre, vale el paso 1 con $u=e^x$: $H'(x)=F'(e^x)\cdot(e^x)'=\operatorname{sen}(\ln e^x)\,e^x=e^x\operatorname{sen}x$, porque $\ln e^x=x$.</li>
-    <li><b>a) Falsa.</b> $e^x\gt0$, así que el signo de $H'$ es el de $\operatorname{sen}x$, que cambia (p. ej. $H'\lt0$ en $(\pi,2\pi)$).</li>
-    <li><b>Segunda derivada</b> (producto): $H''(x)=e^x\operatorname{sen}x+e^x\cos x=e^x(\operatorname{sen}x+\cos x)$.</li>
-    <li><b>d) Falsa.</b> $H'(\pi)=0$ (punto crítico), pero $H''(\pi)=e^\pi(0-1)=-e^\pi\lt0$: en $\pi$ hay un <b>máximo</b> relativo (U Prop. 3.7), no un mínimo.</li>
-    <li><b>c) Falsa.</b> $H''(0)=1\gt0$ y $H''(\pi)\lt0$: $H''$ cambia de signo, así que $H$ no es cóncava en todo $\mathbb R$.</li>
-    <li><b>b) Verdadera.</b> En $x=\frac{3\pi}4$: $\operatorname{sen}\frac{3\pi}4=\frac{\sqrt2}2$ y $\cos\frac{3\pi}4=-\frac{\sqrt2}2$, luego $H''\!\left(\frac{3\pi}4\right)=0$. Tercera derivada: $H'''(x)=e^x(\operatorname{sen}x+\cos x)+e^x(\cos x-\operatorname{sen}x)=2e^x\cos x$, y $H'''\!\left(\frac{3\pi}4\right)=-\sqrt2\,e^{3\pi/4}\lt0$. Por U Prop. 3.12 (p.137) la primera derivada no nula tras la segunda es de orden 3 (impar): <b>hay inflexión</b> (de convexa a cóncava). Comprobación con el signo: $H''\!\left(\frac{3\pi}4-0{,}1\right)\approx1{,}35\gt0$ y $H''\!\left(\frac{3\pi}4+0{,}1\right)\approx-1{,}65\lt0$.</li>
-    <li><b>Respuesta: b).</b></li>
-  </ol>
-  <div class="recipe"><b>Receta:</b> si $H(x)=F(g(x))$ con $F(u)=\int_a^uf(t)\,dt$: $H'(x)=f(g(x))\,g'(x)$ (primer teorema + regla de la cadena). Después se trabaja con $H'$ como con cualquier función.</div>
-  <div class="box warn"><span class="h">Error típico</span><p>Dar por buena la inflexión solo con $H''=0$ sin comprobar el cambio de signo (o $H'''\ne0$).</p></div>
-</details>
-<details class="sol" id="ej-6-15"><summary>Ejercicio 6.15 · derivada con los dos límites variables <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.15, p. 221 · teoría: U Teor. 6.1, p. 243">E p.221</span></summary>
-<p class="enun">Sea $f:\mathbb R\to\mathbb R$ una función integrable en $\mathbb R$. Sean $a,b:\mathbb R\to\mathbb R$ funciones derivables en $\mathbb R$. Demuestra que $\displaystyle\frac{d}{dx}\left(\int_{a(x)}^{b(x)}f(t)\,dt\right)=f(b(x))\,b'(x)-f(a(x))\,a'(x)$. Aplica el resultado para calcular el valor de $\displaystyle\frac{d}{dx}\left(\int_{x^2}^{e^x}\cos t\,dt\right)$.</p>
+</article>
+<article class="ejer" id="ej-6-15">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.15 · derivada con los dos límites variables</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.15, p. 221 · teoría: U Teor. 6.1, p. 243">E p.221</span></header>
+<div class="ejer-enun"><p class="enun">Sea $f:\mathbb R\to\mathbb R$ una función integrable en $\mathbb R$. Sean $a,b:\mathbb R\to\mathbb R$ funciones derivables en $\mathbb R$. Demuestra que $\displaystyle\frac{d}{dx}\left(\int_{a(x)}^{b(x)}f(t)\,dt\right)=f(b(x))\,b'(x)-f(a(x))\,a'(x)$. Aplica el resultado para calcular el valor de $\displaystyle\frac{d}{dx}\left(\int_{x^2}^{e^x}\cos t\,dt\right)$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Probar la fórmula general para derivar una integral con los dos límites variables y aplicarla a un caso.</dd>
     <dt>Cómo lo pienso</dt><dd>Partir la integral en un punto fijo $c$: quedan dos integrales con un solo límite variable cada una, que ya sé derivar (primer teorema, cambio de orden y regla de la cadena).</dd>
@@ -318,8 +605,9 @@
   </dl></div>
   <figure class="graf" data-g='{"c":[{"e":"sin(exp(x))-sin(x^2)","n":"∫ cos t dt de x² a eˣ"},{"e":"exp(x)*cos(exp(x))-2*x*cos(x^2)","n":"derivada"}],"x":[-1.5,1.5],"y":[-8,6]}' data-alt="La integral de cos t entre x² y e^x, y su derivada"><figcaption>La integral $\int_{x^2}^{e^x}\cos t\,dt=\operatorname{sen}(e^x)-\operatorname{sen}(x^2)$ y su derivada $e^x\cos(e^x)-2x\cos(x^2)$: donde la primera sube la segunda es positiva, y donde baja es negativa. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
   <p><b>Nota sobre la hipótesis.</b> El primer teorema pide $f$ continua, así que la demostración se hace con $f$ continua. Si $f$ solo es integrable, la fórmula sigue valiendo en los $x$ donde $f$ es continua en $a(x)$ y en $b(x)$.</p>
-  <p><b>Demostración.</b></p>
-  <ol class="steps">
+  <p><b>Demostración.</b></p></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
     <li><b>Una función auxiliar.</b> Se fija $c\in\mathbb R$ (por ejemplo $c=0$) y se define $\Phi(u)=\int_c^uf(t)\,dt$. Por el primer teorema, $\Phi'(u)=f(u)$ para todo $u$.</li>
     <li><b>Escribir la integral con $\Phi$.</b> Por (P5) y (P6): $\int_{a(x)}^{b(x)}f=\int_{a(x)}^cf+\int_c^{b(x)}f=-\int_c^{a(x)}f+\int_c^{b(x)}f=\Phi(b(x))-\Phi(a(x))$. (Las propiedades valen con cualquier orden de los extremos, así que no importa dónde caiga $c$.)</li>
     <li><b>Derivar con la regla de la cadena.</b> $\Phi(b(x))$ es la composición de $\Phi$ con $b$: su derivada es $\Phi'(b(x))\,b'(x)=f(b(x))\,b'(x)$. Igual para $a$: $\frac{d}{dx}\int_{a(x)}^{b(x)}f=f(b(x))\,b'(x)-f(a(x))\,a'(x)$. $\blacksquare$</li>
@@ -333,19 +621,96 @@
   </ol>
   <div class="recipe"><b>Receta:</b> $\frac{d}{dx}\int_{a(x)}^{b(x)}f=f(\text{arriba})\cdot(\text{arriba})'-f(\text{abajo})\cdot(\text{abajo})'$. Se demuestra partiendo la integral en un punto fijo.</div>
 </details>
-<!-- ============================ 5 ============================ -->
-<h2 id="propios"><span class="n">5</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, resueltos y comprobados con sympy">propio</span></h2>
+</article>
+<h3>C · Monotonía, extremos e inflexión de F</h3>
+<article class="ejer" id="ej-6-12">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Ejercicio 6.12 · $H=F\circ G$ con $F(x)=\int_0^x\operatorname{sen}(\ln t)\,dt$ y $G(x)=e^x$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.12, pp. 219-220 · teoría: U Teor. 6.1 y regla de la cadena, pp. 243, 79">E pp.219-220</span></header>
+<div class="ejer-enun"><p class="enun">Sea $H=F\circ G$ con $F(x)=\displaystyle\int_0^x\operatorname{sen}(\ln t)\,dt$ y $G(x)=e^x$. Señala la opción correcta: a) $H$ es creciente en $\mathbb R$. b) $H$ tiene un punto de inflexión en $x=\frac{3\pi}4$. c) $H$ es cóncava en $\mathbb R$. d) $H$ alcanza un mínimo en $\pi$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar crecimiento, concavidad, inflexión y extremos de $H(x)=F(e^x)$.</dd>
+    <dt>Cómo lo pienso</dt><dd>$H$ es una composición: su derivada sale con la regla de la cadena y la derivada de $F$ la da el primer teorema. Con $H'$, $H''$ y $H'''$ se revisan las cuatro opciones.</dd>
+    <dt>Qué uso</dt><dd>Regla de la cadena (U p.79); primer teorema (U Teor. 6.1, p.243); U Prop. 2.4 (p.98), Prop. 3.7 (p.131), Prop. 3.10-3.12 (pp.136-137).</dd>
+    <dt>Por dónde empiezo</dt><dd>$H'(x)=F'(e^x)\cdot e^x$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"exp(x)*(sin(x)-cos(x))/2","n":"H(x)=eˣ(sen x−cos x)/2"},{"e":"exp(x)*sin(x)","n":"H′(x)=eˣ sen x"}],"x":[-1,4],"y":[-6,14],"q":[[3.1416,11.5703,"máx. en π"],[2.3562,7.4605,"inflexión en 3π/4"]]}' data-alt="H(x)=F(e^x) con máximo en pi e inflexión en 3pi/4"><figcaption>$H(x)=F(e^x)=\frac{e^x}2(\operatorname{sen}x-\cos x)$ y su derivada $H'(x)=e^x\operatorname{sen}x$. Rombos: el máximo relativo en $x=\pi$ (donde $H'$ corta el eje bajando) y el punto de inflexión en $x=\frac{3\pi}4$ (donde $H'$ alcanza su máximo, es decir $H''=0$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
+    <li><b>Derivada de $F$.</b> El integrando $\operatorname{sen}(\ln t)$ es continuo para $t\gt0$ (en $t=0$ no está definido, pero está acotado entre $-1$ y $1$). Para $u\gt0$, $F(u)=\int_0^1\operatorname{sen}(\ln t)\,dt+\int_1^u\operatorname{sen}(\ln t)\,dt$. El primer sumando es un número fijo (vale $-\frac12$; es una integral impropia convergente, <a href="tema_6_5_integrales_impropias.html">§6.5</a>; su valor no importa porque al derivar da $0$). Al segundo se le aplica el primer teorema: $F'(u)=\operatorname{sen}(\ln u)$ para todo $u\gt0$.</li>
+    <li><b>Regla de la cadena.</b> Como $G(x)=e^x\gt0$ siempre, vale el paso 1 con $u=e^x$: $H'(x)=F'(e^x)\cdot(e^x)'=\operatorname{sen}(\ln e^x)\,e^x=e^x\operatorname{sen}x$, porque $\ln e^x=x$.</li>
+    <li><b>a) Falsa.</b> $e^x\gt0$, así que el signo de $H'$ es el de $\operatorname{sen}x$, que cambia (p. ej. $H'\lt0$ en $(\pi,2\pi)$).</li>
+    <li><b>Segunda derivada</b> (producto): $H''(x)=e^x\operatorname{sen}x+e^x\cos x=e^x(\operatorname{sen}x+\cos x)$.</li>
+    <li><b>d) Falsa.</b> $H'(\pi)=0$ (punto crítico), pero $H''(\pi)=e^\pi(0-1)=-e^\pi\lt0$: en $\pi$ hay un <b>máximo</b> relativo (U Prop. 3.7), no un mínimo.</li>
+    <li><b>c) Falsa.</b> $H''(0)=1\gt0$ y $H''(\pi)\lt0$: $H''$ cambia de signo, así que $H$ no es cóncava en todo $\mathbb R$.</li>
+    <li><b>b) Verdadera.</b> En $x=\frac{3\pi}4$: $\operatorname{sen}\frac{3\pi}4=\frac{\sqrt2}2$ y $\cos\frac{3\pi}4=-\frac{\sqrt2}2$, luego $H''\!\left(\frac{3\pi}4\right)=0$. Tercera derivada: $H'''(x)=e^x(\operatorname{sen}x+\cos x)+e^x(\cos x-\operatorname{sen}x)=2e^x\cos x$, y $H'''\!\left(\frac{3\pi}4\right)=-\sqrt2\,e^{3\pi/4}\lt0$. Por U Prop. 3.12 (p.137) la primera derivada no nula tras la segunda es de orden 3 (impar): <b>hay inflexión</b> (de convexa a cóncava). Comprobación con el signo: $H''\!\left(\frac{3\pi}4-0{,}1\right)\approx1{,}35\gt0$ y $H''\!\left(\frac{3\pi}4+0{,}1\right)\approx-1{,}65\lt0$.</li>
+    <li><b>Respuesta: b).</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> si $H(x)=F(g(x))$ con $F(u)=\int_a^uf(t)\,dt$: $H'(x)=f(g(x))\,g'(x)$ (primer teorema + regla de la cadena). Después se trabaja con $H'$ como con cualquier función.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Dar por buena la inflexión solo con $H''=0$ sin comprobar el cambio de signo (o $H'''\ne0$).</p></div>
+</details>
+</article>
+<article class="ejer" id="ej-6-13">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.13 · monotonía y extremos de $F(x)=\int_0^xt\operatorname{sen}t\,dt$</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.13, p. 220 · teoría: U Teor. 6.1, p. 243">E p.220</span></header>
+<div class="ejer-enun"><p class="enun">Dada la función $F(x)=\displaystyle\int_0^xt\operatorname{sen}t\,dt$ definida en $I=[0,\infty)$, señala la opción correcta. a) $F$ alcanza un máximo en $x=7\pi$. b) $F$ es creciente en $I$. c) $F$ alcanza un mínimo en $x=7\pi$. d) $F$ es decreciente en $I$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Estudiar la monotonía de $F$ y qué pasa en $x=7\pi$.</dd>
+    <dt>Cómo lo pienso</dt><dd>No hace falta calcular la integral: el primer teorema da $F'$ directamente, y con $F'$ y $F''$ se estudian crecimiento y extremos como en el tema 3.</dd>
+    <dt>Qué uso</dt><dd>Primer teorema (U Teor. 6.1, p.243); monotonía por el signo de $F'$ (U Prop. 2.4, p.98); criterio de la 2.ª derivada (U Prop. 3.7, p.131).</dd>
+    <dt>Por dónde empiezo</dt><dd>$F'(x)=x\operatorname{sen}x$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"x*sin(x)","n":"F′(x)=x sen x"},{"e":"sin(x)-x*cos(x)","n":"F(x)"}],"x":[0,26],"y":[-30,30],"q":[[21.9911,21.9911,"máx. F(7π)=7π"]]}' data-alt="F(x) y su derivada x sen x: máximo relativo en 7π"><figcaption>El integrando $x\operatorname{sen}x$ (es $F'$) y $F(x)=\operatorname{sen}x-x\cos x$. $F$ sube cuando $F'>0$ y baja cuando $F'<0$; en $x=7\pi$ pasa de subir a bajar: máximo relativo con $F(7\pi)=7\pi\approx21{,}99$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
+    <li><b>Derivar con el primer teorema.</b> $f(t)=t\operatorname{sen}t$ es continua en $\mathbb R$, luego $F'(x)=x\operatorname{sen}x$.</li>
+    <li><b>Descartar b) y d).</b> Para $x\gt0$ el signo de $F'$ es el de $\operatorname{sen}x$, que cambia: $F'\gt0$ en $(0,\pi)$ y $F'\lt0$ en $(\pi,2\pi)$. $F$ crece en $(0,\pi)$ y decrece en $(\pi,2\pi)$: ni creciente ni decreciente en $I$.</li>
+    <li><b>Puntos críticos.</b> $F'(x)=0\iff x=0$ o $\operatorname{sen}x=0\iff x=k\pi$, $k=0,1,2,\dots$ En particular $7\pi$ es crítico.</li>
+    <li><b>Segunda derivada</b> (derivada de un producto): $F''(x)=\operatorname{sen}x+x\cos x$.</li>
+    <li><b>Evaluar en $7\pi$.</b> $\operatorname{sen}7\pi=0$ y $\cos7\pi=\cos\pi=-1$ (7 es impar): $F''(7\pi)=-7\pi\lt0$.</li>
+    <li><b>Concluir.</b> $F'(7\pi)=0$ y $F''(7\pi)\lt0$: $F$ tiene un <b>máximo relativo</b> en $7\pi$. Comprobación con el signo: justo antes de $7\pi$, $\operatorname{sen}x\gt0$ ($F$ sube); justo después, $\operatorname{sen}x\lt0$ ($F$ baja).</li>
+    <li><b>Respuesta: a).</b> (Es relativo, no absoluto: con Barrow, $F(x)=\operatorname{sen}x-x\cos x$, y $F(7\pi)=7\pi\lt F(9\pi)=9\pi$.)</li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> para $F(x)=\int_a^xf(t)\,dt$: $F'=f$ y, si $f$ es derivable, $F''=f'$. Puntos críticos = ceros de $f$; se clasifican con el signo de $f$ alrededor o con $f'$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Intentar calcular la integral (aquí requiere integración por partes, §6.3) cuando solo se necesita su derivada; o equivocarse con $\cos7\pi$ (vale $-1$, no $1$).</p></div>
+</details>
+</article>
+<h3>D · Barrow y su hipótesis</h3>
+<article class="ejer" id="ej-6-16">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Ejercicio 6.16 · ¿cuándo se puede aplicar Barrow a $\frac1{x-1}$?</span> <span class="src" data-l="E" data-ref="Libro de ejercicios, Ej. 6.16, pp. 222-223 · teoría: U Teor. 6.2, p. 244">E pp.222-223</span></header>
+<div class="ejer-enun"><p class="enun">Se sabe que $\displaystyle\int\frac1{x-1}\,dx=\ln|x-1|+C$ en $\mathbb R\setminus\{1\}$. ¿Qué opción es verdadera? a) No hay relación entre la integral definida y la indefinida. b) Utilizando Barrow resulta $\int_0^2\frac1{x-1}\,dx=0$. c) Utilizando Barrow resulta $\int_2^3\frac1{x-1}\,dx=\ln2$.</p>
+  <div class="plan"><span class="h">Antes de calcular</span><dl>
+    <dt>Qué me piden</dt><dd>Decidir en qué casos se puede usar la regla de Barrow con la primitiva $\ln|x-1|$.</dd>
+    <dt>Cómo lo pienso</dt><dd>Barrow tiene una hipótesis: integrando continuo en <b>todo</b> el intervalo $[a,b]$. Si el intervalo contiene el punto donde $\frac1{x-1}$ «explota» ($x=1$), no se puede usar, aunque la cuenta «salga».</dd>
+    <dt>Qué uso</dt><dd>Regla de Barrow (U Teor. 6.2, p.244), con su hipótesis de continuidad.</dd>
+    <dt>Por dónde empiezo</dt><dd>Mirar si $x=1$ está en $[0,2]$ y en $[2,3]$.</dd>
+  </dl></div>
+  <figure class="graf" data-g='{"c":[{"e":"abs(x-1)<0.03?NaN:1/(x-1)","n":"1/(x−1)"}],"x":[-0.5,3.5],"y":[-6,6],"q":[[2,1],[3,0.5]]}' data-alt="1/(x-1) con asíntota vertical en x=1"><figcaption>La función $\frac1{x-1}$ tiene una asíntota vertical en $x=1$: dentro de $[0,2]$ no es continua ni acotada (Barrow no vale), mientras que en $[2,3]$ es continua (rombos: valores $f(2)=1$ y $f(3)=\frac12$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<ol class="steps">
+    <li><b>a) Falsa.</b> La regla de Barrow es precisamente la relación entre ambas: la integral definida se calcula con una primitiva (integral indefinida).</li>
+    <li><b>Hipótesis en b).</b> $f(x)=\frac1{x-1}$ no está definida en $x=1\in[0,2]$: no es continua en $[0,2]$ y <b>no se puede aplicar Barrow</b>.</li>
+    <li><b>Por qué la cuenta engaña.</b> A ciegas saldría $\ln|2-1|-\ln|0-1|=0-0=0$. Pero cerca de $x=1$ la función no está acotada ($f(1{,}001)=1000$, $f(0{,}999)=-1000$), así que no es integrable en $[0,2]$ y esa integral no tiene sentido como integral de Riemann. Un resultado numérico no prueba nada si falla la hipótesis.</li>
+    <li><b>Hipótesis en c).</b> En $[2,3]$, $x-1\in[1,2]$ nunca vale $0$: $f$ es continua y Barrow se puede aplicar.</li>
+    <li><b>Cálculo de c).</b> Con $F(x)=\ln|x-1|$ (se toma $C=0$: vale cualquier primitiva, U p.245): $\int_2^3\frac{dx}{x-1}=\ln2-\ln1=\ln2$.</li>
+    <li><b>Respuesta: c).</b></li>
+  </ol>
+  <div class="recipe"><b>Receta:</b> antes de aplicar Barrow, buscar los puntos donde el integrando no está definido (denominador $0$, logaritmo de $0$, raíz de un negativo…) y comprobar que <b>ninguno</b> está en $[a,b]$.</div>
+  <div class="box warn"><span class="h">Error típico</span><p>Aplicar Barrow «porque se conoce la primitiva» sin mirar el intervalo (ver Propio 2).</p></div>
+</details>
+</article>
+<!-- ============================ 8 ============================ -->
+<h2 id="propios" data-vista="ejercicios"><span class="n">8</span>Ejemplos propios, de menos a más difícil <span class="src" data-l="P" data-ref="Ejemplos propios, resueltos y comprobados con sympy">propio</span></h2>
 <p><b>Índice rápido:</b> <a href="#p1">Propio 1</a> (límites variables y L'Hôpital) · <a href="#p2">Propio 2</a> (Barrow y su hipótesis) · <a href="#p3">Propio 3</a> (valor medio) · <a href="#p4">Propio 4</a> (valor absoluto y trozos).</p>
-<details class="sol" id="p1"><summary>Propio 1 · $G(x)=\int_x^{x^2}\frac{dt}{1+t^2}$ y un límite con integral <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: E 6.15, U Teor. 6.1 p.243 y L'Hôpital U p.82">P</span></summary>
-<p class="enun">a) Calcula $G'(x)$ para $G(x)=\displaystyle\int_x^{x^2}\frac{dt}{1+t^2}$ y el valor $G'(1)$. b) Calcula $\displaystyle\lim_{x\to0}\frac1{x^3}\int_0^x\operatorname{sen}(t^2)\,dt$.</p>
+<article class="ejer" id="p1">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 1 · $G(x)=\int_x^{x^2}\frac{dt}{1+t^2}$ y un límite con integral</span> <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: E 6.15, U Teor. 6.1 p.243 y L'Hôpital U p.82">P</span></header>
+<div class="ejer-enun"><p class="enun">a) Calcula $G'(x)$ para $G(x)=\displaystyle\int_x^{x^2}\frac{dt}{1+t^2}$ y el valor $G'(1)$. b) Calcula $\displaystyle\lim_{x\to0}\frac1{x^3}\int_0^x\operatorname{sen}(t^2)\,dt$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>En a), la derivada de una integral con los dos límites variables; en b), un límite $\frac00$ en el que el numerador es una integral.</dd>
     <dt>Cómo lo pienso</dt><dd>a) es la fórmula de E 6.15. En b) no se sabe calcular $\int\operatorname{sen}(t^2)\,dt$ con funciones elementales, pero no hace falta: L'Hôpital pide derivar el numerador, y eso lo da el primer teorema.</dd>
     <dt>Qué uso</dt><dd>E 6.15 / primer teorema (U Teor. 6.1, p.243); regla de la cadena (U p.79); L'Hôpital (U §2.3, p.82).</dd>
     <dt>Por dónde empiezo</dt><dd>Identificar $f(t)=\frac1{1+t^2}$, $b(x)=x^2$, $a(x)=x$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"atan(x^2)-atan(x)","n":"G(x)=arctg x²−arctg x"},{"e":"2*x/(1+x^4)-1/(1+x^2)","n":"G′(x)"}],"x":[-3,3],"y":[-1.8,1.8],"q":[[1,0.5,"G′(1)=1/2"]]}' data-alt="G(x) y su derivada, con G'(1)=1/2"><figcaption>La función $G(x)=\operatorname{arctg}(x^2)-\operatorname{arctg}x$ (integral de $\frac1{1+t^2}$ entre $x$ y $x^2$) y su derivada $G'(x)=\frac{2x}{1+x^4}-\frac1{1+x^2}$. El rombo marca $G'(1)=\frac12$ (y $G(1)=0$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <p><b>a)</b></p>
+  <figure class="graf" data-g='{"c":[{"e":"atan(x^2)-atan(x)","n":"G(x)=arctg x²−arctg x"},{"e":"2*x/(1+x^4)-1/(1+x^2)","n":"G′(x)"}],"x":[-3,3],"y":[-1.8,1.8],"q":[[1,0.5,"G′(1)=1/2"]]}' data-alt="G(x) y su derivada, con G'(1)=1/2"><figcaption>La función $G(x)=\operatorname{arctg}(x^2)-\operatorname{arctg}x$ (integral de $\frac1{1+t^2}$ entre $x$ y $x^2$) y su derivada $G'(x)=\frac{2x}{1+x^4}-\frac1{1+x^2}$. El rombo marca $G'(1)=\frac12$ (y $G(1)=0$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<p><b>a)</b></p>
   <ol class="steps">
     <li>$f(t)=\frac1{1+t^2}$ es continua en $\mathbb R$ (el denominador nunca es $0$).</li>
     <li>Fórmula de E 6.15 con $b(x)=x^2$, $b'(x)=2x$, $a(x)=x$, $a'(x)=1$: $G'(x)=\frac1{1+(x^2)^2}\cdot2x-\frac1{1+x^2}\cdot1=\frac{2x}{1+x^4}-\frac1{1+x^2}$.</li>
@@ -360,16 +725,19 @@
   </ol>
   <div class="recipe"><b>Receta:</b> integral con límite variable en un límite $\frac00$: L'Hôpital + primer teorema (la derivada del numerador es el integrando evaluado en $x$).</div>
 </details>
-<details class="sol" id="p2"><summary>Propio 2 · Barrow y su hipótesis: $\int_1^4\left(3\sqrt x-\frac2{x^2}\right)dx$ y $\int_{-1}^1\frac{dx}{x^2}$ <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Teor. 6.2, p.244">P</span></summary>
-<p class="enun">a) Calcula $\displaystyle\int_1^4\left(3\sqrt x-\frac2{x^2}\right)dx$. b) ¿Es correcto escribir $\displaystyle\int_{-1}^1\frac{dx}{x^2}=\left[-\frac1x\right]_{-1}^1=-2$?</p>
+</article>
+<article class="ejer" id="p2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">Propio 2 · Barrow y su hipótesis: $\int_1^4\left(3\sqrt x-\frac2{x^2}\right)dx$ y $\int_{-1}^1\frac{dx}{x^2}$</span> <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U Teor. 6.2, p.244">P</span></header>
+<div class="ejer-enun"><p class="enun">a) Calcula $\displaystyle\int_1^4\left(3\sqrt x-\frac2{x^2}\right)dx$. b) ¿Es correcto escribir $\displaystyle\int_{-1}^1\frac{dx}{x^2}=\left[-\frac1x\right]_{-1}^1=-2$?</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Una integral con Barrow y decidir si otra «cuenta» es válida.</dd>
     <dt>Cómo lo pienso</dt><dd>Primero miro si el integrando es continuo en el intervalo. En a) sí ($x\ge1$); en b) no ($x=0$ está dentro). Además, en b) el resultado es negativo para una función positiva: imposible por monotonía.</dd>
     <dt>Qué uso</dt><dd>Barrow (U Teor. 6.2, p.244); monotonía de la integral (U p.240).</dd>
     <dt>Por dónde empiezo</dt><dd>Escribir $3\sqrt x=3x^{1/2}$ y $\frac2{x^2}=2x^{-2}$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"abs(x)<0.04?NaN:1/x^2","n":"1/x²"}],"x":[-1.5,1.5],"y":[0,12]}' data-alt="1/x^2 no acotada cerca de 0"><figcaption>La función $\frac1{x^2}$ es positiva y se dispara al acercarse a $x=0$: no está acotada en $[-1,1]$, así que Barrow no se puede aplicar y la integral no puede valer $-2$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <p><b>a)</b></p>
+  <figure class="graf" data-g='{"c":[{"e":"abs(x)<0.04?NaN:1/x^2","n":"1/x²"}],"x":[-1.5,1.5],"y":[0,12]}' data-alt="1/x^2 no acotada cerca de 0"><figcaption>La función $\frac1{x^2}$ es positiva y se dispara al acercarse a $x=0$: no está acotada en $[-1,1]$, así que Barrow no se puede aplicar y la integral no puede valer $-2$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<p><b>a)</b></p>
   <ol class="steps">
     <li><b>Continuidad.</b> En $[1,4]$, $\sqrt x$ y $\frac1{x^2}$ son continuas (no hay $x=0$).</li>
     <li><b>Primitiva</b> de cada término con $\int x^r\,dx=\frac{x^{r+1}}{r+1}$ ($r\ne-1$): $3x^{1/2}\to2x^{3/2}$ y $-2x^{-2}\to\frac2x$. Así $F(x)=2x^{3/2}+\frac2x$. Comprobación: $F'(x)=3x^{1/2}-\frac2{x^2}$.</li>
@@ -382,16 +750,19 @@
   </ol>
   <div class="recipe"><b>Receta:</b> Barrow = (1) continuidad en $[a,b]$, (2) primitiva comprobada derivando, (3) $F(b)-F(a)$. Si el signo del resultado contradice el del integrando, hay un error de hipótesis.</div>
 </details>
-<details class="sol" id="p3"><summary>Propio 3 · valor medio de una función y puntos del teorema <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U p.244 (margen), E 6.9, L §4.4 p.281">P</span></summary>
-<p class="enun">Halla el valor medio $\frac1{b-a}\int_a^bf$ y todos los puntos $c\in[a,b]$ del teorema del valor medio integral para: a) $f(x)=x^2$ en $[0,3]$; b) $f(x)=\operatorname{sen}x$ en $[0,\pi]$.</p>
+</article>
+<article class="ejer" id="p3">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">Propio 3 · valor medio de una función y puntos del teorema</span> <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U p.244 (margen), E 6.9, L §4.4 p.281">P</span></header>
+<div class="ejer-enun"><p class="enun">Halla el valor medio $\frac1{b-a}\int_a^bf$ y todos los puntos $c\in[a,b]$ del teorema del valor medio integral para: a) $f(x)=x^2$ en $[0,3]$; b) $f(x)=\operatorname{sen}x$ en $[0,\pi]$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>La «altura media» de $f$ y dónde la alcanza $f$.</dd>
     <dt>Cómo lo pienso</dt><dd>El teorema dice que hay un rectángulo de base $b-a$ y altura $f(c)$ con la misma área que la de bajo la gráfica. Calculo esa altura con Barrow y resuelvo $f(c)=$ altura dentro del intervalo.</dd>
     <dt>Qué uso</dt><dd>Valor medio integral (U p.244, margen; E 6.9); Barrow (U Teor. 6.2, p.244); valor medio (L §4.4, p.281).</dd>
     <dt>Por dónde empiezo</dt><dd>Calcular $\int_a^bf$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x^2","n":"x²"},{"e":"3","n":"valor medio 3","d":1}],"x":[-0.3,3.3],"y":[-0.5,10],"q":[[1.7321,3,"c=√3"]]}' data-alt="x^2 en [0,3] y su valor medio 3"><figcaption>$f(x)=x^2$ en $[0,3]$ y la recta de su valor medio $3$ (punteada): $f$ toma ese valor en $c=\sqrt3\approx1{,}73$. El rectángulo de altura $3$ tiene la misma área que la región bajo la parábola. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <p><b>a)</b></p>
+  <figure class="graf" data-g='{"c":[{"e":"x^2","n":"x²"},{"e":"3","n":"valor medio 3","d":1}],"x":[-0.3,3.3],"y":[-0.5,10],"q":[[1.7321,3,"c=√3"]]}' data-alt="x^2 en [0,3] y su valor medio 3"><figcaption>$f(x)=x^2$ en $[0,3]$ y la recta de su valor medio $3$ (punteada): $f$ toma ese valor en $c=\sqrt3\approx1{,}73$. El rectángulo de altura $3$ tiene la misma área que la región bajo la parábola. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<p><b>a)</b></p>
   <ol class="steps">
     <li>$\int_0^3x^2\,dx=\left[\frac{x^3}3\right]_0^3=9$.</li>
     <li>Valor medio: $\frac9{3-0}=3$.</li>
@@ -407,16 +778,19 @@
   <div class="recipe"><b>Receta:</b> valor medio $=\frac1{b-a}\int_a^bf$; los $c$ del teorema son las soluciones de $f(c)=$ valor medio <b>dentro</b> de $[a,b]$. El teorema garantiza al menos uno; puede haber varios.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar dividir por $b-a$, quedarse con soluciones fuera del intervalo ($-\sqrt3$) o creer que $c$ es único.</p></div>
 </details>
-<details class="sol" id="p4"><summary>Propio 4 · integral con valor absoluto y función a trozos <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U p.240 (P5) y Teor. 6.2, p.244">P</span></summary>
-<p class="enun">a) Calcula $\displaystyle\int_{-1}^3\left|x^2-2x\right|dx$ y compárala con $\displaystyle\int_{-1}^3(x^2-2x)\,dx$. b) Calcula $\displaystyle\int_0^2f(x)\,dx$ con $f(x)=x^2$ si $0\le x\le1$ y $f(x)=2-x$ si $1\lt x\le2$.</p>
+</article>
+<article class="ejer" id="p4">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">Propio 4 · integral con valor absoluto y función a trozos</span> <span class="src" data-l="P" data-ref="Ejemplo propio; teoría: U p.240 (P5) y Teor. 6.2, p.244">P</span></header>
+<div class="ejer-enun"><p class="enun">a) Calcula $\displaystyle\int_{-1}^3\left|x^2-2x\right|dx$ y compárala con $\displaystyle\int_{-1}^3(x^2-2x)\,dx$. b) Calcula $\displaystyle\int_0^2f(x)\,dx$ con $f(x)=x^2$ si $0\le x\le1$ y $f(x)=2-x$ si $1\lt x\le2$.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Integrales en las que la expresión cambia según el trozo del intervalo.</dd>
     <dt>Cómo lo pienso</dt><dd>El valor absoluto cambia de fórmula donde lo de dentro cambia de signo: parto el intervalo en esos puntos (aditividad) y en cada trozo quito el valor absoluto con el signo adecuado. En b) parto en $x=1$.</dd>
     <dt>Qué uso</dt><dd>Aditividad (P5, U p.240); Barrow (U Teor. 6.2, p.244) en cada trozo.</dd>
     <dt>Por dónde empiezo</dt><dd>Resolver $x^2-2x=0$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"abs(x^2-2*x)","n":"|x²−2x|"},{"e":"x^2-2*x","n":"x²−2x","d":1}],"x":[-1.3,3.3],"y":[-1.4,3.5]}' data-alt="x^2-2x y su valor absoluto en [-1,3]"><figcaption>La parábola $x^2-2x$ (punteada) baja del eje entre $x=0$ y $x=2$; con el valor absoluto ese tramo se refleja hacia arriba. Con signo, el trozo de $[0,2]$ resta $\frac43$; con $|\cdot|$ suma. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <p><b>a)</b></p>
+  <figure class="graf" data-g='{"c":[{"e":"abs(x^2-2*x)","n":"|x²−2x|"},{"e":"x^2-2*x","n":"x²−2x","d":1}],"x":[-1.3,3.3],"y":[-1.4,3.5]}' data-alt="x^2-2x y su valor absoluto en [-1,3]"><figcaption>La parábola $x^2-2x$ (punteada) baja del eje entre $x=0$ y $x=2$; con el valor absoluto ese tramo se refleja hacia arriba. Con signo, el trozo de $[0,2]$ resta $\frac43$; con $|\cdot|$ suma. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<p><b>a)</b></p>
   <ol class="steps">
     <li><b>Ceros y signo.</b> $x^2-2x=x(x-2)=0\iff x=0$ o $x=2$. Probando un punto de cada trozo: en $x=-\frac12$ vale $\frac54\gt0$; en $x=1$ vale $-1\lt0$; en $x=\frac52$ vale $\frac54\gt0$. Luego $|x^2-2x|=x^2-2x$ en $[-1,0]$ y $[2,3]$, y $|x^2-2x|=-(x^2-2x)$ en $[0,2]$.</li>
     <li><b>Partir</b> (P5) y usar la primitiva $F(x)=\frac{x^3}3-x^2$ de $x^2-2x$: $\int_{-1}^0(x^2-2x)\,dx=F(0)-F(-1)=\frac43$; $\int_0^2-(x^2-2x)\,dx=-(F(2)-F(0))=\frac43$; $\int_2^3(x^2-2x)\,dx=F(3)-F(2)=\frac43$.</li>
@@ -433,122 +807,172 @@
   <div class="recipe"><b>Receta:</b> valor absoluto o función a trozos: (1) puntos donde cambia la fórmula; (2) partir con la aditividad; (3) en cada trozo, fórmula sin $|\cdot|$ y Barrow; (4) sumar.</div>
   <div class="box warn"><span class="h">Error típico</span><p>Calcular $\left|\int_{-1}^3(x^2-2x)\,dx\right|=\frac43$ en lugar de $\int_{-1}^3|x^2-2x|\,dx=4$: el valor absoluto no «sale» de la integral.</p></div>
 </details>
-<!-- ============================ 6 ============================ -->
-<h2 id="examen"><span class="n">6</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+</article>
+<!-- ============================ 9 ============================ -->
+<h2 id="examen" data-vista="examen"><span class="n">9</span>Así lo preguntan en el examen <span class="src" data-l="X" data-ref="Exámenes resueltos de Cálculo, páginas del PDF indicadas en cada problema">X</span></h2>
+<div class="box tip" id="que-cae"><span class="h">Qué cae en el examen de este tema</span>
+  <p>En los exámenes resueltos hay <b>6 preguntas</b> de este tema (todas se resuelven aquí abajo con su redacción) y 6 ejercicios en el libro E. Se reparten en 2 tipos, más lo que no aparece pero es la base:</p>
+  <table class="queCae">
+    <tr><th>Tipo de pregunta</th><th>Receta en una línea</th><th>Libro E</th><th>Examen</th></tr>
+    <tr><td>Monotonía y extremos de $F(x)=\int_0^xf$ (opción o V/F) <small>(3 de 6)</small></td><td>$F'=f$: la monotonía de $F$ la da el signo de $f$; extremos en los ceros de $f$, clasificados con $f'$; contraejemplo con $e^{-x}$ o $-e^{-x}$.</td>
+      <td><a href="#ej-6-12">6.12</a> · <a href="#ej-6-13">6.13</a> · <a href="#p1">P1</a></td><td><a href="#x1">X1</a> · <a href="#x2">X2</a> · <a href="#x3">X3</a></td></tr>
+    <tr><td>Calcular una integral definida con Barrow <small>(3 de 6)</small></td><td>Continuidad en $[a,b]$; primitiva comprobada derivando; $F(b)-F(a)$ (con límite si el integrando no está acotado).</td>
+      <td><a href="#ej-6-16">6.16</a> · <a href="#p2">P2</a> · <a href="#p4">P4</a></td><td><a href="#x4">X4</a> · <a href="#x5">X5</a> · <a href="#x6">X6</a></td></tr>
+    <tr><td>Derivar una integral con límites variables <small>(0 de 6)</small></td><td>Primer teorema + cadena: $f(b)\,b'-f(a)\,a'$.</td>
+      <td><a href="#ej-6-14">6.14</a> · <a href="#ej-6-15">6.15</a> · <a href="#p1">P1</a></td><td>—</td></tr>
+    <tr><td>Primitivas y valor medio <small>(0 de 6)</small></td><td>No aparecen en X; son la base de los dos teoremas.</td>
+      <td><a href="#ej-6-11">6.11</a> · <a href="#p3">P3</a></td><td>—</td></tr>
+  </table>
+  <p><small>Recuento propio sobre las preguntas de X resueltas aquí. Las técnicas de cálculo de primitivas se ven en el tema 6.3.</small></p>
+  <span class="src" data-l="P" data-ref="Recuento propio sobre las preguntas de exámenes resueltos (X, Examenes-resueltos-Calculo.pdf)">P</span>
+</div>
 <p>Dos tipos de pregunta cubren este tema en X: (1) <b>monotonía y extremos de $F(x)=\int_0^xf$</b> (verdadero o falso y opción múltiple), que se resuelven con $F'=f$; y (2) <b>calcular una integral definida</b> con la regla de Barrow, donde la parte difícil es hallar la primitiva (§6.3). En X, en estas páginas, no aparecen preguntas que pidan enunciar o demostrar los teoremas: se usan para resolver problemas. Los exámenes «1-4» están elaborados con exámenes de asignaturas similares (sin fecha en la fuente).</p>
-<details class="sol" id="x1"><summary>X1 · (mismo problema que E 6.13) ¿es $F(x)=\int_0^xt\operatorname{sen}t\,dt$ creciente, decreciente o con máximo en $7\pi$? <span class="src" data-l="X" data-ref="X pp.109-110 (Examen 1, Ej. 4)">X pp.109-110 (Examen 1)</span></summary>
-<p class="enun">Dada la función $F(x)=\int_0^xt\operatorname{sen}t\,dt$ definida en $[0,\infty)$ señale la opción correcta: A) $F$ es creciente; B) $F$ tiene un máximo en $x=7\pi$; C) $F$ es decreciente; D) ninguna de las anteriores.</p>
+<article class="ejer" id="x1">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X1 · (mismo problema que E 6.13) ¿es $F(x)=\int_0^xt\operatorname{sen}t\,dt$ creciente, decreciente o con máximo en $7\pi$?</span> <span class="src" data-l="X" data-ref="X pp.109-110 (Examen 1, Ej. 4)">X pp.109-110 (Examen 1)</span></header>
+<div class="ejer-enun"><p class="enun">Dada la función $F(x)=\int_0^xt\operatorname{sen}t\,dt$ definida en $[0,\infty)$ señale la opción correcta: A) $F$ es creciente; B) $F$ tiene un máximo en $x=7\pi$; C) $F$ es decreciente; D) ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd><b>Mismo problema que E 6.13</b> (con otras letras de opción): monotonía de $F$ y tipo de punto en $7\pi$.</dd>
     <dt>Cómo lo pienso</dt><dd>$F'$ es el integrando (primer teorema); su signo da la monotonía y $F''$ clasifica los puntos críticos.</dd>
     <dt>Qué uso</dt><dd>Primer teorema (U Teor. 6.1, p.243); U Prop. 2.4 (p.98) y Prop. 3.7 (p.131).</dd>
     <dt>Por dónde empiezo</dt><dd>$F'(x)=x\operatorname{sen}x$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x*sin(x)","n":"F′(x)=x sen x"},{"e":"sin(x)-x*cos(x)","n":"F(x)"}],"x":[0,26],"y":[-30,30],"q":[[21.9911,21.9911,"máx. F(7π)=7π"]]}' data-alt="F(x) y su derivada x sen x: máximo relativo en 7π"><figcaption>El integrando $x\operatorname{sen}x$ (es $F'$) y $F(x)=\operatorname{sen}x-x\cos x$. $F$ sube cuando $F'>0$ y baja cuando $F'<0$; en $x=7\pi$ pasa de subir a bajar: máximo relativo con $F(7\pi)=7\pi\approx21{,}99$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"x*sin(x)","n":"F′(x)=x sen x"},{"e":"sin(x)-x*cos(x)","n":"F(x)"}],"x":[0,26],"y":[-30,30],"q":[[21.9911,21.9911,"máx. F(7π)=7π"]]}' data-alt="F(x) y su derivada x sen x: máximo relativo en 7π"><figcaption>El integrando $x\operatorname{sen}x$ (es $F'$) y $F(x)=\operatorname{sen}x-x\cos x$. $F$ sube cuando $F'>0$ y baja cuando $F'<0$; en $x=7\pi$ pasa de subir a bajar: máximo relativo con $F(7\pi)=7\pi\approx21{,}99$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>Por el teorema fundamental del cálculo, $F'(x)=x\operatorname{sen}x$ ($t\operatorname{sen}t$ es continua).</li>
     <li>$F'$ cambia de signo (positiva en $(0,\pi)$, negativa en $(\pi,2\pi)$): A y C son falsas.</li>
     <li>$F'(7\pi)=7\pi\operatorname{sen}7\pi=0$ y $F''(x)=\operatorname{sen}x+x\cos x$, $F''(7\pi)=-7\pi\lt0$: máximo relativo en $7\pi$. <b>Respuesta B.</b></li>
   </ol></div>
+<div class="recipe"><b>Receta:</b> para $F(x)=\int_a^xf(t)\,dt$: $F'=f$ (primer teorema); los puntos críticos son los ceros de $f$ y se clasifican con el signo de $f$ alrededor o con $F''=f'$.</div>
 </details>
-<details class="sol" id="x2"><summary>X2 · V/F: «$f$ derivable y decreciente $\Rightarrow$ $F(x)=\int_0^xf$ decreciente» <span class="src" data-l="X" data-ref="X p.107 (examen sin fecha, I. Electrónica Industrial y Automática, pregunta corta 4)">X p.107 (examen sin fecha)</span></summary>
-<p class="enun">Razone la veracidad o falsedad de la siguiente afirmación: «Si $f$ es derivable y decreciente en $(0,\infty)$, entonces $F$ es decreciente en $(0,\infty)$, donde $F(x)=\int_0^xf(s)\,ds$».</p>
+</article>
+<article class="ejer" id="x2">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X2 · V/F: «$f$ derivable y decreciente $\Rightarrow$ $F(x)=\int_0^xf$ decreciente»</span> <span class="src" data-l="X" data-ref="X p.107 (examen sin fecha, I. Electrónica Industrial y Automática, pregunta corta 4)">X p.107 (examen sin fecha)</span></header>
+<div class="ejer-enun"><p class="enun">Razone la veracidad o falsedad de la siguiente afirmación: «Si $f$ es derivable y decreciente en $(0,\infty)$, entonces $F$ es decreciente en $(0,\infty)$, donde $F(x)=\int_0^xf(s)\,ds$».</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si «$f$ decreciente $\Rightarrow$ $F$ decreciente» y justificarlo.</dd>
     <dt>Cómo lo pienso</dt><dd>La monotonía de $F$ depende del <b>signo</b> de $F'=f$, no de si $f$ sube o baja. Una $f$ que baja pero sigue siendo positiva hace que $F$ <b>crezca</b>.</dd>
     <dt>Qué uso</dt><dd>Primer teorema (U Teor. 6.1, p.243); U Prop. 2.4 (p.98).</dd>
     <dt>Por dónde empiezo</dt><dd>$F'(x)=f(x)$ y buscar una $f$ decreciente y positiva.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"1/(x+1)","n":"f(s)=1/(s+1)"},{"e":"log(1+x)","n":"F(x)=ln(1+x)"}],"x":[0,6],"y":[0,2.2]}' data-alt="1/(s+1) decreciente y su integral ln(1+x) creciente"><figcaption>$f(s)=\frac1{s+1}$ decrece pero es positiva; su integral acumulada $F(x)=\ln(1+x)$ sube (cada vez más despacio) porque sigue acumulando área positiva. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"1/(x+1)","n":"f(s)=1/(s+1)"},{"e":"log(1+x)","n":"F(x)=ln(1+x)"}],"x":[0,6],"y":[0,2.2]}' data-alt="1/(s+1) decreciente y su integral ln(1+x) creciente"><figcaption>$f(s)=\frac1{s+1}$ decrece pero es positiva; su integral acumulada $F(x)=\ln(1+x)$ sube (cada vez más despacio) porque sigue acumulando área positiva. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>La afirmación es <b>falsa</b>.</li>
     <li>Contraejemplo: $f(x)=e^{-x}$ es derivable y decreciente en $(0,\infty)$ ($f'(x)=-e^{-x}\lt0$), y continua y positiva en $[0,\infty)$.</li>
     <li>$F(x)=\int_0^xe^{-s}\,ds=1-e^{-x}$ (Barrow), con $F'(x)=e^{-x}\gt0$: $F$ es <b>estrictamente creciente</b>, no decreciente.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> $F$ decrece donde $F'=f\lt0$ y crece donde $f\gt0$; que $f$ sea decreciente no dice nada sobre su signo. El contraejemplo debe ser integrable desde $0$: $f=\frac1x$ no sirve con ese límite inferior porque no está acotada cerca de $0$ ($\int_0^x\frac{dt}t$ no existe); sí serviría con límite inferior $1$, pues $\int_1^x\frac{dt}t=\ln x$ crece.</p>
-  <div class="recipe"><b>Receta:</b> en un V/F sobre la monotonía de $F(x)=\int_a^xf$: traducir a «signo de $f$». Si la hipótesis habla de la monotonía de $f$ y no de su signo, buscar un contraejemplo con $f$ de signo «contrario» al esperado y continua en el intervalo de integración, extremos incluidos.</div>
+<div class="recipe"><b>Receta:</b> en un V/F sobre la monotonía de $F(x)=\int_a^xf$: traducir a «signo de $f$». Si la hipótesis habla de la monotonía de $f$ y no de su signo, buscar un contraejemplo con $f$ de signo «contrario» al esperado y continua en el intervalo de integración, extremos incluidos.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> $F$ decrece donde $F'=f\lt0$ y crece donde $f\gt0$; que $f$ sea decreciente no dice nada sobre su signo. El contraejemplo debe ser integrable desde $0$: $f=\frac1x$ no sirve con ese límite inferior porque no está acotada cerca de $0$ ($\int_0^x\frac{dt}t$ no existe); sí serviría con límite inferior $1$, pues $\int_1^x\frac{dt}t=\ln x$ crece.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Confundir «$f$ decreciente» con «$f$ negativa»; o proponer un contraejemplo cuya integral desde $0$ no existe.</p></div>
 </details>
-<details class="sol" id="x3"><summary>X3 · V/F: «$f$ continua y creciente $\Rightarrow$ $F(x)=\int_0^xf$ creciente» <span class="src" data-l="X" data-ref="X p.144 (Febrero 2018, 1.ª semana, I. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.144 (feb. 2018)</span></summary>
-<p class="enun">Razone la veracidad o falsedad de la siguiente afirmación: «Si $f$ es continua y creciente en $(0,\infty)$, entonces la función $F(x)=\int_0^xf(t)\,dt$ es creciente en $(0,\infty)$».</p>
+</details>
+</article>
+<article class="ejer" id="x3">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="tit">X3 · V/F: «$f$ continua y creciente $\Rightarrow$ $F(x)=\int_0^xf$ creciente»</span> <span class="src" data-l="X" data-ref="X p.144 (Febrero 2018, 1.ª semana, I. Electrónica Industrial y Automática, pregunta corta 3, 1 punto)">X p.144 (feb. 2018)</span></header>
+<div class="ejer-enun"><p class="enun">Razone la veracidad o falsedad de la siguiente afirmación: «Si $f$ es continua y creciente en $(0,\infty)$, entonces la función $F(x)=\int_0^xf(t)\,dt$ es creciente en $(0,\infty)$».</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Decidir si «$f$ creciente $\Rightarrow$ $F$ creciente».</dd>
     <dt>Cómo lo pienso</dt><dd>Es el espejo del anterior: $F$ crece donde $f\gt0$. Una $f$ creciente pero negativa hace que $F$ <b>decrezca</b>.</dd>
     <dt>Qué uso</dt><dd>Primer teorema (U Teor. 6.1, p.243); U Prop. 2.4 (p.98).</dd>
     <dt>Por dónde empiezo</dt><dd>Buscar una $f$ creciente y negativa, continua también en $0$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"x-1","n":"f(t)=t−1"},{"e":"x^2/2-x","n":"F(x)=x²/2−x"}],"x":[-0.3,3],"y":[-1.4,3],"q":[[1,-0.5,"mín. F(1)=−1/2"]]}' data-alt="f(t)=t-1 y F(x)=x^2/2-x: F decrece en (0,1)"><figcaption>La recta $f(t)=t-1$ (creciente) y su integral acumulada $F(x)=\frac{x^2}2-x$: mientras $f<0$ (antes de $x=1$) $F$ baja; el mínimo de $F$ está donde $f$ cambia de signo. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"x-1","n":"f(t)=t−1"},{"e":"x^2/2-x","n":"F(x)=x²/2−x"}],"x":[-0.3,3],"y":[-1.4,3],"q":[[1,-0.5,"mín. F(1)=−1/2"]]}' data-alt="f(t)=t-1 y F(x)=x^2/2-x: F decrece en (0,1)"><figcaption>La recta $f(t)=t-1$ (creciente) y su integral acumulada $F(x)=\frac{x^2}2-x$: mientras $f<0$ (antes de $x=1$) $F$ baja; el mínimo de $F$ está donde $f$ cambia de signo. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>La afirmación es <b>falsa</b>.</li>
     <li>Contraejemplo: $f(x)=-e^{-x}$ es continua y creciente en $(0,\infty)$ ($f'(x)=e^{-x}\gt0$) y negativa.</li>
     <li>$F(x)=\int_0^x(-e^{-t})\,dt=e^{-x}-1$, con $F'(x)=-e^{-x}\lt0$: $F$ es <b>estrictamente decreciente</b>.</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> por el primer teorema $F'=f$, así que $F$ decrece mientras $f\lt0$. Con límite inferior $1$ también valdría $f(t)=-\frac1{t^2}$, creciente y negativa: $\int_1^x\left(-\frac1{t^2}\right)dt=\frac1x-1$ decrece. Lo que $F$ hereda de la monotonía de $f$ es la <b>convexidad</b> ($F''=f'\ge0$, si $f$ es derivable, implica $F$ convexa, U Prop. 3.10, p.136), no el crecimiento.</p>
-  <div class="recipe"><b>Receta:</b> la de X2: monotonía de $F$ = signo de $f$; el contraejemplo debe ser integrable desde el límite inferior que da el enunciado.</div>
+<div class="recipe"><b>Receta:</b> la de X2: monotonía de $F$ = signo de $f$; el contraejemplo debe ser integrable desde el límite inferior que da el enunciado.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> por el primer teorema $F'=f$, así que $F$ decrece mientras $f\lt0$. Con límite inferior $1$ también valdría $f(t)=-\frac1{t^2}$, creciente y negativa: $\int_1^x\left(-\frac1{t^2}\right)dt=\frac1x-1$ decrece. Lo que $F$ hereda de la monotonía de $f$ es la <b>convexidad</b> ($F''=f'\ge0$, si $f$ es derivable, implica $F$ convexa, U Prop. 3.10, p.136), no el crecimiento.</p>
 </details>
-<details class="sol" id="x4"><summary>X4 · $\int_0^\pi\cos x\,\sqrt[3]{\operatorname{sen}x}\,dx$ <span class="src" data-l="X" data-ref="X p.119 (Examen 4, Ej. 4)">X p.119 (Examen 4)</span></summary>
-<p class="enun">Señale el valor de $\displaystyle\int_0^\pi\cos x\,\sqrt[3]{\operatorname{sen}x}\,dx$: A) $0$; B) $1$; C) $\pi$; D) ninguna de las anteriores.</p>
+</details>
+</article>
+<article class="ejer" id="x4">
+<header class="ejer-cab"><span class="nv n2">★★ Medio</span><span class="nv min">Mínimo</span><span class="tit">X4 · $\int_0^\pi\cos x\,\sqrt[3]{\operatorname{sen}x}\,dx$</span> <span class="src" data-l="X" data-ref="X p.119 (Examen 4, Ej. 4)">X p.119 (Examen 4)</span></header>
+<div class="ejer-enun"><p class="enun">Señale el valor de $\displaystyle\int_0^\pi\cos x\,\sqrt[3]{\operatorname{sen}x}\,dx$: A) $0$; B) $1$; C) $\pi$; D) ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El valor de una integral definida.</dd>
     <dt>Cómo lo pienso</dt><dd>El integrando es «potencia de $\operatorname{sen}x$ por la derivada de $\operatorname{sen}x$»: su primitiva es la potencia siguiente dividida por el nuevo exponente. Después, Barrow.</dd>
     <dt>Qué uso</dt><dd>Barrow (U Teor. 6.2, p.244); regla de la cadena (U p.79) para comprobar la primitiva.</dd>
     <dt>Por dónde empiezo</dt><dd>Proponer $F(x)=\frac34(\operatorname{sen}x)^{4/3}$ y derivarla.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"cos(x)*cbrt(sin(x))","n":"cos x ∛(sen x)"},{"e":"0.75*pow(sin(x),4/3)","n":"F(x)=¾ sen^(4/3) x","d":1}],"x":[0,3.141592653589793],"y":[-0.9,0.9]}' data-alt="cos x por raiz cubica de sen x en [0,pi]"><figcaption>El integrando $\cos x\sqrt[3]{\operatorname{sen}x}$ es positivo en $[0,\frac\pi2]$ y negativo en $[\frac\pi2,\pi]$, con áreas iguales que se cancelan: la integral con signo vale $0$ (la primitiva punteada vuelve a $0$ en $\pi$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"cos(x)*cbrt(sin(x))","n":"cos x ∛(sen x)"},{"e":"0.75*pow(sin(x),4/3)","n":"F(x)=¾ sen^(4/3) x","d":1}],"x":[0,3.141592653589793],"y":[-0.9,0.9]}' data-alt="cos x por raiz cubica de sen x en [0,pi]"><figcaption>El integrando $\cos x\sqrt[3]{\operatorname{sen}x}$ es positivo en $[0,\frac\pi2]$ y negativo en $[\frac\pi2,\pi]$, con áreas iguales que se cancelan: la integral con signo vale $0$ (la primitiva punteada vuelve a $0$ en $\pi$). Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>El integrando es continuo en $[0,\pi]$ (la raíz cúbica está definida y es continua en todo $\mathbb R$): se puede aplicar Barrow.</li>
     <li>Primitiva: $F(x)=\frac34(\operatorname{sen}x)^{4/3}$, pues $F'(x)=\frac34\cdot\frac43(\operatorname{sen}x)^{1/3}\cos x=\cos x\sqrt[3]{\operatorname{sen}x}$.</li>
     <li>$\int_0^\pi=F(\pi)-F(0)=\frac34\cdot0-\frac34\cdot0=0$. <b>Respuesta A.</b></li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> sale $0$ porque en $[0,\frac\pi2]$ el integrando es $\ge0$ y en $[\frac\pi2,\pi]$ es $\le0$ ($\cos x\le0$, $\operatorname{sen}x\ge0$), y por la simetría $x\mapsto\pi-x$ las dos áreas son iguales y se cancelan.</p>
-  <div class="recipe"><b>Receta:</b> integrando de la forma $u^r\,u'$ ($r\ne-1$): primitiva $\frac{u^{r+1}}{r+1}$; comprobar derivando y aplicar Barrow.</div>
+<div class="recipe"><b>Receta:</b> integrando de la forma $u^r\,u'$ ($r\ne-1$): primitiva $\frac{u^{r+1}}{r+1}$; comprobar derivando y aplicar Barrow.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> sale $0$ porque en $[0,\frac\pi2]$ el integrando es $\ge0$ y en $[\frac\pi2,\pi]$ es $\le0$ ($\cos x\le0$, $\operatorname{sen}x\ge0$), y por la simetría $x\mapsto\pi-x$ las dos áreas son iguales y se cancelan.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Confundir el valor de la integral (área con signo, aquí $0$) con el área total (que sería $2\cdot\frac34=\frac32$).</p></div>
 </details>
-<details class="sol" id="x5"><summary>X5 · área bajo $\operatorname{tg}x$ entre $0$ y $\frac\pi4$ <span class="src" data-l="X" data-ref="X p.112 (Examen 2, Ej. 3); solución en p.113">X pp.112-113 (Examen 2)</span></summary>
-<p class="enun">Señale el área comprendida entre la gráfica de $\operatorname{tg}x$; las rectas $x=0$, $x=\frac\pi4$; y el eje $x$: A) $\frac{\ln2}2$; B) $\frac{\ln4}4$; C) $\frac{\pi^2}4$; D) ninguna de las anteriores.</p>
+</details>
+</article>
+<article class="ejer" id="x5">
+<header class="ejer-cab"><span class="nv n1">★ Básico</span><span class="tit">X5 · área bajo $\operatorname{tg}x$ entre $0$ y $\frac\pi4$</span> <span class="src" data-l="X" data-ref="X p.112 (Examen 2, Ej. 3); solución en p.113">X pp.112-113 (Examen 2)</span></header>
+<div class="ejer-enun"><p class="enun">Señale el área comprendida entre la gráfica de $\operatorname{tg}x$; las rectas $x=0$, $x=\frac\pi4$; y el eje $x$: A) $\frac{\ln2}2$; B) $\frac{\ln4}4$; C) $\frac{\pi^2}4$; D) ninguna de las anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>Un área bajo una curva entre $x=0$ y $x=\frac\pi4$.</dd>
     <dt>Cómo lo pienso</dt><dd>Si la función es $\ge0$ en el intervalo, el área es directamente la integral. $\operatorname{tg}x=\frac{\operatorname{sen}x}{\cos x}$ es «menos la derivada del denominador entre el denominador»: su primitiva es $-\ln|\cos x|$.</dd>
     <dt>Qué uso</dt><dd>Integral como área (U §6.1, p.238); Barrow (U Teor. 6.2, p.244); regla de la cadena para comprobar la primitiva (U p.79).</dd>
     <dt>Por dónde empiezo</dt><dd>Comprobar el signo y la continuidad de $\operatorname{tg}x$ en $[0,\frac\pi4]$.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"tan(x)","n":"tg x"},{"e":"-log(cos(x))","n":"−ln(cos x) (área acumulada)","d":1}],"x":[-0.1,0.95],"y":[-0.1,1.3],"q":[[0.7854,0.3466,"área ln2/2"],[0.7854,1]]}' data-alt="tg x en [0,pi/4] y el área acumulada -ln(cos x)"><figcaption>$\operatorname{tg}x$ en $[0,\frac\pi4]$ (alcanza $1$ en $\frac\pi4$) y, punteada, el área acumulada $-\ln(\cos x)$, que en $x=\frac\pi4$ vale $\frac{\ln2}2\approx0{,}347$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"tan(x)","n":"tg x"},{"e":"-log(cos(x))","n":"−ln(cos x) (área acumulada)","d":1}],"x":[-0.1,0.95],"y":[-0.1,1.3],"q":[[0.7854,0.3466,"área ln2/2"],[0.7854,1]]}' data-alt="tg x en [0,pi/4] y el área acumulada -ln(cos x)"><figcaption>$\operatorname{tg}x$ en $[0,\frac\pi4]$ (alcanza $1$ en $\frac\pi4$) y, punteada, el área acumulada $-\ln(\cos x)$, que en $x=\frac\pi4$ vale $\frac{\ln2}2\approx0{,}347$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>En $[0,\frac\pi4]$, $\cos x\ge\frac{\sqrt2}2\gt0$ y $\operatorname{sen}x\ge0$: $\operatorname{tg}x$ es continua y $\ge0$; el área es $\int_0^{\pi/4}\operatorname{tg}x\,dx$.</li>
     <li>Primitiva $F(x)=-\ln(\cos x)$: $F'(x)=\frac{\operatorname{sen}x}{\cos x}=\operatorname{tg}x$.</li>
     <li>$\int_0^{\pi/4}\operatorname{tg}x\,dx=-\ln\frac{\sqrt2}2+\ln1=\ln\sqrt2=\frac{\ln2}2$. Como $\frac{\ln4}4=\frac{2\ln2}4=\frac{\ln2}2$, <b>respuesta A y B</b> (coinciden).</li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> conviene simplificar <b>todas</b> las opciones antes de descartar alguna: $\frac{\ln4}4$ es el mismo número que $\frac{\ln2}2$, es decir, B) es igual a A). La opción C) no puede ser: $\frac{\pi^2}4\approx2{,}47$ y el área es menor que $\frac\pi4\approx0{,}785$ (en $[0,\frac\pi4]$, $0\le\operatorname{tg}x\le1$). Valor numérico: $\frac{\ln2}2\approx0{,}3466$.</p>
-  <div class="recipe"><b>Receta:</b> área bajo $f\ge0$ = $\int_a^bf$ con Barrow. Para $\frac{u'}u$ la primitiva es $\ln|u|$. Simplificar todas las opciones antes de descartar alguna.</div>
+<div class="recipe"><b>Receta:</b> área bajo $f\ge0$ = $\int_a^bf$ con Barrow. Para $\frac{u'}u$ la primitiva es $\ln|u|$. Simplificar todas las opciones antes de descartar alguna.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> conviene simplificar <b>todas</b> las opciones antes de descartar alguna: $\frac{\ln4}4$ es el mismo número que $\frac{\ln2}2$, es decir, B) es igual a A). La opción C) no puede ser: $\frac{\pi^2}4\approx2{,}47$ y el área es menor que $\frac\pi4\approx0{,}785$ (en $[0,\frac\pi4]$, $0\le\operatorname{tg}x\le1$). Valor numérico: $\frac{\ln2}2\approx0{,}3466$.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Olvidar el signo: la primitiva de $\operatorname{tg}x$ es $-\ln|\cos x|$, no $\ln|\cos x|$ (saldría un área negativa).</p></div>
 </details>
-<details class="sol" id="x6"><summary>X6 · $\int_0^{\pi/2}\frac{\cos x}{\sqrt{\operatorname{sen}x}}\,dx$: integrando no acotado en un extremo (usa <a href="tema_6_5_integrales_impropias.html">§6.5</a>) <span class="src" data-l="X" data-ref="X p.115 (Examen 3, Ej. 3); solución en p.116">X pp.115-116 (Examen 3)</span></summary>
-<p class="enun">Señale el valor de $\displaystyle\int_0^{\pi/2}\frac{\cos x}{\sqrt{\operatorname{sen}x}}\,dx$: A) $0$; B) $\frac\pi4$; C) $2$; D) ninguno de los anteriores.</p>
+</details>
+</article>
+<article class="ejer" id="x6">
+<header class="ejer-cab"><span class="nv n3">★★★ Difícil</span><span class="tit">X6 · $\int_0^{\pi/2}\frac{\cos x}{\sqrt{\operatorname{sen}x}}\,dx$: integrando no acotado en un extremo (usa <a href="tema_6_5_integrales_impropias.html">§6.5</a>)</span> <span class="src" data-l="X" data-ref="X p.115 (Examen 3, Ej. 3); solución en p.116">X pp.115-116 (Examen 3)</span></header>
+<div class="ejer-enun"><p class="enun">Señale el valor de $\displaystyle\int_0^{\pi/2}\frac{\cos x}{\sqrt{\operatorname{sen}x}}\,dx$: A) $0$; B) $\frac\pi4$; C) $2$; D) ninguno de los anteriores.</p>
   <div class="plan"><span class="h">Antes de calcular</span><dl>
     <dt>Qué me piden</dt><dd>El valor de la integral.</dd>
     <dt>Cómo lo pienso</dt><dd>Es otra vez «potencia de $\operatorname{sen}x$ por su derivada» ($(\operatorname{sen}x)^{-1/2}\cos x$), con primitiva $2\sqrt{\operatorname{sen}x}$. Pero en $x=0$ el denominador vale $0$: el integrando no está acotado y Barrow no se aplica directamente en $[0,\frac\pi2]$. Se aplica en $[\varepsilon,\frac\pi2]$ y se hace $\varepsilon\to0^+$.</dd>
     <dt>Qué uso</dt><dd>Barrow (U Teor. 6.2, p.244) en $[\varepsilon,\frac\pi2]$; integral impropia de 2.ª especie (U Def. 6.10, p.275).</dd>
     <dt>Por dónde empiezo</dt><dd>Comprobar la primitiva derivando.</dd>
   </dl></div>
-  <figure class="graf" data-g='{"c":[{"e":"cos(x)/sqrt(sin(x))","n":"cos x/√(sen x)"},{"e":"2*sqrt(sin(x))","n":"F(x)=2√(sen x)","d":1}],"x":[0,1.7],"y":[0,12],"q":[[1.5708,2,"F(π/2)=2"]]}' data-alt="cos x/raiz(sen x) no acotada en 0 y su primitiva 2 raiz(sen x)"><figcaption>El integrando se dispara en $x=0$ (no está acotado), pero la primitiva $2\sqrt{\operatorname{sen}x}$ (punteada) es continua y sube de $0$ a $2$: el área bajo la curva es finita y vale $2$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure>
-  <div class="box tip"><span class="h">Lo que hay que escribir en el examen</span>
+  <figure class="graf" data-g='{"c":[{"e":"cos(x)/sqrt(sin(x))","n":"cos x/√(sen x)"},{"e":"2*sqrt(sin(x))","n":"F(x)=2√(sen x)","d":1}],"x":[0,1.7],"y":[0,12],"q":[[1.5708,2,"F(π/2)=2"]]}' data-alt="cos x/raiz(sen x) no acotada en 0 y su primitiva 2 raiz(sen x)"><figcaption>El integrando se dispara en $x=0$ (no está acotado), pero la primitiva $2\sqrt{\operatorname{sen}x}$ (punteada) es continua y sube de $0$ a $2$: el área bajo la curva es finita y vale $2$. Pasa el ratón por la gráfica (o toca; o usa ← →) para leer las coordenadas. <span class="src" data-l="P" data-ref="Gráfica propia: las curvas y los puntos se calculan a partir del enunciado">P</span></figcaption></figure></div>
+<details class="sol"><summary>Ver solución paso a paso</summary>
+<div class="box redaccion"><span class="h">✍️ Así se redacta en el examen</span>
   <ol class="steps">
     <li>La integral $\int_0^{\pi/2}\frac{\cos x}{\sqrt{\operatorname{sen}x}}\,dx$ tiene integrando continuo en $(0,\frac\pi2]$ y no acotado en $0$: integral impropia, $\int_0^{\pi/2}=\lim_{\varepsilon\to0^+}\int_\varepsilon^{\pi/2}$.</li>
     <li>Primitiva $F(x)=2\sqrt{\operatorname{sen}x}$: $F'(x)=2\cdot\frac12(\operatorname{sen}x)^{-1/2}\cos x=\frac{\cos x}{\sqrt{\operatorname{sen}x}}$.</li>
     <li>$\int_\varepsilon^{\pi/2}=2\sqrt{\operatorname{sen}\frac\pi2}-2\sqrt{\operatorname{sen}\varepsilon}=2-2\sqrt{\operatorname{sen}\varepsilon}$.</li>
     <li>$\displaystyle\lim_{\varepsilon\to0^+}\left(2-2\sqrt{\operatorname{sen}\varepsilon}\right)=2$. La integral converge y vale $2$. <b>Respuesta C.</b></li>
   </ol></div>
-  <p><b>Explicaciones (no hace falta escribirlas):</b> en $x=0{,}0001$ el integrando vale $\approx100$: crece sin límite al acercarse a $0$, por eso no se puede aplicar Barrow «a ciegas» en $[0,\frac\pi2]$. Aquí $F$ es continua también en $0$, de modo que el resultado coincide con $F(\frac\pi2)-F(0)=2$, pero el razonamiento correcto pasa por el límite.</p>
-  <div class="recipe"><b>Receta:</b> si el integrando no está acotado en un extremo, integrar hasta $\varepsilon$ con Barrow y tomar el límite. Si la primitiva tiene límite finito en ese extremo, la integral converge y vale ese límite.</div>
+<div class="recipe"><b>Receta:</b> si el integrando no está acotado en un extremo, integrar hasta $\varepsilon$ con Barrow y tomar el límite. Si la primitiva tiene límite finito en ese extremo, la integral converge y vale ese límite.</div>
+<details class="ampl"><summary>Comentarios y comprobaciones</summary>
+<p><b>Explicaciones (no hace falta escribirlas):</b> en $x=0{,}0001$ el integrando vale $\approx100$: crece sin límite al acercarse a $0$, por eso no se puede aplicar Barrow «a ciegas» en $[0,\frac\pi2]$. Aquí $F$ es continua también en $0$, de modo que el resultado coincide con $F(\frac\pi2)-F(0)=2$, pero el razonamiento correcto pasa por el límite.</p>
+  
   <div class="box warn"><span class="h">Error típico</span><p>Aplicar Barrow sin mirar el extremo $x=0$ (aquí la cuenta sale bien, pero ver E 6.16 y Propio 2).</p></div>
 </details>
-<!-- ============================ 7 ============================ -->
-<h2 id="chuleta"><span class="n">7</span>Errores frecuentes, chuleta y lista de comprobación</h2>
+</details>
+</article>
+<!-- ============================ 10 ============================ -->
+<h2 id="chuleta" data-vista="teoria"><span class="n">10</span>Errores frecuentes, chuleta y lista de comprobación</h2>
 <h3>Errores frecuentes</h3>
 <ul>
   <li>Derivar una integral con límites variables: olvidar el factor de la cadena o el signo menos (lista en §2).</li>
