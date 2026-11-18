@@ -69,6 +69,17 @@
         if (k && m.clientWidth && (m.scrollWidth > m.clientWidth + 1 || parseFloat(k.style.fontSize || '1.21') < 1.21 * 0.8)) wrapMath(m);
       });
     }
+    /* fórmulas en línea más anchas que su bloque: se reducen para que no queden recortadas */
+    function fitInline() {
+      [].forEach.call(d.querySelectorAll('main .katex'), function (k) {
+        if (k.closest('.katex-display')) return;
+        k.style.fontSize = '';
+        var b = k.closest('li,p,dd,dt,td,th,summary,div'); if (!b || !b.clientWidth) return;
+        var bl = b.getBoundingClientRect(), kr = k.getBoundingClientRect();
+        var avail = Math.min(bl.right, d.documentElement.clientWidth - 8) - kr.left;
+        if (kr.width > avail + 1 && avail > 40) k.style.fontSize = (1.21 * Math.max(0.4, (avail / kr.width) * 0.96)).toFixed(3) + 'em';
+      });
+    }
     /* tablas: nunca con scroll horizontal; si no caben en el ancho, se reducen (la escala queda en data-fit) */
     function fitTables() {
       [].forEach.call(d.querySelectorAll('main table'), function (t) {
@@ -79,7 +90,7 @@
         if (nat > a + 1) { var k = a / nat; t.style.transformOrigin = '0 0'; t.style.transform = 'scale(' + k.toFixed(4) + ')'; w.style.height = (t.offsetHeight * k) + 'px'; w.setAttribute('data-fit', k.toFixed(2)); }
       });
     }
-    function fitAll() { fitMath(); fitTables(); }
+    function fitAll() { fitMath(); fitInline(); fitTables(); }
     fitAll(); window.addEventListener('resize', fitAll); window.addEventListener('load', fitAll);
     d.addEventListener('toggle', fitAll, true);
     if (d.fonts && d.fonts.ready) d.fonts.ready.then(fitAll);

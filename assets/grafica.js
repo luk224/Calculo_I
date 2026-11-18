@@ -34,7 +34,7 @@
     return function (t) { var s = d[n - 1]; for (var k = n - 2; k >= 0; k--) s = s * (t - P[k][0]) + d[k]; return s; };
   }
   function expr(e) {
-    var f = new Function('x', 'with(Math){return ' + String(e).replace(/(^|[-+*\/(,?:<>])(\s*)-\s*([\w.]+)\s*(?:\^|\*\*)\s*([\w.]+)/g, '$1$2-($3**$4)').replace(/\^/g, '**').replace(/\bln\(/g, 'log(').replace(/\bsen\(/g, 'sin(') + '}');
+    var f = new Function('x', 'with(Math){return ' + String(e).replace(/(^|[-+*\/(,?:<>])(\s*)-\s*([\w.]+)\s*(?:\^|\*\*)\s*([\w.]+)/g, '$1$2-($3**$4)').replace(/\^/g, '**').replace(/\bpi\b/g, 'PI').replace(/\bln\(/g, 'log(').replace(/\bsen\(/g, 'sin(') + '}');
     return f;
   }
 
