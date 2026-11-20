@@ -67,7 +67,7 @@
       if(fuera.length)h+='<p class="res"><b>Para después</b> (si sobra tiempo): '+fuera.map(function(t){return '<a href="'+t.url+'">'+t.cod+'</a> <label><input type="checkbox" data-c="'+t.cod+'"> ya lo he estudiado</label>'}).join(' · ')+'</p>';
       h+='</div>'; if(fin>ini) ini=new Date(Math.max(ini.getTime(),fin.getTime()+86400000)); });
     document.getElementById('out').innerHTML=h}
-  hs.onchange=function(){S.hs=Math.max(1,parseInt(hs.value,10)||8);guarda();pinta()};
+  hs.oninput=hs.onchange=function(){S.hs=Math.max(1,parseInt(hs.value,10)||8);guarda();pinta()};
   document.getElementById('out').addEventListener('change',function(e){if(e.target.dataset.c){S.hecho[e.target.dataset.c]=e.target.checked;guarda();pinta()}});
   document.getElementById('btn-tema').onclick=function(){var r=document.documentElement,d=r.getAttribute('data-theme')==='dark';r.setAttribute('data-theme',d?'light':'dark');try{localStorage.setItem('tema',d?'light':'dark')}catch(e){}};
   pinta();
